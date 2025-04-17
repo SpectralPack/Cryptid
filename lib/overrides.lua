@@ -1,5 +1,44 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+--Get Pack hooks
+
+-- dumb hook because i don't feel like aggressively patching get_pack to do stuff
+-- very inefficient
+-- maybe smods should overwrite the function and make it more targetable?
+local getpackref = get_pack
+function get_pack(_key, _type)
+	local temp_banned = copy_table(G.GAME.banned_keys)
+	--Add banished keys (via DELETE) to banned_keys so they don't appear in shop
+	for k, v in pairs(G.GAME.cry_banished_keys) do
+		G.GAME.banned_keys[k] = v
+	end
+	local abc = getpackref(_key, _type)
+	--Convert banned keys back to what it was originally
+	G.GAME.banned_keys = copy_table(temp_banned)
+	if G.GAME.modifiers.cry_equilibrium then
+		if not P_CRY_ITEMS then
+			P_CRY_ITEMS = {}
+			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
+			for _, id in ipairs(valid_pools) do
+				for k, v in pairs(G.P_CENTER_POOLS[id]) do
+					if not Cryptid.no(v, "doe", k) then
+						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
+					end
+				end
+			end
+			for k, v in pairs(G.P_CARDS) do
+				if not Cryptid.no(v, "doe", k) then
+					P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
+				end
+			end
+		end
+		return G.P_CENTERS[pseudorandom_element(
+			P_CRY_ITEMS,
+			pseudoseed("cry_equipackbrium" .. G.GAME.round_resets.ante)
+		)]
+	end
+	return abc
+end
 -- get_currrent_pool hook for Deck of Equilibrium and Copies
 local gcp = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
@@ -40,7 +79,11 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
 			for _, id in ipairs(valid_pools) do
 				for k, v in pairs(G.P_CENTER_POOLS[id]) do
-					if v.unlocked == true and not center_no(v, "doe", k) and not G.GAME.banned_keys[v.key] then
+					if
+						v.unlocked == true
+						and not Cryptid.no(v, "doe", k)
+						and not (G.GAME.banned_keys[v.key] or G.GAME.cry_banished_keys[v.key])
+					then
 						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
 					end
 				end
@@ -66,15 +109,15 @@ function get_new_boss()
 	if G.GAME.modifiers.cry_beta then
 		local bl_key = string.sub(bl, 4)
 		local nostalgicblinds = {
-			arm = (cry_card_enabled("bl_cry_oldarm") == true),
-			fish = (cry_card_enabled("bl_cry_oldfish") == true),
-			flint = (cry_card_enabled("bl_cry_oldflint") == true),
-			house = (cry_card_enabled("bl_cry_oldhouse") == true),
-			manacle = (cry_card_enabled("bl_cry_oldmanacle") == true),
-			mark = (cry_card_enabled("bl_cry_oldmark") == true),
-			ox = (cry_card_enabled("bl_cry_oldox") == true),
-			pillar = (cry_card_enabled("bl_cry_oldpillar") == true),
-			serpent = (cry_card_enabled("bl_cry_oldserpent") == true),
+			arm = (Cryptid.enabled("bl_cry_oldarm") == true),
+			fish = (Cryptid.enabled("bl_cry_oldfish") == true),
+			flint = (Cryptid.enabled("bl_cry_oldflint") == true),
+			house = (Cryptid.enabled("bl_cry_oldhouse") == true),
+			manacle = (Cryptid.enabled("bl_cry_oldmanacle") == true),
+			mark = (Cryptid.enabled("bl_cry_oldmark") == true),
+			ox = (Cryptid.enabled("bl_cry_oldox") == true),
+			pillar = (Cryptid.enabled("bl_cry_oldpillar") == true),
+			serpent = (Cryptid.enabled("bl_cry_oldserpent") == true),
 		}
 		if nostalgicblinds[bl_key] then
 			return "bl_cry_old" .. bl_key
@@ -105,7 +148,7 @@ function Blind:defeat(s)
 	dft(self, s)
 	local obj = self.config.blind
 	-- Ignore blinds with loc_vars because orb does not properly work with them yet
-	if obj.boss and (obj.boss.no_orb or obj.boss.epic or obj.loc_vars) then
+	if obj.boss and (obj.boss.no_orb or obj.loc_vars) then
 		return
 	end
 	if
@@ -169,8 +212,10 @@ function Game:init_game_object()
 	-- Add initial dropshot and number blocks card
 	g.current_round.cry_nb_card = { rank = "Ace" }
 	g.current_round.cry_dropshot_card = { suit = "Spades" }
+	g.monstermult = 1
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
+	g.jokers_sold = {}
 	return g
 end
 
@@ -185,7 +230,7 @@ function reset_castle_card()
 	G.GAME.current_round.cry_dropshot_card.suit = "Spades"
 	local valid_castle_cards = {}
 	for k, v in ipairs(G.playing_cards) do
-		if v.ability.effect ~= "Stone Card" then
+		if not SMODS.has_no_suit(v) then
 			valid_castle_cards[#valid_castle_cards + 1] = v
 		end
 	end
@@ -271,7 +316,7 @@ function Game:update(dt)
 		AllowDividing("Code")
 		CryptidIncanCompat = true
 	end
-	if cry_card_enabled("set_cry_timer") == true then
+	if Cryptid.enabled("set_cry_timer") == true then
 		cry_pointer_dt = cry_pointer_dt + dt
 		cry_jimball_dt = cry_jimball_dt + dt
 		cry_glowing_dt = cry_glowing_dt + dt
@@ -280,7 +325,7 @@ function Game:update(dt)
 	if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
 		cry_pointer_dt = 0
 		local pointerobj = G.P_CENTERS.c_cry_pointer
-		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
+		pointerobj.pos.x = (pointerobj.pos.x == 11) and 12 or 11
 	end
 	if G.P_CENTERS and G.P_CENTERS.j_cry_jimball and cry_jimball_dt > 0.1 then
 		cry_jimball_dt = 0
@@ -370,22 +415,31 @@ function Game:update(dt)
 				--Update UI
 				--todo: in blinds screen, too
 				if G.blind_select_opts then
-					local blind_UI = G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
-					local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
-					if chip_text_node then
-						chip_text_node.config.text = number_format(
-							get_blind_amount(G.GAME.round_resets.blind_ante)
-								* G.GAME.starting_params.ante_scaling
-								* G.GAME.CRY_BLINDS[c]
-						)
-						chip_text_node.config.scale = score_number_scale(
-							0.9,
-							get_blind_amount(G.GAME.round_resets.blind_ante)
-								* G.GAME.starting_params.ante_scaling
-								* G.GAME.CRY_BLINDS[c]
-						)
+					if (SMODS.Mods["StrangeLib"] or {}).can_load then
+						StrangeLib.dynablind.blind_choice_scores[c] = get_blind_amount(G.GAME.round_resets.blind_ante)
+							* G.GAME.starting_params.ante_scaling
+							* G.GAME.CRY_BLINDS[c]
+						StrangeLib.dynablind.blind_choice_score_texts[c] =
+							number_format(StrangeLib.dynablind.blind_choice_scores[c])
+					else
+						local blind_UI =
+							G.blind_select_opts[string.lower(c)].definition.nodes[1].nodes[1].nodes[1].nodes[1]
+						local chip_text_node = blind_UI.nodes[1].nodes[3].nodes[1].nodes[2].nodes[2].nodes[3]
+						if chip_text_node then
+							chip_text_node.config.text = number_format(
+								get_blind_amount(G.GAME.round_resets.blind_ante)
+									* G.GAME.starting_params.ante_scaling
+									* G.GAME.CRY_BLINDS[c]
+							)
+							chip_text_node.config.scale = score_number_scale(
+								0.9,
+								get_blind_amount(G.GAME.round_resets.blind_ante)
+									* G.GAME.starting_params.ante_scaling
+									* G.GAME.CRY_BLINDS[c]
+							)
+						end
+						G.blind_select_opts[string.lower(c)]:recalculate()
 					end
-					G.blind_select_opts[string.lower(c)]:recalculate()
 				end
 			elseif
 				G.GAME.round_resets.blind_states[c] ~= "Defeated"
@@ -423,7 +477,7 @@ function Card:set_cost()
 	-- Makes the edition cost increase usually present not apply if this variable is true
 	-- Used for some of the Jen's almanac edition decks because having the price increase apply was "unfun"
 	if self.edition and G.GAME.modifiers.cry_no_edition_price then
-		local m = cry_deep_copy(self.edition)
+		local m = Cryptid.deep_copy(self.edition)
 		self.edition = nil
 		sc(self)
 		self.edition = m
@@ -459,6 +513,38 @@ function Card:set_cost()
 		self.sell_cost = 0
 		self.sell_cost_label = 0
 	end
+end
+local sell_card_stuff = Card.sell_card
+function Card:sell_card()
+	if self.config.center.set == "Joker" then
+		if self.config.center.key ~= "j_cry_necromancer" then
+			local contained = false
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if v == self.config.center.key then
+					contained = true
+					break
+				end
+			end
+			if not contained then
+				table.insert(G.GAME.jokers_sold, self.config.center.key)
+			end
+		end
+		-- Add Jolly Joker to the pool if card was treated as Jolly Joker
+		if self:is_jolly() then
+			local contained = false
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if v == "j_jolly" then
+					contained = true
+					break
+				end
+			end
+			if not contained then
+				table.insert(G.GAME.jokers_sold, "j_jolly")
+			end
+		end
+	end
+	--G.P_CENTERS.j_jolly
+	sell_card_stuff(self)
 end
 
 -- Modify to display badges for credits and some gameset badges
@@ -608,12 +694,12 @@ function SMODS.create_mod_badges(obj, badges)
 			}
 		end
 	end
-	if safe_get(G, "ACTIVE_MOD_UI", "id") == "Cryptid" and obj and not obj.force_gameset then
-		local set = cry_get_gameset(obj)
+	if Cryptid.safe_get(G, "ACTIVE_MOD_UI", "id") == "Cryptid" and obj and not obj.force_gameset then
+		local set = Cryptid.gameset(obj)
 		if set == "disabled" or obj.set == "Content Set" then
 			return
 		end
-		local card_type = localize("cry_gameset_" .. cry_get_gameset(obj))
+		local card_type = localize("cry_gameset_" .. Cryptid.gameset(obj))
 		if card_type == "ERROR" then
 			card_type = localize("cry_gameset_custom")
 		end
@@ -662,19 +748,16 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	local ps = pseudoseed
 	if area == "ERROR" then
 		pseudo = function(x)
-			return pseudorandom(predict_pseudoseed(x))
+			return pseudorandom(Cryptid.predict_pseudoseed(x))
 		end
-		ps = predict_pseudoseed
+		ps = Cryptid.predict_pseudoseed
 	end
 	local center = G.P_CENTERS.b_red
-	if (_type == "Joker") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+	if (_type == "Joker" or _type == "Meme") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
-		return center.unlocked
-			and not center_no(center, "doe")
-			and not center_no(center, "aeq")
-			and not (center.rarity == 6 or center.rarity == "cry_exotic")
+		return center.unlocked and not Cryptid.no(center, "doe") and not (center.rarity == "cry_exotic")
 	end
 	if _type == "Joker" and not _rarity and not legendary then
 		if not G.GAME.aequilibriumkey then
@@ -982,15 +1065,20 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		card:set_edition(nil, true)
 	end
 	if G.GAME.modifiers.cry_force_random_edition and area ~= G.pack_cards then
-		local edition = cry_poll_random_edition()
+		local edition = Cryptid.poll_random_edition()
 		card:set_edition(edition, true)
 	end
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
-		cry_misprintize(card)
+		Cryptid.misprintize(card)
 	end
-	if _type == "Joker" and G.GAME.modifiers.cry_common_value_quad then
+	if card.ability.set == "Joker" and G.GAME.modifiers.cry_common_value_quad then
 		if card.config.center.rarity == 1 then
-			cry_misprintize(card, { min = 4, max = 4 }, nil, true)
+			Cryptid.misprintize(card, { min = 4, max = 4 }, nil, true)
+		end
+	end
+	if card.ability.set == "Joker" and G.GAME.modifiers.cry_uncommon_value_quad then
+		if card.config.center.rarity == 2 then
+			Cryptid.misprintize(card, { min = 4, max = 4 }, nil, true)
 		end
 	end
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
@@ -1022,60 +1110,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	-- during the update function. Cryptid can create jokers mid-scoring, meaning
 	-- those values will be unset during scoring unless update() is manually called.
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
-
-	--Debuff jokers if certain boss blinds are active
-	if _type == "Joker" and G.GAME and G.GAME.blind and not G.GAME.blind.disabled then
-		if
-			G.GAME.blind.name == "cry-box"
-			or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_box"] == true)
-		then
-			if card.config.center.rarity == 1 and not card.debuff then
-				card.debuff = true
-				card.debuffed_by_blind = true
-			end
-		end
-		if
-			G.GAME.blind.name == "cry-windmill"
-			or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_windmill"] == true)
-		then
-			if card.config.center.rarity == 2 and not card.debuff then
-				card.debuff = true
-				card.debuffed_by_blind = true
-			end
-		end
-		if
-			G.GAME.blind.name == "cry-striker"
-			or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_striker"] == true)
-		then
-			if card.config.center.rarity == 3 and not card.debuff then
-				card.debuff = true
-				card.debuffed_by_blind = true
-			end
-		end
-		if
-			G.GAME.blind.name == "cry-shackle"
-			or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_shackle"] == true)
-		then
-			if (card.edition and card.edition.negative == true) and not card.debuff then
-				card.debuff = true
-				card.debuffed_by_blind = true
-			end
-		end
-		if
-			G.GAME.blind.name == "cry-pin"
-			or (G.GAME.blind.name == "cry-Obsidian Orb" and G.GAME.defeated_blinds["bl_cry_pin"] == true)
-		then
-			if
-				card.config.center.rarity ~= 3
-				and card.config.center.rarity ~= 2
-				and card.config.center.rarity ~= 1
-				and card.config.center.rarity ~= 5
-			then
-				card.debuff = true
-				card.debuffed_by_blind = true
-			end
-		end
-	end
 	return card
 end
 
@@ -1139,7 +1173,7 @@ end
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
 	if
-		(card.ability.name == "cry-Negative Joker" and card.ability.extra >= 1)
+		(card.ability.name == "cry-Negative Joker" and card.ability.extra.slots >= 1)
 		or (card.ability.name == "cry-soccer" and card.ability.extra.holygrail >= 1)
 		or (card.ability.name == "cry-Tenebris" and card.ability.extra.slots >= 1)
 	then
@@ -1151,7 +1185,7 @@ end
 local gfcsc = G.FUNCS.can_select_card
 G.FUNCS.can_select_card = function(e)
 	if
-		(e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra >= 1)
+		(e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra.slots >= 1)
 		or (e.config.ref_table.ability.name == "cry-soccer" and e.config.ref_table.ability.extra.holygrail >= 1)
 		or (e.config.ref_table.ability.name == "cry-Tenebris" and e.config.ref_table.ability.extra.slots >= 1)
 	then
@@ -1165,8 +1199,7 @@ end
 --Cryptid (THE MOD) localization
 local function parse_loc_txt(center)
 	center.text_parsed = {}
-	if not center.text then
-	else
+	if center.text then
 		for _, line in ipairs(center.text) do
 			center.text_parsed[#center.text_parsed + 1] = loc_parse_string(line)
 		end
@@ -1198,9 +1231,10 @@ function init_localization()
 		G.localization.descriptions.Voucher.v_crystal_ball.text[1] = "{C:attention}+#1#{} consumable slot"
 		G.localization.descriptions.Joker.j_seance.text[1] = "If {C:attention}played hand{} contains a" -- damnit seance
 	end
-	if Cryptid.obj_buffer and Cryptid.obj_buffer.Stake then
-		for i = 1, #Cryptid.obj_buffer.Stake do
-			local key = Cryptid.obj_buffer.Stake[i].key
+	il()
+	if Cryptid.object_buffer and Cryptid.object_buffer.Stake then
+		for i = 1, #Cryptid.object_buffer.Stake do
+			local key = Cryptid.object_buffer.Stake[i].key
 			local color = G.localization.descriptions.Stake[key] and G.localization.descriptions.Stake[key].colour
 			if color then
 				local sticker_key = key:sub(7) .. "_sticker"
@@ -1222,7 +1256,6 @@ function init_localization()
 			end
 		end
 	end
-	il()
 end
 
 --Fix a corrupted game state
@@ -1301,4 +1334,23 @@ function create_UIBox_generic_options(args)
 		}
 	end
 	return ret
+end
+
+local scuref = set_consumeable_usage
+function set_consumeable_usage(card)
+	for i = 1, #G.GAME.cry_last_used_consumeables do
+		if not G.GAME.cry_function_stupid_workaround then
+			G.GAME.cry_function_stupid_workaround = {}
+		end
+		G.GAME.cry_function_stupid_workaround[i] = G.GAME.cry_last_used_consumeables[i]
+	end
+	if not G.GAME.cry_last_used_consumeables then
+		G.GAME.cry_last_used_consumeables = {}
+	end
+	local nextindex = #G.GAME.cry_last_used_consumeables + 1
+	G.GAME.cry_last_used_consumeables[nextindex] = card.config.center.key
+	if nextindex > 3 then
+		table.remove(G.GAME.cry_last_used_consumeables, 1)
+	end
+	scuref(card)
 end

@@ -2,56 +2,136 @@
 
 --Redefine these here because they're always used
 Cryptid.base_values = {}
-function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, big)
+
+Cryptid.misprintize_value_blacklist = {
+	perish_tally = false,
+	id = false,
+	suit_nominal = false,
+	base_nominal = false,
+	face_nominal = false,
+	qty = false,
+	h_x_chips = false,
+	d_size = false,
+	h_size = false,
+	selected_d6_face = false,
+	-- TARGET: Misprintize Value Blacklist (format: key = false, )
+}
+
+function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level)
+	local big_initial = (type(initial) ~= "table" and to_big(initial)) or initial
+	local big_min = (type(min) ~= "table" and to_big(min)) or min
+	local big_max = (type(max) ~= "table" and to_big(max)) or max
+
+	local grow = Cryptid.log_random(pseudoseed("cry_misprint" .. G.GAME.round_resets.ante), big_min, big_max)
+
+	local calc = big_initial
+	if not grow_type then
+		calc = calc * grow
+	elseif grow_type == "+" then
+		calc = calc + grow
+	elseif grow_type == "-" then
+		calc = calc - grow
+	elseif grow_type == "/" then
+		calc = calc / grow
+	elseif grow_type == "^" then
+		pow_level = pow_level or 1
+		if pow_level == 1 then
+			calc = calc ^ grow
+		else
+			local function hyper(level, base, height)
+				local big_base = (type(base) ~= "table" and to_big(base)) or base
+				local big_height = (type(height) ~= "table" and to_big(height)) or height
+
+				if height == 1 then
+					return big_base
+				elseif level == 1 then
+					return big_base ^ big_height
+				else
+					local inner = hyper(level, base, height - 1)
+					return hyper(level - 1, base, inner)
+				end
+			end
+
+			calc = hyper(pow_level, calc, grow)
+		end
+	end
+
+	if calc > to_big(-1e100) and calc < to_big(1e100) then
+		calc = to_number(calc)
+	end
+
+	return calc
+end
+
+function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, big, grow_type, pow_level)
+	local prob_max = 1e69 -- funny number
+	local max_slots = 100
+	local max_booster_slots = 25
+
+	local function num_too_big(initial, min, max, limit)
+		return (
+			to_big(initial) > to_big(max_slots)
+			or to_big(min) > to_big(max_slots)
+			or to_big(max) > to_big(max_slots)
+		)
+	end
+
 	if name and ref_tbl and ref_value then
-		tbl = cry_deep_copy(ref_tbl[ref_value])
+		local tbl = Cryptid.deep_copy(ref_tbl[ref_value])
+
+		local function can_misprintize_value(k, v)
+			if
+				(k == "x_mult" and v == 1 and not tbl.override_x_mult_check)
+				or (k == "x_chips" and v == 1 and not tbl.override_x_chips_check)
+			then
+				return false
+			end
+
+			return Cryptid.misprintize_value_blacklist[k] or true
+		end
+
 		for k, v in pairs(tbl) do
 			if (type(tbl[k]) ~= "table") or is_number(tbl[k]) then
-				if
-					is_number(tbl[k])
-					and not (k == "id")
-					and not (k == "colour")
-					and not (k == "suit_nominal")
-					and not (k == "base_nominal")
-					and not (k == "face_nominal")
-					and not (k == "qty")
-					and not (k == "x_mult" and v == 1 and not tbl.override_x_mult_check)
-					and not (k == "selected_d6_face")
-				then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
+				if is_number(tbl[k]) and can_misprintize_value(k, tbl[k]) then
 					if not Cryptid.base_values[name] then
 						Cryptid.base_values[name] = {}
 					end
 					if not Cryptid.base_values[name][k] then
 						Cryptid.base_values[name][k] = tbl[k]
 					end
-					tbl[k] = cry_sanity_check(
+
+					local initial = (stack and tbl[k] or Cryptid.base_values[name][k])
+					local min = override and override.min or G.GAME.modifiers.cry_misprint_min
+					local max = override and override.max or G.GAME.modifiers.cry_misprint_max
+
+					if
+						(
+							k == "cry_prob"
+							-- Hack for vanilla jokers that use the extra field to describe their odds
+							or (
+								(
+									name == "j_8_ball"
+									or name == "j_business"
+									or name == "j_space"
+									or name == "j_hallucination"
+								) and k == "extra"
+							)
+						) and num_too_big(initial, min, max, prob_max)
+					then
+						initial = Cryptid.base_values[name][k] * prob_max
+						min = 1
+						max = 1
+					end
+
+					tbl[k] = Cryptid.sanity_check(
 						clear and Cryptid.base_values[name][k]
-							or cry_format(
-								(stack and tbl[k] or Cryptid.base_values[name][k])
-									* cry_log_random(
-										pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-										override and override.min or G.GAME.modifiers.cry_misprint_min,
-										override and override.max or G.GAME.modifiers.cry_misprint_max
-									),
-								"%.2g"
-							),
+							or cry_format(Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level), "%.2g"),
 						big
 					)
 				end
-			else
+			elseif not (k == "immutable") and not (k == "colour") then
 				for _k, _v in pairs(tbl[k]) do
-					if
-						is_number(tbl[k][_k])
-						and not (_k == "id")
-						and not (k == "perish_tally")
-						and not (k == "colour")
-						and not (_k == "suit_nominal")
-						and not (_k == "base_nominal")
-						and not (_k == "face_nominal")
-						and not (_k == "qty")
-						and not (k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
-						and not (_k == "selected_d6_face")
-					then --Refer to above
+					if is_number(tbl[k][_k]) and not (_k == "d_size") and not (_k == "h_size") then --Refer to above
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
 						end
@@ -61,17 +141,52 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, b
 						if not Cryptid.base_values[name][k][_k] then
 							Cryptid.base_values[name][k][_k] = tbl[k][_k]
 						end
-						tbl[k][_k] = cry_sanity_check(
+
+						local initial = (stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
+						local min = override and override.min or G.GAME.modifiers.cry_misprint_min
+						local max = override and override.max or G.GAME.modifiers.cry_misprint_max
+
+						if
+							(_k == "odds")
+							and (
+								to_big(initial) > to_big(prob_max)
+								or to_big(min) > to_big(prob_max)
+								or to_big(max) > to_big(prob_max)
+							)
+						then
+							-- print('\t\t\t got "odds"')
+							initial = Cryptid.base_values[name][k][_k] * prob_max
+							min = 1
+							max = 1
+						end
+
+						if
+							(
+								k == "slots"
+								-- Hack for jokers that give slots
+								and (name == "j_cry_tenebris" or name == "j_cry_negative")
+							) and num_too_big(initial, min, max, max_slots)
+						then
+							initial = max_slots
+							min = 1
+							max = 1
+						end
+
+						if
+							(
+								k == "booster_slots"
+								-- Hack for jokers that give booster_slots
+								and (name == "j_cry_booster")
+							) and num_too_big(initial, min, max, max_booster_slots)
+						then
+							initial = max_booster_slots
+							min = 1
+							max = 1
+						end
+
+						tbl[k][_k] = Cryptid.sanity_check(
 							clear and Cryptid.base_values[name][k][_k]
-								or cry_format(
-									(stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
-										* cry_log_random(
-											pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-											override and override.min or G.GAME.modifiers.cry_misprint_min,
-											override and override.max or G.GAME.modifiers.cry_misprint_max
-										),
-									"%.2g"
-								),
+								or cry_format(Cryptid.calculate_misprint(initial, min, max), "%.2g"),
 							big
 						)
 					end
@@ -81,16 +196,17 @@ function cry_misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, b
 		ref_tbl[ref_value] = tbl
 	end
 end
-function cry_misprintize_val(val, override, big)
+function Cryptid.misprintize_val(val, override, big, grow_type, pow_level)
 	if is_number(val) then
-		val = cry_sanity_check(
+		val = Cryptid.sanity_check(
 			cry_format(
-				val
-					* cry_log_random(
-						pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-						override and override.min or G.GAME.modifiers.cry_misprint_min,
-						override and override.max or G.GAME.modifiers.cry_misprint_max
-					),
+				Cryptid.calculate_misprint(
+					val,
+					override and override.min or G.GAME.modifiers.cry_misprint_min,
+					override and override.max or G.GAME.modifiers.cry_misprint_max,
+					grow_type,
+					pow_level
+				),
 				"%.2g"
 			),
 			big
@@ -98,7 +214,7 @@ function cry_misprintize_val(val, override, big)
 	end
 	return val
 end
-function cry_sanity_check(val, is_big)
+function Cryptid.sanity_check(val, is_big)
 	if is_big then
 		if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
 			val = 1e300
@@ -113,9 +229,18 @@ function cry_sanity_check(val, is_big)
 	if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
 		return 1e300
 	end
+	if type(val) == "table" then
+		if val > to_big(1e300) then
+			return 1e300
+		end
+		if val < to_big(-1e300) then
+			return -1e300
+		end
+		return to_number(val)
+	end
 	return val
 end
-function cry_misprintize(card, override, force_reset, stack)
+function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_level)
 	if Card.no(card, "immutable", true) then
 		force_reset = true
 	end
@@ -123,7 +248,7 @@ function cry_misprintize(card, override, force_reset, stack)
 	if card.infinifusion then
 		if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then
 			calculate_infinifusion(card, nil, function(i)
-				cry_misprintize(card, override, force_reset, stack)
+				Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_level)
 			end)
 		end
 	end
@@ -133,9 +258,6 @@ function cry_misprintize(card, override, force_reset, stack)
 			and not stack
 		or not Card.no(card, "immutable", true)
 	then
-		if card.ability.name == "Ace Aequilibrium" then
-			return
-		end
 		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
 			if not override then
 				override = {}
@@ -146,15 +268,35 @@ function cry_misprintize(card, override, force_reset, stack)
 			override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
 		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
-			cry_misprintize_tbl(card.config.center_key, card, "ability", nil, override, stack, is_card_big(card))
+			Cryptid.misprintize_tbl(
+				card.config.center_key,
+				card,
+				"ability",
+				nil,
+				override,
+				stack,
+				Cryptid.is_card_big(card),
+				grow_type,
+				pow_level
+			)
 			if card.base then
-				cry_misprintize_tbl(card.config.card_key, card, "base", nil, override, stack, is_card_big(card))
+				Cryptid.misprintize_tbl(
+					card.config.card_key,
+					card,
+					"base",
+					nil,
+					override,
+					stack,
+					Cryptid.is_card_big(card),
+					grow_type,
+					pow_level
+				)
 			end
 		end
 		if G.GAME.modifiers.cry_misprint_min then
-			--card.cost = cry_format(card.cost / cry_log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
+			--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
 			card.misprint_cost_fac = 1
-				/ cry_log_random(
+				/ Cryptid.log_random(
 					pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
 					override and override.min or G.GAME.modifiers.cry_misprint_min,
 					override and override.max or G.GAME.modifiers.cry_misprint_max
@@ -162,15 +304,25 @@ function cry_misprintize(card, override, force_reset, stack)
 			card:set_cost()
 		end
 	else
-		cry_misprintize_tbl(card.config.center_key, card, "ability", true, nil, nil, is_card_big(card))
+		Cryptid.misprintize_tbl(
+			card.config.center_key,
+			card,
+			"ability",
+			true,
+			nil,
+			nil,
+			Cryptid.is_card_big(card),
+			grow_type,
+			pow_level
+		)
 	end
 	if card.ability.consumeable then
 		for k, v in pairs(card.ability.consumeable) do
-			card.ability.consumeable[k] = cry_deep_copy(card.ability[k])
+			card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
 		end
 	end
 end
-function cry_log_random(seed, min, max)
+function Cryptid.log_random(seed, min, max)
 	math.randomseed(seed)
 	local lmin = math.log(min, 2.718281828459045)
 	local lmax = math.log(max, 2.718281828459045)

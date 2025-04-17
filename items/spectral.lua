@@ -1,4 +1,15 @@
 local white_hole = {
+	cry_credits = {
+		idea = {
+			"y_not_tony",
+		},
+		art = {
+			"5381",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -35,9 +46,16 @@ local white_hole = {
 		for k, v in ipairs(G.handlist) do
 			if to_big(G.GAME.hands[v].level) > to_big(1) then
 				local this_removed_levels = G.GAME.hands[v].level - 1
-				removed_levels = removed_levels + this_removed_levels
-				if v ~= _hand or not modest then
-					level_up_hand(used_consumable, v, true, -this_removed_levels)
+				if
+					-- Due to how these poker hands are loaded they still techically exist even if Poker Hand Stuff is disabled
+					-- Because they still exist, While Hole needs to ignore levels from these if disabled (via Black Hole, Planet.lua, etc...)
+					(v ~= "cry_Bulwark" and v ~= "cry_Clusterfuck" and v ~= "cry_UltPair" and v ~= "cry_WholeDeck")
+					or Cryptid.enabled("set_cry_poker_hand_stuff") == true
+				then
+					if v ~= _hand or not modest then
+						removed_levels = removed_levels + this_removed_levels
+						level_up_hand(used_consumable, v, true, -this_removed_levels)
+					end
 				end
 			end
 		end
@@ -50,7 +68,7 @@ local white_hole = {
 		if modest then
 			level_up_hand(used_consumable, _hand, false, 4)
 		else
-			level_up_hand(used_consumable, _hand, false, 3 * removed_levels)
+			level_up_hand(used_consumable, _hand, false, math.min((3 * removed_levels), 1e300))
 		end
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -91,7 +109,7 @@ local white_hole = {
 		if modest then
 			level_up_hand(used_consumable, _hand, false, 4 * number)
 		else
-			level_up_hand(used_consumable, _hand, false, removed_levels * 3 ^ number)
+			level_up_hand(used_consumable, _hand, false, math.min(((3 ^ number) * removed_levels), 1e300))
 		end
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -100,6 +118,17 @@ local white_hole = {
 	end,
 }
 local vacuum = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
+		},
+		art = {
+			"Linus Goof Balls",
+		},
+		code = {
+			"jenwalter666",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -123,6 +152,7 @@ local vacuum = {
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		local earnings = 0
+		check_for_unlock({ cry_used_consumable = "c_cry_vacuum" })
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
@@ -176,6 +206,17 @@ local vacuum = {
 	end,
 }
 local hammerspace = {
+	cry_credits = {
+		idea = {
+			"jenwalter666",
+		},
+		art = {
+			"AlexZGreat",
+		},
+		code = {
+			"jenwalter666",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -195,6 +236,7 @@ local hammerspace = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_hammerspace" })
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
@@ -226,7 +268,7 @@ local hammerspace = {
 				delay = 0.15,
 				func = function()
 					CARD:flip()
-					CARD:set_ability(get_random_consumable("cry_hammerspace", nil, "c_cry_hammerspace", nil, true))
+					CARD:set_ability(Cryptid.random_consumable("cry_hammerspace", nil, "c_cry_hammerspace", nil, true))
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -236,6 +278,17 @@ local hammerspace = {
 	end,
 }
 local lock = {
+	cry_credits = {
+		idea = {
+			"Ein13",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"jenwalter666",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -250,11 +303,15 @@ local lock = {
 	cost = 4,
 	order = 1,
 	atlas = "atlasnotjokers",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = { key = "eternal", set = "Other" }
+	end,
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_lock" })
 		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
@@ -295,10 +352,8 @@ local lock = {
 						CARD:set_eternal(nil)
 					end
 					CARD.ability.banana = nil
-					if Cryptid.enabled["Spooky"] then
-						CARD.ability.cry_possessed = nil
-						SMODS.Stickers.cry_flickering:apply(CARD, nil)
-					end
+					CARD.ability.cry_possessed = nil
+					SMODS.Stickers.cry_flickering:apply(CARD, nil)
 					play_sound("card1", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
@@ -348,6 +403,17 @@ local lock = {
 	end,
 }
 local trade = {
+	cry_credits = {
+		idea = {
+			"5381",
+		},
+		art = {
+			"RattlingSnow353",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -471,6 +537,17 @@ local trade = {
 	end,
 }
 local analog = {
+	cry_credits = {
+		idea = {
+			"y_not_tony",
+		},
+		art = {
+			"RattlingSnow353",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -492,6 +569,7 @@ local analog = {
 		return #G.jokers.cards > 0
 	end,
 	use = function(self, card, area, copier)
+		check_for_unlock({ cry_used_consumable = "c_cry_analog" })
 		local used_consumable = copier or card
 		local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
@@ -531,6 +609,19 @@ local analog = {
 	end,
 }
 local summoning = {
+	cry_credits = {
+		idea = {
+			"AlexZGreat",
+		},
+		art = {
+			--Summoning's sprite takes some parts from an unused sprite by Rattlingsnow so i'm crediting both users
+			"Kailen",
+			"RattlingSnow353",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -547,8 +638,8 @@ local summoning = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				cry_card_enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
-				colours = { G.C.RARITY[cry_card_enabled("set_cry_epic") == true and "cry_epic" or 3] },
+				Cryptid.enabled("set_cry_epic") == true and localize("k_cry_epic") or localize("k_rare"),
+				colours = { G.C.RARITY[Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 3] },
 			},
 		}
 	end,
@@ -556,7 +647,7 @@ local summoning = {
 		return #G.jokers.cards > 0
 			and #G.jokers.cards <= G.jokers.config.card_limit
 			--Prevent use if slots are full and all jokers are eternal (would exceed limit)
-			and #advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
+			and #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j") < G.jokers.config.card_limit
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
@@ -567,7 +658,7 @@ local summoning = {
 			end
 		end
 		local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed("cry_summoning"))
-		local value = cry_card_enabled("set_cry_epic") == true and "cry_epic" or 0.99
+		local value = Cryptid.enabled("set_cry_epic") == true and "cry_epic" or 0.99
 		local _first_dissolve = nil
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
@@ -598,6 +689,17 @@ local summoning = {
 	end,
 }
 local replica = {
+	cry_credits = {
+		idea = {
+			"Mystic Misclick",
+		},
+		art = {
+			"RattlingSnow353",
+		},
+		code = {
+			"Math",
+		},
+	},
 	object_type = "Consumable",
 	dependencies = {
 		items = {
@@ -617,6 +719,7 @@ local replica = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_replica" })
 		local chosen_card = pseudorandom_element(G.hand.cards, pseudoseed("cry_replica_choice"))
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
@@ -703,16 +806,15 @@ local ritual = {
 	atlas = "atlasnotjokers",
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
-		--TODO: CCD card compat
-		if #G.hand.highlighted > card.ability.max_highlighted then
-			return false
-		end
-		for _, v in ipairs(G.hand.highlighted) do
-			if v.edition then
-				return false
+		if card.area ~= G.hand then
+			return G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and not G.hand.highlighted[1].edition
+		else
+			local idx = 1
+			if G.hand.highlighted[1] == card then
+				idx = 2
 			end
+			return (#G.hand.highlighted == 2) and not G.hand.highlighted[idx].edition
 		end
-		return true
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card

@@ -8,10 +8,31 @@ G.FUNCS.cry_asc_UI_set = function(e)
 	end
 	e.config.object:update_text()
 end
+
+-- Needed because get_poker_hand_info isnt called at the end of the road
+local evaluateroundref = G.FUNCS.evaluate_round
+function G.FUNCS.evaluate_round()
+	evaluateroundref()
+	-- This is just the easiest way to check if its gold because lua is annoying
+	if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
+		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+	end
+end
+
 -- this is a hook to make funny "x of a kind"/"flush x" display text
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
 	local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+	-- Display text if played hand contains a Cluster and a Bulwark
+	-- Not Ascended hand related but this hooks in the same spot so i'm lumping it here anyways muahahahahahaha
+	if text == "cry_Clusterfuck" then
+		if next(poker_hands["cry_Bulwark"]) then
+			disp_text = "cry-Cluster Bulwark"
+			loc_disp_text = localize(disp_text, "poker_hands")
+		end
+	end
+
 	if G.SETTINGS.language == "en-us" then
 		if #scoring_hand > 5 and (text == "Flush Five" or text == "Five of a Kind") then
 			local rank_array = {}
@@ -95,11 +116,11 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["Pair"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
 		["Two Pair"] = 4,
 		["Three of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
-		["Straight"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
-		["Flush"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5,
+		["Straight"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["Flush"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
 		["Full House"] = 5,
 		["Four of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
-		["Straight Flush"] = next(SMODS.find_card("j_four_fingers")) and cry_get_gameset() ~= "modest" and 4 or 5, --debatable
+		["Straight Flush"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5, --debatable
 		["cry_Bulwark"] = 5,
 		["Five of a Kind"] = 5,
 		["Flush House"] = 5,
@@ -108,9 +129,16 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_UltPair"] = 8,
 		["cry_WholeDeck"] = 52,
 	}
-
+	-- Change mult and chips colors if hand is ascended
+	if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] then
+		ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
+		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
+	else
+		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+	end
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
-	if hand_table[text] and cry_card_enabled("set_cry_poker_hand_stuff") == true then
+	if hand_table[text] and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
 				and #_cards - hand_table[text]
 			or #scoring_hand - hand_table[text]
@@ -124,17 +152,22 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	end
 
 	G.GAME.current_round.current_hand.cry_asc_num_text = (
-		G.GAME.current_round.current_hand.cry_asc_num and G.GAME.current_round.current_hand.cry_asc_num > 0
+		G.GAME.current_round.current_hand.cry_asc_num
+		and (
+			type(G.GAME.current_round.current_hand.cry_asc_num) == "table"
+				and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(0))
+			or G.GAME.current_round.current_hand.cry_asc_num > 0
+		)
 	)
 			and " (+" .. G.GAME.current_round.current_hand.cry_asc_num .. ")"
 		or ""
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
-function cry_ascend(num) -- edit this function at your leisure
-	if cry_card_enabled("set_cry_poker_hand_stuff") ~= true then
+function Cryptid.ascend(num) -- edit this function at your leisure
+	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
 		return num
 	end
-	if cry_get_gameset() == "modest" then
+	if Cryptid.gameset() == "modest" then
 		-- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
 		if not G.GAME.current_round.current_hand.cry_asc_num then
 			return num
@@ -148,18 +181,20 @@ function cry_ascend(num) -- edit this function at your leisure
 				* (
 					1
 					+ 0.1
-					+ (0.05 * (G.GAME.sunnumber or 0))
-					+ ((0.1 + (0.05 * (G.GAME.sunnumber or 0))) * (G.GAME.current_round.current_hand.cry_asc_num or 0))
+					+ to_big(G.GAME.sunnumber or 0)
+					+ to_big(
+						(0.1 + (G.GAME.sunnumber or 0)) * to_big(G.GAME.current_round.current_hand.cry_asc_num or 0)
+					)
 				)
 		)
 	else
 		return math.max(
 			num,
-			num * ((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ G.GAME.current_round.current_hand.cry_asc_num or 0)
+			num * to_big((1.25 + (G.GAME.sunnumber or 0)) ^ to_big(G.GAME.current_round.current_hand.cry_asc_num or 0))
 		)
 	end
 end
-function cry_pulse_flame(duration, intensity) -- duration is in seconds, intensity is in idfk honestly, but it increases pretty quickly
+function Cryptid.pulse_flame(duration, intensity) -- duration is in seconds, intensity is in idfk honestly, but it increases pretty quickly
 	G.cry_flame_override = G.cry_flame_override or {}
 	G.cry_flame_override["duration"] = duration or 0.01
 	G.cry_flame_override["intensity"] = intensity or 2

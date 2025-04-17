@@ -100,7 +100,7 @@ function Card:unredeem()
 	end
 	G.E_MANAGER:add_event(Event({
 		func = function()
-			cry_update_used_vouchers()
+			Cryptid.update_used_vouchers()
 			return true
 		end,
 	}))
@@ -274,13 +274,13 @@ function Card:set_ability(center, initial, delay_sprites)
 	local edition = nil
 	local sticker = nil
 	local random = nil
-	if safe_get(G, "GAME", "modifiers", "cry_force_edition") then
+	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_edition") then
 		edition = G.GAME.modifiers.cry_force_edition
 	end
-	if safe_get(G, "GAME", "modifiers", "cry_force_sticker") then
+	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_sticker") then
 		sticker = G.GAME.modifiers.cry_force_sticker
 	end
-	if safe_get(G, "GAME", "modifiers", "cry_force_random_edition") then
+	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_random_edition") then
 		random = true
 	end
 	if
@@ -290,7 +290,7 @@ function Card:set_ability(center, initial, delay_sprites)
 		if edition and not random then
 			self:set_edition({ [edition] = true }, true, true)
 		elseif random then
-			self:set_edition(cry_poll_random_edition(), true, true)
+			self:set_edition(Cryptid.poll_random_edition(), true, true)
 		end
 		if sticker then
 			self.ability[sticker] = true
@@ -307,6 +307,26 @@ end
 local updateref = Card.update
 function Card:update(dt)
 	updateref(self, dt)
+	if self.area then
+		if self.area.config.type == "discard" or self.area.config.type == "deck" then
+			return --prevent lagging event queues with unneeded flips
+		end
+	end
+	if self.sprite_facing == "back" and self.edition and self.edition.cry_double_sided then
+		self.sprite_facing = "front"
+		self.facing = "front"
+		if self.flipping == "f2b" then
+			self.flipping = "b2f"
+		end
+		self:dbl_side_flip()
+	end
+	if self.ability.cry_absolute then -- feedback loop... may be problematic
+		self.cry_absolute = true
+	end
+	if self.cry_absolute then
+		self.ability.cry_absolute = true
+		self.ability.eternal = true
+	end
 	if self.ability.pinned then
 		self.pinned = true
 	end -- gluing these variables together
@@ -331,13 +351,13 @@ function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_jui
 	dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
 	G.E_MANAGER:add_event(Event({
 		func = function()
-			cry_update_used_vouchers()
+			Cryptid.update_used_vouchers()
 			return true
 		end,
 	}))
 end
 
-function cry_update_used_vouchers()
+function Cryptid.update_used_vouchers()
 	if G and G.GAME and G.vouchers then
 		G.GAME.used_vouchers = {}
 		for i, v in ipairs(G.vouchers.cards) do
@@ -347,7 +367,7 @@ function cry_update_used_vouchers()
 end
 
 -- check if Director's Cut or Retcon offers a cheaper reroll price
-function cry_cheapest_boss_reroll()
+function Cryptid.cheapest_boss_reroll()
 	local cheapest = 1e300
 	local vouchers = {
 		SMODS.find_card("v_directors_cut"),
@@ -371,33 +391,51 @@ function cry_best_interest_cap()
 	local vouchers = {
 		SMODS.find_card("v_seed_money"),
 		SMODS.find_card("v_money_tree"),
-		SMODS.find_card("v_cry_money_beanstalk"),
+		SMODS.find_card("v_cry_moneybean"),
 	}
 	for _, table in ipairs(vouchers) do
 		for i, v in ipairs(table) do
-			if v.ability.extra >= best then
+			if to_big(v.ability.extra) >= to_big(best) then
 				best = v.ability.extra
 			end
 		end
 	end
 	return best
 end
-
 local evaluateroundref = G.FUNCS.evaluate_round
 G.FUNCS.evaluate_round = function()
 	G.GAME.interest_cap = cry_best_interest_cap() -- blehhhhhh
-	evaluateroundref()
+	--Semicolon Stuff
+	if G.GAME.current_round.semicolon then
+		add_round_eval_row({ dollars = 0, name = "blind1", pitch = 0.95, saved = true })
+		G.E_MANAGER:add_event(Event({
+			trigger = "before",
+			delay = 1.3 * math.min(G.GAME.blind.dollars + 2, 7) / 2 * 0.15 + 0.5,
+			func = function()
+				G.GAME.blind:defeat()
+				return true
+			end,
+		}))
+		delay(0.2)
+		add_round_eval_row({ name = "bottom", dollars = 0 })
+	else
+		return evaluateroundref()
+	end
 end
-
+function Cryptid.edition_to_table(edition) -- look mom i figured it out (this does NOT need to be a function)
+	if edition then
+		return { [edition] = true }
+	end
+end
 function cry_get_next_voucher_edition() -- currently only for edition decks, can be modified if voucher editioning becomes more important
 	if G.GAME.modifiers.cry_force_edition then
-		return cry_edition_to_table(G.GAME.modifiers.cry_force_edition)
+		return Cryptid.edition_to_table(G.GAME.modifiers.cry_force_edition)
 	elseif G.GAME.modifiers.cry_force_random_edition then
-		return cry_poll_random_edition()
+		return Cryptid.poll_random_edition()
 	end
 end
 -- code to generate Stickers for Vouchers (and boosters), based on that for Jokers
-function cry_get_next_voucher_stickers(booster)
+function Cryptid.next_voucher_stickers(booster)
 	local rate = 0.3
 	if booster then
 		rate = 0.2
@@ -734,6 +772,45 @@ SMODS.Sticker({
 		end
 	end,
 })
+
+-- shiny tag hooks
+
+local tagability = Tag.set_ability
+function Tag:set_ability()
+	tagability(self)
+	if self.ability.blind_type then
+		G.GAME.cry_shiny_choices = G.GAME.cry_shiny_choices or {}
+		G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante] or {}
+
+		if not G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] then
+			G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] = Cryptid.roll_shiny()
+		end
+		self.ability.shiny = G.GAME.cry_shiny_choices[G.GAME.round_resets.ante][self.ability.blind_type] == "shiny"
+			and true
+	end
+end
+
+local ycollecref = G.FUNCS.your_collection
+G.FUNCS.your_collection = function(e)
+	ycollecref(e)
+	G.cry_current_tagpage = nil
+end
+local omuicryref = G.FUNCS.openModUI_Cryptid
+G.FUNCS.openModUI_Cryptid = function(e)
+	omuicryref(e)
+	G.cry_current_tagpage = nil
+end
+
+function Cryptid.shinytag_tally()
+	local ret = 0
+	for k, v in pairs(Cryptid.shinytagdata) do
+		if Cryptid.shinytagdata[k] then
+			ret = ret + 1
+		end
+	end
+	return ret
+end
+
 -- temp crappy overwrite for voucher ui until smods does stuff
 
 function G.UIDEF.used_vouchers()

@@ -17,7 +17,13 @@ local gateway = {
 	order = 90,
 	hidden = true, --default soul_set and soul_rate of 0.3% in spectral packs is used
 	can_use = function(self, card)
-		return true
+		if (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) > 0 then
+			return #G.jokers.cards < to_number(G.jokers.config.card_limit)
+		else
+			--Don't allow use if everything is eternal and there is no room
+			return #Cryptid.advanced_find_joker(nil, nil, nil, { "eternal" }, true, "j")
+				< to_number(G.jokers.config.card_limit)
+		end
 	end,
 	use = function(self, card, area, copier)
 		if (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) <= 0 then
@@ -68,7 +74,15 @@ local iterum = {
 	object_type = "Joker",
 	name = "cry-Iterum",
 	key = "iterum",
-	config = { extra = { x_mult = 2, repetitions = 1 } },
+	config = {
+		extra = {
+			x_mult = 2,
+			repetitions = 1,
+		},
+		immutable = {
+			max_repetitions = 40,
+		},
+	},
 	pos = { x = 0, y = 1 },
 	rarity = "cry_exotic",
 	order = 500,
@@ -77,14 +91,22 @@ local iterum = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.x_mult, math.min(40, center.ability.extra.repetitions) } }
+		return {
+			vars = {
+				number_format(center.ability.extra.x_mult),
+				math.min(center.ability.immutable.max_repetitions, center.ability.extra.repetitions),
+				center.ability.immutable.max_repetitions,
+			},
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.repetition then
 			if context.cardarea == G.play then
 				return {
 					message = localize("k_again_ex"),
-					repetitions = math.min(40, card.ability.extra.repetitions),
+					repetitions = to_number(
+						math.min(card.ability.immutable.max_repetitions, card.ability.extra.repetitions)
+					),
 					card = card,
 				}
 			end
@@ -123,12 +145,12 @@ local universum = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 4, y = 3, extra = { x = 5, y = 3 } },
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra } }
+		return { vars = { number_format(center.ability.extra) } }
 	end,
 	calculate = function(self, card, context)
 		if context.cry_universum then
 			return {
-				mod = to_big(card.ability.extra),
+				mod = lenient_bignum(card.ability.extra),
 				colour = G.C.DARK_EDITION,
 				message = localize("k_upgrade_ex"),
 			}
@@ -136,7 +158,7 @@ local universum = {
 	end,
 	cry_credits = {
 		idea = { "Ein13" },
-		art = { "Ein13", "hydrogenperoxiide" },
+		art = { "Ein13", "hydro" },
 	},
 	init = function(self)
 		--Universum Patches
@@ -286,13 +308,18 @@ local exponentia = {
 						number_format(card.ability.extra.Emult),
 					},
 				}),
-				Emult_mod = card.ability.extra.Emult,
+				Emult_mod = lenient_bignum(card.ability.extra.Emult),
 				colour = G.C.DARK_EDITION,
 			}
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
+		return {
+			vars = {
+				number_format(center.ability.extra.Emult_mod),
+				number_format(center.ability.extra.Emult),
+			},
+		}
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
@@ -304,18 +331,31 @@ local exponentia = {
 		local scie = SMODS.calculate_individual_effect
 		function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
 			local ret = scie(effect, scored_card, key, amount, from_edition)
-			if (key == "x_mult" or key == "xmult" or key == "x_mult_mod" or key == "Xmult_mod") and amount ~= 1 then
+			if
+				(
+					key == "x_mult"
+					or key == "xmult"
+					or key == "Xmult"
+					or key == "x_mult_mod"
+					or key == "xmult_mod"
+					or key == "Xmult_mod"
+				) and amount ~= 1
+			then
 				for _, v in pairs(find_joker("cry-Exponentia")) do
 					local old = v.ability.extra.Emult
-					v.ability.extra.Emult = v.ability.extra.Emult + v.ability.extra.Emult_mod
+					v.ability.extra.Emult = lenient_bignum(to_big(v.ability.extra.Emult) + v.ability.extra.Emult_mod)
 					card_eval_status_text(v, "extra", nil, nil, nil, {
 						message = localize({
 							type = "variable",
 							key = "a_powmult",
-							vars = { number_format(to_big(v.ability.extra.Emult)) },
+							vars = { number_format(v.ability.extra.Emult) },
 						}),
 					})
-					exponentia_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult)
+					Cryptid.apply_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult, {
+						base = { { "extra", "Emult" } },
+						scaler = { { "extra", "Emult_mod" } },
+						scaler_base = { v.ability.extra.Emult_mod },
+					})
 				end
 			end
 			return ret
@@ -396,10 +436,10 @@ local redeo = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				center.ability.extra.ante_reduction,
-				center.ability.extra.money_req,
-				center.ability.extra.money_remaining,
-				center.ability.extra.money_mod,
+				number_format(center.ability.extra.ante_reduction),
+				number_format(center.ability.extra.money_req),
+				number_format(center.ability.extra.money_remaining),
+				number_format(center.ability.extra.money_mod),
 			},
 		}
 	end,
@@ -411,13 +451,16 @@ local redeo = {
 	soul_pos = { x = 4, y = 0, extra = { x = 5, y = 0 } },
 	calculate = function(self, card, context)
 		if context.cry_ease_dollars and to_big(context.cry_ease_dollars) < to_big(0) and not context.blueprint then
-			card.ability.extra.money_remaining = card.ability.extra.money_remaining - context.cry_ease_dollars
+			card.ability.extra.money_remaining =
+				lenient_bignum(to_big(card.ability.extra.money_remaining) - context.cry_ease_dollars)
 			local ante_mod = 0
 			while to_big(card.ability.extra.money_remaining) >= to_big(card.ability.extra.money_req) do
-				card.ability.extra.money_remaining = card.ability.extra.money_remaining - card.ability.extra.money_req
-				card.ability.extra.money_req = card.ability.extra.money_req + card.ability.extra.money_mod
-				card.ability.extra.money_mod = math.min(1e300, math.ceil(card.ability.extra.money_mod * 1.06))
-				ante_mod = ante_mod - card.ability.extra.ante_reduction
+				card.ability.extra.money_remaining =
+					lenient_bignum(to_big(card.ability.extra.money_remaining) - card.ability.extra.money_req)
+				card.ability.extra.money_req =
+					lenient_bignum(to_big(card.ability.extra.money_req) + card.ability.extra.money_mod)
+				card.ability.extra.money_mod = lenient_bignum(math.ceil(to_big(card.ability.extra.money_mod) * 1.06))
+				ante_mod = lenient_bignum(ante_mod - to_big(card.ability.extra.ante_reduction))
 			end
 			if ante_mod < 0 then
 				ease_ante(ante_mod)
@@ -427,7 +470,7 @@ local redeo = {
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		art = { "Jevonn" },
+		art = { "Jevonn", "Darren_The_Frog" },
 		code = { "Math", "jenwalter666" },
 	},
 	init = function(self)
@@ -452,22 +495,39 @@ local tenebris = {
 	key = "tenebris",
 	pos = { x = 3, y = 2 },
 	soul_pos = { x = 4, y = 2, extra = { x = 5, y = 2 } },
-	config = { extra = { slots = 25, money = 25 } },
+	config = {
+		extra = {
+			slots = 25,
+			money = 25,
+		},
+		immutable = {
+			max_slots = 100,
+		},
+	},
 	rarity = "cry_exotic",
 	cost = 50,
 	order = 507,
 	atlas = "atlasexotic",
 	calc_dollar_bonus = function(self, card)
-		return card.ability.extra.money
+		return lenient_bignum(card.ability.extra.money)
 	end,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.slots, center.ability.extra.money } }
+		return {
+			vars = {
+				number_format(math.min(center.ability.immutable.max_slots, center.ability.extra.slots)),
+				number_format(center.ability.extra.money),
+			},
+		}
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.extra.slots
+		G.jokers.config.card_limit = lenient_bignum(
+			G.jokers.config.card_limit + math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
+		)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit - card.ability.extra.slots
+		G.jokers.config.card_limit = lenient_bignum(
+			G.jokers.config.card_limit - math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
+		)
 	end,
 	cry_credits = {
 		idea = { "Gold" },
@@ -505,7 +565,7 @@ local effarcire = {
 	end,
 	cry_credits = {
 		idea = { "Frix" },
-		art = { "AlexZGreat" },
+		art = { "AlexZGreat", "Catformer" },
 		code = { "jenwalter666" },
 	},
 }
@@ -526,7 +586,12 @@ local crustulum = {
 	object_type = "Joker",
 	name = "cry-crustulum",
 	key = "crustulum",
-	config = { extra = { chips = 0, chip_mod = 4 } },
+	config = {
+		extra = {
+			chips = 0,
+			chip_mod = 4,
+		},
+	},
 	pos = { x = 0, y = 2 },
 	soul_pos = { x = 2, y = 2, extra = { x = 1, y = 2 } },
 	rarity = "cry_exotic",
@@ -536,21 +601,34 @@ local crustulum = {
 	blueprint_compat = true,
 	perishable_compat = false,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.chips, center.ability.extra.chip_mod } }
+		return {
+			vars = {
+				number_format(center.ability.extra.chips),
+				number_format(center.ability.extra.chip_mod),
+			},
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.reroll_shop and not context.blueprint then
-			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+			card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + card.ability.extra.chip_mod)
 			card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
+				message = localize({
+					type = "variable",
+					key = "a_chips",
+					vars = { number_format(card.ability.extra.chips) },
+				}),
 				colour = G.C.CHIPS,
 			})
 			return nil, true
 		end
 		if context.joker_main and to_big(card.ability.extra.chips) > to_big(0) then
 			return {
-				message = localize({ type = "variable", key = "a_chips", vars = { card.ability.extra.chips } }),
-				chip_mod = card.ability.extra.chips,
+				message = localize({
+					type = "variable",
+					key = "a_chips",
+					vars = { number_format(card.ability.extra.chips) },
+				}),
+				chip_mod = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 	end,
@@ -579,7 +657,12 @@ local primus = {
 	object_type = "Joker",
 	name = "cry-primus",
 	key = "primus",
-	config = { extra = { Emult = 1.01, Emult_mod = 0.17 } },
+	config = {
+		extra = {
+			Emult = 1.01,
+			Emult_mod = 0.17,
+		},
+	},
 	pos = { x = 0, y = 4 },
 	rarity = "cry_exotic",
 	cost = 53,
@@ -608,7 +691,8 @@ local primus = {
 				end
 			end
 			if check then
-				card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
+				card.ability.extra.Emult =
+					lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = localize("k_upgrade_ex"),
@@ -626,13 +710,18 @@ local primus = {
 						number_format(card.ability.extra.Emult),
 					},
 				}),
-				Emult_mod = card.ability.extra.Emult,
+				Emult_mod = lenient_bignum(card.ability.extra.Emult),
 				colour = G.C.DARK_EDITION,
 			}
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
+		return {
+			vars = {
+				number_format(center.ability.extra.Emult_mod),
+				number_format(center.ability.extra.Emult),
+			},
+		}
 	end,
 	cry_credits = {
 		idea = { "Jevonn" },
@@ -657,54 +746,51 @@ local scalae = {
 	cost = 50,
 	atlas = "atlasexotic",
 	order = 311,
-	config = { extra = { scale = 1, scale_mod = 1, shadow_scale = 1, shadow_scale_mod = 1 } },
-	--todo: support jokers that scale multiple variables
+	config = { extra = { scale = 1, scale_mod = 1 } },
 	calculate = function(self, card, context)
-		--initialize tracking object
-		card.ability.extra.scale = to_big(card.ability.extra.scale)
-		card.ability.extra.scale_mod = to_big(card.ability.extra.scale_mod)
-		card.ability.extra.shadow_scale = to_big(card.ability.extra.shadow_scale)
-		card.ability.extra.shadow_scale_mod = to_big(card.ability.extra.shadow_scale_mod)
 		if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-			card.ability.extra.scale = card.ability.extra.scale + card.ability.extra.scale_mod
-			card.ability.extra.shadow_scale = card.ability.extra.scale
-			card.ability.extra.scale = card.ability.extra.shadow_scale
-			card.ability.extra.scale_mod = card.ability.extra.shadow_scale_mod
+			card.ability.extra.scale = lenient_bignum(to_big(card.ability.extra.scale) + card.ability.extra.scale_mod)
 			return {
 				message = localize("k_upgrade_ex"),
 				colour = G.C.DARK_EDITION,
 			}
 		end
-		card.ability.extra.scale = card.ability.extra.shadow_scale
-		card.ability.extra.scale_mod = card.ability.extra.shadow_scale_mod
 		return
 	end,
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
 		if joker.ability.name ~= "cry-Scalae" then
-			local new_scale = (
+			local new_scale = lenient_bignum(
 				to_big(true_base)
-				* (
-					(
-						1
-						+ (
-							(to_big(orig_scale_scale) / to_big(true_base))
-							^ (to_big(1) / to_big(card.ability.extra.scale))
-						)
-					) ^ card.ability.extra.scale
-				)
+					* (
+						(
+							1
+							+ (
+								(to_big(orig_scale_scale) / to_big(true_base))
+								^ (to_big(1) / to_big(card.ability.extra.scale))
+							)
+						) ^ to_big(card.ability.extra.scale)
+					)
 			)
-			if (new_scale < to_big(1e100)) or not is_card_big(joker) then
-				if new_scale >= to_big(1e300) then
-					new_scale = 1e300
-				else
-					new_scale = to_number(new_scale)
-				end
+			if not Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
+				new_scale = 1e300
 			end
 			return new_scale
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		return { vars = { number_format(card.ability.extra.scale + 1), number_format(card.ability.extra.scale_mod) } }
+		local example = { 2, 3, 4 }
+		for i = 1, #example do
+			example[i] = to_big(example[i]) ^ (card.ability.extra.scale + 1)
+		end
+		return {
+			vars = {
+				number_format(card.ability.extra.scale + 1),
+				number_format(card.ability.extra.scale_mod),
+				example[1],
+				example[2],
+				example[3],
+			},
+		}
 	end,
 	cry_credits = {
 		idea = { "Mathguy" },
@@ -722,7 +808,12 @@ local stella_mortis = {
 	object_type = "Joker",
 	name = "cry-Stella Mortis",
 	key = "stella_mortis",
-	config = { extra = { Emult = 1, Emult_mod = 0.4 } },
+	config = {
+		extra = {
+			Emult = 1,
+			Emult_mod = 0.4,
+		},
+	},
 	pos = { x = 3, y = 5 },
 	rarity = "cry_exotic",
 	cost = 50,
@@ -753,7 +844,8 @@ local stella_mortis = {
 					quota = planet_to_destroy:getEvalQty()
 				end
 				planet_to_destroy.getting_sliced = true
-				card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod * quota
+				card.ability.extra.Emult =
+					lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						(context.blueprint_card or card):juice_up(0.8, 0.8)
@@ -767,7 +859,11 @@ local stella_mortis = {
 							type = "variable",
 							key = "a_powmult",
 							vars = {
-								number_format(to_big(card.ability.extra.Emult + card.ability.extra.Emult_mod * quota)),
+								number_format(
+									lenient_bignum(
+										card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota
+									)
+								),
 							},
 						}),
 					})
@@ -784,17 +880,22 @@ local stella_mortis = {
 						number_format(card.ability.extra.Emult),
 					},
 				}),
-				Emult_mod = card.ability.extra.Emult,
+				Emult_mod = lenient_bignum(card.ability.extra.Emult),
 				colour = G.C.DARK_EDITION,
 			}
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.Emult_mod, center.ability.extra.Emult } }
+		return {
+			vars = {
+				number_format(center.ability.extra.Emult_mod),
+				number_format(center.ability.extra.Emult),
+			},
+		}
 	end,
 	cry_credits = {
 		idea = { "SMG9000" },
-		art = { "SMG9000" },
+		art = { "SMG9000", "George the Rat", "patchy", "lolxDdj" },
 		code = { "SMG9000" },
 	},
 }
@@ -808,18 +909,25 @@ local circulus_pistoris = {
 	object_type = "Joker",
 	name = "cry-Circulus Pistoris",
 	key = "circulus_pistoris",
-	config = { extra = { Emult = math.pi, Echips = math.pi, hands_remaining = 3 } },
+	config = {
+		extra = {
+			Emult = math.pi,
+			Echips = math.pi,
+			hands_remaining = 3,
+		},
+	},
 	pos = { x = 0, y = 3 },
 	rarity = "cry_exotic",
 	cost = 10 * math.pi,
 	order = 509,
 	blueprint_compat = true,
+	immutable = true,
 	atlas = "atlasexotic",
 	soul_pos = { x = 2, y = 3, extra = { x = 1, y = 3 } },
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				safe_get(center, "edition", "cry_oversat") and "tau" or "pi",
+				Cryptid.safe_get(center, "edition", "cry_oversat") and "tau" or "pi",
 				center.ability.extra.hands_remaining,
 			},
 		}
@@ -833,7 +941,7 @@ local circulus_pistoris = {
 			)
 		then
 			local pi = math.pi
-			if safe_get(card, "edition", "cry_oversat") then
+			if Cryptid.safe_get(card, "edition", "cry_oversat") then
 				pi = 2 * pi
 			end
 			return {
@@ -842,7 +950,7 @@ local circulus_pistoris = {
 				message = localize({
 					type = "variable",
 					key = "a_powmultchips",
-					vars = { (safe_get(card, "edition", "cry_oversat") and "tau" or "pi") },
+					vars = { (Cryptid.safe_get(card, "edition", "cry_oversat") and "tau" or "pi") },
 				}),
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
@@ -850,7 +958,7 @@ local circulus_pistoris = {
 	end,
 	cry_credits = {
 		idea = { "SMG9000", "Math" }, --not sure if there's more ppl I'm missing
-		art = { "HexaCryonic" },
+		art = { "HexaCryonic", "ori" },
 		code = { "SMG9000", "Math" },
 	},
 }
@@ -864,7 +972,12 @@ local aequilibrium = {
 	object_type = "Joker",
 	name = "Ace Aequilibrium",
 	key = "equilib",
-	config = { extra = { jokers = 2, card = nil } },
+	config = {
+		extra = {
+			jokers = 2,
+			card = nil,
+		},
+	},
 	rarity = "cry_exotic",
 	pos = { x = 7, y = 0 },
 	soul_pos = { x = 6, y = 0, extra = { x = 8, y = 0 } },
@@ -874,6 +987,7 @@ local aequilibrium = {
 	blueprint_compat = true,
 	eternal_compat = true,
 	perishable_compat = true,
+	immutable = true,
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
@@ -899,81 +1013,9 @@ local aequilibrium = {
 			return nil, true
 		end
 	end,
-	--[[
-	add_to_deck = function(self, card, from_debuff)
-		if not from_debuff then
-			if card.ability.extra.card then
-				card.ability.extra.card = nil
-			end
-			card.ability.extra.card =
-				Card(G.jokers.T.x, G.jokers.T.y, G.CARD_W * 0.675, G.CARD_H * 0.675, G.P_CARDS.S_A, G.P_CENTERS.c_base)
-			--G.hand:emplace(card.ability.extra.card)
-			--card.ability.extra.card:set_card_area(G.hand)
-			card.ability.extra.card:start_materialize({ G.C.WHITE, G.C.WHITE }, nil, 1.2)
-			card.ability.extra.card:set_seal("Gold", true, true)
-			card.ability.extra.card:set_edition({ cry_glitched = true }, true)
-			--card.ability.extra.card.T.x = card.T.x
-
-			if card.ability.extra.card and G.P_CENTERS.j_blueprint.unlocked then
-				local viable_unlockables = {}
-				for k, v in ipairs(G.P_LOCKED) do
-					if (v.set == "Voucher" or v.set == "Joker") and not v.demo then
-						viable_unlockables[#viable_unlockables + 1] = v
-					end
-				end
-				if #viable_unlockables > 0 then
-					local card2 = card.ability.extra.card
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 4.04,
-						func = function()
-							card2 = Card(
-								G.jokers.T.x,
-								G.jokers.T.y,
-								G.CARD_W * 0.675,
-								G.CARD_H * 0.675,
-								nil,
-								pseudorandom_element(viable_unlockables) or self.P_CENTERS.j_joker
-							)
-							card2.no_ui = #viable_unlockables == 0
-							card2.states.visible = false
-							card.ability.extra.card.parent = nil
-							card.ability.extra.card:start_dissolve({ G.C.BLACK, G.C.ORANGE, G.C.RED, G.C.GOLD })
-							return true
-						end,
-					}))
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 1.04,
-						func = function()
-							card2:start_materialize()
-							--G.:emplace(card)
-							return true
-						end,
-					}))
-				end
-			end
-		end
-	end,
-	--Known bug: card does not reappear after save reopened
-	update = function(self, card, front)
-		if card.ability.extra.card then
-			if card.ability.extra.card.states and not card.ability.extra.card.states.drag.is then
-				card.ability.extra.card.T.x = card.T.x + card.T.w / 5
-				card.ability.extra.card.T.y = card.T.y + card.T.h / 5
-			end
-		end
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		if not from_debuff and card.ability.extra.card then
-			card.ability.extra.card:start_dissolve()
-		end
-	end,
-	]]
-	--
 	cry_credits = {
 		idea = { "Elial2" },
-		art = { "Elial2" },
+		art = { "Elial2", "unexian", "hydro" },
 		code = { "Elial2" },
 	},
 }
@@ -987,7 +1029,15 @@ local facile = {
 	object_type = "Joker",
 	name = "cry-facile",
 	key = "facile",
-	config = { extra = { Emult = 3, check = 10, check2 = 0 } },
+	config = {
+		extra = {
+			Emult = 3,
+			check = 10,
+		},
+		immutable = {
+			check2 = 0,
+		},
+	},
 	pos = { x = 6, y = 2 },
 	soul_pos = { x = 8, y = 2, extra = { x = 7, y = 2 } },
 	rarity = "cry_exotic",
@@ -997,35 +1047,38 @@ local facile = {
 	atlas = "atlasexotic",
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { center.ability.extra.Emult, center.ability.extra.check },
+			vars = {
+				number_format(center.ability.extra.Emult),
+				number_format(center.ability.extra.check),
+			},
 		}
 	end,
 	calculate = function(self, card, context)
 		if context.individual then
 			if context.cardarea == G.play then
-				card.ability.extra.check2 = card.ability.extra.check2 + 1
+				card.ability.immutable.check2 = lenient_bignum(card.ability.immutable.check2 + 1)
 			end
 		end
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
-			if card.ability.extra.check2 <= card.ability.extra.check then
-				card.ability.extra.check2 = 0
+			if to_big(card.ability.immutable.check2) <= to_big(card.ability.extra.check) then
+				card.ability.immutable.check2 = 0
 				return {
 					message = localize({
 						type = "variable",
 						key = "a_powmult",
 						vars = { number_format(card.ability.extra.Emult) },
 					}),
-					Emult_mod = card.ability.extra.Emult,
+					Emult_mod = lenient_bignum(card.ability.extra.Emult),
 					colour = G.C.DARK_EDITION,
 				}
 			else
-				card.ability.extra.check2 = 0
+				card.ability.immutable.check2 = 0
 			end
 		end
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		art = { "Kailen" },
+		art = { "Kailen", "hydro" },
 		code = { "Jevonn" },
 	},
 }
@@ -1047,7 +1100,7 @@ local gemino = {
 			"Jolly Open Winner",
 			"Requiacity",
 		},
-		art = { "Requiacity" },
+		art = { "unexian" },
 		code = { "Math" },
 	},
 	rarity = "cry_exotic",
@@ -1106,8 +1159,8 @@ local gemino = {
 			local check = false
 			local card = G.jokers.cards[1]
 			if not Card.no(G.jokers.cards[1], "immutable", true) then
-				cry_with_deck_effects(G.jokers.cards[1], function(card)
-					cry_misprintize(card, { min = 2, max = 2 }, nil, true)
+				Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
+					Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
 				end)
 				check = true
 			end
@@ -1140,10 +1193,16 @@ local energia = {
 	blueprint_compat = false,
 	perishable_compat = false,
 	order = 514,
-	config = { extra = { tags = 1, tag_mod = 1 } },
+	config = {
+		extra = { tags = 1, tag_mod = 1 },
+		immutable = { max_tags = 40 },
+	},
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { math.min(center.ability.extra.tags, 40), center.ability.extra.tag_mod },
+			vars = {
+				math.min(center.ability.extra.tags, center.ability.immutable.max_tags),
+				center.ability.extra.tag_mod,
+			},
 		}
 	end,
 	rarity = "cry_exotic",
@@ -1152,8 +1211,8 @@ local energia = {
 	calculate = function(self, card, context)
 		if context.cry_add_tag then
 			local value = #G.GAME.tags or 0
-			local t = math.min(40 - value, card.ability.extra.tags)
-			card.ability.extra.tags = card.ability.extra.tags + card.ability.extra.tag_mod
+			local t = to_number(math.min(card.ability.immutable.max_tags - value, card.ability.extra.tags))
+			card.ability.extra.tags = lenient_bignum(to_big(card.ability.extra.tags) + card.ability.extra.tag_mod)
 			if t > 0 then
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize({
@@ -1194,7 +1253,7 @@ local verisimile = {
 	blueprint_compat = true,
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra.xmult } }
+		return { vars = { number_format(center.ability.extra.xmult) } }
 	end,
 	calculate = function(self, card, context)
 		if context.post_trigger and not context.blueprint then
@@ -1207,15 +1266,14 @@ local verisimile = {
 				or context.other_joker.ability.name == "Hallucination"
 			then
 				local variable = context.other_joker
-				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
-				)
+				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
 			elseif
 				context.other_joker.ability.name == "Reserved Parking"
 				or context.other_joker.ability.name == "Bloodstone"
@@ -1226,46 +1284,49 @@ local verisimile = {
 				or context.other_joker.ability.name == "cry-scrabble"
 			then
 				local variable = context.other_joker
-				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra.odds
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
-				)
+				card.ability.extra.xmult =
+					lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
 			elseif context.other_joker.ability.name == "cry-notebook" then
 				--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
 				local variable = context.other_joker
-				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra.odds
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
-				)
+				card.ability.extra.xmult =
+					lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
 			end
 			return nil, true
 		elseif context.consumeable and not context.blueprint then
 			if context.consumeable.ability.name == "The Wheel of Fortune" and context.consumeable.cry_wheel_success then
 				local variable = context.consumeable
-				card.ability.extra.xmult = card.ability.extra.xmult + variable.ability.extra --Doesn't account for misprintizing for some reason
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }) }
-				)
+				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra) --Doesn't account for misprintizing for some reason
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
 			end
 		elseif context.joker_main and (to_big(card.ability.extra.xmult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
-				Xmult_mod = card.ability.extra.xmult,
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.xmult) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
 			}
 		end
 	end,
@@ -1294,7 +1355,10 @@ local duplicare = {
 	atlas = "atlasexotic",
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { center.ability.extra.Xmult, center.ability.extra.Xmult_mod },
+			vars = {
+				number_format(center.ability.extra.Xmult),
+				number_format(center.ability.extra.Xmult_mod),
+			},
 		}
 	end,
 	calculate = function(self, card, context)
@@ -1305,7 +1369,7 @@ local duplicare = {
 				or (context.individual and context.cardarea == G.play)
 			)
 		then
-			card.ability.extra.Xmult = card.ability.extra.Xmult + card.ability.extra.Xmult_mod
+			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
 			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 		end
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
@@ -1317,7 +1381,7 @@ local duplicare = {
 						number_format(card.ability.extra.Xmult),
 					},
 				}),
-				Xmult_mod = card.ability.extra.Xmult,
+				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
 				colour = G.C.MULT,
 			}
 		end
@@ -1404,10 +1468,22 @@ local formidiulosus = {
 	pos = { x = 6, y = 4 },
 	soul_pos = { x = 8, y = 4, extra = { x = 7, y = 4 } },
 	blueprint_compat = true,
-	config = { extra = { candy = 3, Emult_mod = 0.01, Emult = 1 } },
+	config = {
+		extra = {
+			Emult_mod = 0.01,
+			Emult = 1,
+		},
+		immutable = {
+			num_candies = 3,
+		},
+	},
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { 3, center.ability.extra.Emult_mod, center.ability.extra.Emult },
+			vars = {
+				center.ability.immutable.num_candies,
+				center.ability.extra.Emult_mod,
+				center.ability.extra.Emult,
+			},
 		}
 	end,
 	rarity = "cry_exotic",
@@ -1416,8 +1492,9 @@ local formidiulosus = {
 	atlas = "atlasexotic",
 	no_dbl = true,
 	update = function(self, card, front)
-		card.ability.extra.Emult = 1
-			+ (card.ability.extra.Emult_mod * #advanced_find_joker(nil, "cry_candy", nil, nil, true))
+		card.ability.extra.Emult = lenient_bignum(
+			1 + (card.ability.extra.Emult_mod * #Cryptid.advanced_find_joker(nil, "cry_candy", nil, nil, true))
+		)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -1439,7 +1516,7 @@ local formidiulosus = {
 			}))
 		end
 		if context.ending_shop then
-			for i = 1, 3 do
+			for i = 1, card.ability.immutable.num_candies do
 				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")
 				card:set_edition({ negative = true }, true)
 				card:add_to_deck()
@@ -1455,14 +1532,14 @@ local formidiulosus = {
 						number_format(card.ability.extra.Emult),
 					},
 				}),
-				Emult_mod = card.ability.extra.Emult,
+				Emult_mod = lenient_bignum(card.ability.extra.Emult),
 				colour = G.C.DARK_EDITION,
 			}
 		end
 	end,
 	cry_credits = {
 		idea = { "HexaCryonic", "Kailen" },
-		art = { "Foegro" },
+		art = { "Foegro", "hydro" },
 		code = { "Foegro" },
 	},
 }
@@ -1473,7 +1550,7 @@ local items = {
 	exponentia,
 	speculo,
 	redeo,
-	tenebris,
+	--tenebris, disabled due to bignum crash
 	effarcire,
 	effarcire_sprite,
 	crustulum,
@@ -1488,38 +1565,10 @@ local items = {
 	--verisimile, WHY IS THIS AN EXOTIC????????????????????
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
-	formidiulosus,
+	--formidiulosus, see tenebris
 }
 return {
 	name = "Exotic Jokers",
-	init = function()
-		--I have no clue what this patch does
-		local cc = copy_card
-		function copy_card(card, a, b, c, d)
-			local m
-			if
-				card
-				and card.ability
-				and card.ability.extra
-				and type(card.ability.extra) == "table"
-				and card.ability.extra.card
-			then
-				m = card.ability.extra.card
-				card.ability.extra.card = nil
-			end
-			local ret = cc(card, a, b, c, d)
-			if
-				card
-				and card.ability
-				and card.ability.extra
-				and type(card.ability.extra) == "table"
-				and card.ability.extra.card
-				and m
-			then
-				card.ability.extra.card = m
-			end
-			return ret
-		end
-	end,
+	init = function() end,
 	items = items,
 }

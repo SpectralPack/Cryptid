@@ -1,50 +1,28 @@
---- STEAMODDED HEADER
---- MOD_NAME: Cryptid
---- MOD_ID: Cryptid
---- PREFIX: cry
---- MOD_AUTHOR: [MathIsFun_, Cryptid and Balatro Discords]
---- MOD_DESCRIPTION: Adds unbalanced ideas to Balatro.
---- BADGE_COLOUR: 708b91
---- DEPENDENCIES: [Talisman>=2.0.9, Steamodded>=1.0.0~ALPHA-1312c]
---- VERSION: 0.5.4
---- PRIORITY: 2147483647
-
-----------------------------------------------
-------------MOD CODE -------------------------
-
 -- Welcome to the Cryptid source code!
 -- This is the main file for the mod, where everything is loaded and initialized.
--- If you're looking for a specific feature, browse the Items folder to see how it is implemented.
+-- If you're looking for a specific feature, browse the items folder to see how it is implemented.
 -- If you're looking for a specific function, check the lib folder to see if it is there.
 
--- Initialize some important variables
 if not Cryptid then
 	Cryptid = {}
 end
 local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod is loaded, but the local variable will retain Cryptid's path
 Cryptid.path = mod_path
 Cryptid_config = SMODS.current_mod.config
--- This will save the current state even when settings are modified
-Cryptid.enabled = copy_table(Cryptid_config)
 
 -- Enable optional features
 SMODS.current_mod.optional_features = {
 	retrigger_joker = true,
 	post_trigger = true,
-	cardareas = {
-		unscored = true,
-	},
+	quantum_enhancements = false,
 	-- Here are some other ones Steamodded has
 	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
-	--[[
-	quantum_enhancements = true,
 	-- These ones add new card areas that Steamodded will calculate through
 	-- Might already be useful for sticker calc
 	cardareas = {
-		deck = true,
-		discard = true,
-	}
-	]]
+		--deck = true,
+		discard = true, -- used by scorch
+	},
 }
 
 --Load Library Files
@@ -71,10 +49,15 @@ local function process_items(f, mod)
 						key = false,
 						atlas = false,
 					}
+					item.mod_path = mod.path
 					if item.key then
-						item.key = mod.prefix .. "_" .. item.key
+						if item.object_type and SMODS[item.object_type].class_prefix then
+							item.key = SMODS[item.object_type].class_prefix .. "_" .. mod.prefix .. "_" .. item.key
+						elseif string.find(item.key, mod.prefix .. "_") ~= 1 then
+							item.key = mod.prefix .. "_" .. item.key
+						end
 					end
-					if item.atlas then
+					if item.atlas and string.find(item.atlas, mod.prefix .. "_") ~= 1 then
 						item.atlas = mod.prefix .. "_" .. item.atlas
 					end
 					-- this will also display the mod's own badge
@@ -153,7 +136,7 @@ for _, mod in pairs(SMODS.Mods) do
 				end
 				process_items(f, mod)
 			end
-			if file == "Cryptid" then
+			if file == "Cryptid" and path .. "Cryptid/" ~= Cryptid.path then
 				local files = NFS.getDirectoryItems(path .. "Cryptid")
 				for _, file in ipairs(files) do
 					print("[CRYPTID] Loading file " .. file .. " from " .. mod.id)
@@ -184,7 +167,7 @@ end
 local inj = SMODS.injectItems
 function SMODS.injectItems(...)
 	inj(...)
-	cry_update_obj_registry()
+	Cryptid.update_obj_registry()
 	for _, t in ipairs({
 		G.P_CENTERS,
 		G.P_BLINDS,
@@ -241,13 +224,19 @@ local cryptidConfigTab = function()
 		active_colour = HEX("40c76d"),
 		ref_table = Cryptid_config,
 		ref_value = "family_mode",
-		callback = reload_cryptid_localization,
+		callback = Cryptid.reload_localization,
 	})
 	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_experimental"),
 		active_colour = HEX("1f8505"),
 		ref_table = Cryptid_config,
 		ref_value = "experimental",
+	})
+	cry_nodes[#cry_nodes + 1] = create_toggle({
+		label = localize("cry_force_tooltips"),
+		active_colour = HEX("22c705"),
+		ref_table = Cryptid_config,
+		ref_value = "force_tooltips",
 	})
 	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_feat_https module"),

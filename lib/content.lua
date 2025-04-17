@@ -1,5 +1,12 @@
 -- content.lua - adds SMODS objects for content that should always be loaded
 
+SMODS.Atlas({
+	key = "poker_hands",
+	path = "hands.png",
+	px = 53,
+	py = 13,
+})
+
 SMODS.PokerHand({
 	key = "Bulwark",
 	visible = false,
@@ -14,17 +21,40 @@ SMODS.PokerHand({
 		{ "S_A", true, "m_stone" },
 		{ "S_A", true, "m_stone" },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 0 },
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_asteroidbelt") ~= true then
-			return
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_asteroidbelt") ~= true then
+			return {}
 		end
 		local stones = {}
 		for i, card in ipairs(hand) do
-			if card.config.center_key == "m_stone" or (card.config.center.no_rank and card.config.center.no_suit) then
+			if
+				card.config.center_key == "m_stone"
+				or (card.config.center.no_rank and card.config.center.no_suit and not card.config.center.not_stoned)
+			then
 				stones[#stones + 1] = card
 			end
 		end
 		return #stones >= 5 and { stones } or {}
+	end,
+})
+SMODS.PokerHandPart({
+	key = "cfpart",
+	func = function(hand)
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_void") ~= true then
+			return {}
+		end
+		local eligible_cards = {}
+		for i, card in ipairs(hand) do
+			if not card.config.center.not_fucked then --card.ability.name ~= "Gold Card"
+				eligible_cards[#eligible_cards + 1] = card
+			end
+		end
+		if #eligible_cards > 7 then
+			return { eligible_cards }
+		end
+		return {}
 	end,
 })
 SMODS.PokerHand({
@@ -44,16 +74,16 @@ SMODS.PokerHand({
 		{ "S_6", true },
 		{ "C_5", true },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 1 },
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_void") ~= true then
-			return
-		end
 		local other_hands = next(parts._flush) or next(parts._straight) or next(parts._all_pairs)
-		if #hand > 7 then
+		if next(parts.cry_cfpart) then
 			if not other_hands then
-				return { hand }
+				return { SMODS.merge_lists(parts.cry_cfpart) }
 			end
 		end
+		return {}
 	end,
 })
 SMODS.PokerHand({
@@ -73,8 +103,10 @@ SMODS.PokerHand({
 		{ "H_7", true },
 		{ "H_7", true },
 	},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 2 },
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_marsmoons") ~= true then
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_marsmoons") ~= true then
 			return
 		end
 		local scoring_pairs = {}
@@ -110,7 +142,7 @@ SMODS.PokerHand({
 			end
 		end
 		if sc_max == #scored_cards / 2 - 1 and sc_unique == 1 then
-			return
+			return {}
 		end
 		if #scored_cards >= 8 then
 			return { scored_cards }
@@ -179,7 +211,7 @@ SMODS.PokerHand({
 		{ "D_2", true },
 	},
 	evaluate = function(parts, hand)
-		if cry_card_enabled("set_cry_poker_hand_stuff") ~= true or cry_card_enabled("c_cry_universe") ~= true then
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_universe") ~= true then
 			return
 		end
 		if #hand >= 52 then
@@ -424,6 +456,10 @@ SMODS.Sound({
 	path = "studiofromhelsinki.ogg",
 })
 SMODS.Sound({
+	key = "whapoosh",
+	path = "whapoosh.ogg",
+})
+SMODS.Sound({
 	key = "music_jimball",
 	path = "music_jimball.ogg",
 	sync = false,
@@ -468,7 +504,7 @@ SMODS.Sound({
 	select_music_track = function()
 		return Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.exotic_music
-			and #advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
+			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
 	end,
 })
 SMODS.Sound({
@@ -582,6 +618,21 @@ SMODS.Atlas({
 	px = 34,
 	py = 34,
 })
+
+-- shiny tags
+SMODS.Atlas({
+	key = "shinyv",
+	path = "shinyv.png",
+	px = 34,
+	py = 34,
+})
+SMODS.Atlas({
+	key = "shinyc",
+	path = "shinyc.png",
+	px = 34,
+	py = 34,
+})
+
 SMODS.Atlas({
 	key = "atlasdeck",
 	path = "atlasdeck.png",
@@ -601,12 +652,6 @@ SMODS.Atlas({
 	py = 95,
 })
 SMODS.Atlas({
-	key = "code",
-	path = "c_cry_code.png",
-	px = 71,
-	py = 95,
-})
-SMODS.Atlas({
 	key = "pack",
 	path = "pack_cry.png",
 	px = 71,
@@ -614,17 +659,17 @@ SMODS.Atlas({
 })
 SMODS.UndiscoveredSprite({
 	key = "Code",
-	atlas = "code",
-	path = "c_cry_code.png",
-	pos = { x = 2, y = 5 },
+	atlas = "atlasnotjokers",
+	path = "atlasnotjokers.png",
+	pos = { x = 9, y = 5 },
 	px = 71,
 	py = 95,
 })
 SMODS.UndiscoveredSprite({
 	key = "Unique",
-	atlas = "code",
-	path = "c_cry_code.png",
-	pos = { x = 2, y = 5 },
+	atlas = "atlasnotjokers",
+	path = "atlasnotjokers.png",
+	pos = { x = 9, y = 5 },
 	px = 71,
 	py = 95,
 })

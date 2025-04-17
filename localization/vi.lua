@@ -197,7 +197,7 @@ return {
 			bl_cry_clock = {
 				name = "The Clock",
 				text = {
-					"+0.1X điểm yêu cầu mỗi 3 giây",
+					"+0.1X điểm yêu cầu mỗi 12 giây",
 					"đã trôi trong ante này",
 				},
 			},
@@ -225,7 +225,7 @@ return {
 			bl_cry_lavender_loop = {
 				name = "Lavender Loop",
 				text = {
-					"1.25X điểm yêu cầu mỗi 1.5 giây",
+					"1.25X điểm yêu cầu mỗi 6 giây",
 					"đã trôi trong ván này",
 				},
 			},
@@ -1599,13 +1599,22 @@ return {
 					"{C:inactive,s:0.8}Nghe có vẻ không sao...{}",
 				},
 			},
+			j_cry_jtron = {
+				name = "Jimbo-tron 9000",
+				text = {
+					"Joker này thêm {X:dark_edition,C:white} ^#1# {} Nhân",
+					"cho mỗi {C:attention}Joker{} mặc định",
+					"{C:inactive}(Hiện tại là {X:dark_edition,C:white}^#2#{C:inactive} Nhân)",
+				},
+			},
 			j_cry_kidnap = {
 				name = "Bắt Cóc",
 				text = {
-					"Nhận {C:money}$#2#{} ở cuối ván",
+					"Nhận {C:money}$#1#{} ở cuối ván",
 					"Tiền thưởng tăng thêm {C:money}$#1#{}",
 					"khi một Joker {C:attention}+Nhân Tay Bài{} hoặc",
 					"{C:attention}+Chip Tay Bài{} được bán",
+					"{C:inactive}(Hiện tại là {C:money}$#2#{C:inactive})",
 				},
 			},
 			j_cry_kooky = {
@@ -1637,6 +1646,14 @@ return {
 					"với {C:attention}5 Lá Bài Ấn Bản{} hoặc",
 					"{C:attention}Joker Ấn Bản",
 					"trở lên",
+				},
+			},
+			j_cry_lebaron_james = {
+				name = "LeBaron James",
+				text = {
+					"Lá {C:attention}Già{} đã chơi ghi điểm thêm",
+					"{C:attention}+#1#{} lá giữ trong tay cho ván này",
+					"và kích hoạt hiệu ứng {C:attention}giữ trong tay{}",
 				},
 			},
 			j_cry_lightupthenight = {
@@ -1780,7 +1797,7 @@ return {
 					"{X:mult,C:white}X#1#{} Nhân cho mỗi thành viên",
 					"ở trong {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Hiện tại là {X:mult,C:white}X#2#{C:inactive} Nhân)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1789,7 +1806,7 @@ return {
 					"{C:chips}+#1#{} Chip cho mỗi thành viên",
 					"ở trong {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Hiện tại là {C:chips}+#2#{C:inactive} Chip)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_meteor = {
@@ -2676,8 +2693,8 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Nâng sức mạnh cho",
-					"các tay bài {C:attention}Thăng Thiên{} lên {X:gold,C:white}0.05{}",
-					"{C:inactive}(Hiện tại là {X:gold,C:white}X(#2#^asc){C:inactive})",
+					"các tay bài {C:attention}Thăng Thiên{} lên {X:gold,C:white}#2#{}",
+					"{C:inactive}(Hiện tại là {X:gold,C:white}X(#3#^asc){C:inactive})",
 				},
 			},
 		},
@@ -3970,7 +3987,7 @@ return {
 				},
 			},
 			p_cry_empowered = {
-				name = "Gói Siêu Linh [Nhãn Siêu Cường]",
+				name = "Nhãn Siêu Cường",
 				text = {
 					"Chọn {C:attention}#1#{} trong tối đa",
 					"{C:attention}#2#{} lá {C:spectral}Siêu Linh",
@@ -4338,10 +4355,10 @@ return {
 			cry_gameset_mainline = "M Chính",
 			cry_gameset_madness = "M Điên Loạn",
 			cry_gameset_custom = "Đã Sửa Đổi",
-			cry_gameset_experimental = "Thử Nghiệm",
-			cry_gameset_experimental_modest = "Thử Nghiệm (M Khiêm Tốn)",
-			cry_gameset_experimental_mainline = "Experimental (M Chính)",
-			cry_gameset_experimental_madness = "Experimental (M Điên Loạn)",
+			cry_gameset_exp = "Thử Nghiệm",
+			cry_gameset_exp_modest = "Thử Nghiệm (M Khiêm Tốn)",
+			cry_gameset_exp_mainline = "Experimental (M Chính)",
+			cry_gameset_exp_madness = "Experimental (M Điên Loạn)",
 
 			cry_view_set_contents = "Xem Vật Phẩm trong Thiết Lập",
 

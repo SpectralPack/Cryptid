@@ -223,13 +223,34 @@ if JokerDisplay then
 	JokerDisplay.Definitions["j_cry_kidnap"] = {
 		text = {
 			{ text = "+$" },
-			{ ref_table = "card.ability.extra", ref_value = "money" },
+			{ ref_table = "card.joker_display_values", ref_value = "extra" },
 		},
 		text_config = { colour = G.C.GOLD },
 		reminder_text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
 		},
 		calc_function = function(card)
+			local abc = 0
+			if G.GAME and G.GAME.jokers_sold then
+				for _, v in ipairs(G.GAME.jokers_sold) do
+					if
+						G.P_CENTERS[v].effect == "Type Mult"
+						or G.P_CENTERS[v].effect == "Cry Type Mult"
+						or G.P_CENTERS[v].effect == "Cry Type Chips"
+						or G.P_CENTERS[v].effect == "Boost Kidnapping"
+						or (
+							G.P_CENTERS[v].name == "Sly Joker"
+							or G.P_CENTERS[v].name == "Wily Joker"
+							or G.P_CENTERS[v].name == "Clever Joker"
+							or G.P_CENTERS[v].name == "Devious Joker"
+							or G.P_CENTERS[v].name == "Crafty Joker"
+						)
+					then
+						abc = abc + 1
+					end
+				end
+			end
+			card.joker_display_values.extra = card.ability.extra * abc
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}
@@ -449,7 +470,7 @@ if JokerDisplay then
 		},
 		text_config = { colour = G.C.CHIPS },
 		calc_function = function(card)
-			card.joker_display_values.stat = card.ability.extra.chips * (GLOBAL_cry_member_count or 1)
+			card.joker_display_values.stat = card.ability.extra.chips * Cryptid.member_count
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_redeo"] = {
@@ -578,7 +599,7 @@ if JokerDisplay then
 				e_mult = (
 					card.ability.name == "Jolly Joker"
 					or card.edition and card.edition.key == "e_cry_m"
-					or safe_get(card, "pools", "M")
+					or Cryptid.safe_get(card, "pools", "M")
 				)
 						and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker)
 					or nil,
@@ -1753,8 +1774,7 @@ if JokerDisplay then
 			},
 		},
 		calc_function = function(card)
-			card.joker_display_values.stat =
-				math.max(1, (card.ability.extra.Xmult_mod * (GLOBAL_cry_member_count or 1)))
+			card.joker_display_values.stat = math.max(1, card.ability.extra.Xmult_mod * Cryptid.member_count)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_cryptidmoment"] = {
@@ -1806,7 +1826,7 @@ if JokerDisplay then
 			{
 				border_nodes = {
 					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "exp" },
+					{ ref_table = "card.ability.extra", ref_value = "monster", retrigger_type = "exp" },
 				},
 			},
 		},

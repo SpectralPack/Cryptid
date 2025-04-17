@@ -154,7 +154,7 @@ return {
 				name = "Zegar",
 				text = {
 					"+0.1X wymagań przeszkadzajki",
-					"co 3 sekundy tego wejścia",
+					"co 12 sekundy tego wejścia",
 				},
 			},
 			bl_cry_hammer = {
@@ -182,7 +182,7 @@ return {
 				name = "Lawendowa Pętla",
 				text = {
 					"1,25x wymagań przeszkadzajki",
-					"co 1,5 sekundy tego wejścia",
+					"co 6 sekundy tego wejścia",
 				},
 			},
 			bl_cry_obsidian_orb = {
@@ -1278,6 +1278,7 @@ return {
 			j_cry_kidnap = {
 				name = "Porwanie",
 				text = {
+					"{C:red}Outdated Description{}",
 					"Zyskujesz {C:money}$#2#{} na końcu rundy",
 					"Wypłata rośnie o {C:money}$#1#{}",
 					"kiedy Joker {C:attention}mnożnikowy{} lub",
@@ -1447,7 +1448,7 @@ return {
 					"Mnoż. {X:mult,C:white}X#1#{} za każdego członka",
 					"discordowego serwera {C:attention}Cryptid{}",
 					"{C:inactive}(obecny mnoż.: {X:mult,C:white}X#2#{C:inactive}",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1456,7 +1457,7 @@ return {
 					"{C:chips}+#1#{} za każdego członka",
 					"discordowego serwera {C:attention}Cryptid{}",
 					"{C:inactive}(obecnie: {C:chips}+#2#{C:inactive} żet.)",
-					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
 				},
 			},
 			j_cry_meteor = {

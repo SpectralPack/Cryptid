@@ -258,6 +258,28 @@ local tax = {
 	loc_vars = function(self, info_queue, card)
 		return { vars = { 0.4 * get_blind_amount(G.GAME.round_resets.ante) * 2 * G.GAME.starting_params.ante_scaling } } -- no bignum?
 	end,
+	preview_ui = function(self)
+		local value = self:loc_vars().vars[1]
+		return {
+			n = G.UIT.C,
+			nodes = {
+				{
+					n = G.UIT.R,
+					nodes = {
+						{ n = G.UIT.O, config = { object = get_stake_sprite(G.GAME.stake, 0.25) } },
+						{
+							n = G.UIT.T,
+							config = {
+								text = number_format(value),
+								colour = G.C.RED,
+								scale = score_number_scale(0.5, value),
+							},
+						},
+					},
+				},
+			},
+		}
+	end,
 	collection_loc_vars = function(self)
 		return { vars = { localize("cry_tax_placeholder") } }
 	end,
@@ -327,7 +349,7 @@ local clock = {
 		if G.SETTINGS.paused then
 			return 0
 		else
-			return 0.1 * dt / 3
+			return 0.1 * (dt * math.min(G.SETTINGS.GAMESPEED, 4) / 4) / 3
 		end
 	end,
 }
@@ -394,11 +416,18 @@ local joke = {
 			},
 		}
 	end,
+	preview_ui = function(self)
+		local value = self:loc_vars().vars[2]
+		return {
+			n = G.UIT.T,
+			config = { text = number_format(value), colour = G.C.ORANGE, scale = score_number_scale(0.5, value) },
+		}
+	end,
 	collection_loc_vars = function(self)
 		return { vars = { "8", localize("cry_joke_placeholder") } }
 	end,
 	cry_calc_ante_gain = function(self)
-		if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) * 2 then
+		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) * 2 then
 			if G.GAME.round_resets.ante == 1 then
 				G.GAME.cry_ach_conditions.the_jokes_on_you_triggered = true
 			end
@@ -427,7 +456,7 @@ local hammer = {
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
-				card.ability.effect ~= "Stone Card"
+				not SMODS.has_no_rank(card)
 				and (
 					card.base.value == "3"
 					or card.base.value == "5"
@@ -462,7 +491,7 @@ local magic = {
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
-				card.ability.effect ~= "Stone Card"
+				not SMODS.has_no_rank(card)
 				and (
 					card.base.value == "2"
 					or card.base.value == "4"
@@ -546,10 +575,14 @@ local shackle = {
 		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then
 			return false
 		end
-		return #advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
+		return #Cryptid.advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
 	end,
 	recalc_debuff = function(self, card, from_blind)
-		if (card.area == G.jokers) and not G.GAME.blind.disabled and safe_get(card, "edition", "negative") == true then
+		if
+			(card.area == G.jokers)
+			and not G.GAME.blind.disabled
+			and Cryptid.safe_get(card, "edition", "negative") == true
+		then
 			return true
 		end
 		return false
@@ -577,7 +610,7 @@ local pin = {
 		if not G.jokers or not G.jokers.cards then
 			return false
 		end
-		return #advanced_find_joker(nil, { 1, 2, 3 }, nil, nil, true) < #G.jokers.cards
+		return #Cryptid.advanced_find_joker(nil, { 1, 2, 3 }, nil, nil, true) < #G.jokers.cards
 	end,
 	recalc_debuff = function(self, card, from_blind)
 		if
@@ -593,6 +626,53 @@ local pin = {
 			return true
 		end
 		return false
+	end,
+}
+-- Must play 5 cards,
+-- Destroy all played and discarded cards
+-- (only appears in endless)
+local scorch = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	object_type = "Blind",
+	name = "cry-scorch",
+	key = "scorch",
+	pos = { x = 0, y = 18 }, -- use Trick as placeholder icon
+	boss = {
+		min = 1,
+		max = 10,
+	},
+	atlas = "blinds",
+	order = 21,
+	boss_colour = HEX("77261a"),
+	debuff = { -- must play 5 cards
+		h_size_ge = 5,
+		h_size_le = 5,
+	},
+	calculate = function(self, blind, context)
+		if
+			context.full_hand
+			and context.destroy_card
+			and (context.cardarea == G.play or context.cardarea == "unscored")
+			and not G.GAME.blind.disabled
+		then
+			return { remove = not context.destroy_card.ability.eternal }
+		end
+		if context.discard and not G.GAME.blind.disabled then
+			for i, card in ipairs(G.hand.highlighted) do
+				return { remove = not card.ability.eternal }
+			end
+		end
+	end,
+	in_pool = function(self) -- only appears in endless
+		if G.GAME.round_resets.blind_ante > G.GAME.win_ante then
+			return true
+		else
+			return false
+		end
 	end,
 }
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
@@ -633,14 +713,17 @@ local lavender_loop = {
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
-				- dt * (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1) * (G.SETTINGS.paused and 0 or 1)
+				- dt
+					* (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
+					* (G.SETTINGS.paused and 0 or 1)
+					* G.SETTINGS.GAMESPEED
 		elseif G.GAME.current_round.hands_played == 0 then
 			G.GAME.cry_ach_conditions.patience_virtue_earnable = true
 		end
-		if G.SETTINGS.paused then
+		if G.SETTINGS.paused or G.STATE == G.STATES.HAND_PLAYED then
 			return 1
 		else
-			return 1.25 ^ (dt / 1.5)
+			return 1.25 ^ (dt / (1.5 / math.min(G.SETTINGS.GAMESPEED, 4) * 4))
 		end
 	end,
 }
@@ -665,7 +748,7 @@ local tornado = {
 	order = 94,
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
-		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
+		return { vars = { "" .. ((Cryptid.safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
@@ -673,10 +756,10 @@ local tornado = {
 		end
 	end,
 	in_pool = function()
-		return #advanced_find_joker("Oops! All 6s", nil, nil, { "eternal" }, nil) == 0
+		return #Cryptid.advanced_find_joker("Oops! All 6s", nil, nil, { "eternal" }, nil) == 0
 	end,
 	collection_loc_vars = function(self)
-		return { vars = { "" .. ((safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
+		return { vars = { "" .. ((Cryptid.safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
 	end,
 	debuff_hand = function(self, cards, hand, handname, check)
 		if
@@ -770,15 +853,22 @@ local sapphire_stamp = {
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
+			G.GAME.stamp_mod = true
 			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + 1
 		end
 	end,
 	defeat = function(self, silent)
+		if G.GAME.stamp_mod then
+			G.GAME.stamp_mod = nil
+		end
 		if not G.GAME.blind.disabled then
 			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
 		end
 	end,
 	disable = function(self, silent)
+		if G.GAME.stamp_mod then
+			G.GAME.stamp_mod = nil
+		end
 		if not G.GAME.blind.disabled then
 			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
 		end
@@ -1301,7 +1391,9 @@ local trophy = {
 	order = 95,
 	boss_colour = HEX("bbdb44"),
 	set_blind = function(self, reset, silent)
-		G.GAME.trophymod = true
+		if not reset then
+			G.GAME.trophymod = true
+		end
 	end,
 	defeat = function(self, silent)
 		if G.GAME.trophymod then
@@ -1334,6 +1426,7 @@ local items_togo = {
 	striker,
 	shackle,
 	pin,
+	scorch,
 	vermillion_virus,
 	tornado,
 	sapphire_stamp,

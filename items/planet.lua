@@ -1,4 +1,15 @@
 local timantti = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -18,40 +29,35 @@ local timantti = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["High Card"].level or 1
-		local leveltwo = G.GAME.hands["Pair"].level or 1
-		local levelthree = G.GAME.hands["Two Pair"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
 		return {
 			vars = {
 				localize("High Card", "poker_hands"),
 				localize("Pair", "poker_hands"),
 				localize("Two Pair", "poker_hands"),
-				G.GAME.hands["High Card"].level,
-				G.GAME.hands["Pair"].level,
-				G.GAME.hands["Two Pair"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				number_format(G.GAME.hands["High Card"].level),
+				number_format(G.GAME.hands["Pair"].level),
+				number_format(G.GAME.hands["Two Pair"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["High Card"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["High Card"].level)):to_number()]
+					),
+					(to_big(G.GAME.hands["Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
+						math.min(7, G.GAME.hands["Pair"].level)
+					):to_number()]),
+					(
+						to_big(G.GAME.hands["Two Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Two Pair"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -72,6 +78,17 @@ local timantti = {
 	end,
 }
 local klubi = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -91,40 +108,35 @@ local klubi = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["Three of a Kind"].level or 1
-		local leveltwo = G.GAME.hands["Straight"].level or 1
-		local levelthree = G.GAME.hands["Flush"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
 		return {
 			vars = {
 				localize("Three of a Kind", "poker_hands"),
 				localize("Straight", "poker_hands"),
 				localize("Flush", "poker_hands"),
-				G.GAME.hands["Three of a Kind"].level,
-				G.GAME.hands["Straight"].level,
-				G.GAME.hands["Flush"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				number_format(G.GAME.hands["Three of a Kind"].level),
+				number_format(G.GAME.hands["Straight"].level),
+				number_format(G.GAME.hands["Flush"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Three of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Three of a Kind"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Straight"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight"].level)):to_number()]
+					),
+					(to_big(G.GAME.hands["Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
+						math.min(7, G.GAME.hands["Flush"].level)
+					):to_number()]),
+				},
 			},
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -145,6 +157,17 @@ local klubi = {
 	end,
 }
 local sydan = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -164,40 +187,36 @@ local sydan = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["Full House"].level or 1
-		local leveltwo = G.GAME.hands["Four of a Kind"].level or 1
-		local levelthree = G.GAME.hands["Straight Flush"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
 		return {
 			vars = {
 				localize("Full House", "poker_hands"),
 				localize("Four of a Kind", "poker_hands"),
 				localize("Straight Flush", "poker_hands"),
-				G.GAME.hands["Full House"].level,
-				G.GAME.hands["Four of a Kind"].level,
-				G.GAME.hands["Straight Flush"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				number_format(G.GAME.hands["Full House"].level),
+				number_format(G.GAME.hands["Four of a Kind"].level),
+				number_format(G.GAME.hands["Straight Flush"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Full House"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Full House"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Four of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Four of a Kind"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Straight Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight Flush"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -218,6 +237,17 @@ local sydan = {
 	end,
 }
 local lapio = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -237,40 +267,36 @@ local lapio = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["Five of a Kind"].level or 1
-		local leveltwo = G.GAME.hands["Flush House"].level or 1
-		local levelthree = G.GAME.hands["Flush Five"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
 		return {
 			vars = {
 				localize("Five of a Kind", "poker_hands"),
 				localize("Flush House", "poker_hands"),
 				localize("Flush Five", "poker_hands"),
-				G.GAME.hands["Five of a Kind"].level,
-				G.GAME.hands["Flush House"].level,
-				G.GAME.hands["Flush Five"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				number_format(G.GAME.hands["Five of a Kind"].level),
+				number_format(G.GAME.hands["Flush House"].level),
+				number_format(G.GAME.hands["Flush Five"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Five of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Five of a Kind"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Flush House"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush House"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["Flush Five"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush Five"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -291,6 +317,17 @@ local lapio = {
 	end,
 }
 local kaikki = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -317,17 +354,7 @@ local kaikki = {
 		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
 		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
 		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-		if levelone == 1 or leveltwo == 1 or levelthree == 1 then --Level 1 colour is white (The background), so this sets it to black
-			if levelone == 1 then
-				planetcolourone = G.C.UI.TEXT_DARK
-			end
-			if leveltwo == 1 then
-				planetcolourtwo = G.C.UI.TEXT_DARK
-			end
-			if levelthree == 1 then
-				planetcolourthree = G.C.UI.TEXT_DARK
-			end
-		end
+
 		return {
 			vars = {
 				localize("cry_Bulwark", "poker_hands"),
@@ -336,15 +363,28 @@ local kaikki = {
 				G.GAME.hands["cry_Bulwark"].level,
 				G.GAME.hands["cry_Clusterfuck"].level,
 				G.GAME.hands["cry_UltPair"].level,
-				colours = { planetcolourone, planetcolourtwo, planetcolourthree },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+					),
+					(
+						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
 	use = function(self, card, area, copier)
-		suit_level_up(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		suit_level_up(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
 	calculate = function(self, card, context)
 		if
@@ -365,6 +405,17 @@ local kaikki = {
 	end,
 }
 local planetlua = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -659,6 +710,17 @@ local planetlua = {
 	end,
 }
 local nstar = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"Jevonn",
+		},
+		code = {
+			"Jevonn",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -689,7 +751,7 @@ local nstar = {
 
 		--Add +1 to amount of neutron stars used this run
 		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
-		local neutronhand = neutronstarrandomhand() --Random poker hand
+		local neutronhand = Cryptid.get_random_hand(nil, "nstar" .. G.GAME.round_resets.ante) --Random poker hand
 		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
 			handname = localize(neutronhand, "poker_hands"),
 			chips = G.GAME.hands[neutronhand].chips,
@@ -711,7 +773,7 @@ local nstar = {
 		local neutronhand = "n/a"
 		for i = 1, number do
 			G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
-			neutronhand = neutronstarrandomhand()
+			neutronhand = Cryptid.get_random_hand()
 			handstolv[neutronhand] = (handstolv[neutronhand] or 0) + G.GAME.neutronstarsusedinthisrun
 		end
 		for k, v in pairs(handstolv) do
@@ -756,7 +818,7 @@ local nstar = {
 		end
 	end,
 	init = function(self)
-		function neutronstarrandomhand(ignore, seed, allowhidden)
+		function Cryptid.get_random_hand(ignore, seed, allowhidden)
 			--From JenLib's get_random_hand
 			local chosen_hand
 			ignore = ignore or {}
@@ -783,6 +845,18 @@ local nstar = {
 	end,
 }
 local sunplanet = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Jevonn",
+			"Toneblock",
+		},
+	},
 	--TODO: disable ascendant hands if this is disabled
 	dependencies = {
 		items = {
@@ -799,6 +873,9 @@ local sunplanet = {
 	aurinko = true,
 	atlas = "atlasnotjokers",
 	order = 7,
+	config = {
+		extra = 0.05,
+	},
 	set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("cry_p_star"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
@@ -807,11 +884,12 @@ local sunplanet = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		local sunlevel = (G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1
+		local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
+		G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
 		delay(0.4)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = sunlevel }
+			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(sunlevel) }
 		)
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({
@@ -821,7 +899,7 @@ local sunplanet = {
 				play_sound("tarot1")
 				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
 				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				cry_pulse_flame(0.01, sunlevel)
+				Cryptid.pulse_flame(0.01, sunlevel)
 				used_consumable:juice_up(0.8, 0.5)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -837,9 +915,9 @@ local sunplanet = {
 				return true
 			end,
 		}))
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = sunlevel + 1 })
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(sunlevel + 1) })
 		delay(2.6)
-		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + 1 or 1
+		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + card.ability.extra or card.ability.extra
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }
@@ -847,11 +925,12 @@ local sunplanet = {
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		local used_consumable = copier or card
-		local sunlevel = (G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1
+		local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
+		G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
 		delay(0.4)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = sunlevel }
+			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(sunlevel) }
 		)
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({
@@ -861,7 +940,7 @@ local sunplanet = {
 				play_sound("tarot1")
 				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
 				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				cry_pulse_flame(0.01, (sunlevel - 1) + number)
+				Cryptid.pulse_flame(0.01, (sunlevel - 1) + number)
 				used_consumable:juice_up(0.8, 0.5)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -877,9 +956,13 @@ local sunplanet = {
 				return true
 			end,
 		}))
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = sunlevel + number })
+		update_hand_text(
+			{ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 },
+			{ level = to_big(sunlevel + number) }
+		)
 		delay(2.6)
-		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number or number
+		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number * card.ability.extra
+			or number * card.ability.extra
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }
@@ -899,15 +982,16 @@ local sunplanet = {
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = (G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1
+		local levelone = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
 		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
 		if levelone == 1 then
 			planetcolourone = G.C.UI.TEXT_DARK
 		end
 		return {
 			vars = {
-				(G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1,
-				((G.GAME.sunnumber and G.GAME.sunnumber or 0) / 20) + 1.25,
+				(G.GAME.sunlevel or 0) + 1,
+				center.ability.extra or 0.05,
+				(G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25,
 				colours = { planetcolourone },
 			},
 		}
@@ -920,6 +1004,17 @@ local sunplanet = {
 	end,
 }
 local abelt = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -937,24 +1032,35 @@ local abelt = {
 		badges[1] = create_badge(localize("k_planet_disc"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["cry_Bulwark"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		if levelone == 1 then
-			planetcolourone = G.C.UI.TEXT_DARK
-		end
 		return {
 			vars = {
 				localize("cry_hand_bulwark"),
 				G.GAME.hands["cry_Bulwark"].level,
 				G.GAME.hands["cry_Bulwark"].l_mult,
 				G.GAME.hands["cry_Bulwark"].l_chips,
-				colours = { planetcolourone },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
 	generate_ui = 0,
 }
 local void = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -972,24 +1078,35 @@ local void = {
 		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["cry_Clusterfuck"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		if levelone == 1 then
-			planetcolourone = G.C.UI.TEXT_DARK
-		end
 		return {
 			vars = {
 				localize("cry_Clusterfuck"),
 				G.GAME.hands["cry_Clusterfuck"].level,
 				G.GAME.hands["cry_Clusterfuck"].l_mult,
 				G.GAME.hands["cry_Clusterfuck"].l_chips,
-				colours = { planetcolourone },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
 	generate_ui = 0,
 }
 local marsmoons = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -1018,13 +1135,29 @@ local marsmoons = {
 				G.GAME.hands["cry_UltPair"].level,
 				G.GAME.hands["cry_UltPair"].l_mult,
 				G.GAME.hands["cry_UltPair"].l_chips,
-				colours = { planetcolourone },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
 	generate_ui = 0,
 }
 local universe = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	dependencies = {
 		items = {
 			"set_cry_poker_hand_stuff",
@@ -1042,29 +1175,42 @@ local universe = {
 		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["cry_WholeDeck"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		if levelone == 1 then
-			planetcolourone = G.C.UI.TEXT_DARK
-		end
 		return {
 			vars = {
 				localize("cry_UltPair"),
 				G.GAME.hands["cry_WholeDeck"].level,
 				G.GAME.hands["cry_WholeDeck"].l_mult,
 				G.GAME.hands["cry_WholeDeck"].l_chips,
-				colours = { planetcolourone },
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_WholeDeck"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_WholeDeck"].level)):to_number()]
+					),
+				},
 			},
 		}
 	end,
 	generate_ui = 0,
 }
-function suit_level_up(center, card, area, copier, number)
+function Cryptid.suit_level_up(card, copier, number, poker_hands, message)
 	local used_consumable = copier or card
 	if not number then
 		number = 1
 	end
-	for _, v in pairs(card.config.center.config.hand_types) do
+	if not poker_hands then
+		poker_hands = { "Two Pair", "Straight Flush" }
+	end
+	if message then
+		card_eval_status_text(
+			card,
+			"extra",
+			nil,
+			nil,
+			nil,
+			{ message = localize("k_level_up_ex"), colour = G.C.FILTER }
+		)
+	end
+	for _, v in pairs(poker_hands) do
 		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
 			handname = localize(v, "poker_hands"),
 			chips = G.GAME.hands[v].chips,
