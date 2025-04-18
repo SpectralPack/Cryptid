@@ -693,6 +693,7 @@ local primus = {
 			if check then
 				card.ability.extra.Emult =
 					lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
+				card.children.floating_sprite:set_sprite_pos({x = 8, y = 6})
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = localize("k_upgrade_ex"),
@@ -702,6 +703,7 @@ local primus = {
 			end
 		end
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
+			card.children.floating_sprite:set_sprite_pos({x = 8, y = 6})
 			return {
 				message = localize({
 					type = "variable",
@@ -714,6 +716,9 @@ local primus = {
 				colour = G.C.DARK_EDITION,
 			}
 		end
+		if context.end_of_round then
+			card.children.floating_sprite:set_sprite_pos({x = 2, y = 4})
+		end
 	end,
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -725,7 +730,7 @@ local primus = {
 	end,
 	cry_credits = {
 		idea = { "Jevonn" },
-		art = { "Jevonn" },
+		art = { "George the Rat" },
 		code = { "Jevonn" },
 	},
 }
