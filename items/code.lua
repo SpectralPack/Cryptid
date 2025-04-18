@@ -2339,7 +2339,7 @@ local hook = { -- Hook://, applies Hooked to two jokers
 			"HexaCryonic",
 		},
 		code = {
-			"Math",
+			"Nova",
 		},
 	},
 	dependencies = {
@@ -2358,56 +2358,37 @@ local hook = { -- Hook://, applies Hooked to two jokers
 	order = 14,
 	no_pool_flag = "beta_deck",
 	can_use = function(self, card)
-		return false
+		local check = true
+		return (#G.jokers.highlighted == 2 and #G.consumeables.highlighted == 1 and check)
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
 	end,
 	use = function(self, card, area, copier)
-		G.jokers.highlighted[1].ability.cry_hooked = true
-		G.jokers.highlighted[2].ability.cry_hooked = true
-		G.jokers.highlighted[1].hook_id = G.jokers.highlighted[2].sort_id
-		G.jokers.highlighted[2].hook_id = G.jokers.highlighted[1].sort_id
+		local card1 = nil
+		local card2 = nil
+		for i = 1, #G.jokers.highlighted do
+			if not card1 then 
+				card1 = G.jokers.highlighted[i] 
+			else
+				card2 = G.jokers.highlighted[i]
+			end
+		end
+		if card1 and card2 then
+			card1.ability.cry_hooked = true
+			card2.ability.cry_hooked = true
+			card1.ability.cry_hook_id = card2.sort_id
+			card2.ability.cry_hook_id = card1.sort_id
+		end
 	end,
 	init = function(self)
-		--HOOK:// patches (probably broken)
-		--[[local cj = Card.calculate_joker
-		function Card:calculate_joker(context)
-			local ret, trig = cj(self, context)
-			if
-				(ret or trig)
-				and self.ability.cry_hooked
-				and not context.post_trigger
-				and not context.cry_hook
-				and not context.retrigger_joker_check
-				and not context.megatrigger_check
-			then
-				context.cry_hook = true
-				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].sort_id == self.hook_id then
-						card_eval_status_text(
-							G.jokers.cards[i],
-							"extra",
-							nil,
-							nil,
-							nil,
-							{ message = localize("cry_hooked_ex"), colour = G.C.SET.Code }
-						)
-						cj(G.jokers.cards[i], context)
-						--I tried a few things to get the color of messages to be green from the other joker, but they haven't worked :(
-					end
-				end
-				context.cry_hook = nil
-			end
-			return ret, trig
-		end--]]
 		local Cardstart_dissolveRef = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 			if G.jokers then
 				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].hook_id == self.sort_id then
+					if (G.jokers.cards[i].ability.cry_hook_id == self.sort_id) or (G.jokers.cards[i].sort_id == self.ability.cry_hook_id) then
 						G.jokers.cards[i].ability.cry_hooked = false
-						G.jokers.cards[i].hook_id = nil
+						G.jokers.cards[i].ability.cry_hook_id = nil
 					end
 				end
 			end
@@ -2415,42 +2396,50 @@ local hook = { -- Hook://, applies Hooked to two jokers
 		end
 	end,
 }
-local hooked =
-	{ -- Hooked sticker, when one joker is triggered, trigger the other joker via context.demicolon (NOT IMPLEMENTED)
-		dependencies = {
-			items = {
-				"set_cry_code",
-				"c_cry_hook",
-			},
+local hooked = { -- When a joker is naturally triggered, force-trigger the hooked joker
+	dependencies = {
+		items = {
+			"set_cry_code",
+			"c_cry_hook",
 		},
-		object_type = "Sticker",
-		atlas = "sticker",
-		pos = { x = 5, y = 3 },
-		no_edeck = true,
-		order = 606,
-		loc_vars = function(self, info_queue, card)
-			local var
-			if not card or not card.hook_id then
-				var = "[" .. localize("k_joker") .. "]"
-			else
-				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].sort_id == card.hook_id then
-						var = localize({ type = "name_text", set = "Joker", key = G.jokers.cards[i].config.center.key })
-					end
+	},
+	object_type = "Sticker",
+	atlas = "sticker",
+	pos = { x = 5, y = 3 },
+	no_edeck = true,
+	order = 606,
+	loc_vars = function(self, info_queue, card)
+		local var
+		if not card or not card.cry_hook_id then
+			var = "[" .. localize("k_joker") .. "]"
+		else
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].sort_id == card.cry_hook_id then
+					var = G.jokers.cards[i]
 				end
-				var = var or ("[no joker found - " .. (card.hook_id or "nil") .. "]")
 			end
-			return { vars = { var or "hooked Joker" } }
-		end,
-		key = "cry_hooked",
-		no_sticker_sheet = true,
-		prefix_config = { key = false },
-		badge_colour = HEX("14b341"),
-		draw = function(self, card) --don't draw shine
-			G.shared_stickers[self.key].role.draw_major = card
-			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
-		end,
-	}
+			var = var or ("[no joker found - " .. (card.cry_hook_id or "nil") .. "]")
+		end
+		return { vars = { var or "hooked Joker" } }
+	end,
+	key = "cry_hooked",
+	no_sticker_sheet = true,
+	prefix_config = { key = false },
+	badge_colour = HEX("14b341"),
+	draw = function(self, card) --don't draw shine
+		G.shared_stickers[self.key].role.draw_major = card
+		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+	end,
+	calculate = function(self, card, context)
+		if context.post_trigger and not context.forcetrigger and not context.other_context.forcetrigger then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == context.other_card and context.other_card.ability.cry_hook_id == card.sort_id then
+					Cryptid.forcetrigger(card, context)
+				end
+			end
+		end
+	end,
+}
 
 local oboe = { -- ://Off By One, the next opened booster pack has +1/+1 slots/selections
 	cry_credits = {
