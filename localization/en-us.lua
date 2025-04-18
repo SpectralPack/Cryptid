@@ -553,8 +553,8 @@ return {
 			c_cry_hook = {
 				name = "HOOK://",
 				text = {
-					"To Be {C:cry_code}Implemented{}",
-					"in a future {C:cry_code}update{}",
+					"When a Joker is triggered,",
+					"{C:cry_code}Force-trigger{} the hooked joker",
 				},
 			},
 			c_cry_inst = {
@@ -4123,7 +4123,7 @@ return {
 				name = "Hooked",
 				text = {
 					"When this Joker is {C:cry_code}triggered{},",
-					"trigger {C:cry_code}#1#",
+					"force-trigger {C:cry_code}#1#",
 				},
 			},
 			cry_global_sticker = {
