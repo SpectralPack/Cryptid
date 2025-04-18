@@ -141,6 +141,7 @@
 --Penetrating Joker
 --Treacherous Joker
 
+--[[
 if JokerDisplay then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
 
@@ -1374,9 +1375,9 @@ if JokerDisplay then
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
 		},
 		calc_function = function(card)
-			local is_active = card.ability.extra.score >= card.ability.extra.req
+			local is_active = card.ability.immutable.score >= card.ability.extra.req
 			card.joker_display_values.localized_text = "("
-				.. (is_active and localize("k_active_ex") or (card.ability.extra.score .. "/" .. card.ability.extra.req))
+				.. (is_active and localize("k_active_ex") or (card.ability.immutable.score .. "/" .. card.ability.extra.req))
 				.. ")"
 		end,
 	}
@@ -2041,4 +2042,6 @@ if JokerDisplay then
 
 	--end of Jokerdisplays
 end
+]]
+--
 return { name = "JokerDisplay" }

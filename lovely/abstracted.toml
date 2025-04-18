@@ -1,0 +1,185 @@
+[manifest]
+version = "0.0.1"
+dump_lua = true
+priority = 2
+
+# Destroy abstract cards at the end of round
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.FUNCS.draw_from_hand_to_discard()"
+position = "before"
+payload = '''
+i = 1
+while i <= #G.hand.cards do
+    local gone = G.hand.cards[i]:calculate_abstract_break()
+    if not gone then i = i + 1 end
+end
+i = 1
+while i <= #G.deck.cards do
+    local gone = G.deck.cards[i]:calculate_abstract_break()
+    if not gone then i = i + 1 end
+end
+i = 1
+while i <= #G.discard.cards do
+    local gone = G.discard.cards[i]:calculate_abstract_break()
+    if not gone then i = i + 1 end
+end
+'''
+match_indent = true
+
+## Specific suit from enhancement check
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if flush_calc then"
+position = "before"
+payload = '''
+--Force suit to be suit X if specified in enhancement, only if not vampired
+if Cryptid.cry_enhancement_has_specific_suit(self) and not self.vampired then
+    return suit == Cryptid.cry_enhancement_get_specific_suit(self)
+end
+'''
+match_indent = true
+
+## For better mod compat, the if statement will be wrapped around
+
+## Idol: Ignore abstracted cards
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "valid_idol_cards[#valid_idol_cards+1] = v"
+position = "before"
+payload = '''
+    if not SMODS.has_enhancement(v, "m_cry_abstract") then
+'''
+match_indent = true
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "valid_idol_cards[#valid_idol_cards+1] = v"
+position = "after"
+payload = '''
+    end
+'''
+match_indent = true
+
+## Mail in rebate: ignore abstracted cards
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "valid_mail_cards[#valid_mail_cards+1] = v"
+position = "before"
+payload = '''
+    if not SMODS.has_enhancement(v, "m_cry_abstract") then
+'''
+match_indent = true
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "valid_mail_cards[#valid_mail_cards+1] = v"
+position = "after"
+payload = '''
+    end
+'''
+match_indent = true
+
+## castle: ignore abstracted cards
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "valid_castle_cards[#valid_castle_cards+1] = v"
+position = "before"
+payload = '''
+    if not SMODS.has_enhancement(v, "m_cry_abstract") then
+'''
+match_indent = true
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "valid_castle_cards[#valid_castle_cards+1] = v"
+position = "after"
+payload = '''
+    end
+'''
+match_indent = true
+
+## really hacky UnStable crossmod workaround;
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "if hand[i]:is_suit(suit, nil, true) then flush_count = flush_count + 1;  t[#t+1] = hand[i] end"
+position = "before"
+payload = '''
+    if Cryptid.cry_enhancement_has_specific_suit(hand[i]) then
+        if hand[i]:is_suit_force_enhancement(suit, nil, true) then flush_count = flush_count + 1;  t[#t+1] = hand[i] end
+    else
+'''
+match_indent = true
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "if hand[i]:is_suit(suit, nil, true) then flush_count = flush_count + 1;  t[#t+1] = hand[i] end"
+position = "after"
+payload = '''
+    end
+'''
+match_indent = true
+
+## Artificially add abstracted 'suits' to flush calculations without declaring them (sigil, familiar)
+## Also make sure to create a hard copy of suits and iterate, otherwise adding the artificial suit will add it to suit.obj_buffer for real!
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "local suits = SMODS.Suit.obj_buffer"
+position = "at"
+payload = '''
+    local suits = {}
+    suits[#suits + 1] = 'cry_abstract'
+    
+    for i,v in pairs(SMODS.Suit.obj_buffer) do
+        suits[#suits + 1] = v
+    end
+'''
+match_indent = true
+
+## Artificially add abstracted 'rank' to X of a kind calculations
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = '''for i = 1, SMODS.Rank.max_id.value do
+      vals[i] = {}
+  end'''
+position = "after"
+payload = '''
+    vals[#vals + 1] = {}
+'''
+match_indent = true
+
+## Force abstract cards to be only slightly above stone cards 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.config.center.no_rank then'''
+position = "before"
+payload = '''
+if Cryptid.cry_enhancement_get_specific_rank(self) == 'cry_abstract' then
+    mult = -9000
+end
+'''
+match_indent = true
+
+## Force abstracted to not be face cards
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if not id then return end'''
+position = "before"
+payload = '''
+if SMODS.has_enhancement(self, "m_cry_abstract") then
+    return
+end
+'''
+match_indent = true

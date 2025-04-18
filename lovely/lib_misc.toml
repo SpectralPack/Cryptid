@@ -171,6 +171,7 @@ payload = '''
 Cryptid = {}
 Cryptid.aliases = {}
 Cryptid.pointerblist = {}
+Cryptid.pointerblistrarity = {}
 function cry_format(...)
 	return ...
 end

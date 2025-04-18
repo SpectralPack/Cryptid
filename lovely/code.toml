@@ -160,7 +160,7 @@ end
 '''
 match_indent = true
 
-# Delete - multiuse 2
+# Multiuse + Function:// code 
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -182,14 +182,146 @@ if cry_muse then
 		scale = 1.1,
 		hold = 0.6,
 		major = card,
-		backdrop_colour = G.C.SECONDARY_SET[card.config.center.set],
+		backdrop_colour = G.C.SET[card.config.center.set],
 		align = 'bm',
 		offset = {x = 0, y = 0.2}
 	})
 
 	delay(0.8)
-	local _area = area ~= G.pack_cards and area or G.consumeables
-	draw_card(G.play, _area, 1, 'up', true, card, nil, true)
+ 	if not G.GAME.modifiers.cry_beta then
+		if to_big(G.consumeables.cards) < to_big(G.consumeables.config.card_limit) then
+			draw_card(G.play, G.consumeables, 1, 'up', true, card, nil, true)
+		else card:start_dissolve()
+		end
+  	else
+		if to_big(G.jokers.cards) < to_big(G.jokers.config.card_limit) then
+			draw_card(G.play, G.jokers, 1, 'up', true, card, nil, true)
+		else card:start_dissolve()
+		end
+    end
+end
+if not G.GAME.modifiers.cry_beta then -- function code + fallback
+	if card.ability.cry_function_counter == 1 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.consumeables,
+					nil,
+					nil,
+					nil,
+					nil,
+					G.GAME.cry_function_cards[2],
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				new_card.ability.cry_function_sticker = true
+				new_card.ability.cry_function_counter = 2
+				G.consumeables:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	elseif card.ability.cry_function_counter == 2 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.consumeables,
+					nil,
+					nil,
+					nil,
+					nil,
+					G.GAME.cry_function_cards[3],
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				G.consumeables:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	elseif card.ability.cry_function_sticker and not card.ability.cry_function_counter == 3 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.consumeables,
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				G.consumeables:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	end
+  else
+	if card.ability.cry_function_counter == 1 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.jokers,
+					nil,
+					nil,
+					nil,
+					nil,
+					G.GAME.cry_function_cards[2],
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				new_card.ability.cry_function_sticker = true
+				new_card.ability.cry_function_counter = 2
+				G.jokers:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	elseif card.ability.cry_function_counter == 2 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.jokers,
+					nil,
+					nil,
+					nil,
+					nil,
+					G.GAME.cry_function_cards[3],
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				G.jokers:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	elseif card.ability.cry_function_sticker and not card.ability.cry_function_counter == 3 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.jokers,
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				G.jokers:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	end
 end
 '''
 match_indent = true
@@ -369,6 +501,21 @@ text = G.GAME.cry_exploit_override or text
 '''
 match_indent = true
 
+# Multiuse localization
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''if main_end then'''
+position = "before"
+payload = '''
+if cfg and cfg.cry_multiuse then
+	local loc = {}
+	localize{type = 'other', key = 'cry_multiuse', nodes = loc, vars = {cfg.cry_multiuse}}
+	desc_nodes[#desc_nodes+1] = loc[1]
+end
+'''
+match_indent = true
+
 # Double Tag makes exact copy of rework tag
 [[patches]]
 [patches.pattern]
@@ -382,5 +529,18 @@ payload = '''
 		tag.ability.rework_key = _context.tag.ability.rework_key
 	end
 	add_tag(tag)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.last_hand_played = text"
+position = "after"
+payload = '''
+G.GAME.last_hand_played_cards = {}
+for i = 1, #G.play.cards do
+	G.GAME.last_hand_played_cards[i] = G.play.cards[i]
+end
 '''
 match_indent = true

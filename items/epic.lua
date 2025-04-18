@@ -722,6 +722,7 @@ local m = {
 	dependencies = {
 		items = {
 			"set_cry_epic",
+			"set_cry_meme",
 			-- Note: This isn't in the M Joker content set due to being added separately
 		},
 	},
@@ -846,6 +847,7 @@ local boredom = {
 	dependencies = {
 		items = {
 			"set_cry_epic",
+			"set_cry_meme",
 		},
 	},
 	gameset_config = {
@@ -1298,6 +1300,7 @@ local curse_sob = {
 	dependencies = {
 		items = {
 			"set_cry_epic",
+			"set_cry_meme",
 		},
 	},
 	gameset_config = {
@@ -1665,6 +1668,7 @@ local altgoogol = {
 	eternal_compat = false,
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
+	config = { copies = 2 },
 	gameset_config = {
 		modest = {
 			cost = 15,

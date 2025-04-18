@@ -31,10 +31,6 @@ function Game:update(dt)
 end
 
 G.FUNCS.cry_intro_controller = function()
-	if Jen then
-		G.PROFILES[G.SETTINGS.profile].cry_intro_complete = true
-		G.PROFILES[G.SETTINGS.profile].cry_gameset = "madness"
-	end
 	G.PROFILES[G.SETTINGS.profile].cry_intro_progress = G.PROFILES[G.SETTINGS.profile].cry_intro_progress
 		or {
 			state = "start",
@@ -547,9 +543,6 @@ end
 
 -- designed to work on any object type
 function Cryptid.gameset(card, center)
-	if Jen then
-		return "madness"
-	end
 	if not center then
 		if not card then
 			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
@@ -1186,6 +1179,12 @@ SMODS.ContentSet({
 	key = "m",
 	atlas = "atlasepic",
 	pos = { x = 3, y = 1 }, --m
+	cry_order = -23,
+})
+SMODS.ContentSet({
+	key = "meme",
+	atlas = "atlastwo",
+	pos = { x = 2, y = 4 }, --Happy House
 	cry_order = -22,
 })
 SMODS.ContentSet({
@@ -1218,7 +1217,7 @@ SMODS.ContentSet({
 	key = "deck",
 	atlas = "atlasdeck",
 	pos = { x = 4, y = 5 }, --Critical Deck
-	cry_order = -23,
+	cry_order = -24,
 })
 SMODS.ContentSet({
 	key = "spooky",
@@ -1243,7 +1242,7 @@ SMODS.ContentSet({
 	key = "misc",
 	atlas = "cry_misc",
 	pos = { x = 2, y = 0 }, --Echo Card
-	cry_order = -22,
+	cry_order = -21,
 })
 SMODS.ContentSet({
 	key = "misc_joker",

@@ -51,7 +51,9 @@ local ballin = {
 	key = "ballin",
 	order = 1,
 	rules = {
-		custom = {},
+		custom = {
+			{ id = "cry_force_enhancement", value = "m_stone" },
+		},
 		modifiers = {
 			{ id = "joker_slots", value = 3 },
 		},
@@ -66,20 +68,6 @@ local ballin = {
 	restrictions = {
 		banned_cards = {
 			{ id = "j_vampire" },
-			{ id = "c_magician" },
-			{ id = "c_empress" },
-			{ id = "c_heirophant" },
-			{ id = "c_lovers" },
-			{ id = "c_chariot" },
-			{ id = "c_justice" },
-			{ id = "c_devil" },
-			{ id = "c_tower" },
-			{ id = "c_cry_seraph" },
-			{ id = "c_familiar" },
-			{ id = "c_grim" },
-			{ id = "c_incantation" },
-			{ id = "c_cry_eclipse" },
-			{ id = "c_cry_class" },
 		},
 		banned_other = {},
 	},
@@ -507,60 +495,6 @@ function Game:start_run(args)
 		G.GAME.joker_rate = 1e300
 	end
 end
---Add banned cards when specific features/mods are enabled here
---TODO other mods
-if (SMODS.Mods["jen"] or {}).can_load then
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_chance" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_cry_bundle" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_magician" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_empress" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_heirophant" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_lovers" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_chariot" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_justice" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_devil" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_tower" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_star" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_moon" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_sun" }
-	ballin.restrictions.banned_cards[#ballin.restrictions.banned_cards + 1] = { id = "c_jen_reverse_world" }
-	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_jen_jokerinatarot" }
-	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_uncommon" }
-	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_rare" }
-	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_top_up" }
-	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_cry_epic" }
-	rng.restrictions.banned_cards[#rng.restrictions.banned_cards + 1] = { id = "c_jen_wraith_ex" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "j_jen_shikigami" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_charm" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_meteor" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_buffoon" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_ethereal" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_token_tag_cry_bundle" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_magician" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_empress" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_heirophant" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_lovers" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_chariot" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_justice" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_devil" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_tower" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] =
-		{ id = "c_jen_reverse_high_priestess" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_emperor" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_death" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_star" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_moon" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_sun" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_world" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_reverse_judgement" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_mischief" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_wonder" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_familiar_ex" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_grim_ex" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_incantation_ex" }
-	onlycard.restrictions.banned_cards[#onlycard.restrictions.banned_cards + 1] = { id = "c_jen_cryptid_ex" }
-end
---end of banned cards
 local challenges = {
 	sticker_sheet,
 	sticker_sheet_plus,

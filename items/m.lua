@@ -423,7 +423,11 @@ local mneon = {
 		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
 			local jollycount = 0
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i]:is_jolly() or Cryptid.safe_get(G.jokers.cards[i].config.center, "pools", "M") then
+				if
+					G.jokers.cards[i]:is_jolly()
+					or Cryptid.safe_get(G.jokers.cards[i].config.center, "pools", "M")
+					or G.jokers.cards[i].ability.name == "cry-mprime"
+				then
 					jollycount = jollycount + 1
 				end
 			end
@@ -562,7 +566,10 @@ local notebook = {
 }
 local bonk = {
 	dependencies = {
-		items = { "set_cry_m" },
+		items = {
+			"set_cry_m",
+			"set_cry_meme",
+		},
 	},
 	object_type = "Joker",
 	name = "cry-bonk",
@@ -894,7 +901,10 @@ local reverse = {
 	key = "reverse",
 	effect = "M Joker",
 	dependencies = {
-		items = { "set_cry_m" },
+		items = {
+			"set_cry_m",
+			"set_cry_meme",
+		},
 	},
 	config = {
 		extra = { type = "Pair" },
