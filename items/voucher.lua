@@ -143,7 +143,7 @@ local command_prompt = { --Code cards can appear in the shop
 	},
 	key = "command_prompt",
 	atlas = "atlasvoucher",
-	order = 3,
+	order = 2063,
 	pos = { x = 0, y = 1 },
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
@@ -187,7 +187,7 @@ local satellite_uplink = { --Code cards may appear in any of the Celestial Packs
 	},
 	key = "satellite_uplink",
 	atlas = "atlasvoucher",
-	order = 4,
+	order = 2064,
 	pos = { x = 0, y = 2 },
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
@@ -216,7 +216,7 @@ local quantum_computing = { --Code cards spawn with +1 use
 		},
 	},
 	key = "quantum_computing",
-	order = 92,
+	order = 3032,
 	atlas = "atlasvoucher",
 	pos = { x = 0, y = 3 },
 	config = { extra = 1 },

@@ -1493,10 +1493,21 @@ local jimball = {
 				end
 			else
 				card.ability.extra.x_mult =
-					lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.xmult_mod)
+					lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.x_mult_mod)
 				--TODO return the proper upgrade text
 				return nil, true
 			end
+		end
+		--Adding actual scoring because that is missing
+		if context.joker_main and lenient_bignum(card.ability.extra.x_mult) > 1 then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.x_mult) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+			}
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)

@@ -1724,7 +1724,7 @@ local candy_sticks = {
 				or to_big(card.ability.extra.hands) <= to_big(0)
 			) and G.GAME.blind.disabled
 		then
-			G.GAME.blind:load(card.ability.extra.boss)
+			G.GAME.blind:load(card.ability.immutable.boss)
 			if not context.selling_self then
 				G.E_MANAGER:add_event(Event({
 					func = function()
