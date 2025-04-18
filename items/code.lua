@@ -2368,8 +2368,8 @@ local hook = { -- Hook://, applies Hooked to two jokers
 		local card1 = nil
 		local card2 = nil
 		for i = 1, #G.jokers.highlighted do
-			if not card1 then 
-				card1 = G.jokers.highlighted[i] 
+			if not card1 then
+				card1 = G.jokers.highlighted[i]
 			else
 				card2 = G.jokers.highlighted[i]
 			end
@@ -2386,7 +2386,10 @@ local hook = { -- Hook://, applies Hooked to two jokers
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 			if G.jokers then
 				for i = 1, #G.jokers.cards do
-					if (G.jokers.cards[i].ability.cry_hook_id == self.sort_id) or (G.jokers.cards[i].sort_id == self.ability.cry_hook_id) then
+					if
+						(G.jokers.cards[i].ability.cry_hook_id == self.sort_id)
+						or (G.jokers.cards[i].sort_id == self.ability.cry_hook_id)
+					then
 						G.jokers.cards[i].ability.cry_hooked = false
 						G.jokers.cards[i].ability.cry_hook_id = nil
 					end
@@ -2433,7 +2436,10 @@ local hooked = { -- When a joker is naturally triggered, force-trigger the hooke
 	calculate = function(self, card, context)
 		if context.post_trigger and not context.forcetrigger and not context.other_context.forcetrigger then
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] == context.other_card and context.other_card.ability.cry_hook_id == card.sort_id then
+				if
+					G.jokers.cards[i] == context.other_card
+					and context.other_card.ability.cry_hook_id == card.sort_id
+				then
 					Cryptid.forcetrigger(card, context)
 				end
 			end
