@@ -2273,7 +2273,11 @@ local demicolon = {
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if Cryptid.demicolonGetTriggerable(G.jokers.cards[i + 1]) then
-						Cryptid.forcetrigger(G.jokers.cards[i + 1], context)
+						local results = Cryptid.forcetrigger(G.jokers.cards[i + 1], context)
+						if results and results.jokers then
+							results.jokers.message = localize("cry_demicolon")
+							return results.jokers
+						end
 						return { message = localize("cry_demicolon") }
 					end
 				end
