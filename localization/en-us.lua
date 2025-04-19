@@ -553,8 +553,8 @@ return {
 			c_cry_hook = {
 				name = "HOOK://",
 				text = {
-					"To Be {C:cry_code}Implemented{}",
-					"in a future {C:cry_code}update{}",
+					"When a Joker is triggered,",
+					"{C:cry_code}Force-trigger{} the hooked joker",
 				},
 			},
 			c_cry_inst = {
@@ -1453,6 +1453,13 @@ return {
 					"and gains {X:mult,C:white} X#1# {} Mult",
 					"at the end of the {C:attention}shop{}",
 					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+				},
+			},
+			j_cry_demicolon = {
+				name = "Demicolon",
+				text = {
+					"Trigger the {C:attention}Joker{} to the right",
+					"{E:1}regardless of its usual conditions",
 				},
 			},
 			j_cry_delirious = {
@@ -4116,7 +4123,7 @@ return {
 				name = "Hooked",
 				text = {
 					"When this Joker is {C:cry_code}triggered{},",
-					"trigger {C:cry_code}#1#",
+					"force-trigger {C:cry_code}#1#",
 				},
 			},
 			cry_global_sticker = {
