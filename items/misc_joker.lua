@@ -9024,6 +9024,79 @@ local sock_and_sock = {
 		end
 	end,
 }
+local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of round
+	cry_credits = {
+		idea = {
+			"Poppip10",
+		},
+		art = {
+			"GeorgeTheRat",
+		},
+		code = {
+			"gemstonez",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_meme",
+		},
+	},
+	name = "cry_brokenhome",
+	key = "brokenhome",
+	atlas = "atlasthree",
+	pos = { x = 1, y = 7 },
+	rarity = 3,
+	cost = 8,
+	order = 139,
+	eternal_compat = false,
+	config = { extra = { Xmult = 11.4, odds = 4 } },
+	loc_vars = function(self, info_queue, card) -- the humble cavendish example mod:
+		return { vars = { card.ability.extra.Xmult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
+				Xmult_mod = card.ability.extra.Xmult,
+			}
+		end
+		if context.end_of_round and context.game_over == false and not context.repetition and not context.blueprint then
+			if pseudorandom("brokenhome") < G.GAME.probabilities.normal / card.ability.extra.odds then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				return {
+					message = localize("cry_divorced"),
+					colour = G.C.FILTER,
+				}
+			else
+				return {
+					message = localize("k_safe_ex"),
+					colour = G.C.FILTER,
+				}
+			end
+		end
+	end,
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -9142,6 +9215,7 @@ local miscitems = {
 	familiar_currency,
 	highfive,
 	sock_and_sock,
+	brokenhome,
 }
 return {
 	name = "Misc. Jokers",

@@ -114,7 +114,7 @@ local iterum = {
 		end
 	end,
 	cry_credits = {
-		idea = { "Math" },
+		idea = { "Math", "Project666" },
 		art = { "Ein13" },
 		code = { "Math" },
 	},

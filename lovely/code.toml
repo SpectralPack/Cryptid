@@ -189,12 +189,12 @@ if cry_muse then
 
 	delay(0.8)
  	if not G.GAME.modifiers.cry_beta then
-		if to_big(G.consumeables.cards) < to_big(G.consumeables.config.card_limit) then
+		if to_big(#G.consumeables.cards) < to_big(G.consumeables.config.card_limit) then
 			draw_card(G.play, G.consumeables, 1, 'up', true, card, nil, true)
 		else card:start_dissolve()
 		end
   	else
-		if to_big(G.jokers.cards) < to_big(G.jokers.config.card_limit) then
+		if to_big(#G.jokers.cards) < to_big(G.jokers.config.card_limit) then
 			draw_card(G.play, G.jokers, 1, 'up', true, card, nil, true)
 		else card:start_dissolve()
 		end

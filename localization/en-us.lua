@@ -284,7 +284,8 @@ return {
 				name = "The Clock",
 				text = {
 					"+0.1X blind requirements every",
-					"12 seconds spent this ante",
+					"12 seconds spent this ante,",
+					"multiplied by game speed",
 				},
 			},
 			bl_cry_hammer = {
@@ -312,7 +313,8 @@ return {
 				name = "Lavender Loop",
 				text = {
 					"1.25X blind requirements every",
-					"6 seconds spent this round",
+					"6 seconds spent this round,",
+					"multiplied by game speed",
 				},
 			},
 			bl_cry_obsidian_orb = {
@@ -394,6 +396,13 @@ return {
 					"Must play 5 cards,",
 					"destroy played and",
 					"discarded cards",
+				},
+			},
+			bl_cry_greed = {
+				name = "The Greed",
+				text = {
+					"+#2# blind requirement",
+					"per $#1# when selected",
 				},
 			},
 			bl_cry_pinkbow = {
@@ -2592,6 +2601,15 @@ return {
 					"{C:attention}Abstract{} cards {C:attention}#1#{} time#<s>1#",
 				},
 			},
+			j_cry_brokenhome = {
+				name = "Broken Home",
+				text = {
+					"{X:mult,C:white} X#1# {} Mult",
+					"{C:green}#2# in #3#{} chance this",
+					"card is destroyed",
+					"at end of round",
+				},
+			},
 			j_cry_spaceglobe = {
 				name = "Celestial Globe",
 				text = {
@@ -4620,6 +4638,7 @@ return {
 			ach_cry_used_crash = "We Told You Not To",
 			ach_cry_what_have_you_done = "WHAT HAVE YOU DONE?!",
 			ach_cry_pin = "Pin of Shame",
+			ach_cry_technically_positive = "Technically Positive",
 			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and "You Can't Be Serious"
 				or "You're Fucking Kidding",
 		},
@@ -4645,6 +4664,7 @@ return {
 			ach_cry_used_crash = "Use ://CRASH",
 			ach_cry_what_have_you_done = "Delete or Sacrifice an Exotic Joker",
 			ach_cry_pin = "Lose a run to The Pin",
+			ach_cry_technically_positive = "Obtain a Negative Negative Joker",
 			ach_cry_youre_fucking_kidding = "Discard " .. localize("cry_WholeDeck", "poker_hands"),
 		},
 		challenge_names = {
@@ -4779,6 +4799,7 @@ return {
 			cry_unredeemed = "Unredeemed...",
 			cry_active = "Active",
 			cry_inactive = "Inactive",
+			cry_divorced = "Divorced!",
 
 			k_disable_music = "Disable Music",
 

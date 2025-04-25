@@ -520,7 +520,7 @@ local notebook = {
 					)
 				)
 
-				if card.ability.immutable.slots >= card.ability.immutable.max_slots then
+				if to_big(card.ability.immutable.slots) >= to_big(card.ability.immutable.max_slots) then
 					card.ability.extra.add = 0
 				end
 

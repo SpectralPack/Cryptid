@@ -423,6 +423,26 @@ local pin = {
 		end
 	end,
 }
+local technically_positive = {
+	object_type = "Achievement",
+	key = "technically_positive",
+	order = 23,
+	bypass_all_unlocked = true,
+	atlas = "cry_achievements",
+	--reset_on_startup = true,
+	unlock_condition = function(self, args)
+		if args.type == "modify_jokers" then
+			for i = 1, #G.jokers.cards do
+				if
+					G.jokers.cards[i].config.center.key == "j_cry_negative"
+					and (G.jokers.cards[i].edition and G.jokers.cards[i].edition.negative)
+				then
+					return true
+				end
+			end
+		end
+	end,
+}
 
 -- TODO: Add new Achievements.
 -- Current Ideas (Normal):
@@ -477,6 +497,7 @@ local achievement_objects = {
 	home_realtor,
 	traffic_jam,
 	perfectly_balanced,
+	technically_positive,
 	--pin, Needs to be screened
 }
 return { name = "Achievements", items = achievement_objects }

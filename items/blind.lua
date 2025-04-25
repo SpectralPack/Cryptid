@@ -640,7 +640,7 @@ local scorch = {
 	object_type = "Blind",
 	name = "cry-scorch",
 	key = "scorch",
-	pos = { x = 0, y = 18 }, -- use Trick as placeholder icon
+	pos = { x = 0, y = 18 },
 	boss = {
 		min = 1,
 		max = 10,
@@ -673,6 +673,70 @@ local scorch = {
 		else
 			return false
 		end
+	end,
+}
+-- +0.25X blind requirements
+-- for every $5 you have when selected
+local greed = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	config = {
+		money_factor = 5,
+		blind_mod = 0.25,
+		max_scale = 5000,
+	},
+	object_type = "Blind",
+	name = "cry-greed",
+	key = "greed",
+	pos = { x = 0, y = 19 }, -- use Tax as placeholder icon
+	boss = {
+		min = 1,
+		max = 10,
+	},
+	atlas = "blinds",
+	order = 22,
+	boss_colour = HEX("C19030"),
+	mult = 1,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(5),
+				number_format(lenient_bignum((get_blind_amount(G.GAME.round_resets.ante) * 0.25))),
+			},
+		}
+	end,
+	collection_loc_vars = function(self)
+		return {
+			vars = {
+				number_format(5),
+				"(" .. number_format(0.25) .. "X base)",
+			},
+		}
+	end,
+	set_blind = function(self, reset, silent)
+		if to_big(G.GAME.dollars) < to_big(5000) then
+			G.GAME.blind.chips = -- go my equations
+				((get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling) + (math.floor(
+					G.GAME.dollars / 5
+				) * (get_blind_amount(G.GAME.round_resets.ante) * 0.25)))
+		else
+			G.GAME.blind.chips = -- set cap at $5000
+				(
+					(get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling)
+					+ (
+						math.floor(5000 / 5) -- 1000 extra increments
+						* (get_blind_amount(G.GAME.round_resets.ante) * 0.25)
+					)
+				)
+		end
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+	end,
+	disable = function(self, silent)
+		G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
 }
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
@@ -1427,6 +1491,7 @@ local items_togo = {
 	shackle,
 	pin,
 	scorch,
+	greed,
 	vermillion_virus,
 	tornado,
 	sapphire_stamp,

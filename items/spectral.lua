@@ -686,9 +686,7 @@ local summoning = {
 			"AlexZGreat",
 		},
 		art = {
-			--Summoning's sprite takes some parts from an unused sprite by Rattlingsnow so i'm crediting both users
-			"Kailen",
-			"RattlingSnow353",
+			"Nova",
 		},
 		code = {
 			"Jevonn",
@@ -879,13 +877,28 @@ local ritual = {
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
 		if card.area ~= G.hand then
-			return G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and not G.hand.highlighted[1].edition
+			local check = true
+			if #G.hand.highlighted > card.ability.max_highlighted then
+				check = nil
+			end
+			if #G.hand.highlighted < 1 then
+				check = nil
+			end
+			for index, card in ipairs(G.hand.highlighted) do
+				if G.hand.highlighted[index].edition then
+					check = nil
+				end
+			end
+			return G.hand and (#G.hand.highlighted <= card.ability.max_highlighted) and check
 		else
 			local idx = 1
-			if G.hand.highlighted[1] == card then
-				idx = 2
+			local check = true
+			for index, card in ipairs(G.hand.highlighted) do
+				if G.hand.highlighted[index].edition and not G.hand.highlighted[index] == card then
+					check = nil
+				end
 			end
-			return (#G.hand.highlighted == 2) and not G.hand.highlighted[idx].edition
+			return G.hand and (#G.hand.highlighted <= (card.ability.max_highlighted + 1)) and check
 		end
 	end,
 	use = function(self, card, area, copier)
