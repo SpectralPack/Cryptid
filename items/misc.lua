@@ -1938,7 +1938,6 @@ local abstract = {
 	key = "abstract",
 	not_stoned = true,
 	overrides_base_rank = true, --enhancement do not generate in grim, incantation, etc...
-	weight = 0, -- let me know if abstract cards can generate naturally
 	replace_base_card = true, --So no base chips and no image
 	atlas = "cry_misc",
 	pos = { x = 3, y = 0 },

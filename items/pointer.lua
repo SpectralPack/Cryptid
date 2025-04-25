@@ -168,9 +168,7 @@ local pointer = {
 			--if enhancement has a suit or rank override, override above and make nil, so it can proceed with playing card creation
 			if current_card ~= nil and string.sub(current_card, 1, 1) == 'm' then
 				if G.P_CENTERS[current_card] and G.P_CENTERS[current_card].specific_suit or  G.P_CENTERS[current_card].specific_rank then
-					print(current_card)
 					current_card = nil
-					print('force playing card')
 				end
 			end
 
@@ -463,6 +461,7 @@ local pointer = {
 						["m_gold"] = { "gold" },
 						["m_stone"] = { "stone" },
 						["m_cry_echo"] = { "echo" },
+						["m_cry_abstract"] = { "abstract" },
 					}
 					for k, v in pairs(G.P_CENTER_POOLS.Enhanced) do
 						local index = v.key

@@ -3063,6 +3063,7 @@ local class = { -- ://Class, change a selected card's enhancement to one of your
 				m_lucky = { "lucky", "rng" },
 				m_cry_echo = { "echo", "retrigger", "retriggers" },
 				m_cry_light = { "light" },
+				m_cry_abstract = { "abstract", "abstracted", "tadc","theamazingdigitalcircus","kaufumo"},
 				ccd = { "ccd" },
 				null = { "nil" },
 			}
