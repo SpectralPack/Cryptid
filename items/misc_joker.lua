@@ -9097,6 +9097,45 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 		end
 	end,
 }
+local falsejoker = {
+	cry_credits = {
+		idea = {
+			"Pyrocreep",
+		},
+		art = {
+			"localthunk",
+		},
+		code = {
+			"gemstonez",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry_falsejoker",
+	key = "falsejoker",
+	rarity = 1,
+	cost = 2,
+	atlas = "atlasone",
+	pos = { x = 1, y = 6 },
+	-- order = 140,
+	no_collection = true,
+	config = { extra = { mult = 400 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.mult } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				mult_mod = card.ability.extra.mult,
+				message = localize { type = 'variable', key = 'a_mult', vars = { card.ability.extra.mult } }
+			}
+		end
+	end,
+}
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -9216,6 +9255,7 @@ local miscitems = {
 	highfive,
 	sock_and_sock,
 	brokenhome,
+	falsejoker,
 }
 return {
 	name = "Misc. Jokers",
