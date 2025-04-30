@@ -2946,6 +2946,12 @@ return {
 					"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)",
 				},
 			},
+			j_cry_falsejoker = {
+				name = "Joker?",
+				text = {
+					"{C:mult}+#1#{} Mult"
+				}
+			},
 		},
 		Planet = {
 			c_cry_Klubi = {
