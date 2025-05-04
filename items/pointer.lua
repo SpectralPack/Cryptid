@@ -621,21 +621,33 @@ local aliases = {
 	-- Vanilla Jokers
 	j_joker = {
 		"Joker",
+		"Jimbo",
 	},
 	j_greedy_joker = {
 		"Greedy Joker",
+		"Diamond Joker"
 	},
 	j_lusty_joker = {
 		"Lusty Joker",
+		"Horny Joker",
+		"Heart Joker",
 	},
 	j_wrathful_joker = {
 		"Wrathful Joker",
+		"Spade Joker",
 	},
 	j_gluttenous_joker = {
 		"Gluttonous Joker",
+		"Fatass Joker",
+		"Fat Ass Joker",
+		"Big Back",
+		"Big Back Joker",
+		"Club Joker"
 	},
 	j_jolly = {
 		"Jolly Joker",
+		"Joseph, J. Joker",
+		"Pair Mult",
 	},
 	j_zany = {
 		"Zany Joker",
@@ -690,6 +702,7 @@ local aliases = {
 	},
 	j_marble = {
 		"Marble Joker",
+		"Lexi"
 	},
 	j_loyalty_card = {
 		"Loyalty Card",
@@ -717,30 +730,42 @@ local aliases = {
 	},
 	j_scary_face = {
 		"Scary Face",
+		"Spooky Face",
 	},
 	j_abstract = {
 		"Abstract Joker",
 	},
 	j_delayed_grat = {
 		"Delayed Gratification",
+		"Delayed Grat",
 	},
 	j_hack = {
 		"Hack",
 	},
 	j_pareidolia = {
 		"Pareidolia",
+		"All Face Cards"
 	},
 	j_gros_michel = {
 		"Gros Michel",
+		"Banana",
 	},
 	j_even_steven = {
 		"Even Steven",
+		"Steven",
 	},
 	j_odd_todd = {
 		"Odd Todd",
+		"Todd",
 	},
 	j_scholar = {
 		"Scholar",
+		"Dr Spectred",
+		"Dr. Spectred",
+		"drspectred",
+		"Balatro University",
+		"Balatro University Joker",
+		"Balatro Uni",
 	},
 	j_business = {
 		"Business Card",
@@ -750,12 +775,14 @@ local aliases = {
 	},
 	j_ride_the_bus = {
 		"Ride the Bus",
+		"Bus",
 	},
 	j_space = {
 		"Space Joker",
 	},
 	j_egg = {
 		"Egg",
+		"Egg Joker",
 	},
 	j_burglar = {
 		"Burglar",
@@ -774,6 +801,7 @@ local aliases = {
 	},
 	j_splash = {
 		"Splash",
+		"Wet Joker",
 	},
 	j_blue_joker = {
 		"Blue Joker",
@@ -801,6 +829,7 @@ local aliases = {
 	},
 	j_cavendish = {
 		"Cavendish",
+		"Glitch"
 	},
 	j_card_sharp = {
 		"Card Sharp",
@@ -819,6 +848,8 @@ local aliases = {
 	},
 	j_riff_raff = {
 		"Riff-raff",
+		"Riff Raff",
+		"RiffRaff",
 	},
 	j_vampire = {
 		"Vampire",
@@ -837,6 +868,10 @@ local aliases = {
 	},
 	j_cloud_9 = {
 		"Cloud 9",
+		"Murphy's Favorite",
+		"Murphy Favorite",
+		"Murphys Favorite",
+		"Murphy Fav",
 	},
 	j_rocket = {
 		"Rocket",
@@ -852,12 +887,14 @@ local aliases = {
 	},
 	j_photograph = {
 		"Photograph",
+		"Photo",
 	},
 	j_gift = {
 		"Gift Card",
 	},
 	j_turtle_bean = {
 		"Turtle Bean",
+		"Bean",
 	},
 	j_erosion = {
 		"Erosion",
@@ -867,6 +904,9 @@ local aliases = {
 	},
 	j_mail = {
 		"Mail-In Rebate",
+		"Mail In Rebate",
+		"Rebate",
+		"Mail Rebate",
 	},
 	j_to_the_moon = {
 		"To the Moon",
@@ -879,9 +919,11 @@ local aliases = {
 	},
 	j_juggler = {
 		"Juggler",
+		"+1 hand size",
 	},
 	j_drunkard = {
 		"Drunkard",
+		"+1 Discard",
 	},
 	j_stone = {
 		"Stone Joker",
@@ -900,6 +942,9 @@ local aliases = {
 	},
 	j_diet_cola = {
 		"Diet Cola",
+		"Cola",
+		"Tag Soda",
+		"Tag Cola",
 	},
 	j_trading = {
 		"Trading Card",
@@ -930,15 +975,18 @@ local aliases = {
 	},
 	j_smiley = {
 		"Smiley Face",
+		"Smiley",
 	},
 	j_campfire = {
 		"Campfire",
 	},
 	j_ticket = {
 		"Golden Ticket",
+		"Gold Ticket",
 	},
 	j_mr_bones = {
 		"Mr. Bones",
+		"Mr Bones",
 	},
 	j_acrobat = {
 		"Acrobat",
@@ -957,6 +1005,7 @@ local aliases = {
 	},
 	j_smeared = {
 		"Smeared Joker",
+		"Smeared",
 	},
 	j_throwback = {
 		"Throwback",
@@ -990,15 +1039,22 @@ local aliases = {
 	},
 	j_wee = {
 		"Wee Joker",
+		"WEEEE"
 	},
 	j_merry_andy = {
 		"Merry Andy",
 	},
 	j_oops = {
 		"Oops! All 6s",
+		"OA6s",
+		"O A 6s",
+		"Oops 6s",
+		"Oops 6",
+		"Oop 6s",
 	},
 	j_idol = {
 		"The Idol",
+		"Idol"
 	},
 	j_seeing_double = {
 		"Seeing Double",
@@ -1011,24 +1067,30 @@ local aliases = {
 	},
 	j_duo = {
 		"The Duo",
+		"Duo",
 	},
 	j_trio = {
 		"The Trio",
+		"Trio",
 	},
 	j_family = {
 		"The Family",
+		"Family",
 	},
 	j_order = {
 		"The Order",
+		"Order",
 	},
 	j_tribe = {
 		"The Tribe",
+		"Tribe",
 	},
 	j_stuntman = {
 		"Stuntman",
 	},
 	j_invisible = {
 		"Invisible Joker",
+		"Invisible",
 	},
 	j_brainstorm = {
 		"Brainstorm",
@@ -1111,6 +1173,8 @@ local aliases = {
 		"Wheel Of Fortune",
 		"tWoF",
 		"WoF",
+		"Gambling",
+		"Wheel",
 	},
 	c_strength = {
 		"Strength",
@@ -1118,6 +1182,7 @@ local aliases = {
 	c_hanged_man = {
 		"The Hanged Man",
 		"Hanged Man",
+		"Hang Man",
 	},
 	c_death = {
 		"Death",
@@ -1533,10 +1598,170 @@ local aliases = {
 		"Spectral Ectoplasm",
 		"Mega Spectral Pack",
 	},
+		p_spectral_mega_1 = {
+		"Mega Spectral",
+		"Spectral Ectoplasm",
+		"Mega Spectral Pack",
+	},
 
 	-- Vanilla Tags
 	-- everybody forgor
-
+	tag_uncommon = {
+		"Uncommon Tag",
+		"Tag Uncommon",
+	},
+	tag_rare = {
+		"Rare Tag",
+		"Tag Rare",
+	},
+	tag_negative = {
+		"Negative Tag",
+		"Tag Negative",
+	},
+	tag_foil = {
+		"Foil Tag",
+		"Tag Foil",
+	},
+	tag_holo = {
+		"Holo Tag",
+		"Tag Holo",
+		"Holographic Tag",
+		"Tag Holographic",
+	},
+	tag_polychrome = {
+		"Polychrome Tag",
+		"Tag Polychrome",
+	},
+	tag_investment = {
+		"Investment Tag",
+		"Tag Investment",
+		"Invest Tag",
+		"Tag Invest",
+		"Investment",
+	},
+	tag_voucher = {
+		"Voucher Tag",
+		"Tag Voucher",
+		"Vouch Tag",
+	},
+	tag_boss = {
+		"Boss Tag",
+		"Tag Boss",
+	},
+	tag_standard = {
+		"Standard Tag",
+		"Tag Standard",
+	},
+	tag_charm = {
+		"Charm Tag",
+		"Tag Charm",
+		"Tarot Tag",
+		"Acrana Tag",
+		"Tag Tarot",
+		"Tag Arcana",
+		"Charm Pack Tag",
+		"Tarot Pack Tag",
+		"Acrana Pack Tag",
+	},
+	tag_meteor = {
+		"Meteor Tag",
+		"Tag Meteor",
+		"Celestial Tag",
+		"Tag Celestial",
+		"Planet Tag",
+		"Tag Planet",
+		"Celestial Pack Tag",
+		"Planet Pack Tag",
+	},
+	tag_buffoon = {
+		"Buffoon Tag",
+		"Tag Buffoon",
+		"Joker Pack Tag",
+		"Joker Tag",
+		"Buffoon Pack Tag",
+	},
+	tag_handy = {
+		"Handy Tag",
+		"Tag Handy",
+	},
+	tag_garbage = {
+		"Garbage Tag",
+		"Tag Garbage",
+		"Discard Tag",
+		"Tag Discard",
+	},
+	tag_ethereal = {
+		"Ethereal Tag",
+		"Tag Ethereal",
+		"Spectral Tag",
+		"Tag Spectral",
+	},
+	tag_coupon = {
+		"Coupon Tag",
+		"Tag Coupon",
+		"Free Tag",
+		"Shop Tag Free",
+		"Shop Free Tag",
+		"Shop Tag",
+	},
+	tag_double = {
+		"Double Tag",
+		"Tag Double",
+		"Extra Tag",
+		"2 Tag",
+	},
+	tag_juggle = {
+		"Juggle Tag",
+		"Tag Juggle",
+		"Juggler Tag",
+		"Tag Juggler",
+		"Hand Size Tag",
+		"Tag Hand Size",
+	},
+	tag_d_six = {
+		"D Six Tag",
+		"Tag D Six",
+		"D6 Tag",
+		"Tag D6",
+		"Reroll Tag",
+		"Tag Reroll",
+		"Rerolling Tag",
+		"Tag Rerolling",
+		"DSix Tag",
+		"Tag DSix",
+		"D6",
+		"D 6",
+		"D 6 Tag",
+		"Tag D 6",
+	},
+	tag_top_up = {
+		"Top Up Tag",
+		"Tag Top Up",
+		"Top Up",
+		"2 common tag",
+	},
+	tag_skip = {
+		"Skip Tag",
+		"Tag Skip",
+		"Skipping Tag",
+		"Tag Skipping",
+	},
+	tag_orbital = {
+		"Orbital Tag",
+		"Tag Orbital",
+		"Orbital",
+		"Planet Tag"
+	},
+	tag_economy = {
+		"Economy Tag",
+		"Tag Economy",
+		"Econ tag",
+		"Eco tag",
+		"money tag",
+		"Tag Money",
+		"Tag Econ",
+		"Tag Eco",
+	},
 	-- Vanilla Vouchers
 	-- oops somebody forgor
 
