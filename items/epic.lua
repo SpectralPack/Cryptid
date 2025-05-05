@@ -2241,6 +2241,108 @@ local clockwork = { -- Steel Support: The Joker
 		},
 	},
 }
+local verisimile = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+			"set_cry_epic",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-verisimile",
+	key = "verisimile",
+	pos = { x = 6, y = 5 },
+	soul_pos = { x = 8, y = 5, extra = { x = 7, y = 5 } },
+	config = { extra = { xmult = 1 } },
+	rarity = "cry_epic",
+	cost = 14,
+	order = 136,
+	immutable = true,
+	blueprint_compat = true,
+	atlas = "atlasexotic",
+	loc_vars = function(self, info_queue, center)
+		return { vars = { number_format(center.ability.extra.xmult) } }
+	end,
+	calculate = function(self, card, context)
+		if context.post_trigger and not context.blueprint then
+			--Todo: Gros Michel, Cavendish, Planet.lua
+			--Bus driver is ignored because it always triggers anyway
+			if
+				context.other_joker.ability.name == "8 Ball"
+				or context.other_joker.ability.name == "Space Joker"
+				or context.other_joker.ability.name == "Business Card"
+				or context.other_joker.ability.name == "Hallucination"
+			then
+				local variable = context.other_joker
+				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
+			elseif
+				context.other_joker.ability.name == "Reserved Parking"
+				or context.other_joker.ability.name == "Bloodstone"
+				or context.other_joker.ability.name == "cry-Googol Play Card"
+				or context.other_joker.ability.name == "cry-Boredom"
+				or context.other_joker.ability.name == "cry-bonusjoker"
+				or context.other_joker.ability.name == "cry-multjoker"
+				or context.other_joker.ability.name == "cry-scrabble"
+			then
+				local variable = context.other_joker
+				card.ability.extra.xmult =
+					lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
+			elseif context.other_joker.ability.name == "cry-notebook" then
+				--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
+				local variable = context.other_joker
+				card.ability.extra.xmult =
+					lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
+			end
+			return nil, true
+		elseif context.consumeable and not context.blueprint then
+			if context.consumeable.ability.name == "The Wheel of Fortune" and context.consumeable.cry_wheel_success then
+				local variable = context.consumeable
+				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra) --Doesn't account for misprintizing for some reason
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				})
+			end
+		elseif context.joker_main and (to_big(card.ability.extra.xmult) > to_big(1)) then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.xmult) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
+			}
+		end
+	end,
+	cry_credits = {
+		idea = { "Enemui" },
+		code = { "Jevonn" },
+	},
+}
 return {
 	name = "Epic Jokers",
 	items = {
@@ -2269,5 +2371,6 @@ return {
 		spectrogram,
 		jtron,
 		clockwork,
+		-- verisimile,
 	},
 }
