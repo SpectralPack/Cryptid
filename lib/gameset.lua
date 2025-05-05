@@ -1287,6 +1287,12 @@ SMODS.ContentSet({
 	pos = { x = 7, y = 1 }, --The Fuck!? (Clusterfuck's XMult Joker)
 	cry_order = -16,
 })
+SMODS.ContentSet({
+	key = "dice",
+	atlas = "placeholders",
+	pos = { x = 0, y = 0 }, --Placeholder
+	cry_order = -1,
+})
 
 -- these are mostly copy/paste from vanilla code
 G.FUNCS.your_collection_content_sets = function(e)
