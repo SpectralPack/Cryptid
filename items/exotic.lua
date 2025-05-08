@@ -1744,10 +1744,10 @@ local singularitas = {
 	end,
 	cry_credits = {
 		idea = {
-			"vexastrae",
+			"HexaCryonic",
 		},
 		art = {
-			"vexastrae",
+			"N/A",
 		},
 		code = {
 			"SMG9000",
