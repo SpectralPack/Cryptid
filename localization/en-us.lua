@@ -856,6 +856,13 @@ return {
 					"added by Cryptid",
 				},
 			},
+			set_cry_dice = {
+				name = "Dice Jokers",
+				text = {
+					"Jokers with effects based",
+					"on rolling dice",
+				},
+			},
 		},
 		Edition = {
 			e_cry_astral = {
