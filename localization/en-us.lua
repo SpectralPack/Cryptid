@@ -1498,17 +1498,16 @@ return {
 					"If any {C:attention}d{} is a Critical Success, {C:attention}double{} its result",
 					"If the first {C:attention}d20{} is a Critical Failure, its roll is set to {C:attention}0{}",
 					" ",
-					"{C:inactive,s:0.8}\"Watch in amazement as your brain collapses into a black hole!{}",
+					'{C:inactive,s:0.8}"Watch in amazement as your brain collapses into a black hole!{}',
 					"{C:inactive,s:0.8}At least that's one more level up, right?\"{}",
 				},
-			},	
+			},
 			j_cry_d20 = {
 				name = "D20",
 				text = {
 					"{C:mult}+(#1#-#2#){} Mult",
 					"On {C:attention}Natural 20{}, {X:mult,C:white}x#3#{} Mult",
 					"On {C:attention}Natural 1{}, {X:mult,C:white}x#4#{} Mult",
-					
 				},
 			},
 			j_cry_delirious = {
