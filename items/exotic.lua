@@ -1657,8 +1657,7 @@ local formidiulosus = {
 local singularitas = {
 	object_type = "Joker",
 	dependencies = {
-		items = {
-		},
+		items = {},
 	},
 	is_d20 = true,
 	name = "cry-singularitas ",
@@ -1666,36 +1665,37 @@ local singularitas = {
 	pos = { x = 2, y = 5 },
 	config = { extra = {} },
 	rarity = "cry_exotic",
-	cost = 50,	
+	cost = 50,
 	atlas = "atlasone",
-	order = 159	,
+	order = 159,
 	loc_vars = function(self, info_queue, center)
 		return { vars = {} }
 	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and context.cardarea == G.jokers and not context.retrigger_joker then
-			local first_dice = roll({amount = 1, sides = 20}, "D20", {singularitus = true})
+			local first_dice = roll({ amount = 1, sides = 20 }, "D20", { singularitus = true })
 			if first_dice <= 1 then
 				first_dice = 0
-            end
-			local real_deal = (roll({
-				amount = {
+			end
+			local real_deal = (
+				roll({
 					amount = {
 						amount = {
 							amount = {
-								amount = first_dice, 
-								sides = 12
-								}, 
-							sides = 10
-							}, 
-						sides = 8
-						},  
-					sides = 6
-					}, 
-				sides = 4
-				}, "Singularitas", {singularitus = true}))+1
+								amount = {
+									amount = first_dice,
+									sides = 12,
+								},
+								sides = 10,
+							},
+							sides = 8,
+						},
+						sides = 6,
+					},
+					sides = 4,
+				}, "Singularitas", { singularitus = true })
+			) + 1
 
-			
 			update_hand_text(
 				{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
 				{ handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
@@ -1731,7 +1731,7 @@ local singularitas = {
 					return true
 				end,
 			}))
-			update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..real_deal })
+			update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+" .. real_deal })
 			delay(1.3)
 			for k, v in pairs(G.GAME.hands) do
 				level_up_hand(card, k, true, real_deal)
@@ -1739,7 +1739,7 @@ local singularitas = {
 			update_hand_text(
 				{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 				{ mult = 0, chips = 0, handname = "", level = "" }
-			)		
+			)
 		end
 	end,
 	cry_credits = {
