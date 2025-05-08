@@ -14,17 +14,17 @@ i = 1
 while i <= #G.hand.cards do
     local gone = G.hand.cards[i]:calculate_abstract_break()
     if not gone then i = i + 1 end
-end
-i = 1
-while i <= #G.deck.cards do
-    local gone = G.deck.cards[i]:calculate_abstract_break()
-    if not gone then i = i + 1 end
-end
-i = 1
-while i <= #G.discard.cards do
-    local gone = G.discard.cards[i]:calculate_abstract_break()
-    if not gone then i = i + 1 end
-end
+end 
+-- i = 1
+-- while i <= #G.deck.cards do
+--     local gone = G.deck.cards[i]:calculate_abstract_break()
+--     if not gone then i = i + 1 end
+-- end
+-- i = 1
+-- while i <= #G.discard.cards do
+--     local gone = G.discard.cards[i]:calculate_abstract_break()
+--     if not gone then i = i + 1 end
+-- end
 '''
 match_indent = true
 

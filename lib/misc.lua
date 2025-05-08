@@ -606,6 +606,15 @@ function Blind:cry_before_play()
 		end
 	end
 end
+--The decision's ability to show a booster pack
+function Blind:cry_before_cash()
+	if not self.disabled then
+		local obj = self.config.blind
+		if obj.cry_before_cash and type(obj.cry_before_cash) == "function" then
+			return obj:cry_before_cash()
+		end
+	end
+end
 function Blind:cry_calc_ante_gain()
 	if G.GAME.modifiers.cry_spooky then --here is the best place to check when spooky should apply
 		local card
@@ -780,4 +789,22 @@ function Cryptid.cry_rankname_to_id(rankname)
 		end
 	end
 	return nil
+end
+
+--The decision: Open GUI to make a decision then open a baneful buffoon pack (or)
+function Game:make_a_decision(dt)
+	if self.buttons then
+		self.buttons:remove()
+		self.buttons = nil
+	end
+	if self.shop and not G.GAME.USING_CODE then
+		self.shop:remove()
+		self.shop = nil
+	end
+
+	if not G.STATE_COMPLETE then
+		G.STATE_COMPLETE = true
+		G.GAME.cry_make_a_decision = true
+		G.GAME.blind:cry_before_cash()
+	end
 end

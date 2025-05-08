@@ -444,6 +444,18 @@ local technically_positive = {
 	end,
 }
 
+-- local stoned = {
+-- 	object_type = "Achievement",
+-- 	key = "stoned",
+-- 	order = 24,
+-- 	bypass_all_unlocked = true,
+-- 	atlas = "cry_achievements",
+-- 	--reset_on_startup = true,
+-- 	unlock_condition = function(self, args)
+
+-- 	end,
+-- }
+
 -- TODO: Add new Achievements.
 -- Current Ideas (Normal):
 -- Cry: Win a run with only Sob and Obelisk

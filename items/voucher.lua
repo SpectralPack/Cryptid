@@ -5,7 +5,9 @@ local voucher_atlas = {
 	px = 71,
 	py = 95,
 }
-local copies = { --Double tags become Triple Tags and are 2X as common
+
+-- Normal Vouchers (T1/T2)
+local copies = { -- DTag T1; Double tags become Triple Tags and are 2X as common
 	cry_credits = {
 		idea = {
 			"Catman",
@@ -27,7 +29,7 @@ local copies = { --Double tags become Triple Tags and are 2X as common
 	},
 	key = "copies",
 	atlas = "atlasvoucher",
-	order = 1,
+	order = 20001,
 	pos = { x = 1, y = 1 },
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
@@ -56,7 +58,7 @@ local copies = { --Double tags become Triple Tags and are 2X as common
 		end
 	end,
 }
-local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
+local tag_printer = { --DTag T2; Double tags become Quadruple Tags and are 3X as common
 	cry_credits = {
 		idea = {
 			"Catman",
@@ -78,7 +80,7 @@ local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
 		},
 	},
 	key = "tag_printer",
-	order = 2,
+	order = 20002,
 	atlas = "atlasvoucher",
 	pos = { x = 1, y = 2 },
 	loc_vars = function(self, info_queue)
@@ -88,145 +90,7 @@ local tag_printer = { --Double tags become Quadruple Tags and are 3X as common
 	end,
 	requires = { "v_cry_copies" },
 }
-local clone_machine = { --Double tags become Quintuple Tags and are 4X as common
-	cry_credits = {
-		idea = {
-			"Catman",
-			"Mystic Misclick",
-		},
-		art = {
-			"Linus Goof Balls",
-		},
-		code = {
-			"Math",
-		},
-	},
-	object_type = "Voucher",
-	dependencies = {
-		items = {
-			"set_cry_voucher",
-			"set_cry_tag",
-			"set_cry_tier3",
-			"v_cry_tag_printer",
-		},
-	},
-	key = "clone_machine",
-	atlas = "atlasvoucher",
-	order = 91,
-	pos = { x = 1, y = 3 },
-	pools = { ["Tier3"] = true },
-	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_quintuple", specific_vars = { 4 } }
-		return { vars = {} }
-	end,
-	requires = { "v_cry_tag_printer" },
-}
-local command_prompt = { --Code cards can appear in the shop
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"Mathguy",
-		},
-	},
-	object_type = "Voucher",
-	dependencies = {
-		items = {
-			"set_cry_voucher",
-			"set_cry_code",
-		},
-	},
-	key = "command_prompt",
-	atlas = "atlasvoucher",
-	order = 2063,
-	pos = { x = 0, y = 1 },
-	loc_vars = function(self, info_queue)
-		return { vars = {} }
-	end,
-	redeem = function(self)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.code_rate = (G.GAME.code_rate or 0) + 4
-				return true
-			end,
-		}))
-	end,
-	unredeem = function(self)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.code_rate = math.max(0, G.GAME.code_rate - 4)
-				return true
-			end,
-		}))
-	end,
-}
-local satellite_uplink = { --Code cards may appear in any of the Celestial Packs
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"Mathguy",
-		},
-	},
-	object_type = "Voucher",
-	dependencies = {
-		items = {
-			"set_cry_voucher",
-			"set_cry_code",
-			"v_cry_command_prompt",
-		},
-	},
-	key = "satellite_uplink",
-	atlas = "atlasvoucher",
-	order = 2064,
-	pos = { x = 0, y = 2 },
-	loc_vars = function(self, info_queue)
-		return { vars = {} }
-	end,
-	requires = { "v_cry_command_prompt" },
-}
-local quantum_computing = { --Code cards spawn with +1 use
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"Mathguy",
-		},
-	},
-	object_type = "Voucher",
-	dependencies = {
-		items = {
-			"set_cry_voucher",
-			"set_cry_tier3",
-			"set_cry_code",
-			"v_cry_satellite_uplink",
-		},
-	},
-	key = "quantum_computing",
-	order = 3032,
-	atlas = "atlasvoucher",
-	pos = { x = 0, y = 3 },
-	config = { extra = 1 },
-	pools = { ["Tier3"] = true },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { (card and card.ability.extra or self.config.extra) } }
-	end,
-	requires = { "v_cry_satellite_uplink" },
-}
-local pairing = { --Retrigger all M Jokers if played hand is a Pair
+local pairing = { -- M T1; Retrigger all M Jokers if played hand is a Pair
 	object_type = "Voucher",
 	dependencies = {
 		items = {
@@ -236,7 +100,7 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 	},
 	key = "pairing",
 	atlas = "atlasvoucher",
-	order = 5,
+	order = 20003,
 	pos = { x = 4, y = 5 },
 	cry_credits = {
 		art = {
@@ -258,7 +122,7 @@ local pairing = { --Retrigger all M Jokers if played hand is a Pair
 		return false
 	end,
 }
-local repair_man = { --Retrigger all M Jokers if played hand contains a pair
+local repair_man = { -- M T2; Retrigger all M Jokers if played hand contains a pair
 	object_type = "Voucher",
 	dependencies = {
 		items = {
@@ -269,7 +133,7 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 	},
 	key = "repair_man",
 	atlas = "atlasvoucher",
-	order = 6,
+	order = 20004,
 	pos = { x = 5, y = 5 },
 	requires = { "v_cry_pairing" },
 	cry_credits = {
@@ -292,43 +156,7 @@ local repair_man = { --Retrigger all M Jokers if played hand contains a pair
 		return false
 	end,
 }
-local pairamount_plus = { --Retrigger all M Jokers once for every pair contained in played hand
-	object_type = "Voucher",
-	dependencies = {
-		items = {
-			"set_cry_voucher",
-			"set_cry_m",
-			"set_cry_tier3",
-			"v_cry_repair_man",
-		},
-	},
-	key = "pairamount_plus",
-	atlas = "atlasvoucher",
-	order = 93,
-	pos = { x = 6, y = 5 },
-	requires = { "v_cry_repair_man" },
-	pools = { ["Tier3"] = true },
-	cry_credits = {
-		art = {
-			"lolxddj",
-		},
-		code = {
-			"Math",
-		},
-		jolly = {
-			"Jolly Open Winner",
-			"Xaltios",
-		},
-	},
-	in_pool = function(self)
-		local mcheck = Cryptid.get_m_jokers()
-		if mcheck > 0 then
-			return true
-		end
-		return false
-	end,
-}
-local double_vision = { --Double-Sided cards appear 4x more frequently
+local double_vision = { -- DSide T1; Double-Sided cards appear 4x more frequently
 	object_type = "Voucher",
 	dependencies = {
 		items = {
@@ -337,7 +165,7 @@ local double_vision = { --Double-Sided cards appear 4x more frequently
 		},
 	},
 	key = "double_vision",
-	order = 7,
+	order = 20005,
 	atlas = "atlasvoucher",
 	pos = { x = 4, y = 3 },
 	loc_vars = function(self, info_queue)
@@ -356,7 +184,7 @@ local double_vision = { --Double-Sided cards appear 4x more frequently
 		},
 	},
 }
-local double_slit = { --Meld can appear in the shop and Arcana Packs
+local double_slit = { -- DSide T2; Meld can appear in the shop and Arcana Packs
 	object_type = "Voucher",
 	dependencies = {
 		items = {
@@ -368,7 +196,7 @@ local double_slit = { --Meld can appear in the shop and Arcana Packs
 	},
 	key = "double_slit",
 	atlas = "atlasvoucher",
-	order = 8,
+	order = 20006,
 	pos = { x = 3, y = 4 },
 	requires = { "v_cry_double_vision" },
 	loc_vars = function(self, info_queue)
@@ -387,39 +215,165 @@ local double_slit = { --Meld can appear in the shop and Arcana Packs
 		},
 	},
 }
-local double_down = { --After every round, X1.5 to all values on the back of Double-Sided Cards
+local stickyhand = { -- CSL T1; +1 card selection limit
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
 	object_type = "Voucher",
 	dependencies = {
 		items = {
 			"set_cry_voucher",
-			"set_cry_tier3",
-			"e_cry_double_sided",
-			"v_cry_double_slit",
 		},
 	},
-	key = "double_down",
+	key = "stickyhand",
+	config = { extra = 1 },
 	atlas = "atlasvoucher",
-	order = 94,
-	pos = { x = 4, y = 4 },
-	requires = { "v_cry_double_slit" },
-	pools = { ["Tier3"] = true },
-	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
+	order = 20007,
+	pos = { x = 0, y = 5 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
+	redeem = function(self, card)
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+			+ (card and card.ability.extra or self.config.extra)
+	end,
+	unredeem = function(self, card)
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+			- (card and card.ability.extra or self.config.extra)
+		if G.hand.config.highlighted_limit < 5 then
+			G.hand.config.highlighted_limit = 5
+		end
+		if not G.GAME.before_play_buffer then
+			G.hand:unhighlight_all()
+		end
+	end,
+}
+local grapplinghook = { -- CSL T2; +2 card selection limit
 	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
 		art = {
-			"Linus Goof Balls",
+			"HexaCryonic",
 		},
 		code = {
-			"Math",
-		},
-		jolly = {
-			"Jolly Open Winner",
-			"Axolotolus",
+			"HexaCryonic",
 		},
 	},
+	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"v_cry_stickyhand",
+		},
+	},
+	key = "grapplinghook",
+	config = { extra = 2 },
+	atlas = "atlasvoucher",
+	order = 20008,
+	pos = { x = 1, y = 5 },
+	requires = { "v_cry_stickyhand" },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
+	end,
+	redeem = function(self, card)
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+			+ (card and card.ability.extra or self.config.extra)
+	end,
+	unredeem = function(self, card)
+		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
+			- (card and card.ability.extra or self.config.extra)
+		if G.hand.config.highlighted_limit < 5 then
+			G.hand.config.highlighted_limit = 5
+		end
+		if not G.GAME.before_play_buffer then
+			G.hand:unhighlight_all()
+		end
+	end,
 }
-local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 voucher slot[s] available in the shop
+local command_prompt = { -- Code T1; Code cards can appear in the shop
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Mathguy",
+		},
+	},
+	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_code",
+		},
+	},
+	key = "command_prompt",
+	atlas = "atlasvoucher",
+	order = 20031,
+	pos = { x = 0, y = 1 },
+	loc_vars = function(self, info_queue)
+		return { vars = {} }
+	end,
+	redeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.code_rate = (G.GAME.code_rate or 0) + 4
+				return true
+			end,
+		}))
+	end,
+	unredeem = function(self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.code_rate = math.max(0, G.GAME.code_rate - 4)
+				return true
+			end,
+		}))
+	end,
+}
+local satellite_uplink = { -- Code T2; Code cards may appear in any of the Celestial Packs
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Mathguy",
+		},
+	},
+	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_code",
+			"v_cry_command_prompt",
+		},
+	},
+	key = "satellite_uplink",
+	atlas = "atlasvoucher",
+	order = 20032,
+	pos = { x = 0, y = 2 },
+	loc_vars = function(self, info_queue)
+		return { vars = {} }
+	end,
+	requires = { "v_cry_command_prompt" },
+}
+
+-- Tier 3 Vouchers
+local overstock_multi = { -- Overstock T3; +1 card slot, +1 booster pack slot and +1 voucher slot available in the shop
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -440,7 +394,7 @@ local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 vouc
 	key = "overstock_multi",
 	config = { extra = 1 },
 	atlas = "atlasvoucher",
-	order = 75,
+	order = 32658,
 	pos = { x = 4, y = 1 },
 	requires = { "v_overstock_plus" },
 	pools = { ["Tier3"] = true },
@@ -472,7 +426,7 @@ local overstock_multi = { --+1 card slot[s], +1 booster pack slot[s] and +1 vouc
 		SMODS.change_voucher_limit(-mod)
 	end,
 }
-local massproduct = { --All cards and packs in the shop cost $1
+local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost $1
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -492,7 +446,7 @@ local massproduct = { --All cards and packs in the shop cost $1
 	},
 	key = "massproduct",
 	atlas = "atlasvoucher",
-	order = 76,
+	order = 32659,
 	pos = { x = 6, y = 4 },
 	requires = { "v_liquidation" },
 	pools = { ["Tier3"] = true },
@@ -524,7 +478,7 @@ local massproduct = { --All cards and packs in the shop cost $1
 		}))
 	end,
 }
-local curate = { --All cards appear with an Edition
+local curate = { -- Hone T3; All cards appear with an Edition
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -544,7 +498,7 @@ local curate = { --All cards appear with an Edition
 	},
 	key = "curate",
 	atlas = "atlasvoucher",
-	order = 77,
+	order = 32660,
 	pos = { x = 6, y = 1 },
 	requires = { "v_glow_up" },
 	pools = { ["Tier3"] = true },
@@ -559,7 +513,7 @@ local curate = { --All cards appear with an Edition
 		end
 	end,
 }
-local rerollexchange = { --All rerolls cost $2
+local rerollexchange = { -- Reroll Surplus T3; All rerolls cost $2
 	cry_credits = {
 		idea = {
 			"Project666",
@@ -579,7 +533,7 @@ local rerollexchange = { --All rerolls cost $2
 	},
 	key = "rerollexchange",
 	atlas = "atlasvoucher",
-	order = 78,
+	order = 32661,
 	pos = { x = 6, y = 2 },
 	requires = { "v_reroll_glut" },
 	pools = { ["Tier3"] = true },
@@ -603,22 +557,35 @@ local rerollexchange = { --All rerolls cost $2
 		}))
 	end,
 }
---Order 79 reserved for celestial storage (unimplemented)
-local scope = { --Also unimplemented
+local CBALLT3PLACEHOLDER = { -- RESERVED FOR CRYSTAL BALL T3
 	object_type = "Voucher",
 	dependencies = {
 		items = {
 			"set_cry_tier3",
 		},
 	},
-	key = "scope",
+	key = "CBALLT3PLACEHOLDER",
 	atlas = "atlasvoucher",
-	order = 80,
+	order = 32662,
+	-- pos = { x = 2, y = 0 },
+	requires = { "v_omen_globe" },
+	pools = { ["Tier3"] = true },
+}
+local TSCOPET3PLACEHOLDER = { -- RESERVED FOR TELESCOPE T3
+	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		},
+	},
+	key = "TSCOPET3PLACEHOLDER",
+	atlas = "atlasvoucher",
+	order = 32663,
 	pos = { x = 2, y = 0 },
 	requires = { "v_observatory" },
 	pools = { ["Tier3"] = true },
 }
-local dexterity = { --Permanently gain +2 hand[s] each round
+local dexterity = { -- Grabber T3; Permanently gain +2 hands each round
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -639,7 +606,7 @@ local dexterity = { --Permanently gain +2 hand[s] each round
 	key = "dexterity",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
-	order = 81,
+	order = 32664,
 	pos = { x = 6, y = 3 },
 	requires = { "v_nacho_tong" },
 	pools = { ["Tier3"] = true },
@@ -655,7 +622,7 @@ local dexterity = { --Permanently gain +2 hand[s] each round
 		ease_hands_played(-1 * (card and card.ability.extra or self.config.extra))
 	end,
 }
-local threers = { --Permanently gain +2 discard[s] each round
+local threers = { -- Wasteful T3; Permanently gain +2 discards each round
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -676,7 +643,7 @@ local threers = { --Permanently gain +2 discard[s] each round
 	key = "threers",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
-	order = 82,
+	order = 32665,
 	pos = { x = 5, y = 0 },
 	requires = { "v_recyclomancy" },
 	pools = { ["Tier3"] = true },
@@ -692,7 +659,7 @@ local threers = { --Permanently gain +2 discard[s] each round
 		ease_discard(-1 * (card and card.ability.extra or self.config.extra))
 	end,
 }
-local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All future Tarot cards are free
+local tacclimator = { -- Tarot Merchant T3; Tarots are free, spawn rate controllable in run info
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -714,7 +681,7 @@ local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All 
 	key = "tacclimator",
 	config = { extra = 24 / 4, extra_disp = 6 },
 	atlas = "atlasvoucher",
-	order = 83,
+	order = 32666,
 	pos = { x = 1, y = 4 },
 	requires = { "v_tarot_tycoon" },
 	pools = { ["Tier3"] = true },
@@ -738,7 +705,7 @@ local tacclimator = { --Tarot cards appear X6 more frequently in the shop   All 
 		}))
 	end,
 }
-local pacclimator = { --Planet cards appear X6 more frequently in the shop   All future Planet cards are free
+local pacclimator = { -- Planet Merchant T3; Planets are free, spawn rate controllable in run info
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -760,7 +727,7 @@ local pacclimator = { --Planet cards appear X6 more frequently in the shop   All
 	key = "pacclimator",
 	config = { extra = 24 / 4, extra_disp = 6 },
 	atlas = "atlasvoucher",
-	order = 84,
+	order = 32667,
 	pos = { x = 0, y = 4 },
 	requires = { "v_planet_tycoon" },
 	pools = { ["Tier3"] = true },
@@ -784,7 +751,7 @@ local pacclimator = { --Planet cards appear X6 more frequently in the shop   All
 		}))
 	end,
 }
-local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
+local moneybean = { -- Seed Money T3; Raise the cap on interest earned in each round to $2.0e299
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -805,7 +772,7 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 	key = "moneybean",
 	config = { extra = 1e300 },
 	atlas = "atlasvoucher",
-	order = 85,
+	order = 32668,
 	pos = { x = 5, y = 1 },
 	requires = { "v_money_tree" },
 	pools = { ["Tier3"] = true },
@@ -833,7 +800,7 @@ local moneybean = { --Raise the cap on interest earned in each round to $2.0e299
 		}))
 	end,
 }
-local fabric = { --+2 Joker slot[s]
+local fabric = { -- Blank Voucher T3; +2 Joker slots
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -854,7 +821,7 @@ local fabric = { --+2 Joker slot[s]
 	key = "fabric",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
-	order = 86,
+	order = 32669,
 	pos = { x = 6, y = 0 },
 	requires = { "v_antimatter" },
 	pools = { ["Tier3"] = true },
@@ -899,8 +866,21 @@ local fabric = { --+2 Joker slot[s]
 		end
 	end,
 }
---Order 87 reserved for Fake-out (unimplemented)
-local asteroglyph = { --Set Ante to 0
+local MTRICKT3PLACEHOLDER = { -- RESERVED FOR MAGIC TRICK T3
+	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		},
+	},
+	key = "TSCOPET3PLACEHOLDER",
+	atlas = "atlasvoucher",
+	order = 32670,
+	pos = { x = 2, y = 0 },
+	requires = { "v_observatory" },
+	pools = { ["Tier3"] = true },
+}
+local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -920,7 +900,7 @@ local asteroglyph = { --Set Ante to 0
 	},
 	key = "asteroglyph",
 	atlas = "atlasvoucher",
-	order = 88,
+	order = 32761,
 	pos = { x = 5, y = 2 },
 	requires = { "v_petroglyph" },
 	pools = { ["Tier3"] = true },
@@ -964,8 +944,21 @@ local asteroglyph = { --Set Ante to 0
 		end
 	end,
 }
---Order 89 reserved for Ivory Script (unimplemented)
-local blankcanvas = { --+2 hand size
+local DCUTT3PLACEHOLDER = { -- RESERVED FOR DIRECTOR'S CUT T3
+	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_tier3",
+		},
+	},
+	key = "TSCOPET3PLACEHOLDER",
+	atlas = "atlasvoucher",
+	order = 32672,
+	pos = { x = 2, y = 0 },
+	requires = { "v_observatory" },
+	pools = { ["Tier3"] = true },
+}
+local blankcanvas = { -- Paint Brush T3; +2 hand size
 	cry_credits = {
 		idea = {
 			"Frix",
@@ -986,7 +979,7 @@ local blankcanvas = { --+2 hand size
 	key = "blankcanvas",
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
-	order = 90,
+	order = 32763,
 	pos = { x = 2, y = 4 },
 	requires = { "v_palette" },
 	pools = { ["Tier3"] = true },
@@ -1012,91 +1005,109 @@ local blankcanvas = { --+2 hand size
 		end
 	end,
 }
-local stickyhand = { --+1 card selection limit
+local clone_machine = { -- DTag Voucher T3; Double tags become Quintuple Tags and are 4X as common
 	cry_credits = {
 		idea = {
-			"HexaCryonic",
+			"Catman",
+			"Mystic Misclick",
 		},
 		art = {
-			"HexaCryonic",
+			"Linus Goof Balls",
 		},
 		code = {
-			"HexaCryonic",
+			"Math",
 		},
 	},
 	object_type = "Voucher",
 	dependencies = {
 		items = {
 			"set_cry_voucher",
+			"set_cry_tag",
+			"set_cry_tier3",
+			"v_cry_tag_printer",
 		},
 	},
-	key = "stickyhand",
-	config = { extra = 1 },
+	key = "clone_machine",
 	atlas = "atlasvoucher",
-	order = 9,
-	pos = { x = 0, y = 5 },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { (card and card.ability.extra or self.config.extra) } }
+	order = 32764,
+	pos = { x = 1, y = 3 },
+	pools = { ["Tier3"] = true },
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_quintuple", specific_vars = { 4 } }
+		return { vars = {} }
 	end,
-	redeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			+ (card and card.ability.extra or self.config.extra)
-	end,
-	unredeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			- (card and card.ability.extra or self.config.extra)
-		if G.hand.config.highlighted_limit < 5 then
-			G.hand.config.highlighted_limit = 5
-		end
-		if not G.GAME.before_play_buffer then
-			G.hand:unhighlight_all()
-		end
-	end,
+	requires = { "v_cry_tag_printer" },
 }
-local grapplinghook = { --+1 card selection limit (replace me when "extra functionality" is added later)
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"HexaCryonic",
-		},
-	},
+local pairamount_plus = { -- M T3; Retrigger all M Jokers once for every pair contained in played hand
 	object_type = "Voucher",
 	dependencies = {
 		items = {
 			"set_cry_voucher",
-			"v_cry_stickyhand",
+			"set_cry_m",
+			"set_cry_tier3",
+			"v_cry_repair_man",
 		},
 	},
-	key = "grapplinghook",
-	config = { extra = 2 },
+	key = "pairamount_plus",
 	atlas = "atlasvoucher",
-	order = 10,
-	pos = { x = 1, y = 5 },
-	requires = { "v_cry_stickyhand" },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { (card and card.ability.extra or self.config.extra) } }
-	end,
-	redeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			+ (card and card.ability.extra or self.config.extra)
-	end,
-	unredeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			- (card and card.ability.extra or self.config.extra)
-		if G.hand.config.highlighted_limit < 5 then
-			G.hand.config.highlighted_limit = 5
+	order = 32765,
+	pos = { x = 6, y = 5 },
+	requires = { "v_cry_repair_man" },
+	pools = { ["Tier3"] = true },
+	cry_credits = {
+		art = {
+			"lolxddj",
+		},
+		code = {
+			"Math",
+		},
+		jolly = {
+			"Jolly Open Winner",
+			"Xaltios",
+		},
+	},
+	in_pool = function(self)
+		local mcheck = Cryptid.get_m_jokers()
+		if mcheck > 0 then
+			return true
 		end
-		if not G.GAME.before_play_buffer then
-			G.hand:unhighlight_all()
-		end
+		return false
 	end,
 }
-local hyperspacetether = { --+2 card selection limit + other stuff
+local double_down = { -- DSide T3; After every round, X1.5 to all values on the back of Double-Sided Cards
+	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_tier3",
+			"e_cry_double_sided",
+			"v_cry_double_slit",
+		},
+	},
+	key = "double_down",
+	atlas = "atlasvoucher",
+	order = 32766,
+	pos = { x = 4, y = 4 },
+	requires = { "v_cry_double_slit" },
+	pools = { ["Tier3"] = true },
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
+	end,
+	cry_credits = {
+		art = {
+			"Linus Goof Balls",
+		},
+		code = {
+			"Math",
+		},
+		jolly = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+}
+local hyperspacetether = { -- CSL T3; +2 card selection limit, all* selected cards contribute to asc power
 	cry_credits = {
 		idea = {
 			"HexaCryonic",
@@ -1120,7 +1131,7 @@ local hyperspacetether = { --+2 card selection limit + other stuff
 	config = { extra = 2 },
 	atlas = "atlasvoucher",
 	pos = { x = 2, y = 5 },
-	order = 95,
+	order = 32767,
 	requires = { "v_cry_grapplinghook" },
 	pools = { ["Tier3"] = true },
 	loc_vars = function(self, info_queue, card)
@@ -1141,6 +1152,40 @@ local hyperspacetether = { --+2 card selection limit + other stuff
 		end
 	end,
 }
+local quantum_computing = { -- Code T3; Code cards spawn with +1 use
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Mathguy",
+		},
+	},
+	object_type = "Voucher",
+	dependencies = {
+		items = {
+			"set_cry_voucher",
+			"set_cry_tier3",
+			"set_cry_code",
+			"v_cry_satellite_uplink",
+		},
+	},
+	key = "quantum_computing",
+	order = 32768,
+	atlas = "atlasvoucher",
+	pos = { x = 0, y = 3 },
+	config = { extra = 1 },
+	pools = { ["Tier3"] = true },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
+	end,
+	requires = { "v_cry_satellite_uplink" },
+}
+
+-- Triple+ tag tags
 local triple = { --Copies voucher triple tag
 	cry_credits = {
 		idea = {

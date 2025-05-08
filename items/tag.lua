@@ -225,6 +225,9 @@ local empoweredPack = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
+	in_pool = function()
+		return false
+	end,
 }
 local empowered = {
 	cry_credits = {

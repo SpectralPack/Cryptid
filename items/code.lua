@@ -1398,8 +1398,14 @@ local crynperror = { -- ://NPERROR, add last played hand back to your hand, mult
 				end
 			end
 			if G.discard.cards[i] and check then
+				if G.discard.cards[i].facing == "back" then
+					G.discard.cards[i]:flip()
+				end
 				draw_card(G.discard, G.hand, i * 100 / 5, "up", nil, G.GAME.last_hand_played_cards[i])
 			elseif G.deck.cards[i] and check then
+				if G.deck.cards[i].facing == "back" then
+					G.deck.cards[i]:flip()
+				end
 				draw_card(G.deck, G.hand, i * 100 / 5, "up", nil, G.GAME.last_hand_played_cards[i])
 			end
 		end
@@ -2339,8 +2345,14 @@ local hook = { -- Hook://, applies Hooked to two jokers
 			"HexaCryonic",
 		},
 		code = {
-			"Math",
+			"Nova",
 		},
+	},
+	gameset_config = {
+		modest = { disabled = true },
+		mainline = { disabled = false },
+		madness = { disabled = false },
+		experimental = { disabled = false },
 	},
 	dependencies = {
 		items = {
@@ -2358,56 +2370,43 @@ local hook = { -- Hook://, applies Hooked to two jokers
 	order = 14,
 	no_pool_flag = "beta_deck",
 	can_use = function(self, card)
-		return false
+		if not G.GAME.modifiers.cry_beta then
+			return (#G.jokers.highlighted == 2 and #G.consumeables.highlighted == 1)
+		else
+			return #G.jokers.highlighted == 3
+		end
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
 	end,
 	use = function(self, card, area, copier)
-		G.jokers.highlighted[1].ability.cry_hooked = true
-		G.jokers.highlighted[2].ability.cry_hooked = true
-		G.jokers.highlighted[1].hook_id = G.jokers.highlighted[2].sort_id
-		G.jokers.highlighted[2].hook_id = G.jokers.highlighted[1].sort_id
+		local card1 = nil
+		local card2 = nil
+		for i = 1, #G.jokers.highlighted do
+			if not card1 and card1 ~= card then
+				card1 = G.jokers.highlighted[i]
+			elseif card2 ~= card then
+				card2 = G.jokers.highlighted[i]
+			end
+		end
+		if card1 and card2 then
+			card1.ability.cry_hooked = true
+			card2.ability.cry_hooked = true
+			card1.ability.cry_hook_id = card2.sort_id
+			card2.ability.cry_hook_id = card1.sort_id
+		end
 	end,
 	init = function(self)
-		--HOOK:// patches (probably broken)
-		--[[local cj = Card.calculate_joker
-		function Card:calculate_joker(context)
-			local ret, trig = cj(self, context)
-			if
-				(ret or trig)
-				and self.ability.cry_hooked
-				and not context.post_trigger
-				and not context.cry_hook
-				and not context.retrigger_joker_check
-				and not context.megatrigger_check
-			then
-				context.cry_hook = true
-				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].sort_id == self.hook_id then
-						card_eval_status_text(
-							G.jokers.cards[i],
-							"extra",
-							nil,
-							nil,
-							nil,
-							{ message = localize("cry_hooked_ex"), colour = G.C.SET.Code }
-						)
-						cj(G.jokers.cards[i], context)
-						--I tried a few things to get the color of messages to be green from the other joker, but they haven't worked :(
-					end
-				end
-				context.cry_hook = nil
-			end
-			return ret, trig
-		end--]]
 		local Cardstart_dissolveRef = Card.start_dissolve
 		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
 			if G.jokers then
 				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].hook_id == self.sort_id then
+					if
+						(G.jokers.cards[i].ability.cry_hook_id == self.sort_id)
+						or (G.jokers.cards[i].sort_id == self.ability.cry_hook_id)
+					then
 						G.jokers.cards[i].ability.cry_hooked = false
-						G.jokers.cards[i].hook_id = nil
+						G.jokers.cards[i].ability.cry_hook_id = nil
 					end
 				end
 			end
@@ -2415,42 +2414,53 @@ local hook = { -- Hook://, applies Hooked to two jokers
 		end
 	end,
 }
-local hooked =
-	{ -- Hooked sticker, when one joker is triggered, trigger the other joker via context.demicolon (NOT IMPLEMENTED)
-		dependencies = {
-			items = {
-				"set_cry_code",
-				"c_cry_hook",
-			},
+local hooked = { -- When a joker is naturally triggered, force-trigger the hooked joker
+	dependencies = {
+		items = {
+			"set_cry_code",
+			"c_cry_hook",
 		},
-		object_type = "Sticker",
-		atlas = "sticker",
-		pos = { x = 5, y = 3 },
-		no_edeck = true,
-		order = 606,
-		loc_vars = function(self, info_queue, card)
-			local var
-			if not card or not card.hook_id then
-				var = "[" .. localize("k_joker") .. "]"
-			else
-				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].sort_id == card.hook_id then
-						var = localize({ type = "name_text", set = "Joker", key = G.jokers.cards[i].config.center.key })
-					end
+	},
+	object_type = "Sticker",
+	atlas = "sticker",
+	pos = { x = 5, y = 3 },
+	no_edeck = true,
+	order = 606,
+	loc_vars = function(self, info_queue, card)
+		local var
+		if not card or not card.cry_hook_id then
+			var = "[" .. localize("k_joker") .. "]"
+		else
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].sort_id == card.cry_hook_id then
+					var = G.jokers.cards[i]
 				end
-				var = var or ("[no joker found - " .. (card.hook_id or "nil") .. "]")
 			end
-			return { vars = { var or "hooked Joker" } }
-		end,
-		key = "cry_hooked",
-		no_sticker_sheet = true,
-		prefix_config = { key = false },
-		badge_colour = HEX("14b341"),
-		draw = function(self, card) --don't draw shine
-			G.shared_stickers[self.key].role.draw_major = card
-			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
-		end,
-	}
+			var = var or ("[no joker found - " .. (card.cry_hook_id or "nil") .. "]")
+		end
+		return { vars = { var or "hooked Joker" } }
+	end,
+	key = "cry_hooked",
+	no_sticker_sheet = true,
+	prefix_config = { key = false },
+	badge_colour = HEX("14b341"),
+	draw = function(self, card) --don't draw shine
+		G.shared_stickers[self.key].role.draw_major = card
+		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+	end,
+	calculate = function(self, card, context)
+		if context.post_trigger and not context.forcetrigger and not context.other_context.forcetrigger then
+			for i = 1, #G.jokers.cards do
+				if
+					G.jokers.cards[i] == context.other_card
+					and context.other_card.ability.cry_hook_id == card.sort_id
+				then
+					Cryptid.forcetrigger(card, context)
+				end
+			end
+		end
+	end,
+}
 
 local oboe = { -- ://Off By One, the next opened booster pack has +1/+1 slots/selections
 	cry_credits = {
@@ -2523,22 +2533,24 @@ local assemble = { -- ://Assemble, add the number of jokers to selected cards +m
 	order = 16,
 	can_use = function(self, card)
 		if not G.GAME.modifiers.cry_beta then
-			return (#G.hand.highlighted > 0 and #G.consumeables.highlighted == 1 and #G.jokers.cards > 0)
+			return (#G.hand.highlighted > 0 and #G.jokers.cards > 0)
 		else
-			return (#G.hand.highlighted > 0 and #G.jokers.highlighted == 1 and #G.jokers.cards > 1)
+			return (#G.hand.highlighted > 0 and #G.jokers.cards > 1)
 		end
 	end,
 	use = function(self, card, area, copier)
-		G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)].mult = G.GAME.hands[G.FUNCS.get_poker_hand_info(
-			G.hand.highlighted
-		)].mult + #G.jokers.cards
-		G.hand:unhighlight_all()
+		local upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		if upgrade_hand then
+			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
+			G.hand:unhighlight_all()
+		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)].mult = G.GAME.hands[G.FUNCS.get_poker_hand_info(
-			G.hand.highlighted
-		)].mult + (#G.jokers.cards * number)
-		G.hand:unhighlight_all()
+		local upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		if upgrade_hand then
+			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards * number
+			G.hand:unhighlight_all()
+		end
 	end,
 }
 
@@ -2779,38 +2791,36 @@ local function_sticker = { -- TODO write this
 	},
 	object_type = "Sticker",
 	atlas = "sticker",
-	pos = { x = 6, y = 5 },
+	pos = { x = 3, y = 5 },
 	config = {},
-	key = "cry_function_sticker",
+	key = "cry_function_sticker_desc",
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
 	order = 607,
 	draw = function(self, card) --don't draw shine
-		local notilt = nil
-		if card.area and card.area.config.type == "deck" then
-			notilt = true
-		end
-		if not G.shared_stickers["cry_function_sticker2"] then
-			G.shared_stickers["cry_function_sticker2"] =
-				Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 5 })
-		end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
-
 		G.shared_stickers[self.key].role.draw_major = card
-		G.shared_stickers["cry_function_sticker2"].role.draw_major = card
-
-		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
-
-		card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
-		G.shared_stickers["cry_function_sticker2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
-		G.shared_stickers["cry_function_sticker2"]:draw_shader(
-			"hologram",
-			nil,
-			card.ARGS.send_to_shader,
-			notilt,
-			card.children.center
-		) -- this doesn't really do much tbh, but the slight effect is nice
-		card.hover_tilt = card.hover_tilt * 2
+		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+	end,
+	-- loc_vars = function(self, info_queue, card)
+	-- 	info_queue[#info_queue + 1] = {
+	-- 		key = "cry_function_sticker_desc",
+	-- 		set = "Other",
+	-- 		vars = {
+	-- 			(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1],
+	-- 			(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2],
+	-- 			(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3],
+	-- 		},
+	-- 	}
+	-- end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1],
+				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2],
+				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3],
+			},
+		}
 	end,
 }
 
@@ -3062,6 +3072,7 @@ local class = { -- ://Class, change a selected card's enhancement to one of your
 				m_gold = { "gold", "money", "yellow" },
 				m_lucky = { "lucky", "rng" },
 				m_cry_echo = { "echo", "retrigger", "retriggers" },
+				m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
 				m_cry_light = { "light" },
 				ccd = { "ccd" },
 				null = { "nil" },
@@ -3822,136 +3833,123 @@ local multiply = { -- ://Multiply, doubles a joker's values until the end of the
 	end,
 }
 
-local delete =
-	{ -- ://Delete, Banish a selected card in shop; it will no longer appear normally (can still be created via pointer or other means)
-		cry_credits = {
-			idea = {
-				"Mjiojio",
-			},
-			art = {
-				"HexaCryonic",
-			},
-			code = {
-				"Math",
-				"Toneblock",
-			},
+-- ://Delete, Banish a selected card in shop; it will no longer appear normally (can still be created via pointer or other means)
+local delete = {
+	cry_credits = {
+		idea = {
+			"Mjiojio",
 		},
-		dependencies = {
-			items = {
-				"set_cry_code",
-			},
+		art = {
+			"HexaCryonic",
 		},
-		object_type = "Consumable",
-		set = "Code",
-		key = "delete",
-		name = "cry-Delete",
-		atlas = "atlasnotjokers",
-		order = 28,
-		pos = { x = 11, y = 2 },
-		cost = 4,
-		config = { cry_multiuse = 3 },
-		loc_vars = function(self, info_queue, card)
-			return { vars = { Cryptid.safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
-		end,
-		can_use = function(self, card)
-			return G.STATE == G.STATES.SHOP
-				and card.area == G.consumeables
-				and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
-				and G.shop_jokers.highlighted[1] ~= self
-				and G.shop_booster.highlighted[1] ~= self
-				and G.shop_vouchers.highlighted[1] ~= self
-		end,
-		use = function(self, card, area, copier)
-			if not G.GAME.banned_keys then
-				G.GAME.banned_keys = {}
-			end -- i have no idea if this is always initialised already tbh
-			if not G.GAME.cry_banned_pcards then
-				G.GAME.cry_banned_pcards = {}
+		code = {
+			"Math",
+			"Toneblock",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
+	object_type = "Consumable",
+	set = "Code",
+	key = "delete",
+	name = "cry-Delete",
+	atlas = "atlasnotjokers",
+	order = 28,
+	pos = { x = 11, y = 2 },
+	cost = 4,
+	config = { cry_multiuse = 3 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { Cryptid.safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
+	end,
+	can_use = function(self, card)
+		return G.STATE == G.STATES.SHOP
+			and card.area == (G.GAME.modifiers.cry_beta and G.jokers or G.consumeables)
+			and #G.jokers.highlighted + #G.consumeables.highlighted == 1
+			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
+			and G.shop_jokers.highlighted[1] ~= card
+			and G.shop_booster.highlighted[1] ~= card
+			and G.shop_vouchers.highlighted[1] ~= card
+	end,
+	use = function(self, card, area, copier)
+		if not G.GAME.banned_keys then
+			G.GAME.banned_keys = {}
+		end -- i have no idea if this is always initialised already tbh
+		if not G.GAME.cry_banned_pcards then
+			G.GAME.cry_banned_pcards = {}
+		end
+		local a = nil
+		local c = nil
+		local _p = nil
+		if G.shop_jokers.highlighted[1] then
+			_p = not not G.shop_jokers.highlighted[1].base.value
+			a = G.shop_jokers
+			c = G.shop_jokers.highlighted[1]
+		end
+		if G.shop_booster.highlighted[1] then
+			_p = not not G.shop_booster.highlighted[1].base.value
+			a = G.shop_booster
+			c = G.shop_booster.highlighted[1]
+		end
+		if G.shop_vouchers.highlighted[1] then
+			_p = not not G.shop_vouchers.highlighted[1].base.value
+			a = G.shop_vouchers
+			c = G.shop_vouchers.highlighted[1]
+			if c.shop_voucher then
+				G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
+				G.GAME.current_round.cry_voucher_edition = nil
+				G.GAME.current_round.cry_voucher_stickers =
+					{ eternal = false, perishable = false, rental = false, pinned = false, banana = false }
 			end
-			local a = nil
-			local c = nil
-			local _p = nil
-			if G.shop_jokers.highlighted[1] then
-				_p = not not G.shop_jokers.highlighted[1].base.value
-				a = G.shop_jokers
-				c = G.shop_jokers.highlighted[1]
-			end
-			if G.shop_booster.highlighted[1] then
-				a = G.shop_booster
-				c = G.shop_booster.highlighted[1]
-			end
-			if G.shop_vouchers.highlighted[1] then
-				a = G.shop_vouchers
-				c = G.shop_vouchers.highlighted[1]
-				if c.shop_voucher then
-					G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
-					G.GAME.current_round.cry_voucher_edition = nil
-					G.GAME.current_round.cry_voucher_stickers =
-						{ eternal = false, perishable = false, rental = false, pinned = false, banana = false }
-				end
-			end
-			if c.config.center.rarity == "cry_exotic" then
-				check_for_unlock({ type = "what_have_you_done" })
-			end
+		end
+		if c.config.center.rarity == "cry_exotic" then
+			check_for_unlock({ type = "what_have_you_done" })
+		end
 
-			G.GAME.cry_banished_keys[c.config.center.key] = true
+		G.GAME.cry_banished_keys[c.config.center.key] = true
 
-			-- blanket ban all boosters of a specific type
-			if a == G.shop_booster then
-				local _center = c.config.center
-				for k, v in pairs(G.P_CENTER_POOLS.Booster) do
-					if
-						_center.kind == v.kind
-						and _center.config.extra == v.config.extra
-						and _center.config.choose == v.config.choose
-					then
-						G.GAME.cry_banished_keys[v.key] = true
-					end
-				end
-			end
+		-- blanket ban all boosters of a specific type (disabled because why does this exist)
+		-- if a == G.shop_booster then
+		-- 	local _center = c.config.center
+		-- 	for k, v in pairs(G.P_CENTER_POOLS.Booster) do
+		-- 		if
+		-- 			_center.kind == v.kind
+		-- 			and _center.config.extra == v.config.extra
+		-- 			and _center.config.choose == v.config.choose
+		-- 		then
+		-- 			G.GAME.cry_banished_keys[v.key] = true
+		-- 		end
+		-- 	end
+		-- end
 
-			if _p then
-				for k, v in pairs(G.P_CARDS) do
-					-- blanket banning ranks here, probably more useful
-					if v.value == c.base.value then -- and v.suit == c.base.suit
-						G.GAME.cry_banned_pcards[k] = true
-					end
+		if _p then
+			for k, v in pairs(G.P_CARDS) do
+				-- bans a specific rank AND suit
+				if v.value == c.base.value and v.suit == c.base.suit then
+					G.GAME.cry_banned_pcards[k] = true
 				end
 			end
-			c:start_dissolve()
-		end,
-		init = function(self)
-			-- dumb hook because i don't feel like aggressively patching get_pack to do stuff
-			-- very inefficient
-			-- maybe smods should overwrite the function and make it more targetable?
-			local getpackref = get_pack
-			function get_pack(_key, _type)
-				local temp_banned = copy_table(G.GAME.banned_keys)
-				for k, v in pairs(G.GAME.cry_banished_keys) do
-					G.GAME.banned_keys[k] = v
-				end
-				local ret = getpackref(_key, _type)
-				G.GAME.banned_keys = copy_table(temp_banned)
-				return ret
+		end
+		c:start_dissolve()
+	end,
+	init = function(self)
+		-- dumb hook because i don't feel like aggressively patching get_pack to do stuff
+		-- very inefficient
+		-- maybe smods should overwrite the function and make it more targetable?
+		local getpackref = get_pack
+		function get_pack(_key, _type)
+			local temp_banned = copy_table(G.GAME.banned_keys)
+			for k, v in pairs(G.GAME.cry_banished_keys) do
+				G.GAME.banned_keys[k] = v
 			end
-		end,
-		-- i was gonna use this function and all but... i don't like the way it does things
-		-- leaving it here so nobody screams at me
-		--[[
-	keep_on_use = function(self, card)
-		if card.ability.cry_multiuse <= 1 then
-			return false
-		else
-			card.ability.cry_multiuse = card.ability.cry_multiuse - 1
-			delay(0.3)
-			card:juice_up()
-			play_sound('tarot1')
-			card_eval_status_text(card, 'extra', nil, nil, nil, {message = card.ability.cry_multiuse, colour = G.C.SECONDARY_SET.Code})
-			return true
+			local ret = getpackref(_key, _type)
+			G.GAME.banned_keys = copy_table(temp_banned)
+			return ret
 		end
 	end,
-	]]
-	}
+}
 
 local alttab = { -- ://Alt-Tab, creates the current blind's Tag
 	cry_credits = {
@@ -4367,7 +4365,7 @@ local source = {
 	object_type = "Consumable",
 	set = "Spectral",
 	name = "cry-Source",
-	order = 604,
+	order = 603,
 	key = "source",
 	config = {
 		-- This will add a tooltip.
@@ -4504,6 +4502,7 @@ local CodeJoker = {
 	cost = 11,
 	order = 301,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if
@@ -4511,6 +4510,17 @@ local CodeJoker = {
 			and not (context.blueprint_card or self).getting_sliced
 			and (G.GAME.blind:get_type() == "Boss" or Cryptid.gameset(card) ~= "exp_modest")
 		then
+			play_sound("timpani")
+			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
+			card:set_edition({
+				negative = true,
+			})
+			card:add_to_deck()
+			G.consumeables:emplace(card)
+			card:juice_up(0.3, 0.5)
+			return nil, true
+		end
+		if context.forcetrigger then
 			play_sound("timpani")
 			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
 			card:set_edition({
@@ -4569,7 +4579,6 @@ local copypaste = {
 	key = "copypaste",
 	pos = { x = 3, y = 4 },
 	order = 302,
-	immune_to_chemach = true,
 	config = {
 		extra = {
 			odds = 2,
@@ -4702,6 +4711,7 @@ local cut = {
 	order = 303,
 	blueprint_compat = true,
 	perishable_compat = false,
+	demicoloncompat = true,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.ending_shop then
@@ -4755,6 +4765,20 @@ local cut = {
 				colour = G.C.MULT,
 			}
 		end
+		if context.forcetrigger then
+			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = {
+						number_format(card.ability.extra.Xmult),
+					},
+				}),
+				Xmult_mod = card.ability.extra.Xmult,
+				colour = G.C.MULT,
+			}
+		end
 	end,
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -4789,6 +4813,7 @@ local blender = {
 	rarity = 1,
 	cost = 5,
 	blueprint_compat = true,
+	demicoloncompat = true,
 	atlas = "atlasthree",
 	order = 304,
 	calculate = function(self, card, context)
@@ -4802,6 +4827,11 @@ local blender = {
 				card:add_to_deck()
 				G.consumeables:emplace(card)
 			end
+		end
+		if context.forcetrigger then
+			local card = create_card("Consumeables", G.consumeables, nil, nil, nil, nil, nil, "cry_blender")
+			card:add_to_deck()
+			G.consumeables:emplace(card)
 		end
 	end,
 	cry_credits = {
@@ -4836,6 +4866,7 @@ local python = {
 	cost = 7,
 	blueprint_compat = true,
 	perishable_compat = false,
+	demicoloncompat = true,
 	atlas = "atlasthree",
 	order = 305,
 	loc_vars = function(self, info_queue, center)
@@ -4868,6 +4899,17 @@ local python = {
 			return
 		end
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.Xmult) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+			}
+		end
+		if context.forcetrigger then
+			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
 			return {
 				message = localize({
 					type = "variable",
@@ -4925,14 +4967,14 @@ local code_cards = {
 	rigged,
 	patch,
 	-- cryupdate, -- WIP: no effect
-	-- hook, -- WIP; rework needed
-	-- hooked,
+	hook,
+	hooked,
 	oboe,
 	assemble,
 	inst,
 	revert,
-	-- cryfunction, FINISHED: NEEDS ART
-	-- function_sticker, see above
+	cryfunction,
+	function_sticker,
 	run,
 	class,
 	global,

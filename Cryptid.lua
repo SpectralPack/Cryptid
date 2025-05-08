@@ -10,6 +10,9 @@ local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod
 Cryptid.path = mod_path
 Cryptid_config = SMODS.current_mod.config
 
+-- Lovely Patch Target, toggles being able to change gameset config. Here for mod support
+Cryptid_config.gameset_toggle = true
+
 -- Enable optional features
 SMODS.current_mod.optional_features = {
 	retrigger_joker = true,

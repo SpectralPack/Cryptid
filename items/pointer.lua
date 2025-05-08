@@ -13,6 +13,7 @@ local pointer = {
 	dependencies = {
 		items = {
 			"set_cry_code",
+			"set_cry_spectral",
 		},
 	},
 	object_type = "Consumable",
@@ -160,35 +161,35 @@ local pointer = {
 			end
 			local current_card -- j_cry_dropshot
 			local entered_card = G.ENTERED_CARD
+			local valid_check = {}
 			G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
 			current_card = Cryptid.pointergetalias(apply_lower(entered_card)) or nil
-			if Cryptid.pointergetblist(current_card) and not G.DEBUG_POINTER then
+			valid_check = Cryptid.pointergetblist(current_card)
+			if not valid_check[3] then
 				current_card = nil
+			end
+			--if enhancement has a suit or rank override, override above and make nil, so it can proceed with playing card creation
+			if current_card ~= nil and string.sub(current_card, 1, 1) == "m" then
+				if
+					G.P_CENTERS[current_card] and G.P_CENTERS[current_card].specific_suit
+					or G.P_CENTERS[current_card].specific_rank
+				then
+					current_card = nil
+				end
 			end
 
 			if current_card then -- non-playing card cards
-				local created = false
-				if -- Joker check
-					G.P_CENTERS[current_card].set == "Joker"
-					and (
-						G.DEBUG_POINTER -- Debug Mode
-						or (
-							G.P_CENTERS[current_card].unlocked -- If card discovered
-							and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit -- and you have room
-						)
-					)
-				then
+				local created = false -- Joker check
+				if not valid_check[1] and valid_check[2] == "Joker" and valid_check[3] then
 					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, current_card)
 					card:add_to_deck()
 					G.jokers:emplace(card)
 					created = true
 				end
 				if -- Consumeable check
-					G.P_CENTERS[current_card].consumeable
-					and (
-						G.DEBUG_POINTER
-						or (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit)
-					)
+					not valid_check[1]
+					and valid_check[2] == "Consumeable"
+					and valid_check[3]
 				then
 					local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
 					if card.ability.name and card.ability.name == "cry-Chambered" then
@@ -199,8 +200,9 @@ local pointer = {
 					created = true
 				end
 				if -- Voucher check
-					G.P_CENTERS[current_card].set == "Voucher"
-					and (G.DEBUG_POINTER or G.P_CENTERS[current_card].unlocked)
+					not valid_check[1]
+					and valid_check[2] == "Voucher"
+					and valid_check[3]
 				then
 					local area
 					if G.STATE == G.STATES.HAND_PLAYED then
@@ -236,16 +238,9 @@ local pointer = {
 					created = true
 				end
 				if -- Booster check
-					G.P_CENTERS[current_card].set == "Booster"
-					and (G.DEBUG_POINTER or G.P_CENTERS[current_card].unlocked)
-					and ( -- no boosters if already in booster
-						G.STATE ~= G.STATES.TAROT_PACK
-						and G.STATE ~= G.STATES.SPECTRAL_PACK
-						and G.STATE ~= G.STATES.STANDARD_PACK
-						and G.STATE ~= G.STATES.BUFFOON_PACK
-						and G.STATE ~= G.STATES.PLANET_PACK
-						and G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED
-					)
+					not valid_check[1]
+					and valid_check[2] == "Booster"
+					and valid_check[3]
 				then
 					local card = create_card("Booster", G.hand, nil, nil, nil, nil, current_card)
 					card.cost = 0
@@ -410,6 +405,7 @@ local pointer = {
 					{ "Q", "Queen" },
 					{ "K", "King" },
 					{ "A", "Ace", "One", "1", "I" },
+					{ "Abstract", "Abstracted", "TADC" },
 				} -- ty variable
 				local _rank = nil
 				for m = #words, 1, -1 do -- the legendary TRIPLE LOOP, checking from end since rank is most likely near the end
@@ -454,6 +450,7 @@ local pointer = {
 						["m_gold"] = { "gold" },
 						["m_stone"] = { "stone" },
 						["m_cry_echo"] = { "echo" },
+						["m_cry_abstract"] = { "abstract" },
 					}
 					for k, v in pairs(G.P_CENTER_POOLS.Enhanced) do
 						local index = v.key
@@ -502,6 +499,7 @@ local pointer = {
 						["pinned"] = { "pinned" },
 						["banana"] = { "banana" }, -- no idea why this evades prefixing
 						["cry_rigged"] = { "rigged" },
+						["cry_global_sticker"] = { "global" },
 						["cry_flickering"] = { "flickering" },
 						["cry_possessed"] = { "possessed" },
 						["cry_absolute"] = { "absolute" },
@@ -601,6 +599,14 @@ local pointer = {
 							if _rank == 1 then
 								_card:set_ability(G.P_CENTERS["m_stone"])
 							end
+							--Abstracted
+							if
+								_rank == 15
+								or string.lower(_suit) == "abstract"
+								or string.lower(_suit) == "abstracted"
+							then
+								_card:set_ability(G.P_CENTERS["m_cry_abstract"])
+							end
 							if _seal ~= "" then
 								_card:set_seal(_seal, true, true)
 							end
@@ -634,24 +640,37 @@ local pointer = {
 }
 
 local aliases = {
+	---- Vanilla Cards
 	-- Vanilla Jokers
 	j_joker = {
 		"Joker",
+		"Jimbo",
 	},
 	j_greedy_joker = {
 		"Greedy Joker",
+		"Diamond Joker",
 	},
 	j_lusty_joker = {
 		"Lusty Joker",
+		"Horny Joker",
+		"Heart Joker",
 	},
 	j_wrathful_joker = {
 		"Wrathful Joker",
+		"Spade Joker",
 	},
 	j_gluttenous_joker = {
 		"Gluttonous Joker",
+		"Fatass Joker",
+		"Fat Ass Joker",
+		"Big Back",
+		"Big Back Joker",
+		"Club Joker",
 	},
 	j_jolly = {
 		"Jolly Joker",
+		"Joseph, J. Joker",
+		"Pair Mult",
 	},
 	j_zany = {
 		"Zany Joker",
@@ -706,6 +725,7 @@ local aliases = {
 	},
 	j_marble = {
 		"Marble Joker",
+		"Lexi",
 	},
 	j_loyalty_card = {
 		"Loyalty Card",
@@ -733,30 +753,42 @@ local aliases = {
 	},
 	j_scary_face = {
 		"Scary Face",
+		"Spooky Face",
 	},
 	j_abstract = {
 		"Abstract Joker",
 	},
 	j_delayed_grat = {
 		"Delayed Gratification",
+		"Delayed Grat",
 	},
 	j_hack = {
 		"Hack",
 	},
 	j_pareidolia = {
 		"Pareidolia",
+		"All Face Cards",
 	},
 	j_gros_michel = {
 		"Gros Michel",
+		"Banana",
 	},
 	j_even_steven = {
 		"Even Steven",
+		"Steven",
 	},
 	j_odd_todd = {
 		"Odd Todd",
+		"Todd",
 	},
 	j_scholar = {
 		"Scholar",
+		"Dr Spectred",
+		"Dr. Spectred",
+		"drspectred",
+		"Balatro University",
+		"Balatro University Joker",
+		"Balatro Uni",
 	},
 	j_business = {
 		"Business Card",
@@ -766,12 +798,14 @@ local aliases = {
 	},
 	j_ride_the_bus = {
 		"Ride the Bus",
+		"Bus",
 	},
 	j_space = {
 		"Space Joker",
 	},
 	j_egg = {
 		"Egg",
+		"Egg Joker",
 	},
 	j_burglar = {
 		"Burglar",
@@ -790,6 +824,7 @@ local aliases = {
 	},
 	j_splash = {
 		"Splash",
+		"Wet Joker",
 	},
 	j_blue_joker = {
 		"Blue Joker",
@@ -817,6 +852,7 @@ local aliases = {
 	},
 	j_cavendish = {
 		"Cavendish",
+		"Glitch",
 	},
 	j_card_sharp = {
 		"Card Sharp",
@@ -835,6 +871,8 @@ local aliases = {
 	},
 	j_riff_raff = {
 		"Riff-raff",
+		"Riff Raff",
+		"RiffRaff",
 	},
 	j_vampire = {
 		"Vampire",
@@ -853,6 +891,10 @@ local aliases = {
 	},
 	j_cloud_9 = {
 		"Cloud 9",
+		"Murphy's Favorite",
+		"Murphy Favorite",
+		"Murphys Favorite",
+		"Murphy Fav",
 	},
 	j_rocket = {
 		"Rocket",
@@ -868,12 +910,14 @@ local aliases = {
 	},
 	j_photograph = {
 		"Photograph",
+		"Photo",
 	},
 	j_gift = {
 		"Gift Card",
 	},
 	j_turtle_bean = {
 		"Turtle Bean",
+		"Bean",
 	},
 	j_erosion = {
 		"Erosion",
@@ -883,6 +927,9 @@ local aliases = {
 	},
 	j_mail = {
 		"Mail-In Rebate",
+		"Mail In Rebate",
+		"Rebate",
+		"Mail Rebate",
 	},
 	j_to_the_moon = {
 		"To the Moon",
@@ -895,9 +942,11 @@ local aliases = {
 	},
 	j_juggler = {
 		"Juggler",
+		"+1 hand size",
 	},
 	j_drunkard = {
 		"Drunkard",
+		"+1 Discard",
 	},
 	j_stone = {
 		"Stone Joker",
@@ -916,6 +965,9 @@ local aliases = {
 	},
 	j_diet_cola = {
 		"Diet Cola",
+		"Cola",
+		"Tag Soda",
+		"Tag Cola",
 	},
 	j_trading = {
 		"Trading Card",
@@ -946,15 +998,18 @@ local aliases = {
 	},
 	j_smiley = {
 		"Smiley Face",
+		"Smiley",
 	},
 	j_campfire = {
 		"Campfire",
 	},
 	j_ticket = {
 		"Golden Ticket",
+		"Gold Ticket",
 	},
 	j_mr_bones = {
 		"Mr. Bones",
+		"Mr Bones",
 	},
 	j_acrobat = {
 		"Acrobat",
@@ -973,6 +1028,7 @@ local aliases = {
 	},
 	j_smeared = {
 		"Smeared Joker",
+		"Smeared",
 	},
 	j_throwback = {
 		"Throwback",
@@ -1006,15 +1062,23 @@ local aliases = {
 	},
 	j_wee = {
 		"Wee Joker",
+		"WEEEE",
 	},
 	j_merry_andy = {
 		"Merry Andy",
 	},
 	j_oops = {
 		"Oops! All 6s",
+		"OA6s",
+		"OA6",
+		"O A 6s",
+		"Oops 6s",
+		"Oops 6",
+		"Oop 6s",
 	},
 	j_idol = {
 		"The Idol",
+		"Idol",
 	},
 	j_seeing_double = {
 		"Seeing Double",
@@ -1027,24 +1091,30 @@ local aliases = {
 	},
 	j_duo = {
 		"The Duo",
+		"Duo",
 	},
 	j_trio = {
 		"The Trio",
+		"Trio",
 	},
 	j_family = {
 		"The Family",
+		"Family",
 	},
 	j_order = {
 		"The Order",
+		"Order",
 	},
 	j_tribe = {
 		"The Tribe",
+		"Tribe",
 	},
 	j_stuntman = {
 		"Stuntman",
 	},
 	j_invisible = {
 		"Invisible Joker",
+		"Invisible",
 	},
 	j_brainstorm = {
 		"Brainstorm",
@@ -1085,6 +1155,1048 @@ local aliases = {
 	j_perkeo = {
 		"Perkeo",
 	},
+
+	-- Vanilla Tarots
+	c_fool = {
+		"The Fool",
+		"Fool",
+	},
+	c_high_priestess = {
+		"The High Priestess",
+		"High Priestess",
+	},
+	c_empress = {
+		"The Empress",
+		"Empress",
+	},
+	c_emperor = {
+		"The Emperor",
+		"Emperor",
+	},
+	c_heirophant = {
+		"The Heirophant",
+		"Heirophant",
+	},
+	c_lovers = {
+		"The Lovers",
+		"Lovers",
+	},
+	c_chariot = {
+		"The Chariot",
+		"Chariot",
+	},
+	c_justice = {
+		"Justice",
+	},
+	c_hermit = {
+		"The Hermit",
+		"Hermit",
+	},
+	c_wheel_of_fortune = {
+		"The Wheel Of Fortune",
+		"Wheel Of Fortune",
+		"tWoF",
+		"WoF",
+		"Gambling",
+		"Wheel",
+	},
+	c_strength = {
+		"Strength",
+	},
+	c_hanged_man = {
+		"The Hanged Man",
+		"Hanged Man",
+		"Hang Man",
+	},
+	c_death = {
+		"Death",
+		"Turn The Left Card Into The Right Card",
+	},
+	c_temperance = {
+		"Temperance",
+	},
+	c_devil = {
+		"The Devil",
+		"Devil",
+	},
+	c_tower = {
+		"The Tower",
+		"Tower",
+	},
+	c_star = {
+		"The Star",
+		"Star",
+	},
+	c_moon = {
+		"The Moon",
+		"Moon",
+	},
+	c_sun = {
+		"The Sun",
+		"Sun",
+	},
+	c_judgement = {
+		"Judgement",
+	},
+	c_world = {
+		"The World",
+		"World",
+	},
+
+	-- Vanilla Planets
+	c_mercury = {
+		"Mercury",
+		"Merc",
+		"M planet",
+		"Mlanet",
+		"Pair",
+		"2oak",
+	},
+	c_venus = {
+		"Venus",
+		"3 planet",
+		"3oak",
+		"Aphrodite",
+		"Penus",
+	},
+	c_earth = {
+		"Earth",
+		"Terra",
+		"3+2",
+		"Gaia",
+		"Hell",
+		"Here",
+		"erth",
+		"erf",
+		"Full House",
+		"1987 Sitcom by Jeff Franklin",
+		"Spawn",
+		"Spawnpoint",
+	},
+	c_mars = {
+		"Mars",
+		"4oak",
+		"Not 2 Pairs",
+		"Ares",
+		"Red Planet",
+	},
+	c_jupiter = {
+		"Jupiter",
+		"Flush",
+		"The big one",
+		"Zeus",
+	},
+	c_saturn = {
+		"Saturn",
+		"Straight",
+		"Chronos",
+		"Rings",
+	},
+	c_uranus = {
+		"Uranus",
+		"Uranus but in greek",
+		"2 pair",
+		"22",
+		"anus",
+		"haha get it cuz uranus is like ur-anus and anus means butt so its funny come on guys please laugh",
+	},
+	c_neptune = {
+		"Neptune",
+		"Neptunus",
+		"Poseidon",
+		"Straight Flush",
+		"Slush",
+		"Royal",
+	},
+	c_pluto = {
+		"Pluto",
+		"Hades",
+		"1oak",
+		"One",
+		"High Card",
+		"Not Planet",
+		"Dwarf",
+	},
+	c_planet_x = {
+		"Planet X",
+		"5oak",
+		"Twitter",
+		"Five Guys",
+	},
+	c_ceres = {
+		"Ceres",
+		"Demeter",
+		"Flush House",
+		"Reaper",
+	},
+	c_eris = {
+		"Eris",
+		"fish",
+		"Flush Five",
+		"F5",
+	},
+
+	-- Vanilla Spectrals
+	c_familiar = {
+		"Familiar",
+		"The Familiar",
+	},
+	c_grim = {
+		"Grim",
+		"The Grim",
+	},
+	c_incantation = {
+		"Incantation",
+		"The Incantation",
+		"Consumable Stacker",
+		"Incant",
+		"Inct",
+		"Inc",
+	},
+	c_talisman = {
+		"Talisman",
+		"The Talisman",
+		"Bignum mod",
+		"Omeganum mod",
+		"Skip Animations",
+		"Skip Anim",
+		"Talis",
+		"Tali",
+	},
+	c_aura = {
+		"Aura",
+		"The Aura",
+		"WoF 2",
+	},
+	c_wraith = {
+		"Wraith",
+		"The Wraith",
+		"Obelisk Spawner 2",
+		"Wrath",
+	},
+	c_sigil = {
+		"Sigil",
+		"The Sigil",
+		"Suit Equalizer",
+	},
+	c_ouija = {
+		"Ouija",
+		"The Ouija",
+		"Ouija Board",
+		"Weegee",
+	},
+	c_ectoplasm = {
+		"Ectoplasm",
+		"The Ectoplasm",
+		"White Glop",
+		"Ghost Matter",
+		"Ecto",
+		"Plasm",
+		"One Negative Popcorn Pretty Please",
+	},
+	c_immolate = {
+		"Immolate",
+		"Imolate",
+		"The Immolate",
+		"The Imolate",
+		"Immolation",
+		"Immolator",
+		"Oh Boy 20 Dollars",
+	},
+	c_ankh = {
+		"Ankh",
+		"Life",
+		"Egyptian Cross",
+	},
+	c_deja_vu = {
+		"Deja vu",
+		"Deja vu",
+		"Deja",
+		"vu",
+		"Again!",
+		"Deja vu",
+		"Deja vu",
+	},
+	c_hex = {
+		"Hex",
+		"The Hex",
+		"Vex",
+		"This Hexes Me",
+	},
+	c_trance = {
+		"Trance",
+		"The Trance",
+		"Transe",
+		"Trans",
+		"Trams",
+	},
+	c_medium = {
+		"Medium",
+		"The Medium",
+		"Ourple",
+	},
+	c_cryptid = {
+		"Cryptid",
+		"The Cryptid",
+		"+2",
+		"The Mod",
+		"Cry",
+	},
+	c_soul = {
+		"Soul",
+		"The Soul",
+		"Jazz",
+		"Spirit",
+		"Legendary",
+		"White Rock",
+		"Blank Rune",
+	},
+	c_black_hole = {
+		"Black Hole",
+		"The Black Hole",
+		"Bhole",
+		"Oprah",
+	},
+
+	-- Vanilla Booster Packs
+	p_arcana_normal_1 = {
+		"Arcana Pack",
+		"Arcana Fool",
+		"Arcana Pack 1",
+	},
+	p_arcana_normal_2 = {
+		"Arcana",
+		"Arcana Temperance",
+		"Arcana Pack 2",
+	},
+	p_arcana_normal_3 = {
+		"Arcana Hierophant",
+		"Arcana Pack 3",
+	},
+	p_arcana_normal_4 = {
+		"Arcana World",
+		"Arcana Pack 4",
+	},
+	p_arcana_jumbo_1 = {
+		"Jumbo Arcana",
+		"Jumbo Arcana Pack",
+		"Arcana Death",
+		"Jumbo Arcana 1",
+		"Jumbo Arcana Pack 1",
+	},
+	p_arcana_jumbo_2 = {
+		"Arcana Emperor",
+		"Jumbo Arcana 2",
+		"Jumbo Arcana Pack 2",
+	},
+	p_arcana_mega_1 = {
+		"Mega Arcana",
+		"Mega Arcana Pack",
+		"Arcana Tower",
+		"Mega Arcana 1",
+		"Mega Arcana Pack 1",
+	},
+	p_arcana_mega_2 = {
+		"Arcana Hermit",
+		"Mega Arcana 2",
+		"Mega Arcana Pack 2",
+	},
+
+	p_celestial_normal_1 = {
+		"Celestial Pack",
+		"Celestial Mercury",
+		"Celestial Pack 1",
+	},
+	p_celestial_normal_2 = {
+		"Celestial",
+		"Celestial Jupiter",
+		"Celestial Pack 2",
+	},
+	p_celestial_normal_3 = {
+		"Celestial Earth",
+		"Celestial Pack 3",
+	},
+	p_celestial_normal_4 = {
+		"Celestial Uranus",
+		"Celestial Pack 4",
+	},
+	p_celestial_jumbo_1 = {
+		"Jumbo Celestial",
+		"Jumbo Celestial Pack",
+		"Celestial Mars",
+		"Jumbo Celestial 1",
+		"Jumbo Celestial Pack 1",
+	},
+	p_celestial_jumbo_2 = {
+		"Celestial Pluto",
+		"Jumbo Celestial 2",
+		"Jumbo Celestial Pack 2",
+	},
+	p_celestial_mega_1 = {
+		"Mega Celestial",
+		"Mega Celestial Pack",
+		"Celestial Saturn",
+		"Mega Celestial 1",
+		"Mega Celestial Pack 1",
+	},
+	p_celestial_mega_2 = {
+		"Celestial Venus",
+		"Mega Celestial 2",
+		"Mega Celestial Pack 2",
+	},
+	p_standard_normal_1 = {
+		"Standard Pack",
+		"Standard Pack 1",
+	},
+	p_standard_normal_2 = {
+		"Standard",
+		"Standard Pack 2",
+	},
+	p_standard_normal_3 = {
+		"Standard Pack 3",
+	},
+	p_standard_normal_4 = {
+		"Standard Pack 4",
+	},
+	p_standard_jumbo_1 = {
+		"Jumbo Standard",
+		"Jumbo Standard Pack",
+		"Jumbo Standard 1",
+		"Jumbo Standard Pack 1",
+	},
+	p_standard_jumbo_2 = {
+		"Jumbo Standard 2",
+		"Jumbo Standard Pack 2",
+	},
+	p_standard_mega_1 = {
+		"Mega Standard",
+		"Mega Standard Pack",
+		"Mega Standard 1",
+		"Mega Standard Pack 1",
+	},
+	p_standard_mega_2 = {
+		"Mega Standard 2",
+		"Mega Standard Pack 2",
+	},
+	p_buffoon_normal_1 = {
+		"Buffoon Pack",
+		"Buffoon Hack",
+		"Buffoon Pack 1",
+	},
+	p_buffoon_normal_2 = {
+		"Jimbo Pack",
+		"Buffoon",
+		"Buffoon Juggler",
+		"Buffoon Pack 2",
+	},
+	p_buffoon_jumbo_1 = {
+		"Jumbo Jimbo",
+		"Jumbo Jimbo Pack",
+		"Buffoon Banner",
+		"Jumbo Buffoon",
+		"Jumbo Buffoon Pack",
+	},
+	p_buffoon_mega_1 = {
+		"Mega Jimbo",
+		"Mega Jimbo Pack",
+		"Buffoon Brainstom",
+		"Mega Buffoon",
+		"Mega Buffoon Pack",
+	},
+	p_spectral_normal_1 = {
+		"Spectral Pack",
+		"Spectral Grim",
+		"Spectral Pack 1",
+	},
+	p_spectral_normal_2 = {
+		"Spectral",
+		"Spectral Pack 2",
+	},
+	p_spectral_jumbo_1 = {
+		"Jumbo Spectral",
+		"Spectral Incantation",
+		"Jumbo Spectral Pack",
+	},
+	p_spectral_mega_1 = {
+		"Mega Spectral",
+		"Spectral Ectoplasm",
+		"Mega Spectral Pack",
+	},
+	p_spectral_mega_1 = {
+		"Mega Spectral",
+		"Spectral Ectoplasm",
+		"Mega Spectral Pack",
+	},
+
+	-- Vanilla Tags
+	-- everybody forgor
+	tag_uncommon = {
+		"Uncommon Tag",
+		"Tag Uncommon",
+	},
+	tag_rare = {
+		"Rare Tag",
+		"Tag Rare",
+	},
+	tag_negative = {
+		"Negative Tag",
+		"Tag Negative",
+	},
+	tag_foil = {
+		"Foil Tag",
+		"Tag Foil",
+	},
+	tag_holo = {
+		"Holo Tag",
+		"Tag Holo",
+		"Holographic Tag",
+		"Tag Holographic",
+	},
+	tag_polychrome = {
+		"Polychrome Tag",
+		"Tag Polychrome",
+	},
+	tag_investment = {
+		"Investment Tag",
+		"Tag Investment",
+		"Invest Tag",
+		"Tag Invest",
+		"Investment",
+	},
+	tag_voucher = {
+		"Voucher Tag",
+		"Tag Voucher",
+		"Vouch Tag",
+	},
+	tag_boss = {
+		"Boss Tag",
+		"Tag Boss",
+	},
+	tag_standard = {
+		"Standard Tag",
+		"Tag Standard",
+	},
+	tag_charm = {
+		"Charm Tag",
+		"Tag Charm",
+		"Tarot Tag",
+		"Acrana Tag",
+		"Tag Tarot",
+		"Tag Arcana",
+		"Charm Pack Tag",
+		"Tarot Pack Tag",
+		"Acrana Pack Tag",
+	},
+	tag_meteor = {
+		"Meteor Tag",
+		"Tag Meteor",
+		"Celestial Tag",
+		"Tag Celestial",
+		"Planet Tag",
+		"Tag Planet",
+		"Celestial Pack Tag",
+		"Planet Pack Tag",
+	},
+	tag_buffoon = {
+		"Buffoon Tag",
+		"Tag Buffoon",
+		"Joker Pack Tag",
+		"Joker Tag",
+		"Buffoon Pack Tag",
+	},
+	tag_handy = {
+		"Handy Tag",
+		"Tag Handy",
+	},
+	tag_garbage = {
+		"Garbage Tag",
+		"Tag Garbage",
+		"Discard Tag",
+		"Tag Discard",
+	},
+	tag_ethereal = {
+		"Ethereal Tag",
+		"Tag Ethereal",
+		"Spectral Tag",
+		"Tag Spectral",
+	},
+	tag_coupon = {
+		"Coupon Tag",
+		"Tag Coupon",
+		"Free Tag",
+		"Shop Tag Free",
+		"Shop Free Tag",
+		"Shop Tag",
+	},
+	tag_double = {
+		"Double Tag",
+		"Tag Double",
+		"Extra Tag",
+		"2 Tag",
+	},
+	tag_juggle = {
+		"Juggle Tag",
+		"Tag Juggle",
+		"Juggler Tag",
+		"Tag Juggler",
+		"Hand Size Tag",
+		"Tag Hand Size",
+	},
+	tag_d_six = {
+		"D Six Tag",
+		"Tag D Six",
+		"D6 Tag",
+		"Tag D6",
+		"Reroll Tag",
+		"Tag Reroll",
+		"Rerolling Tag",
+		"Tag Rerolling",
+		"DSix Tag",
+		"Tag DSix",
+		"D6",
+		"D 6",
+		"D 6 Tag",
+		"Tag D 6",
+	},
+	tag_top_up = {
+		"Top Up Tag",
+		"Tag Top Up",
+		"Top Up",
+		"2 common tag",
+	},
+	tag_skip = {
+		"Skip Tag",
+		"Tag Skip",
+		"Skipping Tag",
+		"Tag Skipping",
+	},
+	tag_orbital = {
+		"Orbital Tag",
+		"Tag Orbital",
+		"Orbital",
+		"Planet Tag",
+	},
+	tag_economy = {
+		"Economy Tag",
+		"Tag Economy",
+		"Econ tag",
+		"Eco tag",
+		"money tag",
+		"Tag Money",
+		"Tag Econ",
+		"Tag Eco",
+	},
+	-- Vanilla Vouchers
+
+	v_overstock_norm = {
+		"Overstock",
+		"Over Stock",
+	},
+	v_overstock_plus = {
+		"Overstock Plus",
+		"Over Stock Plus",
+		"Overstockplus",
+		"Overstock+",
+		"Overstock 2",
+	},
+	v_clearance_sale = {
+		"Clearance Sale",
+		"Clearancesale",
+		"Clearance",
+	},
+	v_liquidation = {
+		"Liquidation",
+		"Clearance Sale+",
+		"Clearance Sale Plus",
+		"Clearance Sale 2",
+	},
+	v_hone = {
+		"Hone",
+	},
+	v_glow_up = {
+		"Glow Up",
+		"Glow-Up",
+		"Glowup",
+		"Hone+",
+		"Hone Plus",
+		"Hone 2",
+	},
+	v_reroll_surplus = {
+		"Reroll Surplus",
+		"Rerollsurplus",
+		"Reroll Voucher",
+	},
+	v_reroll_glut = {
+		"Reroll Glut",
+		"Rerollglut",
+		"Reroll Surplus+",
+		"Reroll Surplus Plus",
+		"Reroll Surplus 2",
+	},
+	v_crystal_ball = {
+		"Crystal Ball",
+		"Crystalball",
+		"Consumable Slot",
+		"Consumable Voucher",
+		"Consumable Slot Voucher",
+	},
+	v_omen_globe = {
+		"Omen Globe",
+		"Omenglobe",
+		"Crystal Ball+",
+		"Crystal Ball Plus",
+		"Crystal Ball 2",
+	},
+	v_telescope = {
+		"Telescope",
+		"Teliscope",
+	},
+	v_observatory = {
+		"Observatory",
+		"Telescope+",
+		"Telescope Plus",
+		"Telescope 2",
+		"Perkeo Voucher",
+	},
+	v_grabber = {
+		"Grabber",
+		"Hand Voucher",
+	},
+	v_nacho_tong = {
+		"Nacho Tong",
+		"Nachotong",
+		"Grabber+",
+		"Grabber Plus",
+		"Grabber 2",
+	},
+	v_wasteful = {
+		"Wasteful",
+		"Discard Voucher",
+	},
+	v_recyclomancy = {
+		"Recyclomancy",
+		"Wasteful+",
+		"Wasteful Plus",
+		"Wasteful 2",
+	},
+	v_tarot_merchant = {
+		"Tarot Merchant",
+		"Tarotmerchant",
+		"Tarot Voucher",
+	},
+	v_tarot_tycoon = {
+		"Tarot Tycoon",
+		"Tarot Merchant+",
+		"Tarot Merchant Plus",
+		"Tarot Merchant 2",
+	},
+	v_planet_merchant = {
+		"Planet Merchant",
+		"Planetmerchant",
+		"Planet Voucher",
+	},
+	v_planet_tycoon = {
+		"Planet Tycoon",
+		"Planet Merchant+",
+		"Planet Merchant Plus",
+		"Planet Merchant 2",
+	},
+	v_seed_money = {
+		"Seed Money",
+		"Interest Voucher",
+		"Seedmoney",
+	},
+	v_money_tree = {
+		"Money Tree",
+		"Moneytree",
+		"Seed Money+",
+		"Seed Money Plus",
+		"Seed Money 2",
+	},
+	v_blank = {
+		"Blank",
+		"Blank Voucher",
+		"Blank?",
+		"Does Nothing",
+	},
+	v_antimatter = {
+		"Antimatter",
+		"Anti Matter",
+		"Antematter",
+		"Blank+",
+		"Blank Plus",
+		"Blank 2",
+		"Joker Slot Voucher",
+	},
+	v_magic_trick = {
+		"Magic Trick",
+		"Magictrick",
+		"Card Voucher",
+		"Hologram Voucher",
+	},
+	v_illusion = {
+		"Illusion",
+		"Magic Trick+",
+		"Magic Trick Plus",
+		"Magic Trick 2",
+	},
+	v_hieroglyph = {
+		"Hieroglyph",
+		"Heiroglyph",
+		"Hiroglyph",
+	},
+	v_petroglyph = {
+		"Petroglyph",
+		"Hieroglyph+",
+		"Hieroglyph Plus",
+		"Hieroglyph 2",
+	},
+	v_directors_cut = {
+		"Director's Cut",
+		"Directors Cut",
+		"Directorscut",
+	},
+	v_retcon = {
+		"Retcon",
+		"Boss Reroll",
+		"Director's Cut+",
+		"Director's Cut Plus",
+		"Director's Cut 2",
+	},
+	v_paint_brush = {
+		"Paint Brush",
+		"Paintbrush",
+		"Hand Size Voucher",
+	},
+	v_palette = {
+		"Palette",
+		"Pallete",
+		"Paint Brush+",
+		"Paint Brush Plus",
+		"Paint Brush 2",
+	},
+
+	---- Cryptid Cards
+	-- M jokers
+	j_cry_m = {
+		"m",
+		"lowercase m",
+	},
+	j_cry_mprime = {
+		"Flesh Panopticon",
+		"Minos Prime",
+		"M Prime",
+	},
+	j_cry_M = {
+		"M",
+		"Capital M",
+	},
+	j_cry_bubblem = {
+		"BubbleM",
+		"Bubble M",
+	},
+	j_cry_foodm = {
+		"McDonalds",
+		"McDonald's",
+		"Food M",
+		"Fast Food M",
+	},
+	j_cry_mstack = {
+		"Stack M",
+		"M Stack",
+	},
+	j_cry_mneon = {
+		"Neon M",
+		"mneon",
+	},
+	j_cry_notebook = {
+		"Notebook",
+		"The Notebook",
+		"The Motebook",
+		"Motebook",
+		"Noting this down",
+		"Moting this down",
+	},
+	j_cry_bonk = {
+		"Bonk",
+	},
+	j_cry_loopy = {
+		"Loopy",
+		"Loopy M",
+	},
+	j_cry_scrabble = {
+		"Scrabble",
+		"Scrabble Tile",
+		"Scrabble M",
+		"Letter M",
+	},
+	j_cry_sacrifice = {
+		"Sacrifice",
+	},
+	j_cry_reverse = {
+		"Uno Card",
+		"Uno Reverse",
+		"Reverse Card",
+		"Uno Reverse Card",
+		"Reverse Uno Card",
+	},
+	j_cry_longboi = {
+		"Monster",
+		"longboi",
+		"long boi",
+	},
+	j_cry_megg = {
+		"Megg",
+		"Jolly Egg",
+	},
+	j_cry_macabre = {
+		"Macabre",
+		"Macabre Joker",
+		"M Dagger",
+	},
+	j_cry_smallestm = {
+		"Tiny",
+		"Tiny M",
+		"very small m",
+		"teeny m",
+	},
+	j_cry_virgo = {
+		"Virgo",
+		"Virgin",
+	},
+	j_cry_doodlem = {
+		"Doodle",
+		"Doodle M",
+		"The anniversary is back on!",
+	},
+	j_cry_jollysus = {
+		"Jolly Joker?",
+		"jolly sus",
+		"blue sus",
+		"sus jolly",
+	},
+	j_cry_biggestm = {
+		"Huge",
+		"Big Boned",
+		"not fat",
+		"Massive",
+		"Huge M",
+	},
+
+	-- SpOoOky jokers
+	-- placeholder
+
+	-- Cursed Jokers
+	-- for some reason
+
+	-- Code Jokers (not code cards)
+	-- placeholder
+
+	-- Secret Placeholder 1
+	-- Smaller Placeholder
+
+	-- Misc Jokers
+	-- bigger placeholder
+
+	-- Epic Jokers
+	-- epic placeholder
+
+	-- Exotic Jokers
+	-- exotic placeholder
+
+	-- Cryptid Tarots
+	-- placeholder for the like 5 there is
+
+	-- Cryptid Planets
+	c_cry_planetlua = {
+		"Planet.lua",
+		"Lua Planet",
+	},
+	c_cry_abelt = {
+		"Asteroid Belt",
+		"Bulwark",
+	},
+	c_cry_void = {
+		"Void",
+		"Clusterfuck",
+		"Cluster",
+	},
+	c_cry_marsmoons = {
+		"Mars Moons",
+		"Phobos",
+		"Phobos and Deimos",
+		"Ultimate Pair",
+	},
+	c_cry_universe = {
+		"Universe",
+		"The Universe In Its Entirety",
+		"The Universe In Its Fucking Entirety",
+		"The Entire Deck",
+		"The Entire Fucking Deck",
+	},
+	c_cry_nstar = {
+		"Neutron Star",
+		"Random Hand",
+	},
+	c_cry_sunplanet = {
+		"Sun",
+		"Sol",
+		"Ascended Hands",
+		"Ascended Hand",
+	},
+	c_cry_Timantti = {
+		"Ruutu",
+		"Diamond Planet",
+		"High Card Pair Two Pair",
+	},
+	c_cry_Klubi = {
+		"Risti",
+		"Club Planet",
+		"Three of a Kind Straight Flush",
+		"3oak Straight Flush",
+	},
+	c_cry_Sydan = {
+		"Hertta",
+		"Heart Planet",
+		"Full House Four of a Kind Straight Flush",
+		"Full House 4oak Straight Flush",
+	},
+	c_cry_Lapio = {
+		"Pata",
+		"Spade Planet",
+		"Five of a Kind Flush House Flush Five",
+		"5oak Flush House Flush Five",
+	},
+	c_cry_Kaikki = {
+		"Kaikki",
+		"Wild Planet",
+		"Bulwark Clusterfuck Ultimate Pair",
+		"Bulwark Cluster Ultimate Pair",
+	},
+
+	-- Cryptid Spectrals
+	-- magic placeholder
+
+	-- Cryptid Unique Consumeables
+	-- probably not going to be used ever
+
+	-- Cryptid Code Cards
+	-- 01010000 01001100 01000001 01000011 01000101 01001000 01001111 01001100 01000100 01000101 01010010
+
+	-- Secret Placeholder 2
+	-- another smaller placeholder
+
+	-- Cryptid Booster Packs
+	-- placeholder in a placeholder in a placeholder in a holdplacer in a placeholder
+
+	-- Cryptid Tags
+	-- meow
+
+	-- Cryptid Vouchers
+	-- placeholder (T1 T2 T1 T2 pattern)
+
+	-- Cryptid T3 Vouchers
+	-- super strong placeholder
 
 	--[[ 
 	Format:

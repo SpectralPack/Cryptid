@@ -517,3 +517,22 @@ payload = '''
 v_planet_tycoon=    {order = 20,     discovered = false, unlocked = false, available = true,cost = 10, name = "Planet Tycoon", pos = {x=2,y=1}, set = "Voucher", config = {extra = 32/9.6, extra_disp = 4}, requires = {'v_planet_merchant'},unlock_condition = {type = 'c_planets_bought', extra = 50}},
 '''
 match_indent = true
+
+#Fix copying jokers with bignum values
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if not strip_edition then "
+position = "before"
+payload = '''
+Cryptid.misprintize_tbl(
+				new_card.config.center_key,
+				new_card,
+				"ability",
+				nil,
+				{min = 1, max = 1},
+				true,
+				Cryptid.is_card_big(new_card)
+			)
+'''
+match_indent = true
