@@ -1480,6 +1480,37 @@ return {
 					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
 			},
+			j_cry_gameofyoumustdice = {
+				name = "How About a Game of YOU MUST DICE??",
+				text = {
+					"Roll {C:attention}1d10{}. Let this result be {C:attention}Y{}",
+					"Roll {C:attention}Yd4{}. Let this result be {C:attention}Z{}",
+					"This Joker gains {X:mult,C:white}X(#1# x ZdY){} Mult",
+					"at the end of the round",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
+				},
+			},
+			j_cry_singularitas = {
+				name = "Singularitas",
+				text = {
+					"At the end of round, level up all {C:attention}Poker Hands{}",
+					"by {C:mult}({C:attention}({C:money}({C:green}({C:planet}({C:purple}({C:cry_ascendant}1{C:dark_edition}d{C:cry_ascendant}20{C:purple}){C:dark_edition}d{C:cry_ascendant}12{C:planet}){C:dark_edition}d{C:cry_ascendant}10{C:green}){C:dark_edition}d{C:cry_ascendant}8{C:money}){C:dark_edition}d{C:cry_ascendant}6{C:attention}){C:dark_edition}d{C:cry_ascendant}4{C:mult}){C:dark_edition} +1{} levels",
+					"If any {C:attention}d{} is a Critical Success, {C:attention}double{} its result",
+					"If the first {C:attention}d20{} is a Critical Failure, its roll is set to {C:attention}0{}",
+					" ",
+					"{C:inactive,s:0.8}\"Watch in amazement as your brain collapses into a black hole!{}",
+					"{C:inactive,s:0.8}At least that's one more level up, right?\"{}",
+				},
+			},	
+			j_cry_d20 = {
+				name = "D20",
+				text = {
+					"{C:mult}+(#1#-#2#){} Mult",
+					"On {C:attention}Natural 20{}, {X:mult,C:white}x#3#{} Mult",
+					"On {C:attention}Natural 1{}, {X:mult,C:white}x#4#{} Mult",
+					
+				},
+			},
 			j_cry_delirious = {
 				name = "Delirious Joker",
 				text = {
