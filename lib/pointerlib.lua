@@ -91,7 +91,14 @@ function Cryptid.pointergetalias(target) -- "Is this alias legit?"
 		return string.lower(strn)
 	end
 	for _, group in pairs(G.localization.descriptions) do
-		if _ ~= "Back" and _ ~= "Content Set" and _ ~= "Edition" and _ ~= "Enhanced" and _ ~= "Stake" and _ ~= "Other" then
+		if
+			_ ~= "Back"
+			and _ ~= "Content Set"
+			and _ ~= "Edition"
+			and _ ~= "Enhanced"
+			and _ ~= "Stake"
+			and _ ~= "Other"
+		then
 			for key, card in pairs(group) do
 				if G.P_CENTERS[key] then
 					if apply_lower(card.name) == apply_lower(target) then
