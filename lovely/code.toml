@@ -58,21 +58,6 @@ position = "at"
 payload = "if area and area.cards and area.cards[1] then"
 match_indent = true
 
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = """for k, v in ipairs(G.GAME.tags) do
-    if (type(v) == "table") and v.is and v:is(Tag) then 
-      local tagSer = v:save()
-      if tagSer then tags[k] = tagSer end
-    end
-  end"""
-position = "after"
-payload = """
-if G.GAME.
-"""
-match_indent = true
-
 # Crash - use glitched shader
 [[patches]]
 [patches.pattern]
