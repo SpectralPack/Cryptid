@@ -244,6 +244,12 @@ local cryptidConfigTab = function()
 		ref_value = "force_tooltips",
 	})
 	cry_nodes[#cry_nodes + 1] = create_toggle({
+		label = localize("cry_no_glitched_fx"),
+		active_colour = HEX("55fc70"),
+		ref_table = Cryptid_config,
+		ref_value = "no_glitched_fx",
+	})
+	cry_nodes[#cry_nodes + 1] = create_toggle({
 		label = localize("cry_feat_https module"),
 		active_colour = HEX("b1c78d"),
 		ref_table = Cryptid_config,

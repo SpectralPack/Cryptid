@@ -9,6 +9,7 @@ return {
 	["family_mode"] = false, -- removes f*ck
 	["experimental"] = false, -- experimental stuff
 	["force_tooltips"] = true, -- i don't actually know what this does
+	["no_glitched_fx"] = false, -- disables the shader for "Glitched"
 	["HTTPS"] = true, -- your internet connection
 	["menu"] = true, -- i don't know what this does either
 }
