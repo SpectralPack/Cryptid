@@ -1235,6 +1235,7 @@ local exploit = {
 					"the entire deck",
 					"everything of a kind",
 					"everything",
+					"wholedeck",
 				},
 			}
 			local current_hand = nil
@@ -1398,22 +1399,21 @@ local crynperror = {
 	end,
 	use = function(self, card, area, copier)
 		for i = 1, #G.GAME.last_hand_played_cards do
-			local check = true
-			for j = 1, #G.hand.cards do
-				if G.GAME.last_hand_played_cards[i] == G.hand.cards[j] then
-					check = nil
+			for _, v in pairs(G.discard.cards) do
+				if v.sort_id == G.GAME.last_hand_played_cards[i] then
+					if v.facing == "back" then
+						v:flip()
+					end
+					draw_card(G.discard, G.hand, i * 100 / 5, "up", nil, v)
 				end
 			end
-			if G.discard.cards[i] and check then
-				if G.discard.cards[i].facing == "back" then
-					G.discard.cards[i]:flip()
+			for _, v in pairs(G.deck.cards) do
+				if v.sort_id == G.GAME.last_hand_played_cards[i] then
+					if v.facing == "back" then
+						v:flip()
+					end
+					draw_card(G.deck, G.hand, i * 100 / 5, "up", nil, v)
 				end
-				draw_card(G.discard, G.hand, i * 100 / 5, "up", nil, G.GAME.last_hand_played_cards[i])
-			elseif G.deck.cards[i] and check then
-				if G.deck.cards[i].facing == "back" then
-					G.deck.cards[i]:flip()
-				end
-				draw_card(G.deck, G.hand, i * 100 / 5, "up", nil, G.GAME.last_hand_played_cards[i])
 			end
 		end
 	end,
@@ -1719,7 +1719,7 @@ local commit = {
 	cost = 4,
 	order = 408,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta then
+		if not G.GAME.modifiers.cry_beta or card.area == G.pack_cards then
 			return #G.jokers.highlighted == 1
 				and not G.jokers.highlighted[1].ability.eternal
 				and not (
@@ -2383,8 +2383,8 @@ local hook = {
 	atlas = "atlasnotjokers",
 	order = 414,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta then
-			return (#G.jokers.highlighted == 2 and #G.consumeables.highlighted == 1)
+		if not G.GAME.modifiers.cry_beta or card.area == G.pack_cards then
+			return #G.jokers.highlighted == 2
 		else
 			return #G.jokers.highlighted == 3
 		end
@@ -2403,6 +2403,20 @@ local hook = {
 			end
 		end
 		if card1 and card2 then
+			if card1.ability.cry_hooked then
+				for _, v in ipairs(G.jokers.cards) do
+					if v.sort_id == card1.ability.cry_hook_id then
+						v.ability.cry_hooked = false
+					end
+				end
+			end
+			if card2.ability.cry_hooked then
+				for _, v in ipairs(G.jokers.cards) do
+					if v.sort_id == card2.ability.cry_hook_id then
+						v.ability.cry_hooked = false
+					end
+				end
+			end
 			card1.ability.cry_hooked = true
 			card2.ability.cry_hooked = true
 			card1.ability.cry_hook_id = card2.sort_id
@@ -2561,14 +2575,24 @@ local assemble = {
 		end
 	end,
 	use = function(self, card, area, copier)
-		local upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		local upgrade_hand
+		if #G.hand.highlighted > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		elseif #G.play.cards > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
+		end
 		if upgrade_hand then
 			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
 			G.hand:unhighlight_all()
 		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		local upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		local upgrade_hand
+		if #G.hand.highlighted > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		elseif #G.play.cards > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
+		end
 		if upgrade_hand then
 			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards * number
 			G.hand:unhighlight_all()
@@ -2682,6 +2706,9 @@ local revert = {
 		return G.GAME.cry_revert
 	end,
 	use = function(self, card, area, copier)
+		if not G.GAME.cry_revert then
+			return
+		end
 		G.E_MANAGER:add_event(
 			Event({
 				trigger = "after",
@@ -3866,7 +3893,7 @@ local multiply = {
 	pos = { x = 10, y = 2 },
 	cost = 4,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta then
+		if not G.GAME.modifiers.cry_beta or card.area == G.pack_cards then
 			return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immutable", true)
 		else
 			return #G.jokers.highlighted == 2
@@ -3938,7 +3965,6 @@ local delete = {
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 			and card.area == (G.GAME.modifiers.cry_beta and G.jokers or G.consumeables)
-			and #G.jokers.highlighted + #G.consumeables.highlighted == 1
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
 			and G.shop_jokers.highlighted[1] ~= card
 			and G.shop_booster.highlighted[1] ~= card

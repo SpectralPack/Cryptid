@@ -352,10 +352,7 @@ return {
 		-- Disallow use of Debuffed Perishable consumables
 		local cuc = Card.can_use_consumeable
 		function Card:can_use_consumeable(any_state, skip_check)
-			if self.ability.perish_tally == nil then
-				self.ability.perish_tally = G.GAME.perishable_rounds or 5
-			end
-			if self.ability.perishable and self.ability.perish_tally <= 0 then
+			if self.debuff then
 				return false
 			end
 			return cuc(self, any_state, skip_check)

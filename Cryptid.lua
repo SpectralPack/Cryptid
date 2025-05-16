@@ -129,7 +129,7 @@ end
 -- either in [Mod]/Cryptid.lua or [Mod]/Cryptid/*.lua
 for _, mod in pairs(SMODS.Mods) do
 	-- Note: Crashes with lone lua files
-	if mod.path and mod.id ~= "Cryptid" then
+	if not mod.disabled and mod.path and mod.id ~= "Cryptid" then
 		local path = mod.path
 		local files = NFS.getDirectoryItems(path)
 		for _, file in ipairs(files) do

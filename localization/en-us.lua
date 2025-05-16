@@ -3044,7 +3044,7 @@ return {
 					"{C:inactive}(Currently {X:gold,C:white}X(#3#^asc){C:inactive})",
 				},
 			},
-			c_cry_ruutu = {
+			c_cry_Timantii = {
 				name = "Ruutu",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
@@ -3054,7 +3054,7 @@ return {
 					"and {C:attention}#3#{}",
 				},
 			},
-			c_cry_risti = {
+			c_cry_Klubi = {
 				name = "Risti",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
@@ -3064,7 +3064,7 @@ return {
 					"and {C:attention}#3#{}",
 				},
 			},
-			c_cry_hertta = {
+			c_cry_Sydan = {
 				name = "Hertta",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
@@ -3074,7 +3074,7 @@ return {
 					"and {C:attention}#3#{}",
 				},
 			},
-			c_cry_pata = {
+			c_cry_Lapio = {
 				name = "Pata",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",

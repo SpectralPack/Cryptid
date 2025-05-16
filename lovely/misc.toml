@@ -15,6 +15,7 @@ new_card.from_copy = true
 match_indent = true
 
 # Update value of Monsters created via copy_card
+# Also make copied cards lose their hooks
 [[patches]]
 [patches.pattern]
 target = 'functions/common_events.lua'
@@ -22,6 +23,7 @@ pattern = "if not strip_edition then"
 position = 'before'
 payload = '''
 if new_card.ability.name == "cry-longboi" then new_card:set_ability(new_card.config.center) end
+if new_card.ability.cry_hooked then new_card.ability.cry_hooked = nil end
 '''
 match_indent = true
 
@@ -321,7 +323,7 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = '''-- TARGET: add your own CardAreas for joker evaluation'''
 position = "after"
 payload = '''
-if G.GAME.modifiers.cry_beta then t = {G.jokers} end'''
+if G.GAME.modifiers.cry_beta then t = {G.jokers, G.vouchers} end'''
 match_indent = true
 
 # Fix Boredom crash (somehow)
@@ -520,5 +522,18 @@ if amt > 0 or amt < 0 then
 position = "at"
 payload = """
 if to_big(amt) ~= to_big(0) then
+"""
+match_indent = true
+
+#Make joker-editioning consumables not crash when they have no valid target
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = """
+local edition = nil
+"""
+position = "before"
+payload = """
+if not eligible_card then return true end
 """
 match_indent = true

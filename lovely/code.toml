@@ -542,7 +542,7 @@ position = "after"
 payload = '''
 G.GAME.last_hand_played_cards = {}
 for i = 1, #G.play.cards do
-	G.GAME.last_hand_played_cards[i] = G.play.cards[i]
+	G.GAME.last_hand_played_cards[i] = G.play.cards[i].sort_id
 end
 '''
 match_indent = true

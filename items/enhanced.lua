@@ -344,6 +344,7 @@ return {
 					or center.name == "Mime"
 					or center.name == "Hack"
 					or center.name == "Sock and Buskin"
+					or center.name == "Hanging Chad"
 					or center.name == "Invisible Joker"
 					or center.name == "Swashbuckler"
 					or center.name == "Smeared Joker"

@@ -829,7 +829,7 @@ local pickle = {
 	end,
 	calculate = function(self, card, context)
 		if context.skip_blind or context.forcetrigger then
-			for i = 1, math.min(card.ability.immutable.max_tags, card.ability.extra.tags) do
+			for i = 1, to_number(math.min(card.ability.immutable.max_tags, card.ability.extra.tags)) do
 				local tag_key = get_next_tag_key("cry_pickle")
 				if tag_key == "tag_boss" then
 					i = i - 1 --skip these, as they can cause bugs with pack opening from other tags

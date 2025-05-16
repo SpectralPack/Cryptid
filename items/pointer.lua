@@ -1709,10 +1709,12 @@ local aliases = {
 		"Tag Charm",
 		"Tarot Tag",
 		"Acrana Tag",
+		"Arcana Tag",
 		"Tag Tarot",
 		"Tag Arcana",
 		"Charm Pack Tag",
 		"Tarot Pack Tag",
+		"Arcana Pack Tag",
 		"Acrana Pack Tag",
 	},
 	tag_meteor = {
@@ -2194,9 +2196,24 @@ local aliases = {
 	-- Smaller Placeholder
 
 	-- Misc Jokers
+	j_cry_oil_lamp = {
+		"Oil Lamp",
+		"Oillamp",
+	},
+	j_cry_tropical_smoothie = {
+		"Tropical Smoothie",
+		"Tropical",
+		"Smoothie",
+	},
 	-- bigger placeholder
 
 	-- Epic Jokers
+	j_cry_altgoogol = {
+		"Nostalgic Googol Play Card",
+		"NGPC",
+		"Nostalgic Googol",
+		"Nostalgic Google Play Card",
+	},
 	-- epic placeholder
 
 	-- Exotic Jokers

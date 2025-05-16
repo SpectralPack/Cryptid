@@ -157,6 +157,8 @@ function Blind:defeat(s)
 		and self.name ~= "The Sink"
 		and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"])
 		and (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
+		and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_cry_scorch"])
+		and (self.name ~= "cry_scorch" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
 		and (self.name ~= "The Eye" or not G.GAME.defeated_blinds["bl_mouth"])
 		and (self.name ~= "The Mouth" or not G.GAME.defeated_blinds["bl_eye"])
 		and (self.name ~= "cry-Lavender Loop" or not G.GAME.defeated_blinds["bl_cry_tax"])
@@ -831,7 +833,10 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 
 	local front = (
 		(_type == "Base" or _type == "Enhanced")
-		and pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
+		and (
+			pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
+			or G.P_CARDS["S_T"]
+		)
 	) or nil
 
 	if area == "ERROR" then
