@@ -19,7 +19,6 @@ function Cryptid.demicolonGetTriggerable(card)
 	end
 	if card.ability.consumeable and Cryptid.forcetriggerConsumableCheck(card) then
 		n[1] = true
-		n[2] = true
 	end
 	return n
 end
