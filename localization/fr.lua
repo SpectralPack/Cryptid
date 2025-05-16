@@ -2658,7 +2658,7 @@ return {
 				name = "Maison cassée",
 				text = {
 					"{X:mult,C:white} X#1# {} Multi",
-					"{C:green}#2# chance#<2>s# sur #3#{} que cette carte",
+					"{C:green}#2# chance#<s>2# sur #3#{} que cette carte",
 					"soit détruite à la fin",
 					"de la manche",
 				},
