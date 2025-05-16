@@ -1073,6 +1073,69 @@ function Cryptid.forcetrigger(card, context)
 
 				G.jokers:unhighlight_all()
 			end
+
+		elseif card.ability.name == "cry-conduit" or card.ability.name == "cry-Seed" then --Cards that work with both playing cards and jokers
+
+			local _cards = {}
+			local targets = {}
+
+			for k, v in ipairs(G.hand.cards) do
+				if not v.will_be_destroyed then
+					_cards[#_cards + 1] = v
+				end
+			end
+			for k, v in ipairs(G.jokers.cards) do
+				if 
+					not v.will_be_destroyed 
+					and v ~= card 
+				then
+					_cards[#_cards + 1] = v
+				end
+			end
+
+			local highlight_count = to_number(math.min(#_cards, card.ability.name == "cry-conduit" and 2 or 1))
+
+			if #_cards >= highlight_count then
+				for i = 1, highlight_count do
+					local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
+					targets[#targets + 1] = table.remove(_cards, card_key)
+
+					if selected_card.area == G.hand then
+						G.hand:add_to_highlighted(selected_card, true)
+					else
+						G.jokers:add_to_highlighted(selected_card, true)
+					end
+				end
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for _, v in ipairs(targets) do
+							if v.area == G.hand then
+								G.hand:add_to_highlighted(v, true)
+							else
+								G.jokers:add_to_highlighted(v, true)
+							end
+							play_sound("card1", 1)
+						end
+						return true
+					end,
+				}))
+
+				card:use_consumeable()
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.hand:unhighlight_all()
+						G.jokers:unhighlight_all()
+						return true
+					end,
+				}))
+
+				G.hand:unhighlight_all()
+				G.jokers:unhighlight_all()
+
+			end
+
 		else
 			-- Copy rigged code to guarantee WoF and Planet.lua
 

@@ -524,3 +524,16 @@ payload = """
 if to_big(amt) ~= to_big(0) then
 """
 match_indent = true
+
+#Make joker-editioning consumables not crash when they have no valid target
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = """
+local edition = nil
+"""
+position = "before"
+payload = """
+if not eligible_card then return true end
+"""
+match_indent = true
