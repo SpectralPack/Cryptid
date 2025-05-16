@@ -1235,6 +1235,7 @@ local exploit = {
 					"the entire deck",
 					"everything of a kind",
 					"everything",
+					"wholedeck",
 				},
 			}
 			local current_hand = nil
@@ -2574,14 +2575,24 @@ local assemble = {
 		end
 	end,
 	use = function(self, card, area, copier)
-		local upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		local upgrade_hand
+		if #G.hand.highlighted > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		elseif #G.play.cards > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
+		end
 		if upgrade_hand then
 			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
 			G.hand:unhighlight_all()
 		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		local upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		local upgrade_hand
+		if #G.hand.highlighted > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		elseif #G.play.cards > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
+		end
 		if upgrade_hand then
 			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards * number
 			G.hand:unhighlight_all()
@@ -2695,6 +2706,7 @@ local revert = {
 		return G.GAME.cry_revert
 	end,
 	use = function(self, card, area, copier)
+		if not G.GAME.cry_revert then return end
 		G.E_MANAGER:add_event(
 			Event({
 				trigger = "after",
