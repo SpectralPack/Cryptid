@@ -1072,9 +1072,7 @@ function Cryptid.forcetrigger(card, context)
 
 				G.jokers:unhighlight_all()
 			end
-
 		elseif card.ability.name == "cry-conduit" or card.ability.name == "cry-Seed" then --Cards that work with both playing cards and jokers
-
 			local _cards = {}
 			local targets = {}
 
@@ -1084,10 +1082,7 @@ function Cryptid.forcetrigger(card, context)
 				end
 			end
 			for k, v in ipairs(G.jokers.cards) do
-				if 
-					not v.will_be_destroyed 
-					and v ~= card 
-				then
+				if not v.will_be_destroyed and v ~= card then
 					_cards[#_cards + 1] = v
 				end
 			end
@@ -1132,11 +1127,8 @@ function Cryptid.forcetrigger(card, context)
 
 				G.hand:unhighlight_all()
 				G.jokers:unhighlight_all()
-
 			end
-
 		elseif card.ability.name == "cry-Merge" then --I banned this card from being forcetriggered after I wrote this code, but it seems a waste to delete it.
-			
 			local _cards = {}
 			local _cards2 = {}
 
@@ -1146,12 +1138,12 @@ function Cryptid.forcetrigger(card, context)
 				end
 			end
 			for k, v in ipairs(G.consumeables.cards) do
-				if 
+				if
 					v.ability.consumeable
 					and not v.ability.eternal
 					and v.ability.set ~= "Unique"
-					and	not v.will_be_destroyed
-					and v ~= card 
+					and not v.will_be_destroyed
+					and v ~= card
 				then
 					_cards2[#_cards2 + 1] = v
 				end
@@ -1188,9 +1180,7 @@ function Cryptid.forcetrigger(card, context)
 
 				G.hand:unhighlight_all()
 				G.consumeables:unhighlight_all()
-
 			end
-			
 		else
 			-- Copy rigged code to guarantee WoF and Planet.lua
 
@@ -1206,7 +1196,9 @@ function Cryptid.forcetrigger(card, context)
 end
 
 function Cryptid.forcetriggerVanillaCheck(card)
-	if not card then return false end
+	if not card then
+		return false
+	end
 	local compatvanilla = {
 		"Joker",
 		"Greedy Joker",
@@ -1369,7 +1361,9 @@ function Cryptid.forcetriggerVanillaCheck(card)
 end
 
 function Cryptid.forcetriggerConsumableCheck(card)
-	if not card then return false end
+	if not card then
+		return false
+	end
 	local banned = {
 		"cry-Exploit",
 		"cry-Merge",
@@ -1377,7 +1371,7 @@ function Cryptid.forcetriggerConsumableCheck(card)
 		"cry-Delete",
 		"cry-Pointer",
 	}
-	for i = 1, #banned do 
+	for i = 1, #banned do
 		if card.ability.name == banned[i] then
 			return false
 		end

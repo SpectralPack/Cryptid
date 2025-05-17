@@ -2706,7 +2706,9 @@ local revert = {
 		return G.GAME.cry_revert
 	end,
 	use = function(self, card, area, copier)
-		if not G.GAME.cry_revert then return end
+		if not G.GAME.cry_revert then
+			return
+		end
 		G.E_MANAGER:add_event(
 			Event({
 				trigger = "after",

@@ -346,7 +346,9 @@ local trade = {
 			end
 		end
 		local unredeemed_voucher = pseudorandom_element(usable_vouchers, pseudoseed("cry_trade"))
-		if not unredeemed_voucher then return end
+		if not unredeemed_voucher then
+			return
+		end
 		--redeem extra voucher code based on Betmma's Vouchers
 		local area
 		if G.STATE == G.STATES.HAND_PLAYED then
