@@ -395,7 +395,7 @@ local queensgambit = {
 	calculate = function(self, card, context)
 		if context.destroying_card and not context.blueprint then
 			if
-				G.GAME.current_round.current_hand.handname == "Royal Flush"
+				G.GAME.current_round.current_hand.handname == localize("Royal Flush", "poker_hands")
 				and context.destroying_card:get_id() == 12
 			then
 				card_eval_status_text(
