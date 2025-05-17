@@ -98,7 +98,13 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						Cryptid.base_values[name] = {}
 					end
 					if not Cryptid.base_values[name][k] then
-						Cryptid.base_values[name][k] = tbl[k]
+						if G.P_CENTERS[name] and G.P_CENTERS[name].config[k] then
+							Cryptid.base_values[name][k] = G.P_CENTERS[name].config[k]
+						elseif k == "cry_prob" then
+							Cryptid.base_values[name][k] = 1
+						else
+							Cryptid.base_values[name][k] = tbl[k]
+						end
 					end
 
 					local initial = (stack and tbl[k] or Cryptid.base_values[name][k])
@@ -140,7 +146,11 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 							Cryptid.base_values[name][k] = {}
 						end
 						if not Cryptid.base_values[name][k][_k] then
-							Cryptid.base_values[name][k][_k] = tbl[k][_k]
+							if G.P_CENTERS[name] and type(G.P_CENTERS[name].config[k]) == "table" and G.P_CENTERS[name].config[k][_k] then
+								Cryptid.base_values[name][k][_k] = G.P_CENTERS[name].config[k][_k]
+							else
+								Cryptid.base_values[name][k][_k] = tbl[k][_k]
+							end
 						end
 
 						local initial = (stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
