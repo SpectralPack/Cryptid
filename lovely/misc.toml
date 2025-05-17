@@ -525,6 +525,30 @@ if to_big(amt) ~= to_big(0) then
 """
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+return val and (val > 0 and '+'..val or ''..val) or '0'
+"""
+position = "at"
+payload = """
+return val and (to_big(val) > to_big(0) and '+'..number_format(val) or ''..number_format(val)) or '0'
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+return val and (val > 0 and '$'..val or '-$'..-val) or '0'
+"""
+position = "at"
+payload = """
+return val and (to_big(val) > to_big(0) and '$'..number_format(val) or '-$'..number_format(-val)) or '0'
+"""
+match_indent = true
+
 #Make joker-editioning consumables not crash when they have no valid target
 [[patches]]
 [patches.pattern]
