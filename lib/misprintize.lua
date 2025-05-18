@@ -70,7 +70,11 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 	local max_booster_slots = 25
 
 	local function num_too_big(initial, min, max, limit)
-		return (to_big(initial) > to_big(limit) or to_big(initial)*min > to_big(limit) or to_big(initial)*max > to_big(limit))
+		return (
+			to_big(initial) > to_big(limit)
+			or to_big(initial) * min > to_big(limit)
+			or to_big(initial) * max > to_big(limit)
+		)
 	end
 
 	if name and ref_tbl and ref_value then
