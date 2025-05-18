@@ -108,11 +108,9 @@ local happyhouse = {
 	pos = { x = 2, y = 4 },
 	order = 2,
 	config = {
-		extra = {
+		immutable = {
 			mult = 4,
 			trigger = 114,
-		},
-		immutable = {
 			check = 0,
 			ante_cutoff = 8,
 		},
@@ -126,9 +124,9 @@ local happyhouse = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(center.ability.extra.mult),
+				number_format(center.ability.immutable.mult),
 				number_format(center.ability.immutable.check),
-				number_format(center.ability.extra.trigger),
+				number_format(center.ability.immutable.trigger),
 			},
 		}
 	end,
@@ -141,7 +139,7 @@ local happyhouse = {
 		then
 			card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 			if
-				card.ability.immutable.check == card.ability.extra.trigger
+				card.ability.immutable.check == card.ability.immutable.trigger
 				and G.GAME.round_resets.ante < card.ability.immutable.ante_cutoff
 				and not (G.GAME.selected_back.effect.center.key == "antimatter" or G.GAME.selected_back.effect.center.key == "equilibrium")
 				and (
@@ -156,11 +154,11 @@ local happyhouse = {
 			then --Yes, the cut off point is boss blind Ante 7. I'm evil >:3.
 				check_for_unlock({ type = "home_realtor" })
 			end
-			if card.ability.immutable.check < card.ability.extra.trigger then --Hardcoded, dont want misprint to mess with this hehe
+			if card.ability.immutable.check < card.ability.immutable.trigger then --Hardcoded, dont want misprint to mess with this hehe
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = number_format(card.ability.immutable.check) .. "/" .. number_format(
-							card.ability.extra.trigger
+							card.ability.immutable.trigger
 						),
 						colour = G.C.DARK_EDITION,
 					}),
@@ -169,16 +167,16 @@ local happyhouse = {
 		end
 		if
 			context.joker_main
-			and (to_big(card.ability.extra.mult) > to_big(1))
-			and to_big(card.ability.immutable.check) > to_big(card.ability.extra.trigger)
+			and (to_big(card.ability.immutable.mult) > to_big(1))
+			and to_big(card.ability.immutable.check) > to_big(card.ability.immutable.trigger)
 		then
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
+					vars = { number_format(card.ability.immutable.mult) },
 				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
+				Emult_mod = lenient_bignum(card.ability.immutable.mult),
 				colour = G.C.DARK_EDITION,
 				card = card,
 			}
@@ -188,9 +186,9 @@ local happyhouse = {
 				message = localize({
 					type = "variable",
 					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
+					vars = { number_format(card.ability.immutable.mult) },
 				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
+				Emult_mod = lenient_bignum(card.ability.immutable.mult),
 				colour = G.C.DARK_EDITION,
 				card = card,
 			}
