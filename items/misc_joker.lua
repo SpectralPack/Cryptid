@@ -1640,7 +1640,7 @@ local jimball = {
 			end
 		end
 		--Adding actual scoring because that is missing
-		if context.joker_main and lenient_bignum(card.ability.extra.x_mult) > 1 then
+		if context.joker_main and to_big(card.ability.extra.x_mult) > to_big(1) then
 			return {
 				message = localize({
 					type = "variable",
@@ -7423,7 +7423,7 @@ local night = {
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main and G.GAME.current_round.hands_left == 0 then
-			if card.ability.extra.mult > 1 then
+			if to_big(card.ability.extra.mult) > to_big(1) then
 				return {
 					message = localize({
 						type = "variable",
@@ -7555,7 +7555,7 @@ local busdriver = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main and (card.ability.extra.mult > 0) then
+		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			local oddy = math.max(1, card.ability.extra.odds)
 			if
 				pseudorandom("busdriver")
