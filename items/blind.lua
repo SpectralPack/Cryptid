@@ -621,11 +621,9 @@ local pin = {
 			(card.area == G.jokers)
 			and not G.GAME.blind.disabled
 			and (
-				card.config.center.rarity ~= 3
-				and card.config.center.rarity ~= 2
-				and card.config.center.rarity ~= 1
-				and card.config.center.rarity ~= 5
-				and card.config.center.rarity ~= nil
+				card.config.center.rarity == 4
+				or card.config.center.rarity == "cry_epic"
+				or card.config.center.rarity == "cry_exotic"
 			)
 		then
 			return true
