@@ -831,6 +831,36 @@ local decision = {
 		G.GAME.cry_fastened = nil
 	end,
 }
+--0.1x Blind Size
+--Mult is always equal to 1
+local cube = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	object_type = "Blind",
+	name = "cry-cube",
+	key = "cube",
+	atlas = "blinds",
+	order = 23,
+	boss_colour = G.C.CHIPS,
+	mult = 0.1,
+	pos = { x = 0, y = 21 },
+	dollars = 5,
+	boss = {
+		min = 1,
+	},
+	calculate = function(self, blind, context)
+		local cube_mod_mult = mod_mult
+		mod_mult = function(mult)
+			if context.setting_blind and G.GAME.blind.config.blind.key == "bl_cry_cube" then
+				return 1
+			end
+		return cube_mod_mult(mult)
+	end
+end
+}
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 local lavender_loop = {
@@ -1609,5 +1639,6 @@ local items_togo = {
 	lavender_loop,
 	trophy,
 	decision,
+	cube,
 }
 return { name = "Blinds", items = items_togo }
