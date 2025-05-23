@@ -39,6 +39,7 @@ function get_pack(_key, _type)
 	end
 	return abc
 end
+
 -- get_currrent_pool hook for Deck of Equilibrium and Copies
 local gcp = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
@@ -60,7 +61,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 				pool[i] = "tag_cry_quintuple"
 			end
 		end
-	-- Deck of Equilibrium stuff
+		-- Deck of Equilibrium stuff
 	elseif
 		G.GAME.modifiers.cry_equilibrium
 		and not override_equilibrium_effect
@@ -96,6 +97,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 	end
 	return gcp(_type, _rarity, _legendary, _append)
 end
+
 local gnb = get_new_boss
 function get_new_boss()
 	--Fix an issue with adding bosses mid-run
@@ -207,6 +209,7 @@ function reset_blinds()
 	end
 	rb()
 end
+
 --Init stuff at the start of the game
 local gigo = Game.init_game_object
 function Game:init_game_object()
@@ -394,7 +397,8 @@ function Game:update(dt)
 			then
 				if G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].name == "cry-Obsidian Orb" then
 					for i = 1, #G.GAME.defeated_blinds do
-						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult
+						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = G.P_BLINDS
+							[G.GAME.round_resets.blind_choices[c]].mult
 							* G.P_BLINDS[G.GAME.defeated_blinds[i]]
 							/ 2
 					end
@@ -410,9 +414,9 @@ function Game:update(dt)
 				G.GAME.CRY_BLINDS[c] = (G.GAME.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult)
 					+ (
 						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod
-							and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(
-								dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)
-							)
+						and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(
+							dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)
+						)
 						or 0
 					)
 				--Update UI
@@ -431,14 +435,14 @@ function Game:update(dt)
 						if chip_text_node then
 							chip_text_node.config.text = number_format(
 								get_blind_amount(G.GAME.round_resets.blind_ante)
-									* G.GAME.starting_params.ante_scaling
-									* G.GAME.CRY_BLINDS[c]
+								* G.GAME.starting_params.ante_scaling
+								* G.GAME.CRY_BLINDS[c]
 							)
 							chip_text_node.config.scale = score_number_scale(
 								0.9,
 								get_blind_amount(G.GAME.round_resets.blind_ante)
-									* G.GAME.starting_params.ante_scaling
-									* G.GAME.CRY_BLINDS[c]
+								* G.GAME.starting_params.ante_scaling
+								* G.GAME.CRY_BLINDS[c]
 							)
 						end
 						G.blind_select_opts[string.lower(c)]:recalculate()
@@ -451,8 +455,8 @@ function Game:update(dt)
 			then
 				G.GAME.blind.chips = G.GAME.blind.chips
 					+ G.GAME.blind:cry_ante_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
-						* get_blind_amount(G.GAME.round_resets.ante)
-						* G.GAME.starting_params.ante_scaling
+					* get_blind_amount(G.GAME.round_resets.ante)
+					* G.GAME.starting_params.ante_scaling
 				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 			end
 		end
@@ -466,7 +470,7 @@ function Game:update(dt)
 			G.GAME.blind.chips = G.GAME.blind.chips
 				* (
 					G.GAME.blind.cry_round_base_mod
-						and G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
+					and G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
 					or 1
 				)
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
@@ -517,6 +521,7 @@ function Card:set_cost()
 		self.sell_cost_label = 0
 	end
 end
+
 local sell_card_stuff = Card.sell_card
 function Card:sell_card()
 	if self.config.center.set == "Joker" then
@@ -709,9 +714,9 @@ function SMODS.create_mod_badges(obj, badges)
 		badges[#badges + 1] = create_badge(
 			card_type,
 			set == "modest" and G.C.GREEN
-				or set == "mainline" and G.C.RED
-				or set == "madness" and G.C.CRY_EXOTIC
-				or G.C.CRY_ASCENDANT
+			or set == "mainline" and G.C.RED
+			or set == "madness" and G.C.CRY_EXOTIC
+			or G.C.CRY_ASCENDANT
 		)
 	end
 end
@@ -1234,7 +1239,8 @@ function init_localization()
 		G.localization.descriptions.Spectral.c_medium.text[2] = "to {C:attention}#1#{} selected"
 		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
 		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected"
-		G.localization.descriptions.Spectral.c_deja_vu.text[2] = "to {C:attention}#1#{} selected" -- why is this done THREE times???
+		G.localization.descriptions.Spectral.c_deja_vu.text[2] =
+		"to {C:attention}#1#{} selected" -- why is this done THREE times???
 		G.localization.descriptions.Voucher.v_antimatter.text[1] = "{C:dark_edition}+#1#{} Joker Slot"
 		G.localization.descriptions.Voucher.v_overstock_norm.text[1] = "{C:attention}+#1#{} card slot"
 		G.localization.descriptions.Voucher.v_overstock_plus.text[1] = "{C:attention}+#1#{} card slot"
@@ -1282,6 +1288,7 @@ function Controller:queue_L_cursor_press(x, y)
 	end
 	self.L_cursor_queue = { x = x, y = y }
 end
+
 -- Lemon Trophy's effect
 local trophy_mod_mult = mod_mult
 function mod_mult(_mult)
@@ -1291,6 +1298,7 @@ function mod_mult(_mult)
 	end
 	return trophy_mod_mult(_mult)
 end
+
 -- Fix a CCD-related crash
 local cuc = Card.can_use_consumeable
 function Card:can_use_consumeable(any_state, skip_check)
@@ -1466,6 +1474,112 @@ function Card:shatter(volume)
 	}))
 end
 
+-- Buttercup's store joker mechanic, creates a specified joker
+local ccfs = create_card_for_shop
+function create_card_for_shop(area)
+	local guaranteed_card = Card(
+		area.x,
+		area.y,
+		G.CARD_W,
+		G.CARD_H,
+		nil,
+		G.P_CENTERS.j_jolly,
+		{ bypass_discovery_center = true, bypass_discovery_ui = true }
+	)
+	local areas_to_check = {
+		shop_jokers = G.shop_jokers,
+		shop_vouchers = G.shop_vouchers,
+		shop_booster = G.shop_booster
+	}
+	local loaded_card_data = nil
+	local loaded_card_pos = -1
+	-- check if there's a card for `area` within `next_shop_cards`,
+	-- then put its data in `loaded_card_data` and its index in the table in `loaded_card_pos`
+	if G.GAME.next_shop_cards and #G.GAME.next_shop_cards > 0 then
+		for i, card in ipairs(G.GAME.next_shop_cards) do
+			sendInfoMessage(card.cry_from_shop, "next_shop_cards")
+			if not card.cry_from_shop then card.cry_from_shop = "shop_jokers" end -- failsafe :3
+			if areas_to_check[card.cry_from_shop] == area and loaded_card_pos == -1 then
+				loaded_card_data = card
+				loaded_card_pos = i
+				break
+			end
+		end
+	end
+	if loaded_card_data then
+		-- guaranteed_card.T.h = G.CARD_H
+		guaranteed_card:load(loaded_card_data, nil)
+		guaranteed_card.VT.h = guaranteed_card.T.h
+		table.remove(G.GAME.next_shop_cards, loaded_card_pos)
+		create_shop_card_ui(guaranteed_card, "Joker", area)
+		guaranteed_card.states.visible = false
+		G.E_MANAGER:add_event(Event({
+			delay = 0.4,
+			trigger = 'after',
+			func = (
+				function()
+					guaranteed_card:start_materialize()
+					guaranteed_card:set_cost()
+					return true
+				end)
+		}))
+		guaranteed_card:set_cost()
+		return guaranteed_card
+	else
+		guaranteed_card:remove()
+	end
+	return ccfs(area)
+end
+
+-- Again, buttercup, making sure you can savescum safely :gjumbsup:
+local carsv = Card.save
+function Card:save()
+	local saved_table = carsv(self)
+	if self.cry_storage then
+		saved_table.cry_storage = self.cry_storage:save()
+	end
+	if self.cry_from_shop then
+		saved_table.cry_from_shop = self.cry_from_shop
+	end
+	return saved_table
+end
+
+local carld = Card.load
+function Card:load(cardTable, other_card)
+	carld(self, cardTable, other_card)
+
+	local storage_area_config = {
+		type = "play",
+		card_w = G.CARD_W,
+	}
+	if cardTable.cry_storage then
+		self.cry_storage = CardArea(self.T.x, 2, 1, 1, storage_area_config)
+		self.cry_storage:load(cardTable.cry_storage)
+		for i, card in ipairs(self.cry_storage.cards) do
+			card.T.orig = { w = card.T.w, h = card.T.h }
+			card.T.w = card.T.w * 0.5
+			card.T.h = card.T.h * 0.5
+		end
+	end
+	if cardTable.cry_from_shop then
+		self.cry_from_shop = cardTable.cry_from_shop
+	end
+end
+
+-- Attach Buttercup's stored cards card area
+local carmv = Card.move
+function Card:move(dt)
+carmv(self,dt)
+	if self.cry_storage ~= nil and self.cry_storage.cards ~= nil then
+		self.cry_storage.config.card_limit = #self.cry_storage.cards + 1
+		self.cry_storage.T.w = G.CARD_W*2
+		self.cry_storage.T.x = self.T.x - (G.CARD_W*0.5)
+		self.cry_storage.T.y = self.T.y
+		self.cry_storage.VT.x = self.VT.x
+		self.cry_storage.VT.y = self.VT.y
+	end
+end
+
 --Hook for booster skip to automatically destroy and banish the rightmost Joker, regardless of eternal
 local banefulSkipPenalty = G.FUNCS.skip_booster
 G.FUNCS.skip_booster = function(e)
@@ -1496,7 +1610,8 @@ G.FUNCS.skip_booster = function(e)
 				G.GAME.cry_banished_keys = {}
 			end
 			local c = nil
-			c = G.jokers.cards[#G.jokers.cards] --fallback to rightmost if somehow, you skipped without disabling and its unskippable.
+			c = G.jokers.cards
+				[#G.jokers.cards] --fallback to rightmost if somehow, you skipped without disabling and its unskippable.
 			--Iterate backwards to get the rightmost valid (non eternal or cursed) Joker
 			if G.jokers and G.jokers.cards then
 				for i = #G.jokers.cards, 1, -1 do

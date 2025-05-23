@@ -169,7 +169,7 @@ local choco1 = {
 		info_queue[#info_queue + 1] = { set = "Other", key = self.key } --todo specific_vars
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_flickering_desc", specific_vars = { 5 } }
 		info_queue[#info_queue + 1] =
-			{ set = "Joker", key = "j_cry_ghost", specific_vars = { G.GAME.probabilities.normal or 1, 2, 6 } }
+		{ set = "Joker", key = "j_cry_ghost", specific_vars = { G.GAME.probabilities.normal or 1, 2, 6 } }
 	end,
 	start = function(self)
 		G.GAME.events[self.key] = true
@@ -231,7 +231,7 @@ local choco3 = {
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = { set = "Other", key = self.key } --todo specific_vars
+		info_queue[#info_queue + 1] = { set = "Other", key = self.key }  --todo specific_vars
 		info_queue[#info_queue + 1] = { set = "Unique", key = "c_cry_potion" } -- bugged rn
 	end,
 	finish = function(self)
@@ -853,11 +853,11 @@ local trick_or_treat = {
 			if
 				pseudorandom(pseudoseed("cry_trick_or_treat"))
 				< cry_prob(
-						card.ability.cry_prob * card.ability.immutable.prob_mod,
-						card.ability.extra.odds,
-						card.ability.cry_rigged
-					)
-					/ card.ability.extra.odds
+					card.ability.cry_prob * card.ability.immutable.prob_mod,
+					card.ability.extra.odds,
+					card.ability.cry_rigged
+				)
+				/ card.ability.extra.odds
 			then
 				local spawn_num =
 					to_number(math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies))
@@ -940,7 +940,7 @@ local candy_basket = {
 			if G.GAME.blind.boss then
 				card.ability.extra.candies = lenient_bignum(
 					card.ability.extra.candies
-						+ to_big(card.ability.extra.candy_mod) * card.ability.extra.candy_boss_mod
+					+ to_big(card.ability.extra.candy_mod) * card.ability.extra.candy_boss_mod
 				)
 			end
 			if card.ability.immutable.current_win_count >= card.ability.immutable.wins_needed then
@@ -1099,11 +1099,11 @@ local ghost = {
 			if
 				pseudorandom(pseudoseed("cry_ghost_destroy"))
 				< cry_prob(
-						card.ability.cry_prob,
-						card.ability.extra.odds * card.ability.extra.destroy_rate,
-						card.ability.cry_rigged
-					)
-					/ (card.ability.extra.odds * card.ability.extra.destroy_rate)
+					card.ability.cry_prob,
+					card.ability.extra.odds * card.ability.extra.destroy_rate,
+					card.ability.cry_rigged
+				)
+				/ (card.ability.extra.odds * card.ability.extra.destroy_rate)
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1126,11 +1126,11 @@ local ghost = {
 			if
 				pseudorandom(pseudoseed("cry_ghost_possess"))
 				< cry_prob(
-						card.ability.cry_prob,
-						card.ability.extra.odds * card.ability.extra.possess_rate,
-						card.ability.cry_rigged
-					)
-					/ (card.ability.extra.odds * card.ability.extra.possess_rate)
+					card.ability.cry_prob,
+					card.ability.extra.odds * card.ability.extra.possess_rate,
+					card.ability.cry_rigged
+				)
+				/ (card.ability.extra.odds * card.ability.extra.possess_rate)
 			then
 				for i = 1, #G.jokers.cards do
 					G.jokers.cards[i].ability.cry_possessed = nil
@@ -1651,8 +1651,8 @@ local mellowcreme = {
 				if v.set_cost then
 					v.ability.extra_value = lenient_bignum(
 						(to_big(v.ability.extra_value) or 0)
-							+ (math.max(1, math.floor(to_big(v.cost) / 2)) + (v.ability.extra_value or 0))
-								* (to_big(card.ability.extra.sell_mult) - 1)
+						+ (math.max(1, math.floor(to_big(v.cost) / 2)) + (v.ability.extra_value or 0))
+						* (to_big(card.ability.extra.sell_mult) - 1)
 					)
 					v:set_cost()
 				end
@@ -1765,7 +1765,7 @@ local monopoly_money = {
 			if
 				pseudorandom(pseudoseed("cry_monopoly"))
 				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
+				/ card.ability.extra.odds
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1966,6 +1966,65 @@ local wonka_bar = {
 		},
 	},
 }
+
+-- Buttercup
+-- Store items in shop
+local buttercup = {
+	object_type = "Joker",
+	key = "buttercup",
+	name = "cry-Buttercup",
+	pos = { x = 2, y = 3 },
+	config = { extra = { slots = 1 } },
+	rarity = "cry_candy",
+	cost = 3,
+	atlas = "atlasspooky",
+	blueprint_compat = false,
+	eternal_compat = false,
+	no_dbl = true,
+	cry_credits = {
+		idea = { "Squiddy" },
+		art = { "lolxddj" },
+		code = { "#Guigui" }
+	},
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = { center.ability.extra.slots, },
+		}
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		if card.cry_storage == nil then
+			local storage_area_config = {
+				type = "play",
+				card_w = G.CARD_W,
+			}
+			card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
+		end
+		if G.GAME.next_shop_cards == nil then
+			G.GAME.next_shop_cards = {}
+		end
+	end,
+	calculate = function(self, card, context)
+		if card.cry_storage == nil then
+			local storage_area_config = {
+				type = "play",
+				card_w = G.CARD_W,
+			}
+			card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
+		end
+		if context.selling_self and not context.blueprint then
+			if #card.cry_storage.cards > 0 then
+				for i, jok in ipairs(card.cry_storage.cards) do
+					jok.T.w = jok.T.orig.w
+					jok.T.h = jok.T.orig.h
+					G.GAME.next_shop_cards[#G.GAME.next_shop_cards + 1] = jok:save()
+					jok:remove()
+				end
+			end
+			card.cry_storage:remove()
+		end
+	end,
+}
+
 items = {
 	cotton_candy,
 	wrapped,
@@ -1999,6 +2058,7 @@ items = {
 	monopoly_money,
 	candy_sticks,
 	wonka_bar,
+	buttercup,
 }
 return {
 	name = "Spooky",
