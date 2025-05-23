@@ -196,7 +196,7 @@ function Cryptid.pluralize(str, vars)
 				if isnum then
 					if not checks1mod then
 						checks[1] = nil
-					end                           -- dumb stuff
+					end -- dumb stuff
 					checks[isnum] = "<" .. (_table[i + 1] or "") -- do less than for custom values
 					if isnum == 1 then
 						checks1mod = true
@@ -413,10 +413,10 @@ if Cryptid_config.menu then
 			{
 				shader = "splash",
 				send = {
-					{ name = "time",       ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
+					{ name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
 					{ name = "vort_speed", val = 0.4 },
-					{ name = "colour_1",   ref_table = G.C,      ref_value = "CRY_EXOTIC" },
-					{ name = "colour_2",   ref_table = G.C,      ref_value = "DARK_EDITION" },
+					{ name = "colour_1", ref_table = G.C, ref_value = "CRY_EXOTIC" },
+					{ name = "colour_2", ref_table = G.C, ref_value = "DARK_EDITION" },
 				},
 			},
 		})
@@ -814,7 +814,7 @@ function G.FUNCS.can_store_card(e)
 	local areas_to_check = {
 		shop_jokers = G.shop_jokers,
 		shop_vouchers = G.shop_vouchers,
-		shop_booster = G.shop_booster
+		shop_booster = G.shop_booster,
 	}
 	local jok = e.config.ref_table
 
@@ -838,13 +838,13 @@ end
 
 function G.FUNCS.store_card(e)
 	G.E_MANAGER:add_event(Event({
-		trigger = 'after',
+		trigger = "after",
 		delay = 0.1,
 		func = function()
 			local areas_to_check = {
 				shop_jokers = G.shop_jokers,
 				shop_vouchers = G.shop_vouchers,
-				shop_booster = G.shop_booster
+				shop_booster = G.shop_booster,
 			}
 			local this_card = e.config.ref_table
 			-- This doesn't take into account the possibility that multiple cards might be selected in different areas
@@ -856,23 +856,27 @@ function G.FUNCS.store_card(e)
 					new_card.T.w = new_card.T.w * 0.5
 					new_card.T.h = new_card.T.h * 0.5
 					new_card.cry_from_shop = shop_name
-					if new_card.children.price then new_card.children.price:remove() end
+					if new_card.children.price then
+						new_card.children.price:remove()
+					end
 					new_card.children.price = nil
-					if new_card.children.buy_button then new_card.children.buy_button:remove() end
+					if new_card.children.buy_button then
+						new_card.children.buy_button:remove()
+					end
 					new_card.children.buy_button = nil
 					shop_area:remove_card(new_card)
 					this_card.cry_storage:emplace(new_card)
 				end
 			end
 			return true
-		end
+		end,
 	}))
 end
 
 function Card:can_use_storage()
 	if self.cry_storage ~= nil then
 		return #self.cry_storage.cards < self.ability.extra.slots
-	elseif self.config.center.key == "j_cry_buttercup" then     -- "where did my fucking storage go"
+	elseif self.config.center.key == "j_cry_buttercup" then -- "where did my fucking storage go"
 		sendInfoMessage("creating missing card area")
 		self.cry_storage = CardArea(0.5, 0.5, 1, 1, storage_area_config)
 	end
