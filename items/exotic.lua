@@ -355,7 +355,9 @@ local exponentia = {
 					or key == "x_mult_mod"
 					or key == "xmult_mod"
 					or key == "Xmult_mod"
-				) and amount ~= 1
+				)
+				and amount ~= 1
+				and mult
 			then
 				for _, v in pairs(find_joker("cry-Exponentia")) do
 					local old = v.ability.extra.Emult
@@ -921,11 +923,7 @@ local stella_mortis = {
 							type = "variable",
 							key = "a_powmult",
 							vars = {
-								number_format(
-									lenient_bignum(
-										card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota
-									)
-								),
+								number_format(lenient_bignum(card.ability.extra.Emult)),
 							},
 						}),
 					})

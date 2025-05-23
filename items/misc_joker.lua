@@ -108,11 +108,9 @@ local happyhouse = {
 	pos = { x = 2, y = 4 },
 	order = 2,
 	config = {
-		extra = {
+		immutable = {
 			mult = 4,
 			trigger = 114,
-		},
-		immutable = {
 			check = 0,
 			ante_cutoff = 8,
 		},
@@ -126,9 +124,9 @@ local happyhouse = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(center.ability.extra.mult),
+				number_format(center.ability.immutable.mult),
 				number_format(center.ability.immutable.check),
-				number_format(center.ability.extra.trigger),
+				number_format(center.ability.immutable.trigger),
 			},
 		}
 	end,
@@ -141,7 +139,7 @@ local happyhouse = {
 		then
 			card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 			if
-				card.ability.immutable.check == card.ability.extra.trigger
+				card.ability.immutable.check == card.ability.immutable.trigger
 				and G.GAME.round_resets.ante < card.ability.immutable.ante_cutoff
 				and not (G.GAME.selected_back.effect.center.key == "antimatter" or G.GAME.selected_back.effect.center.key == "equilibrium")
 				and (
@@ -156,11 +154,11 @@ local happyhouse = {
 			then --Yes, the cut off point is boss blind Ante 7. I'm evil >:3.
 				check_for_unlock({ type = "home_realtor" })
 			end
-			if card.ability.immutable.check < card.ability.extra.trigger then --Hardcoded, dont want misprint to mess with this hehe
+			if card.ability.immutable.check < card.ability.immutable.trigger then --Hardcoded, dont want misprint to mess with this hehe
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = number_format(card.ability.immutable.check) .. "/" .. number_format(
-							card.ability.extra.trigger
+							card.ability.immutable.trigger
 						),
 						colour = G.C.DARK_EDITION,
 					}),
@@ -169,16 +167,16 @@ local happyhouse = {
 		end
 		if
 			context.joker_main
-			and (to_big(card.ability.extra.mult) > to_big(1))
-			and to_big(card.ability.immutable.check) > to_big(card.ability.extra.trigger)
+			and (to_big(card.ability.immutable.mult) > to_big(1))
+			and to_big(card.ability.immutable.check) > to_big(card.ability.immutable.trigger)
 		then
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
+					vars = { number_format(card.ability.immutable.mult) },
 				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
+				Emult_mod = lenient_bignum(card.ability.immutable.mult),
 				colour = G.C.DARK_EDITION,
 				card = card,
 			}
@@ -188,9 +186,9 @@ local happyhouse = {
 				message = localize({
 					type = "variable",
 					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
+					vars = { number_format(card.ability.immutable.mult) },
 				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
+				Emult_mod = lenient_bignum(card.ability.immutable.mult),
 				colour = G.C.DARK_EDITION,
 				card = card,
 			}
@@ -395,7 +393,7 @@ local queensgambit = {
 	calculate = function(self, card, context)
 		if context.destroying_card and not context.blueprint then
 			if
-				G.GAME.current_round.current_hand.handname == "Royal Flush"
+				G.GAME.current_round.current_hand.handname == localize("Royal Flush", "poker_hands")
 				and context.destroying_card:get_id() == 12
 			then
 				card_eval_status_text(
@@ -829,7 +827,7 @@ local pickle = {
 	end,
 	calculate = function(self, card, context)
 		if context.skip_blind or context.forcetrigger then
-			for i = 1, math.min(card.ability.immutable.max_tags, card.ability.extra.tags) do
+			for i = 1, to_number(math.min(card.ability.immutable.max_tags, card.ability.extra.tags)) do
 				local tag_key = get_next_tag_key("cry_pickle")
 				if tag_key == "tag_boss" then
 					i = i - 1 --skip these, as they can cause bugs with pack opening from other tags
@@ -1388,15 +1386,11 @@ local nice = {
 		extra = {
 			chips = 420,
 		},
-		immutable = {
-			sixcount = 0,
-			nincount = 0,
-		},
 	},
 	pos = { x = 2, y = 3 },
 	pools = { ["Meme"] = true },
 	rarity = 3,
-	cost = 6.9,
+	cost = 6,
 	order = 84,
 	atlas = "atlasone",
 	blueprint_compat = true,
@@ -1405,21 +1399,17 @@ local nice = {
 		return { vars = { number_format(center.ability.extra.chips) } }
 	end,
 	calculate = function(self, card, context)
-		if context.cardarea == G.jokers and context.before then
-			card.ability.immutable.sixcount = 0
-			card.ability.immutable.ninecount = 0
-			for i, v in pairs(context.full_hand) do
-				if v:get_id() == 6 then
-					card.ability.immutable.sixcount = lenient_bignum(card.ability.immutable.sixcount + 1)
-				elseif v:get_id() == 9 then
-					card.ability.immutable.ninecount = lenient_bignum(card.ability.immutable.ninecount + 1)
+		if context.cardarea == G.jokers and context.joker_main then
+			local aaa, bbb = nil, nil
+			for i = 1, #context.full_hand do
+				if context.full_hand[i]:get_id() == 6 then
+					aaa = true
+				end
+				if context.full_hand[i]:get_id() == 9 then
+					bbb = true
 				end
 			end
-		elseif context.cardarea == G.jokers and context.joker_main then
-			if
-				to_big(card.ability.immutable.sixcount) > to_big(0)
-				and to_big(card.ability.immutable.ninecount) > to_big(0)
-			then
+			if aaa and bbb then
 				return {
 					message = localize({
 						type = "variable",
@@ -1642,7 +1632,7 @@ local jimball = {
 			end
 		end
 		--Adding actual scoring because that is missing
-		if context.joker_main and lenient_bignum(card.ability.extra.x_mult) > 1 then
+		if context.joker_main and to_big(card.ability.extra.x_mult) > to_big(1) then
 			return {
 				message = localize({
 					type = "variable",
@@ -7115,7 +7105,7 @@ local coin = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if (context.selling_card and context.card.ability.set == "Joker") or context.forcetrigger then
-			local mod = math.floor(pseudorandom(pseudoseed("coin")) * card.ability.immutable.money_mod)
+			local mod = math.floor(pseudorandom(pseudoseed("coin")) * card.ability.immutable.money_mod) + 1
 			local option = lenient_bignum(to_big(card.ability.extra.money) * mod)
 			ease_dollars(option)
 			card_eval_status_text(
@@ -7425,7 +7415,7 @@ local night = {
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main and G.GAME.current_round.hands_left == 0 then
-			if card.ability.extra.mult > 1 then
+			if to_big(card.ability.extra.mult) > to_big(1) then
 				return {
 					message = localize({
 						type = "variable",
@@ -7557,7 +7547,7 @@ local busdriver = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main and (card.ability.extra.mult > 0) then
+		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			local oddy = math.max(1, card.ability.extra.odds)
 			if
 				pseudorandom("busdriver")
@@ -9413,7 +9403,7 @@ local lebaron_james = {
 				local max_h_mod = card.ability.immutable.max_h_mod
 
 				local available_h = math.max(0, max_h_mod - added_h)
-				local h_size = math.max(0, math.min(available_h, h_mod))
+				local h_size = to_number(math.max(0, math.min(available_h, h_mod)))
 
 				if h_size > 0 then
 					-- Apply hand size bonus

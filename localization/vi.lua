@@ -1775,7 +1775,7 @@ return {
 					"{C:attention}lượt bỏ đầu tiên{} của mỗi ván",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "Mrứng",
 				text = {
 					"Bán lá này để tạo ra",

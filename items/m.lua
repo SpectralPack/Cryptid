@@ -364,7 +364,7 @@ local mstack = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		return {
 			vars = {
-				number_format(center.ability.extra.retriggers),
+				number_format(math.min(center.ability.extra.retriggers, center.ability.immutable.max_retriggers)),
 				number_format(center.ability.extra.sell_req),
 				number_format(center.ability.extra.sell),
 			},
@@ -758,7 +758,7 @@ local loopy = {
 	name = "cry-loopy",
 	key = "loopy",
 	pools = { ["M"] = true },
-	config = { extra = { retrigger = 0 } },
+	config = { extra = { retrigger = 0 }, immutable = { limit = 40 } },
 	pos = { x = 7, y = 0 },
 	order = 257,
 	atlas = "atlastwo",
@@ -769,7 +769,7 @@ local loopy = {
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		return { vars = { center.ability.extra.retrigger } }
+		return { vars = { math.min(center.ability.extra.retrigger, center.ability.immutable.limit) } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -778,7 +778,7 @@ local loopy = {
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			card.ability.extra.retrigger = card.ability.extra.retrigger + 1
+			card.ability.extra.retrigger = math.min((card.ability.extra.retrigger + 1), card.ability.immutable.limit)
 			return {
 				card_eval_status_text(card, "extra", nil, nil, nil, {
 					message = localize("cry_m_ex"),
@@ -795,7 +795,7 @@ local loopy = {
 			return {
 				message = localize("k_again_ex"),
 				colour = G.C.GREEN,
-				repetitions = card.ability.extra.retrigger,
+				repetitions = math.min(card.ability.extra.retrigger, card.ability.immutable.limit),
 				card = card,
 			}
 		end
@@ -1706,7 +1706,7 @@ local megg = {
 	},
 	object_type = "Joker",
 	name = "cry-megg",
-	key = "Megg",
+	key = "megg",
 	pools = { ["M"] = true },
 	blueprint_compat = false,
 	eternal_compat = false,

@@ -714,6 +714,7 @@ local aliases = {
 	},
 	j_stencil = {
 		"Joker Stencil",
+		"Stencil",
 	},
 	j_four_fingers = {
 		"Four Fingers",
@@ -726,6 +727,7 @@ local aliases = {
 	},
 	j_credit_card = {
 		"Credit Card",
+		"Debit Card",
 	},
 	j_ceremonial = {
 		"Ceremonial Dagger",
@@ -758,6 +760,7 @@ local aliases = {
 	},
 	j_raised_fist = {
 		"Raised Fist",
+		"1984",
 	},
 	j_chaos = {
 		"Chaos the Clown",
@@ -983,6 +986,7 @@ local aliases = {
 	},
 	j_baseball = {
 		"Baseball Card",
+		"Baseball Huh?",
 	},
 	j_bull = {
 		"Bull",
@@ -1084,10 +1088,12 @@ local aliases = {
 	},
 	j_blueprint = {
 		"Blueprint",
+		"BP",
 	},
 	j_wee = {
 		"Wee Joker",
 		"WEEEE",
+		"Wee",
 	},
 	j_merry_andy = {
 		"Merry Andy",
@@ -1193,6 +1199,7 @@ local aliases = {
 	c_empress = {
 		"The Empress",
 		"Empress",
+		"Mult Tarot",
 	},
 	c_emperor = {
 		"The Emperor",
@@ -1203,21 +1210,26 @@ local aliases = {
 		"Hierophant",
 		"The Heirophant",
 		"Heirophant",
+		"Bonus Tarot",
 	},
 	c_lovers = {
 		"The Lovers",
 		"Lovers",
+		"Wild Tarot",
 	},
 	c_chariot = {
 		"The Chariot",
 		"Chariot",
+		"Steel Tarot",
 	},
 	c_justice = {
 		"Justice",
+		"Glass Tarot",
 	},
 	c_hermit = {
 		"The Hermit",
 		"Hermit",
+		"Doubles Money",
 	},
 	c_wheel_of_fortune = {
 		"The Wheel Of Fortune",
@@ -1242,33 +1254,44 @@ local aliases = {
 	},
 	c_temperance = {
 		"Temperance",
+		"The Temperance",
+		"Joker Money",
 	},
 	c_devil = {
 		"The Devil",
 		"Devil",
+		"Gold Tarot",
 	},
 	c_tower = {
 		"The Tower",
 		"Tower",
+		"Stone Tarot",
 	},
 	c_star = {
 		"The Star",
 		"Star",
+		"Diamond Tarot",
 	},
 	c_moon = {
 		"The Moon",
 		"Moon",
+		"Club Tarot",
 	},
 	c_sun = {
 		"The Sun",
 		"Sun",
+		"Heart Tarot",
 	},
 	c_judgement = {
 		"Judgement",
+		"The Judgement",
+		"Judgement Day",
+		"Minos Prime",
 	},
 	c_world = {
 		"The World",
 		"World",
+		"Spade Tarot",
 	},
 
 	-- Vanilla Planets
@@ -1650,11 +1673,6 @@ local aliases = {
 		"Spectral Ectoplasm",
 		"Mega Spectral Pack",
 	},
-	p_spectral_mega_1 = {
-		"Mega Spectral",
-		"Spectral Ectoplasm",
-		"Mega Spectral Pack",
-	},
 
 	-- Vanilla Tags
 	-- everybody forgor
@@ -1709,10 +1727,12 @@ local aliases = {
 		"Tag Charm",
 		"Tarot Tag",
 		"Acrana Tag",
+		"Arcana Tag",
 		"Tag Tarot",
 		"Tag Arcana",
 		"Charm Pack Tag",
 		"Tarot Pack Tag",
+		"Arcana Pack Tag",
 		"Acrana Pack Tag",
 	},
 	tag_meteor = {
@@ -2194,9 +2214,24 @@ local aliases = {
 	-- Smaller Placeholder
 
 	-- Misc Jokers
+	j_cry_oil_lamp = {
+		"Oil Lamp",
+		"Oillamp",
+	},
+	j_cry_tropical_smoothie = {
+		"Tropical Smoothie",
+		"Tropical",
+		"Smoothie",
+	},
 	-- bigger placeholder
 
 	-- Epic Jokers
+	j_cry_altgoogol = {
+		"Nostalgic Googol Play Card",
+		"NGPC",
+		"Nostalgic Googol",
+		"Nostalgic Google Play Card",
+	},
 	-- epic placeholder
 
 	-- Exotic Jokers

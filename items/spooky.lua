@@ -1644,7 +1644,7 @@ local mellowcreme = {
 	end,
 	blueprint_compat = true,
 	eternal_compat = false,
-	demicolomcompat = true,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.selling_self or context.forcetrigger then
 			for k, v in ipairs(G.consumeables.cards) do

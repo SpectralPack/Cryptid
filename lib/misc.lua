@@ -502,6 +502,9 @@ end
 local sppref = set_profile_progress
 function set_profile_progress()
 	sppref()
+	if not Cryptid.shinytagdata then
+		Cryptid.shinytagdata = {}
+	end
 	if not Cryptid.shinytagdata.init then
 		for k, v in pairs(G.P_TAGS) do
 			if Cryptid.shinytagdata[k] == nil then

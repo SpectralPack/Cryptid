@@ -19,20 +19,6 @@ end
 '''
 match_indent = true
 
-# Yellow Stake - perishable and rental effects on cards held in hand
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "local effects = {[1] = {playing_card = G.hand.cards[i]:get_end_of_round_effect()}}"
-position = "after"
-payload = '''
--- these are already calculated
--- does mean this patch is pointless now, but i want to leave it here just so it's clear, maybe remove later
--- G.hand.cards[i]:calculate_rental()
--- G.hand.cards[i]:calculate_perishable()
-'''
-match_indent = true
-
 # Yellow Stake - perishable and rental effects on cards in deck and discard pile
 # Double Down
 [[patches]]
@@ -182,15 +168,6 @@ payload = '''if (G.GAME.modifiers.cry_voucher_restock_antes == nil or G.GAME.rou
 end'''
 match_indent = true
 
-# Amber Stake - edit number of booster packs
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "for i = 1, 2 do"
-position = "at"
-payload = "for i = 1, G.GAME.modifiers.cry_no_boosters and 0 or G.GAME.modifiers.cry_booster_packs or 2 do"
-match_indent = true
-
 # Quartz Stake - pinned effect applies in every type of slot
 [[patches]]
 [patches.pattern]
@@ -332,7 +309,7 @@ match_indent = true
 # Emerald Stake - flipped vouchers
 [[patches]]
 [patches.pattern]
-target = "game.lua"
+target = """=[SMODS _ "src/utils.lua"]"""
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''

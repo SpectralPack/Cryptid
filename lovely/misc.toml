@@ -15,6 +15,7 @@ new_card.from_copy = true
 match_indent = true
 
 # Update value of Monsters created via copy_card
+# Also make copied cards lose their hooks
 [[patches]]
 [patches.pattern]
 target = 'functions/common_events.lua'
@@ -22,6 +23,7 @@ pattern = "if not strip_edition then"
 position = 'before'
 payload = '''
 if new_card.ability.name == "cry-longboi" then new_card:set_ability(new_card.config.center) end
+if new_card.ability.cry_hooked then new_card.ability.cry_hooked = nil end
 '''
 match_indent = true
 
@@ -321,7 +323,7 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = '''-- TARGET: add your own CardAreas for joker evaluation'''
 position = "after"
 payload = '''
-if G.GAME.modifiers.cry_beta then t = {G.jokers} end'''
+if G.GAME.modifiers.cry_beta then t = {G.jokers, G.vouchers} end'''
 match_indent = true
 
 # Fix Boredom crash (somehow)
@@ -521,4 +523,119 @@ position = "at"
 payload = """
 if to_big(amt) ~= to_big(0) then
 """
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+return val and (val > 0 and '+'..val or ''..val) or '0'
+"""
+position = "at"
+payload = """
+return val and (to_big(val) > to_big(0) and '+'..number_format(val) or ''..number_format(val)) or '0'
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+return val and (val > 0 and '$'..val or '-$'..-val) or '0'
+"""
+position = "at"
+payload = """
+return val and (to_big(val) > to_big(0) and '$'..number_format(val) or '-$'..number_format(-val)) or '0'
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+if (key == 'chips' or key == 'h_chips' or key == 'chip_mod') and amount then
+"""
+position = "at"
+payload = """
+if (key == 'chips' or key == 'h_chips' or key == 'chip_mod') and amount and hand_chips then
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+if (key == 'mult' or key == 'h_mult' or key == 'mult_mod') and amount then
+"""
+position = "at"
+payload = """
+if (key == 'mult' or key == 'h_mult' or key == 'mult_mod') and amount and mult then
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+if (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 then
+"""
+position = "at"
+payload = """
+if (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 and hand_chips then
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+if (key == 'x_mult' or key == 'xmult' or key == 'Xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 then
+"""
+position = "at"
+payload = """
+if (key == 'x_mult' or key == 'xmult' or key == 'Xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 and mult then
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = """
+if key == 'balance' then
+"""
+position = "at"
+payload = """
+if key == 'balance' and hand_chips and mult then
+"""
+match_indent = true
+
+
+#Make joker-editioning consumables not crash when they have no valid target
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = """
+local edition = nil
+"""
+position = "before"
+payload = """
+if not eligible_card then return true end
+"""
+match_indent = true
+
+#Make negative playing cards not take up space even when debuffed
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = """if not card.debuff and card.edition and card.edition.card_limit and (self == G.hand) then"""
+position = "at"
+payload = """if card.edition and card.edition.card_limit and (self == G.hand) then"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = """limit = limit - 1 + (not card.debuff and card.edition and card.edition.card_limit or 0)"""
+position = "at"
+payload = """limit = limit - 1 + (card.edition and card.edition.card_limit or 0)"""
 match_indent = true

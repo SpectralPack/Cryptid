@@ -7,7 +7,7 @@ priority = -1
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = "self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or SMODS.get_next_vouchers()"
+pattern = "self.GAME.current_round.voucher = forced_voucher and {forced_voucher, spawn = {[forced_voucher] = true }} or SMODS.get_next_vouchers()"
 position = "after"
 payload = '''
 if self.GAME.modifiers.cry_no_vouchers then

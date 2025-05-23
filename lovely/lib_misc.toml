@@ -67,16 +67,6 @@ end
 '''
 match_indent = true
 
-
-# Custom variables in info queue
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end)"
-position = "after"
-payload = "if _c.specific_vars then specific_vars = _c.specific_vars end"
-match_indent = true
-
 # Fix not all cards returning to hand on big hands
 [[patches]]
 [patches.pattern]

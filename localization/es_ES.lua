@@ -1868,7 +1868,7 @@ return {
 					"{C:attention}primer descarte{} de cada ronda",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "Muevo",
 				text = {
 					"Vende esta carta para crear",

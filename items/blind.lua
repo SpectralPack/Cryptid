@@ -621,11 +621,9 @@ local pin = {
 			(card.area == G.jokers)
 			and not G.GAME.blind.disabled
 			and (
-				card.config.center.rarity ~= 3
-				and card.config.center.rarity ~= 2
-				and card.config.center.rarity ~= 1
-				and card.config.center.rarity ~= 5
-				and card.config.center.rarity ~= nil
+				card.config.center.rarity == 4
+				or card.config.center.rarity == "cry_epic"
+				or card.config.center.rarity == "cry_exotic"
 			)
 		then
 			return true
@@ -974,7 +972,8 @@ local vermillion_virus = {
 					)
 				else
 					_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
-					G.jokers.cards[idx]:remove_from_deck()
+					G.jokers.cards[idx]:start_dissolve()
+					--G.jokers.cards[idx]:remove_from_deck()
 					_card:add_to_deck()
 					_card:start_materialize()
 					G.jokers.cards[idx] = _card

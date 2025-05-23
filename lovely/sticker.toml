@@ -24,11 +24,11 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = "G.GAME.current_round.voucher = get_next_voucher_key()"
+pattern = "G.GAME.current_round.voucher = SMODS.get_next_vouchers()"
 position = "at"
 payload = '''
 if G.GAME.current_round.cry_voucher_stickers.pinned == false then
-	G.GAME.current_round.voucher = get_next_voucher_key()
+	G.GAME.current_round.voucher = SMODS.get_next_vouchers()
 end
 '''
 match_indent = true

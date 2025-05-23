@@ -306,6 +306,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 						or not orig_ability[dbl_info.base[info_i][1]]
 						or type(orig_ability[dbl_info.base[info_i][1]]) ~= "table"
 						or not orig_ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]
+						or type(orig_ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]) == "string"
 					)
 				then
 					orig_scale_base = orig_ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]

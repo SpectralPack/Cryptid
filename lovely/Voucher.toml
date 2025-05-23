@@ -34,10 +34,9 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = '''G.GAME.current_round.voucher = nil'''
-position = "at"
+pattern = '''--G.GAME.current_round.voucher = nil'''
+position = "after"
 payload = '''
--- G.GAME.current_round.voucher = nil
 if self.shop_cry_bonusvoucher then G.GAME.cry_bonusvouchersused[self.shop_cry_bonusvoucher] = true end
 '''
 match_indent = true
@@ -73,7 +72,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = '''G.GAME.current_round.voucher = get_next_voucher_key()'''
+pattern = '''G.GAME.current_round.voucher = SMODS.get_next_vouchers()'''
 position = "after"
 payload = '''
 G.GAME.current_round.cry_voucher_stickers = Cryptid.next_voucher_stickers()
@@ -81,7 +80,7 @@ G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition() or {}
 G.GAME.current_round.cry_bonusvouchers = {}
 G.GAME.cry_bonusvouchersused = {}	-- i'm not sure why i'm putting these in two separate tables but it doesn't matter much
 for i = 1, G.GAME.cry_bonusvouchercount do
-	G.GAME.current_round.cry_bonusvouchers[i] = get_next_voucher_key()
+	G.GAME.current_round.cry_bonusvouchers[i] = SMODS.get_next_vouchers()
 end
 '''
 match_indent = true
@@ -90,7 +89,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = '''self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()'''
+pattern = '''self.GAME.current_round.voucher = forced_voucher and {forced_voucher, spawn = {[forced_voucher] = true }} or SMODS.get_next_vouchers()'''
 position = "after"
 payload = '''
 G.GAME.current_round.cry_voucher_stickers = Cryptid.next_voucher_stickers()

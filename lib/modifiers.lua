@@ -676,6 +676,16 @@ SMODS.Sticker:take_ownership("eternal", {
 			return { key = "cry_eternal_booster" }
 		end
 	end,
+	draw = function(self, card)
+		local notilt = nil
+		if card.area and card.area.config.type == "deck" then
+			notilt = true
+		end
+		if not card.ability.cry_absolute then
+			G.shared_stickers[self.key].role.draw_major = card
+			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+		end
+	end,
 })
 SMODS.Sticker:take_ownership("rental", {
 	loc_vars = function(self, info_queue, card)

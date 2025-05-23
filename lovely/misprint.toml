@@ -130,6 +130,14 @@ position = "after"
 payload = "G.GAME.round_resets.ante = Big and (to_number(math.floor(to_big(G.GAME.round_resets.ante)))) or math.floor(G.GAME.round_resets.ante)"
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante"
+position = "after"
+payload = "G.GAME.round_resets.blind_ante = Big and (to_number(math.floor(to_big(G.GAME.round_resets.blind_ante)))) or math.floor(G.GAME.round_resets.blind_ante)"
+match_indent = true
+
 # UI Bugs
 [[patches]]
 [patches.pattern]

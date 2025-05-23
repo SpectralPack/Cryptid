@@ -52,7 +52,7 @@ local supercell = {
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main then
-			if lenient_bignum(card.ability.extra.stat2) > lenient_bignum(1) then --misprint deck moment
+			if to_big(card.ability.extra.stat2) > to_big(1) then --misprint deck moment
 				if Card.get_gameset(card) ~= "modest" then
 					return {
 						message = localize("cry_gaming_ex"),
@@ -910,7 +910,7 @@ local boredom = {
 		if
 			context.retrigger_joker_check
 			and not context.retrigger_joker
-			and context.other_card.original_key ~= "boredom"
+			and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
 		then
 			if
 				pseudorandom("cry_boredom_joker")
@@ -2168,10 +2168,10 @@ local jtron = {
 					type = "variable",
 					key = "a_powmult",
 					vars = {
-						number_format(1 + to_big(center.ability.extra.bonus)),
+						number_format(1 + to_big(card.ability.extra.bonus)),
 					},
 				}),
-				Emult_mod = lenient_bignum(1 + to_big(center.ability.extra.bonus)),
+				Emult_mod = lenient_bignum(1 + to_big(card.ability.extra.bonus)),
 				colour = G.C.DARK_EDITION,
 			}
 		end
@@ -2387,6 +2387,7 @@ local demicolon = {
 	cost = 14,
 	order = 299,
 	blueprint_compat = false,
+	demicoloncompat = false,
 	atlas = "atlasepic",
 	pos = { x = 3, y = 5 },
 	config = { check = nil },
@@ -2456,10 +2457,10 @@ local demicolon = {
 		end
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main and not context.blueprint then
+		if context.joker_main and not context.blueprint and not context.forcetrigger then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
-					if Cryptid.demicolonGetTriggerable(G.jokers.cards[i + 1]) then
+					if Cryptid.demicolonGetTriggerable(G.jokers.cards[i + 1])[1] then
 						local results = Cryptid.forcetrigger(G.jokers.cards[i + 1], context)
 						if results and results.jokers then
 							results.jokers.message = localize("cry_demicolon")

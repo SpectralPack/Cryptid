@@ -1452,7 +1452,7 @@ return {
 					"{C:attention}erster Abwurf{} der Runde",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "Mei",
 				text = {
 					"Verkaufe diese Karte um",

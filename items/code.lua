@@ -967,8 +967,11 @@ local payload = {
 	key = "payload",
 	pos = { x = 8, y = 0 },
 	config = { interest_mult = 3 },
-	loc_vars = function(self, info_queue, center)
-		return { vars = { self.config.interest_mult } }
+	loc_vars = function(self, info_queue, card)
+		if not card then
+			return { vars = { self.config.interest_mult } }
+		end
+		return { vars = { card.ability.interest_mult } }
 	end,
 	cost = 4,
 	atlas = "atlasnotjokers",
@@ -1235,6 +1238,7 @@ local exploit = {
 					"the entire deck",
 					"everything of a kind",
 					"everything",
+					"wholedeck",
 				},
 			}
 			local current_hand = nil
@@ -1398,22 +1402,21 @@ local crynperror = {
 	end,
 	use = function(self, card, area, copier)
 		for i = 1, #G.GAME.last_hand_played_cards do
-			local check = true
-			for j = 1, #G.hand.cards do
-				if G.GAME.last_hand_played_cards[i] == G.hand.cards[j] then
-					check = nil
+			for _, v in pairs(G.discard.cards) do
+				if v.sort_id == G.GAME.last_hand_played_cards[i] then
+					if v.facing == "back" then
+						v:flip()
+					end
+					draw_card(G.discard, G.hand, i * 100 / 5, "up", nil, v)
 				end
 			end
-			if G.discard.cards[i] and check then
-				if G.discard.cards[i].facing == "back" then
-					G.discard.cards[i]:flip()
+			for _, v in pairs(G.deck.cards) do
+				if v.sort_id == G.GAME.last_hand_played_cards[i] then
+					if v.facing == "back" then
+						v:flip()
+					end
+					draw_card(G.deck, G.hand, i * 100 / 5, "up", nil, v)
 				end
-				draw_card(G.discard, G.hand, i * 100 / 5, "up", nil, G.GAME.last_hand_played_cards[i])
-			elseif G.deck.cards[i] and check then
-				if G.deck.cards[i].facing == "back" then
-					G.deck.cards[i]:flip()
-				end
-				draw_card(G.deck, G.hand, i * 100 / 5, "up", nil, G.GAME.last_hand_played_cards[i])
 			end
 		end
 	end,
@@ -1719,7 +1722,7 @@ local commit = {
 	cost = 4,
 	order = 408,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta then
+		if not G.GAME.modifiers.cry_beta or card.area == G.pack_cards then
 			return #G.jokers.highlighted == 1
 				and not G.jokers.highlighted[1].ability.eternal
 				and not (
@@ -2383,11 +2386,13 @@ local hook = {
 	atlas = "atlasnotjokers",
 	order = 414,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta then
-			return (#G.jokers.highlighted == 2 and #G.consumeables.highlighted == 1)
-		else
-			return #G.jokers.highlighted == 3
+		local count = 0
+		for _, v in ipairs(G.jokers.highlighted) do
+			if not v.ability.consumeable then
+				count = count + 1
+			end
 		end
+		return G.GAME.modifiers.cry_beta and count == 3 or count == 2
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
@@ -2396,13 +2401,27 @@ local hook = {
 		local card1 = nil
 		local card2 = nil
 		for i = 1, #G.jokers.highlighted do
-			if not card1 and G.jokers.highlighted[i] ~= card then
+			if not card1 and G.jokers.highlighted[i] ~= card and not G.jokers.highlighted[i].ability.consumeable then
 				card1 = G.jokers.highlighted[i]
-			elseif G.jokers.highlighted[i] ~= card then
+			elseif G.jokers.highlighted[i] ~= card and not G.jokers.highlighted[i].ability.consumeable then
 				card2 = G.jokers.highlighted[i]
 			end
 		end
 		if card1 and card2 then
+			if card1.ability.cry_hooked then
+				for _, v in ipairs(G.jokers.cards) do
+					if v.sort_id == card1.ability.cry_hook_id then
+						v.ability.cry_hooked = false
+					end
+				end
+			end
+			if card2.ability.cry_hooked then
+				for _, v in ipairs(G.jokers.cards) do
+					if v.sort_id == card2.ability.cry_hook_id then
+						v.ability.cry_hooked = false
+					end
+				end
+			end
 			card1.ability.cry_hooked = true
 			card2.ability.cry_hooked = true
 			card1.ability.cry_hook_id = card2.sort_id
@@ -2561,14 +2580,24 @@ local assemble = {
 		end
 	end,
 	use = function(self, card, area, copier)
-		local upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		local upgrade_hand
+		if #G.hand.highlighted > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		elseif #G.play.cards > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
+		end
 		if upgrade_hand then
 			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
 			G.hand:unhighlight_all()
 		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		local upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		local upgrade_hand
+		if #G.hand.highlighted > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
+		elseif #G.play.cards > 0 then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
+		end
 		if upgrade_hand then
 			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards * number
 			G.hand:unhighlight_all()
@@ -2682,6 +2711,9 @@ local revert = {
 		return G.GAME.cry_revert
 	end,
 	use = function(self, card, area, copier)
+		if not G.GAME.cry_revert then
+			return
+		end
 		G.E_MANAGER:add_event(
 			Event({
 				trigger = "after",
@@ -3866,7 +3898,7 @@ local multiply = {
 	pos = { x = 10, y = 2 },
 	cost = 4,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta then
+		if not G.GAME.modifiers.cry_beta or card.area == G.pack_cards then
 			return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immutable", true)
 		else
 			return #G.jokers.highlighted == 2
@@ -3938,7 +3970,6 @@ local delete = {
 	can_use = function(self, card)
 		return G.STATE == G.STATES.SHOP
 			and card.area == (G.GAME.modifiers.cry_beta and G.jokers or G.consumeables)
-			and #G.jokers.highlighted + #G.consumeables.highlighted == 1
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
 			and G.shop_jokers.highlighted[1] ~= card
 			and G.shop_booster.highlighted[1] ~= card
@@ -4140,7 +4171,8 @@ local ctrl_v = {
 		return {}
 	end,
 	can_use = function(self, card)
-		return #G.hand.highlighted + #G.consumeables.highlighted == 2
+		return #G.hand.highlighted + #G.consumeables.highlighted + (G.pack_cards and #G.pack_cards.highlighted or 0)
+			== 2
 	end,
 	use = function(self, card, area, copier)
 		if area then
@@ -4174,6 +4206,22 @@ local ctrl_v = {
 				end,
 			}))
 		end
+		if G.pack_cards and G.pack_cards.highlighted[1] then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local card = copy_card(G.pack_cards.highlighted[1])
+					if card.ability.name and card.ability.name == "cry-Chambered" then
+						card.ability.extra.num_copies = 1
+					end
+					card:add_to_deck()
+					if Incantation then
+						card:setQty(1)
+					end
+					G.consumeables:emplace(card)
+					return true
+				end,
+			}))
+		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		for i = 1, number do
@@ -4194,6 +4242,22 @@ local ctrl_v = {
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local card = copy_card(G.consumeables.highlighted[1])
+						if card.ability.name and card.ability.name == "cry-Chambered" then
+							card.ability.extra.num_copies = 1
+						end
+						card:add_to_deck()
+						if Incantation then
+							card:setQty(1)
+						end
+						G.consumeables:emplace(card)
+						return true
+					end,
+				}))
+			end
+			if G.pack_cards and G.pack_cards.highlighted[1] then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(G.pack_cards.highlighted[1])
 						if card.ability.name and card.ability.name == "cry-Chambered" then
 							card.ability.extra.num_copies = 1
 						end
@@ -4456,27 +4520,17 @@ local green_seal = {
 	order = 604,
 	calculate = function(self, card, context)
 		if context.cardarea == "unscored" and context.main_scoring then
-			for k, v in ipairs(context.scoring_hand) do
-				v.cry_green_incompat = true
-			end
-			for k, v in ipairs(context.full_hand) do
-				if not v.cry_green_incompat then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if G.consumeables.config.card_limit > #G.consumeables.cards then
-								local c = create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_green_seal")
-								c:add_to_deck()
-								G.consumeables:emplace(c)
-								v:juice_up()
-							end
-							return true
-						end,
-					}))
-				end
-			end
-			for k, v in ipairs(context.scoring_hand) do
-				v.cry_green_incompat = nil
-			end
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.consumeables.config.card_limit > #G.consumeables.cards then
+						local c = create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_green_seal")
+						c:add_to_deck()
+						G.consumeables:emplace(c)
+						card:juice_up()
+					end
+					return true
+				end,
+			}))
 		end
 	end,
 }
@@ -4961,6 +5015,7 @@ local python = {
 			context.using_consumeable
 			and context.consumeable.ability.set == "Code"
 			and not context.consumeable.beginning_end
+			and not context.blueprint
 		then
 			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
 			G.E_MANAGER:add_event(Event({

@@ -1,28 +1,16 @@
 -- everything demicolon needs (not really as simple anymore)
-SMODS.Sound({
-	key = "forcetrigger",
-	path = "forcetrigger.ogg",
-})
-SMODS.Sound({
-	key = "demitrigger",
-	path = "demitrigger.ogg",
-})
 function Cryptid.demicolonGetTriggerable(card)
-	local n = {}
+	local n = { false, false }
 	if not card then
-		return { false, false }
+		return n
 	end
-	if card and Card.no(card, "demicoloncompat", true) then
+	if Card.no(card, "demicoloncompat", true) or Cryptid.forcetriggerVanillaCheck(card) then
 		n[1] = true
 	else
 		n[1] = false
 	end
-	if Cryptid.forcetriggerVanillaCheck(card) then
+	if card.ability.consumeable and Cryptid.forcetriggerConsumableCheck(card) then
 		n[1] = true
-	end
-	if card.ability.consumeable then
-		n[1] = true
-		n[2] = true
 	end
 	return n
 end
@@ -250,12 +238,28 @@ function Cryptid.forcetrigger(card, context)
 			card.ability.mult = card.ability.mult + card.ability.extra
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
-		if card.ability.name == "Space Joker" and context.scoring_name then
-			level_up_hand(card, context.scoring_name)
+		if card.ability.name == "Space Joker" then
+			if #G.hand.highlighted > 0 then
+				local text, disp_text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+				update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+					handname = localize(text, "poker_hands"),
+					chips = G.GAME.hands[text].chips,
+					mult = G.GAME.hands[text].mult,
+					level = G.GAME.hands[text].level,
+				})
+				level_up_hand(card, text, nil, 1)
+				update_hand_text(
+					{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+					{ mult = 0, chips = 0, handname = "", level = "" }
+				)
+			elseif context.scoring_name then
+				level_up_hand(card, context.scoring_name)
+			end
 		end
 		-- page 4
 		if card.ability.name == "Egg" then
 			card.ability.extra_value = card.ability.extra_value + card.ability.extra
+			card:set_cost()
 		end
 		if card.ability.name == "Burglar" then
 			G.E_MANAGER:add_event(Event({
@@ -353,7 +357,7 @@ function Cryptid.forcetrigger(card, context)
 				trigger = "after",
 				delay = 0.4,
 				func = function()
-					local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, nil, "sup")
+					local card = create_card("Tarot", G.consumeables, nil, nil, nil, nil, nil, "sup")
 					card:add_to_deck()
 					G.consumeables:emplace(card)
 					G.GAME.consumeable_buffer = 0
@@ -414,7 +418,7 @@ function Cryptid.forcetrigger(card, context)
 					and pseudorandom_element(destructable_jokers, pseudoseed("madness"))
 				or nil
 
-			if joker_to_destroy and not (context.blueprint_card or self).getting_sliced then
+			if joker_to_destroy and not card.getting_sliced then
 				joker_to_destroy.getting_sliced = true
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -463,22 +467,14 @@ function Cryptid.forcetrigger(card, context)
 		if card.ability.name == "Vampire" then
 			local check = nil
 			local enhanced = {}
-			if context.scoring_hand then
+			if context.scoring_hand and #context.scoring_hand > 0 then
 				for k, v in ipairs(context.scoring_hand) do
 					if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then
 						enhanced[#enhanced + 1] = v
 						v.vampired = true
 						v:set_ability(G.P_CENTERS.c_base, nil, true)
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.4,
-							func = function()
-								v:juice_up()
-								v.vampired = nil
-								return true
-							end,
-						}))
 					end
+					v.vampired = nil
 				end
 				check = true
 			end
@@ -488,14 +484,8 @@ function Cryptid.forcetrigger(card, context)
 						enhanced[#enhanced + 1] = v
 						v.vampired = true
 						v:set_ability(G.P_CENTERS.c_base, nil, true)
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								v:juice_up()
-								v.vampired = nil
-								return true
-							end,
-						}))
 					end
+					v.vampired = nil
 				end
 				check = true
 			end
@@ -804,26 +794,35 @@ function Cryptid.forcetrigger(card, context)
 		-- page 10
 		if card.ability.name == "Stuntman" then
 			G.hand:change_size(-card.ability.extra.h_size)
-			results = { jokers = { chips = card.ability.chip_mod, card = card } }
+			results = { jokers = { chips = card.ability.extra.chip_mod, card = card } }
 		end
 		if card.ability.name == "Invisible Joker" then
 			card.ability.invis_rounds = card.ability.invis_rounds + 1
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] ~= self then
+				if G.jokers.cards[i] ~= card then
 					jokers[#jokers + 1] = G.jokers.cards[i]
 				end
 			end
 			if #jokers > 0 then
-				local chosen_joker = pseudorandom_element(jokers, pseudoseed("invisible"))
-				local card =
-					copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
-				if card.ability.invis_rounds then
-					card.ability.invis_rounds = 0
-				end
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				return nil, true
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local chosen_joker = pseudorandom_element(jokers, pseudoseed("invisible"))
+						local card = copy_card(
+							chosen_joker,
+							nil,
+							nil,
+							nil,
+							chosen_joker.edition and chosen_joker.edition.negative
+						)
+						if card.ability.invis_rounds then
+							card.ability.invis_rounds = 0
+						end
+						card:add_to_deck()
+						G.jokers:emplace(card)
+						return true
+					end,
+				}))
 			end
 		end
 		-- if card.ability.name == "Brainstorm" then results = { jokers = { } } end
@@ -854,9 +853,23 @@ function Cryptid.forcetrigger(card, context)
 			}))
 		end
 		-- if card.ability.name == "Astronomer" then results = { jokers = { } } end
-		if card.ability.name == "Burnt Joker" and context.scoring_name then
-			local text, disp_text = G.FUNCS.get_poker_hand_info(context.scoring_name)
-			level_up_hand(card, text, nil, 1)
+		if card.ability.name == "Burnt Joker" then
+			if #G.hand.highlighted > 0 then
+				local text, disp_text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+				update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+					handname = localize(text, "poker_hands"),
+					chips = G.GAME.hands[text].chips,
+					mult = G.GAME.hands[text].mult,
+					level = G.GAME.hands[text].level,
+				})
+				level_up_hand(card, text, nil, 1)
+				update_hand_text(
+					{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+					{ mult = 0, chips = 0, handname = "", level = "" }
+				)
+			elseif context.scoring_name then
+				level_up_hand(card, context.scoring_name)
+			end
 		end
 		if card.ability.name == "Bootstraps" then
 			results = {
@@ -921,13 +934,263 @@ function Cryptid.forcetrigger(card, context)
 				}))
 			end
 		end
-	elseif card.ability.consumeable then
-		card:use_consumeable()
+	elseif card.ability.consumeable and Cryptid.forcetriggerConsumableCheck(card) then
+		if
+			card.ability.consumeable.max_highlighted
+			or card.ability.name == "Aura"
+			or card.ability.name == "cry-global"
+			or card.ability.name == "cry-Inst"
+		then --Cards that require cards in hand to be selected
+			local _cards = {}
+			local targets = {}
+
+			--Get all cards that we can target
+			for k, v in ipairs(G.hand.cards) do
+				if
+					not (
+						(card.ability.name == "Aura" or card.ability.name == "cry-Ritual")
+						and (v.edition or v.will_be_editioned)
+					) and not v.will_be_destroyed
+				then
+					_cards[#_cards + 1] = v
+				end
+			end
+
+			local highlight_count = to_number(math.min(#_cards, card.ability.consumeable.max_highlighted or 1))
+
+			if highlight_count > 0 then
+				--Choose random targets for consumable
+				for i = 1, highlight_count do
+					local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
+					if card.ability.name == "Aura" or card.ability.name == "cry-Ritual" then
+						selected_card.will_be_editioned = true
+					end
+					if card.ability.name == "The Hanged Man" then
+						selected_card.will_be_destroyed = true
+					end
+					targets[#targets + 1] = table.remove(_cards, card_key)
+
+					--Dodgy way of doing this
+					--Basically we need to highlight the cards temporarily to ensure events are created correctly
+					G.hand:add_to_highlighted(selected_card, true)
+				end
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for _, v in ipairs(targets) do
+							G.hand:add_to_highlighted(v, true)
+							v.will_be_editioned = nil
+							v.will_be_destroyed = nil
+							play_sound("card1", 1)
+						end
+						return true
+					end,
+				}))
+
+				card:use_consumeable()
+
+				--Not sure how to do input correctly, so random is what you get.
+				if card.ability.name == "cry-Class" then
+					local choices = {
+						"bonus",
+						"mult",
+						"wild",
+						"glass",
+						"steel",
+						"stone",
+						"gold",
+						"lucky",
+						"echo",
+						"light",
+						"abstract",
+					}
+					G.ENTERED_ENH = pseudorandom_element(choices, pseudoseed("forceclass"))
+					G.FUNCS.class_cancel()
+					G.FUNCS.class_apply()
+				elseif card.ability.name == "cry-Variable" then
+					local choices = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" }
+					G.ENTERED_RANK = pseudorandom_element(choices, pseudoseed("forceclass"))
+					G.FUNCS.variable_cancel()
+					G.FUNCS.variable_apply()
+				end
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.hand:unhighlight_all()
+						return true
+					end,
+				}))
+
+				--Unhighlight once events are created
+				G.hand:unhighlight_all()
+			end
+		elseif
+			card.ability.name == "cry-Commit"
+			or card.ability.name == "cry-Rework"
+			or card.ability.name == "cry-Multiply"
+		then --Cards that require Jokers to be selected
+			local _cards = {}
+
+			for k, v in ipairs(G.jokers.cards) do
+				if not v.will_be_destroyed then
+					_cards[#_cards + 1] = v
+				end
+			end
+
+			if #_cards > 0 then
+				local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
+				if card.ability.name == "cry-Commit" or card.ability.name == "cry-Rework" then
+					selected_card.will_be_destroyed = true
+				end
+				G.jokers:add_to_highlighted(selected_card, true)
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.jokers:add_to_highlighted(selected_card, true)
+						selected_card.will_be_destroyed = nil
+						play_sound("card1", 1)
+						return true
+					end,
+				}))
+
+				card:use_consumeable()
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.jokers:unhighlight_all()
+						return true
+					end,
+				}))
+
+				G.jokers:unhighlight_all()
+			end
+		elseif card.ability.name == "cry-conduit" or card.ability.name == "cry-Seed" then --Cards that work with both playing cards and jokers
+			local _cards = {}
+			local targets = {}
+
+			for k, v in ipairs(G.hand.cards) do
+				if not v.will_be_destroyed then
+					_cards[#_cards + 1] = v
+				end
+			end
+			for k, v in ipairs(G.jokers.cards) do
+				if not v.will_be_destroyed and v ~= card then
+					_cards[#_cards + 1] = v
+				end
+			end
+
+			local highlight_count = to_number(math.min(#_cards, card.ability.name == "cry-conduit" and 2 or 1))
+
+			if #_cards >= highlight_count then
+				for i = 1, highlight_count do
+					local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
+					targets[#targets + 1] = table.remove(_cards, card_key)
+
+					if selected_card.area == G.hand then
+						G.hand:add_to_highlighted(selected_card, true)
+					else
+						G.jokers:add_to_highlighted(selected_card, true)
+					end
+				end
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for _, v in ipairs(targets) do
+							if v.area == G.hand then
+								G.hand:add_to_highlighted(v, true)
+							else
+								G.jokers:add_to_highlighted(v, true)
+							end
+							play_sound("card1", 1)
+						end
+						return true
+					end,
+				}))
+
+				card:use_consumeable()
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.hand:unhighlight_all()
+						G.jokers:unhighlight_all()
+						return true
+					end,
+				}))
+
+				G.hand:unhighlight_all()
+				G.jokers:unhighlight_all()
+			end
+		elseif card.ability.name == "cry-Merge" then --I banned this card from being forcetriggered after I wrote this code, but it seems a waste to delete it.
+			local _cards = {}
+			local _cards2 = {}
+
+			for k, v in ipairs(G.hand.cards) do
+				if not v.ability.consumeable and not v.will_be_destroyed and not v.will_be_merged then
+					_cards[#_cards + 1] = v
+				end
+			end
+			for k, v in ipairs(G.consumeables.cards) do
+				if
+					v.ability.consumeable
+					and not v.ability.eternal
+					and v.ability.set ~= "Unique"
+					and not v.will_be_destroyed
+					and v ~= card
+				then
+					_cards2[#_cards2 + 1] = v
+				end
+			end
+
+			if #_cards > 0 and #_cards2 > 0 then
+				local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
+				selected_card.will_be_merged = true
+				G.hand:add_to_highlighted(selected_card, true)
+
+				local selected_consum, consum_key = pseudorandom_element(_cards2, pseudoseed("forcehighlight"))
+				selected_consum.will_be_destroyed = true
+				G.consumeables:add_to_highlighted(selected_card, true)
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.hand:add_to_highlighted(selected_card, true)
+						selected_card.will_be_merged = nil
+						G.consumeables:add_to_highlighted(selected_consum, true)
+						selected_card.will_be_destroyed = nil
+						return true
+					end,
+				}))
+
+				card:use_consumeable()
+
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.hand:unhighlight_all()
+						G.consumeables:unhighlight_all()
+						return true
+					end,
+				}))
+
+				G.hand:unhighlight_all()
+				G.consumeables:unhighlight_all()
+			end
+		else
+			-- Copy rigged code to guarantee WoF and Planet.lua
+
+			local ggpn = G.GAME.probabilities.normal
+			G.GAME.probabilities.normal = 1e9
+
+			card:use_consumeable()
+
+			G.GAME.probabilities.normal = ggpn
+		end
 	end
 	return results
 end
 
 function Cryptid.forcetriggerVanillaCheck(card)
+	if not card then
+		return false
+	end
 	local compatvanilla = {
 		"Joker",
 		"Greedy Joker",
@@ -1012,7 +1275,7 @@ function Cryptid.forcetriggerVanillaCheck(card)
 		"Erosion",
 		"Reserved Parking",
 		"Mail-In Rebate",
-		"To the Moon",
+		-- "To the Moon",
 		"Hallucination",
 		"Fortune Teller",
 		"Juggler",
@@ -1041,7 +1304,7 @@ function Cryptid.forcetriggerVanillaCheck(card)
 		"Swashbuckler",
 		"Troubadour",
 		"Certificate",
-		"Smeared Joker",
+		-- "Smeared Joker",
 		"Throwback",
 		-- "Hanging Chad",
 		"Rough Gem",
@@ -1074,18 +1337,36 @@ function Cryptid.forcetriggerVanillaCheck(card)
 		-- "Astronomer",
 		"Burnt Joker",
 		"Bootstraps",
-		"Canio",
+		"Caino",
 		"Triboulet",
 		"Yorick",
 		"Chicot",
 		"Perkeo",
 		"Perkeo (Incantation)",
 	}
-	local vanilcheck = false
 	for i = 1, #compatvanilla do
-		if card and card.ability.name == compatvanilla[i] then
-			vanilcheck = true
+		if card.ability.name == compatvanilla[i] then
+			return true
 		end
 	end
-	return vanilcheck
+	return false
+end
+
+function Cryptid.forcetriggerConsumableCheck(card)
+	if not card then
+		return false
+	end
+	local banned = {
+		"cry-Exploit",
+		"cry-Merge",
+		"cry-Divide",
+		"cry-Delete",
+		"cry-Pointer",
+	}
+	for i = 1, #banned do
+		if card.ability.name == banned[i] then
+			return false
+		end
+	end
+	return true
 end

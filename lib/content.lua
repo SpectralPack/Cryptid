@@ -401,6 +401,14 @@ SMODS.Atlas({
 	end,
 })
 SMODS.Sound({
+	key = "forcetrigger",
+	path = "forcetrigger.ogg",
+})
+SMODS.Sound({
+	key = "demitrigger",
+	path = "demitrigger.ogg",
+})
+SMODS.Sound({
 	key = "meow1",
 	path = "meow1.ogg",
 })
