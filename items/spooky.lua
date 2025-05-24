@@ -1980,7 +1980,9 @@ local buttercup = {
 	atlas = "atlasspooky",
 	blueprint_compat = false,
 	eternal_compat = false,
+	demicoloncompat = true,
 	no_dbl = true,
+	order = 147,
 	cry_credits = {
 		idea = { "Squiddy" },
 		art = { "lolxddj" },
@@ -2011,7 +2013,7 @@ local buttercup = {
 			}
 			card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
 		end
-		if context.selling_self and not context.blueprint then
+		if context.selling_self and not context.blueprint and not context.forcetrigger then
 			if #card.cry_storage.cards > 0 then
 				for i, jok in ipairs(card.cry_storage.cards) do
 					jok.T.w = jok.T.orig.w
@@ -2021,6 +2023,13 @@ local buttercup = {
 				end
 			end
 			card.cry_storage:remove()
+		end
+		if context.forcetrigger and #card.cry_storage.cards > 0 then
+			for i, jok in ipairs(card.cry_storage.cards) do
+				jok.T.w = jok.T.orig.w
+				jok.T.h = jok.T.orig.h
+				G.GAME.next_shop_cards[#G.GAME.next_shop_cards + 1] = jok:save()
+			end
 		end
 	end,
 }
