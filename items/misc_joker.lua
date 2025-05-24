@@ -9297,6 +9297,7 @@ local zooble = {
 	cost = 6,
 	atlas = "atlasone",
 	order = 132,
+        blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -9307,7 +9308,7 @@ local zooble = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.before and context.cardarea == G.jokers then
+		if context.before and context.cardarea == G.jokers and not context.blueprint then
 			if not (next(context.poker_hands["Straight"]) or next(context.poker_hands["Straight Flush"])) then
 				local unique_ranks = {}
 				for i, v in pairs(context.scoring_hand) do
