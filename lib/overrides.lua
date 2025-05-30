@@ -1200,6 +1200,26 @@ function new_round()
 	end
 end
 
+-- Prevent 1 card hand from being played if Sapphire Stamp is active (would result in 0 card hand -> crash)
+local stamp_can_play = G.FUNCS.can_play
+G.FUNCS.can_play = function(e)
+	if G.GAME.stamp_mod then
+		if
+			#G.hand.highlighted <= 1
+			or G.GAME.blind.block_play
+			or #G.hand.highlighted > math.max(G.GAME.starting_params.play_limit, 1)
+		then
+			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+			e.config.button = nil
+		else
+			e.config.colour = G.C.BLUE
+			e.config.button = "play_cards_from_highlighted"
+		end
+	else
+		stamp_can_play(e)
+	end
+end
+
 -- These allow jokers that add joker slots to be obtained even without room, like with Negative Jokers in vanilla
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)

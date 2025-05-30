@@ -189,23 +189,6 @@ position = "at"
 payload = "self.ability.consumeable.mod_num = self.ability.consumeable.max_highlighted"
 match_indent = true
 
-# Infinite Deck
-[[patches]]
-[patches.pattern]
-target = "cardarea.lua"
-pattern = "self.config.highlighted_limit = config.highlight_limit or 5"
-position = "at"
-payload = "self.config.highlighted_limit = config.highlight_limit or G.GAME.modifiers.cry_highlight_limit or 5"
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = "if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > 5 then"
-position = "at"
-payload = "if #G.hand.highlighted <= (G.GAME.stamp_mod and 1 or 0) or G.GAME.blind.block_play then"
-match_indent = true
-
 # Hieroglyph
 [[patches]]
 [patches.pattern]

@@ -516,8 +516,11 @@ function set_profile_progress()
 end
 
 Cryptid.big_num_blacklist = {
-	-- empty for now add more later
-
+	["j_cry_fractal"] = true,
+	["j_cry_wonka_bar"] = true,
+	["v_cry_stickyhand"] = true,
+	["v_cry_grapplinghook"] = true,
+	["v_cry_hyperspacetether"] = true,
 	-- Add your Jokers here if you *don't* want to have it's numbers go into BigNum
 	-- FORMAT: <Joker Key ("j_cry_oil_lamp")> = true,
 	-- TARGET: BigNum Black List

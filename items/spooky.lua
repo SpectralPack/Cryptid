@@ -1943,15 +1943,15 @@ local wonka_bar = {
 	cost = 10,
 	eternal_compat = false,
 	demicoloncompat = true,
+	blueprint_compat = true,
 	atlas = "atlasspooky",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { number_format(center.ability.extra) } }
+		return { vars = { center.ability.extra } }
 	end,
 	calculate = function(self, card, context)
-		if (context.selling_self and not context.blueprint) or context.forcetrigger then
-			card.ability.extra = lenient_bignum(math.floor(card.ability.extra))
-			G.hand.config.highlighted_limit =
-				lenient_bignum(G.hand.config.highlighted_limit + to_big(card.ability.extra))
+		if context.selling_self or context.forcetrigger then
+			SMODS.change_play_limit(math.floor(card.ability.extra))
+			SMODS.change_discard_limit(math.floor(card.ability.extra))
 		end
 	end,
 	cry_credits = {
