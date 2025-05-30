@@ -4171,6 +4171,23 @@ local ctrl_v = {
 		return {}
 	end,
 	can_use = function(self, card)
+		if G.pack_cards and G.pack_cards.highlighted then
+			for i = 1, #G.pack_cards.highlighted do
+				if
+					G.pack_cards.highlighted[i].ability
+					and (
+						G.pack_cards.highlighted[i].ability.consumeable
+						or G.pack_cards.highlighted[i].ability.set == "Default"
+						or G.pack_cards.highlighted[i].ability.set == "Enhanced"
+					)
+				then
+					-- nothing
+				else
+					return false
+				end
+			end
+		end
+
 		return #G.hand.highlighted + #G.consumeables.highlighted + (G.pack_cards and #G.pack_cards.highlighted or 0)
 			== 2
 	end,
@@ -4217,7 +4234,15 @@ local ctrl_v = {
 					if Incantation then
 						card:setQty(1)
 					end
-					G.consumeables:emplace(card)
+
+					-- Edit by IcyEthics: Needed to choose between not allowing copying playing cards or adding them to deck. Made it so they're added to deck.
+					if card.ability.set == "Default" or card.ability.set == "Enhanced" then
+						table.insert(G.playing_cards, card)
+						G.hand:emplace(card)
+						playing_card_joker_effects({ card })
+					else
+						G.consumeables:emplace(card)
+					end
 					return true
 				end,
 			}))
