@@ -152,6 +152,61 @@ local marsmoons = {
 }
 
 -- Order 4 reserved for possible None planet
+-- hehehehehehe
+local nibiru = {
+	cry_credits = {
+		idea = {
+			"cassknows",
+		},
+		art = {
+			"cassknows",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	key = "nibiru",
+	order = 4,
+	config = { hand_type = "cry_None", softlock = true },
+	pos = { x = 0, y = 6 },
+	atlas = "atlasnotjokers",
+	aurinko = true,
+	set_card_type_badge = function(self, card, badges)
+		--use whichever of these fits best, the second literally just removes the badge, and the first is a blank badge
+		--badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
+
+		if badges[1] and badges[1].remove then badges[1]:remove() end
+		badges[1] = nil
+	end,
+	loc_vars = function(self, info_queue, center)
+		local levelone = G.GAME.hands["cry_None"].level or 1
+		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+		if levelone == 1 then
+			planetcolourone = G.C.UI.TEXT_DARK
+		end
+		return {
+			vars = {
+				localize("cry_None"),
+				G.GAME.hands["cry_None"].level,
+				G.GAME.hands["cry_None"].l_mult,
+				G.GAME.hands["cry_None"].l_chips,
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_None"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_None"].level)):to_number()]
+					),
+				},
+			},
+		}
+	end,
+	generate_ui = 0,
+}
+
 
 -- The Universe In Its Fucking Entirety
 -- Upgrades The Entire Fucking Deck (+5.25252e28/+5.25252e27)
@@ -194,6 +249,7 @@ local universe = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_WholeDeck"].level) == to_big(1) and G.C.UI.TEXT_DARK
+		
 						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_WholeDeck"].level)):to_number()]
 					),
 				},
@@ -201,6 +257,10 @@ local universe = {
 		}
 	end,
 	generate_ui = 0,
+	cry_credits = {
+		art = {"cassknows"},
+		code = {"lord-ruby"}
+	}
 }
 
 -- Planet.lua
@@ -1264,6 +1324,7 @@ local planet_cards = {
 	void,
 	marsmoons,
 	-- reserved for None
+	nibiru,
 	universe,
 
 	planetlua,
