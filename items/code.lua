@@ -3415,12 +3415,30 @@ local global_sticker = {
 		card.hover_tilt = card.hover_tilt * 2
 	end,
 	calculate = function(self, card, context)
-		if (context.setting_blind or context.open_booster) and context.cardarea == G.deck then
-			draw_card(G.deck, G.hand, nil, nil, nil, card)
-			--[[card.globalticks = (card.globalticks or 1) - 1
-		if card.globalticks == 0 then
-			card.global = nil
-		end--]]
+		-- Added by IcyEthics
+		if context.cry_shuffling_area and context.cardarea == G.deck and context.cry_post_shuffle then
+			local _targetpos = nil
+			local _selfpos = nil
+
+			-- Iterate through every card in the deck to find both the location
+			-- of the stickered card, and the highest placed non-stickered card
+			for i, _playingcard in ipairs(G.deck.cards) do
+				if _playingcard == card then
+					_selfpos = i
+				elseif not _playingcard.ability.cry_global_sticker then
+					_targetpos = i
+				end
+			end
+
+			if _targetpos == nil then
+				_targetpos = #G.deck.cards
+			end
+			if _selfpos == nil then
+				_selfpos = #G.deck.cards
+			end
+
+			-- Swaps the positions of the selected cards
+			G.deck.cards[_selfpos], G.deck.cards[_targetpos] = G.deck.cards[_targetpos], G.deck.cards[_selfpos]
 		end
 	end,
 }
