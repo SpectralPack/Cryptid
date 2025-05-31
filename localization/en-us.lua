@@ -1883,7 +1883,7 @@ return {
 					"{C:attention}#2#{} time#<s>2#,",
 					"each played card gives",
 					"{X:mult,C:white} X#1# {} Mult when scored",
-					"{C:inactive}(Max {}{C:attention}#3#{}{C:inactive} repetitions)",
+					"{C:inactive}(Max {}{C:attention}#3#{}{C:inactive} retriggers)",
 				},
 			},
 			j_cry_jawbreaker = {
@@ -4816,6 +4816,7 @@ return {
 			--Why aren't these in vanilla?
 			b_tag = "Tag",
 			b_blind = "Blind",
+			rush_hour_reminder = "Enable the Clock and Lavender loop to play Rush Hour",
 
 			b_tarot_rate = "Tarot Rate",
 			b_planet_rate = "Planet Rate",

@@ -8049,13 +8049,12 @@ local fractal = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra = math.min(math.floor(card.ability.extra), 1000)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.extra
+		SMODS.change_play_limit(card.ability.extra)
+		SMODS.change_discard_limit(card.ability.extra)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.extra
-		if to_big(G.hand.config.highlighted_limit) < to_big(5) then
-			G.hand.config.highlighted_limit = 5
-		end
+		SMODS.change_play_limit(-1 * card.ability.extra)
+		SMODS.change_discard_limit(-1 * card.ability.extra)
 		if not G.GAME.before_play_buffer then
 			G.hand:unhighlight_all()
 		end
@@ -9297,6 +9296,7 @@ local zooble = {
 	cost = 6,
 	atlas = "atlasone",
 	order = 132,
+	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -9307,7 +9307,7 @@ local zooble = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.before and context.cardarea == G.jokers then
+		if context.before and context.cardarea == G.jokers and not context.blueprint then
 			if not (next(context.poker_hands["Straight"]) or next(context.poker_hands["Straight Flush"])) then
 				local unique_ranks = {}
 				for i, v in pairs(context.scoring_hand) do

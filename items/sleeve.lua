@@ -33,7 +33,7 @@ if CardSleeves then
 		name = "Unlimited Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 4, y = 0 },
-		config = { cry_highlight_limit = 1e20, hand_size = 1 },
+		config = { hand_size = 1 },
 		unlocked = true,
 		unlock_condition = { deck = "Infinite Deck", stake = 1 },
 		loc_vars = function(self)
@@ -41,7 +41,16 @@ if CardSleeves then
 		end,
 		trigger_effect = function(self, args) end,
 		apply = function(self)
-			G.GAME.modifiers.cry_highlight_limit = self.config.cry_highlight_limit
+			G.GAME.infinitedeck = true
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.7,
+				func = function()
+					SMODS.change_play_limit(1e6)
+					SMODS.change_discard_limit(1e6)
+					return true
+				end,
+			}))
 		end,
 	})
 

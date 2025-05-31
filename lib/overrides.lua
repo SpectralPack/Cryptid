@@ -98,14 +98,26 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 end
 local gnb = get_new_boss
 function get_new_boss()
+	local bl = gnb()
 	--Fix an issue with adding bosses mid-run
 	for k, v in pairs(G.P_BLINDS) do
 		if not G.GAME.bosses_used[k] then
 			G.GAME.bosses_used[k] = 0
 		end
 	end
+	-- Force Clock and Lavender Loop for Rush hour
+	if G.GAME.modifiers.cry_rush_hour then
+		--Check if Clock and Lavender Loop are both enabled
+		if (Cryptid.enabled("bl_cry_clock") == true) and (Cryptid.enabled("bl_cry_lavender_loop") == true) then
+			return (G.GAME.round_resets.ante % G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2)
+					and "bl_cry_lavender_loop"
+				or "bl_cry_clock"
+		else
+			-- Note: code elsewhere will force losses until both blinds are enabled
+			return bl
+		end
+	end
 	--This is how nostalgic deck replaces the boss blinds with Nostalgic versions
-	local bl = gnb()
 	if G.GAME.modifiers.cry_beta then
 		local bl_key = string.sub(bl, 4)
 		local nostalgicblinds = {
@@ -410,9 +422,7 @@ function Game:update(dt)
 				G.GAME.CRY_BLINDS[c] = (G.GAME.CRY_BLINDS[c] or G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult)
 					+ (
 						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].cry_ante_base_mod
-							and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(
-								dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1)
-							)
+							and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]]:cry_ante_base_mod(dt)
 						or 0
 					)
 				--Update UI
@@ -450,7 +460,7 @@ function Game:update(dt)
 				and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
 			then
 				G.GAME.blind.chips = G.GAME.blind.chips
-					+ G.GAME.blind:cry_ante_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
+					+ G.GAME.blind:cry_ante_base_mod(dt)
 						* get_blind_amount(G.GAME.round_resets.ante)
 						* G.GAME.starting_params.ante_scaling
 				G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
@@ -464,11 +474,7 @@ function Game:update(dt)
 			and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
 		then
 			G.GAME.blind.chips = G.GAME.blind.chips
-				* (
-					G.GAME.blind.cry_round_base_mod
-						and G.GAME.blind:cry_round_base_mod(dt * (G.GAME.modifiers.cry_rush_hour_iii and 2 or 1))
-					or 1
-				)
+				* (G.GAME.blind.cry_round_base_mod and G.GAME.blind:cry_round_base_mod(dt) or 1)
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		end
 	end
@@ -1172,11 +1178,46 @@ function add_tag(tag, from_skip, no_copy)
 	end
 end
 
--- I don't remember exactly what this patch was for, perhaps issues with syncing hand size with jokers like Effarcire?
 local nr = new_round
 function new_round()
+	-- I don't remember exactly what this patch was for, perhaps issues with syncing hand size with jokers like Effarcire?
 	G.hand:change_size(0)
 	nr()
+	-- Force losses if Rush hour is played with clock and lavender loop disabled
+	if G.GAME.modifiers.cry_rush_hour then
+		if not (Cryptid.enabled("bl_cry_clock") == true) or not (Cryptid.enabled("bl_cry_lavender_loop") == true) then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.STAGE == G.STAGES.RUN then
+						G.STATE = G.STATES.GAME_OVER
+						G.STATE_COMPLETE = false
+					end
+					print(localize("rush_hour_reminder"))
+					return true
+				end,
+			}))
+		end
+	end
+end
+
+-- Prevent 1 card hand from being played if Sapphire Stamp is active (would result in 0 card hand -> crash)
+local stamp_can_play = G.FUNCS.can_play
+G.FUNCS.can_play = function(e)
+	if G.GAME.stamp_mod then
+		if
+			#G.hand.highlighted <= 1
+			or G.GAME.blind.block_play
+			or #G.hand.highlighted > math.max(G.GAME.starting_params.play_limit, 1)
+		then
+			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+			e.config.button = nil
+		else
+			e.config.colour = G.C.BLUE
+			e.config.button = "play_cards_from_highlighted"
+		end
+	else
+		stamp_can_play(e)
+	end
 end
 
 -- These allow jokers that add joker slots to be obtained even without room, like with Negative Jokers in vanilla
