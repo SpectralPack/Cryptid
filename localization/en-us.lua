@@ -1335,6 +1335,18 @@ return {
 					"an {E:1,C:attention}Ultimate Pair",
 				},
 			},
+			j_cry_the = {
+				name = "The",
+				text = {
+					"{X:mult,C:white} X#1# {} Mult if played",
+					"hand is {C:attention}#2#",
+				},
+				unlock = {
+					"Win a run with",
+					"your final hand being",
+					"a {E:1,C:attention}None",
+				},
+			},
 			j_cry_clicked_cookie = {
 				name = "Clicked Cookie",
 				text = {
@@ -1740,6 +1752,13 @@ return {
 					"{C:red}+#1#{} Mult if played",
 					"hand contains",
 					"an {C:attention}#2#",
+				},
+			},
+			j_cry_undefined = {
+				name = "Undefined Joker",
+				text = {
+					"{C:red}+#1#{} Mult if played",
+					"hand is {C:attention}#2#",
 				},
 			},
 			j_cry_formidiulosus = {
@@ -2796,6 +2815,35 @@ return {
 					"an {C:attention}#2#",
 				},
 			},
+			j_cry_nebulous = {
+				name = "Nebulous Joker",
+				text = {
+					"{C:chips}+#1#{} Chip#<s>1# if played",
+					"hand is {C:attention}#2#",
+				},
+			},
+			j_cry_words_cant_even = {
+				name = "Words cant even describe this Joker",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult if played",
+					"hand contains",
+					"a {C:attention}#2#",
+				},
+			},
+			j_cry_many_lost_minds = {
+				name = "Many have lost their minds comprehending this Joker",
+				text = {
+					"{X:blue,C:white}X#1#{} Chips if played hand contains {C:attention}#2#",
+				},
+			},
+			j_cry_annihalation = {
+				name = "The complete and utter annihalation of everything that makes Balatro sacred",
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Mult if played",
+					"hand contains",
+					"a {C:attention}#2#",
+				},
+			},
 			j_cry_trick_or_treat = {
 				name = "Trick-or-Treat",
 				text = {
@@ -3013,6 +3061,16 @@ return {
 				},
 			},
 			-- Reserved Spot For None Hand Planet
+			c_cry_nibiru = {
+				name = "Nibiru",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} Mult and",
+					"{C:chips}+#4#{} chip#<s>4#",
+				},
+			},
+
 			c_cry_universe = {
 				name = Cryptid_config.family_mode and "Universe" or "The Universe In Its Fucking Entirety",
 				text = {
@@ -4663,6 +4721,7 @@ return {
 			["cry_UltPair"] = "Ultimate Pair",
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "The Entire Deck" or "The Entire Fucking Deck",
 			["cry-Cluster Bulwark"] = "Clusterwark",
+			["cry_None"] = "None",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -4682,6 +4741,7 @@ return {
 				"card found in a 52-card deck.",
 				"Are you insane?",
 			},
+			["cry_None"] = { "A hand containing 0 cards" },
 		},
 		achievement_names = {
 			ach_cry_ace_in_crash = "Pocket ACE",
@@ -4890,6 +4950,7 @@ return {
 			k_planet_disc = "Circumstellar Disc",
 			k_planet_satellite = "Natural Satellites",
 			k_planet_universe = Cryptid_config.family_mode and "Universe" or "The Actual Fucking Universe",
+			k_planet_nibiru = "Nothing",
 
 			cry_notif_jimball_1 = "Jimball",
 			cry_notif_jimball_2 = "Copyright Notice",
