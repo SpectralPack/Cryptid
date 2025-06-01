@@ -3028,6 +3028,25 @@ local run = {
 }
 -- ://Class
 -- Change a selected card's enhancement to one of your choosing (or nil)
+
+local enh_table = {
+	m_bonus = { "bonus" },
+	m_mult = { "mult", "red" },
+	m_wild = { "wild", "suit" },
+	m_glass = { "glass", "xmult" },
+	m_steel = { "steel", "metal", "grey" },
+	m_stone = { "stone", "chip", "chips" },
+	m_gold = { "gold", "money", "yellow" },
+	m_lucky = { "lucky", "rng" },
+	m_cry_echo = { "echo", "retrigger", "retriggers" },
+	m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
+	m_cry_light = { "light" },
+	ccd = { "ccd" },
+	null = { "nil" },
+}
+
+Cryptid.load_enhancement_aliases(enh_table)
+
 local class = {
 	cry_credits = {
 		idea = {
@@ -3153,21 +3172,22 @@ local class = {
 		end
 		--todo: mod support
 		G.FUNCS.class_apply = function()
-			local enh_table = {
-				m_bonus = { "bonus" },
-				m_mult = { "mult", "red" },
-				m_wild = { "wild", "suit" },
-				m_glass = { "glass", "xmult" },
-				m_steel = { "steel", "metal", "grey" },
-				m_stone = { "stone", "chip", "chips" },
-				m_gold = { "gold", "money", "yellow" },
-				m_lucky = { "lucky", "rng" },
-				m_cry_echo = { "echo", "retrigger", "retriggers" },
-				m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
-				m_cry_light = { "light" },
-				ccd = { "ccd" },
-				null = { "nil" },
-			}
+			-- local enh_table = {
+			-- 	m_bonus = { "bonus" },
+			-- 	m_mult = { "mult", "red" },
+			-- 	m_wild = { "wild", "suit" },
+			-- 	m_glass = { "glass", "xmult" },
+			-- 	m_steel = { "steel", "metal", "grey" },
+			-- 	m_stone = { "stone", "chip", "chips" },
+			-- 	m_gold = { "gold", "money", "yellow" },
+			-- 	m_lucky = { "lucky", "rng" },
+			-- 	m_cry_echo = { "echo", "retrigger", "retriggers" },
+			-- 	m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
+			-- 	m_cry_light = { "light" },
+			-- 	ccd = { "ccd" },
+			-- 	null = { "nil" },
+			-- }
+			local enh_table = Cryptid.enhancement_alias_list
 
 			local enh_suffix = nil
 

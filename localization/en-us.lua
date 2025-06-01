@@ -2640,6 +2640,13 @@ return {
 					"at end of round",
 				},
 			},
+			j_cry_yarnball = {
+				name = "Yarn Ball",
+				text = {
+					"{C:red}+#1#{} to all {C:green}listed probabilities",
+					"for the highest {C:attention}Cat Tag{} level",
+				},
+			},
 			j_cry_spaceglobe = {
 				name = "Celestial Globe",
 				text = {

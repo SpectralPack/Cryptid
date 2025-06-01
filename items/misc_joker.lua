@@ -1462,7 +1462,7 @@ local seal_the_deal = {
 	calculate = function(self, card, context)
 		if
 			context.after
-			and G.GAME.current_round.hands_left == 0
+			and (G.GAME.current_round.hands_left == 0 or next(find_joker("cry-panopticon")))
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
@@ -1489,17 +1489,11 @@ local seal_the_deal = {
 		end
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
-		local sealtable = { "blue", "red", "purple" }
-		if Cryptid.enabled("cry_azure") then
-			sealtable[#sealtable + 1] = "azure"
-		end
-		if Cryptid.enabled("cry_green") then
-			sealtable[#sealtable + 1] = "green"
-		end
+		local sealtable = { "blue", "red", "purple", "azure", "green" }
 		card.ability.extra = pseudorandom_element(sealtable, pseudoseed("abc"))
-		if self.discovered then
+		if self.discovered and not (card.area and card.area.config.collection) then
 			--Gold (ULTRA RARE!!!!!!!!)
-			if pseudorandom("xyz") <= 0.000001 and not (card.area and card.area.config.collection) then
+			if pseudorandom("xyz") <= 0.000001 then
 				card.children.center:set_sprite_pos({ x = 6, y = 4 })
 			--Others
 			elseif card.ability.extra == "red" then
@@ -9881,6 +9875,83 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 		end
 	end,
 }
+
+local yarnball = { -- +1 to all listed probabilities for the highest cat tag level
+	cry_credits = {
+		idea = {
+			"Saturn",
+		},
+		art = {
+			"Darren_The_Frog",
+		},
+		code = {
+			"Lily",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"tag_cry_cat",
+		},
+	},
+	name = "cry_yarnball",
+	key = "yarnball",
+	atlas = "atlasthree",
+	pos = { x = 2, y = 7 },
+	rarity = 3,
+	cost = 8,
+	order = 140,
+	demicoloncompat = false,
+	config = { extra = { oddsmod = 1 }, immutable = { lasthighest = 0 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.oddsmod } }
+	end,
+	update = function(self, card, dt)
+		if G.GAME and G.GAME.tags and card.ability then
+			local highest = 0
+			for i, tag in pairs(G.GAME.tags) do
+				local lvl = tag.ability.level
+				if lvl == nil then
+					lvl = 1
+				end
+
+				-- print("trying comparison of " .. tostring(lvl) .. " > " .. tostring(highest))
+				if tag.key == "tag_cry_cat" and lvl > highest then
+					highest = lvl
+					-- get highest cat tag level
+					-- unfortunately this probably causes lag if you have 2763 cat tags but thats your problem not mine
+				end
+			end
+
+			-- print(card.ability.immutable.lasthighest, highest)
+			if highest ~= card.ability.immutable.lasthighest then
+				for k, v in pairs(G.GAME.probabilities) do
+					G.GAME.probabilities[k] = (v - card.ability.immutable.lasthighest) + highest
+					-- im not fully sure on this, but we're having fun :)
+
+					-- i dont even know if you have to iterate through all of them, but this is what oa6 does
+				end
+				card.ability.immutable.lasthighest = highest
+			end
+		end
+	end,
+	in_pool = function(self)
+		local r = false
+		for _, tag in pairs(G.GAME.tags) do
+			if tag.key == "tag_cry_cat" then
+				r = true
+			end
+		end
+		return r
+	end,
+
+	remove_from_deck = function(self, card, from_debuff)
+		for k, v in pairs(G.GAME.probabilities) do
+			G.GAME.probabilities[k] = (v - card.ability.immutable.lasthighest)
+		end
+	end,
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -10000,6 +10071,7 @@ local miscitems = {
 	highfive,
 	sock_and_sock,
 	brokenhome,
+	yarnball,
 }
 return {
 	name = "Misc. Jokers",

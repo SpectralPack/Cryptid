@@ -230,6 +230,18 @@ function Game:init_game_object()
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
 	g.jokers_sold = {}
+
+	-- Added by IcyEthics: Converted the voucher-related modifiers for the tier 3
+	-- acclimator vouchers to be more generically accessible
+	g.cry_bonusvouchercount = 0
+	g.cry_bonusvouchersused = {}
+
+	-- Automatically sets up the cry_percrate for each consumable type and sets it to 100 as a default
+	g.cry_percrate = {}
+	for _, v in ipairs(SMODS.ConsumableType.ctype_buffer) do
+		g.cry_percrate[v:lower()] = 100
+	end
+
 	return g
 end
 

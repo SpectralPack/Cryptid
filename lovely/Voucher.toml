@@ -56,17 +56,17 @@ match_indent = true
 
 # initialise the other helpful variables
 # tarot/planet percrates appear here too because why not
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''ecto_minus = 1,'''
-position = "after"
-payload = '''
-cry_bonusvouchercount = 0,
-cry_bonusvouchersused = {},
-cry_percrate = {tarot = 100, planet = 100},
-'''
-match_indent = true
+# [[patches]]
+# [patches.pattern]
+# target = "game.lua"
+# pattern = '''ecto_minus = 1,'''
+# position = "after"
+# payload = '''
+# cry_bonusvouchercount = 0,
+# cry_bonusvouchersused = {},
+# cry_percrate = {tarot = 100, planet = 100},
+# '''
+# match_indent = true
 
 # populate the table with keys
 [[patches]]
@@ -143,7 +143,7 @@ for i = 1, #G.GAME.current_round.cry_bonusvouchers do
 end
 '''
 
-# control the planet/tarot rates
+# control the planet/tarot rates (This needs to be left in to maintain vanilla RNG
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
@@ -158,7 +158,38 @@ payload = '''
 '''
 match_indent = true
 
-# fix total rate
+# Adds adjustability to every other consumable type
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+            table.insert(rates, { type = v, val = G.GAME[v:lower()..'_rate'] })
+'''
+position = "at"
+payload = '''
+local num = G.GAME.cry_percrate and G.GAME.cry_percrate[v:lower()] or 100
+table.insert(rates, { type = v, val = G.GAME[v:lower()..'_rate'] * ((num or 100) / 100) })
+'''
+match_indent = true
+
+# fix total rate (Current Cryptid implementation)
+# [[patches]]
+# [patches.pattern]
+# target = "functions/UI_definitions.lua"
+# pattern = '''
+# total_rate = total_rate + G.GAME[v:lower()..'_rate']
+# '''
+# position = "at"
+# payload = '''
+# if not (v:lower() == 'tarot' or v:lower() == 'planet') then
+# 	total_rate = total_rate + G.GAME[v:lower()..'_rate']
+# else
+# 	total_rate = total_rate + ( G.GAME[v:lower()..'_rate'] * (G.GAME.cry_percrate[v:lower()]/100) )
+# end
+# '''
+# match_indent = true
+
+# fix total rate (IcyEthics Refactor)
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
@@ -167,11 +198,7 @@ total_rate = total_rate + G.GAME[v:lower()..'_rate']
 '''
 position = "at"
 payload = '''
-if not (v:lower() == 'tarot' or v:lower() == 'planet') then
-	total_rate = total_rate + G.GAME[v:lower()..'_rate']
-else
-	total_rate = total_rate + ( G.GAME[v:lower()..'_rate'] * (G.GAME.cry_percrate[v:lower()]/100) )
-end
+total_rate = total_rate + ( G.GAME[v:lower()..'_rate'] * (G.GAME.cry_percrate[v:lower()]/100) )
 '''
 match_indent = true
 
