@@ -1648,8 +1648,8 @@ function Blind:set_blind(blind, reset, silent)
 			trigger = "after",
 			func = function()
 				update_hand_text({ delay = 0, immediate = true }, {
-					mult = G.GAME.hands["cry_None"].mult,
-					chips = G.GAME.hands["cry_None"].chips,
+					mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
+					chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
 					level = G.GAME.hands["cry_None"].level,
 					handname = localize("cry_None", "poker_hands"),
 				})
@@ -1689,8 +1689,8 @@ function Game:update_selecting_hand(dt)
 			trigger = "after",
 			func = function()
 				update_hand_text({ delay = 0, immediate = true }, {
-					mult = G.GAME.hands["cry_None"].mult,
-					chips = G.GAME.hands["cry_None"].chips,
+					mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
+					chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
 					level = G.GAME.hands["cry_None"].level,
 					handname = localize("cry_None", "poker_hands"),
 				})
@@ -1715,8 +1715,8 @@ function Blind:load(blindTable)
 			trigger = "after",
 			func = function()
 				update_hand_text({ delay = 0, immediate = true, volume = 0.01 }, {
-					mult = G.GAME.hands["cry_None"].mult,
-					chips = G.GAME.hands["cry_None"].chips,
+					mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
+					chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
 					level = G.GAME.hands["cry_None"].level,
 					handname = localize("cry_None", "poker_hands"),
 				})
@@ -1772,8 +1772,8 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 			trigger = "after",
 			func = function()
 				update_hand_text({ delay = 0, immediate = true }, {
-					mult = G.GAME.hands["cry_None"].mult,
-					chips = G.GAME.hands["cry_None"].chips,
+					mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
+					chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
 					level = G.GAME.hands["cry_None"].level,
 					handname = localize("cry_None", "poker_hands"),
 				})

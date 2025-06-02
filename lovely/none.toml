@@ -56,7 +56,7 @@ position = "at"
 payload = '''
                 level_up_hand(context.blueprint_card or self, text, nil, 1)
                 if G.GAME.hands["cry_None"].visible then
-                    update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
+                    update_hand_text({delay = 0}, {mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult), chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips), level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
                     
                 else
                     update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
@@ -103,7 +103,7 @@ payload = '''
             level_up_hand(self, k, true)
         end
         if G.GAME.hands["cry_None"].visible then
-            update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
+            update_hand_text({delay = 0}, {mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult), chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips), level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
                     
         else
             update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
@@ -123,7 +123,7 @@ position = "at"
 payload = '''
     if self.ability.consumeable.max_highlighted then
         if G.GAME.hands["cry_None"].visible then
-            update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
+            update_hand_text({delay = 0}, {mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult), chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips), level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
                     
         else
             update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
