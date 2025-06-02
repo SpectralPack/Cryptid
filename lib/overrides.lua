@@ -145,15 +145,6 @@ function G.FUNCS.evaluate_play(e)
 	G.GAME.blind:cry_after_play()
 end
 
---Add context for Just before cards are played
-local pcfh = G.FUNCS.play_cards_from_highlighted
-function G.FUNCS.play_cards_from_highlighted(e)
-	G.GAME.before_play_buffer = true
-	G.GAME.blind:cry_before_play()
-	pcfh(e)
-	G.GAME.before_play_buffer = nil
-end
-
 --Track defeated blinds for Obsidian Orb
 local dft = Blind.defeat
 function Blind:defeat(s)
@@ -1212,12 +1203,23 @@ function new_round()
 	end
 end
 
--- Prevent 1 card hand from being played if Sapphire Stamp is active (would result in 0 card hand -> crash)
 local stamp_can_play = G.FUNCS.can_play
 G.FUNCS.can_play = function(e)
-	if G.GAME.stamp_mod then
+	local value = 0
+	-- Allow 0 card hand to always be played if none is unlocked and poker hands aren't disabled
+	if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then
+		value = -1
+	end
+	-- Prevent 1 card hand from being played if Sapphire Stamp is active and poker hands aren't enabled (would result in 0 card hand)
+	if G.GAME.stamp_mod and Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
+		value = 1
+	end
+
+	if value == 0 then
+		stamp_can_play(e)
+	else
 		if
-			#G.hand.highlighted <= 1
+			#G.hand.highlighted <= value
 			or G.GAME.blind.block_play
 			or #G.hand.highlighted > math.max(G.GAME.starting_params.play_limit, 1)
 		then
@@ -1227,8 +1229,29 @@ G.FUNCS.can_play = function(e)
 			e.config.colour = G.C.BLUE
 			e.config.button = "play_cards_from_highlighted"
 		end
+	end
+end
+local stamp_can_discard = G.FUNCS.can_discard
+G.FUNCS.can_discard = function(e)
+	local value = 0
+	-- Allow 0 card hand to always be discarded if none is unlocked and poker hands aren't disabled
+	if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then
+		value = -1
+	end
+	if value == 0 then
+		stamp_can_discard(e)
 	else
-		stamp_can_play(e)
+		if
+			G.GAME.current_round.discards_left <= 0
+			or #G.hand.highlighted <= value
+			or #G.hand.highlighted > math.max(G.GAME.starting_params.discard_limit, 0)
+		then
+			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+			e.config.button = nil
+		else
+			e.config.colour = G.C.RED
+			e.config.button = "play_cards_from_highlighted"
+		end
 	end
 end
 
@@ -1762,6 +1785,8 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 end
 local play_ref = G.FUNCS.play_cards_from_highlighted
 G.FUNCS.play_cards_from_highlighted = function(e)
+	G.GAME.before_play_buffer = true
+	-- None Stuff
 	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 1 then
 		G.PROFILES[G.SETTINGS.profile].cry_none = true
 		print("nonelock stuff here")
@@ -1770,7 +1795,10 @@ G.FUNCS.play_cards_from_highlighted = function(e)
 	if G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 0 then
 		G.GAME.hands["cry_None"].visible = true
 	end
+	--Add blind context for Just before cards are played
+	G.GAME.blind:cry_before_play()
 	play_ref(e)
+	G.GAME.before_play_buffer = nil
 end
 
 local use_cardref = G.FUNCS.use_card

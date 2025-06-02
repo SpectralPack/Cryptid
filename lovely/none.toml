@@ -5,36 +5,6 @@ priority = 0
 
 [[patches]]
 [patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = '''
-if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > math.max(G.GAME.starting_params.play_limit, 1) then 
-'''
-position = "at"
-payload = '''
-local num = 0
-if G.PROFILES[G.SETTINGS.profile].cry_none then num = -1 end
-if #G.hand.highlighted <= num or G.GAME.blind.block_play or #G.hand.highlighted > math.max(G.GAME.starting_params.play_limit, 1) then 
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = '''
-  G.FUNCS.can_discard = function(e)
-    if G.GAME.current_round.discards_left <= 0 or #G.hand.highlighted <= 0 or #G.hand.highlighted > math.max(G.GAME.starting_params.discard_limit, 0) then 
-'''
-position = "at"
-payload = '''
-  G.FUNCS.can_discard = function(e)
-    local num = 0
-    if G.PROFILES[G.SETTINGS.profile].cry_none then num = -1 end
-    if G.GAME.current_round.discards_left <= 0 or #G.hand.highlighted <= num or #G.hand.highlighted > math.max(G.GAME.starting_params.discard_limit, 0) then 
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
 target = "functions/ui_definitions.lua"
 pattern = '''
     local discard_button = {n=G.UIT.C, config={id = 'discard_button',align = "tm", padding = 0.3, r = 0.1, minw = 2.5, minh = button_height, hover = true, colour = G.C.RED, button = "discard_cards_from_highlighted", one_press = true, shadow = true, func = 'can_discard'}, nodes={
