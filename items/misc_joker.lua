@@ -10266,15 +10266,24 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.oddsmod } }
 	end,
-	update = function(self, card, dt)
-		if G.GAME and G.GAME.tags and card.ability then
+	in_pool = function(self)
+		local r = false
+		for _, tag in pairs(G.GAME.tags) do
+			if tag.key == "tag_cry_cat" then
+				r = true
+			end
+		end
+		return r
+	end,
+
+	calculate = function(self, card, context)
+		if true then
 			local highest = 0
 			for i, tag in pairs(G.GAME.tags) do
 				local lvl = tag.ability.level
 				if lvl == nil then
 					lvl = 1
 				end
-
 				-- print("trying comparison of " .. tostring(lvl) .. " > " .. tostring(highest))
 				if tag.key == "tag_cry_cat" and lvl > highest then
 					highest = lvl
@@ -10288,21 +10297,11 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 				for k, v in pairs(G.GAME.probabilities) do
 					G.GAME.probabilities[k] = (v - card.ability.immutable.lasthighest) + highest
 					-- im not fully sure on this, but we're having fun :)
-
 					-- i dont even know if you have to iterate through all of them, but this is what oa6 does
 				end
 				card.ability.immutable.lasthighest = highest
 			end
 		end
-	end,
-	in_pool = function(self)
-		local r = false
-		for _, tag in pairs(G.GAME.tags) do
-			if tag.key == "tag_cry_cat" then
-				r = true
-			end
-		end
-		return r
 	end,
 
 	remove_from_deck = function(self, card, from_debuff)
@@ -10437,7 +10436,7 @@ local miscitems = {
 	highfive,
 	sock_and_sock,
 	brokenhome,
-	yarnball,
+	-- yarnball, broken with oa6 currently
 }
 return {
 	name = "Misc. Jokers",

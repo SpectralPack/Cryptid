@@ -2662,8 +2662,8 @@ return {
 			j_cry_yarnball = {
 				name = "Yarn Ball",
 				text = {
-					"{C:red}+#1#{} to all {C:green}listed probabilities",
-					"for the highest {C:attention}Cat Tag{} level",
+					"Add the level of the highest level {C:attention}Cat Tag{}",
+					"to all {C:green}listed probabilities",
 				},
 			},
 			j_cry_spaceglobe = {
