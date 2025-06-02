@@ -3900,7 +3900,7 @@ return {
 				name = "The Seraph",
 				text = {
 					"Enhances {C:attention}#1#{} selected card#<s>1#",
-					"into a {C:attention}Light Card",
+					"into {C:attention}Light Cards",
 				},
 			},
 		},
