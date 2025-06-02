@@ -1250,7 +1250,7 @@ G.FUNCS.can_discard = function(e)
 			e.config.button = nil
 		else
 			e.config.colour = G.C.RED
-			e.config.button = "play_cards_from_highlighted"
+			e.config.button = "discard_cards_from_highlighted"
 		end
 	end
 end
