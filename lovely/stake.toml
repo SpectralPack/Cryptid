@@ -64,7 +64,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if self.ability.name == 'The Hermit' or self.ability.consumeable.hand_type or self.ability.name == 'Temperance' or self.ability.name == 'Black Hole' then"
+pattern = "if self.ability.name == 'The Wheel of Fortune' then"
 position = "before"
 payload = '''
 if self.ability.name == "The Hanged Man" then
