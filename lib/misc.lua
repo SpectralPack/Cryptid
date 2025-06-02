@@ -517,6 +517,7 @@ end
 
 Cryptid.big_num_blacklist = {
 	["j_cry_fractal"] = true,
+	["j_cry_wonka_bar"] = true,
 	["v_cry_stickyhand"] = true,
 	["v_cry_grapplinghook"] = true,
 	["v_cry_hyperspacetether"] = true,

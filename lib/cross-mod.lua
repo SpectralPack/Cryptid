@@ -150,3 +150,53 @@ function Card:is_suit_force_enhancement(suit, bypass_debuff, flush_calc)
 	local ref = self:is_suit(suit, bypass_debuff, flush_calc)
 	return ref
 end
+
+-- === Cross mod access for Cryptid === --
+-- IcyEthics: Adding this section to collect functions that are intended to help other mods
+-- interact with Cryptid's functionality in some way
+
+-- ://CLASS API
+-- This function allows another mod to set up a name and alias that's accessible by the ://CLASS Code Card
+-- It's also set up more generically so that other mods can access the same information
+Cryptid.enhancement_alias_list = {}
+
+---@param list table
+function Cryptid.load_enhancement_aliases(list)
+	for _enhancementkey, _listofaliases in pairs(list) do
+		Cryptid.enhancement_alias_list[_enhancementkey] = _listofaliases
+	end
+end
+
+-- Acclimator Voucher API functions
+-- This should allow other mods to set up their own tier 3 vouchers in the style of
+-- the Tarot Acclimator voucher by setting up the voucher and just initializing
+-- a call to this function in their initialization
+
+Cryptid.voucher_acclimator_data = {}
+
+---@param voucher_key string
+---@param localization_key string
+---@param ref_value string
+---@param colour any
+function Cryptid.setup_voucher_rate_adjuster(voucher_key, localization_key, ref_value, colour)
+	-- Necessary values:
+	-- Voucher key
+	-- localize key
+	-- ref value
+	-- colour
+
+	if not voucher_key or not localization_key or not ref_value or not colour then
+		print("Cryptid.setup_voucher_rate_adjuster was improperly called")
+	end
+
+	Cryptid.voucher_acclimator_data[#Cryptid.voucher_acclimator_data + 1] = {
+		voucher_key = voucher_key,
+		localization_key = localization_key,
+		ref_value = ref_value,
+		colour = colour,
+	}
+	print(Cryptid.voucher_acclimator_data[#Cryptid.voucher_acclimator_data])
+end
+
+Cryptid.setup_voucher_rate_adjuster("v_cry_tacclimator", "b_tarot_rate", "tarot", G.C.SECONDARY_SET.Tarot)
+Cryptid.setup_voucher_rate_adjuster("v_cry_pacclimator", "b_planet_rate", "planet", G.C.SECONDARY_SET.Planet)

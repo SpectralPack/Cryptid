@@ -2581,9 +2581,11 @@ local assemble = {
 	end,
 	use = function(self, card, area, copier)
 		local upgrade_hand
-		if #G.hand.highlighted > 0 then
+		local num = 0
+		if G.PROFILES[G.SETTINGS.profile].cry_none then num = -1 end
+		if #G.hand.highlighted > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
-		elseif #G.play.cards > 0 then
+		elseif #G.play.cards > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
 		end
 		if upgrade_hand then
@@ -3028,6 +3030,25 @@ local run = {
 }
 -- ://Class
 -- Change a selected card's enhancement to one of your choosing (or nil)
+
+local enh_table = {
+	m_bonus = { "bonus" },
+	m_mult = { "mult", "red" },
+	m_wild = { "wild", "suit" },
+	m_glass = { "glass", "xmult" },
+	m_steel = { "steel", "metal", "grey" },
+	m_stone = { "stone", "chip", "chips" },
+	m_gold = { "gold", "money", "yellow" },
+	m_lucky = { "lucky", "rng" },
+	m_cry_echo = { "echo", "retrigger", "retriggers" },
+	m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
+	m_cry_light = { "light" },
+	ccd = { "ccd" },
+	null = { "nil" },
+}
+
+Cryptid.load_enhancement_aliases(enh_table)
+
 local class = {
 	cry_credits = {
 		idea = {
@@ -3153,21 +3174,22 @@ local class = {
 		end
 		--todo: mod support
 		G.FUNCS.class_apply = function()
-			local enh_table = {
-				m_bonus = { "bonus" },
-				m_mult = { "mult", "red" },
-				m_wild = { "wild", "suit" },
-				m_glass = { "glass", "xmult" },
-				m_steel = { "steel", "metal", "grey" },
-				m_stone = { "stone", "chip", "chips" },
-				m_gold = { "gold", "money", "yellow" },
-				m_lucky = { "lucky", "rng" },
-				m_cry_echo = { "echo", "retrigger", "retriggers" },
-				m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
-				m_cry_light = { "light" },
-				ccd = { "ccd" },
-				null = { "nil" },
-			}
+			-- local enh_table = {
+			-- 	m_bonus = { "bonus" },
+			-- 	m_mult = { "mult", "red" },
+			-- 	m_wild = { "wild", "suit" },
+			-- 	m_glass = { "glass", "xmult" },
+			-- 	m_steel = { "steel", "metal", "grey" },
+			-- 	m_stone = { "stone", "chip", "chips" },
+			-- 	m_gold = { "gold", "money", "yellow" },
+			-- 	m_lucky = { "lucky", "rng" },
+			-- 	m_cry_echo = { "echo", "retrigger", "retriggers" },
+			-- 	m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
+			-- 	m_cry_light = { "light" },
+			-- 	ccd = { "ccd" },
+			-- 	null = { "nil" },
+			-- }
+			local enh_table = Cryptid.enhancement_alias_list
 
 			local enh_suffix = nil
 
@@ -3415,12 +3437,30 @@ local global_sticker = {
 		card.hover_tilt = card.hover_tilt * 2
 	end,
 	calculate = function(self, card, context)
-		if (context.setting_blind or context.open_booster) and context.cardarea == G.deck then
-			draw_card(G.deck, G.hand, nil, nil, nil, card)
-			--[[card.globalticks = (card.globalticks or 1) - 1
-		if card.globalticks == 0 then
-			card.global = nil
-		end--]]
+		-- Added by IcyEthics
+		if context.cry_shuffling_area and context.cardarea == G.deck and context.cry_post_shuffle then
+			local _targetpos = nil
+			local _selfpos = nil
+
+			-- Iterate through every card in the deck to find both the location
+			-- of the stickered card, and the highest placed non-stickered card
+			for i, _playingcard in ipairs(G.deck.cards) do
+				if _playingcard == card then
+					_selfpos = i
+				elseif not _playingcard.ability.cry_global_sticker then
+					_targetpos = i
+				end
+			end
+
+			if _targetpos == nil then
+				_targetpos = #G.deck.cards
+			end
+			if _selfpos == nil then
+				_selfpos = #G.deck.cards
+			end
+
+			-- Swaps the positions of the selected cards
+			G.deck.cards[_selfpos], G.deck.cards[_targetpos] = G.deck.cards[_targetpos], G.deck.cards[_selfpos]
 		end
 	end,
 }
@@ -4171,6 +4211,23 @@ local ctrl_v = {
 		return {}
 	end,
 	can_use = function(self, card)
+		if G.pack_cards and G.pack_cards.highlighted then
+			for i = 1, #G.pack_cards.highlighted do
+				if
+					G.pack_cards.highlighted[i].ability
+					and (
+						G.pack_cards.highlighted[i].ability.consumeable
+						or G.pack_cards.highlighted[i].ability.set == "Default"
+						or G.pack_cards.highlighted[i].ability.set == "Enhanced"
+					)
+				then
+					-- nothing
+				else
+					return false
+				end
+			end
+		end
+
 		return #G.hand.highlighted + #G.consumeables.highlighted + (G.pack_cards and #G.pack_cards.highlighted or 0)
 			== 2
 	end,
@@ -4217,7 +4274,15 @@ local ctrl_v = {
 					if Incantation then
 						card:setQty(1)
 					end
-					G.consumeables:emplace(card)
+
+					-- Edit by IcyEthics: Needed to choose between not allowing copying playing cards or adding them to deck. Made it so they're added to deck.
+					if card.ability.set == "Default" or card.ability.set == "Enhanced" then
+						table.insert(G.playing_cards, card)
+						G.hand:emplace(card)
+						playing_card_joker_effects({ card })
+					else
+						G.consumeables:emplace(card)
+					end
 					return true
 				end,
 			}))

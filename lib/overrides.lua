@@ -230,6 +230,18 @@ function Game:init_game_object()
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
 	g.jokers_sold = {}
+
+	-- Added by IcyEthics: Converted the voucher-related modifiers for the tier 3
+	-- acclimator vouchers to be more generically accessible
+	g.cry_bonusvouchercount = 0
+	g.cry_bonusvouchersused = {}
+
+	-- Automatically sets up the cry_percrate for each consumable type and sets it to 100 as a default
+	g.cry_percrate = {}
+	for _, v in ipairs(SMODS.ConsumableType.ctype_buffer) do
+		g.cry_percrate[v:lower()] = 100
+	end
+
 	return g
 end
 
@@ -1600,17 +1612,16 @@ G.FUNCS.can_skip_booster = function(e)
 		e.config.button = nil
 	end
 end
-
---stuff related to none hand
-
+--none stuff
 local set_blindref = Blind.set_blind
 function Blind:set_blind(blind, reset, silent)
     set_blindref(self, blind, reset, silent)
-    if G.GAME.hands["cry_None"].visible and G.STATE ~= G.STATES.ROUND_EVAL then
+    if G.GAME.hands["cry_None"].visible and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.DRAW_TO_HAND) and #G.hand.highlighted == 0 then
 		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
 			func = function() 
-				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")});play_sound('button', 0.9, 0.6);
+				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")});
+				
 				return true
 			end
 		}))
@@ -1623,8 +1634,8 @@ function end_round()
 	G.E_MANAGER:add_event(Event({
 		trigger = 'after',
 		func = function() 
-			update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-
+			update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+			
 			return true
 		end
 	}))
@@ -1643,8 +1654,8 @@ function Game:update_selecting_hand(dt)
 		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
 			func = function() 
-				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")});play_sound('button', 0.9, 0.6);
-
+				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")});
+				
 				return true
 			end
 		}))
@@ -1656,12 +1667,11 @@ end
 local blind_loadref = Blind.load
 function Blind:load(blindTable)
 	blind_loadref(self, blindTable)
-	if G.GAME.hands["cry_None"].visible and self.blind_set and G.STATE ~= G.STATES.ROUND_EVAL then 
+	if G.GAME.hands["cry_None"].visible and self.blind_set and (G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.DRAW_TO_HAND) then 
 		G.E_MANAGER:add_event(Event({
 			trigger = 'after',
 			func = function() 
-				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")});play_sound('button', 0.9, 0.6);
-
+				update_hand_text({delay = 0, immediate = true, volume=0.01}, {mult = G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")});
 				return true
 			end
 		}))
@@ -1671,11 +1681,11 @@ end
 local evaluate_ref = G.FUNCS.evaluate_round
 G.FUNCS.evaluate_round = function()
 	evaluate_ref()
-	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+	update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	G.E_MANAGER:add_event(Event({
 		trigger = 'after',
 		func = function() 
-			update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+			update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 			return true
 		end
 	}))
@@ -1707,127 +1717,57 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
             }))
         end
 	end
+	if G.GAME.hands["cry_None"].visible then
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			func = function() 
+				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")});
+				
+				return true
+			end
+		}))
+	end
 end
 local play_ref = G.FUNCS.play_cards_from_highlighted
 G.FUNCS.play_cards_from_highlighted = function(e)
-	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none then
+	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 1 then
 		G.PROFILES[G.SETTINGS.profile].cry_none = true
 		print("nonelock stuff here")
+		G.GAME.hands["cry_None"].visible = true
+	end
+	if G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 0 then
+		G.GAME.hands["cry_None"].visible = true
 	end
 	play_ref(e)
 end
 
---none stuff
-local set_blindref = Blind.set_blind
-function Blind:set_blind(blind, reset, silent)
-    set_blindref(self, blind, reset, silent)
-    if G.GAME.hands["none_None"].visible and G.STATE ~= G.STATES.ROUND_EVAL then
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			func = function() 
-				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["none_None"].mult, chips = G.GAME.hands["none_None"].chips, level = G.GAME.hands["none_None"].level, handname = localize('none_None', "poker_hands")});play_sound('button', 0.9, 0.6);
-				return true
-			end
-		}))
-    end
-end
-
-local end_roundref = end_round
-function end_round()
-    end_roundref()
-	G.E_MANAGER:add_event(Event({
-		trigger = 'after',
-		func = function() 
-			update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-
-			return true
-		end
-	}))
-end
-
-local after_ref = evaluate_play_after
-function evaluate_play_after(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-	local ret = after_ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-	if G.GAME.hands["none_None"].visible then G.reset_to_none = true end
-	return ret
-end
-local update_handref = Game.update_selecting_hand
-function Game:update_selecting_hand(dt)
-	local ret = update_handref(self, dt)
-	if G.reset_to_none then
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			func = function() 
-				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["none_None"].mult, chips = G.GAME.hands["none_None"].chips, level = G.GAME.hands["none_None"].level, handname = localize('none_None', "poker_hands")});play_sound('button', 0.9, 0.6);
-
-				return true
-			end
-		}))
-		G.reset_to_none = nil
-	end
-	return ret
-end
-
-local blind_loadref = Blind.load
-function Blind:load(blindTable)
-	blind_loadref(self, blindTable)
-	if G.GAME.hands["none_None"].visible and self.blind_set and G.STATE ~= G.STATES.ROUND_EVAL then 
-		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
-			func = function() 
-				update_hand_text({delay = 0, immediate = true}, {mult = G.GAME.hands["none_None"].mult, chips = G.GAME.hands["none_None"].chips, level = G.GAME.hands["none_None"].level, handname = localize('none_None', "poker_hands")});play_sound('button', 0.9, 0.6);
-
-				return true
-			end
-		}))
-	end
-end
-
-local evaluate_ref = G.FUNCS.evaluate_round
-G.FUNCS.evaluate_round = function()
-	evaluate_ref()
-	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-	G.E_MANAGER:add_event(Event({
-		trigger = 'after',
-		func = function() 
-			update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-			return true
-		end
-	}))
-end
-
-local discard_ref = G.FUNCS.discard_cards_from_highlighted
-G.FUNCS.discard_cards_from_highlighted = function(e, hook)
-	discard_ref(e, hook)
-	local highlighted_count = math.min(#G.hand.highlighted, G.discard.config.card_limit - #G.play.cards)
-	if highlighted_count <= 0 then
-        table.sort(G.hand.highlighted, function(a,b) return a.T.x < b.T.x end)
-        check_for_unlock({type = 'discard_custom', cards = {}})
-		for j = 1, #G.jokers.cards do
-            G.jokers.cards[j]:calculate_joker({pre_discard = true, full_hand = G.hand.highlighted, hook = hook})
-        end
-        if not hook then
-            if G.GAME.modifiers.discard_cost then
-                ease_dollars(-G.GAME.modifiers.discard_cost)
-            end
-            ease_discard(-1)
-            G.GAME.current_round.discards_used = G.GAME.current_round.discards_used + 1
-            G.STATE = G.STATES.DRAW_TO_HAND
+local use_cardref = G.FUNCS.use_card
+G.FUNCS.use_card = function(e, mute, nosave)
+	use_cardref(e,mute,nosave)
+	if G.STATE == G.STATES.SELECTING_HAND then
             G.E_MANAGER:add_event(Event({
-                trigger = 'immediate',
+                trigger = 'after',
                 func = function()
-                    G.STATE_COMPLETE = false
+                    G.hand:parse_highlighted()
                     return true
                 end
             }))
-        end
+	else
+		update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 	end
 end
-local play_ref = G.FUNCS.play_cards_from_highlighted
-G.FUNCS.play_cards_from_highlighted = function(e)
-	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none then
-		G.PROFILES[G.SETTINGS.profile].cry_none = true
-		print("nonelock stuff here")
-	end
-	play_ref(e)
+local emplace_ref = CardArea.emplace
+function CardArea:emplace(card, location, stay_flipped)
+	return emplace_ref(self, card or {}, location, stay_flipped)
+end
+-- Added by IcyEthics: Adding a hook to the shuffle function so that there can be a context to modify randomization
+-- Any card using this will most likely want to use cry_post_shuffle.
+-- added cry_pre_shuffle for posterity
+local o_ca_shuffle = CardArea.shuffle
+function CardArea:shuffle(_seed)
+	SMODS.calculate_context({ cry_shuffling_area = true, cardarea = self, cry_pre_shuffle = true })
+
+	o_ca_shuffle(self, _seed)
+
+	SMODS.calculate_context({ cry_shuffling_area = true, cardarea = self, cry_post_shuffle = true })
 end

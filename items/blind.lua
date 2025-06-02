@@ -1003,8 +1003,10 @@ local sapphire_stamp = {
 	order = 92,
 	boss_colour = HEX("4057d6"),
 	cry_before_play = function(self)
-		local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
-		G.hand:remove_from_highlighted(G.hand.highlighted[idx])
+		if #G.hand.highlighted > 0 then
+			local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
+			G.hand:remove_from_highlighted(G.hand.highlighted[idx])
+		end
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then

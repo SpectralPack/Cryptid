@@ -7,13 +7,13 @@ priority = 0
 [patches.pattern]
 target = "functions/button_callbacks.lua"
 pattern = '''
-if #G.hand.highlighted <= (G.GAME.stamp_mod and 1 or 0) or G.GAME.blind.block_play then
+if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > math.max(G.GAME.starting_params.play_limit, 1) then 
 '''
 position = "at"
 payload = '''
 local num = 0
 if G.PROFILES[G.SETTINGS.profile].cry_none then num = -1 end
-if #G.hand.highlighted <= num or G.GAME.blind.block_play then
+if #G.hand.highlighted <= num or G.GAME.blind.block_play or #G.hand.highlighted > math.max(G.GAME.starting_params.play_limit, 1) then 
 '''
 match_indent = true
 
@@ -22,14 +22,14 @@ match_indent = true
 target = "functions/button_callbacks.lua"
 pattern = '''
   G.FUNCS.can_discard = function(e)
-    if G.GAME.current_round.discards_left <= 0 or #G.hand.highlighted <= 0 then 
+    if G.GAME.current_round.discards_left <= 0 or #G.hand.highlighted <= 0 or #G.hand.highlighted > math.max(G.GAME.starting_params.discard_limit, 0) then 
 '''
 position = "at"
 payload = '''
   G.FUNCS.can_discard = function(e)
-  local num = 0
+    local num = 0
     if G.PROFILES[G.SETTINGS.profile].cry_none then num = -1 end
-    if G.GAME.current_round.discards_left <= 0 or #G.hand.highlighted <= num then 
+    if G.GAME.current_round.discards_left <= 0 or #G.hand.highlighted <= num or #G.hand.highlighted > math.max(G.GAME.starting_params.discard_limit, 0) then 
 '''
 match_indent = true
 
@@ -57,41 +57,20 @@ match_indent = true
 [patches.pattern]
 target = "functions/state_events.lua"
 pattern = '''
-        func = (function()  update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});play_sound('button', 0.9, 0.6);return true end)
+        func = (function()  update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});return true end)
 '''
 position = "at"
 payload = '''
         func = (function()  
         
         if G.GAME.hands["cry_None"].visible then
-        update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});play_sound('button', 0.9, 0.6);
+        update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});
             G.reset_to_none = true
-
+            
         else    
-            update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});play_sound('button', 0.9, 0.6);
+            update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});
         end
         return true end)
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = '''
-            if highlighted_count > 0 then 
-        update_hand_text({immediate = true, nopulse = true, delay = 0}, {mult = 0, chips = 0, level = '', handname = ''})
-        table.sort(G.hand.highlighted, function(a,b) return a.T.x < b.T.x end)
-'''
-position = "at"
-payload = '''
-    if highlighted_count > 0 then 
-        if G.GAME.hands["cry_None"].visible then
-            update_hand_text({immediate = true, nopulse = true, delay = 0}, {mult = G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
-
-        else
-            update_hand_text({immediate = true, nopulse = true, delay = 0}, {mult = 0, chips = 0, level = '', handname = ''})
-        end
-        table.sort(G.hand.highlighted, function(a,b) return a.T.x < b.T.x end)
 '''
 match_indent = true
 
@@ -100,17 +79,17 @@ match_indent = true
 target = "card.lua"
 pattern = '''
                 level_up_hand(context.blueprint_card or self, text, nil, 1)
-                update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+                update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
                 return nil, true
 '''
 position = "at"
 payload = '''
                 level_up_hand(context.blueprint_card or self, text, nil, 1)
                 if G.GAME.hands["cry_None"].visible then
-                    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
-
+                    update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
+                    
                 else
-                    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+                    update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
                 end
                 return nil, true
 '''
@@ -120,24 +99,22 @@ match_indent = true
 [patches.pattern]
 target = "card.lua"
 pattern = '''
-    if self.ability.consumeable.hand_type then
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(self.ability.consumeable.hand_type, 'poker_hands'),chips = G.GAME.hands[self.ability.consumeable.hand_type].chips, mult = G.GAME.hands[self.ability.consumeable.hand_type].mult, level=G.GAME.hands[self.ability.consumeable.hand_type].level})
         level_up_hand(used_tarot, self.ability.consumeable.hand_type)
         update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-    end
 '''
 position = "at"
 payload = '''
-    if self.ability.consumeable.hand_type then
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 0.8, delay = 0.3}, {handname=localize(self.ability.consumeable.hand_type, 'poker_hands'),chips = G.GAME.hands[self.ability.consumeable.hand_type].chips, mult = G.GAME.hands[self.ability.consumeable.hand_type].mult, level=G.GAME.hands[self.ability.consumeable.hand_type].level})
         level_up_hand(used_tarot, self.ability.consumeable.hand_type)
-        if G.GAME.hands["cry_None"].visible then
-            update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
-
-        else
-            update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+        if G.GAME.current_round.current_hand.handname ~= "" then
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                func = function() 
+                    G.hand:parse_highlighted()
+                    return true
+                end
+            }))
         end
-    end
 '''
 match_indent = true
 
@@ -148,7 +125,7 @@ pattern = '''
         for k, v in pairs(G.GAME.hands) do
             level_up_hand(self, k, true)
         end
-        update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+        update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 '''
 position = "at"
 payload = '''
@@ -156,10 +133,10 @@ payload = '''
             level_up_hand(self, k, true)
         end
         if G.GAME.hands["cry_None"].visible then
-            update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
-
+            update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
+                    
         else
-            update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+            update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
         end
 '''
 match_indent = true
@@ -176,10 +153,10 @@ position = "at"
 payload = '''
     if self.ability.consumeable.max_highlighted then
         if G.GAME.hands["cry_None"].visible then
-            update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
-
+            update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
+                    
         else
-            update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+            update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
         end
     end
 '''
@@ -238,3 +215,85 @@ end
 function evaluate_play_after(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+G.GAME.hands[text].played = G.GAME.hands[text].played + 1
+'''
+position = "at"
+payload = '''
+local hand = (G.GAME.hands[text])
+if not hand then text = "cry_None"; disp_text = localize("cry_None", "poker_hands") end
+hand = G.GAME.hands[text]
+if text == "cry_None" then G.GAME.hands["cry_None"].visible = true end
+hand.played = hand.played + 1
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+    G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
+    G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult*amount, 1)
+    G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips*amount, 1)
+'''
+position = "at"
+payload = '''
+    G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
+    G.GAME.hands[hand].mult = G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult*amount
+    G.GAME.hands[hand].chips = G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips*amount
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then
+        end_round()
+    end
+'''
+position = "at"
+payload = '''
+    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 and not G.PROFILES[G.SETTINGS.profile].cry_none then
+        end_round()
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+        if #G.hand.cards < 1 and #G.deck.cards < 1 then
+            end_round()
+        else
+            save_run()
+            G.CONTROLLER:recall_cardarea_focus('hand')
+        end
+'''
+position = "at"
+payload = '''
+        if #G.hand.cards < 1 and #G.deck.cards < 1 and not G.PROFILES[G.SETTINGS.profile].cry_none then
+            end_round()
+        else
+            save_run()
+            G.CONTROLLER:recall_cardarea_focus('hand')
+        end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+        G.hand.config.card_limit <= 0 and #G.hand.cards == 0 then
+'''
+position = "at"
+payload = '''
+        G.hand.config.card_limit <= 0 and #G.hand.cards == 0 and not G.PROFILES[G.SETTINGS.profile].cry_none then
+'''
+match_indent = true 

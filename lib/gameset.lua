@@ -595,6 +595,11 @@ function Card:set_ability(center, y, z)
 	if not center then
 		return
 	end
+	-- Addition by IcyEthics to make compatible with strings used on set_ability. Copied directly from the smods set_ability implementation
+	if type(center) == "string" then
+		assert(G.P_CENTERS[center], ('Could not find center "%s"'):format(center))
+		center = G.P_CENTERS[center]
+	end
 	if not center.config then
 		center.config = {} --crashproofing
 	end
