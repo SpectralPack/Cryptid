@@ -10161,17 +10161,17 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 	demicoloncompat = true,
 	config = { extra = { Xmult = 11.4, odds = 4 } },
 	loc_vars = function(self, info_queue, card) -- the humble cavendish example mod:
-		return { vars = { card.ability.extra.Xmult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
+		return { vars = { card.ability.extra.Xmult, cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main and not context.forcetrigger then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
 				Xmult_mod = card.ability.extra.Xmult,
 			}
 		end
 		if context.end_of_round and context.game_over == false and not context.repetition and not context.blueprint then
-			if pseudorandom("brokenhome") < G.GAME.probabilities.normal / card.ability.extra.odds then
+			if pseudorandom("brokenhome") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("tarot1")
@@ -10205,29 +10205,27 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 			end
 		end
 		if context.forcetrigger then
-			if pseudorandom("brokenhome") < G.GAME.probabilities.normal / card.ability.extra.odds then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("tarot1")
-						card.T.r = -0.2
-						card:juice_up(0.3, 0.4)
-						card.states.drag.is = true
-						card.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card = nil
-								return true
-							end,
-						}))
-						return true
-					end,
-				}))
-			end
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound("tarot1")
+					card.T.r = -0.2
+					card:juice_up(0.3, 0.4)
+					card.states.drag.is = true
+					card.children.center.pinch.x = true
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.3,
+						blockable = false,
+						func = function()
+							G.jokers:remove_card(card)
+							card:remove()
+							card = nil
+							return true
+						end,
+					}))
+					return true
+				end,
+			}))
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
 				Xmult_mod = card.ability.extra.Xmult,
