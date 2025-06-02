@@ -85,7 +85,10 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if self.ability.name:find('Arcana') then"
+pattern = '''
+booster_obj = self.config.center
+if booster_obj and SMODS.Centers[booster_obj.key] then
+'''
 position = "before"
 payload = '''
 if self.ability.extra < 1 then self.ability.extra = 1 end

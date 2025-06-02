@@ -49,19 +49,17 @@ match_indent = true
 target = "card.lua"
 pattern = '''
 level_up_hand(context.blueprint_card or self, text, nil, 1)
-update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-return nil, true
+update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 '''
 position = "at"
 payload = '''
 level_up_hand(context.blueprint_card or self, text, nil, 1)
 if G.GAME.hands["cry_None"].visible then
-    update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
+    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
     
 else
-    update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 end
-return nil, true
 '''
 match_indent = true
 
@@ -95,7 +93,7 @@ pattern = '''
 for k, v in pairs(G.GAME.hands) do
     level_up_hand(self, k, true)
 end
-update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 '''
 position = "at"
 payload = '''
@@ -103,10 +101,10 @@ for k, v in pairs(G.GAME.hands) do
     level_up_hand(self, k, true)
 end
 if G.GAME.hands["cry_None"].visible then
-    update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
+    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
             
 else
-    update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
 end
 '''
 match_indent = true
