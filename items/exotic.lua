@@ -1269,7 +1269,7 @@ local energia = {
 	key = "energia",
 	pos = { x = 6, y = 3 },
 	soul_pos = { x = 8, y = 3, extra = { x = 7, y = 3 } },
-	blueprint_compat = false,
+	blueprint_compat = true,
 	perishable_compat = false,
 	demicoloncompat = true,
 	order = 514,
