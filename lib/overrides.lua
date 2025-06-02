@@ -1647,13 +1647,7 @@ function Blind:set_blind(blind, reset, silent)
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			func = function()
-				update_hand_text({ delay = 0, immediate = true }, {
-					mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
-					chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
-					level = G.GAME.hands["cry_None"].level,
-					handname = localize("cry_None", "poker_hands"),
-				})
-
+					Cryptid.reset_to_none()
 				return true
 			end,
 		}))
@@ -1688,12 +1682,7 @@ function Game:update_selecting_hand(dt)
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			func = function()
-				update_hand_text({ delay = 0, immediate = true }, {
-					mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
-					chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
-					level = G.GAME.hands["cry_None"].level,
-					handname = localize("cry_None", "poker_hands"),
-				})
+				Cryptid.reset_to_none()
 
 				return true
 			end,
@@ -1714,12 +1703,7 @@ function Blind:load(blindTable)
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			func = function()
-				update_hand_text({ delay = 0, immediate = true, volume = 0.01 }, {
-					mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
-					chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
-					level = G.GAME.hands["cry_None"].level,
-					handname = localize("cry_None", "poker_hands"),
-				})
+					Cryptid.reset_to_none()
 				return true
 			end,
 		}))
@@ -1771,13 +1755,7 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			func = function()
-				update_hand_text({ delay = 0, immediate = true }, {
-					mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
-					chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
-					level = G.GAME.hands["cry_None"].level,
-					handname = localize("cry_None", "poker_hands"),
-				})
-
+					Cryptid.reset_to_none()
 				return true
 			end,
 		}))
