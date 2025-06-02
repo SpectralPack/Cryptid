@@ -2582,7 +2582,9 @@ local assemble = {
 	use = function(self, card, area, copier)
 		local upgrade_hand
 		local num = 0
-		if G.PROFILES[G.SETTINGS.profile].cry_none then num = -1 end
+		if G.PROFILES[G.SETTINGS.profile].cry_none then
+			num = -1
+		end
 		if #G.hand.highlighted > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
 		elseif #G.play.cards > num then

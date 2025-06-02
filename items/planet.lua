@@ -180,7 +180,9 @@ local nibiru = {
 		--use whichever of these fits best, the second literally just removes the badge, and the first is a blank badge
 		--badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
 
-		if badges[1] and badges[1].remove then badges[1]:remove() end
+		if badges[1] and badges[1].remove then
+			badges[1]:remove()
+		end
 		badges[1] = nil
 	end,
 	loc_vars = function(self, info_queue, center)
@@ -206,7 +208,6 @@ local nibiru = {
 	end,
 	generate_ui = 0,
 }
-
 
 -- The Universe In Its Fucking Entirety
 -- Upgrades The Entire Fucking Deck (+5.25252e28/+5.25252e27)
@@ -249,7 +250,6 @@ local universe = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_WholeDeck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-		
 						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_WholeDeck"].level)):to_number()]
 					),
 				},
@@ -258,9 +258,9 @@ local universe = {
 	end,
 	generate_ui = 0,
 	cry_credits = {
-		art = {"cassknows"},
-		code = {"lord-ruby"}
-	}
+		art = { "cassknows" },
+		code = { "lord-ruby" },
+	},
 }
 
 -- Planet.lua

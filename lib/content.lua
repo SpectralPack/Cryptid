@@ -275,15 +275,14 @@ SMODS.PokerHand({
 	mult = 0,
 	l_chips = 5,
 	l_mult = 0.5,
-	example = {
-	},
+	example = {},
 	atlas = "poker_hands",
 	pos = { x = 0, y = 0 },
 	evaluate = function(parts, hand)
 		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_nibiru") ~= true then --or Cryptid.enabled("c_cry_asteroidbelt") ~= true then
 			return {}
 		end
-		return {hand and #hand == 0 and G.GAME.hands["cry_None"].visible and {} or nil}
+		return { hand and #hand == 0 and G.GAME.hands["cry_None"].visible and {} or nil }
 	end,
 })
 

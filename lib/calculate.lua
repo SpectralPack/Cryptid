@@ -3,7 +3,14 @@
 -- deal with Rigged and Fragile when scoring a playing card
 local ec = eval_card
 function eval_card(card, context)
-	if not card then card = {ability={}, can_calculate = function() return false end} end
+	if not card then
+		card = {
+			ability = {},
+			can_calculate = function()
+				return false
+			end,
+		}
+	end
 	if card.will_shatter then
 		return {}, {}
 	end
