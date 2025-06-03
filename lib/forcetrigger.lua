@@ -897,10 +897,16 @@ function Cryptid.forcetrigger(card, context)
 			end
 		end
 		if card.ability.name == "Perkeo" then
-			if G.consumeables.cards[1] then
+			local eligibleJokers = {}
+			for i = 1, #G.consumeables.cards do
+				if G.consumeables.cards[i].ability.consumeable then
+					eligibleJokers[#eligibleJokers + 1] = G.consumeables.cards[i]
+				end
+			end
+			if #eligibleJokers > 0 then
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed("perkeo")), nil)
+						local card = copy_card(pseudorandom_element(eligibleJokers, pseudoseed('perkeo')), nil)
 						card:set_edition({ negative = true }, true)
 						card:add_to_deck()
 						G.consumeables:emplace(card)
