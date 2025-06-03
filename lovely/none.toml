@@ -50,6 +50,7 @@ target = "card.lua"
 pattern = '''
 level_up_hand(context.blueprint_card or self, text, nil, 1)
 update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+return nil, true
 '''
 position = "at"
 payload = '''
@@ -128,7 +129,6 @@ payload = '''
             update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
         end
     end
-end
 '''
 match_indent = true
 
