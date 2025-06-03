@@ -2377,7 +2377,152 @@ local aliases = {
 	-- placeholder in a placeholder in a placeholder in a holdplacer in a placeholder
 
 	-- Cryptid Tags
-	-- meow
+	tag_cry_astral = {
+		"Astral Tag",
+		"Astral",
+		"Free Astral",
+	},
+	tag_cry_banana = {
+		"Banana Tag",
+	},
+	tag_cry_bettertop_up = {
+		"Better Top-Up Tag",
+		"Better Top-Up",
+		"Better Top Up Tag",
+		"Better Top Up",
+		"Uncommon Top Up",
+	},
+	tag_cry_better_voucher = {
+		"Tier 3 tag",
+		"Tier 3 voucher tag",
+		"Golden Voucher",
+		"Golden Voucher Tag",
+		"Better Voucher Tag",
+	},
+	tag_cry_blur = {
+		"Blurred Tag",
+		"Blurred",
+		"Free Blurred",
+	},
+	tag_cry_booster = {
+		"Booster Tag",
+		"Double Booster Tag",
+		"Double Booster",
+	},
+	tag_cry_bundle = {
+		"Bundle Tag",
+		"Bundle",
+	},
+	tag_cry_cat = {
+		"Cat Tag",
+		"meow",
+		"mrow",
+		"mrrp",
+		"purr",
+	},
+	tag_cry_console = {
+		"Console Tag",
+		"Console",
+		"Code Tag",
+	},
+	tag_cry_double_m = {
+		"Double M",
+		"Double M Tag",
+		"Jolly M",
+	},
+	tag_cry_empowered = {
+		"Empowered Tag",
+		"Better Spectral",
+		"Better Spectral Tag",
+	},
+	tag_cry_epic = {
+		"Epic Tag",
+		"Half-price Epic Joker",
+		"Half price Epic Joker",
+		"Half price Epic",
+		"Half-price Epic",
+	},
+	tag_cry_gambler = {
+		"Gambler Tag",
+		"Gambling Tag",
+		"Gambling",
+		"Gambler's Tag",
+		"LETS GO GAMBLING!",
+	},
+	tag_cry_glass = {
+		"Fragile Tag",
+		"Fragile",
+		"Glass Tag",
+		"Free Fragile",
+	},
+	tag_cry_glitched = {
+		"Glitched Tag",
+		"Glitched",
+		"Free Glitched",
+	},
+	tag_cry_gold = {
+		"Gold Tag",
+		"Golden Tag",
+		"Gold",
+		"Free Golden",
+	},
+	tag_cry_gourmand = {
+		"Gourmand",
+		"Gourmand Tag",
+		"Free Food",
+	},
+	tag_cry_loss = {
+		"Loss",
+		"Loss Tag",
+		"Meme Tag",
+		"Meme Pack Tag",
+	},
+	tag_cry_m = {
+		"M Tag",
+		"Jolly Tag",
+		"Jolly",
+		"Free Jolly",
+	},
+	tag_cry_memory = {
+		"Memory Tag",
+		"Memory",
+	},
+	tag_cry_mosaic = {
+		"Mosaic",
+		"Mosaic Tag",
+		"Free Mosaic",
+	},
+	tag_cry_oversat = {
+		"Oversat",
+		"Free Oversat",
+		"Oversaturated",
+		"Free Oversaturated",
+		"Oversaturated Tag",
+	},
+	tag_cry_quadruple = {
+		"Quadruple",
+		"Quadruple Tag",
+	},
+	tag_cry_quintuple = {
+		"Quintuple",
+		"Quintuple Tag",
+	},
+	tag_cry_rework = {
+		"Rework Tag",
+	},
+	tag_cry_schematic = {
+		"Schematic",
+		"Schematic Tag",
+		"Guaranteed Brainstorm",
+	},
+	tag_cry_scope = {
+		"Scope Tag",
+		"Scope",
+	},
+	tag_cry_triple = {
+		"Triple",
+		"Triple Tag",
+	},
 
 	-- Cryptid Vouchers
 	-- placeholder (T1 T2 T1 T2 pattern)
