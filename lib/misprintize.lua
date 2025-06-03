@@ -322,30 +322,25 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 			pow_level
 		)
 	end
-	if card.ability.consumeable then
-		for k, v in pairs(card.ability.consumeable) do
-			card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
-		end
-	end
 	if clamps then
+		print(clamps)
 		for i, v in pairs(clamps) do
 			if type(v) == "table" and not v.tetrate then
 				for i2, v2 in pairs(v) do
 					if to_big(card.ability[i][i2]) > to_big(v2) then
 						card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
 					end
-					if card.consumeable[i] and to_big(card.consumeable[i][i2]) > to_big(v2) then
-						card.consumeable[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
-					end
 				end
 			elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
 				if to_big(card.ability[i]) > to_big(v) then
 					card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
 				end
-				if card.consumeable and to_big(card.consumeable[i]) > to_big(v) then
-					card.consumeable[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
-				end
 			end
+		end
+	end
+	if card.ability.consumeable then
+		for k, v in pairs(card.ability.consumeable) do
+			card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
 		end
 	end
 end
