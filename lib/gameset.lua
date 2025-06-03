@@ -1126,6 +1126,10 @@ function Cryptid.update_obj_registry(m, force_enable)
 				else
 					if not v.cry_disabled then
 						v:_disable(en)
+						if v.key == "set_cry_poker_hand_stuff" and G.PROFILES[G.SETTINGS.profile].cry_none then
+							--Remove the none flag if poker hands are disabled because leaving it on can leave to softlocks
+							G.PROFILES[G.SETTINGS.profile].cry_none = nil
+						end
 					end
 				end
 			end
