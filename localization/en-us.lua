@@ -2837,7 +2837,7 @@ return {
 				},
 			},
 			j_cry_annihalation = {
-				name = "The Complete and Utter Annihalation of Everything That Makes Balatro Sacred",
+				name = "The Complete and Utter Annihilation of Everything That Makes Balatro Sacred",
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult if played",
 					"hand contains",
