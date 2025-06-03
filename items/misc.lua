@@ -2228,12 +2228,14 @@ local double_sided = {
 			G.FUNCS.flip({config = {ref_table = self}})
 		end
 		function Card:get_other_side_dummy()
-			{ability = self.ability.immutable.other_side, config = {
-					center = G.P_CENTERS[self.ability.immutable.other_side.key]
-				}, juice_up = function(_, ...) return self:juice_up(...) end, start_dissolve = function(_, ...) return self:start_dissolve(...) end,
-				remove = function(_, ...) return self:remove(...) end, flip = function(_, ...) return self:flip(...) end,
-				original_card = self, area = self.area
-			}
+			if self.ability.immmutable and type(self.ability.immutable.other_side) == "table" then
+				return {ability = self.ability.immutable.other_side, config = {
+						center = G.P_CENTERS[self.ability.immutable.other_side.key]
+					}, juice_up = function(_, ...) return self:juice_up(...) end, start_dissolve = function(_, ...) return self:start_dissolve(...) end,
+					remove = function(_, ...) return self:remove(...) end, flip = function(_, ...) return self:flip(...) end,
+					original_card = self, area = self.area
+				}
+			end
 		end
 		local set_editionref = Card.set_edition
 		function Card:set_edition(...)
