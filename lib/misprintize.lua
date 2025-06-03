@@ -323,7 +323,6 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 		)
 	end
 	if clamps then
-		print(clamps)
 		for i, v in pairs(clamps) do
 			if type(v) == "table" and not v.tetrate then
 				for i2, v2 in pairs(v) do
