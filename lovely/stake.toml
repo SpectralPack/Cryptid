@@ -43,6 +43,7 @@ while i <= #G.deck.cards do
 end
 if G.GAME.used_vouchers.v_cry_double_down then
     local function update_dbl(area)
+        local area = G.jokers
         for i = 1, #area.cards do
             if area.cards[i].ability.immutable and type(area.cards[i].ability.immutable.other_side) == "table" then
                 --tweak to do deck effects with on the flip side
@@ -54,7 +55,7 @@ if G.GAME.used_vouchers.v_cry_double_down then
                         "other_side", 
                         nil,
                         {min = 1.5, max = 1.5},
-                        nil,
+                        true,
                         Cryptid.is_card_big({config = {center = G.P_CENTERS[area.cards[i].ability.immutable.other_side.key]}})
                         )
                         card_eval_status_text(area.cards[i], "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
