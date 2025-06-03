@@ -121,14 +121,14 @@ end
 '''
 position = "at"
 payload = '''
-    if self.ability.consumeable.max_highlighted then
-        if G.GAME.hands["cry_None"].visible then
-            Cryptid.reset_to_none()
-                    
-        else
-            update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-        end
+if self.ability.consumeable.max_highlighted then
+    if G.GAME.hands["cry_None"].visible then
+        Cryptid.reset_to_none()
+                
+    else
+        update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
     end
+end
 '''
 match_indent = true
 
