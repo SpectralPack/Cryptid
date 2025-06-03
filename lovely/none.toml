@@ -31,13 +31,13 @@ func = (function()  update_hand_text({delay = 0, immediate = true}, {mult = 0, c
 '''
 position = "at"
 payload = '''
-func = (function()  
+func = (function()
 
 if G.GAME.hands["cry_None"].visible then
 update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});
     G.reset_to_none = true
-    
-else    
+
+else
     update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});
 end
 return true end)
@@ -50,13 +50,14 @@ target = "card.lua"
 pattern = '''
 level_up_hand(context.blueprint_card or self, text, nil, 1)
 update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+return nil, true
 '''
 position = "at"
 payload = '''
                 level_up_hand(context.blueprint_card or self, text, nil, 1)
                 if G.GAME.hands["cry_None"].visible then
                     Cryptid.reset_to_none()
-                    
+
                 else
                     update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
                 end
@@ -78,7 +79,7 @@ update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult
 if G.GAME.current_round.current_hand.handname ~= "" then
     G.E_MANAGER:add_event(Event({
         trigger = 'after',
-        func = function() 
+        func = function()
             G.hand:parse_highlighted()
             return true
         end
@@ -103,7 +104,7 @@ payload = '''
         end
         if G.GAME.hands["cry_None"].visible then
             Cryptid.reset_to_none()
-                    
+
         else
             update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
         end
@@ -123,12 +124,11 @@ payload = '''
     if self.ability.consumeable.max_highlighted then
         if G.GAME.hands["cry_None"].visible then
             Cryptid.reset_to_none()
-                    
+
         else
             update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
         end
     end
-end
 '''
 match_indent = true
 
@@ -145,7 +145,7 @@ position = "at"
 payload = '''
 G.E_MANAGER:add_event(Event({
     trigger = 'immediate',
-    func = (function() 
+    func = (function()
         if G.GAME.current_round.current_hand.handname ~= localize('cry_None', "poker_hands") or not G.GAME.hands["cry_None"].visible then
             G.GAME.current_round.current_hand.handname = ''
         end
@@ -160,7 +160,7 @@ target = "functions/state_events.lua"
 pattern = '''
     G.E_MANAGER:add_event(Event({
       trigger = 'immediate',
-      	func = (function() 
+      	func = (function()
             if G.GAME.current_round.current_hand.handname ~= localize('cry_None', "poker_hands") or not G.GAME.hands["cry_None"].visible then
                 G.GAME.current_round.current_hand.handname = ''
             end
@@ -172,7 +172,7 @@ position = "at"
 payload = '''
     G.E_MANAGER:add_event(Event({
       trigger = 'immediate',
-      	func = (function() 
+      	func = (function()
             if text ~= "cry_None" or not G.GAME.hands["cry_None"].visible then
                 G.GAME.current_round.current_hand.handname = ''
             end
@@ -266,4 +266,4 @@ position = "at"
 payload = '''
 G.hand.config.card_limit <= 0 and #G.hand.cards == 0 and not G.PROFILES[G.SETTINGS.profile].cry_none then
 '''
-match_indent = true 
+match_indent = true
