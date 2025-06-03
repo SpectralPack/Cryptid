@@ -10179,7 +10179,13 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 	demicoloncompat = true,
 	config = { extra = { Xmult = 11.4, odds = 4 } },
 	loc_vars = function(self, info_queue, card) -- the humble cavendish example mod:
-		return { vars = { card.ability.extra.Xmult, cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds } }
+		return {
+			vars = {
+				card.ability.extra.Xmult,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+			},
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main and not context.forcetrigger then
@@ -10189,7 +10195,11 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 			}
 		end
 		if context.end_of_round and context.game_over == false and not context.repetition and not context.blueprint then
-			if pseudorandom("brokenhome") < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
+			if
+				pseudorandom("brokenhome")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+					/ card.ability.extra.odds
+			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("tarot1")

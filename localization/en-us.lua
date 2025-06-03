@@ -4256,8 +4256,9 @@ return {
 			cry_global_sticker = {
 				name = "Global",
 				text = {
-					"Always drawn after",
-					"{C:cry_code}First Hand Drawn{}",
+					"Draw this card",
+					"{C:cry_code}Before other cards,{}",
+					"if possible",
 				},
 			},
 			cry_flickering = {
