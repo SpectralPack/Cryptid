@@ -246,6 +246,7 @@ function Cryptid.sanity_check(val, is_big)
 	return val
 end
 function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_level)
+	local clamps = card.config.center.misprintize_caps or {}
 	if Card.no(card, "immutable", true) then
 		force_reset = true
 	end
@@ -320,6 +321,21 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 			grow_type,
 			pow_level
 		)
+	end
+	if clamps then
+		for i, v in pairs(clamps) do
+			if type(v) == "table" and not v.tetrate then
+				for i2, v2 in pairs(v) do
+					if to_big(card.ability[i][i2]) > to_big(v2) then
+						card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
+					end
+				end
+			elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
+				if to_big(card.ability[i]) > to_big(v) then
+					card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
+				end
+			end
+		end
 	end
 	if card.ability.consumeable then
 		for k, v in pairs(card.ability.consumeable) do
