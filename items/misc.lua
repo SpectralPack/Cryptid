@@ -2021,7 +2021,7 @@ local double_sided = {
 	local highlight_ref = Card.highlight
 		function Card:highlight(is_highlighted)
 			if self.edition and self.edition.key == "e_cry_double_sided" then
-				if is_highlighted and self.area.config.type ~= "shop" then
+				if is_highlighted and self.area.config.type ~= "shop" and self.area ~= G.pack_cards then
 					self.children.flip = UIBox {
 						definition = {
 							n = G.UIT.ROOT,
@@ -2099,7 +2099,7 @@ local double_sided = {
 						}
 					}
 				end
-				if not is_highlighted or self.area.config.type == "shop" then
+				if not is_highlighted or self.area.config.type == "shop" or self.area == G.pack_cards then
 					if self.children.flip then
 						self.children.flip:remove()
 						self.children.flip = nil
