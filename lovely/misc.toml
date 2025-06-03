@@ -61,6 +61,16 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
+pattern = "if self.ability.x_mult - self.ability.extra <= 1 then"
+position = "at"
+payload = '''
+if to_big(self.ability.x_mult) - to_big(self.ability.extra) <= to_big(1) then 
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
 pattern = "if self.ability.name ~= 'Seeing Double' and self.ability.x_mult > 1 and (self.ability.type == '' or next(context.poker_hands[self.ability.type])) then"
 position = "at"
 payload = '''
