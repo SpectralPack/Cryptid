@@ -1999,12 +1999,21 @@ local double_sided = {
 	cry_credits = {
 		code = {
 			"Math",
+			"lord-ruby"
 		},
 		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
 		},
 	},
+    on_apply = function(card)
+        if not card.ability.immutable then
+            card.ability.immutable = {}
+        end
+        if not card.ability.immutable.other_side then
+            card.ability.immutable.other_side = "c_base"
+        end
+    end,
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight * (G.GAME.used_vouchers.v_cry_double_vision and 4 or 1)
 	end,
@@ -2026,8 +2035,8 @@ local double_sided = {
 								align = 'cm',
 								colour = G.C.PURPLE,
 								shadow = true,
-								button = 'flip',
-								func = 'can_flip',
+								button = 'flip_ds',
+								func = 'can_flip_ds',
 								ref_table = self
 							},
 							nodes = {
@@ -2051,7 +2060,7 @@ local double_sided = {
 							parent = self
 						}
 					}
-					self.children.merge = UIBox {
+					self.children.merge_ds = UIBox {
 						definition = {
 							n = G.UIT.ROOT,
 							config = {
@@ -2072,7 +2081,7 @@ local double_sided = {
 								{
 									n = G.UIT.T,
 									config = {
-										text = localize("b_merge"), --localize
+										text = localize("b_merge"),
 										scale = 0.3,
 										colour = G.C.UI.TEXT_LIGHT
 									}
@@ -2096,145 +2105,119 @@ local double_sided = {
 						self.children.flip = nil
 					end
 
-					if self.children.merge then
-						self.children.merge:remove()
-						self.children.merge = nil
+					if self.children.merge_ds then
+						self.children.merge_ds:remove()
+						self.children.merge_ds = nil
 					end
 				end
 			end
 			return highlight_ref(self,is_highlighted)
 		end
-
-		G.FUNCS.can_flip = function(e)
-			local card = e.config.ref_table
-			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) then
-				e.config.colour = G.C.PURPLE
-				e.config.button = 'flip'
-				e.states.visible = true
-			else
-				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-				e.config.button = nil
-				e.states.visible = false
-			end
-		end
-
-		G.FUNCS.flip = function(e)
-			local card = e.config.ref_table
-			card:flip()
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = G.SETTINGS.paused and 0.1 or 0.5,
-				func = function()
-					if type(card.ability.immutable.other_side) == "string" then
-						card:remove_from_deck(true)
-						local curr_abil = copy_table(card.ability)
-						local key = card.config.center.key
-						local base = copy_table(card.base)
-						local seal = card.seal
-						card:set_ability(G.P_CENTERS[card.ability.immutable.other_side])
-						if card.ability.immutable.other_side.base then
-							SMODS.change_base(card, card.ability.immutable.other_side.base.suit, card.ability.immutable.other_side.base.value)
-							card.base = card.ability.immutable.other_side.base
-						else
-							card.base = {
-								nominal = 0,
-								suit_nominal = 0,
-								face_nominal = 0,
-								times_played = 0,
-								suit_nominal_original = 0
-							}
-							if card.children.front then
-								card.children.front:remove()
-								card.children.front = nil
-							end
-						end
-						card.seal = card.ability.immutable.other_side.seal
-						card.ability.immutable.other_side = curr_abil
-						card.ability.immutable.other_side.key = key
-						if base.nominal ~= 0 then card.ability.immutable.other_side.base = base end
-						card.ability.immutable.other_side.seal = seal
-						card:add_to_deck(true)
-					else
-						card:remove_from_deck(true)
-						local curr_abil = copy_table(card.ability)
-						local key = card.config.center.key
-						local base = copy_table(card.base)
-						local seal = card.seal
-						card:set_ability(card.ability.immutable.other_side.key)
-						if card.ability.immutable.other_side.base then
-							SMODS.change_base(card, card.ability.immutable.other_side.base.suit, card.ability.immutable.other_side.base.value)
-							card.base = card.ability.immutable.other_side.base
-						else
-							card.base = {
-								nominal = 0,
-								suit_nominal = 0,
-								face_nominal = 0,
-								times_played = 0,
-								suit_nominal_original = 0
-							}
-							if card.children.front then
-								card.children.front:remove()
-								card.children.front = nil
-							end
-						end
-						card.seal = card.ability.immutable.other_side.seal
-						card.ability = copy_table(card.ability.immutable.other_side)
-						card.ability.immutable.other_side = curr_abil
-						card.ability.immutable.other_side.key = key
-						if base.nominal ~= 0 then card.ability.immutable.other_side.base = base end
-						card.ability.immutable.other_side.seal = seal
-						card:add_to_deck(true)
-					end
-					return true
-				end
-			}))
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = G.SETTINGS.paused and 0.4 or 1,
-				func = function()
-					card:flip()
-					return true
-				end
-			}))
-		end
-
-		G.FUNCS.can_merge_ds = function(e)
-			local card = e.config.ref_table
-			local highlighted = #card.area.highlighted
-			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) and highlighted == 2 and type(card.ability.immutable.other_side) == "string" then
-				e.config.colour = G.C.PURPLE
-				e.config.button = 'merge_ds'
-				e.states.visible = true
-			else
-				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-				e.config.button = nil
-				e.states.visible = false
-			end
-		end
-
-		G.FUNCS.merge_ds = function(e)
-			local card = e.config.ref_table
-			local other
-			for i, v in ipairs(card.area.highlighted) do
-				if v ~= card then other = v end
-			end
-			card.ability.immutable.other_side = copy_table(other.ability)
-			card.ability.immutable.other_side.key = copy_table(other.config.center.key)
-			card.ability.immutable.other_side.seal = copy_table(other.seal)
-			if other.base.nominal ~= 0 then card.ability.immutable.other_side.base = copy_table(other.base) end
-			other:start_dissolve()
-		end
 		function Card:flip_side()
-			G.FUNCS.flip({config = {ref_table = self}})
+			local card = self
+			if card.ability.immutable.other_side then 
+					if type(card.ability.immutable.other_side) == "string" then
+						if next(find_joker("cry-Flip Side")) then
+							if card:get_other_side_dummy() then
+								local dummy = card:get_other_side_dummy()
+								dummy.added_to_deck = true
+								Card.remove_from_deck(dummy, true)
+							end
+						else
+							card:remove_from_deck(true)
+						end
+						local curr_abil = copy_table(card.ability)
+						local key = card.config.center.key
+						local base = copy_table(card.base)
+						local seal = card.seal
+						card:set_ability(G.P_CENTERS[card.ability.immutable.other_side], true, true)
+						card.ability.immutable.other_side = curr_abil
+						if card.ability.immutable.other_side.base then
+							SMODS.change_base(card, card.ability.immutable.other_side.base.suit, card.ability.immutable.other_side.base.value)
+							card.base = card.ability.immutable.other_side.base
+						else
+							card.base = {
+								nominal = 0,
+								suit_nominal = 0,
+								face_nominal = 0,
+								times_played = 0,
+								suit_nominal_original = 0
+							}
+							if card.children.front then
+								card.children.front:remove()
+								card.children.front = nil
+							end
+						end
+						card.seal = card.ability.immutable.other_side.seal
+						card.ability.immutable.other_side.key = key
+						if base.nominal ~= 0 then card.ability.immutable.other_side.base = base end
+						card.ability.immutable.other_side.seal = seal
+						if next(find_joker("cry-Flip Side")) then
+							if card:get_other_side_dummy() then
+								Card.add_to_deck(card:get_other_side_dummy(), true)
+							end
+						else
+							card:add_to_deck(true)
+						end
+					else
+						if next(find_joker("cry-Flip Side")) then
+							local dummy = card:get_other_side_dummy()
+							dummy.added_to_deck = true
+							Card.remove_from_deck(dummy, true)
+						else
+							card:remove_from_deck(true)
+						end
+						local curr_abil = copy_table(card.ability)
+						local key = card.config.center.key
+						local base = copy_table(card.base)
+						local seal = card.seal
+						card:set_ability(card.ability.immutable.other_side.key, true, true)
+						if card.ability.immutable.other_side then card.ability = copy_table(card.ability.immutable.other_side) end
+						card.ability.immutable.other_side = curr_abil
+						if card.ability.immutable.other_side and type(card.ability.immutable.other_side.base) == "table" then
+							SMODS.change_base(card, card.ability.immutable.other_side.base.suit, card.ability.immutable.other_side.base.value)
+							card.base = card.ability.immutable.other_side.base
+						else
+							card.base = {
+								nominal = 0,
+								suit_nominal = 0,
+								face_nominal = 0,
+								times_played = 0,
+								suit_nominal_original = 0
+							}
+							if card.children.front then
+								card.children.front:remove()
+								card.children.front = nil
+							end
+						end
+						card.seal = card.ability.immutable.other_side.seal
+						card.ability.immutable.other_side.key = key
+						if base.nominal ~= 0 then card.ability.immutable.other_side.base = base end
+						card.ability.immutable.other_side.seal = seal
+						if next(find_joker("cry-Flip Side")) then
+							Card.add_to_deck(card:get_other_side_dummy(), true)
+						else
+							card:add_to_deck(true)
+						end
+					end
+				end
 		end
-		function Card:get_other_side_dummy()
-			if self.ability.immmutable and type(self.ability.immutable.other_side) == "table" then
-				return {ability = self.ability.immutable.other_side, config = {
+		function Card:get_other_side_dummy(added_to_deck)
+			if self.ability.immutable and type(self.ability.immutable.other_side) == "table" then
+				local tbl = {ability = self.ability.immutable.other_side, config = {
 						center = G.P_CENTERS[self.ability.immutable.other_side.key]
 					}, juice_up = function(_, ...) return self:juice_up(...) end, start_dissolve = function(_, ...) return self:start_dissolve(...) end,
 					remove = function(_, ...) return self:remove(...) end, flip = function(_, ...) return self:flip(...) end,
-					original_card = self, area = self.area
+					original_card = self, area = self.area, added_to_deck = added_to_deck
 				}
+				for i, v in pairs(self) do
+					if type(v) == "function" and i ~= "flip_side" then
+						tbl[i] = function(_, ...)
+							return v(self, ...)
+						end
+					end
+				end
+				return tbl
 			end
 		end
 		local set_editionref = Card.set_edition
@@ -2245,6 +2228,12 @@ local double_sided = {
 					self.children.flip:remove()
 					self.children.flip = nil
 				end
+				if self.children.merge then
+					self.children.merge:remove()
+					self.children.merge = nil
+				end
+				self.merged = nil
+				self.ability.immutable.other_side = nil
 			end
 		end
 
@@ -2262,21 +2251,15 @@ local double_sided = {
 		end
 
 
-		local calculate_joker = Card.calculate_joker
-		function Card:calculate_joker(context)
-			if next(SMODS.find_joker("cry-Flip Side")) and type(self.ability.immutable.other_side) ~= "string" and self.ability.immutable and self.ability.immutable.other_side then
-				context.dbl_side = true
-				local ret = calculate_joker(
-					{ability = self.ability.immutable.other_side, config = {
-						center = G.P_CENTERS[self.ability.immutable.other_side.key]
-					}, juice_up = function(_, ...) return self:juice_up(...) end, start_dissolve = function(_, ...) return self:start_dissolve(...) end,
-						remove = function(_, ...) return self:remove(...) end, flip = function(_, ...) return self:flip(...) end,
-						original_card = self, area = self.area
-					}, context)
-				return ret
-			end
-			return calculate_joker(self, context)
-		end
+-- 		local calculate_joker = Card.calculate_joker
+-- 		function Card:calculate_joker(context)
+-- 			if next(SMODS.find_card("cry-Flip Side")) and type(self.ability.immutable.other_side) ~= "string" and self.ability.immutable.other_side then
+-- 				context.dbl_side = true
+-- 				local ret = self:get_other_side_dummy()
+-- 				return calculate_joker(ret, context)
+-- 			end
+-- 			return calculate_joker(self, context)
+-- 		end
 
 		local card_st_ref = card_eval_status_text
 		function card_eval_status_text(card, ...)
@@ -2331,6 +2314,54 @@ local double_sided = {
 		end
 	end,
 }
+
+		G.FUNCS.can_flip_ds = function(e)
+			local card = e.config.ref_table
+			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) and not G.SETTINGS.paused then
+				e.config.colour = G.C.PURPLE
+				e.config.button = 'flip_ds'
+			else
+				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+				e.config.button = nil
+			end
+		end
+
+		G.FUNCS.flip_ds = function(e)
+			e.config.ref_table:flip()
+		end
+
+		G.FUNCS.can_merge_ds = function(e)
+			local card = e.config.ref_table
+			local highlighted = #card.area.highlighted
+			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) and highlighted == 2 and not G.SETTINGS.paused and not card.merged then
+				e.config.colour = G.C.PURPLE
+				e.config.button = 'merge_ds'
+				e.states.visible = true
+			else
+				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+				e.config.button = nil
+				e.states.visible = false
+			end
+		end
+
+		G.FUNCS.merge_ds = function(e)
+			local card = e.config.ref_table
+			card.merged = true
+			local other
+			for i, v in ipairs(card.area.highlighted) do
+				if v ~= card then other = v end
+			end
+			card.ability.immutable.other_side = copy_table(other.ability)
+			card.ability.immutable.other_side.key = copy_table(other.config.center.key)
+			card.ability.immutable.other_side.seal = copy_table(other.seal)
+			if other.base.nominal ~= 0 then card.ability.immutable.other_side.base = copy_table(other.base) end
+			other:start_dissolve()
+			if next(find_joker("cry-Flip Side")) then
+				card:remove_from_deck(true)
+				Card.add_to_deck(card:get_other_side_dummy(), true)
+			end
+		end
+
 local meld = {
 	object_type = "Consumable",
 	dependencies = {
@@ -2464,8 +2495,8 @@ local miscitems = {
 	eclipse,
 	blessing,
 	azure_seal,
-	--double_sided,
-	--meld,
+	double_sided,
+	meld,
 	abstract,
 	instability,
 	absolute,

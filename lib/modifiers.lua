@@ -318,7 +318,7 @@ function Card:update(dt)
 		if self.flipping == "f2b" then
 			self.flipping = "b2f"
 		end
-		self:dbl_side_flip()
+		self:flip_side()
 	end
 	if self.ability.cry_absolute then -- feedback loop... may be problematic
 		self.cry_absolute = true
