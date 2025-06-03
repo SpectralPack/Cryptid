@@ -8267,7 +8267,10 @@ local flipside = {
 			if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_double_sided then
 				G.jokers.cards[i]:init_dbl_side()
 				G.jokers.cards[i]:remove_from_deck(true)
-				G.jokers.cards[i].dbl_side:add_to_deck(true)
+				local dummy = G.jokers.cards[i]:get_other_side_dummy()
+				if dummy then
+					dummy:add_to_deck(true)
+				end
 			end
 		end
 	end,
@@ -8276,7 +8279,10 @@ local flipside = {
 			if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_double_sided then
 				G.jokers.cards[i]:init_dbl_side()
 				G.jokers.cards[i]:add_to_deck(true)
-				G.jokers.cards[i].dbl_side:remove_from_deck(true)
+				local dummy = G.jokers.cards[i]:get_other_side_dummy()
+				if dummy then
+					dummy:remove_from_deck(true)
+				end
 			end
 		end
 	end,
