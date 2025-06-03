@@ -796,3 +796,15 @@ function Cryptid.cry_rankname_to_id(rankname)
 	end
 	return nil
 end
+
+function Cryptid.reset_to_none()
+	update_hand_text(
+		{ delay = 0 },
+		{
+			mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
+			chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
+			level = G.GAME.hands["cry_None"].level,
+			handname = localize("cry_None", "poker_hands"),
+		}
+	)
+end

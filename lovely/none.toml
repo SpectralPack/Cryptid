@@ -53,13 +53,14 @@ update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult
 '''
 position = "at"
 payload = '''
-level_up_hand(context.blueprint_card or self, text, nil, 1)
-if G.GAME.hands["cry_None"].visible then
-    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
-    
-else
-    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-end
+                level_up_hand(context.blueprint_card or self, text, nil, 1)
+                if G.GAME.hands["cry_None"].visible then
+                    Cryptid.reset_to_none()
+                    
+                else
+                    update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+                end
+                return nil, true
 '''
 match_indent = true
 
@@ -97,15 +98,15 @@ update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult
 '''
 position = "at"
 payload = '''
-for k, v in pairs(G.GAME.hands) do
-    level_up_hand(self, k, true)
-end
-if G.GAME.hands["cry_None"].visible then
-    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
-            
-else
-    update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-end
+        for k, v in pairs(G.GAME.hands) do
+            level_up_hand(self, k, true)
+        end
+        if G.GAME.hands["cry_None"].visible then
+            Cryptid.reset_to_none()
+                    
+        else
+            update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+        end
 '''
 match_indent = true
 
@@ -119,12 +120,13 @@ end
 '''
 position = "at"
 payload = '''
-if self.ability.consumeable.max_highlighted then
-    if G.GAME.hands["cry_None"].visible then
-        update_hand_text({delay = 0}, {G.GAME.hands["cry_None"].mult, chips = G.GAME.hands["cry_None"].chips, level = G.GAME.hands["cry_None"].level, handname = localize('cry_None', "poker_hands")})
-                
-    else
-        update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    if self.ability.consumeable.max_highlighted then
+        if G.GAME.hands["cry_None"].visible then
+            Cryptid.reset_to_none()
+                    
+        else
+            update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+        end
     end
 end
 '''

@@ -2857,7 +2857,13 @@ local unjust_dagger = {
 			})
 			return nil, true
 		end
-		if context.forcetrigger and my_pos and G.jokers.cards[my_pos - 1] then
+		if
+			context.forcetrigger
+			and my_pos
+			and G.jokers.cards[my_pos - 1]
+			and not G.jokers.cards[my_pos - 1].ability.eternal
+			and not G.jokers.cards[my_pos - 1].getting_sliced
+		then
 			local sliced_card = G.jokers.cards[my_pos - 1]
 			sliced_card.getting_sliced = true
 			if sliced_card.config.center.rarity == "cry_exotic" then
@@ -2974,7 +2980,13 @@ local monkey_dagger = {
 			})
 			return nil, true
 		end
-		if context.forcetrigger and my_pos and G.jokers.cards[my_pos - 1] then
+		if
+			context.forcetrigger
+			and my_pos
+			and G.jokers.cards[my_pos - 1]
+			and not G.jokers.cards[my_pos - 1].ability.eternal
+			and not G.jokers.cards[my_pos - 1].getting_sliced
+		then
 			local sliced_card = G.jokers.cards[my_pos - 1]
 			sliced_card.getting_sliced = true
 			if sliced_card.config.center.rarity == "cry_exotic" then
@@ -3093,7 +3105,13 @@ local pirate_dagger = {
 			})
 			return nil, true
 		end
-		if context.forcetrigger and my_pos and G.jokers.cards[my_pos + 1] then
+		if
+			context.forcetrigger
+			and my_pos
+			and G.jokers.cards[my_pos - 1]
+			and not G.jokers.cards[my_pos - 1].ability.eternal
+			and not G.jokers.cards[my_pos - 1].getting_sliced
+		then
 			local sliced_card = G.jokers.cards[my_pos + 1]
 			sliced_card.getting_sliced = true
 			if sliced_card.config.center.rarity == "cry_exotic" then
