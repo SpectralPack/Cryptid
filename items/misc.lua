@@ -2320,12 +2320,12 @@ local double_sided = {
 			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) and not G.SETTINGS.paused and card.area.config.type ~= "shop" then
 				e.config.colour = G.C.PURPLE
 				e.config.button = 'flip_ds'
-				e.config.visible = true
+				e.states.visible = true
 			else
 				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
 				e.config.button = nil
 				if card.area.config.type == "shop" then
-					e.config.visible = false
+					e.states.visible = false
 				end
 			end
 		end
@@ -2337,7 +2337,7 @@ local double_sided = {
 		G.FUNCS.can_merge_ds = function(e)
 			local card = e.config.ref_table
 			local highlighted = #card.area.highlighted
-			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) and highlighted == 2 and not G.SETTINGS.paused and not card.merged  and card.area.config.type ~= "shop" then
+			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) and highlighted == 2 and not G.SETTINGS.paused and not card.merged and card.area and card.area.config.type ~= "shop" then
 				e.config.colour = G.C.PURPLE
 				e.config.button = 'merge_ds'
 				e.states.visible = true
