@@ -42,15 +42,6 @@ end
 '''
 match_indent = true
 
-# Patch related crash
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if not initial then G.GAME.blind:debuff_card(self) end"
-position = "at"
-payload = "if not initial and G.GAME and G.GAME.blind then G.GAME.blind:debuff_card(self) end"
-match_indent = true
-
 # Draw midground layer
 [[patches]]
 [patches.pattern]

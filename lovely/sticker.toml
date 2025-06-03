@@ -121,7 +121,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if self.ability.queue_negative_removal then"
+pattern = "if self.joker_added_to_deck_but_debuffed then"
 position = "before"
 payload = '''
 if self.ability.consumeable and self.pinned and (G.GAME.cry_pinned_consumeables > 0) then
