@@ -2307,7 +2307,7 @@ local double_sided = {
 		function set_joker_win()
 			sjw()
 			for k, v in pairs(G.jokers.cards) do
-				if v.ability.immutable and v.ability.immutable.other_side and type()v.ability.immutable.other_side) == "table" and G.P_CENTERS[v.ability.immutable.other_side.key] == "Joker" then
+				if v.ability.immutable and v.ability.immutable.other_side and type(v.ability.immutable.other_side) == "table" and G.P_CENTERS[v.ability.immutable.other_side.key] == "Joker" then
 					G.PROFILES[G.SETTINGS.profile].joker_usage[v.ability.immutable.other_side.key] = G.PROFILES[G.SETTINGS.profile].joker_usage[v.ability.immutable.other_side.key]
 						or {
 							count = 1,
