@@ -314,7 +314,17 @@ cry_jimball_dt = 0
 cry_glowing_dt = 0
 function Game:update(dt)
 	upd(self, dt)
-
+	if not Cryptid.member_count_delay then
+		Cryptid.member_count_delay = 0
+	end
+	if (Cryptid.member_count_delay > 5) or not Cryptid.member_count then -- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
+		if Cryptid.update_member_count then
+			Cryptid.update_member_count()
+		end -- i honestly hate nil checks like this, wish there was a shorthand
+		Cryptid.member_count_delay = 0
+	else
+		Cryptid.member_count_delay = Cryptid.member_count_delay + dt
+	end
 	--Gradients based on Balatrostuck code
 	local anim_timer = self.TIMERS.REAL * 1.5
 	local p = 0.5 * (math.sin(anim_timer) + 1)
