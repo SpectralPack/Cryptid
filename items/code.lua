@@ -2574,7 +2574,9 @@ local assemble = {
 	order = 416,
 	can_use = function(self, card)
 		local aaa = 0
-		if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then aaa = -1 end
+		if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then
+			aaa = -1
+		end
 		if not G.GAME.modifiers.cry_beta then
 			return (#G.hand.highlighted > aaa and #G.jokers.cards > 0)
 		else
