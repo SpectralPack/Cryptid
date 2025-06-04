@@ -633,6 +633,22 @@ if not eligible_card then return true end
 """
 match_indent = true
 
+# Make Cube only show up in shop
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif v.enhancement_gate then"
+position = "before"
+payload = '''
+elseif v.source_gate then
+    if v.source_gate ~= _append then
+        add = nil
+    else
+        add = true
+    end
+'''
+match_indent = true
+
 #Make negative playing cards not take up space even when debuffed
 [[patches]]
 [patches.pattern]

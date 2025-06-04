@@ -1280,6 +1280,9 @@ local big_cube = {
 			}
 		end
 	end,
+	in_pool = function(self)
+		return #find_joker("cry-Cube", true) ~= 0
+	end,
 	cry_credits = {
 		idea = {
 			"Mystic Misclick",
