@@ -221,6 +221,9 @@ function Game:init_game_object()
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
 	g.jokers_sold = {}
+	g.cry_banished_keys = {}
+	g.cry_last_used_consumeables = {}
+	g.cry_function_stupid_workaround = {}
 
 	-- Added by IcyEthics: Converted the voucher-related modifiers for the tier 3
 	-- acclimator vouchers to be more generically accessible
