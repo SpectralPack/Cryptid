@@ -1,5 +1,3 @@
---Move all the stuff in here into atlasdeck.png later
---Also a lot of the edition decks have wrong proportions so those also need to get fixed
 local atlasedition = {
 	object_type = "Atlas",
 	key = "atlaseditiondeck",
@@ -378,32 +376,13 @@ return {
 				self.config.center.immutable = true
 			end
 			G.P_CENTERS.j_hanging_chad.misprintize_caps = { extra = 40 }
-			Cryptid.big_num_blacklist["c_magician"] = true
 			G.P_CENTERS.c_high_priestess.misprintize_caps = { planets = 100 }
-			Cryptid.big_num_blacklist["c_empress"] = true
 			G.P_CENTERS.c_emperor.misprintize_caps = { tarots = 100 }
-			Cryptid.big_num_blacklist["c_heirophant"] = true
-			Cryptid.big_num_blacklist["c_lovers"] = true
-			Cryptid.big_num_blacklist["c_chariot"] = true
-			Cryptid.big_num_blacklist["c_justice"] = true
-			Cryptid.big_num_blacklist["c_strength"] = true
-			Cryptid.big_num_blacklist["c_hanged_man"] = true
-			Cryptid.big_num_blacklist["c_death"] = true
-			Cryptid.big_num_blacklist["c_devil"] = true
-			Cryptid.big_num_blacklist["c_tower"] = true
-			Cryptid.big_num_blacklist["c_star"] = true
-			Cryptid.big_num_blacklist["c_moon"] = true
-			Cryptid.big_num_blacklist["c_sun"] = true
-			Cryptid.big_num_blacklist["c_world"] = true
-			Cryptid.big_num_blacklist["c_cry_eclipse"] = true
-			Cryptid.big_num_blacklist["c_cry_seraph"] = true
-			Cryptid.big_num_blacklist["c_cry_instability"] = true
 			G.P_CENTERS.c_cry_automaton.misprintize_caps = { create = 100 }
 			G.P_CENTERS.c_familiar.misprintize_caps = { extra = 100 }
 			G.P_CENTERS.c_grim.misprintize_caps = { extra = 100 }
 			G.P_CENTERS.c_incantation.misprintize_caps = { extra = 100 }
 			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
-			Cryptid.big_num_blacklist["c_cry_instability"] = true
 			G.P_CENTERS.c_cryptid.misprintize_caps = { extra = 100, max_highlighted = 100 }
 			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
 			G.P_CENTERS.c_cry_chambered.misprintize_caps = { extra = { num_copies = 100 } }
