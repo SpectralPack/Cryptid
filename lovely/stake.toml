@@ -348,16 +348,6 @@ position = "at"
 payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
 match_indent = true
 
-# Ember Stake - grant no money on sell
-# this is NOT ember stake grant no money on sell wtf
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then'''
-position = "at"
-payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
-match_indent = true
-
 # Ember Stake - give no money for selling
 [[patches]]
 [patches.pattern]
