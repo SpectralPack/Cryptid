@@ -84,11 +84,11 @@ end
 [[patches]]
 [patches.regex]
 target = "functions/common_events.lua"
-pattern = '''localize\('ph_mr_bones'\)..' '\}, colours = \{G.C.FILTER'''
+pattern = '''localize\(type\(SMODS.saved\) == 'string' and SMODS.saved or 'ph_mr_bones'\)..' '\}, colours = \{G.C.FILTER'''
 position = 'at'
 # match_indent = true
 line_prepend = ''
-payload = '''(G.GAME.current_round.semicolon and ";" or localize('ph_mr_bones'))..' '}, colours = {(G.GAME.current_round.semicolon and G.C.SET.Code or G.C.FILTER)'''
+payload = '''(G.GAME.current_round.semicolon and ";" or localize(type(SMODS.saved) == 'string' and SMODS.saved or 'ph_mr_bones'))..' '}, colours = {(G.GAME.current_round.semicolon and G.C.SET.Code or G.C.FILTER)'''
 
 # Semicolon - polished UI
 [[patches]]
@@ -103,9 +103,9 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = '''{n=G.UIT.T, config={text = localize('$')..config.dollars, scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
+pattern = '''{n=G.UIT.T, config={text = localize('$')..format_ui_value(config.dollars), scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
 position = "at"
-payload = '''{n=G.UIT.T, config={text = not G.GAME.current_round.semicolon and localize('$')..config.dollars or ';', scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
+payload = '''{n=G.UIT.T, config={text = not G.GAME.current_round.semicolon and localize('$')..format_ui_value(config.dollars) or ';', scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
 match_indent = true
 
 # Semicolon - polished UI
