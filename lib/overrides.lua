@@ -520,6 +520,14 @@ function Card:set_cost()
 	if self.ability.name == "cry-Big Cube" then
 		self.cost = 27
 	end
+	--Make Tarots free if Tarot Acclimator is redeemed
+	if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then
+		self.cost = 0
+	end
+	--Make Planets free if Planet Acclimator is redeemed
+	if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then
+		self.cost = 0
+	end
 
 	--Multiplies voucher cost by G.GAME.modifiers.cry_voucher_price_hike
 	--Used by bronze stake to make vouchers %50 more expensive
