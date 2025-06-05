@@ -61,6 +61,16 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
+pattern = "if self.ability.x_mult - self.ability.extra <= 1 then"
+position = "at"
+payload = '''
+if to_big(self.ability.x_mult) - to_big(self.ability.extra) <= to_big(1) then 
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
 pattern = "if self.ability.name ~= 'Seeing Double' and self.ability.x_mult > 1 and (self.ability.type == '' or next(context.poker_hands[self.ability.type])) then"
 position = "at"
 payload = '''
@@ -621,6 +631,22 @@ position = "before"
 payload = """
 if not eligible_card then return true end
 """
+match_indent = true
+
+# Make Cube only show up in shop
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif v.enhancement_gate then"
+position = "before"
+payload = '''
+elseif v.source_gate then
+    if v.source_gate ~= _append then
+        add = nil
+    else
+        add = true
+    end
+'''
 match_indent = true
 
 #Make negative playing cards not take up space even when debuffed

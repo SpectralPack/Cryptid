@@ -1,5 +1,3 @@
---Move all the stuff in here into atlasdeck.png later
---Also a lot of the edition decks have wrong proportions so those also need to get fixed
 local atlasedition = {
 	object_type = "Atlas",
 	key = "atlaseditiondeck",
@@ -344,7 +342,6 @@ return {
 					or center.name == "Mime"
 					or center.name == "Hack"
 					or center.name == "Sock and Buskin"
-					or center.name == "Hanging Chad"
 					or center.name == "Invisible Joker"
 					or center.name == "Swashbuckler"
 					or center.name == "Smeared Joker"
@@ -378,6 +375,17 @@ return {
 			then
 				self.config.center.immutable = true
 			end
+			G.P_CENTERS.j_hanging_chad.misprintize_caps = { extra = 40 }
+			G.P_CENTERS.c_high_priestess.misprintize_caps = { planets = 100 }
+			G.P_CENTERS.c_emperor.misprintize_caps = { tarots = 100 }
+			G.P_CENTERS.c_cry_automaton.misprintize_caps = { create = 100 }
+			G.P_CENTERS.c_familiar.misprintize_caps = { extra = 100 }
+			G.P_CENTERS.c_grim.misprintize_caps = { extra = 100 }
+			G.P_CENTERS.c_incantation.misprintize_caps = { extra = 100 }
+			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
+			G.P_CENTERS.c_cryptid.misprintize_caps = { extra = 100, max_highlighted = 100 }
+			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
+			G.P_CENTERS.c_cry_chambered.misprintize_caps = { extra = { num_copies = 100 } }
 			if Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
 				return sa(
 					self,

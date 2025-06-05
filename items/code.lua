@@ -2573,10 +2573,14 @@ local assemble = {
 	atlas = "atlasnotjokers",
 	order = 416,
 	can_use = function(self, card)
+		local aaa = 0
+		if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then
+			aaa = -1
+		end
 		if not G.GAME.modifiers.cry_beta then
-			return (#G.hand.highlighted > 0 and #G.jokers.cards > 0)
+			return (#G.hand.highlighted > aaa and #G.jokers.cards > 0)
 		else
-			return (#G.hand.highlighted > 0 and #G.jokers.cards > 1)
+			return (#G.hand.highlighted > aaa and #G.jokers.cards > 1)
 		end
 	end,
 	use = function(self, card, area, copier)
@@ -2597,9 +2601,13 @@ local assemble = {
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		local upgrade_hand
-		if #G.hand.highlighted > 0 then
+		local num = 0
+		if G.PROFILES[G.SETTINGS.profile].cry_none then
+			num = -1
+		end
+		if #G.hand.highlighted > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
-		elseif #G.play.cards > 0 then
+		elseif #G.play.cards > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
 		end
 		if upgrade_hand then

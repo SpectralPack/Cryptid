@@ -221,6 +221,9 @@ function Game:init_game_object()
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
 	g.jokers_sold = {}
+	g.cry_banished_keys = {}
+	g.cry_last_used_consumeables = {}
+	g.cry_function_stupid_workaround = {}
 
 	-- Added by IcyEthics: Converted the voucher-related modifiers for the tier 3
 	-- acclimator vouchers to be more generically accessible
@@ -314,7 +317,17 @@ cry_jimball_dt = 0
 cry_glowing_dt = 0
 function Game:update(dt)
 	upd(self, dt)
-
+	if not Cryptid.member_count_delay then
+		Cryptid.member_count_delay = 0
+	end
+	if (Cryptid.member_count_delay > 5) or not Cryptid.member_count then -- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
+		if Cryptid.update_member_count then
+			Cryptid.update_member_count()
+		end -- i honestly hate nil checks like this, wish there was a shorthand
+		Cryptid.member_count_delay = 0
+	else
+		Cryptid.member_count_delay = Cryptid.member_count_delay + dt
+	end
 	--Gradients based on Balatrostuck code
 	local anim_timer = self.TIMERS.REAL * 1.5
 	local p = 0.5 * (math.sin(anim_timer) + 1)
@@ -506,6 +519,14 @@ function Card:set_cost()
 	end
 	if self.ability.name == "cry-Big Cube" then
 		self.cost = 27
+	end
+	--Make Tarots free if Tarot Acclimator is redeemed
+	if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then
+		self.cost = 0
+	end
+	--Make Planets free if Planet Acclimator is redeemed
+	if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then
+		self.cost = 0
 	end
 
 	--Multiplies voucher cost by G.GAME.modifiers.cry_voucher_price_hike
@@ -1656,6 +1677,14 @@ end
 
 local end_roundref = end_round
 function end_round()
+	if (#G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1) or (#G.hand.cards < 1 and #G.deck.cards < 1) then
+		if
+			Cryptid.enabled("set_cry_poker_hand_stuff") == true
+			and not Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_none")
+		then
+			G.PROFILES[G.SETTINGS.profile].cry_none = true
+		end
+	end
 	end_roundref()
 	G.E_MANAGER:add_event(Event({
 		trigger = "after",
