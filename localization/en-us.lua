@@ -1440,7 +1440,7 @@ return {
 			j_cry_crustulum = {
 				name = "Crustulum",
 				text = {
-					"This Joker gains {C:chips}+#2#{} Chip#<s>1#",
+					"This Joker gains {C:chips}+#2#{} Chip#<s>2#",
 					"per {C:attention}reroll{} in the shop",
 					"{C:green}All rerolls are free{}",
 					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chip#<s>1#)",
