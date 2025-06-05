@@ -8292,7 +8292,7 @@ local flipside = {
 		},
 		code = {
 			"Math",
-			"lord-ruby"
+			"lord-ruby",
 		},
 	},
 }

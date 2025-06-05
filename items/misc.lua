@@ -1977,12 +1977,12 @@ local double_sided = {
 			"set_cry_misc",
 		},
 	},
--- 	gameset_config = {
--- 		modest = { disabled = true },
--- 		mainline = { disabled = true },
--- 		madness = { disabled = true },
--- 		exp = {},
--- 	},
+	-- 	gameset_config = {
+	-- 		modest = { disabled = true },
+	-- 		mainline = { disabled = true },
+	-- 		madness = { disabled = true },
+	-- 		exp = {},
+	-- 	},
 	extra_gamesets = { "exp" },
 	key = "double_sided",
 	shader = false,
@@ -1999,30 +1999,30 @@ local double_sided = {
 	cry_credits = {
 		code = {
 			"Math",
-			"lord-ruby"
+			"lord-ruby",
 		},
 		jolly = {
 			"Jolly Open Winner",
 			"Axolotolus",
 		},
 	},
-    on_apply = function(card)
-        if not card.ability.immutable then
-            card.ability.immutable = {}
-        end
-        if not card.ability.immutable.other_side then
-            card.ability.immutable.other_side = "c_base"
-        end
-    end,
+	on_apply = function(card)
+		if not card.ability.immutable then
+			card.ability.immutable = {}
+		end
+		if not card.ability.immutable.other_side then
+			card.ability.immutable.other_side = "c_base"
+		end
+	end,
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight * (G.GAME.used_vouchers.v_cry_double_vision and 4 or 1)
 	end,
 	init = function(self)
-	local highlight_ref = Card.highlight
+		local highlight_ref = Card.highlight
 		function Card:highlight(is_highlighted)
 			if self.edition and self.edition.key == "e_cry_double_sided" then
 				if is_highlighted and self.area.config.type ~= "shop" and self.area ~= G.pack_cards then
-					self.children.flip = UIBox {
+					self.children.flip = UIBox({
 						definition = {
 							n = G.UIT.ROOT,
 							config = {
@@ -2032,12 +2032,12 @@ local double_sided = {
 								maxw = 4,
 								r = 0.08,
 								padding = 0.1,
-								align = 'cm',
+								align = "cm",
 								colour = G.C.PURPLE,
 								shadow = true,
-								button = 'flip_ds',
-								func = 'can_flip_ds',
-								ref_table = self
+								button = "flip_ds",
+								func = "can_flip_ds",
+								ref_table = self,
 							},
 							nodes = {
 								{
@@ -2045,22 +2045,22 @@ local double_sided = {
 									config = {
 										text = localize("b_flip"), --localize
 										scale = 0.3,
-										colour = G.C.UI.TEXT_LIGHT
-									}
-								}
-							}
+										colour = G.C.UI.TEXT_LIGHT,
+									},
+								},
+							},
 						},
 						config = {
-							align = 'bmi',
+							align = "bmi",
 							offset = {
 								x = 0,
-								y = 0.5
+								y = 0.5,
 							},
-							bond = 'Strong',
-							parent = self
-						}
-					}
-					self.children.merge_ds = UIBox {
+							bond = "Strong",
+							parent = self,
+						},
+					})
+					self.children.merge_ds = UIBox({
 						definition = {
 							n = G.UIT.ROOT,
 							config = {
@@ -2070,12 +2070,12 @@ local double_sided = {
 								maxw = 4,
 								r = 0.08,
 								padding = 0.1,
-								align = 'cm',
+								align = "cm",
 								colour = G.C.PURPLE,
 								shadow = true,
-								button = 'merge_ds',
-								func = 'can_merge_ds',
-								ref_table = self
+								button = "merge_ds",
+								func = "can_merge_ds",
+								ref_table = self,
 							},
 							nodes = {
 								{
@@ -2083,21 +2083,21 @@ local double_sided = {
 									config = {
 										text = localize("b_merge"),
 										scale = 0.3,
-										colour = G.C.UI.TEXT_LIGHT
-									}
-								}
-							}
+										colour = G.C.UI.TEXT_LIGHT,
+									},
+								},
+							},
 						},
 						config = {
-							align = 'bmi',
+							align = "bmi",
 							offset = {
 								x = 0,
-								y = 1
+								y = 1,
 							},
-							bond = 'Strong',
-							parent = self
-						}
-					}
+							bond = "Strong",
+							parent = self,
+						},
+					})
 				end
 				if not is_highlighted or self.area.config.type == "shop" or self.area == G.pack_cards then
 					if self.children.flip then
@@ -2111,104 +2111,136 @@ local double_sided = {
 					end
 				end
 			end
-			return highlight_ref(self,is_highlighted)
+			return highlight_ref(self, is_highlighted)
 		end
 		function Card:flip_side()
 			local card = self
-			if card.ability.immutable.other_side then 
-					if type(card.ability.immutable.other_side) == "string" then
-						if next(find_joker("cry-Flip Side")) then
-							if card:get_other_side_dummy() then
-								local dummy = card:get_other_side_dummy()
-								dummy.added_to_deck = true
-								Card.remove_from_deck(dummy, true)
-							end
-						else
-							card:remove_from_deck(true)
-						end
-						local curr_abil = copy_table(card.ability)
-						local key = card.config.center.key
-						local base = copy_table(card.base)
-						local seal = card.seal
-						card:set_ability(G.P_CENTERS[card.ability.immutable.other_side], true, true)
-						card.ability.immutable.other_side = curr_abil
-						if card.ability.immutable.other_side.base then
-							SMODS.change_base(card, card.ability.immutable.other_side.base.suit, card.ability.immutable.other_side.base.value)
-							card.base = card.ability.immutable.other_side.base
-						else
-							card.base = {
-								nominal = 0,
-								suit_nominal = 0,
-								face_nominal = 0,
-								times_played = 0,
-								suit_nominal_original = 0
-							}
-							if card.children.front then
-								card.children.front:remove()
-								card.children.front = nil
-							end
-						end
-						card.seal = card.ability.immutable.other_side.seal
-						card.ability.immutable.other_side.key = key
-						if base.nominal ~= 0 then card.ability.immutable.other_side.base = base end
-						card.ability.immutable.other_side.seal = seal
-						if next(find_joker("cry-Flip Side")) then
-							if card:get_other_side_dummy() then
-								Card.add_to_deck(card:get_other_side_dummy(), true)
-							end
-						else
-							card:add_to_deck(true)
-						end
-					else
-						if next(find_joker("cry-Flip Side")) then
+			if card.ability.immutable.other_side then
+				if type(card.ability.immutable.other_side) == "string" then
+					if next(find_joker("cry-Flip Side")) then
+						if card:get_other_side_dummy() then
 							local dummy = card:get_other_side_dummy()
 							dummy.added_to_deck = true
 							Card.remove_from_deck(dummy, true)
-						else
-							card:remove_from_deck(true)
 						end
-						local curr_abil = copy_table(card.ability)
-						local key = card.config.center.key
-						local base = copy_table(card.base)
-						local seal = card.seal
-						card:set_ability(card.ability.immutable.other_side.key, true, true)
-						if card.ability.immutable.other_side then card.ability = copy_table(card.ability.immutable.other_side) end
-						card.ability.immutable.other_side = curr_abil
-						if card.ability.immutable.other_side and type(card.ability.immutable.other_side.base) == "table" then
-							SMODS.change_base(card, card.ability.immutable.other_side.base.suit, card.ability.immutable.other_side.base.value)
-							card.base = card.ability.immutable.other_side.base
-						else
-							card.base = {
-								nominal = 0,
-								suit_nominal = 0,
-								face_nominal = 0,
-								times_played = 0,
-								suit_nominal_original = 0
-							}
-							if card.children.front then
-								card.children.front:remove()
-								card.children.front = nil
-							end
-						end
-						card.seal = card.ability.immutable.other_side.seal
-						card.ability.immutable.other_side.key = key
-						if base.nominal ~= 0 then card.ability.immutable.other_side.base = base end
-						card.ability.immutable.other_side.seal = seal
-						if next(find_joker("cry-Flip Side")) then
-							Card.add_to_deck(card:get_other_side_dummy(), true)
-						else
-							card:add_to_deck(true)
+					else
+						card:remove_from_deck(true)
+					end
+					local curr_abil = copy_table(card.ability)
+					local key = card.config.center.key
+					local base = copy_table(card.base)
+					local seal = card.seal
+					card:set_ability(G.P_CENTERS[card.ability.immutable.other_side], true, true)
+					card.ability.immutable.other_side = curr_abil
+					if card.ability.immutable.other_side.base then
+						SMODS.change_base(
+							card,
+							card.ability.immutable.other_side.base.suit,
+							card.ability.immutable.other_side.base.value
+						)
+						card.base = card.ability.immutable.other_side.base
+					else
+						card.base = {
+							nominal = 0,
+							suit_nominal = 0,
+							face_nominal = 0,
+							times_played = 0,
+							suit_nominal_original = 0,
+						}
+						if card.children.front then
+							card.children.front:remove()
+							card.children.front = nil
 						end
 					end
+					card.seal = card.ability.immutable.other_side.seal
+					card.ability.immutable.other_side.key = key
+					if base.nominal ~= 0 then
+						card.ability.immutable.other_side.base = base
+					end
+					card.ability.immutable.other_side.seal = seal
+					if next(find_joker("cry-Flip Side")) then
+						if card:get_other_side_dummy() then
+							Card.add_to_deck(card:get_other_side_dummy(), true)
+						end
+					else
+						card:add_to_deck(true)
+					end
+				else
+					if next(find_joker("cry-Flip Side")) then
+						local dummy = card:get_other_side_dummy()
+						dummy.added_to_deck = true
+						Card.remove_from_deck(dummy, true)
+					else
+						card:remove_from_deck(true)
+					end
+					local curr_abil = copy_table(card.ability)
+					local key = card.config.center.key
+					local base = copy_table(card.base)
+					local seal = card.seal
+					card:set_ability(card.ability.immutable.other_side.key, true, true)
+					if card.ability.immutable.other_side then
+						card.ability = copy_table(card.ability.immutable.other_side)
+					end
+					card.ability.immutable.other_side = curr_abil
+					if
+						card.ability.immutable.other_side
+						and type(card.ability.immutable.other_side.base) == "table"
+					then
+						SMODS.change_base(
+							card,
+							card.ability.immutable.other_side.base.suit,
+							card.ability.immutable.other_side.base.value
+						)
+						card.base = card.ability.immutable.other_side.base
+					else
+						card.base = {
+							nominal = 0,
+							suit_nominal = 0,
+							face_nominal = 0,
+							times_played = 0,
+							suit_nominal_original = 0,
+						}
+						if card.children.front then
+							card.children.front:remove()
+							card.children.front = nil
+						end
+					end
+					card.seal = card.ability.immutable.other_side.seal
+					card.ability.immutable.other_side.key = key
+					if base.nominal ~= 0 then
+						card.ability.immutable.other_side.base = base
+					end
+					card.ability.immutable.other_side.seal = seal
+					if next(find_joker("cry-Flip Side")) then
+						Card.add_to_deck(card:get_other_side_dummy(), true)
+					else
+						card:add_to_deck(true)
+					end
 				end
+			end
 		end
 		function Card:get_other_side_dummy(added_to_deck)
 			if self.ability.immutable and type(self.ability.immutable.other_side) == "table" then
-				local tbl = {ability = self.ability.immutable.other_side, config = {
-						center = G.P_CENTERS[self.ability.immutable.other_side.key]
-					}, juice_up = function(_, ...) return self:juice_up(...) end, start_dissolve = function(_, ...) return self:start_dissolve(...) end,
-					remove = function(_, ...) return self:remove(...) end, flip = function(_, ...) return self:flip(...) end,
-					original_card = self, area = self.area, added_to_deck = added_to_deck
+				local tbl = {
+					ability = self.ability.immutable.other_side,
+					config = {
+						center = G.P_CENTERS[self.ability.immutable.other_side.key],
+					},
+					juice_up = function(_, ...)
+						return self:juice_up(...)
+					end,
+					start_dissolve = function(_, ...)
+						return self:start_dissolve(...)
+					end,
+					remove = function(_, ...)
+						return self:remove(...)
+					end,
+					flip = function(_, ...)
+						return self:flip(...)
+					end,
+					original_card = self,
+					area = self.area,
+					added_to_deck = added_to_deck,
 				}
 				for i, v in pairs(self) do
 					if type(v) == "function" and i ~= "flip_side" then
@@ -2237,29 +2269,31 @@ local double_sided = {
 			end
 		end
 
-
 		local no_rankref = SMODS.has_no_rank
 		function SMODS.has_no_rank(card)
-			if not card.base.value then return true end
+			if not card.base.value then
+				return true
+			end
 			return no_rankref(card)
 		end
 
 		local no_suitref = SMODS.has_no_suit
 		function SMODS.has_no_suit(card)
-			if not card.base.suit then return true end
+			if not card.base.suit then
+				return true
+			end
 			return no_suitref(card)
 		end
 
-
--- 		local calculate_joker = Card.calculate_joker
--- 		function Card:calculate_joker(context)
--- 			if next(SMODS.find_card("cry-Flip Side")) and type(self.ability.immutable.other_side) ~= "string" and self.ability.immutable.other_side then
--- 				context.dbl_side = true
--- 				local ret = self:get_other_side_dummy()
--- 				return calculate_joker(ret, context)
--- 			end
--- 			return calculate_joker(self, context)
--- 		end
+		-- 		local calculate_joker = Card.calculate_joker
+		-- 		function Card:calculate_joker(context)
+		-- 			if next(SMODS.find_card("cry-Flip Side")) and type(self.ability.immutable.other_side) ~= "string" and self.ability.immutable.other_side then
+		-- 				context.dbl_side = true
+		-- 				local ret = self:get_other_side_dummy()
+		-- 				return calculate_joker(ret, context)
+		-- 			end
+		-- 			return calculate_joker(self, context)
+		-- 		end
 
 		local card_st_ref = card_eval_status_text
 		function card_eval_status_text(card, ...)
@@ -2290,7 +2324,12 @@ local double_sided = {
 		function set_joker_win()
 			sjw()
 			for k, v in pairs(G.jokers.cards) do
-				if v.ability.immutable and v.ability.immutable.other_side and type(v.ability.immutable.other_side) == "table" and G.P_CENTERS[v.ability.immutable.other_side.key] == "Joker" then
+				if
+					v.ability.immutable
+					and v.ability.immutable.other_side
+					and type(v.ability.immutable.other_side) == "table"
+					and G.P_CENTERS[v.ability.immutable.other_side.key] == "Joker"
+				then
 					G.PROFILES[G.SETTINGS.profile].joker_usage[v.ability.immutable.other_side.key] = G.PROFILES[G.SETTINGS.profile].joker_usage[v.ability.immutable.other_side.key]
 						or {
 							count = 1,
@@ -2315,56 +2354,71 @@ local double_sided = {
 	end,
 }
 
-		G.FUNCS.can_flip_ds = function(e)
-			local card = e.config.ref_table
-			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) and not G.SETTINGS.paused and card.area.config.type ~= "shop" then
-				e.config.colour = G.C.PURPLE
-				e.config.button = 'flip_ds'
-				e.states.visible = true
-			else
-				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-				e.config.button = nil
-				if card.area.config.type == "shop" then
-					e.states.visible = false
-				end
-			end
+G.FUNCS.can_flip_ds = function(e)
+	local card = e.config.ref_table
+	if
+		not (G.CONTROLLER.locked or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0))
+		and not G.SETTINGS.paused
+		and card.area.config.type ~= "shop"
+	then
+		e.config.colour = G.C.PURPLE
+		e.config.button = "flip_ds"
+		e.states.visible = true
+	else
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+		e.config.button = nil
+		if card.area.config.type == "shop" then
+			e.states.visible = false
 		end
+	end
+end
 
-		G.FUNCS.flip_ds = function(e)
-			e.config.ref_table:flip()
-		end
+G.FUNCS.flip_ds = function(e)
+	e.config.ref_table:flip()
+end
 
-		G.FUNCS.can_merge_ds = function(e)
-			local card = e.config.ref_table
-			local highlighted = #card.area.highlighted
-			if not ((G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)) and highlighted == 2 and not G.SETTINGS.paused and not card.merged and card.area and card.area.config.type ~= "shop" then
-				e.config.colour = G.C.PURPLE
-				e.config.button = 'merge_ds'
-				e.states.visible = true
-			else
-				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-				e.config.button = nil
-				e.states.visible = false
-			end
-		end
+G.FUNCS.can_merge_ds = function(e)
+	local card = e.config.ref_table
+	local highlighted = #card.area.highlighted
+	if
+		not (G.CONTROLLER.locked or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0))
+		and highlighted == 2
+		and not G.SETTINGS.paused
+		and not card.merged
+		and card.area
+		and card.area.config.type ~= "shop"
+	then
+		e.config.colour = G.C.PURPLE
+		e.config.button = "merge_ds"
+		e.states.visible = true
+	else
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+		e.config.button = nil
+		e.states.visible = false
+	end
+end
 
-		G.FUNCS.merge_ds = function(e)
-			local card = e.config.ref_table
-			card.merged = true
-			local other
-			for i, v in ipairs(card.area.highlighted) do
-				if v ~= card then other = v end
-			end
-			card.ability.immutable.other_side = copy_table(other.ability)
-			card.ability.immutable.other_side.key = copy_table(other.config.center.key)
-			card.ability.immutable.other_side.seal = copy_table(other.seal)
-			if other.base.nominal ~= 0 then card.ability.immutable.other_side.base = copy_table(other.base) end
-			other:start_dissolve()
-			if next(find_joker("cry-Flip Side")) then
-				card:remove_from_deck(true)
-				Card.add_to_deck(card:get_other_side_dummy(), true)
-			end
+G.FUNCS.merge_ds = function(e)
+	local card = e.config.ref_table
+	card.merged = true
+	local other
+	for i, v in ipairs(card.area.highlighted) do
+		if v ~= card then
+			other = v
 		end
+	end
+	card.ability.immutable.other_side = copy_table(other.ability)
+	card.ability.immutable.other_side.key = copy_table(other.config.center.key)
+	card.ability.immutable.other_side.seal = copy_table(other.seal)
+	if other.base.nominal ~= 0 then
+		card.ability.immutable.other_side.base = copy_table(other.base)
+	end
+	other:start_dissolve()
+	if next(find_joker("cry-Flip Side")) then
+		card:remove_from_deck(true)
+		Card.add_to_deck(card:get_other_side_dummy(), true)
+	end
+end
 
 local meld = {
 	object_type = "Consumable",

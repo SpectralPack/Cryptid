@@ -1094,7 +1094,7 @@ local double_down = { -- DSide T3; After every round, X1.5 to all values on the 
 		},
 		code = {
 			"Math",
-			"lord-ruby"
+			"lord-ruby",
 		},
 		jolly = {
 			"Jolly Open Winner",
