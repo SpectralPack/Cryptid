@@ -2860,13 +2860,7 @@ local unjust_dagger = {
 			})
 			return nil, true
 		end
-		if
-			context.forcetrigger
-			and my_pos
-			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
-			and not G.jokers.cards[my_pos - 1].getting_sliced
-		then
+		if context.forcetrigger and my_pos and G.jokers.cards[my_pos - 1] then
 			local sliced_card = G.jokers.cards[my_pos - 1]
 			sliced_card.getting_sliced = true
 			if sliced_card.config.center.rarity == "cry_exotic" then
@@ -2983,13 +2977,7 @@ local monkey_dagger = {
 			})
 			return nil, true
 		end
-		if
-			context.forcetrigger
-			and my_pos
-			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
-			and not G.jokers.cards[my_pos - 1].getting_sliced
-		then
+		if context.forcetrigger and my_pos and G.jokers.cards[my_pos - 1] then
 			local sliced_card = G.jokers.cards[my_pos - 1]
 			sliced_card.getting_sliced = true
 			if sliced_card.config.center.rarity == "cry_exotic" then
@@ -3108,13 +3096,7 @@ local pirate_dagger = {
 			})
 			return nil, true
 		end
-		if
-			context.forcetrigger
-			and my_pos
-			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
-			and not G.jokers.cards[my_pos - 1].getting_sliced
-		then
+		if context.forcetrigger and my_pos and G.jokers.cards[my_pos + 1] then
 			local sliced_card = G.jokers.cards[my_pos + 1]
 			sliced_card.getting_sliced = true
 			if sliced_card.config.center.rarity == "cry_exotic" then
@@ -8268,24 +8250,29 @@ local flipside = {
 	add_to_deck = function(self, card, from_debuff)
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_double_sided then
-				G.jokers.cards[i]:init_dbl_side()
 				G.jokers.cards[i]:remove_from_deck(true)
-				G.jokers.cards[i].dbl_side:add_to_deck(true)
+				local dummy = G.jokers.cards[i]:get_other_side_dummy()
+				if dummy then
+					Card.add_to_deck(dummy, true)
+				end
 			end
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_double_sided then
-				G.jokers.cards[i]:init_dbl_side()
 				G.jokers.cards[i]:add_to_deck(true)
-				G.jokers.cards[i].dbl_side:remove_from_deck(true)
+				local dummy = G.jokers.cards[i]:get_other_side_dummy(true)
+				if dummy then
+					dummy.added_to_deck = true
+					Card.remove_from_deck(dummy, true)
+				end
 			end
 		end
 	end,
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if context.other_context and context.other_context.dbl_side then
+			if context.other_context and context.other_card.edition and context.other_card.edition.cry_double_sided then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
@@ -8305,6 +8292,7 @@ local flipside = {
 		},
 		code = {
 			"Math",
+			"lord-ruby"
 		},
 	},
 }
@@ -10182,27 +10170,17 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 	demicoloncompat = true,
 	config = { extra = { Xmult = 11.4, odds = 4 } },
 	loc_vars = function(self, info_queue, card) -- the humble cavendish example mod:
-		return {
-			vars = {
-				card.ability.extra.Xmult,
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
-			},
-		}
+		return { vars = { card.ability.extra.Xmult, (G.GAME.probabilities.normal or 1), card.ability.extra.odds } }
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main and not context.forcetrigger then
+		if context.joker_main then
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
 				Xmult_mod = card.ability.extra.Xmult,
 			}
 		end
 		if context.end_of_round and context.game_over == false and not context.repetition and not context.blueprint then
-			if
-				pseudorandom("brokenhome")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
-			then
+			if pseudorandom("brokenhome") < G.GAME.probabilities.normal / card.ability.extra.odds then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("tarot1")
@@ -10236,27 +10214,29 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 			end
 		end
 		if context.forcetrigger then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					play_sound("tarot1")
-					card.T.r = -0.2
-					card:juice_up(0.3, 0.4)
-					card.states.drag.is = true
-					card.children.center.pinch.x = true
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 0.3,
-						blockable = false,
-						func = function()
-							G.jokers:remove_card(card)
-							card:remove()
-							card = nil
-							return true
-						end,
-					}))
-					return true
-				end,
-			}))
+			if pseudorandom("brokenhome") < G.GAME.probabilities.normal / card.ability.extra.odds then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
 				Xmult_mod = card.ability.extra.Xmult,
@@ -10295,24 +10275,15 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.oddsmod } }
 	end,
-	in_pool = function(self)
-		local r = false
-		for _, tag in pairs(G.GAME.tags) do
-			if tag.key == "tag_cry_cat" then
-				r = true
-			end
-		end
-		return r
-	end,
-
-	calculate = function(self, card, context)
-		if true then
+	update = function(self, card, dt)
+		if G.GAME and G.GAME.tags and card.ability then
 			local highest = 0
 			for i, tag in pairs(G.GAME.tags) do
 				local lvl = tag.ability.level
 				if lvl == nil then
 					lvl = 1
 				end
+
 				-- print("trying comparison of " .. tostring(lvl) .. " > " .. tostring(highest))
 				if tag.key == "tag_cry_cat" and lvl > highest then
 					highest = lvl
@@ -10326,11 +10297,21 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 				for k, v in pairs(G.GAME.probabilities) do
 					G.GAME.probabilities[k] = (v - card.ability.immutable.lasthighest) + highest
 					-- im not fully sure on this, but we're having fun :)
+
 					-- i dont even know if you have to iterate through all of them, but this is what oa6 does
 				end
 				card.ability.immutable.lasthighest = highest
 			end
 		end
+	end,
+	in_pool = function(self)
+		local r = false
+		for _, tag in pairs(G.GAME.tags) do
+			if tag.key == "tag_cry_cat" then
+				r = true
+			end
+		end
+		return r
 	end,
 
 	remove_from_deck = function(self, card, from_debuff)
@@ -10465,7 +10446,7 @@ local miscitems = {
 	highfive,
 	sock_and_sock,
 	brokenhome,
-	-- yarnball, broken with oa6 currently
+	yarnball,
 }
 return {
 	name = "Misc. Jokers",
