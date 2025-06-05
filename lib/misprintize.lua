@@ -191,7 +191,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 						tbl[k][_k] = Cryptid.sanity_check(
 							clear and Cryptid.base_values[name][k][_k]
-								or cry_format(Cryptid.calculate_misprint(initial, min, max), "%.2g"),
+								or cry_format(Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level), "%.2g"),
 							big
 						)
 					end
