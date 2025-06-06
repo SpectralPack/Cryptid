@@ -2130,34 +2130,25 @@ local double_sided = {
 					local key = card.config.center.key
 					local base = copy_table(card.base)
 					local seal = card.seal
-					card:set_ability(G.P_CENTERS[card.ability.immutable.other_side], true, true)
-					card.ability.immutable.other_side = curr_abil
-					if card.ability.immutable.other_side.base then
+					if card.ability.immutable.other_side.base then card.base = card.ability.immutable.other_side.base
+					else card.base =  { nominal = 0, suit_nominal = 0, face_nominal = 0, times_played = 0, suit_nominal_original = 0, } end
+					if card.base.nominal ~= 0 then
 						SMODS.change_base(
 							card,
-							card.ability.immutable.other_side.base.suit,
-							card.ability.immutable.other_side.base.value
+							card.base.suit,
+							card.base.value
 						)
-						card.base = card.ability.immutable.other_side.base
-					else
-						card.base = {
-							nominal = 0,
-							suit_nominal = 0,
-							face_nominal = 0,
-							times_played = 0,
-							suit_nominal_original = 0,
-						}
+					else	
 						if card.children.front then
 							card.children.front:remove()
 							card.children.front = nil
 						end
 					end
-					card.seal = card.ability.immutable.other_side.seal
+					card.seal = G.P_SEALS[card.ability.immutable.other_side.seal] and card.ability.immutable.other_side.seal or nil
+					card:set_ability(G.P_CENTERS[card.ability.immutable.other_side], true, true)
+					card.ability.immutable.other_side = curr_abil
 					card.ability.immutable.other_side.key = key
-					if base.nominal ~= 0 then
-						card.ability.immutable.other_side.base = base
-					end
-					card.ability.immutable.other_side.seal = seal
+					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
 					if next(find_joker("cry-Flip Side")) then
 						if card:get_other_side_dummy() then
 							Card.add_to_deck(card:get_other_side_dummy(), true)
@@ -2165,6 +2156,7 @@ local double_sided = {
 					else
 						card:add_to_deck(true)
 					end
+					card.ability.immutable.other_side.base = base
 				else
 					if next(find_joker("cry-Flip Side")) then
 						local dummy = card:get_other_side_dummy()
@@ -2175,47 +2167,36 @@ local double_sided = {
 					end
 					local curr_abil = copy_table(card.ability)
 					local key = card.config.center.key
-					local base = copy_table(card.base)
 					local seal = card.seal
-					card:set_ability(card.ability.immutable.other_side.key, true, true)
-					if card.ability.immutable.other_side then
-						card.ability = copy_table(card.ability.immutable.other_side)
-					end
-					card.ability.immutable.other_side = curr_abil
-					if
-						card.ability.immutable.other_side
-						and type(card.ability.immutable.other_side.base) == "table"
-					then
+					local base = copy_table(card.base)
+					if card.ability.immutable.other_side.base then card.base = card.ability.immutable.other_side.base
+					else card.base =  { nominal = 0, suit_nominal = 0, face_nominal = 0, times_played = 0, suit_nominal_original = 0, } end
+					if card.base.nominal ~= 0 then
 						SMODS.change_base(
 							card,
-							card.ability.immutable.other_side.base.suit,
-							card.ability.immutable.other_side.base.value
+							card.base.suit,
+							card.base.value
 						)
-						card.base = card.ability.immutable.other_side.base
-					else
-						card.base = {
-							nominal = 0,
-							suit_nominal = 0,
-							face_nominal = 0,
-							times_played = 0,
-							suit_nominal_original = 0,
-						}
+					else	
 						if card.children.front then
 							card.children.front:remove()
 							card.children.front = nil
 						end
 					end
-					card.seal = card.ability.immutable.other_side.seal
-					card.ability.immutable.other_side.key = key
-					if base.nominal ~= 0 then
-						card.ability.immutable.other_side.base = base
+					card.seal = G.P_SEALS[card.ability.immutable.other_side.seal] and card.ability.immutable.other_side.seal or nil
+					card:set_ability(card.ability.immutable.other_side.key, true, true)
+					if card.ability.immutable.other_side then
+						card.ability = copy_table(card.ability.immutable.other_side)
 					end
-					card.ability.immutable.other_side.seal = seal
+					card.ability.immutable.other_side = curr_abil
+					card.ability.immutable.other_side.key = key
+					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
 					if next(find_joker("cry-Flip Side")) then
 						Card.add_to_deck(card:get_other_side_dummy(), true)
 					else
 						card:add_to_deck(true)
 					end
+					card.ability.immutable.other_side.base = base
 				end
 			end
 		end
