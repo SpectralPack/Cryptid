@@ -2265,7 +2265,9 @@ local double_sided = {
 					self.children.merge = nil
 				end
 				self.merged = nil
-				self.ability.immutable.other_side = nil
+				if self.ability.immutable then
+					self.ability.immutable.other_side = nil
+				end
 			end
 		end
 
