@@ -2376,12 +2376,20 @@ end
 
 G.FUNCS.can_merge_ds = function(e)
 	local card = e.config.ref_table
+	local other
+	for i, v in ipairs(card.area.highlighted) do
+		if v ~= card then
+			other = v
+		end
+	end
 	local highlighted = #card.area.highlighted
 	if
 		not (G.CONTROLLER.locked or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0))
 		and highlighted == 2
 		and not G.SETTINGS.paused
 		and not card.merged
+		and other 
+		and not other.merged
 		and card.area
 		and card.area.config.type ~= "shop"
 	then
