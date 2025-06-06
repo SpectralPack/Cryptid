@@ -2388,7 +2388,7 @@ G.FUNCS.can_merge_ds = function(e)
 		and highlighted == 2
 		and not G.SETTINGS.paused
 		and not card.merged
-		and other 
+		and other
 		and not other.merged
 		and card.area
 		and card.area.config.type ~= "shop"
