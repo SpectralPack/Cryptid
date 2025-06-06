@@ -1084,6 +1084,7 @@ local oldcandy = {
 	order = 43,
 	config = {
 		extra = { hand_size = 3 },
+		immutable = { max_hand_size_mod = 1000 },
 	},
 	gameset_config = {
 		modest = { extra = { hand_size = 1 } },
@@ -1097,7 +1098,10 @@ local oldcandy = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				math.max(1, math.floor(center.ability.extra.hand_size)),
+				math.min(
+					center.ability.immutable.max_hand_size_mod,
+					math.max(1, math.floor(center.ability.extra.hand_size))
+				),
 			},
 		}
 	end,
@@ -1109,7 +1113,12 @@ local oldcandy = {
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if context.selling_self or context.forcetrigger then
-			G.hand:change_size(math.max(1, math.floor(card.ability.extra.hand_size)))
+			G.hand:change_size(
+				math.min(
+					card.ability.immutable.max_hand_size_mod,
+					math.max(1, math.floor(card.ability.extra.hand_size))
+				)
+			)
 			return nil, true
 		end
 	end,
