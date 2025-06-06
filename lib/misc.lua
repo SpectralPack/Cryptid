@@ -518,6 +518,7 @@ end
 Cryptid.big_num_blacklist = {
 	["j_cry_fractal"] = true,
 	["j_cry_wonka_bar"] = true,
+	["j_cry_oldcandy"] = true,
 
 	["c_magician"] = true,
 	["c_empress"] = true,
