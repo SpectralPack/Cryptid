@@ -2130,21 +2130,28 @@ local double_sided = {
 					local key = card.config.center.key
 					local base = copy_table(card.base)
 					local seal = card.seal
-					if card.ability.immutable.other_side.base then card.base = card.ability.immutable.other_side.base
-					else card.base =  { nominal = 0, suit_nominal = 0, face_nominal = 0, times_played = 0, suit_nominal_original = 0, } end
+					if card.ability.immutable.other_side.base then
+						card.base = card.ability.immutable.other_side.base
+					else
+						card.base = {
+							nominal = 0,
+							suit_nominal = 0,
+							face_nominal = 0,
+							times_played = 0,
+							suit_nominal_original = 0,
+						}
+					end
 					if card.base.nominal ~= 0 then
-						SMODS.change_base(
-							card,
-							card.base.suit,
-							card.base.value
-						)
-					else	
+						SMODS.change_base(card, card.base.suit, card.base.value)
+					else
 						if card.children.front then
 							card.children.front:remove()
 							card.children.front = nil
 						end
 					end
-					card.seal = G.P_SEALS[card.ability.immutable.other_side.seal] and card.ability.immutable.other_side.seal or nil
+					card.seal = G.P_SEALS[card.ability.immutable.other_side.seal]
+							and card.ability.immutable.other_side.seal
+						or nil
 					card:set_ability(G.P_CENTERS[card.ability.immutable.other_side], true, true)
 					card.ability.immutable.other_side = curr_abil
 					card.ability.immutable.other_side.key = key
@@ -2169,21 +2176,28 @@ local double_sided = {
 					local key = card.config.center.key
 					local seal = card.seal
 					local base = copy_table(card.base)
-					if card.ability.immutable.other_side.base then card.base = card.ability.immutable.other_side.base
-					else card.base =  { nominal = 0, suit_nominal = 0, face_nominal = 0, times_played = 0, suit_nominal_original = 0, } end
+					if card.ability.immutable.other_side.base then
+						card.base = card.ability.immutable.other_side.base
+					else
+						card.base = {
+							nominal = 0,
+							suit_nominal = 0,
+							face_nominal = 0,
+							times_played = 0,
+							suit_nominal_original = 0,
+						}
+					end
 					if card.base.nominal ~= 0 then
-						SMODS.change_base(
-							card,
-							card.base.suit,
-							card.base.value
-						)
-					else	
+						SMODS.change_base(card, card.base.suit, card.base.value)
+					else
 						if card.children.front then
 							card.children.front:remove()
 							card.children.front = nil
 						end
 					end
-					card.seal = G.P_SEALS[card.ability.immutable.other_side.seal] and card.ability.immutable.other_side.seal or nil
+					card.seal = G.P_SEALS[card.ability.immutable.other_side.seal]
+							and card.ability.immutable.other_side.seal
+						or nil
 					card:set_ability(card.ability.immutable.other_side.key, true, true)
 					if card.ability.immutable.other_side then
 						card.ability = copy_table(card.ability.immutable.other_side)
