@@ -483,6 +483,12 @@ return {
 					"Pack after round",
 				},
 			},
+			bl_cry_cube = {
+				name = "The Cube",
+				text = {
+					"Mult is always equal to 1",
+				},
+			},
 		},
 		Code = {
 			c_cry_crash = {
