@@ -267,3 +267,18 @@ payload = '''
 G.hand.config.card_limit <= 0 and #G.hand.cards == 0 and not G.PROFILES[G.SETTINGS.profile].cry_none then
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+local text,disp_text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+'''
+position = "after"
+payload = '''
+if not text or text == "NULL" then 
+    G.GAME.hands["cry_None"].visible = true
+    text = "cry_None" 
+end
+'''
+match_indent = true
