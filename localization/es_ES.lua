@@ -651,7 +651,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Manos de póker",
 				text = {
-					"Añade 4 {C:attention}manos de póker{} nuevas",
+					"Añade 5 {C:attention}manos de póker{} nuevas",
 					"y habilita {C:attention}Manos ascendidas",
 				},
 			},
