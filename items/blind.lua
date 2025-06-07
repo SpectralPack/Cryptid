@@ -974,7 +974,6 @@ local vermillion_virus = {
 				end
 			end
 			if idx and G.jokers.cards[idx] then
-				print("a")
 				_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
 				G.jokers.cards[idx]:start_dissolve()
 				--G.jokers.cards[idx]:remove_from_deck()

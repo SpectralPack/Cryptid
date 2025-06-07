@@ -4074,21 +4074,6 @@ local delete = {
 		end
 		c:start_dissolve()
 	end,
-	init = function(self)
-		-- dumb hook because i don't feel like aggressively patching get_pack to do stuff
-		-- very inefficient
-		-- maybe smods should overwrite the function and make it more targetable?
-		local getpackref = get_pack
-		function get_pack(_key, _type)
-			local temp_banned = copy_table(G.GAME.banned_keys)
-			for k, v in pairs(G.GAME.cry_banished_keys) do
-				G.GAME.banned_keys[k] = v
-			end
-			local ret = getpackref(_key, _type)
-			G.GAME.banned_keys = copy_table(temp_banned)
-			return ret
-		end
-	end,
 }
 -- ://Alt-Tab
 -- Creates the current blind's Tag
