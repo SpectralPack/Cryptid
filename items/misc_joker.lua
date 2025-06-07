@@ -1466,6 +1466,7 @@ local seal_the_deal = {
 		if
 			context.after
 			and (G.GAME.current_round.hands_left == 0 or next(find_joker("cry-panopticon")))
+			and context.scoring_hand
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
