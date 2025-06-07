@@ -7594,156 +7594,61 @@ local oldblueprint = {
 	rarity = 1,
 	cost = 6,
 	order = 83,
-	update = function(self, card, front)
-		if G.STAGE == G.STAGES.RUN then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] == card then
-					other_joker = G.jokers.cards[i + 1]
-				end
-			end
-			if other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat then
-				card.ability.blueprint_compat = "compatible"
-			else
-				card.ability.blueprint_compat = "incompatible"
-			end
-		end
-	end,
-	loc_vars = function(self, info_queue, card)
-		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ""
-		card.ability.blueprint_compat_check = nil
-		return {
-			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
-			},
-			main_end = (card.area and card.area == G.jokers) and {
-				{
-					n = G.UIT.C,
-					config = { align = "bm", minh = 0.4 },
-					nodes = {
-						{
-							n = G.UIT.C,
-							config = {
-								ref_table = card,
-								align = "m",
-								colour = G.C.JOKER_GREY,
-								r = 0.05,
-								padding = 0.06,
-								func = "blueprint_compat",
-							},
-							nodes = {
-								{
-									n = G.UIT.T,
-									config = {
-										ref_table = card.ability,
-										ref_value = "blueprint_compat_ui",
-										colour = G.C.UI.TEXT_LIGHT,
-										scale = 0.32 * 0.8,
-									},
-								},
-							},
-						},
-					},
-				},
-			} or nil,
-		}
-	end,
 	blueprint_compat = true,
 	eternal_compat = false,
 	atlas = "atlasthree",
-	calculate = function(self, card, context)
-		if
-			context.end_of_round2
-			and not context.individual
-			and not context.repetition
-			and not context.blueprint
-			and not context.retrigger_joker
-		then
-			if
-				pseudorandom("oldblueprint")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
-			then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("tarot1")
-						card.T.r = -0.2
-						card:juice_up(0.3, 0.4)
-						card.states.drag.is = true
-						card.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card = nil
-								if
-									G.P_CENTERS["j_blueprint"].unlocked
-									and ((G.GAME.oldbpfactor and G.GAME.oldbpfactor < 10) or not G.GAME.oldbpfactor)
-								then
-									G.GAME.oldbpfactor = math.min(((G.GAME.oldbpfactor or 1) * 3), 10)
-								end
-								return true
-							end,
-						}))
-						return true
-					end,
-				}))
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
-				)
-			else
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_safe_ex"), colour = G.C.FILTER }
-				)
-			end
-		end
-		local other_joker = nil
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i] == card then
-				other_joker = G.jokers.cards[i + 1]
-			end
-		end
-		if other_joker and other_joker ~= card then
-			context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
-			context.blueprint_card = context.blueprint_card or card
-
-			if context.blueprint > #G.jokers.cards + 1 then
-				return
-			end
-
-			local other_joker_ret, trig = other_joker:calculate_joker(context)
-			local eff_card = context.blueprint_card or card
-
-			context.blueprint = nil
-			context.blueprint_card = nil
-
-			if other_joker_ret == true then
-				return other_joker_ret
-			end
-			if other_joker_ret or trig then
-				if not other_joker_ret then
-					other_joker_ret = {}
-				end
-				other_joker_ret.card = eff_card
-				other_joker_ret.colour = darken(G.C.BLUE, 0.3)
-				other_joker_ret.no_callback = true
-				return other_joker_ret
-			end
-		end
-	end,
+	loc_vars = function(self, info_queue, card)
+        if card.area and card.area == G.jokers then
+            local other_joker
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 1] end
+            end
+            local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+            main_end = {
+                {
+                    n = G.UIT.C,
+                    config = { align = "bm", minh = 0.4 },
+                    nodes = {
+                        {
+                            n = G.UIT.C,
+                            config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
+                            nodes = {
+                                { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
+                            }
+                        }
+                    }
+                }
+            }
+        end
+		return {
+			vars = {
+			cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+			card.ability.extra.odds,
+			},
+			main_end = main_end
+		}
+    end,
+    calculate = function(self, card, context)
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint and not context.individual and not context.repetition and not context.retrigger_joker then
+            if pseudorandom('oldblueprint') < G.GAME.probabilities.normal / card.ability.extra.odds then
+                G.E_MANAGER:add_event(Event({
+					card:start_dissolve()
+                }))
+                return {
+                    message = localize('k_extinct_ex')
+                }
+            else
+                return {
+                    message = localize('k_safe_ex')
+                }
+            end
+        end
+        local other_joker = nil
+        for i = 1, #G.jokers.cards do
+            if G.jokers.cards[i] == card then other_joker = G.jokers.cards[i + 1] end
+        end
+        return SMODS.blueprint_effect(card, other_joker, context)
+    end,
 	cry_credits = {
 		idea = {
 			"Linus Goof Balls",
@@ -7753,7 +7658,8 @@ local oldblueprint = {
 			"unexian",
 		},
 		code = {
-			"Math",
+			"Math", --original
+			"NaoRiley", --rewrite
 		},
 	},
 }
