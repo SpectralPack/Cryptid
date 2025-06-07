@@ -956,29 +956,34 @@ local vermillion_virus = {
 	order = 90,
 	boss_colour = HEX("f65d34"),
 	cry_before_play = function(self)
-		if G.jokers.cards[1] then
-			local idx = pseudorandom(pseudoseed("cry_vermillion_virus"), 1, #G.jokers.cards)
-			if G.jokers.cards[idx] then
-				if G.jokers.cards[idx].config.center.immune_to_vermillion then
-					card_eval_status_text(
-						G.jokers.cards[idx],
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ message = localize("k_nope_ex"), colour = G.C.JOKER_GREY }
-					)
-				else
-					_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
-					G.jokers.cards[idx]:start_dissolve()
-					--G.jokers.cards[idx]:remove_from_deck()
-					_card:add_to_deck()
-					_card:start_materialize()
-					G.jokers.cards[idx] = _card
-					_card:set_card_area(G.jokers)
-					G.jokers:set_ranks()
-					G.jokers:align_cards()
+		local eligible_cards = {}
+		local idx
+		--Check for eligible cards (not eternal and not immune)
+		for i = 1, #G.jokers.cards do
+			if not G.jokers.cards[i].config.center.immune_to_vermillion and not G.jokers.cards[i].ability.eternal then
+				eligible_cards[#eligible_cards + 1] = G.jokers.cards[i]
+			end
+		end
+		if #eligible_cards ~= 0 then
+			--Choose 1 eligible card and get the position of it
+			local option = pseudorandom_element(eligible_cards, pseudoseed("cry_vermillion_virus"))
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == option then
+					idx = i
+					break
 				end
+			end
+			if idx and G.jokers.cards[idx] then
+				print("a")
+				_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
+				G.jokers.cards[idx]:start_dissolve()
+				--G.jokers.cards[idx]:remove_from_deck()
+				_card:add_to_deck()
+				_card:start_materialize()
+				G.jokers.cards[idx] = _card
+				_card:set_card_area(G.jokers)
+				G.jokers:set_ranks()
+				G.jokers:align_cards()
 			end
 		end
 	end,
