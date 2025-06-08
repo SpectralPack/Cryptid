@@ -2115,7 +2115,9 @@ local double_sided = {
 		end
 		function Card:flip_side()
 			local card = self
-			if not card.ability.immutable then card.ability.immutable = {} end
+			if not card.ability.immutable then
+				card.ability.immutable = {}
+			end
 			if card.ability.immutable.other_side then
 				if type(card.ability.immutable.other_side) == "string" then
 					if next(find_joker("cry-Flip Side")) then
@@ -2154,7 +2156,9 @@ local double_sided = {
 							and card.ability.immutable.other_side.seal
 						or nil
 					card:set_ability(G.P_CENTERS[card.ability.immutable.other_side], true, true)
-					if not card.ability.immutable then card.ability.immutable = {} end
+					if not card.ability.immutable then
+						card.ability.immutable = {}
+					end
 					card.ability.immutable.other_side = curr_abil
 					card.ability.immutable.other_side.key = key
 					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
@@ -2204,7 +2208,9 @@ local double_sided = {
 					if card.ability.immutable.other_side then
 						card.ability = copy_table(card.ability.immutable.other_side)
 					end
-					if not card.ability.immutable then card.ability.immutable = {} end
+					if not card.ability.immutable then
+						card.ability.immutable = {}
+					end
 					card.ability.immutable.other_side = curr_abil
 					card.ability.immutable.other_side.key = key
 					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
