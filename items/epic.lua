@@ -298,7 +298,7 @@ local sync_catalyst = {
 	calculate = function(self, card, context)
 		if (context.joker_main and not context.debuffed_hand) or context.forcetrigger then
 			return {
-				balance = true
+				balance = true,
 			}
 		end
 	end,
