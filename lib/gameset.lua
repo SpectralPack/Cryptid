@@ -562,7 +562,9 @@ function Cryptid.gameset(card, center)
 		if center.tag and center.tag.key then --dumb fix for tags
 			center = center.tag
 		else
-			print("Could not find key for center: " .. tprint(center))
+			if false then
+				print("Could not find key for center: " .. tprint(center))
+			end
 			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
 		end
 	end
