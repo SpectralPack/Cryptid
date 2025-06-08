@@ -296,35 +296,9 @@ local sync_catalyst = {
 	immutable = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if ((context.joker_main and not context.debuffed_hand) or context.forcetrigger) and hand_chips and mult then
-			local tot = hand_chips + mult
-			if not tot.array or #tot.array < 2 or tot.array[2] < 2 then --below eXeY notation
-				hand_chips = mod_chips(math.floor(tot / 2))
-				mult = mod_mult(math.floor(tot / 2))
-			else
-				if hand_chips > mult then
-					tot = hand_chips
-				else
-					tot = mult
-				end
-				hand_chips = mod_chips(tot)
-				mult = mod_chips(tot)
-			end
-			update_hand_text({ delay = 0 }, { mult = mult, chips = hand_chips })
+		if (context.joker_main and not context.debuffed_hand) or context.forcetrigger then
 			return {
-				message = localize("k_balanced"),
-				colour = { 0.8, 0.45, 0.85, 1 },
-				func = function()
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						func = function()
-							play_sound("gong", 0.94, 0.3)
-							play_sound("gong", 0.94 * 1.5, 0.2)
-							play_sound("tarot1", 1.5)
-							return true
-						end,
-					}))
-				end,
+				balance = true
 			}
 		end
 	end,
