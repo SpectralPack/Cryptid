@@ -238,7 +238,7 @@ local universum = {
 									.. tostring(vals.level)
 								if is_number(vals.level) then
 									G.hand_text_area.hand_level.config.colour =
-										G.C.HAND_LEVELS[to_big(math.min(vals.level, 7)):to_number()]
+										G.C.HAND_LEVELS[to_number(math.min(vals.level, 7))]
 								else
 									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
 								end

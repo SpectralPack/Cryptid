@@ -39,7 +39,7 @@ local abelt = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Bulwark"].level))]
 					),
 				},
 			},
@@ -88,7 +88,7 @@ local void = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Clusterfuck"].level))]
 					),
 				},
 			},
@@ -142,7 +142,7 @@ local marsmoons = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_UltPair"].level))]
 					),
 				},
 			},
@@ -200,7 +200,7 @@ local nibiru = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_None"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_None"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_None"].level))]
 					),
 				},
 			},
@@ -250,7 +250,7 @@ local universe = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_WholeDeck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_WholeDeck"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_WholeDeck"].level))]
 					),
 				},
 			},
@@ -913,14 +913,15 @@ local ruutu = {
 				colours = {
 					(
 						to_big(G.GAME.hands["High Card"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["High Card"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["High Card"].level))]
 					),
-					(to_big(G.GAME.hands["Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
-						math.min(7, G.GAME.hands["Pair"].level)
-					):to_number()]),
+					(
+						to_big(G.GAME.hands["Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Pair"].level))]
+					),
 					(
 						to_big(G.GAME.hands["Two Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Two Pair"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Two Pair"].level))]
 					),
 				},
 			},
@@ -994,15 +995,16 @@ local risti = {
 				colours = {
 					(
 						to_big(G.GAME.hands["Three of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Three of a Kind"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Three of a Kind"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Straight"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Straight"].level))]
 					),
-					(to_big(G.GAME.hands["Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
-						math.min(7, G.GAME.hands["Flush"].level)
-					):to_number()]),
+					(
+						to_big(G.GAME.hands["Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush"].level))]
+					),
 				},
 			},
 		}
@@ -1075,15 +1077,15 @@ local hertta = {
 				colours = {
 					(
 						to_big(G.GAME.hands["Full House"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Full House"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Full House"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Four of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Four of a Kind"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Four of a Kind"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Straight Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight Flush"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Straight Flush"].level))]
 					),
 				},
 			},
@@ -1157,15 +1159,15 @@ local pata = {
 				colours = {
 					(
 						to_big(G.GAME.hands["Five of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Five of a Kind"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Five of a Kind"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Flush House"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush House"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush House"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Flush Five"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush Five"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush Five"].level))]
 					),
 				},
 			},
@@ -1247,15 +1249,15 @@ local kaikki = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Bulwark"].level))]
 					),
 					(
 						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Clusterfuck"].level))]
 					),
 					(
 						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_UltPair"].level))]
 					),
 				},
 			},
