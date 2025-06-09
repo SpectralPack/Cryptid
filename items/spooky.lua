@@ -969,7 +969,7 @@ local candy_basket = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(math.floor(center.ability.extra.candies)),
+				number_format(math.floor(math.min(center.ability.immutable.max_spawn, center.ability.extra.candies))),
 				number_format(center.ability.extra.candy_mod),
 				center.ability.immutable.wins_needed,
 				number_format(
