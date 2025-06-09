@@ -385,7 +385,7 @@ return {
 			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
 			G.P_CENTERS.c_cryptid.misprintize_caps = { extra = 100, max_highlighted = 100 }
 			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
-			if G.P_CENTERS.c_cry_chambered G.P_CENTERS.c_cry_chambered.misprintize_caps = { extra = { num_copies = 100 } } end
+			if G.P_CENTERS.c_cry_chambered then G.P_CENTERS.c_cry_chambered.misprintize_caps = { extra = { num_copies = 100 } } end
 			if Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
 				return sa(
 					self,
