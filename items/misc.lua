@@ -934,7 +934,8 @@ local glitched = {
 		if not card.ability.cry_glitched then
 			Cryptid.with_deck_effects(card, function(card)
 				Cryptid.manipulate(card, {
-					min = 0.1, max = 10
+					min = 0.1,
+					max = 10,
 				})
 			end)
 
@@ -943,7 +944,7 @@ local glitched = {
 					return Cryptid.manipulate_value(val, {
 						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
 						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
-						type = "X"
+						type = "X",
 					}, Cryptid.is_card_big(card))
 				end)
 			end

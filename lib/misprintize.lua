@@ -15,7 +15,7 @@ Cryptid.misprintize_value_blacklist = {
 	h_size = false,
 	selected_d6_face = false,
 	cry_hook_id = false,
-	colour = false
+	colour = false,
 	-- TARGET: Misprintize Value Blacklist (format: key = false, )
 }
 
@@ -387,10 +387,12 @@ function Cryptid.manipulate(card, args)
 			min = G.GAME.modifiers.cry_misprint_min,
 			max = G.GAME.modifiers.cry_misprint_max,
 			type = "X",
-			dont_stack = true
+			dont_stack = true,
 		})
 	else
-		if not args.type then args.type = "X" end
+		if not args.type then
+			args.type = "X"
+		end
 		local caps = card.config.center.misprintize_caps or {}
 		if card.infinifusion then
 			if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then
@@ -400,7 +402,9 @@ function Cryptid.manipulate(card, args)
 			end
 		end
 		Cryptid.manipulate_table(card, card, "ability", args)
-		if card.base then Cryptid.manipulate_table(card, card, "base", args) end
+		if card.base then
+			Cryptid.manipulate_table(card, card, "base", args)
+		end
 		if caps then
 			for i, v in pairs(caps) do
 				if type(v) == "table" and not v.tetrate then
@@ -426,18 +430,25 @@ end
 
 function Cryptid.manipulate_table(card, ref_table, ref_value, args)
 	for i, v in pairs(ref_table[ref_value]) do
-		if (type(v) == "number" or (type(v) == "table" and v.tetrate)) and Cryptid.misprintize_value_blacklist[i] ~= false then
-				local num = v
-				if args.dont_stack then
-					if not Cryptid.base_values[card.config.center.key] then Cryptid.base_values[card.config.center.key] = {} end
-					if not Cryptid.base_values[card.config.center.key][i] then Cryptid.base_values[card.config.center.key][i] = v end
-					num = Cryptid.base_values[card.config.center.key][i]
+		if
+			(type(v) == "number" or (type(v) == "table" and v.tetrate))
+			and Cryptid.misprintize_value_blacklist[i] ~= false
+		then
+			local num = v
+			if args.dont_stack then
+				if not Cryptid.base_values[card.config.center.key] then
+					Cryptid.base_values[card.config.center.key] = {}
 				end
-				if args.big then
-					ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big) 
-				else
-					ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card)) 
+				if not Cryptid.base_values[card.config.center.key][i] then
+					Cryptid.base_values[card.config.center.key][i] = v
 				end
+				num = Cryptid.base_values[card.config.center.key][i]
+			end
+			if args.big then
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big)
+			else
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card))
+			end
 		elseif i ~= "immutable" and type(v) == "table" and Cryptid.misprintize_value_blacklist[i] ~= false then
 			Cryptid.manipulate_table(card, ref_table[ref_value], i, args)
 		end
@@ -445,14 +456,18 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args)
 end
 
 function Cryptid.manipulate_value(num, args, is_big)
-	if args.func then 
+	if args.func then
 		num = args.func(num, args, is_big)
 	else
 		if args.min and args.max then
 			local new_args = args
 			local big_min = to_big(args.min)
 			local big_max = to_big(args.max)
-			local new_value = Cryptid.log_random(pseudoseed(args.seed or ("cry_misprint" .. G.GAME.round_resets.ante)), big_min, big_max)
+			local new_value = Cryptid.log_random(
+				pseudoseed(args.seed or ("cry_misprint" .. G.GAME.round_resets.ante)),
+				big_min,
+				big_max
+			)
 			if args.type == "+" then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
 					num = to_big(num) + to_big(new_value)

@@ -3978,7 +3978,7 @@ local multiply = {
 				if G.jokers.cards[i].config.cry_multiply then
 					m = G.jokers.cards[i].config.cry_multiply
 					Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-						Cryptid.manipulate(card, { value = 1 /m })
+						Cryptid.manipulate(card, { value = 1 / m })
 					end)
 					G.jokers.cards[i].config.cry_multiply = nil
 				end
