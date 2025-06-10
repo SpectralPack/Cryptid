@@ -332,7 +332,10 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 				for i2, v2 in pairs(v) do
 					if to_big(card.ability[i][i2]) > to_big(v2) then
 						card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
-						if to_big(card.ability[i][i2]) > to_big(-1e100) or to_big(card.ability[i][i2]) < to_big(1e100) then
+						if
+							to_big(card.ability[i][i2]) > to_big(-1e100)
+							or to_big(card.ability[i][i2]) < to_big(1e100)
+						then
 							card.ability[i][i2] = to_number(card.ability[i][i2])
 						end
 					end
