@@ -18,6 +18,10 @@ Cryptid.misprintize_value_blacklist = {
 	colour = false,
 	-- TARGET: Misprintize Value Blacklist (format: key = false, )
 }
+Cryptid.misprintize_bignum_blacklist = {
+	odds = false,
+	cry_prob = true
+}
 
 function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level)
 	local big_initial = (type(initial) ~= "table" and to_big(initial)) or initial
@@ -501,6 +505,10 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end
 		end
+	end
+	if Cryptid.misprintize_bignum_blacklist[name] == false then
+		num = to_number(num)
+		return to_number(Cryptid.sanity_check(num, false))
 	end
 	return Cryptid.sanity_check(num, is_big)
 end
