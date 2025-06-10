@@ -49,14 +49,15 @@ if G.GAME.used_vouchers.v_cry_double_down then
                 --tweak to do deck effects with on the flip side
                 if not G.P_CENTERS[area.cards[i].ability.immutable.other_side.key].immutable then
                     if area.cards[i].ability.immutable.other_side and area.cards[i].edition.cry_double_sided then
-                        Cryptid.misprintize_tbl(
-                        area.cards[i].ability.immutable.other_side.key,
+                        Cryptid.manipulate_table(
+                        area.cards[i],
                         area.cards[i].ability.immutable,
                         "other_side", 
-                        nil,
-                        {min = 1.5, max = 1.5},
-                        true,
-                        Cryptid.is_card_big({config = {center = G.P_CENTERS[area.cards[i].ability.immutable.other_side.key]}})
+                        {
+                            value = 1.5, 
+                            type = "X",
+                            big = Cryptid.is_card_big({config = {center = G.P_CENTERS[area.cards[i].ability.immutable.other_side.key]}})
+                        }
                         )
                         card_eval_status_text(area.cards[i], "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
                     end

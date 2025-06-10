@@ -468,7 +468,7 @@ function Cryptid.bonus_voucher_mod(mod)
 					{ bypass_discovery_center = true, bypass_discovery_ui = true }
 				)
 				card.shop_cry_bonusvoucher = #curr_bonus
-				Cryptid.misprintize(card)
+				Cryptid.manipulate(card)
 				if G.GAME.events.ev_cry_choco2 then
 					card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
 					card:set_cost()

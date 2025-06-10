@@ -1239,7 +1239,7 @@ local gemino = {
 			local card = G.jokers.cards[1]
 			if not Card.no(G.jokers.cards[1], "immutable", true) then
 				Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
-					Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
+					Cryptid.manipulate(card, { value = 2 })
 				end)
 				check = true
 			end

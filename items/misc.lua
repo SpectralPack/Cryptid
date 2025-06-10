@@ -809,9 +809,8 @@ local oversat = {
 	on_apply = function(card)
 		if not card.ability.cry_oversat then
 			Cryptid.with_deck_effects(card, function(card)
-				Cryptid.misprintize(card, {
-					min = 2,
-					max = 2,
+				Cryptid.manipulate(card, {
+					value = 2,
 				}, nil, true)
 			end)
 			if card.config.center.apply_oversat then
@@ -827,8 +826,8 @@ local oversat = {
 	end,
 	on_remove = function(card)
 		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.misprintize(card, { min = 1, max = 1 }, true)
-			Cryptid.misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
+			Cryptid.manipulate(card, { value = 1 / 2 })
+			Cryptid.manipulate(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 		card.ability.cry_oversat = nil
 	end,
@@ -934,16 +933,17 @@ local glitched = {
 	on_apply = function(card)
 		if not card.ability.cry_glitched then
 			Cryptid.with_deck_effects(card, function(card)
-				Cryptid.misprintize(card, {
-					min = 0.1,
-					max = 10,
-				}, nil, true)
+				Cryptid.manipulate(card, {
+					min = 0.1, max = 10
+				})
 			end)
+
 			if card.config.center.apply_glitched then
 				card.config.center:apply_glitched(card, function(val)
-					return Cryptid.misprintize_val(val, {
+					return Cryptid.manipulate_value(val, {
 						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
 						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
+						type = "X"
 					}, Cryptid.is_card_big(card))
 				end)
 			end
@@ -952,8 +952,8 @@ local glitched = {
 	end,
 	on_remove = function(card)
 		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.misprintize(card, { min = 1, max = 1 }, true)
-			Cryptid.misprintize(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
+			Cryptid.manipulate(card, { min = 1, max = 1, dont_stack = true })
+			Cryptid.manipulate(card) -- Correct me if i'm wrong but this is for misprint deck. or atleast it is after this patch
 		end)
 		card.ability.cry_glitched = nil
 	end,

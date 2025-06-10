@@ -8816,11 +8816,9 @@ local tropical_smoothie = {
 				if v ~= card then
 					if not Card.no(v, "immutable", true) then
 						Cryptid.with_deck_effects(v, function(cards)
-							Cryptid.misprintize(
+							Cryptid.manipulate(
 								cards,
-								{ min = card.ability.extra, max = card.ability.extra },
-								nil,
-								true
+								{ value = card.ability.extra }
 							)
 						end)
 						check = true
@@ -9199,11 +9197,9 @@ local oil_lamp = { --You want it? It's yours my friend
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
 							check = true
 							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(cards)
-								Cryptid.misprintize(
+								Cryptid.manipulate(
 									cards,
-									{ min = card.ability.extra.increase, max = card.ability.extra.increase },
-									nil,
-									true
+									{ value = card.ability.extra.increase }
 								)
 							end)
 						end
