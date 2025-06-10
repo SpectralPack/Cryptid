@@ -445,9 +445,9 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args)
 				num = Cryptid.base_values[card.config.center.key][i]
 			end
 			if args.big then
-				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big)
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big, i)
 			else
-				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card))
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card), i)
 			end
 		elseif i ~= "immutable" and type(v) == "table" and Cryptid.misprintize_value_blacklist[i] ~= false then
 			Cryptid.manipulate_table(card, ref_table[ref_value], i, args)
@@ -455,9 +455,9 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args)
 	end
 end
 
-function Cryptid.manipulate_value(num, args, is_big)
+function Cryptid.manipulate_value(num, args, is_big, name)
 	if args.func then
-		num = args.func(num, args, is_big)
+		num = args.func(num, args, is_big, name)
 	else
 		if args.min and args.max then
 			local new_args = args
@@ -473,7 +473,9 @@ function Cryptid.manipulate_value(num, args, is_big)
 					num = to_big(num) + to_big(new_value)
 				end
 			elseif args.type == "X" then
-				num = to_big(num) * to_big(new_value)
+				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
+					num = to_big(num) * to_big(new_value)
+				end
 			elseif args.type == "hyper" then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
 					num = to_big(num):arrow(args.value.arrows, to_big(new_value))
@@ -483,7 +485,9 @@ function Cryptid.manipulate_value(num, args, is_big)
 			if args.type == "+" then
 				num = to_big(num) + to_big(args.value)
 			elseif args.type == "X" then
-				num = to_big(num) * to_big(args.value)
+				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
+					num = to_big(num) * to_big(args.value)
+				end
 			elseif args.type == "hyper" then
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end
