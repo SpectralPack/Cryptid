@@ -20,7 +20,7 @@ Cryptid.misprintize_value_blacklist = {
 }
 Cryptid.misprintize_bignum_blacklist = {
 	odds = false,
-	cry_prob = true
+	cry_prob = true,
 }
 
 function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level)
