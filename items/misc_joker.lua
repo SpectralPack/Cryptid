@@ -10378,7 +10378,7 @@ local miscitems = {
 	highfive,
 	sock_and_sock,
 	brokenhome,
-	yarnball,
+	--yarnball,
 }
 return {
 	name = "Misc. Jokers",
