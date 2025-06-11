@@ -46,7 +46,7 @@ payload = '''
 G.GAME.pack_choices = ((self.ability.choose and self.ability.extra) and math.min(math.floor(self.ability.extra), self.ability.choose)) or 1
 if G.GAME.modifiers.cry_misprint_min then
     G.GAME.pack_size = self.ability.extra
-    if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
+    if to_big(G.GAME.pack_size) < to_big(1) then G.GAME.pack_size = 1 end
     self.ability.extra = G.GAME.pack_size
     G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), self.ability.choose)
     --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * Cryptid.log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
@@ -56,7 +56,7 @@ if G.GAME.cry_oboe then
     G.GAME.pack_choices = G.GAME.pack_choices + G.GAME.cry_oboe
     G.GAME.cry_oboe = nil
 end
-if G.GAME.boostertag and G.GAME.boostertag > 0 then
+if G.GAME.boostertag and to_big(G.GAME.boostertag) > to_big(0) then
     self.ability.extra = self.ability.extra * 2
     G.GAME.pack_choices = G.GAME.pack_choices * 2
     G.GAME.boostertag = math.max(0, G.GAME.boostertag - 1)
@@ -82,6 +82,8 @@ G.GAME.pack_size = self.ability.extra
 '''
 match_indent = true
 
+#idk wtf is going on my head hurts
+#but this should fix it
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -91,7 +93,8 @@ if booster_obj and SMODS.Centers[booster_obj.key] then
 '''
 position = "before"
 payload = '''
-if self.ability.extra < 1 then self.ability.extra = 1 end
+self.ability.extra = to_number(self.ability.extra)
+if to_big(self.ability.extra) < to_big(1) then self.ability.extra = 1 end
 '''
 match_indent = true
 
