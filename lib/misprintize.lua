@@ -511,5 +511,9 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 		num = to_number(num)
 		return to_number(Cryptid.sanity_check(num, false))
 	end
-	return Cryptid.sanity_check(num, is_big)
+	local val = Cryptid.sanity_check(num, is_big)
+	if to_big(val) > to_big(-1e100) and to_big(val) < to_big(1e100) then
+		return to_number(val)
+	end
+	return val
 end
