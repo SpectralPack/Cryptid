@@ -487,7 +487,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 					num = to_big(num) + to_big(new_value)
 				end
 			elseif args.type == "X" then
-				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
+				if to_big(num) ~= to_big(0) and (to_big(num) ~= to_big(1) or (name ~= "x_chips" and name ~= "x_mult")) then
 					num = to_big(num) * to_big(new_value)
 				end
 			elseif args.type == "hyper" then
@@ -499,7 +499,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 			if args.type == "+" then
 				num = to_big(num) + to_big(args.value)
 			elseif args.type == "X" then
-				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
+				if to_big(num) ~= to_big(0) and (to_big(num) ~= to_big(1) or (name ~= "x_chips" and name ~= "x_mult")) then
 					num = to_big(num) * to_big(args.value)
 				end
 			elseif args.type == "hyper" then
