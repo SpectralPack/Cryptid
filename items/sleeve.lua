@@ -186,7 +186,7 @@ if CardSleeves then
 				for i = 1, #G.jokers.cards do
 					if not Card.no(G.jokers.cards[i], "immutable", true) then
 						Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-							Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
+							Cryptid.manipulate(card, { value = 1.25 })
 						end)
 					end
 				end
@@ -484,7 +484,7 @@ if CardSleeves then
 				for i = 1, #G.jokers.cards do
 					if not Card.no(G.jokers.cards[i], "immutable", true) then
 						Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-							Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
+							Cryptid.manipulate(card, { value = 1.25 })
 						end)
 					end
 				end
@@ -695,7 +695,7 @@ if CardSleeves then
 					then
 						for i = 1, #G.jokers.cards do
 							Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-								Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
+								Cryptid.manipulate(card, { value = 1.25 })
 							end)
 						end
 					end

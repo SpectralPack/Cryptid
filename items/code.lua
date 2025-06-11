@@ -3966,7 +3966,7 @@ local multiply = {
 		end
 		G.jokers.highlighted[1].config.cry_multiply = G.jokers.highlighted[1].config.cry_multiply * 2
 		Cryptid.with_deck_effects(G.jokers.highlighted[1], function(card)
-			Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
+			Cryptid.manipulate(card, { value = 2 })
 		end)
 	end,
 	init = function(self)
@@ -3978,7 +3978,7 @@ local multiply = {
 				if G.jokers.cards[i].config.cry_multiply then
 					m = G.jokers.cards[i].config.cry_multiply
 					Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-						Cryptid.misprintize(card, { min = 1 / m, max = 1 / m }, nil, true)
+						Cryptid.manipulate(card, { value = 1 / m })
 					end)
 					G.jokers.cards[i].config.cry_multiply = nil
 				end
@@ -4023,9 +4023,26 @@ local delete = {
 		return G.STATE == G.STATES.SHOP
 			and card.area == (G.GAME.modifiers.cry_beta and G.jokers or G.consumeables)
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
-			and G.shop_jokers.highlighted[1] ~= card
-			and G.shop_booster.highlighted[1] ~= card
-			and G.shop_vouchers.highlighted[1] ~= card
+			and (G.shop_jokers.highlighted[1] ~= card and not Cryptid.safe_get(
+				G,
+				"shop_jokers",
+				"highlighted",
+				1,
+				"ability",
+				"eternal"
+			))
+			and (G.shop_booster.highlighted[1] ~= card and not Cryptid.safe_get(
+				G,
+				"shop_booster",
+				"highlighted",
+				1,
+				"ability",
+				"eternal"
+			))
+			and (
+				G.shop_vouchers.highlighted[1] ~= card
+				and not Cryptid.safe_get(G, "shop_vouchers", "highlighted", 1, "ability", "eternal")
+			)
 	end,
 	use = function(self, card, area, copier)
 		if not G.GAME.banned_keys then

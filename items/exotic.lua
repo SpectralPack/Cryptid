@@ -238,7 +238,7 @@ local universum = {
 									.. tostring(vals.level)
 								if is_number(vals.level) then
 									G.hand_text_area.hand_level.config.colour =
-										G.C.HAND_LEVELS[to_big(math.min(vals.level, 7)):to_number()]
+										G.C.HAND_LEVELS[to_number(math.min(vals.level, 7))]
 								else
 									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
 								end
@@ -1239,7 +1239,7 @@ local gemino = {
 			local card = G.jokers.cards[1]
 			if not Card.no(G.jokers.cards[1], "immutable", true) then
 				Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
-					Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
+					Cryptid.manipulate(card, { value = 2 })
 				end)
 				check = true
 			end

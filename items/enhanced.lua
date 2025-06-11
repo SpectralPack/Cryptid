@@ -378,14 +378,18 @@ return {
 			G.P_CENTERS.j_hanging_chad.misprintize_caps = { extra = 40 }
 			G.P_CENTERS.c_high_priestess.misprintize_caps = { planets = 100 }
 			G.P_CENTERS.c_emperor.misprintize_caps = { tarots = 100 }
-			G.P_CENTERS.c_cry_automaton.misprintize_caps = { create = 100 }
+			if G.P_CENTERS.c_cry_automaton then
+				G.P_CENTERS.c_cry_automaton.misprintize_caps = { create = 100 }
+			end
 			G.P_CENTERS.c_familiar.misprintize_caps = { extra = 100 }
 			G.P_CENTERS.c_grim.misprintize_caps = { extra = 100 }
 			G.P_CENTERS.c_incantation.misprintize_caps = { extra = 100 }
 			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
 			G.P_CENTERS.c_cryptid.misprintize_caps = { extra = 100, max_highlighted = 100 }
 			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
-			G.P_CENTERS.c_cry_chambered.misprintize_caps = { extra = { num_copies = 100 } }
+			if G.P_CENTERS.c_cry_chambered then
+				G.P_CENTERS.c_cry_chambered.misprintize_caps = { extra = { num_copies = 100 } }
+			end
 			if Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
 				return sa(
 					self,

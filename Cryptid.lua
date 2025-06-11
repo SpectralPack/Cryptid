@@ -189,6 +189,13 @@ function SMODS.injectItems(...)
 	end
 end
 
+local old_repitions = SMODS.calculate_repetitions
+SMODS.calculate_repetitions = function(card, context, reps)
+	local reps = old_repitions(card, context, reps)
+	reps = reps or { 1 }
+	return reps
+end
+
 local cryptidConfigTab = function()
 	cry_nodes = {
 		{

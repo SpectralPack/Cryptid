@@ -30,7 +30,7 @@ target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 '''
 match_indent = true
 
@@ -102,7 +102,7 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -116,7 +116,7 @@ target = "tag.lua"
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -519,6 +519,8 @@ target = "functions/common_events.lua"
 pattern = "if not strip_edition then "
 position = "before"
 payload = '''
+--misprintize table has to stay around
+--cause i literally cant fix this without it
 Cryptid.misprintize_tbl(
 				new_card.config.center_key,
 				new_card,
