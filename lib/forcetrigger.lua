@@ -235,7 +235,7 @@ function Cryptid.forcetrigger(card, context)
 			local hand = context.other_context and context.other_context.scoring_name or context.scoring_name
 			if hand then
 				results = { jokers = { mult_mod = G.GAME.hands[hand].played, card = card } }
-			end 
+			end
 		end
 		if card.ability.name == "Ride The Bus" then
 			card.ability.mult = card.ability.mult + card.ability.extra
