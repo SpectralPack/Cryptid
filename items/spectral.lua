@@ -955,7 +955,7 @@ local conduit = {
 					highlighted_1:flip()
 				end
 				highlighted_1:set_edition(highlighted_2.edition)
-				if not highlighted_2.edition or not highlighted_2.edition.cry_double_sided then 
+				if not highlighted_2.edition or not highlighted_2.edition.cry_double_sided then
 					highlighted_2:flip()
 				end
 
