@@ -407,6 +407,10 @@ function Cryptid.manipulate(card, args)
 		if not args.type then
 			args.type = "X"
 		end
+		--hardcoded whatever
+		if card.config.center.set == "Booster" then
+			args.big = false
+		end
 		local caps = card.config.center.misprintize_caps or {}
 		if card.infinifusion then
 			if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then
@@ -458,7 +462,7 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args)
 				end
 				num = Cryptid.base_values[card.config.center.key][i]
 			end
-			if args.big then
+			if args.big ~= nil then
 				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big, i)
 			else
 				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card), i)
