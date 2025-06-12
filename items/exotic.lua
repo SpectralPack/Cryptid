@@ -907,6 +907,9 @@ local stella_mortis = {
 				if Incantation then
 					quota = planet_to_destroy:getEvalQty()
 				end
+				if Overflow then
+					quaota = planet_to_destroy.ability.immutable and planet_to_destroy.ability.immutable.overflow_amount
+				end
 				planet_to_destroy.getting_sliced = true
 				card.ability.extra.Emult =
 					lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
@@ -917,6 +920,7 @@ local stella_mortis = {
 						return true
 					end,
 				}))
+				planet_to_destroy.dissolve = 0 --timing issues related to crossmod stuff
 				if not (context.blueprint_card or self).getting_sliced then
 					card_eval_status_text((context.blueprint_card or card), "extra", nil, nil, nil, {
 						message = localize({

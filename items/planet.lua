@@ -563,6 +563,7 @@ local planetlua = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1) end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -670,13 +671,15 @@ local nstar = {
 	end,
 	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
 		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil and context.joker_main then
+			local value = G.GAME.neutronstarsusedinthisrun
+			if Overflow then value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1) end
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { 1 + (0.10 * G.GAME.neutronstarsusedinthisrun) },
+					vars = { 1 + (0.10 * value) },
 				}),
-				Xmult_mod = 1 + (0.10 * G.GAME.neutronstarsusedinthisrun),
+				Xmult_mod = 1 + (0.10 * value),
 			}
 		end
 	end,
@@ -841,6 +844,7 @@ local sunplanet = {
 			and context.joker_main
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1) end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -944,6 +948,7 @@ local ruutu = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1) end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1026,6 +1031,7 @@ local risti = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1) end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1108,6 +1114,7 @@ local hertta = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1) end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1190,6 +1197,7 @@ local pata = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1) end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1280,6 +1288,7 @@ local kaikki = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1) end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
