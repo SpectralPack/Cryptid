@@ -1726,6 +1726,7 @@ local sus = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
+		-- TODO: Shatter Glass cards, reimplement cards_removed calculation
 		local function is_impostor(card)
 			return card.base.value and SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
 		end
