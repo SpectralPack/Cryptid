@@ -304,9 +304,9 @@ position = "after"
 payload = '''
 if (self and self.ability and self.ability.extra_disp) then	-- redeeming through centers isn't misprinted
 	local self_disp = self.ability.extra_disp
-	local orig_disp = self.config.center.config.extra_disp
+	local orig_disp = self.config.center.config.extra_disp or 1
 	local self_extra = self.ability.extra
-	local orig_extra = self.config.center.config.extra
+	local orig_extra = self.config.center.config.extra or 1
 
 	local new_fac = self_disp / orig_disp
 	self.ability.extra = new_fac*orig_extra
