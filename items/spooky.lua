@@ -1060,7 +1060,16 @@ local blacklist = {
 	end,
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { localize(center.ability.extra.blacklist == 14 and "Ace" or center.ability.extra.blacklist == 13 and "King" or center.ability.extra.blacklist == 12 and "Queen" or center.ability.extra.blacklist == 11 and "Jack" or number_format(center.ability.extra.blacklist), "ranks") },
+			vars = {
+				localize(
+					center.ability.extra.blacklist == 14 and "Ace"
+						or center.ability.extra.blacklist == 13 and "King"
+						or center.ability.extra.blacklist == 12 and "Queen"
+						or center.ability.extra.blacklist == 11 and "Jack"
+						or number_format(center.ability.extra.blacklist),
+					"ranks"
+				),
+			},
 		}
 	end,
 }
