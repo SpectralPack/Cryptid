@@ -1726,6 +1726,7 @@ local sus = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
+		-- TODO: Shatter Glass cards, reimplement cards_removed calculation
 		local function is_impostor(card)
 			return card.base.value and SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
 		end
@@ -1734,81 +1735,51 @@ local sus = {
 			and context.cardarea == G.jokers
 			and not context.blueprint
 			and not context.retrigger_joker
+			and #G.hand.cards >= 1
 		then
-			if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
-				card.ability.chosen_card = nil
-			end
-			local choosable_cards = {}
-			local has_impostor = false
+			-- if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
+			-- 	card.ability.chosen_card = nil
+			-- end
+			local impostor = nil
 			for i = 1, #G.hand.cards do
-				if not G.hand.cards[i].murdered_by_impostor then
-					choosable_cards[#choosable_cards + 1] = G.hand.cards[i]
-					if is_impostor(G.hand.cards[i]) then
-						has_impostor = true
-					end
+				if is_impostor(G.hand.cards[i]) then
+					impostor = G.hand.cards[i]
 				end
 			end
-			if has_impostor then
-				choosable_cards = {}
-				for i = 1, #G.hand.cards do
-					if not G.hand.cards[i].murdered_by_impostor and is_impostor(G.hand.cards[i]) then
-						choosable_cards[#choosable_cards + 1] = G.hand.cards[i]
-					end
-				end
+			if not impostor then
+				impostor = pseudorandom_element(G.hand.cards, pseudoseed("cry_sus"))
 			end
-			card.ability.chosen_card = card.ability.chosen_card
-				or pseudorandom_element(choosable_cards, pseudoseed("cry_sus"))
-			if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
-				card.ability.used_round = G.GAME.round
-				local deletable_cards = {}
-				for k, v in pairs(G.hand.cards) do
-					if not v.ability.eternal and not is_impostor(v) then
-						deletable_cards[#deletable_cards + 1] = v
+			local _first_dissolve = nil
+			G.E_MANAGER:add_event(Event({
+				trigger = "before",
+				delay = 0.75,
+				func = function()
+					for k, v in pairs(G.hand.cards) do
+						if v ~= impostor then
+							v:start_dissolve(nil, _first_dissolve)
+							_first_dissolve = true
+						end
 					end
-				end
-				if #deletable_cards ~= 0 then
-					local _first_dissolve = nil
-					for j = 1, #G.jokers.cards do
-						eval_card(
-							G.jokers.cards[j],
-							{ cardarea = G.jokers, remove_playing_cards = true, removed = deletable_cards }
-						)
-					end
-					G.E_MANAGER:add_event(Event({
-						trigger = "before",
-						delay = 0.75,
-						func = function()
-							for k, v in pairs(deletable_cards) do
-								if v ~= card.ability.chosen_card then
-									v.murdered_by_impostor = true
-									v:start_dissolve(nil, _first_dissolve)
-									_first_dissolve = true
-								end
-							end
-							return true
-						end,
-					}))
-				end
-			end
-			if card.ability.chosen_card ~= nil then
-				G.E_MANAGER:add_event(Event({
-					trigger = "before",
-					delay = 0.4,
-					func = function()
-						card:juice_up(0.3, 0.4)
-						G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-						local _c = copy_card(card.ability.chosen_card, nil, nil, G.playing_card)
-						_c:start_materialize()
-						_c:add_to_deck()
-						G.deck.config.card_limit = G.deck.config.card_limit + 1
-						table.insert(G.playing_cards, _c)
-						G.hand:emplace(_c)
-						playing_card_joker_effects({ _c })
-						return true
-					end,
-				}))
-				return { message = localize("cry_sus_ex") }
-			end
+					return true
+				end,
+			}))
+			G.E_MANAGER:add_event(Event({
+				trigger = "before",
+				delay = 0.4,
+				func = function()
+					card:juice_up(0.3, 0.4)
+					G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+					local _c = copy_card(impostor, nil, nil, G.playing_card)
+					_c:start_materialize()
+					_c:add_to_deck()
+					G.deck.config.card_limit = G.deck.config.card_limit + 1
+					table.insert(G.playing_cards, _c)
+					G.hand:emplace(_c)
+					playing_card_joker_effects({ _c })
+					return true
+				end,
+			}))
+			return { message = localize("cry_sus_ex") }
 		end
 	end,
 	cry_credits = {
@@ -10378,7 +10349,7 @@ local miscitems = {
 	highfive,
 	sock_and_sock,
 	brokenhome,
-	yarnball,
+	--yarnball,
 }
 return {
 	name = "Misc. Jokers",
