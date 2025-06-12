@@ -992,7 +992,7 @@ local blacklist = {
 	cost = 0,
 	atlas = "atlasspooky",
 	order = 136,
-	config = { extra = { blacklist = {} } },
+	config = { extra = { blacklist = 14 } },
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
@@ -1003,13 +1003,13 @@ local blacklist = {
 		if context.joker_main then
 			local blacklist = false
 			for i = 1, #G.play.cards do
-				if G.play.cards[i]:get_id() == card.ability.extra.blacklist.id then
+				if G.play.cards[i]:get_id() == card.ability.extra.blacklist then
 					blacklist = true
 					break
 				end
 			end
 			for i = 1, #G.hand.cards do
-				if G.hand.cards[i]:get_id() == card.ability.extra.blacklist.id then
+				if G.hand.cards[i]:get_id() == card.ability.extra.blacklist then
 					blacklist = true
 					break
 				end
@@ -1024,13 +1024,13 @@ local blacklist = {
 				}
 			else
 				for i = 1, #G.discard.cards do
-					if G.discard.cards[i]:get_id() == card.ability.extra.blacklist.id then
+					if G.discard.cards[i]:get_id() == card.ability.extra.blacklist then
 						blacklist = true
 						break
 					end
 				end
 				for i = 1, #G.deck.cards do
-					if G.deck.cards[i]:get_id() == card.ability.extra.blacklist.id then
+					if G.deck.cards[i]:get_id() == card.ability.extra.blacklist then
 						blacklist = true
 						break
 					end
@@ -1056,11 +1056,11 @@ local blacklist = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.blacklist =
-			pseudorandom_element(SMODS.Ranks, pseudoseed("cry_blacklist" .. G.GAME.round_resets.ante))
+			pseudorandom_element(SMODS.Ranks, pseudoseed("cry_blacklist" .. G.GAME.round_resets.ante)).id
 	end,
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { localize(center.ability.extra.blacklist and center.ability.extra.blacklist.key or "Ace", "ranks") },
+			vars = { localize(center.ability.extra.blacklist == 14 and "Ace" or center.ability.extra.blacklist == 13 and "King" or center.ability.extra.blacklist == 12 and "Queen" or center.ability.extra.blacklist == 11 and "Jack" or number_format(center.ability.extra.blacklist), "ranks") },
 		}
 	end,
 }
