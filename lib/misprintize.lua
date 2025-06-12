@@ -423,6 +423,16 @@ function Cryptid.manipulate(card, args)
 		if card.base then
 			Cryptid.manipulate_table(card, card, "base", args)
 		end
+		if G.GAME.modifiers.cry_misprint_min then
+			--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
+			card.misprint_cost_fac = 1
+				/ Cryptid.log_random(
+					pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
+					override and override.min or G.GAME.modifiers.cry_misprint_min,
+					override and override.max or G.GAME.modifiers.cry_misprint_max
+				)
+			card:set_cost()
+		end
 		if caps then
 			for i, v in pairs(caps) do
 				if type(v) == "table" and not v.tetrate then
