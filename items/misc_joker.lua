@@ -1726,50 +1726,65 @@ local sus = {
 	blueprint_compat = true,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
-		-- TODO: Shatter Glass cards, reimplement cards_removed calculation
 		local function is_impostor(card)
-			return card.base.value and SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
+			return card.base.value and card:get_id() == 13 and card:is_suit("Hearts")
 		end
-		if
-			context.end_of_round
-			and context.cardarea == G.jokers
-			and not context.blueprint
-			and not context.retrigger_joker
-			and #G.hand.cards >= 1
-		then
-			-- if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
-			-- 	card.ability.chosen_card = nil
-			-- end
-			local impostor = nil
-			for i = 1, #G.hand.cards do
-				if is_impostor(G.hand.cards[i]) then
-					impostor = G.hand.cards[i]
+		if context.end_of_round and context.cardarea == G.jokers and #G.hand.cards >= 1 then
+			local king_of_hearts_cards, destroyed_cards = {}, {}
+			local chosen_card = nil
+			-- use the chosen card from previous SUS activations if there are any
+			-- Use a random card elsewhere
+			for _, v in ipairs(G.hand.cards) do
+				if v.sus then
+					chosen_card = v
+					break
 				end
 			end
-			if not impostor then
-				impostor = pseudorandom_element(G.hand.cards, pseudoseed("cry_sus"))
+			chosen_card = chosen_card or pseudorandom_element(G.hand.cards, pseudoseed("cry_sus"))
+			-- For future sus activations
+			chosen_card.sus = true
+
+			-- Add Ignored cards to a table, this table will be used to destroy the cards
+			-- Ignore King of Kearts and ignore the chosen card only if there are no King of Hearts
+			for _, v in ipairs(G.hand.cards) do
+				if is_impostor(v) then
+					table.insert(king_of_hearts_cards, v)
+				end
+				if not v.ability.eternal and not (v.sus and #king_of_hearts_cards == 0) and not is_impostor(v) then
+					table.insert(destroyed_cards, v)
+				end
 			end
-			local _first_dissolve = nil
-			G.E_MANAGER:add_event(Event({
-				trigger = "before",
-				delay = 0.75,
-				func = function()
-					for k, v in pairs(G.hand.cards) do
-						if v ~= impostor then
-							v:start_dissolve(nil, _first_dissolve)
-							_first_dissolve = true
+			-- Destroy Cards
+			-- Don't destroy them if they were already destroyed though
+			if not G.GAME.sus_cards then
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.1,
+					func = function()
+						for i = #destroyed_cards, 1, -1 do
+							local aaa = destroyed_cards[i]
+							if SMODS.shatters(aaa) then
+								aaa:shatter()
+							else
+								aaa:start_dissolve(nil, i == #destroyed_cards)
+							end
 						end
-					end
-					return true
-				end,
-			}))
+						return true
+					end,
+				}))
+			end
+			--Create the copied card
 			G.E_MANAGER:add_event(Event({
 				trigger = "before",
 				delay = 0.4,
 				func = function()
 					card:juice_up(0.3, 0.4)
-					G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-					local _c = copy_card(impostor, nil, nil, G.playing_card)
+					G.playing_card = (G.playing_card or 0) + 1
+					--Prioritize copying King of hearts if there are any, otherwise copy the chosen card
+					local to_copy = (
+						#king_of_hearts_cards > 0 and pseudorandom_element(king_of_hearts_cards, pseudoseed("cry_sus2"))
+					) or chosen_card
+					local _c = copy_card(to_copy, nil, nil, G.playing_card)
 					_c:start_materialize()
 					_c:add_to_deck()
 					G.deck.config.card_limit = G.deck.config.card_limit + 1
@@ -1779,6 +1794,13 @@ local sus = {
 					return true
 				end,
 			}))
+
+			-- use destroyed cards to Calc card removal effects
+			-- not here though; doing it here would make said effects trigger multiple times
+			if not G.GAME.sus_cards then
+				G.GAME.sus_cards = destroyed_cards
+			end
+			-- SMODS.calculate_context({ remove_playing_cards = true, removed = G.GAME.sus_cards })
 			return { message = localize("cry_sus_ex") }
 		end
 	end,
