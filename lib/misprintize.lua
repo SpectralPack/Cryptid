@@ -17,7 +17,7 @@ Cryptid.misprintize_value_blacklist = {
 	cry_hook_id = false,
 	colour = false,
 	suit_nominal_original = false,
-	times_played = false
+	times_played = false,
 	-- TARGET: Misprintize Value Blacklist (format: key = false, )
 }
 Cryptid.misprintize_bignum_blacklist = {
@@ -537,7 +537,6 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 	end
 	return val
 end
-
 
 local get_nominalref = Card.get_nominal
 function Card:get_nominal(...)
