@@ -163,7 +163,7 @@ local pointer = {
 			local entered_card = G.ENTERED_CARD
 			local valid_check = {}
 			G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
-			current_card = Cryptid.pointergetalias(apply_lower(entered_card)) or nil
+			current_card = Cryptid.pointergetalias(entered_card) or nil
 			valid_check = Cryptid.pointergetblist(current_card)
 			if not valid_check[3] then
 				current_card = nil
