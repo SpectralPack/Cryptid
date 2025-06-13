@@ -411,8 +411,8 @@ return {
 			c_cry_malware = {
 				name = "://MALWARE",
 				text = {
-					"Füge {C:dark_edition}Fehlerhaft{} zu allen", 
-					"Karten {C:cry_code}in der Hand{} hinzu" 
+					"Füge {C:dark_edition}Fehlerhaft{} zu allen",
+					"Karten {C:cry_code}in der Hand{} hinzu",
 				},
 			},
 			c_cry_merge = {
@@ -1312,7 +1312,6 @@ return {
 					"oder {C:attention}Chip Typ{} Joker in diesem Durchlauf",
 					"{C:inactive}(Aktuell {C:money}$#2#{C:inactive})",
 				},
-
 			},
 			j_cry_kooky = {
 				name = "Wahnsinniger Joker",
@@ -2793,7 +2792,7 @@ return {
 			},
 			tag_cry_cat = {
 				name = "Katzen-Tag",
-				text = { "Miau.", "{C:inactive}Level {C:dark_edition}#1#" },		-- (=^･w･^=)
+				text = { "Miau.", "{C:inactive}Level {C:dark_edition}#1#" }, -- (=^･w･^=)
 			},
 			tag_cry_console = {
 				name = "Konsolen-Tag",
