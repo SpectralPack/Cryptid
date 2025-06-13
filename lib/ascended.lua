@@ -32,7 +32,13 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			loc_disp_text = localize(disp_text, "poker_hands")
 		end
 	end
-
+	local hidden = false
+	for i, v in pairs(scoring_hand) do
+		if v.facing == "back" then
+			hidden = true
+			break
+		end
+	end
 	if G.SETTINGS.language == "en-us" then
 		if #scoring_hand > 5 and (text == "Flush Five" or text == "Five of a Kind") then
 			local rank_array = {}
@@ -130,7 +136,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_WholeDeck"] = 52,
 	}
 	-- Change mult and chips colors if hand is ascended
-	if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] then
+	if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] and not hidden then
 		ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
 		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
 	else
@@ -150,17 +156,20 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	if G.GAME.cry_exploit_override then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + 1
 	end
-
-	G.GAME.current_round.current_hand.cry_asc_num_text = (
-		G.GAME.current_round.current_hand.cry_asc_num
-		and (
-			type(G.GAME.current_round.current_hand.cry_asc_num) == "table"
-				and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(0))
-			or G.GAME.current_round.current_hand.cry_asc_num > 0
+	if not hidden then
+		G.GAME.current_round.current_hand.cry_asc_num_text = (
+			G.GAME.current_round.current_hand.cry_asc_num
+			and (
+				type(G.GAME.current_round.current_hand.cry_asc_num) == "table"
+					and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(0))
+				or G.GAME.current_round.current_hand.cry_asc_num > 0
+			)
 		)
-	)
-			and " (+" .. G.GAME.current_round.current_hand.cry_asc_num .. ")"
-		or ""
+				and " (+" .. G.GAME.current_round.current_hand.cry_asc_num .. ")"
+			or ""
+	else
+		G.GAME.current_round.current_hand.cry_asc_num_text = ""
+	end
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 function Cryptid.ascend(num) -- edit this function at your leisure
