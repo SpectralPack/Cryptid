@@ -187,6 +187,7 @@ function Cryptid.pluralize(str, vars)
 		if type(num) == "string" then
 			num = (Big and to_number(to_big(num))) or num
 		end
+		if not num then num = 1 end
 		local plural = _table[1] -- default
 		local checks = { [1] = "=" } -- checks 1 by default
 		local checks1mod = false -- tracks if 1 was modified
