@@ -16,12 +16,14 @@ Cryptid.misprintize_value_blacklist = {
 	selected_d6_face = false,
 	cry_hook_id = false,
 	colour = false,
+	suit_nominal_original = false,
+	times_played = false
 	-- TARGET: Misprintize Value Blacklist (format: key = false, )
 }
 Cryptid.misprintize_bignum_blacklist = {
 	odds = false,
 	cry_prob = false,
-	nominal = false,
+	--nominal = false,
 }
 
 function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level)
@@ -534,4 +536,10 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 		return to_number(val)
 	end
 	return val
+end
+
+
+local get_nominalref = Card.get_nominal
+function Card:get_nominal(...)
+	return to_number(get_nominalref(self, ...))
 end
