@@ -179,6 +179,7 @@ local pointer = {
 			end
 
 			if current_card then -- non-playing card cards
+
 				local created = false -- Joker check
 				if not valid_check[1] and valid_check[2] == "Joker" and valid_check[3] then
 					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, current_card)
@@ -257,22 +258,33 @@ local pointer = {
 					return
 				end
 			end
-
 			for i, v in pairs(G.P_TAGS) do -- TAGS
-				if Cryptid.pointergetalias(i) and not Cryptid.pointergetblist(i) then
+				local blacklist = Cryptid.pointergetblist(i)
+				-- gonna be real w/ you idk why pointergetblist is a table now so im just gonna check if everything in it is falsey
+				local can_spawn = true
+				for _,val in pairs(blacklist) do
+					can_spawn = can_spawn and (not val)
+				end
+
+				if Cryptid.pointergetalias(i) and can_spawn then
+
 					if v.name and apply_lower(entered_card) == apply_lower(v.name) then
 						current_card = i
+						break --no clue why this wasn't done before, you can't create 2 tags with one pointer
 					end
 					if apply_lower(entered_card) == apply_lower(i) then
 						current_card = i
+						break
 					end
 					if
 						apply_lower(entered_card) == apply_lower(localize({ type = "name_text", set = v.set, key = i }))
 					then
 						current_card = i
+						break
 					end
 				end
 			end
+			
 
 			if
 				current_card
