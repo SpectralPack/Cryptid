@@ -259,17 +259,28 @@ local pointer = {
 			end
 
 			for i, v in pairs(G.P_TAGS) do -- TAGS
-				if Cryptid.pointergetalias(i) and not Cryptid.pointergetblist(i) then
+				local blacklist = Cryptid.pointergetblist(i)
+				-- gonna be real w/ you idk why pointergetblist is a table now so im just gonna check if everything in it is falsey
+				local can_spawn = true
+				for _,val in pairs(blacklist) do
+					can_spawn = can_spawn and (not val)
+				end
+
+				if Cryptid.pointergetalias(i) and can_spawn then
+
 					if v.name and apply_lower(entered_card) == apply_lower(v.name) then
 						current_card = i
+						break --no clue why this wasn't done before, you can't create 2 tags with one pointer
 					end
 					if apply_lower(entered_card) == apply_lower(i) then
 						current_card = i
+						break
 					end
 					if
 						apply_lower(entered_card) == apply_lower(localize({ type = "name_text", set = v.set, key = i }))
 					then
 						current_card = i
+						break
 					end
 				end
 			end
@@ -2569,12 +2580,33 @@ return {
 	name = "Pointer://",
 	items = pointeritems,
 	init = function()
-		print("[CRYPTID] Inserting Pointer Aliases")
-		local alify = Cryptid.pointeraliasify
-		Cryptid.pointerblistifytype("rarity", "cry_exotic", nil)
-		for key, aliasesTable in pairs(aliases) do
-			for _, alias in pairs(aliasesTable) do
-				alify(key, alias, nil)
+		function Cryptid.inject_pointer_aliases()
+			--print("[CRYPTID] Inserting Pointer Aliases")
+			local alify = Cryptid.pointeraliasify
+			Cryptid.pointerblistifytype("rarity", "cry_exotic", nil)
+			for key, aliasesTable in pairs(aliases) do
+				for _, alias in pairs(aliasesTable) do
+					alify(key, alias, nil)
+				end
+				alify(key, key, nil)
+			end
+			for _, group in pairs(G.localization.descriptions) do
+				if
+					_ ~= "Back"
+					and _ ~= "Content Set"
+					and _ ~= "Edition"
+					and _ ~= "Enhanced"
+					and _ ~= "Stake"
+					and _ ~= "Other"
+				then
+					for key, card in pairs(group) do
+						if G.P_CENTERS[key] then
+							alify(key, card.name, nil)
+							if G.P_CENTERS[key].name then alify(key, G.P_CENTERS[key].name, nil) end
+							if G.P_CENTERS[key].original_key then alify(key, G.P_CENTERS[key].original_key, nil) end
+						end
+					end
+				end
 			end
 		end
 	end,

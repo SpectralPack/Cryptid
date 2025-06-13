@@ -1363,6 +1363,24 @@ function init_localization()
 			end
 		end
 	end
+
+	for _, group in pairs(G.localization.descriptions) do
+		if
+			_ ~= "Back"
+			and _ ~= "Content Set"
+			and _ ~= "Edition"
+			and _ ~= "Enhanced"
+			and _ ~= "Stake"
+			and _ ~= "Other"
+		then
+			for key, card in pairs(group) do
+				if G.P_CENTERS[key] then
+					Cryptid.pointeraliasify(key, card.name, true)
+				end
+			end
+		end
+	end
+	Cryptid.inject_pointer_aliases()
 end
 
 --Fix a corrupted game state
