@@ -2600,7 +2600,7 @@ return {
 				then
 					for key, card in pairs(group) do
 						if G.P_CENTERS[key] then
-							alify(key, card.name, nil)
+							alify(key, type(card.name) == "table" and card.name[1] or card.name, nil)
 							if G.P_CENTERS[key].name then
 								alify(key, G.P_CENTERS[key].name, nil)
 							end

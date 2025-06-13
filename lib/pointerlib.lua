@@ -21,14 +21,16 @@ function Cryptid.pointerblistify(target, remove) -- Add specific joker to blackl
 end
 
 function Cryptid.pointeraliasify(target, key, remove) -- Add a specific alias/key combo to the alias list
-	if string.len(key) ~= 1 then
-		key = string.lower(key:gsub("%b{}", ""):gsub("%s+", ""))
-	end
-	if not remove then
-		Cryptid.pointeralias[key] = target
-		return true
-	else
-		Cryptid.pointeralias[key] = nil
+	if type(key) == "string" then
+		if string.len(key) ~= 1 then
+			key = string.lower(key:gsub("%b{}", ""):gsub("%s+", ""))
+		end
+		if not remove then
+			Cryptid.pointeralias[key] = target
+			return true
+		else
+			Cryptid.pointeralias[key] = nil
+		end
 	end
 	return false
 end
