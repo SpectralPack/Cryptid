@@ -181,7 +181,7 @@ return {
 				name = "Der Witz",
 				text = {
 					"Wenn deine Chips mehr als 2x die benötigten sind,",
-					"setze die Ante zu einer mehrzahl von #1#",
+					"setze die Ante zu einer Mehrzahl von #1#",
 				},
 			},
 			bl_cry_magic = {
@@ -1364,7 +1364,7 @@ return {
 				name = "Loopy",
 				text = {
 					"{C:attention}Löse{} alle Joker für jeden",
-					"{C:attention}Jolly Joker{}, der in dieser Runder",
+					"{C:attention}Lustigen Joker{}, der in dieser Runder",
 					"verkauft wurde erneut {C:attention}aus",
 					"{C:inactive}(Momentan{}{C:attention:} #1#{}{C:inactive} Auslösung(en)){}",
 					"{C:inactive,s:0.8}Es war nicht genug Platz...{}",
@@ -3176,7 +3176,7 @@ return {
 			v_cry_stickyhand = {
 				name = "Klebrige Hand",
 				text = {
-					"{C:attention}+#1#{} Karten auswahl limit",
+					"{C:attention}+#1#{} Karten Auswahl Limit",
 				},
 			},
 			v_cry_grapplinghook = {
