@@ -1308,7 +1308,7 @@ return {
 				name = "Entführung",
 				text = {
 					"Verdiene {C:money}$#1#{} am Ende der Runde",
-					"pro verkauften einzigartigen {C:attention}Mult Typ{}"
+					"pro verkauften einzigartigen {C:attention}Mult Typ{}",
 					"oder {C:attention}Chip Typ{} Joker in diesem Durchlauf",
 					"{C:inactive}(Aktuell {C:money}$#2#{C:inactive})",
 				},
