@@ -2793,7 +2793,7 @@ return {
 			},
 			tag_cry_cat = {
 				name = "Katzen-Tag",
-				text = { "Miau.", "{C:inactive}Level {C:dark_edition}#1#" },
+				text = { "Miau.", "{C:inactive}Level {C:dark_edition}#1#" },		-- (=^･w･^=)
 			},
 			tag_cry_console = {
 				name = "Konsolen-Tag",
@@ -3465,8 +3465,8 @@ return {
 			cry_banana_consumeable = {
 				name = "Banana",
 				text = {
-					"Chance von {C:green}#1# zu #2#{} beim nutzen",
-					"nichts zu tuhen",
+					"Chance von {C:green}#1# zu #2#{} beim Nutzen",
+					"nichts zu tun",
 				},
 			},
 			p_cry_code_normal_1 = {
@@ -3532,7 +3532,7 @@ return {
 					"Kaufe oder nutze",
 					"diese Karte in einem",
 					"Durchlauf ohne Code",
-					"um zu lernen was es tuht",
+					"um zu lernen was es tut",
 				},
 			},
 			undiscovered_unique = {
@@ -3541,7 +3541,7 @@ return {
 					"Kaufe oder nutze",
 					"diese Karte in einem",
 					"Durchlauf ohne Code",
-					"um zu lernen was es tuht",
+					"um zu lernen was es tut",
 				},
 			},
 			cry_green_seal = {
@@ -3585,7 +3585,7 @@ return {
 				"Lass mich dir zeigen wie es funktioniert!",
 			},
 			cry_intro_3 = {
-				"*wächst hände*",
+				"*wächst Hände*",
 			},
 			cry_intro_4 = {
 				"Es ist schwer dieses Mod in nur",
@@ -3611,16 +3611,16 @@ return {
 			},
 			cry_mainline_1 = {
 				"Willst du das Spiel gerne {E:1,C:attention}zerstören{}? Gute Nachichten!",
-				"Du kannst es machen ohne komplett durchzudrehen.",
+				"Du kannst das tun, ohne komplett durchzudrehen.",
 			},
 			cry_mainline_2 = {
-				"Hier ist es immernoch verrückt, aber du hast die",
-				"Chance das {C:cry_ascendant}Fortschrittsystem{} zu",
-				"erfahren. Aber werde nicht zu gemütlich...",
+				"Hier ist es immer noch verrückt, aber du hast die",
+				"Chance, das {C:cry_ascendant}Fortschrittsystem{} zu",
+				"erfahren. Aber mach es dir nicht zu bequem...",
 			},
 			cry_mainline_3 = {
 				"Weil du stärker sein wirst,",
-				"habe ich einige {E:1,C:dark_edition}Bosse{} die",
+				"habe ich einige {E:1,C:dark_edition}Bosse{}, die",
 				"dich deine Wahl bereuen lassen könnten.",
 			},
 			cry_madness_1 = {
@@ -3630,14 +3630,14 @@ return {
 			},
 			cry_madness_2 = {
 				"Ich habe viele schlaflose Wochen, {C:green}Mountain Dew{}-angetriebene",
-				"Nächte verbracht um sicherzustellen, dass dieses Gameset für dich",
+				"Nächte verbracht, um sicherzustellen, dass dieses Gameset für dich",
 				"{C:cry_ascendant}PERFEKT BALANCIERT{} ist!",
 			},
 			cry_madness_3 = {
-				"Du beginnst mit allem freigeschaltet, also",
+				"Du beginnst mit Allem freigeschaltet, also",
 				"kannst du die {C:red,E:1}volle Macht{} von Cryptid sofort nutzen!",
 				"Sei nur vorsichtig, dass das Spiel nicht {C:attention,E:1}abstürzt{},",
-				"da das Warscheinlich passiert bevor du verlierst...",
+				"da das warscheinlich passiert bevor du verlierst...",
 			},
 		},
 		poker_hands = {
@@ -3655,13 +3655,13 @@ return {
 				"Paar, Flush oder Straße enthalten",
 			},
 			["cry_UltPair"] = {
-				"Zwei zwei Paare, bei denen jedes",
+				"Zwei Zwei Paare, bei denen Jedes",
 				"von ihnen von einer Farbe ist,",
 				"was insgesammt 2 Farben ergibt.",
 			},
 			["cry_WholeDeck"] = {
 				"Eine Hand, die jede Karte in",
-				"in einem 52-Karten Deck enthält.",
+				"einem 52-Karten Deck enthält.",
 				"Bist du verrückt?",
 			},
 		},
@@ -3685,7 +3685,7 @@ return {
 			ach_cry_traffic_jam = "Stau",
 			ach_cry_ult_full_skip = "Ultimativer Full Skip",
 			ach_cry_used_crash = "Wir haben dich gewarnt",
-			ach_cry_what_have_you_done = "WAS HAST DU GETAHN?!",
+			ach_cry_what_have_you_done = "WAS HAST DU GETAN?!",
 		},
 		achievement_descriptions = {
 			ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
@@ -3696,12 +3696,12 @@ return {
 			ach_cry_exodia = "Habe 5 Exotische Joker",
 			ach_cry_freak_house = "Spiele ein Flush House aus 6 und 9 von Herz während du Nice hast",
 			ach_cry_googol_play_pass = "Manipuliere eine Googol Play Karte",
-			ach_cry_haxxor = "Benutze einen cheat code",
+			ach_cry_haxxor = "Benutze einen Cheat Code",
 			ach_cry_home_realtor = "Aktiviere Fröhliches Haus vor Ante 8 (ohne DoE/Antimaterie)",
 			ach_cry_jokes_on_you = "Löse den Effect von dem Witz in Ante 1 aus und gewinne den Durchlauf trotzdem.",
 			ach_cry_niw_uoy = "Erreiche Ante -8",
 			ach_cry_now_the_fun_begins = "Bekomme Leinwand",
-			ach_cry_patience_virtue = "Warte bei der Lavendelschleife für 2 minuten bevor du sie besiegst",
+			ach_cry_patience_virtue = "Warte bei der Lavendelschleife für 2 Minuten bevor du sie besiegst",
 			ach_cry_perfectly_balanced = "Besiege das Sehr Faire Deck auf Aufgestiegenen Einsatz",
 			ach_cry_pull_request = "Lass ://COMMIT den Joker erstellen den es zerstört hat.",
 			ach_cry_traffic_jam = "Besiege alle Rush Hour Herausforderungen",
@@ -3725,7 +3725,7 @@ return {
 			--Settings Menu
 			cry_set_features = "Features",
 			cry_set_music = "Musik",
-			cry_set_enable_features = "Wähle features zum Aktivieren (wird beim Neustart angewendet):",
+			cry_set_enable_features = "Wähle Features zum Aktivieren (wird beim Neustart angewendet):",
 			cry_feat_achievements = "Erfolge",
 			["cry_feat_antimatter deck"] = "Antimaterie Deck",
 			cry_feat_blinds = "Blinds",
@@ -3768,7 +3768,7 @@ return {
 			cry_debuff_oldarm = "Must 4 oder weniger Karten spielen",
 			cry_debuff_oldpillar = "Keine Straßen",
 			cry_debuff_oldflint = "Keine Flushes",
-			cry_debuff_oldmark = "Keine Hände die ein Paar enthalten",
+			cry_debuff_oldmark = "Keine Hände, die ein Paar enthalten",
 			cry_debuff_obsidian_orb = "Hat die Fähigkeiten aller besiegten Bosse",
 
 			k_code = "Code",
@@ -3841,11 +3841,11 @@ return {
 			cry_gameset_madness = "Madness",
 			cry_gameset_custom = "Modifiziert",
 			cry_gameset_exp = "Experimentel",
-			cry_gameset_exp_modest = "Experimentel (Modest)",
-			cry_gameset_exp_mainline = "Experimentel (Mainline)",
-			cry_gameset_exp_madness = "Experimentel (Madness)",
+			cry_gameset_exp_modest = "Experimentell (Modest)",
+			cry_gameset_exp_mainline = "Experimentell (Mainline)",
+			cry_gameset_exp_madness = "Experimentell (Madness)",
 
-			cry_view_set_contents = "Siehe Gegenstände im set",
+			cry_view_set_contents = "Siehe Gegenstände im Set",
 
 			b_reset_gameset_modest = "Setzt Gameset Konfiguaration zurück (Modest)",
 			b_reset_gameset_mainline = "Setzt Gameset Konfiguaration zurück (Mainline)",
@@ -3872,7 +3872,7 @@ return {
 			cry_gold = "Golden",
 			cry_m = "Lustig",
 			cry_mosaic = "Mosaik",
-			cry_noisy = "Geräuchvoll",
+			cry_noisy = "Geräuschvoll",
 			cry_oversat = "Übersättigt",
 
 			cry_epic = "Episch",
@@ -3886,8 +3886,8 @@ return {
 				plus_chips = { "{C:blue}+#2#{} Chips" },
 				x_mult = { "{X:red,C:white} X#2#{} Mult" },
 				x_chips = { "{X:blue,C:white} X#2#{} Chips" },
-				h_size = { "{C:attention}+#2#{} Hand Size" },
-				money = { "{C:money}+$#2#{} at payout" },
+				h_size = { "{C:attention}+#2#{} Handgröße" },
+				money = { "{C:money}+$#2#{} beim Auszahlen" },
 			},
 			stats_inactive = {
 				plus_mult = { "{C:inactive}(Momentan {C:red}+#1#{C:inactive} Mult)" },
@@ -3902,7 +3902,7 @@ return {
 				make_tarot = { "Erstelle {C:attention}#2#{C:tarot} Tarot{} Karte" },
 				make_planet = { "Erstelle {C:attention}#2#{C:planet} Planet{} Karte" },
 				make_spectral = { "Erstelle {C:attention}#2#{C:spectral} Spectral{} Karte" },
-				add_dollars = { "Earn {C:money}$#2#{}" },
+				add_dollars = { "Verdiene {C:money}$#2#{}" },
 			},
 			contexts = {
 				open_booster = { "wenn ein {C:attention}Booster{} geöffnet wird" },
@@ -3936,7 +3936,7 @@ return {
 				buy_common = { "wenn dies ein {C:blue}Gewöhnlicher{} {C:attention}Joker{} ist" },
 				buy_uncommon = { "wenn dies ein {C:green}Ungewöhnlicher{} {C:attention}Joker{} ist" },
 				tarot = { "wenn die Karte eine {C:tarot}Tarot{} Karte ist" },
-				planet = { "wenn die Karte eine {C:planet}Planeten{} Karte" },
+				planet = { "wenn die Karte eine {C:planet}Planeten{} Karte ist" },
 				spectral = { "wenn die Karte eine {C:spectral}Geisterkarte{} ist" },
 				joker = { "wenn die Karte ein {C:attention}Joker{} ist" },
 				suit = { "wenn die Karte ein {V:1}#3#{} ist" },
@@ -3948,7 +3948,7 @@ return {
 				big = { "wenn {C:attention}Blind{} eine {C:attention}Big {C:attention}Blind{} ist" },
 				first = { "wenn dies die {C:attention}erste {C:attention}Hand{} ist" },
 				last = { "wenn dies die {C:attention}letzte {C:attention}Hand{} ist" },
-				common = { "wenn es ein {C:blue}Gewöhnicher{} {C:attention}Joker{} ist" },
+				common = { "wenn es ein {C:blue}Gewöhnlicher{} {C:attention}Joker{} ist" },
 				uncommon = { "wenn es ein {C:green}Ungewöhnlicher{} {C:attention}Joker{} ist" },
 				rare = { "wenn es ein {C:red}Seltener{} {C:attention}Joker{} ist" },
 				poker_hand = { "wenn Hand ein {C:attention}#3#{} is" },
@@ -3982,7 +3982,7 @@ return {
 			cry_sticker_desc = {
 				"Nutze diesen Joker",
 				"um auf #2##1#",
-				"#2#Einsatz#3# Schwieringkeit tu gewinnen",
+				"#2#Einsatz#3# Schwierigkeit zu gewinnen",
 			},
 
 			cry_art = { "Bild: #1#" },
