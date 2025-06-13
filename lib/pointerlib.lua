@@ -99,7 +99,7 @@ end
 
 function Cryptid.pointergetblist(target) -- "Is this card pointer banned?"
 	target = Cryptid.pointergetalias(target) or target
-	target = G.P_CENTERS[target] or target
+	target = target
 	results = {}
 	results[1] = false
 	if not target then
@@ -133,6 +133,7 @@ function Cryptid.pointergetblist(target) -- "Is this card pointer banned?"
 	if G.DEBUG_POINTER then
 		results[1] = false
 	end
+	target = G.P_CENTERS[target] or target
 	if results[1] == false then
 		if target and target.set == "Joker" then
 			results[2] = "Joker"
