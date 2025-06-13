@@ -179,7 +179,6 @@ local pointer = {
 			end
 
 			if current_card then -- non-playing card cards
-
 				local created = false -- Joker check
 				if not valid_check[1] and valid_check[2] == "Joker" and valid_check[3] then
 					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, current_card)
@@ -258,6 +257,7 @@ local pointer = {
 					return
 				end
 			end
+
 			for i, v in pairs(G.P_TAGS) do -- TAGS
 				local blacklist = Cryptid.pointergetblist(i)
 				-- gonna be real w/ you idk why pointergetblist is a table now so im just gonna check if everything in it is falsey
@@ -284,7 +284,6 @@ local pointer = {
 					end
 				end
 			end
-			
 
 			if
 				current_card
@@ -2581,12 +2580,33 @@ return {
 	name = "Pointer://",
 	items = pointeritems,
 	init = function()
-		print("[CRYPTID] Inserting Pointer Aliases")
-		local alify = Cryptid.pointeraliasify
-		Cryptid.pointerblistifytype("rarity", "cry_exotic", nil)
-		for key, aliasesTable in pairs(aliases) do
-			for _, alias in pairs(aliasesTable) do
-				alify(key, alias, nil)
+		function Cryptid.inject_pointer_aliases()
+			--print("[CRYPTID] Inserting Pointer Aliases")
+			local alify = Cryptid.pointeraliasify
+			Cryptid.pointerblistifytype("rarity", "cry_exotic", nil)
+			for key, aliasesTable in pairs(aliases) do
+				for _, alias in pairs(aliasesTable) do
+					alify(key, alias, nil)
+				end
+				alify(key, key, nil)
+			end
+			for _, group in pairs(G.localization.descriptions) do
+				if
+					_ ~= "Back"
+					and _ ~= "Content Set"
+					and _ ~= "Edition"
+					and _ ~= "Enhanced"
+					and _ ~= "Stake"
+					and _ ~= "Other"
+				then
+					for key, card in pairs(group) do
+						if G.P_CENTERS[key] then
+							alify(key, card.name, nil)
+							if G.P_CENTERS[key].name then alify(key, G.P_CENTERS[key].name, nil) end
+							if G.P_CENTERS[key].original_key then alify(key, G.P_CENTERS[key].original_key, nil) end
+						end
+					end
+				end
 			end
 		end
 	end,
