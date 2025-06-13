@@ -105,16 +105,16 @@ function Cryptid.pointergetblist(target) -- "Is this card pointer banned?"
 	if not target then
 		results[1] = true
 	end
-	if G.GAME.banned_keys[target] then
+	if G.GAME.banned_keys[target] or (type(target) == "table" and G.GAME.banned_keys[target.key]) then
 		results[1] = true
 	end
 	for index, value in ipairs(Cryptid.pointerblist) do
-		if target == value then
+		if target == value or (type(target) == "table" and target.key) then
 			results[1] = true
 		end
 	end
-	if results[1] ~= true and G.P_CENTERS[target] then
-		target = G.P_CENTERS[target]
+	if results[1] ~= true and (G.P_CENTERS[target] or (type(target) == "table" and G.P_CENTERS[target.key])) then
+		target = (G.P_CENTERS[target] or (type(target) == "table" and G.P_CENTERS[target.key]))
 		for value, power in pairs(Cryptid.pointerblisttype) do
 			for index, val2 in pairs(target) do
 				if value == index then
