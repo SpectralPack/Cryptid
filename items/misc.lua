@@ -1554,8 +1554,8 @@ local noisy = {
 		end
 
 		AurinkoAddons.cry_noisy = function(card, hand, instant, amount)
-			local modc = pseudorandom("cry_noisy_chips_aurinko", noisy_stats.min.chips, noisy_stats.max.chips)
-			local modm = pseudorandom("cry_noisy_mult_aurinko", noisy_stats.min.mult, noisy_stats.max.mult)
+			local modc = pseudorandom("cry_noisy_chips_aurinko", noisy_stats.min.chips, noisy_stats.max.chips) * amount
+			local modm = pseudorandom("cry_noisy_mult_aurinko", noisy_stats.min.mult, noisy_stats.max.mult) * amount
 			G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
 			G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
 			if not instant then
