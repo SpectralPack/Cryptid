@@ -187,6 +187,7 @@ function SMODS.injectItems(...)
 			end
 		end
 	end
+	Cryptid.inject_pointer_aliases()
 end
 
 local old_repitions = SMODS.calculate_repetitions
