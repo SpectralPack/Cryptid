@@ -82,10 +82,18 @@ function Cryptid.pointergetalias(target) -- "Is this alias legit?"
 		end
 		return string.lower(strn)
 	end
-	if Cryptid.pointeralias[apply_lower(target)] then return Cryptid.pointeralias[apply_lower(target)] end
-	if G.P_CENTERS[apply_lower(target)] then return G.P_CENTERS[apply_lower(target)].key end
-	if Cryptid.pointeralias[target] then return Cryptid.pointeralias[target] end
-	if G.P_CENTERS[target] then return G.P_CENTERS[target].key end
+	if Cryptid.pointeralias[apply_lower(target)] then
+		return Cryptid.pointeralias[apply_lower(target)]
+	end
+	if G.P_CENTERS[apply_lower(target)] then
+		return G.P_CENTERS[apply_lower(target)].key
+	end
+	if Cryptid.pointeralias[target] then
+		return Cryptid.pointeralias[target]
+	end
+	if G.P_CENTERS[target] then
+		return G.P_CENTERS[target].key
+	end
 	return false
 end
 
