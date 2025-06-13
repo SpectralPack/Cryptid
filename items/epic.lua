@@ -402,7 +402,11 @@ local canvas = {
 					num_retriggers = num_retriggers + 1
 				end
 			end
-			if card.T and context.other_card.T and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2) then
+			if
+				card.T
+				and context.other_card.T
+				and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
+			then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = Card.get_gameset(card) ~= "modest" and num_retriggers or math.min(2, num_retriggers),
