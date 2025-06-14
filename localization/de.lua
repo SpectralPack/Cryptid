@@ -8,6 +8,11 @@ return {
 					"Hat die {C:legendary,E:1}positiven Effekte{}",
 					"von {C:attention}jedem{} Deck",
 				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"mit {C:attention}Unbedrucktem Deck",
+					"auf {C:attention}Goldener Einsatz",
+ 				},
 			},
 			b_cry_antimatter_balanced = {
 				name = "Antimaterie Deck",
@@ -23,6 +28,11 @@ return {
 					"{C:attention}Gewöhnliche{} Joker haben",
 					"{C:attention}vierfache{} Werte",
 				},
+				unlock = {
+					"Entdecke mindestens",
+					"{C:attention}200{} Gegenstände",
+					"deiner Sammlung",
+ 				},
 			},
 			b_cry_beta = {
 				name = "Nostalgisches Deck",
@@ -32,6 +42,10 @@ return {
 					"{C:attention}Nostalgische{} Blinds ersetzen",
 					"ihre neuen Versionen.",
 				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"auf {C:attention}Pinker Einsatz",
+ 				},
 			},
 			b_cry_blank = {
 				name = "Unbedrucktes Deck",
@@ -45,6 +59,10 @@ return {
 					"Ziehe immer 5 Karten nach",
 					"{C:attention}Gespielter Hand{} oder {C:attention}Abwurf{}",
 				},
+				unlock = {
+					"Schlage {C:attention}Die Schlange",
+					"ohne {C:red}Abwurf",
+ 				},
 			},
 			b_cry_CCD = {
 				name = "CCD Deck",
@@ -52,14 +70,20 @@ return {
 					"Jede Karte ist auch",
 					"ein {C:attention}zufälliger{} Verbrauchsgegenstand",
 				},
+				unlock = {
+					"Benutze {C:spectral}Hammerspace",
+ 				},
 			},
 			b_cry_conveyor = {
-				name = "Fließband Deck",
+				name = "Fließband-Deck",
 				text = {
 					"Joker können {C:attention}nicht{} bewegt werden",
 					"Am Anfang der Runde,",
 					"{C:attention}dupliziere{} den rechtesten Joker",
 					"und {C:attention}zerstöre{} den linkesten Joker",
+				},
+				unlock = {
+					"Benutze {C:spectral}Analog",
 				},
 			},
 			b_cry_critical = {
@@ -69,7 +93,22 @@ return {
 					"Chance von {C:green}#1# zu 4{} für {X:dark_edition,C:white} ^2 {} Mult",
 					"Chance von {C:green}#1# zu 8{} für {X:dark_edition,C:white} ^0.5 {} Mult",
 				},
+				unlock = {
+					"Erhalte einen {C:attention}Manipulierten Joker",
+				},
 			},
+			b_cry_e_deck = {
+				name = "Editionen-Deck",
+				text = {
+					"Alle Karten sind {C:dark_edition}#1#{}",
+					"Karten können Edition nicht ändern",
+					"{C:inactive}(Klicke zum Ändern)",
+				},
+				unlock = {
+					"Entdecke jede",
+					"{C:dark_edition}Edition",
+ 				},
+ 			},
 			b_cry_encoded = {
 				name = "Verschlüsseltes Deck",
 				text = {
@@ -77,6 +116,9 @@ return {
 					"und einem {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
 					"Nur {C:cry_code}Code Karten{} erscheinen im Shop",
 				},
+				unlock = {
+					"Benutze {C:spectral}POINTER://",
+ 				},
 			},
 			b_cry_equilibrium = {
 				name = "Deck des Gleichgewichts",
@@ -87,7 +129,22 @@ return {
 					"beginne den Durchlauf mit",
 					"{C:attention,T:v_overstock_plus}Überbestand Plus",
 				},
+				unlock = {
+					"Habe gleichzeitig",
+					"{C:attention}100 Joker",
+				},
 			},
+			b_cry_et_deck = {
+				name = "Verstärktes Deck",
+				text = {
+					"Alle {C:attention}Spielkarten{}",
+					"sind {C:attention}#1#{}",
+					"{C:inactive}(Klicke zum Ändern)",
+				},
+				unlock = {
+					"Benutze {C:spectral}Vakuum",
+ 				},
+ 			},
 			b_cry_glowing = {
 				name = "Glühendes Deck",
 				text = {
@@ -95,6 +152,10 @@ return {
 					"aller Joker mit {X:dark_edition,C:white} X1.25 {}",
 					"wenn die Boss Blind besiegt wurde.",
 					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
+				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"mit {C:attention}Beiges Deck",
 				},
 			},
 			b_cry_infinite = {
@@ -104,6 +165,10 @@ return {
 					"Karten auswählen.",
 					"{C:attention}+1{} Handgröße",
 				},
+				unlock = {
+					"Spiele eine Hand mit",
+					"{C:attention}6{} oder mehr Karten",
+ 				},
 			},
 			b_cry_misprint = {
 				name = "Fehlgedrucktes Deck",
@@ -112,6 +177,9 @@ return {
 					"und Pokerhänden",
 					"sind {C:attention}zufällig",
 				},
+				unlock = {
+					"Erhalte einen {C:dark_edition}Fehlerhaften{C:attention} Joker",
+ 				},
 			},
 			b_cry_redeemed = {
 				name = "Eingelöstes Deck",
@@ -119,7 +187,32 @@ return {
 					"Wenn ein {C:attention}Gutschein{} gekauft wird,",
 					"bekomme seine {C:attention}verbesserten Versionen",
 				},
+				unlock = {
+					"Entdecke jeden",
+					"{C:attention}Gutschein",
+				},
 			},
+			b_cry_sk_deck = {
+				name = "Sticker-Deck",
+				text = {
+					"Alle Karten sind {C:attention}#1#{}",
+					"{C:inactive}(Klicke zum Ändern)",
+				},
+				unlock = {
+					"Benutze {C:spectral}Schloss",
+				},
+			},
+			b_cry_sl_deck = {
+				name = "Siegel-Deck",
+				text = {
+					"Alle Spielkarten haben ein {C:dark_edition}#1#{}",
+					"Karten können Siegel nicht ändern",
+					"{C:inactive}(Klicke zum Ändern)",
+				},
+				unlock = {
+					"Benutze {C:spectral}Taifun",
+ 				},
+ 			},
 			b_cry_spooky = {
 				name = "Gruseliges Deck",
 				text = {
@@ -127,7 +220,21 @@ return {
 					"Nach jeder {C:attention}Ante{}, erstelle eine",
 					"{C:cry_candy}Süßigkeit{} oder einen {X:cry_cursed,C:white}Verfluchten{} Joker",
 				},
+				unlock = {
+					"Erhalte einen {C:cry_candy}Süßigkeiten{C:attention} Joker",
+				},
 			},
+			b_cry_st_deck = {
+				name = "Farben-Deck",
+				text = {
+					"Alle Spielkarten sind {C:dark_edition}#1#",
+					"und können Farbe nicht ändern",
+					"{C:inactive}(Klicke zum Ändern)",
+				},
+				unlock = {
+					"Benutze {C:spectral}Replik",
+ 				},
+ 			},
 			b_cry_very_fair = {
 				name = "Sehr Faires Deck",
 				text = {
@@ -136,6 +243,10 @@ return {
 					"{C:attention}Gutscheine{} erscheinen",
 					"nicht mehr im Shop",
 				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"mit {C:attention}Unbedrucktes Deck",
+ 				},
 			},
 			b_cry_wormhole = {
 				name = "Wurmloch Deck",
@@ -145,14 +256,22 @@ return {
 					"{C:dark_edition}Negativ{} zu sein",
 					"{C:attention}-2{} Joker-Slots",
 				},
+				unlock = {
+					"Erhalte einen {C:cry_exotic}Exotischen{C:attention} Joker",
+ 				},
 			},
 			b_cry_legendary = {
 				name = "Legendäres Deck",
 				text = {
 					"Beginne mit einem {C:legendary}Legendären{C:legendary} Joker",
-					"Chance von {C:green}1 in 5{} einen weiteren zu erstellen",
-					"wenn Boss Blind besiegt wurde {C:inactive}(Muss Platz haben){}",
+					"Chance von {C:green}1 in 5{}, einen Weiteren zu erstellen",
+					"wenn Boss Blind besiegt wurde",
+					"{C:inactive}(Muss Platz haben){}",
 				},
+				unlock = {
+					"Habe gleichzeitig",
+					"{C:attention}2 Legendäre Joker",
+ 				},
 			},
 		},
 		Blind = {
