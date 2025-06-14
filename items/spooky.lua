@@ -1530,7 +1530,10 @@ local candy_buttons = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
+	        -- The find_joker check in calculate_reroll_cost doesn't work if this is the only copy when added to deck (Too early)
+		G.GAME.reroll_limit_buffer = 1
 		calculate_reroll_cost(true)
+		G.GAME.reroll_limit_buffer = nil
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)

@@ -748,6 +748,14 @@ end
 
 -- This is short enough that I'm fine overriding it
 function calculate_reroll_cost(skip_increment)
+	local limit = G.GAME.reroll_limit_buffer or nil
+	if not limit then
+		if next(find_joker("cry-candybuttons")) then
+			limit = 1
+		elseif G.GAME.used_vouchers.v_cry_rerollexchange then
+			limit = 2
+		end
+	end
 	if not G.GAME.current_round.free_rerolls or G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
@@ -755,14 +763,16 @@ function calculate_reroll_cost(skip_increment)
 		G.GAME.current_round.reroll_cost = 0
 		return
 	end
-	if next(find_joker("cry-candybuttons")) then
-		G.GAME.current_round.reroll_cost = 1
+	if
+		limit
+		and (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost)
+				+ G.GAME.current_round.reroll_cost_increase
+			>= limit
+	then
+		G.GAME.current_round.reroll_cost = limit
 		return
 	end
-	if G.GAME.used_vouchers.v_cry_rerollexchange then
-		G.GAME.current_round.reroll_cost = 2
-		return
-	end
+
 	G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase or 0
 	if not skip_increment then
 		G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase
