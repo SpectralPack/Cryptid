@@ -769,6 +769,7 @@ function calculate_reroll_cost(skip_increment)
 				+ G.GAME.current_round.reroll_cost_increase
 			>= limit
 	then
+		G.GAME.current_round.reroll_cost_increase = 0
 		G.GAME.current_round.reroll_cost = limit
 		return
 	end
