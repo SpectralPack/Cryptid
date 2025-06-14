@@ -12,7 +12,7 @@ return {
 					"Gewinne einen Durchlauf",
 					"mit {C:attention}Unbedrucktem Deck",
 					"auf {C:attention}Goldener Einsatz",
- 				},
+				},
 			},
 			b_cry_antimatter_balanced = {
 				name = "Antimaterie Deck",
@@ -32,7 +32,7 @@ return {
 					"Entdecke mindestens",
 					"{C:attention}200{} Gegenstände",
 					"deiner Sammlung",
- 				},
+				},
 			},
 			b_cry_beta = {
 				name = "Nostalgisches Deck",
@@ -45,7 +45,7 @@ return {
 				unlock = {
 					"Gewinne einen Durchlauf",
 					"auf {C:attention}Pinker Einsatz",
- 				},
+				},
 			},
 			b_cry_blank = {
 				name = "Unbedrucktes Deck",
@@ -62,7 +62,7 @@ return {
 				unlock = {
 					"Schlage {C:attention}Die Schlange",
 					"ohne {C:red}Abwurf",
- 				},
+				},
 			},
 			b_cry_CCD = {
 				name = "CCD Deck",
@@ -72,7 +72,7 @@ return {
 				},
 				unlock = {
 					"Benutze {C:spectral}Hammerspace",
- 				},
+				},
 			},
 			b_cry_conveyor = {
 				name = "Fließband-Deck",
@@ -107,8 +107,8 @@ return {
 				unlock = {
 					"Entdecke jede",
 					"{C:dark_edition}Edition",
- 				},
- 			},
+				},
+			},
 			b_cry_encoded = {
 				name = "Verschlüsseltes Deck",
 				text = {
@@ -118,7 +118,7 @@ return {
 				},
 				unlock = {
 					"Benutze {C:spectral}POINTER://",
- 				},
+				},
 			},
 			b_cry_equilibrium = {
 				name = "Deck des Gleichgewichts",
@@ -143,8 +143,8 @@ return {
 				},
 				unlock = {
 					"Benutze {C:spectral}Vakuum",
- 				},
- 			},
+				},
+			},
 			b_cry_glowing = {
 				name = "Glühendes Deck",
 				text = {
@@ -168,7 +168,7 @@ return {
 				unlock = {
 					"Spiele eine Hand mit",
 					"{C:attention}6{} oder mehr Karten",
- 				},
+				},
 			},
 			b_cry_misprint = {
 				name = "Fehlgedrucktes Deck",
@@ -179,7 +179,7 @@ return {
 				},
 				unlock = {
 					"Erhalte einen {C:dark_edition}Fehlerhaften{C:attention} Joker",
- 				},
+				},
 			},
 			b_cry_redeemed = {
 				name = "Eingelöstes Deck",
@@ -211,8 +211,8 @@ return {
 				},
 				unlock = {
 					"Benutze {C:spectral}Taifun",
- 				},
- 			},
+				},
+			},
 			b_cry_spooky = {
 				name = "Gruseliges Deck",
 				text = {
@@ -233,8 +233,8 @@ return {
 				},
 				unlock = {
 					"Benutze {C:spectral}Replik",
- 				},
- 			},
+				},
+			},
 			b_cry_very_fair = {
 				name = "Sehr Faires Deck",
 				text = {
@@ -246,7 +246,7 @@ return {
 				unlock = {
 					"Gewinne einen Durchlauf",
 					"mit {C:attention}Unbedrucktes Deck",
- 				},
+				},
 			},
 			b_cry_wormhole = {
 				name = "Wurmloch Deck",
@@ -258,7 +258,7 @@ return {
 				},
 				unlock = {
 					"Erhalte einen {C:cry_exotic}Exotischen{C:attention} Joker",
- 				},
+				},
 			},
 			b_cry_legendary = {
 				name = "Legendäres Deck",
@@ -271,7 +271,7 @@ return {
 				unlock = {
 					"Habe gleichzeitig",
 					"{C:attention}2 Legendäre Joker",
- 				},
+				},
 			},
 		},
 		Blind = {
