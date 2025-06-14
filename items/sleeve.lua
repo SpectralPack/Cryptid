@@ -530,6 +530,16 @@ if CardSleeves then
 				return pseudorandom("slv", 3, 6)
 			end
 			Cryptid.antimattersleeve_apply()
+			G.GAME.infinitedeck = true
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.7,
+				func = function()
+					SMODS.change_play_limit(1e6)
+					SMODS.change_discard_limit(1e6)
+					return true
+				end,
+			}))
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					if G.jokers then
