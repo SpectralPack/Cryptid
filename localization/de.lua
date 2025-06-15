@@ -488,11 +488,63 @@ return {
  			},
 		},
 		Code = {
-			c_cry_class = {
-				name = "://CLASS",
+			c_cry_crash = {
+				name = "://CRASH",
 				text = {
-					"Mache {C:cry_code}#1#{} ausgewählte Karte",
-					"zu einer {C:cry_code}gewählten{} Verstärkung",
+					"{C:cry_code,E:1}Nein",
+				},
+			},
+			c_cry_keygen = {
+				name = "://KEYGEN",
+				text = {
+					"Erzeuge einen zufälligen {C:cry_code}Verdeblichen Bananen{}-",
+					"Gutschein, {C:cry_code}zerstöre{} zuvor auf diese",
+					"Weise erzeugte Gutscheine.",
+				},
+			},
+			c_cry_payload = {
+				name = "://PAYLOAD",
+				text = {
+					"Nächster besiegter Blind",
+					"gibt {C:cry_code}X#1#{} Zinsen",
+				},
+			},
+			c_cry_exploit = {
+				name = "://EXPLOIT",
+				text = {
+					"Die {C:cry_code}nächste{} gespielte Hand wird",
+					"gewertet, als wäre sie eine {C:cry_code}gewählte{} Pokerhand",
+					"und erhält {C:cry_code}eine{} temporäre {C:cry_code}Aufstiegskraft{}",
+				},
+			},
+			c_cry_malware = {
+				name = "://MALWARE",
+				text = {
+					"Füge {C:dark_edition}Fehlerhaft{} zu allen",
+					"Karten {C:cry_code}in der Hand{} hinzu",
+				},
+			},
+			c_cry_nperror = {
+				name = "://NPERROR",
+				text = {
+					"Holt die {C:cry_code}letzte gespielte Hand{}",
+					"zurück auf deine Hand",
+				},
+			},
+			c_cry_rework = {
+				name = "://REWORK",
+				text = {
+					"Zerstöre einen {C:cry_code}gewählten{} Joker,",
+					"erstelle ein {C:cry_code}Überarbeitungs-Tag{} mit",
+					"einer Edition {C:cry_code}besser{}",
+					"{C:inactive,s:0.8}Nutzt Reinfolge in der Sammlung",
+				},
+			},
+			c_cry_merge = {
+				name = "://MERGE",
+				text = {
+					"Verschmelze ein gewählten {C:cry_code}Verbrauchsgegenstand",
+					"mit einer gewählten {C:cry_code}Spielkarte",
 				},
 			},
 			c_cry_commit = {
@@ -503,137 +555,17 @@ return {
 					"mit der {C:cry_code}selben Seltenheit",
 				},
 			},
-			c_cry_crash = {
-				name = "://CRASH",
-				text = {
-					"{C:cry_code,E:1}Nein",
-				},
-			},
-			c_cry_ctrl_v = {
-				name = "://CTRL+V",
-				text = {
-					"Erstelle eine Kopie einer {C:cry_code}gewälten{} Spielkarte oder Gebrauchsgegenstand.",
-				},
-			},
-			c_cry_delete = {
-				name = "://DELETE",
-				text = {
-					"Entferne ein {C:cry_code}gewählten{}",
-					"Shopgegenstand {C:cry_code}permanent{}",
-					"{C:inactive,s:0.8}Item kann in diesem Durchlauf nicht mehr auftauchen.",
-				},
-			},
-			c_cry_divide = {
-				name = "://DIVIDE",
-				text = {
-					"{C:cry_code}Halbiere{} alle gelisteten Preise",
-					"im momentanen Shop",
-				},
-			},
-			c_cry_exploit = {
-				name = "://EXPLOIT",
-				text = {
-					"Die {C:cry_code}nächste{} gespielte Hand wird",
-					"gewertet, als ob sie eine {C:cry_code}gewählte{} Pokerhand enthält.",
-					"{C:inactive,s:0.8}Geheime Hände müssen",
-					"{C:inactive,s:0.8}entdeckt weden um gültig zu sein.",
-				},
-			},
-			c_cry_hook = {
-				name = "HOOK://",
-				text = {
-					"Wähle zwei Joker",
-					"die {C:cry_code}Verhackt{} werden",
-				},
-			},
-			c_cry_inst = {
-				name = "://INSTANTIATE",
-				text = {
-					"Ziehe eine Karte mit dem {C:attention}Rang{} einer ausgewählten Karte",
-					"und eine mit der {C:attention}Farbe{} der ausgewählten Karte",
-					"{C:inactive}(Wenn möglich){}",
-				},
-			},
 			c_cry_machinecode = {
 				name = "://MACHINECODE",
 				text = {
 					"",
 				},
 			},
-			c_cry_malware = {
-				name = "://MALWARE",
+			c_cry_spaghetti = {
+				name = "://SPAGHETTI",
 				text = {
-					"Füge {C:dark_edition}Fehlerhaft{} zu allen",
-					"Karten {C:cry_code}in der Hand{} hinzu",
-				},
-			},
-			c_cry_merge = {
-				name = "://MERGE",
-				text = {
-					"Verschmelze ein gewählten {C:cry_code}Verbrauchsgegenstand",
-					"mit einer gewählten {C:cry_code}Spielkarte",
-				},
-			},
-			c_cry_multiply = {
-				name = "://MULTIPLY",
-				text = {
-					"{C:cry_code}Verdopple{} alle Werte",
-					"eines gewählten {C:cry_code}Jokers{} bis",
-					"zum Ende der Runde.",
-				},
-			},
-			c_cry_patch = {
-				name = "://PATCH",
-				text = {
-					"Entfernt alle Sticker und Schwächungen von",
-					"allen momentan sichtbaren Gegenständen",
-				},
-			},
-			c_cry_payload = {
-				name = "://PAYLOAD",
-				text = {
-					"Nächste besiegte Blind",
-					"gibt {C:cry_code}X#1#{} Zinsen",
-				},
-			},
-			c_cry_oboe = {
-				name = "://OFFBYONE",
-				text = {
-					"Nächstes {C:cry_code}Booster Packet{} hat",
-					"{C:cry_code}#1#{} zusätzliche Karte und",
-					"{C:cry_code}#1#{} zusätzliche Auswahl",
-					"{C:inactive}(Momentan {C:cry_code}+#2#{C:inactive})",
-				},
-			},
-			c_cry_reboot = {
-				name = "://REBOOT",
-				text = {
-					"Erfrische {C:blue}Hände{} und {C:red}Abwürfe{},",
-					"tue {C:cry_code}alle{} Karten zurück ins Deck",
-					"und ziehe eine {C:cry_code}neue{} Hand",
-				},
-			},
-			c_cry_revert = {
-				name = "://REVERT",
-				text = {
-					"Setzt {C:cry_code}Spielstand{} zum",
-					"Start {C:cry_code}dieser Ante{}",
-				},
-			},
-			c_cry_rework = {
-				name = "://REWORK",
-				text = {
-					"Zerstöre einen {C:cry_code}gewählten{} Joker,",
-					"erstelle einen {C:cry_code}Überarbeitungs-Tag{} mit",
-					"einer Edition {C:cry_code}besser{}",
-					"{C:inactive,s:0.8}Nutzt Reinfolge in der Sammlung",
-				},
-			},
-			c_cry_run = {
-				name = "://RUN",
-				text = {
-					"Besuche einen {C:cry_code}Shop",
-					"während einer {C:cry_code}Blind",
+					"Erzeuge einen {C:cry_code}Fehlerhaften{}",
+					"Essen Joker", --TODO: weirdly worded, change in whole file
 				},
 			},
 			c_cry_seed = {
@@ -644,15 +576,85 @@ return {
 					"um {C:cry_code}Manipuliert{} zu werden",
 				},
 			},
-			c_cry_semicolon = {
-				name = ";//",
-				text = { "Ende momentane nicht-Boss {C:cry_code}Blind{}", "{C:cry_code}ohne{} Preisgeld zu bekommen" },
-			},
-			c_cry_spaghetti = {
-				name = "://SPAGHETTI",
+			c_cry_patch = {
+				name = "://PATCH",
 				text = {
-					"Erstelle einen {C:cry_code}Fehlerhaften{}",
-					"Essen Joker",
+					"Entfernt alle Schwächungen von",
+					"aktuell sichtbaren Gegenständen",
+				},
+			},
+			c_cry_cryupdate = {
+				name = "://UPDATE",
+				text = {
+					"Kommt in einem",
+					"zukünftigen {C:cry_code}Update{}",
+				},
+			},
+			c_cry_hook = {
+				name = "HOOK://",
+				text = {
+					"Wähle zwei Joker",
+					"die {C:cry_code}Verhakt{} werden",
+				},
+			},
+			c_cry_oboe = {
+				name = "://OFFBYONE",
+				text = {
+					"Nächstes {C:cry_code}Booster Paket{} hat",
+					"{C:cry_code}#1#{} zusätzliche Karte#<n>1# und",
+					"{C:cry_code}#1#{} zusätzliche Auswahl#<en>1#",
+					"{C:inactive}(Aktuell {C:cry_code}+#2#{C:inactive})",
+				},
+			},
+			c_cry_assemble = {
+				name = "://ASSEMBLE",
+				text = {
+					"Addiere Anzahl der Joker zu"
+					"{C:cry_code}Mult{} der {C:cry_code}gewählten Hand{}",
+				},
+			},
+			c_cry_inst = {
+				name = "://INSTANTIATE",
+				text = {
+					"Ziehe eine Karte mit dem {C:attention}Rang{} einer ausgewählten Karte",
+					"und eine mit der {C:attention}Farbe{} der ausgewählten Karte",
+					"{C:inactive}(Wenn möglich){}",
+				},
+			},
+			c_cry_revert = {
+				name = "://REVERT",
+				text = {
+					"Setze {C:cry_code}Spielstand{} zum",
+					"Start {C:cry_code}dieser Ante{}",
+				},
+			},
+			c_cry_cryfunction = {
+				name = "FUNCTION://",
+				text = {
+					"Speichert die {C:cry_code}letzten 3{} benutzten Verbrauchgegenstände,",
+					"erneute Benutzung dieser Karte erzeugt",
+					"den Ersten mit einem {C:cry_code}Function://{} Sticker",
+				},
+			},
+			c_cry_run = {
+				name = "://RUN",
+				text = {
+					"Besuche einen {C:cry_code}Shop",
+					"während eines {C:cry_code}Blinds",
+				},
+			},
+			c_cry_class = {
+				name = "://CLASS",
+				text = {
+					"Mache {C:cry_code}#1#{} ausgewählte Karte",
+					"zu einer {C:cry_code}gewählten{} Verstärkung",
+				},
+			},
+			c_cry_global = {
+				name = "://GLOBAL",
+				text = {
+					"Wähle eine Spielkarte",
+					"um {C:cry_code}Global{} zu werden",
 				},
 			},
 			c_cry_variable = {
@@ -660,6 +662,73 @@ return {
 				text = {
 					"Mache {C:cry_code}#1#{} gewählte Karten",
 					"zu einem {C:cry_code}gewählten{} Rang",
+				},
+			},
+			c_cry_crylog = {
+				name = "://LOG",
+				text = {
+					"Kommt in einem",
+					"zukünftigen {C:cry_code}Update{}",
+				},
+			},
+			c_cry_quantify = {
+				name = "://QUANTIFY",
+				text = { -- "{C:cry_code}J{C:cry_exotic}o{C:legendary}k{C:cry_epic}e{C:cry_candy}r{C:rare}i{C:uncommon}z{C:common}e{C:dark_edition}!{} an object", --o.o
+					"Kommt in einem",
+					"zukünftigen {C:cry_code}Update{}",
+				},
+			},
+			c_cry_divide = {
+				name = "://DIVIDE",
+				text = {
+					"{C:cry_code}Halbiere{} alle gelisteten Preise",
+					"im momentanen Shop",
+				},
+			},
+			c_cry_multiply = {
+				name = "://MULTIPLY",
+				text = {
+					"{C:cry_code}Verdopple{} alle Werte",
+					"eines gewählten {C:cry_code}Jokers{} bis",
+					"zum Ende der Runde.",
+				},
+			},
+			c_cry_delete = {
+				name = "://DELETE",
+				text = {
+					"Entferne einen {C:cry_code}gewählten{}",
+					"Shopgegenstand {C:cry_code}permanent{}",
+					"{C:inactive,s:0.8}Item kann in diesem Durchlauf nicht mehr auftauchen.",
+				},
+			},
+			c_cry_alttab = {
+				name = "://ALTTAB",
+				text = {
+					"Erzeugt den Skip-Tag des",
+					"{C:cry_code}aktuellen{} Blinds",
+					"{C:inactive}(Aktuell: {C:cry_code}#1#{C:inactive})",
+ 				},
+ 			},
+ 			c_cry_ctrl_v = {
+				name = "://CTRL+V",
+				text = {
+					"Erstelle eine Kopie einer {C:cry_code}gewälten{}",
+					"Spielkarte oder Gebrauchsgegenstand.",
+				},
+			},
+			c_cry_reboot = {
+				name = "://REBOOT",
+				text = {
+					"Erfrische {C:blue}Hände{} und {C:red}Abwürfe{},",
+					"hole {C:cry_code}alle{} Karten zurück ins Deck",
+					"und ziehe eine {C:cry_code}neue{} Hand",
+				},
+			},
+			c_cry_semicolon = {
+				name = ";//",
+				text = {
+					"Ende momentanen Nicht-Boss {C:cry_code}Blind{}",
+					"{C:cry_code}ohne{} Preisgeld zu bekommen" 
 				},
 			},
 		},
