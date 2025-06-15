@@ -535,3 +535,13 @@ Cryptid.misprintize_tbl(
 			)
 '''
 match_indent = true
+#fix for bignum playing cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "nominal_chips = self.base.nominal > 0 and self.base.nominal or nil,"
+position = "at"
+payload = '''
+nominal_chips = to_big(self.base.nominal) > to_big(0) and self.base.nominal or nil,
+'''
+match_indent = true
