@@ -2045,6 +2045,24 @@ local buttercup = {
 			end
 		end
 	end,
+	init = function()
+		local start_dissolveref = Card.start_dissolve
+		function Card:start_dissolve(...)
+			start_dissolveref(self, card)
+			if self.config.center.key == "j_cry_buttercup" then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for i, v in pairs((self.cry_storage or {}).cards or {}) do
+							v.states.visible = false
+							v:start_dissolve()
+						end
+						if self.cry_storage then self.cry_storage:remove() end
+						return true
+					end
+				}))
+			end
+		end
+	end
 }
 
 items = {

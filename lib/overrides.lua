@@ -1621,7 +1621,6 @@ function create_card_for_shop(area)
 	-- then put its data in `loaded_card_data` and its index in the table in `loaded_card_pos`
 	if G.GAME.next_shop_cards and #G.GAME.next_shop_cards > 0 then
 		for i, card in ipairs(G.GAME.next_shop_cards) do
-			sendInfoMessage(card.cry_from_shop, "next_shop_cards")
 			if not card.cry_from_shop then
 				card.cry_from_shop = "shop_jokers"
 			end -- failsafe :3
@@ -1629,6 +1628,32 @@ function create_card_for_shop(area)
 				loaded_card_data = card
 				loaded_card_pos = i
 				break
+			elseif areas_to_check[card.cry_from_shop] ~= G.shop_jokers then
+				local other_card = Card(
+					area.x,
+					area.y,
+					G.CARD_W,
+					G.CARD_H,
+					nil,
+					G.P_CENTERS.j_jolly,
+					{ bypass_discovery_center = true, bypass_discovery_ui = true }
+				)
+				other_card:load(card, nil)
+				other_card.VT.h = other_card.T.h
+				table.remove(G.GAME.next_shop_cards, i)
+				create_shop_card_ui(other_card, G.P_CENTERS[card.save_fields.center],set, areas_to_check[card.cry_from_shop])
+				areas_to_check[card.cry_from_shop]:emplace(other_card)
+				other_card.states.visible = false
+				G.E_MANAGER:add_event(Event({
+					delay = 0.4,
+					trigger = "after",
+					func = function()
+						other_card:start_materialize()
+						other_card:set_cost()
+						return true
+					end,
+				}))
+				other_card:set_cost()
 			end
 		end
 	end
