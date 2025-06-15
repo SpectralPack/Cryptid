@@ -830,9 +830,13 @@ function Cryptid.reset_to_none()
 		handname = localize("cry_None", "poker_hands"),
 	})
 end
-function Cryptid.table_merge(t1, t2) 
+function Cryptid.table_merge(t1, t2)
 	local tbl = {}
-	for i, v in pairs(t1) do tbl[#tbl+1] = v end
-	for i, v in pairs(t2) do tbl[#tbl+1] = v end
+	for i, v in pairs(t1) do
+		tbl[#tbl + 1] = v
+	end
+	for i, v in pairs(t2) do
+		tbl[#tbl + 1] = v
+	end
 	return tbl
 end
