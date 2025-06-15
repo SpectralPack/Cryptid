@@ -463,6 +463,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 		table.insert(m.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
 			use,
 		} })
+		return abc
 	end
 	if
 		card.area
@@ -576,4 +577,5 @@ function G.UIDEF.use_and_sell_buttons(card)
 			end
 		end
 	end
+	return abc
 end
