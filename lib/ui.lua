@@ -409,7 +409,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 	end
 	if card.config and card.config.center and card.config.center.key == "c_cry_potion" then
 		table.remove(abc.nodes[1].nodes, 1)
-  end
+	end
 	-- i love buttercup
 	if
 		card.area
