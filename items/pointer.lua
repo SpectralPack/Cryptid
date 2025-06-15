@@ -163,7 +163,7 @@ local pointer = {
 			local entered_card = G.ENTERED_CARD
 			local valid_check = {}
 			G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
-			current_card = Cryptid.pointergetalias(apply_lower(entered_card)) or nil
+			current_card = Cryptid.pointergetalias(entered_card) or nil
 			valid_check = Cryptid.pointergetblist(current_card)
 			if not valid_check[3] then
 				current_card = nil
@@ -259,17 +259,27 @@ local pointer = {
 			end
 
 			for i, v in pairs(G.P_TAGS) do -- TAGS
-				if Cryptid.pointergetalias(i) and not Cryptid.pointergetblist(i) then
+				local blacklist = Cryptid.pointergetblist(i)
+				-- gonna be real w/ you idk why pointergetblist is a table now so im just gonna check if everything in it is falsey
+				local can_spawn = true
+				for _, val in pairs(blacklist) do
+					can_spawn = can_spawn and not val
+				end
+
+				if Cryptid.pointergetalias(i) and can_spawn then
 					if v.name and apply_lower(entered_card) == apply_lower(v.name) then
 						current_card = i
+						break --no clue why this wasn't done before, you can't create 2 tags with one pointer
 					end
 					if apply_lower(entered_card) == apply_lower(i) then
 						current_card = i
+						break
 					end
 					if
 						apply_lower(entered_card) == apply_lower(localize({ type = "name_text", set = v.set, key = i }))
 					then
 						current_card = i
+						break
 					end
 				end
 			end
@@ -714,6 +724,7 @@ local aliases = {
 	},
 	j_stencil = {
 		"Joker Stencil",
+		"Stencil",
 	},
 	j_four_fingers = {
 		"Four Fingers",
@@ -726,6 +737,7 @@ local aliases = {
 	},
 	j_credit_card = {
 		"Credit Card",
+		"Debit Card",
 	},
 	j_ceremonial = {
 		"Ceremonial Dagger",
@@ -758,6 +770,7 @@ local aliases = {
 	},
 	j_raised_fist = {
 		"Raised Fist",
+		"1984",
 	},
 	j_chaos = {
 		"Chaos the Clown",
@@ -983,6 +996,7 @@ local aliases = {
 	},
 	j_baseball = {
 		"Baseball Card",
+		"Baseball Huh?",
 	},
 	j_bull = {
 		"Bull",
@@ -1084,10 +1098,12 @@ local aliases = {
 	},
 	j_blueprint = {
 		"Blueprint",
+		"BP",
 	},
 	j_wee = {
 		"Wee Joker",
 		"WEEEE",
+		"Wee",
 	},
 	j_merry_andy = {
 		"Merry Andy",
@@ -1193,6 +1209,7 @@ local aliases = {
 	c_empress = {
 		"The Empress",
 		"Empress",
+		"Mult Tarot",
 	},
 	c_emperor = {
 		"The Emperor",
@@ -1203,21 +1220,26 @@ local aliases = {
 		"Hierophant",
 		"The Heirophant",
 		"Heirophant",
+		"Bonus Tarot",
 	},
 	c_lovers = {
 		"The Lovers",
 		"Lovers",
+		"Wild Tarot",
 	},
 	c_chariot = {
 		"The Chariot",
 		"Chariot",
+		"Steel Tarot",
 	},
 	c_justice = {
 		"Justice",
+		"Glass Tarot",
 	},
 	c_hermit = {
 		"The Hermit",
 		"Hermit",
+		"Doubles Money",
 	},
 	c_wheel_of_fortune = {
 		"The Wheel Of Fortune",
@@ -1242,33 +1264,44 @@ local aliases = {
 	},
 	c_temperance = {
 		"Temperance",
+		"The Temperance",
+		"Joker Money",
 	},
 	c_devil = {
 		"The Devil",
 		"Devil",
+		"Gold Tarot",
 	},
 	c_tower = {
 		"The Tower",
 		"Tower",
+		"Stone Tarot",
 	},
 	c_star = {
 		"The Star",
 		"Star",
+		"Diamond Tarot",
 	},
 	c_moon = {
 		"The Moon",
 		"Moon",
+		"Club Tarot",
 	},
 	c_sun = {
 		"The Sun",
 		"Sun",
+		"Heart Tarot",
 	},
 	c_judgement = {
 		"Judgement",
+		"The Judgement",
+		"Judgement Day",
+		"Minos Prime",
 	},
 	c_world = {
 		"The World",
 		"World",
+		"Spade Tarot",
 	},
 
 	-- Vanilla Planets
@@ -1644,11 +1677,6 @@ local aliases = {
 		"Jumbo Spectral",
 		"Spectral Incantation",
 		"Jumbo Spectral Pack",
-	},
-	p_spectral_mega_1 = {
-		"Mega Spectral",
-		"Spectral Ectoplasm",
-		"Mega Spectral Pack",
 	},
 	p_spectral_mega_1 = {
 		"Mega Spectral",
@@ -2359,7 +2387,152 @@ local aliases = {
 	-- placeholder in a placeholder in a placeholder in a holdplacer in a placeholder
 
 	-- Cryptid Tags
-	-- meow
+	tag_cry_astral = {
+		"Astral Tag",
+		"Astral",
+		"Free Astral",
+	},
+	tag_cry_banana = {
+		"Banana Tag",
+	},
+	tag_cry_bettertop_up = {
+		"Better Top-Up Tag",
+		"Better Top-Up",
+		"Better Top Up Tag",
+		"Better Top Up",
+		"Uncommon Top Up",
+	},
+	tag_cry_better_voucher = {
+		"Tier 3 tag",
+		"Tier 3 voucher tag",
+		"Golden Voucher",
+		"Golden Voucher Tag",
+		"Better Voucher Tag",
+	},
+	tag_cry_blur = {
+		"Blurred Tag",
+		"Blurred",
+		"Free Blurred",
+	},
+	tag_cry_booster = {
+		"Booster Tag",
+		"Double Booster Tag",
+		"Double Booster",
+	},
+	tag_cry_bundle = {
+		"Bundle Tag",
+		"Bundle",
+	},
+	tag_cry_cat = {
+		"Cat Tag",
+		"meow",
+		"mrow",
+		"mrrp",
+		"purr",
+	},
+	tag_cry_console = {
+		"Console Tag",
+		"Console",
+		"Code Tag",
+	},
+	tag_cry_double_m = {
+		"Double M",
+		"Double M Tag",
+		"Jolly M",
+	},
+	tag_cry_empowered = {
+		"Empowered Tag",
+		"Better Spectral",
+		"Better Spectral Tag",
+	},
+	tag_cry_epic = {
+		"Epic Tag",
+		"Half-price Epic Joker",
+		"Half price Epic Joker",
+		"Half price Epic",
+		"Half-price Epic",
+	},
+	tag_cry_gambler = {
+		"Gambler Tag",
+		"Gambling Tag",
+		"Gambling",
+		"Gambler's Tag",
+		"LETS GO GAMBLING!",
+	},
+	tag_cry_glass = {
+		"Fragile Tag",
+		"Fragile",
+		"Glass Tag",
+		"Free Fragile",
+	},
+	tag_cry_glitched = {
+		"Glitched Tag",
+		"Glitched",
+		"Free Glitched",
+	},
+	tag_cry_gold = {
+		"Gold Tag",
+		"Golden Tag",
+		"Gold",
+		"Free Golden",
+	},
+	tag_cry_gourmand = {
+		"Gourmand",
+		"Gourmand Tag",
+		"Free Food",
+	},
+	tag_cry_loss = {
+		"Loss",
+		"Loss Tag",
+		"Meme Tag",
+		"Meme Pack Tag",
+	},
+	tag_cry_m = {
+		"M Tag",
+		"Jolly Tag",
+		"Jolly",
+		"Free Jolly",
+	},
+	tag_cry_memory = {
+		"Memory Tag",
+		"Memory",
+	},
+	tag_cry_mosaic = {
+		"Mosaic",
+		"Mosaic Tag",
+		"Free Mosaic",
+	},
+	tag_cry_oversat = {
+		"Oversat",
+		"Free Oversat",
+		"Oversaturated",
+		"Free Oversaturated",
+		"Oversaturated Tag",
+	},
+	tag_cry_quadruple = {
+		"Quadruple",
+		"Quadruple Tag",
+	},
+	tag_cry_quintuple = {
+		"Quintuple",
+		"Quintuple Tag",
+	},
+	tag_cry_rework = {
+		"Rework Tag",
+	},
+	tag_cry_schematic = {
+		"Schematic",
+		"Schematic Tag",
+		"Guaranteed Brainstorm",
+	},
+	tag_cry_scope = {
+		"Scope Tag",
+		"Scope",
+	},
+	tag_cry_triple = {
+		"Triple",
+		"Triple Tag",
+	},
 
 	-- Cryptid Vouchers
 	-- placeholder (T1 T2 T1 T2 pattern)
@@ -2406,12 +2579,37 @@ return {
 	name = "Pointer://",
 	items = pointeritems,
 	init = function()
-		print("[CRYPTID] Inserting Pointer Aliases")
-		local alify = Cryptid.pointeraliasify
-		Cryptid.pointerblistifytype("rarity", "cry_exotic", nil)
-		for key, aliasesTable in pairs(aliases) do
-			for _, alias in pairs(aliasesTable) do
-				alify(key, alias, nil)
+		function Cryptid.inject_pointer_aliases()
+			--print("[CRYPTID] Inserting Pointer Aliases")
+			local alify = Cryptid.pointeraliasify
+			Cryptid.pointerblistifytype("rarity", "cry_exotic", nil)
+			for key, aliasesTable in pairs(aliases) do
+				for _, alias in pairs(aliasesTable) do
+					alify(key, alias, nil)
+				end
+				alify(key, key, nil)
+			end
+			for _, group in pairs(G.localization.descriptions) do
+				if
+					_ ~= "Back"
+					and _ ~= "Content Set"
+					and _ ~= "Edition"
+					and _ ~= "Enhanced"
+					and _ ~= "Stake"
+					and _ ~= "Other"
+				then
+					for key, card in pairs(group) do
+						if G.P_CENTERS[key] then
+							alify(key, type(card.name) == "table" and card.name[1] or card.name, nil)
+							if G.P_CENTERS[key].name then
+								alify(key, G.P_CENTERS[key].name, nil)
+							end
+							if G.P_CENTERS[key].original_key then
+								alify(key, G.P_CENTERS[key].original_key, nil)
+							end
+						end
+					end
+				end
 			end
 		end
 	end,

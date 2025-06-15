@@ -39,7 +39,7 @@ local abelt = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Bulwark"].level))]
 					),
 				},
 			},
@@ -88,7 +88,7 @@ local void = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Clusterfuck"].level))]
 					),
 				},
 			},
@@ -142,7 +142,7 @@ local marsmoons = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_UltPair"].level))]
 					),
 				},
 			},
@@ -152,6 +152,62 @@ local marsmoons = {
 }
 
 -- Order 4 reserved for possible None planet
+-- hehehehehehe
+local nibiru = {
+	cry_credits = {
+		idea = {
+			"cassknows",
+		},
+		art = {
+			"cassknows",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	key = "nibiru",
+	order = 4,
+	config = { hand_type = "cry_None", softlock = true },
+	pos = { x = 0, y = 6 },
+	atlas = "atlasnotjokers",
+	aurinko = true,
+	set_card_type_badge = function(self, card, badges)
+		--use whichever of these fits best, the second literally just removes the badge, and the first is a blank badge
+		--badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
+
+		if badges[1] and badges[1].remove then
+			badges[1]:remove()
+		end
+		badges[1] = nil
+	end,
+	loc_vars = function(self, info_queue, center)
+		local levelone = G.GAME.hands["cry_None"].level or 1
+		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+		if levelone == 1 then
+			planetcolourone = G.C.UI.TEXT_DARK
+		end
+		return {
+			vars = {
+				localize("cry_None"),
+				G.GAME.hands["cry_None"].level,
+				G.GAME.hands["cry_None"].l_mult,
+				G.GAME.hands["cry_None"].l_chips,
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_None"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_None"].level))]
+					),
+				},
+			},
+		}
+	end,
+	generate_ui = 0,
+}
 
 -- The Universe In Its Fucking Entirety
 -- Upgrades The Entire Fucking Deck (+5.25252e28/+5.25252e27)
@@ -194,13 +250,17 @@ local universe = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_WholeDeck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_WholeDeck"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_WholeDeck"].level))]
 					),
 				},
 			},
 		}
 	end,
 	generate_ui = 0,
+	cry_credits = {
+		art = { "cassknows" },
+		code = { "lord-ruby" },
+	},
 }
 
 -- Planet.lua
@@ -503,6 +563,9 @@ local planetlua = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -610,13 +673,17 @@ local nstar = {
 	end,
 	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
 		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil and context.joker_main then
+			local value = G.GAME.neutronstarsusedinthisrun
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { 1 + (0.10 * G.GAME.neutronstarsusedinthisrun) },
+					vars = { 1 + (0.10 * value) },
 				}),
-				Xmult_mod = 1 + (0.10 * G.GAME.neutronstarsusedinthisrun),
+				Xmult_mod = 1 + (0.10 * value),
 			}
 		end
 	end,
@@ -781,6 +848,9 @@ local sunplanet = {
 			and context.joker_main
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -853,14 +923,15 @@ local ruutu = {
 				colours = {
 					(
 						to_big(G.GAME.hands["High Card"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["High Card"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["High Card"].level))]
 					),
-					(to_big(G.GAME.hands["Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
-						math.min(7, G.GAME.hands["Pair"].level)
-					):to_number()]),
+					(
+						to_big(G.GAME.hands["Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Pair"].level))]
+					),
 					(
 						to_big(G.GAME.hands["Two Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Two Pair"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Two Pair"].level))]
 					),
 				},
 			},
@@ -883,6 +954,9 @@ local ruutu = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -934,15 +1008,16 @@ local risti = {
 				colours = {
 					(
 						to_big(G.GAME.hands["Three of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Three of a Kind"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Three of a Kind"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Straight"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Straight"].level))]
 					),
-					(to_big(G.GAME.hands["Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
-						math.min(7, G.GAME.hands["Flush"].level)
-					):to_number()]),
+					(
+						to_big(G.GAME.hands["Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush"].level))]
+					),
 				},
 			},
 		}
@@ -964,6 +1039,9 @@ local risti = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1015,15 +1093,15 @@ local hertta = {
 				colours = {
 					(
 						to_big(G.GAME.hands["Full House"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Full House"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Full House"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Four of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Four of a Kind"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Four of a Kind"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Straight Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight Flush"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Straight Flush"].level))]
 					),
 				},
 			},
@@ -1046,6 +1124,9 @@ local hertta = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1097,15 +1178,15 @@ local pata = {
 				colours = {
 					(
 						to_big(G.GAME.hands["Five of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Five of a Kind"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Five of a Kind"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Flush House"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush House"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush House"].level))]
 					),
 					(
 						to_big(G.GAME.hands["Flush Five"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush Five"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush Five"].level))]
 					),
 				},
 			},
@@ -1128,6 +1209,9 @@ local pata = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1187,15 +1271,15 @@ local kaikki = {
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Bulwark"].level))]
 					),
 					(
 						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Clusterfuck"].level))]
 					),
 					(
 						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_UltPair"].level))]
 					),
 				},
 			},
@@ -1218,6 +1302,9 @@ local kaikki = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1264,6 +1351,7 @@ local planet_cards = {
 	void,
 	marsmoons,
 	-- reserved for None
+	nibiru,
 	universe,
 
 	planetlua,

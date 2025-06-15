@@ -609,7 +609,7 @@ return {
 				text = {
 					"Add {C:cry_code}Mult{} to the",
 					"{C:cry_code}selected hand{} equal to",
-					"how many jokers are owned",
+					"how many Jokers are owned",
 				},
 			},
 			c_cry_inst = {
@@ -816,7 +816,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Poker Hand Stuff",
 				text = {
-					"Add 4 new {C:attention}poker hands",
+					"Add 5 new {C:attention}poker hands",
 					"and enable {C:attention}Ascended hands",
 				},
 			},
@@ -1343,6 +1343,18 @@ return {
 					"an {E:1,C:attention}Ultimate Pair",
 				},
 			},
+			j_cry_the = {
+				name = "The",
+				text = {
+					"{X:mult,C:white} X#1# {} Mult if played",
+					"hand is {C:attention}#2#",
+				},
+				unlock = {
+					"Win a run with",
+					"your final hand being",
+					"a {E:1,C:attention}None",
+				},
+			},
 			j_cry_clicked_cookie = {
 				name = "Clicked Cookie",
 				text = {
@@ -1436,7 +1448,7 @@ return {
 			j_cry_crustulum = {
 				name = "Crustulum",
 				text = {
-					"This Joker gains {C:chips}+#2#{} Chip#<s>1#",
+					"This Joker gains {C:chips}+#2#{} Chip#<s>2#",
 					"per {C:attention}reroll{} in the shop",
 					"{C:green}All rerolls are free{}",
 					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chip#<s>1#)",
@@ -1498,7 +1510,7 @@ return {
 			j_cry_demicolon = {
 				name = "Demicolon",
 				text = {
-					"{C:attention}Force-trigger{} the joker",
+					"{C:attention}Force-trigger{} the Joker",
 					"to the right",
 				},
 			},
@@ -1748,6 +1760,13 @@ return {
 					"{C:red}+#1#{} Mult if played",
 					"hand contains",
 					"an {C:attention}#2#",
+				},
+			},
+			j_cry_undefined = {
+				name = "Undefined Joker",
+				text = {
+					"{C:red}+#1#{} Mult if played",
+					"hand is {C:attention}#2#",
 				},
 			},
 			j_cry_formidiulosus = {
@@ -2648,6 +2667,13 @@ return {
 					"at end of round",
 				},
 			},
+			j_cry_yarnball = {
+				name = "Yarn Ball",
+				text = {
+					"Add the level of the highest level {C:attention}Cat Tag{}",
+					"to all {C:green}listed probabilities",
+				},
+			},
 			j_cry_spaceglobe = {
 				name = "Celestial Globe",
 				text = {
@@ -2797,11 +2823,47 @@ return {
 					"an {C:attention}#2#",
 				},
 			},
+			j_cry_nebulous = {
+				name = "Nebulous Joker",
+				text = {
+					"{C:chips}+#1#{} Chip#<s>1# if played",
+					"hand is {C:attention}#2#",
+				},
+			},
+			j_cry_words_cant_even = {
+				name = "Words Can’t Even Begin to Describe This Joker",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult if played",
+					"hand contains",
+					"a {C:attention}#2#",
+				},
+			},
+			j_cry_many_lost_minds = {
+				name = "Many Have Lost Their Minds Comprehending This Joker",
+				text = {
+					"{C:chips}+#1#{} Chips if played",
+					"hand contains",
+					"{C:attention}#2#",
+				},
+			},
+			j_cry_annihalation = {
+				name = "The Complete and Utter Annihilation of Everything That Makes Balatro Sacred",
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Mult if played",
+					"hand contains",
+					"a {C:attention}#2#",
+				},
+				unlock = {
+					"Win a run with",
+					"your final hand being",
+					"a {E:1,C:attention}#1#",
+				},
+			},
 			j_cry_trick_or_treat = {
 				name = "Trick-or-Treat",
 				text = {
 					"When {C:attention}sold{}:",
-					"{C:green}#1# in #2#{} chance to create {C:attention}#3{} {C:cry_candy}Candies",
+					"{C:green}#1# in #2#{} chance to create {C:attention}#3#{} {C:cry_candy}Candies",
 					"Otherwise, create a {X:cry_cursed,C:white}Cursed{} Joker",
 					"{C:inactive}(Can overflow)",
 				},
@@ -2826,7 +2888,7 @@ return {
 				text = {
 					"Sell this card",
 					"to {C:attention}multiply{} values",
-					"of owned jokers by {C:attention}X#1#{}",
+					"of owned Jokers by {C:attention}X#1#{}",
 				},
 			},
 			j_cry_unity = {
@@ -3014,6 +3076,16 @@ return {
 				},
 			},
 			-- Reserved Spot For None Hand Planet
+			c_cry_nibiru = {
+				name = "Nibiru",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} Mult and",
+					"{C:chips}+#4#{} chip#<s>4#",
+				},
+			},
+
 			c_cry_universe = {
 				name = Cryptid_config.family_mode and "Universe" or "The Universe In Its Fucking Entirety",
 				text = {
@@ -3843,7 +3915,7 @@ return {
 				name = "The Seraph",
 				text = {
 					"Enhances {C:attention}#1#{} selected card#<s>1#",
-					"into a {C:attention}Light Card",
+					"into {C:attention}Light Cards",
 				},
 			},
 		},
@@ -4193,14 +4265,15 @@ return {
 					"When this Joker is {C:cry_code}triggered{},",
 					"trigger {C:cry_code}#1#",
 					"{C:inactive}Not all cards can be triggered this way{}",
-					"{C:inactive}but all jokers can trigger the other{}",
+					"{C:inactive}but all Jokers can trigger the other{}",
 				},
 			},
 			cry_global_sticker = {
 				name = "Global",
 				text = {
-					"Always drawn after",
-					"{C:cry_code}First Hand Drawn{}",
+					"Draw this card",
+					"{C:cry_code}Before other cards,{}",
+					"if possible",
 				},
 			},
 			cry_flickering = {
@@ -4664,6 +4737,7 @@ return {
 			["cry_UltPair"] = "Ultimate Pair",
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "The Entire Deck" or "The Entire Fucking Deck",
 			["cry-Cluster Bulwark"] = "Clusterwark",
+			["cry_None"] = "None",
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -4683,6 +4757,7 @@ return {
 				"card found in a 52-card deck.",
 				"Are you insane?",
 			},
+			["cry_None"] = { "A hand containing 0 cards" },
 		},
 		achievement_names = {
 			ach_cry_ace_in_crash = "Pocket ACE",
@@ -4822,6 +4897,7 @@ return {
 			--Why aren't these in vanilla?
 			b_tag = "Tag",
 			b_blind = "Blind",
+			rush_hour_reminder = "Enable the Clock and Lavender loop to play Rush Hour",
 
 			b_tarot_rate = "Tarot Rate",
 			b_planet_rate = "Planet Rate",
@@ -4891,6 +4967,7 @@ return {
 			k_planet_disc = "Circumstellar Disc",
 			k_planet_satellite = "Natural Satellites",
 			k_planet_universe = Cryptid_config.family_mode and "Universe" or "The Actual Fucking Universe",
+			k_planet_nibiru = "Nothing",
 
 			cry_notif_jimball_1 = "Jimball",
 			cry_notif_jimball_2 = "Copyright Notice",

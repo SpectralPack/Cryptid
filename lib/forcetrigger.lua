@@ -232,7 +232,10 @@ function Cryptid.forcetrigger(card, context)
 			ease_dollars(2)
 		end
 		if card.ability.name == "Supernova" then
-			results = { jokers = { mult_mod = G.GAME.hands[context.scoring_name].played, card = card } }
+			local hand = context.other_context and context.other_context.scoring_name or context.scoring_name
+			if hand then
+				results = { jokers = { mult_mod = G.GAME.hands[hand].played, card = card } }
+			end
 		end
 		if card.ability.name == "Ride The Bus" then
 			card.ability.mult = card.ability.mult + card.ability.extra
@@ -465,8 +468,6 @@ function Cryptid.forcetrigger(card, context)
 			}))
 		end
 		if card.ability.name == "Vampire" then
-			local check = nil
-			local enhanced = {}
 			if context.scoring_hand and #context.scoring_hand > 0 then
 				for k, v in ipairs(context.scoring_hand) do
 					if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then
@@ -476,9 +477,7 @@ function Cryptid.forcetrigger(card, context)
 					end
 					v.vampired = nil
 				end
-				check = true
-			end
-			if not check and G and G.hand and #G.hand.highlighted > 0 then
+			elseif G and G.hand and #G.hand.highlighted > 0 then
 				for k, v in ipairs(G.hand.highlighted) do
 					if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then
 						enhanced[#enhanced + 1] = v
@@ -487,7 +486,6 @@ function Cryptid.forcetrigger(card, context)
 					end
 					v.vampired = nil
 				end
-				check = true
 			end
 			card.ability.x_mult = card.ability.x_mult + (card.ability.extra * #enhanced or 1)
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
@@ -531,7 +529,6 @@ function Cryptid.forcetrigger(card, context)
 		end
 		-- page 6
 		if card.ability.name == "Midas Mask" then
-			local check = nil
 			if context.scoring_hand then
 				for k, v in ipairs(context.scoring_hand) do
 					if v:is_face() then
@@ -546,10 +543,8 @@ function Cryptid.forcetrigger(card, context)
 						}))
 					end
 				end
-				check = true
-			end
-			if not check and G and G.hand and #G.hand.highlighted > 0 then
-				for k, v in ipairs(context.scoring_hand) do
+			elseif G and G.hand and #G.hand.highlighted > 0 then
+				for k, v in ipairs(G.hand.highlighted) do
 					if v:is_face() then
 						v:set_ability(G.P_CENTERS.m_gold, nil, true)
 						G.E_MANAGER:add_event(Event({
@@ -562,7 +557,6 @@ function Cryptid.forcetrigger(card, context)
 						}))
 					end
 				end
-				check = true
 			end
 		end
 		if card.ability.name == "Luchador" then
@@ -897,10 +891,16 @@ function Cryptid.forcetrigger(card, context)
 			end
 		end
 		if card.ability.name == "Perkeo" then
-			if G.consumeables.cards[1] then
+			local eligibleJokers = {}
+			for i = 1, #G.consumeables.cards do
+				if G.consumeables.cards[i].ability.consumeable then
+					eligibleJokers[#eligibleJokers + 1] = G.consumeables.cards[i]
+				end
+			end
+			if #eligibleJokers > 0 then
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						local card = copy_card(pseudorandom_element(G.consumeables.cards, pseudoseed("perkeo")), nil)
+						local card = copy_card(pseudorandom_element(eligibleJokers, pseudoseed("perkeo")), nil)
 						card:set_edition({ negative = true }, true)
 						card:add_to_deck()
 						G.consumeables:emplace(card)

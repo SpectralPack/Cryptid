@@ -20,7 +20,7 @@ vec4 dissolve_mask(vec4 tex, vec2 texture_coords, vec2 uv)
         return vec4(shadow ? vec3(0.,0.,0.) : tex.xyz, shadow ? tex.a*0.3: tex.a);
     }
 
-    float adjusted_dissolve = (dissolve*dissolve*(3.-2.*dissolve))*1.02 - 0.01; //Adjusting 0.0-1.0 to fall to -0.1 - 1.1 scale so the mask does not pause at extreme values
+    float adjusted_dissolve = (dissolve*dissolve*(3. - 2. * dissolve)) * 1.02 - 0.01; //Adjusting 0.0-1.0 to fall to -0.1 - 1.1 scale so the mask does not pause at extreme values
 
 	float t = time * 10.0 + 2003.;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/max(texture_details.b, texture_details.a);
@@ -123,11 +123,11 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     );*/
     vec3 fac = vec3(0.0);
     fac += vec3(0.2,0.4,0.7)*(sin(4.0*uv.x + ultrafoil.r*4.0 + cos(ultrafoil.r*5.3))+.5);
-    fac += vec3(0.5,0.1,0.7)*(sin(6.0*uv.x + ultrafoil.r*6.3 + cos(ultrafoil.r*2))+.5);
-    fac += max(vec3(0.7,0.2,0.2)*(1-pow(uv.x*10.0-10.0 + ultrafoil.r*2.3,2)), 0);
-    fac += max(vec3(0.5,0.3,0.6)*(1-pow(uv.x*40.0-40.0 + ultrafoil.r*15.3,2)), 0);
-    fac += max(vec3(0.7,0.2,0.2)*(1-pow(uv.x*10.0-20.0 + ultrafoil.r*3.7,2)), 0);
-    fac += max(vec3(0.5,0.3,0.6)*(1-pow(uv.x*40.0-50.0 + ultrafoil.r*11.8,2)), 0);
+    fac += vec3(0.5,0.1,0.7)*(sin(6.0*uv.x + ultrafoil.r*6.3 + cos(ultrafoil.r*2.))+.5);
+    fac += max(vec3(0.7,0.2,0.2)*(1.-pow(uv.x*10.0-10.0 + ultrafoil.r*2.3,2.)), vec3(0.));
+    fac += max(vec3(0.5,0.3,0.6)*(1.-pow(uv.x*40.0-40.0 + ultrafoil.r*15.3,2.)), vec3(0.));
+    fac += max(vec3(0.7,0.2,0.2)*(1.-pow(uv.x*10.0-20.0 + ultrafoil.r*3.7,2.)), vec3(0.));
+    fac += max(vec3(0.5,0.3,0.6)*(1.-pow(uv.x*40.0-50.0 + ultrafoil.r*11.8,2.)), vec3(0.));
     fac += sqrt(uv.y*0.2);
 
     tex.rgb *= vec3(0.5,0.7,1.0);

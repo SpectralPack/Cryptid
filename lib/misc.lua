@@ -187,6 +187,9 @@ function Cryptid.pluralize(str, vars)
 		if type(num) == "string" then
 			num = (Big and to_number(to_big(num))) or num
 		end
+		if not num then
+			num = 1
+		end
 		local plural = _table[1] -- default
 		local checks = { [1] = "=" } -- checks 1 by default
 		local checks1mod = false -- tracks if 1 was modified
@@ -468,7 +471,7 @@ function Cryptid.bonus_voucher_mod(mod)
 					{ bypass_discovery_center = true, bypass_discovery_ui = true }
 				)
 				card.shop_cry_bonusvoucher = #curr_bonus
-				Cryptid.misprintize(card)
+				Cryptid.manipulate(card)
 				if G.GAME.events.ev_cry_choco2 then
 					card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
 					card:set_cost()
@@ -516,7 +519,32 @@ function set_profile_progress()
 end
 
 Cryptid.big_num_blacklist = {
-	-- empty for now add more later
+	["j_cry_fractal"] = true,
+	["j_cry_wonka_bar"] = true,
+	["j_cry_oldcandy"] = true,
+
+	["c_magician"] = true,
+	["c_empress"] = true,
+	["c_heirophant"] = true,
+	["c_lovers"] = true,
+	["c_chariot"] = true,
+	["c_justice"] = true,
+	["c_strength"] = true,
+	["c_hanged_man"] = true,
+	["c_death"] = true,
+	["c_devil"] = true,
+	["c_tower"] = true,
+	["c_star"] = true,
+	["c_moon"] = true,
+	["c_sun"] = true,
+	["c_world"] = true,
+	["c_cry_eclipse"] = true,
+	["c_cry_seraph"] = true,
+	["c_cry_instability"] = true,
+
+	["v_cry_stickyhand"] = true,
+	["v_cry_grapplinghook"] = true,
+	["v_cry_hyperspacetether"] = true,
 
 	-- Add your Jokers here if you *don't* want to have it's numbers go into BigNum
 	-- FORMAT: <Joker Key ("j_cry_oil_lamp")> = true,
@@ -805,7 +833,6 @@ function Cryptid.cry_rankname_to_id(rankname)
 	end
 	return nil
 end
-
 -- for buttercup
 function G.FUNCS.can_store_card(e)
 	-- get shop highlighted
@@ -881,4 +908,12 @@ function Card:can_use_storage()
 		self.cry_storage = CardArea(0.5, 0.5, 1, 1, storage_area_config)
 	end
 	return false
+end
+function Cryptid.reset_to_none()
+	update_hand_text({ delay = 0 }, {
+		mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
+		chips = Cryptid.ascend(G.GAME.hands["cry_None"].chips),
+		level = G.GAME.hands["cry_None"].level,
+		handname = localize("cry_None", "poker_hands"),
+	})
 end

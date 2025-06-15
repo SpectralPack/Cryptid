@@ -242,15 +242,12 @@ local stickyhand = { -- CSL T1; +1 card selection limit
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			+ (card and card.ability.extra or self.config.extra)
+		SMODS.change_play_limit(card.ability.extra or self.config.extra)
+		SMODS.change_discard_limit(card.ability.extra or self.config.extra)
 	end,
 	unredeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			- (card and card.ability.extra or self.config.extra)
-		if G.hand.config.highlighted_limit < 5 then
-			G.hand.config.highlighted_limit = 5
-		end
+		SMODS.change_play_limit(-(card.ability.extra or self.config.extra))
+		SMODS.change_discard_limit(-(card.ability.extra or self.config.extra))
 		if not G.GAME.before_play_buffer then
 			G.hand:unhighlight_all()
 		end
@@ -285,15 +282,12 @@ local grapplinghook = { -- CSL T2; +2 card selection limit
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			+ (card and card.ability.extra or self.config.extra)
+		SMODS.change_play_limit(card.ability.extra or self.config.extra)
+		SMODS.change_discard_limit(card.ability.extra or self.config.extra)
 	end,
 	unredeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			- (card and card.ability.extra or self.config.extra)
-		if G.hand.config.highlighted_limit < 5 then
-			G.hand.config.highlighted_limit = 5
-		end
+		SMODS.change_play_limit(-(card.ability.extra or self.config.extra))
+		SMODS.change_discard_limit(-(card.ability.extra or self.config.extra))
 		if not G.GAME.before_play_buffer then
 			G.hand:unhighlight_all()
 		end
@@ -1100,6 +1094,7 @@ local double_down = { -- DSide T3; After every round, X1.5 to all values on the 
 		},
 		code = {
 			"Math",
+			"lord-ruby",
 		},
 		jolly = {
 			"Jolly Open Winner",
@@ -1138,15 +1133,12 @@ local hyperspacetether = { -- CSL T3; +2 card selection limit, all* selected car
 		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			+ (card and card.ability.extra or self.config.extra)
+		SMODS.change_play_limit(card.ability.extra or self.config.extra)
+		SMODS.change_discard_limit(card.ability.extra or self.config.extra)
 	end,
 	unredeem = function(self, card)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit
-			- (card and card.ability.extra or self.config.extra)
-		if G.hand.config.highlighted_limit < 5 then
-			G.hand.config.highlighted_limit = 5
-		end
+		SMODS.change_play_limit(-(card.ability.extra or self.config.extra))
+		SMODS.change_discard_limit(-(card.ability.extra or self.config.extra))
 		if not G.GAME.before_play_buffer then
 			G.hand:unhighlight_all()
 		end

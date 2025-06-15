@@ -21,21 +21,15 @@ function Cryptid.pointerblistify(target, remove) -- Add specific joker to blackl
 end
 
 function Cryptid.pointeraliasify(target, key, remove) -- Add a specific alias/key combo to the alias list
-	if string.len(key) ~= 1 then
-		key = string.lower(key:gsub("%b{}", ""):gsub("%s+", ""))
-	end
-	if not remove then
-		if not Cryptid.pointeralias[target] then
-			Cryptid.pointeralias[target] = {}
+	if type(key) == "string" then
+		if string.len(key) ~= 1 then
+			key = string.lower(key:gsub("%b{}", ""):gsub("%s+", ""))
 		end
-		Cryptid.pointeralias[target][#Cryptid.pointeralias[target] + 1] = key
-		return true
-	else
-		for v = 1, #Cryptid.pointeralias[target] do
-			if Cryptid.pointeralias[target][v] == key then
-				table.remove(Cryptid.pointeralias, v)
-				return true
-			end
+		if not remove then
+			Cryptid.pointeralias[key] = target
+			return true
+		else
+			Cryptid.pointeralias[key] = nil
 		end
 	end
 	return false
@@ -90,65 +84,39 @@ function Cryptid.pointergetalias(target) -- "Is this alias legit?"
 		end
 		return string.lower(strn)
 	end
-	for _, group in pairs(G.localization.descriptions) do
-		if
-			_ ~= "Back"
-			and _ ~= "Content Set"
-			and _ ~= "Edition"
-			and _ ~= "Enhanced"
-			and _ ~= "Stake"
-			and _ ~= "Other"
-		then
-			for key, card in pairs(group) do
-				if G.P_CENTERS[key] then
-					if apply_lower(card.name) == apply_lower(target) then
-						return key
-					end
-				end
-			end
-		end
+	if Cryptid.pointeralias[apply_lower(target)] then
+		return Cryptid.pointeralias[apply_lower(target)]
 	end
-	for card, _ in pairs(Cryptid.pointeralias) do
-		if apply_lower(card) == apply_lower(target) then
-			return card
-		end
-		for _, alias in ipairs(Cryptid.pointeralias[card]) do
-			if apply_lower(alias) == apply_lower(target) then
-				return card
-			end
-		end
+	if G.P_CENTERS[apply_lower(target)] then
+		return G.P_CENTERS[apply_lower(target)].key
 	end
-	for keym, card in pairs(G.P_CENTERS) do
-		if apply_lower(card.name) == apply_lower(target) then
-			return keym
-		end
-		if apply_lower(card.original_key) == apply_lower(target) then
-			return keym
-		end
-		if apply_lower(keym) == apply_lower(target) then
-			return keym
-		end
+	if Cryptid.pointeralias[target] then
+		return Cryptid.pointeralias[target]
+	end
+	if G.P_CENTERS[target] then
+		return G.P_CENTERS[target].key
 	end
 	return false
 end
 
 function Cryptid.pointergetblist(target) -- "Is this card pointer banned?"
-	target = Cryptid.pointergetalias(target)
+	target = Cryptid.pointergetalias(target) or target
+	target = target
 	results = {}
 	results[1] = false
 	if not target then
 		results[1] = true
 	end
-	if G.GAME.banned_keys[target] then
+	if G.GAME.banned_keys[target] or (type(target) == "table" and G.GAME.banned_keys[target.key]) then
 		results[1] = true
 	end
 	for index, value in ipairs(Cryptid.pointerblist) do
-		if target == value then
+		if target == value or (type(target) == "table" and target.key) then
 			results[1] = true
 		end
 	end
-	if results[1] ~= true and G.P_CENTERS[target] then
-		target = G.P_CENTERS[target]
+	if results[1] ~= true and (G.P_CENTERS[target] or (type(target) == "table" and G.P_CENTERS[target.key])) then
+		target = (G.P_CENTERS[target] or (type(target) == "table" and G.P_CENTERS[target.key]))
 		for value, power in pairs(Cryptid.pointerblisttype) do
 			for index, val2 in pairs(target) do
 				if value == index then
@@ -167,6 +135,7 @@ function Cryptid.pointergetblist(target) -- "Is this card pointer banned?"
 	if G.DEBUG_POINTER then
 		results[1] = false
 	end
+	target = G.P_CENTERS[target] or target
 	if results[1] == false then
 		if target and target.set == "Joker" then
 			results[2] = "Joker"

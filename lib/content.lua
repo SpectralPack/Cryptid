@@ -267,6 +267,25 @@ SMODS.PokerHand({
 		return
 	end,
 })
+
+SMODS.PokerHand({
+	key = "None",
+	visible = false,
+	chips = 0,
+	mult = 0,
+	l_chips = 5,
+	l_mult = 0.5,
+	example = {},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 0 },
+	evaluate = function(parts, hand)
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_nibiru") ~= true then --or Cryptid.enabled("c_cry_asteroidbelt") ~= true then
+			return {}
+		end
+		return { hand and #hand == 0 and G.GAME.hands["cry_None"].visible and {} or nil }
+	end,
+})
+
 SMODS.Rarity({
 	key = "exotic",
 	loc_txt = {},
@@ -501,9 +520,17 @@ SMODS.Sound({
 	key = "music_big",
 	path = "music_big.ogg",
 	select_music_track = function()
-		return Cryptid_config.Cryptid
+		if G.GAME.cry_music_big then
+			return G.GAME.cry_music_big
+		end
+		if
+			Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.big_music
 			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
+		then
+			G.GAME.cry_music_big = true
+			return true
+		end
 	end,
 })
 SMODS.Sound({

@@ -382,27 +382,31 @@ local crash = {
 				--by WilsonTheWolf and MathIsFun_, funky error screen with random funny message
 				messages = {
 					"Oops.",
+					not Cryptid_config.family_mode and "Why don't you buy more jonkers? Are you stupid?" or "Oops.",
+					not Cryptid_config.family_mode and "Peter? What are you doing? Cards. WHAT THE FUCK?" or "Oops.",
+					not Cryptid_config.family_mode
+							and "what if instead of rush hour it was called kush hour and you just smoked a massive blunt"
+						or "Oops.",
+					not Cryptid_config.family_mode and "you are an idiot" or "Oops.",
+					not Cryptid_config.family_mode and "fuck you" or "Oops.",
+					not Cryptid_config.family_mode and "Nah fuck off" or "Oops.",
 					"Your cards have been TOASTED, extra crispy for your pleasure.",
 					"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 					"What we have here is a certified whoopsidaisy",
-					"Why don't you buy more jonkers? Are you stupid?",
 					"lmao",
 					"How about a game of YOU MUST DIE?",
 					"Sorry, I was in the bathroom. What'd I mi'Where'd... Where is everyone?",
-					"Peter? What are you doing? Cards. WHAT THE FUCK?",
 					"what if it was called freaklatro",
 					"4",
 					"I SAWED THIS GAME IN HALF!",
 					"is this rush hour 4",
 					"You missed a semicolon on line 19742, you buffoon",
-					"you are an idiot",
 					"You do not recognise the cards in the deck.",
 					":( Your P",
 					"Assertion failed",
 					"Play ULTRAKILL",
 					"Play Nova Drift",
 					"Play Balatro- wait",
-					"what if instead of rush hour it was called kush hour and you just smoked a massive blunt",
 					"death.fell.accident.water",
 					"Balatro's innards were made outards",
 					"i am going to club yrou",
@@ -416,7 +420,6 @@ local crash = {
 					"I'm never going back this casino agai-",
 					"what did you think would happen?",
 					"DO THE EARTHQUAKE! [screams]",
-					"fuck you",
 					"Screaming in the casino prank! AAAAAAAAAAAAAAAAAA",
 					"https://www.youtube.com/watch?v=dQw4w9WgXcQ",
 					"You musn't tear or crease it.",
@@ -428,7 +431,6 @@ local crash = {
 					"Looks like a skill issue to me.",
 					"it turns out that card was ligma",
 					"YouJustLostTheCasinoGame",
-					"Nah fuck off",
 					"attempt to call global your_mom (value too large)",
 					"Killed by intentional game design",
 					"attempt to index field 'attempt to call global to_big (too big)' (a nil value)",
@@ -2573,17 +2575,25 @@ local assemble = {
 	atlas = "atlasnotjokers",
 	order = 416,
 	can_use = function(self, card)
+		local aaa = 0
+		if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then
+			aaa = -1
+		end
 		if not G.GAME.modifiers.cry_beta then
-			return (#G.hand.highlighted > 0 and #G.jokers.cards > 0)
+			return (#G.hand.highlighted > aaa and #G.jokers.cards > 0)
 		else
-			return (#G.hand.highlighted > 0 and #G.jokers.cards > 1)
+			return (#G.hand.highlighted > aaa and #G.jokers.cards > 1)
 		end
 	end,
 	use = function(self, card, area, copier)
 		local upgrade_hand
-		if #G.hand.highlighted > 0 then
+		local num = 0
+		if G.PROFILES[G.SETTINGS.profile].cry_none then
+			num = -1
+		end
+		if #G.hand.highlighted > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
-		elseif #G.play.cards > 0 then
+		elseif #G.play.cards > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
 		end
 		if upgrade_hand then
@@ -2593,9 +2603,13 @@ local assemble = {
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		local upgrade_hand
-		if #G.hand.highlighted > 0 then
+		local num = 0
+		if G.PROFILES[G.SETTINGS.profile].cry_none then
+			num = -1
+		end
+		if #G.hand.highlighted > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
-		elseif #G.play.cards > 0 then
+		elseif #G.play.cards > num then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
 		end
 		if upgrade_hand then
@@ -3028,6 +3042,25 @@ local run = {
 }
 -- ://Class
 -- Change a selected card's enhancement to one of your choosing (or nil)
+
+local enh_table = {
+	m_bonus = { "bonus" },
+	m_mult = { "mult", "red" },
+	m_wild = { "wild", "suit" },
+	m_glass = { "glass", "xmult" },
+	m_steel = { "steel", "metal", "grey" },
+	m_stone = { "stone", "chip", "chips" },
+	m_gold = { "gold", "money", "yellow" },
+	m_lucky = { "lucky", "rng" },
+	m_cry_echo = { "echo", "retrigger", "retriggers" },
+	m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
+	m_cry_light = { "light" },
+	ccd = { "ccd" },
+	null = { "nil" },
+}
+
+Cryptid.load_enhancement_aliases(enh_table)
+
 local class = {
 	cry_credits = {
 		idea = {
@@ -3153,21 +3186,22 @@ local class = {
 		end
 		--todo: mod support
 		G.FUNCS.class_apply = function()
-			local enh_table = {
-				m_bonus = { "bonus" },
-				m_mult = { "mult", "red" },
-				m_wild = { "wild", "suit" },
-				m_glass = { "glass", "xmult" },
-				m_steel = { "steel", "metal", "grey" },
-				m_stone = { "stone", "chip", "chips" },
-				m_gold = { "gold", "money", "yellow" },
-				m_lucky = { "lucky", "rng" },
-				m_cry_echo = { "echo", "retrigger", "retriggers" },
-				m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
-				m_cry_light = { "light" },
-				ccd = { "ccd" },
-				null = { "nil" },
-			}
+			-- local enh_table = {
+			-- 	m_bonus = { "bonus" },
+			-- 	m_mult = { "mult", "red" },
+			-- 	m_wild = { "wild", "suit" },
+			-- 	m_glass = { "glass", "xmult" },
+			-- 	m_steel = { "steel", "metal", "grey" },
+			-- 	m_stone = { "stone", "chip", "chips" },
+			-- 	m_gold = { "gold", "money", "yellow" },
+			-- 	m_lucky = { "lucky", "rng" },
+			-- 	m_cry_echo = { "echo", "retrigger", "retriggers" },
+			-- 	m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
+			-- 	m_cry_light = { "light" },
+			-- 	ccd = { "ccd" },
+			-- 	null = { "nil" },
+			-- }
+			local enh_table = Cryptid.enhancement_alias_list
 
 			local enh_suffix = nil
 
@@ -3415,12 +3449,30 @@ local global_sticker = {
 		card.hover_tilt = card.hover_tilt * 2
 	end,
 	calculate = function(self, card, context)
-		if (context.setting_blind or context.open_booster) and context.cardarea == G.deck then
-			draw_card(G.deck, G.hand, nil, nil, nil, card)
-			--[[card.globalticks = (card.globalticks or 1) - 1
-		if card.globalticks == 0 then
-			card.global = nil
-		end--]]
+		-- Added by IcyEthics
+		if context.cry_shuffling_area and context.cardarea == G.deck and context.cry_post_shuffle then
+			local _targetpos = nil
+			local _selfpos = nil
+
+			-- Iterate through every card in the deck to find both the location
+			-- of the stickered card, and the highest placed non-stickered card
+			for i, _playingcard in ipairs(G.deck.cards) do
+				if _playingcard == card then
+					_selfpos = i
+				elseif not _playingcard.ability.cry_global_sticker then
+					_targetpos = i
+				end
+			end
+
+			if _targetpos == nil then
+				_targetpos = #G.deck.cards
+			end
+			if _selfpos == nil then
+				_selfpos = #G.deck.cards
+			end
+
+			-- Swaps the positions of the selected cards
+			G.deck.cards[_selfpos], G.deck.cards[_targetpos] = G.deck.cards[_targetpos], G.deck.cards[_selfpos]
 		end
 	end,
 }
@@ -3914,7 +3966,7 @@ local multiply = {
 		end
 		G.jokers.highlighted[1].config.cry_multiply = G.jokers.highlighted[1].config.cry_multiply * 2
 		Cryptid.with_deck_effects(G.jokers.highlighted[1], function(card)
-			Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
+			Cryptid.manipulate(card, { value = 2 })
 		end)
 	end,
 	init = function(self)
@@ -3926,7 +3978,7 @@ local multiply = {
 				if G.jokers.cards[i].config.cry_multiply then
 					m = G.jokers.cards[i].config.cry_multiply
 					Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-						Cryptid.misprintize(card, { min = 1 / m, max = 1 / m }, nil, true)
+						Cryptid.manipulate(card, { value = 1 / m })
 					end)
 					G.jokers.cards[i].config.cry_multiply = nil
 				end
@@ -3971,9 +4023,26 @@ local delete = {
 		return G.STATE == G.STATES.SHOP
 			and card.area == (G.GAME.modifiers.cry_beta and G.jokers or G.consumeables)
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
-			and G.shop_jokers.highlighted[1] ~= card
-			and G.shop_booster.highlighted[1] ~= card
-			and G.shop_vouchers.highlighted[1] ~= card
+			and (G.shop_jokers.highlighted[1] ~= card and not Cryptid.safe_get(
+				G,
+				"shop_jokers",
+				"highlighted",
+				1,
+				"ability",
+				"eternal"
+			))
+			and (G.shop_booster.highlighted[1] ~= card and not Cryptid.safe_get(
+				G,
+				"shop_booster",
+				"highlighted",
+				1,
+				"ability",
+				"eternal"
+			))
+			and (
+				G.shop_vouchers.highlighted[1] ~= card
+				and not Cryptid.safe_get(G, "shop_vouchers", "highlighted", 1, "ability", "eternal")
+			)
 	end,
 	use = function(self, card, area, copier)
 		if not G.GAME.banned_keys then
@@ -4021,21 +4090,6 @@ local delete = {
 			end
 		end
 		c:start_dissolve()
-	end,
-	init = function(self)
-		-- dumb hook because i don't feel like aggressively patching get_pack to do stuff
-		-- very inefficient
-		-- maybe smods should overwrite the function and make it more targetable?
-		local getpackref = get_pack
-		function get_pack(_key, _type)
-			local temp_banned = copy_table(G.GAME.banned_keys)
-			for k, v in pairs(G.GAME.cry_banished_keys) do
-				G.GAME.banned_keys[k] = v
-			end
-			local ret = getpackref(_key, _type)
-			G.GAME.banned_keys = copy_table(temp_banned)
-			return ret
-		end
 	end,
 }
 -- ://Alt-Tab
@@ -4171,6 +4225,23 @@ local ctrl_v = {
 		return {}
 	end,
 	can_use = function(self, card)
+		if G.pack_cards and G.pack_cards.highlighted then
+			for i = 1, #G.pack_cards.highlighted do
+				if
+					G.pack_cards.highlighted[i].ability
+					and (
+						G.pack_cards.highlighted[i].ability.consumeable
+						or G.pack_cards.highlighted[i].ability.set == "Default"
+						or G.pack_cards.highlighted[i].ability.set == "Enhanced"
+					)
+				then
+					-- nothing
+				else
+					return false
+				end
+			end
+		end
+
 		return #G.hand.highlighted + #G.consumeables.highlighted + (G.pack_cards and #G.pack_cards.highlighted or 0)
 			== 2
 	end,
@@ -4217,7 +4288,15 @@ local ctrl_v = {
 					if Incantation then
 						card:setQty(1)
 					end
-					G.consumeables:emplace(card)
+
+					-- Edit by IcyEthics: Needed to choose between not allowing copying playing cards or adding them to deck. Made it so they're added to deck.
+					if card.ability.set == "Default" or card.ability.set == "Enhanced" then
+						table.insert(G.playing_cards, card)
+						G.hand:emplace(card)
+						playing_card_joker_effects({ card })
+					else
+						G.consumeables:emplace(card)
+					end
 					return true
 				end,
 			}))

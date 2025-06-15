@@ -1280,6 +1280,9 @@ local big_cube = {
 			}
 		end
 	end,
+	in_pool = function(self)
+		return #find_joker("cry-Cube", true) ~= 0
+	end,
 	cry_credits = {
 		idea = {
 			"Mystic Misclick",
@@ -1462,7 +1465,8 @@ local seal_the_deal = {
 	calculate = function(self, card, context)
 		if
 			context.after
-			and G.GAME.current_round.hands_left == 0
+			and (G.GAME.current_round.hands_left == 0 or next(find_joker("cry-panopticon")))
+			and context.scoring_hand
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
@@ -1489,17 +1493,11 @@ local seal_the_deal = {
 		end
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
-		local sealtable = { "blue", "red", "purple" }
-		if Cryptid.enabled("cry_azure") then
-			sealtable[#sealtable + 1] = "azure"
-		end
-		if Cryptid.enabled("cry_green") then
-			sealtable[#sealtable + 1] = "green"
-		end
+		local sealtable = { "blue", "red", "purple", "azure", "green" }
 		card.ability.extra = pseudorandom_element(sealtable, pseudoseed("abc"))
-		if self.discovered then
+		if self.discovered and not (card.area and card.area.config.collection) then
 			--Gold (ULTRA RARE!!!!!!!!)
-			if pseudorandom("xyz") <= 0.000001 and not (card.area and card.area.config.collection) then
+			if pseudorandom("xyz") <= 0.000001 then
 				card.children.center:set_sprite_pos({ x = 6, y = 4 })
 			--Others
 			elseif card.ability.extra == "red" then
@@ -1729,88 +1727,81 @@ local sus = {
 	atlas = "atlasone",
 	calculate = function(self, card, context)
 		local function is_impostor(card)
-			return card.base.value and SMODS.Ranks[card.base.value].key == "King" and card:is_suit("Hearts")
+			return card.base.value and card:get_id() == 13 and card:is_suit("Hearts")
 		end
-		if
-			context.end_of_round
-			and context.cardarea == G.jokers
-			and not context.blueprint
-			and not context.retrigger_joker
-		then
-			if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
-				card.ability.chosen_card = nil
-			end
-			local choosable_cards = {}
-			local has_impostor = false
-			for i = 1, #G.hand.cards do
-				if not G.hand.cards[i].murdered_by_impostor then
-					choosable_cards[#choosable_cards + 1] = G.hand.cards[i]
-					if is_impostor(G.hand.cards[i]) then
-						has_impostor = true
-					end
+		if context.end_of_round and context.cardarea == G.jokers and #G.hand.cards >= 1 then
+			local king_of_hearts_cards, destroyed_cards = {}, {}
+			local chosen_card = nil
+			-- use the chosen card from previous SUS activations if there are any
+			-- Use a random card elsewhere
+			for _, v in ipairs(G.hand.cards) do
+				if v.sus then
+					chosen_card = v
+					break
 				end
 			end
-			if has_impostor then
-				choosable_cards = {}
-				for i = 1, #G.hand.cards do
-					if not G.hand.cards[i].murdered_by_impostor and is_impostor(G.hand.cards[i]) then
-						choosable_cards[#choosable_cards + 1] = G.hand.cards[i]
-					end
+			chosen_card = chosen_card or pseudorandom_element(G.hand.cards, pseudoseed("cry_sus"))
+			-- For future sus activations
+			chosen_card.sus = true
+
+			-- Add Ignored cards to a table, this table will be used to destroy the cards
+			-- Ignore King of Kearts and ignore the chosen card only if there are no King of Hearts
+			for _, v in ipairs(G.hand.cards) do
+				if is_impostor(v) then
+					table.insert(king_of_hearts_cards, v)
+				end
+				if not v.ability.eternal and not (v.sus and #king_of_hearts_cards == 0) and not is_impostor(v) then
+					table.insert(destroyed_cards, v)
 				end
 			end
-			card.ability.chosen_card = card.ability.chosen_card
-				or pseudorandom_element(choosable_cards, pseudoseed("cry_sus"))
-			if not card.ability.used_round or card.ability.used_round ~= G.GAME.round then
-				card.ability.used_round = G.GAME.round
-				local deletable_cards = {}
-				for k, v in pairs(G.hand.cards) do
-					if not v.ability.eternal and not is_impostor(v) then
-						deletable_cards[#deletable_cards + 1] = v
-					end
-				end
-				if #deletable_cards ~= 0 then
-					local _first_dissolve = nil
-					for j = 1, #G.jokers.cards do
-						eval_card(
-							G.jokers.cards[j],
-							{ cardarea = G.jokers, remove_playing_cards = true, removed = deletable_cards }
-						)
-					end
-					G.E_MANAGER:add_event(Event({
-						trigger = "before",
-						delay = 0.75,
-						func = function()
-							for k, v in pairs(deletable_cards) do
-								if v ~= card.ability.chosen_card then
-									v.murdered_by_impostor = true
-									v:start_dissolve(nil, _first_dissolve)
-									_first_dissolve = true
-								end
-							end
-							return true
-						end,
-					}))
-				end
-			end
-			if card.ability.chosen_card ~= nil then
+			-- Destroy Cards
+			-- Don't destroy them if they were already destroyed though
+			if not G.GAME.sus_cards then
 				G.E_MANAGER:add_event(Event({
-					trigger = "before",
-					delay = 0.4,
+					trigger = "after",
+					delay = 0.1,
 					func = function()
-						card:juice_up(0.3, 0.4)
-						G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-						local _c = copy_card(card.ability.chosen_card, nil, nil, G.playing_card)
-						_c:start_materialize()
-						_c:add_to_deck()
-						G.deck.config.card_limit = G.deck.config.card_limit + 1
-						table.insert(G.playing_cards, _c)
-						G.hand:emplace(_c)
-						playing_card_joker_effects({ _c })
+						for i = #destroyed_cards, 1, -1 do
+							local aaa = destroyed_cards[i]
+							if SMODS.shatters(aaa) then
+								aaa:shatter()
+							else
+								aaa:start_dissolve(nil, i == #destroyed_cards)
+							end
+						end
 						return true
 					end,
 				}))
-				return { message = localize("cry_sus_ex") }
 			end
+			--Create the copied card
+			G.E_MANAGER:add_event(Event({
+				trigger = "before",
+				delay = 0.4,
+				func = function()
+					card:juice_up(0.3, 0.4)
+					G.playing_card = (G.playing_card or 0) + 1
+					--Prioritize copying King of hearts if there are any, otherwise copy the chosen card
+					local to_copy = (
+						#king_of_hearts_cards > 0 and pseudorandom_element(king_of_hearts_cards, pseudoseed("cry_sus2"))
+					) or chosen_card
+					local _c = copy_card(to_copy, nil, nil, G.playing_card)
+					_c:start_materialize()
+					_c:add_to_deck()
+					G.deck.config.card_limit = G.deck.config.card_limit + 1
+					table.insert(G.playing_cards, _c)
+					G.hand:emplace(_c)
+					playing_card_joker_effects({ _c })
+					return true
+				end,
+			}))
+
+			-- use destroyed cards to Calc card removal effects
+			-- not here though; doing it here would make said effects trigger multiple times
+			if not G.GAME.sus_cards then
+				G.GAME.sus_cards = destroyed_cards
+			end
+			-- SMODS.calculate_context({ remove_playing_cards = true, removed = G.GAME.sus_cards })
+			return { message = localize("cry_sus_ex") }
 		end
 	end,
 	cry_credits = {
@@ -5836,6 +5827,154 @@ local clash = {
 	end,
 	unlocked = false,
 }
+
+local the = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"c_cry_nibiru",
+		},
+	},
+	name = "cry-the",
+	key = "the",
+	order = 121.5,
+	pos = { x = 5, y = 7 },
+	config = {
+		extra = {
+			Xmult = 2,
+			type = "cry_None",
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.Xmult),
+				localize(card.ability.extra.type, "poker_hands"),
+			},
+		}
+	end,
+	atlas = "atlasthree",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	calculate = function(self, card, context)
+		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
+			if context.scoring_name == "cry_None" then
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.Xmult) },
+					}),
+					colour = G.C.RED,
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				}
+			end
+		end
+		if context.forcetrigger then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.Xmult) },
+				}),
+				colour = G.C.RED,
+				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_None"].played > 0 then
+			return true
+		end
+		return false
+	end,
+	check_for_unlock = function(self, args)
+		if args.type == "win" and G.GAME.last_hand_played == "cry_None" then
+			return true
+		end
+	end,
+	unlocked = false,
+	cry_credits = {
+		art = { "MarioFan597" },
+		code = { "lord-ruby" },
+	},
+}
+
+local annihalation = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"c_cry_universe",
+		},
+	},
+	name = "cry-annihalation",
+	key = "annihalation",
+	order = 121.75,
+	pos = { x = 8, y = 7 },
+	config = {
+		extra = {
+			emult = 5.2,
+			type = "cry_WholeDeck",
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.emult),
+				localize(card.ability.extra.type, "poker_hands"),
+			},
+		}
+	end,
+	locked_loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				localize(card.ability.extra.type, "poker_hands"),
+			},
+		}
+	end,
+	atlas = "atlasthree",
+	rarity = 3,
+	cost = 8,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	calculate = function(self, card, context)
+		if context.joker_main and (to_big(card.ability.extra.emult) > to_big(1)) then
+			if next(context.poker_hands["cry_WholeDeck"]) then
+				return {
+					colour = G.C.DARK_EDITION,
+					Emult = lenient_bignum(card.ability.extra.emult),
+				}
+			end
+		end
+		if context.forcetrigger then
+			return {
+				colour = G.C.DARK_EDITION,
+				Emult = lenient_bignum(card.ability.extra.emult),
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_WholeDeck"].played > 0 then
+			return true
+		end
+		return false
+	end,
+	check_for_unlock = function(self, args)
+		if args.type == "win" and G.GAME.last_hand_played == "cry_WholeDeck" then
+			return true
+		end
+	end,
+	unlocked = false,
+	cry_credits = {
+		art = { "luigicat11" },
+		code = { "lord-ruby" },
+	},
+}
+
 local filler = {
 	object_type = "Joker",
 	dependencies = {
@@ -6479,6 +6618,116 @@ local foolhardy = {
 		return false
 	end,
 }
+
+local undefined = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"c_cry_nibiru",
+		},
+	},
+	name = "cry-undefined Joker",
+	key = "undefined",
+	pos = { x = 3, y = 7 },
+	order = 115.5,
+	config = {
+		extra = {
+			t_mult = 5,
+			type = "cry_None",
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.t_mult),
+				localize(card.ability.extra.type, "poker_hands"),
+			},
+		}
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	effect = "Cry Type Mult",
+	cost = 4,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	calculate = function(self, card, context)
+		if (context.joker_main and context.scoring_name == "cry_None") or context.forcetrigger then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_mult",
+					vars = { number_format(card.ability.extra.t_mult) },
+				}),
+				colour = G.C.RED,
+				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_None"].played > 0 then
+			return true
+		end
+		return false
+	end,
+	cry_credits = {
+		art = { "unexian" },
+		code = { "lord-ruby" },
+	},
+}
+
+local wordscanteven = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"c_cry_universe",
+		},
+	},
+	name = "cry-Words Cant Even",
+	key = "words_cant_even",
+	pos = { x = 6, y = 7 },
+	effect = "Cry Type Chips",
+	order = 115.75,
+	config = {
+		extra = {
+			x_mult = 52000000,
+			type = "cry_WholeDeck",
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.x_mult),
+				localize(card.ability.extra.type, "poker_hands"),
+			},
+		}
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	calculate = function(self, card, context)
+		if (context.joker_main and next(context.poker_hands["cry_WholeDeck"])) or context.forcetrigger then
+			return {
+				colour = G.C.RED,
+				xmult = lenient_bignum(card.ability.extra.x_mult),
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_WholeDeck"].played > 0 then
+			return true
+		end
+		return false
+	end,
+	cry_credits = {
+		art = { "luigicat11" },
+		code = { "lord-ruby" },
+	},
+}
+
 local dubious = {
 	object_type = "Joker",
 	dependencies = {
@@ -7075,6 +7324,115 @@ local treacherous = {
 		return false
 	end,
 }
+local nebulous = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"c_cry_nibiru",
+		},
+	},
+	name = "cry-nebulous Joker",
+	key = "nebulous",
+	pos = { x = 4, y = 7 },
+	effect = "Cry Type Chips",
+	order = 118.5,
+	config = {
+		extra = {
+			t_chips = 30,
+			type = "cry_None",
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.t_chips),
+				localize(card.ability.extra.type, "poker_hands"),
+			},
+		}
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	cost = 4,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	calculate = function(self, card, context)
+		if (context.joker_main and context.scoring_name == "cry_None") or context.forcetrigger then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_chips",
+					vars = { number_format(card.ability.extra.t_chips) },
+				}),
+				colour = G.C.BLUE,
+				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_None"].played > 0 then
+			return true
+		end
+		return false
+	end,
+	cry_credits = {
+		art = { "unexian" },
+		code = { "lord-ruby" },
+	},
+}
+
+local manylostminds = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"c_cry_universe",
+		},
+	},
+	name = "cry-Many Lost Minds",
+	key = "many_lost_minds",
+	pos = { x = 7, y = 7 },
+	order = 118.75,
+	config = {
+		extra = {
+			chips = 8.0658175e67, --52!
+			type = "cry_WholeDeck",
+		},
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.chips),
+				localize(card.ability.extra.type, "poker_hands"),
+			},
+		}
+	end,
+	atlas = "atlasthree",
+	rarity = 1,
+	effect = "Cry Type Mult",
+	cost = 4,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	calculate = function(self, card, context)
+		if (context.joker_main and next(context.poker_hands["cry_WholeDeck"])) or context.forcetrigger then
+			return {
+				colour = G.C.BLUE,
+				chips = lenient_bignum(card.ability.extra.chips),
+			}
+		end
+	end,
+	in_pool = function(self)
+		if G.GAME.hands["cry_WholeDeck"].played > 0 then
+			return true
+		end
+		return false
+	end,
+	cry_credits = {
+		art = { "luigicat11" },
+		code = { "lord-ruby" },
+	},
+}
+
 local coin = {
 	object_type = "Joker",
 	dependencies = {
@@ -7229,29 +7587,19 @@ local oldblueprint = {
 	rarity = 1,
 	cost = 6,
 	order = 83,
-	update = function(self, card, front)
-		if G.STAGE == G.STAGES.RUN then
+	blueprint_compat = true,
+	eternal_compat = false,
+	atlas = "atlasthree",
+	loc_vars = function(self, info_queue, card)
+		if card.area and card.area == G.jokers then
+			local other_joker
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					other_joker = G.jokers.cards[i + 1]
 				end
 			end
-			if other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat then
-				card.ability.blueprint_compat = "compatible"
-			else
-				card.ability.blueprint_compat = "incompatible"
-			end
-		end
-	end,
-	loc_vars = function(self, info_queue, card)
-		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ""
-		card.ability.blueprint_compat_check = nil
-		return {
-			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
-			},
-			main_end = (card.area and card.area == G.jokers) and {
+			local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+			main_end = {
 				{
 					n = G.UIT.C,
 					config = { align = "bm", minh = 0.4 },
@@ -7261,17 +7609,18 @@ local oldblueprint = {
 							config = {
 								ref_table = card,
 								align = "m",
-								colour = G.C.JOKER_GREY,
+								colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+									or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
 								r = 0.05,
 								padding = 0.06,
-								func = "blueprint_compat",
 							},
 							nodes = {
 								{
 									n = G.UIT.T,
 									config = {
-										ref_table = card.ability,
-										ref_value = "blueprint_compat_ui",
+										text = " "
+											.. localize("k_" .. (compatible and "compatible" or "incompatible"))
+											.. " ",
 										colour = G.C.UI.TEXT_LIGHT,
 										scale = 0.32 * 0.8,
 									},
@@ -7280,69 +7629,37 @@ local oldblueprint = {
 						},
 					},
 				},
-			} or nil,
+			}
+		end
+		return {
+			vars = {
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+			},
+			main_end = main_end,
 		}
 	end,
-	blueprint_compat = true,
-	eternal_compat = false,
-	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if
-			context.end_of_round2
+			context.end_of_round
+			and context.game_over == false
+			and context.main_eval
+			and not context.blueprint
 			and not context.individual
 			and not context.repetition
-			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			if
-				pseudorandom("oldblueprint")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
-			then
+			if pseudorandom("oldblueprint") < G.GAME.probabilities.normal / card.ability.extra.odds then
 				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("tarot1")
-						card.T.r = -0.2
-						card:juice_up(0.3, 0.4)
-						card.states.drag.is = true
-						card.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card = nil
-								if
-									G.P_CENTERS["j_blueprint"].unlocked
-									and ((G.GAME.oldbpfactor and G.GAME.oldbpfactor < 10) or not G.GAME.oldbpfactor)
-								then
-									G.GAME.oldbpfactor = math.min(((G.GAME.oldbpfactor or 1) * 3), 10)
-								end
-								return true
-							end,
-						}))
-						return true
-					end,
+					card:start_dissolve(),
 				}))
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
-				)
+				return {
+					message = localize("k_extinct_ex"),
+				}
 			else
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_safe_ex"), colour = G.C.FILTER }
-				)
+				return {
+					message = localize("k_safe_ex"),
+				}
 			end
 		end
 		local other_joker = nil
@@ -7351,33 +7668,7 @@ local oldblueprint = {
 				other_joker = G.jokers.cards[i + 1]
 			end
 		end
-		if other_joker and other_joker ~= card then
-			context.blueprint = (context.blueprint and (context.blueprint + 1)) or 1
-			context.blueprint_card = context.blueprint_card or card
-
-			if context.blueprint > #G.jokers.cards + 1 then
-				return
-			end
-
-			local other_joker_ret, trig = other_joker:calculate_joker(context)
-			local eff_card = context.blueprint_card or card
-
-			context.blueprint = nil
-			context.blueprint_card = nil
-
-			if other_joker_ret == true then
-				return other_joker_ret
-			end
-			if other_joker_ret or trig then
-				if not other_joker_ret then
-					other_joker_ret = {}
-				end
-				other_joker_ret.card = eff_card
-				other_joker_ret.colour = darken(G.C.BLUE, 0.3)
-				other_joker_ret.no_callback = true
-				return other_joker_ret
-			end
-		end
+		return SMODS.blueprint_effect(card, other_joker, context)
 	end,
 	cry_credits = {
 		idea = {
@@ -7388,7 +7679,8 @@ local oldblueprint = {
 			"unexian",
 		},
 		code = {
-			"Math",
+			"Math", --original
+			"NaoRiley", --rewrite
 		},
 	},
 }
@@ -7893,24 +8185,29 @@ local flipside = {
 	add_to_deck = function(self, card, from_debuff)
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_double_sided then
-				G.jokers.cards[i]:init_dbl_side()
 				G.jokers.cards[i]:remove_from_deck(true)
-				G.jokers.cards[i].dbl_side:add_to_deck(true)
+				local dummy = G.jokers.cards[i]:get_other_side_dummy()
+				if dummy then
+					Card.add_to_deck(dummy, true)
+				end
 			end
 		end
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_double_sided then
-				G.jokers.cards[i]:init_dbl_side()
 				G.jokers.cards[i]:add_to_deck(true)
-				G.jokers.cards[i].dbl_side:remove_from_deck(true)
+				local dummy = G.jokers.cards[i]:get_other_side_dummy(true)
+				if dummy then
+					dummy.added_to_deck = true
+					Card.remove_from_deck(dummy, true)
+				end
 			end
 		end
 	end,
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if context.other_context and context.other_context.dbl_side then
+			if context.other_context and context.other_card.edition and context.other_card.edition.cry_double_sided then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
@@ -7930,6 +8227,7 @@ local flipside = {
 		},
 		code = {
 			"Math",
+			"lord-ruby",
 		},
 	},
 }
@@ -8049,13 +8347,12 @@ local fractal = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra = math.min(math.floor(card.ability.extra), 1000)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.extra
+		SMODS.change_play_limit(card.ability.extra)
+		SMODS.change_discard_limit(card.ability.extra)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.extra
-		if to_big(G.hand.config.highlighted_limit) < to_big(5) then
-			G.hand.config.highlighted_limit = 5
-		end
+		SMODS.change_play_limit(-1 * card.ability.extra)
+		SMODS.change_discard_limit(-1 * card.ability.extra)
 		if not G.GAME.before_play_buffer then
 			G.hand:unhighlight_all()
 		end
@@ -8512,12 +8809,7 @@ local tropical_smoothie = {
 				if v ~= card then
 					if not Card.no(v, "immutable", true) then
 						Cryptid.with_deck_effects(v, function(cards)
-							Cryptid.misprintize(
-								cards,
-								{ min = card.ability.extra, max = card.ability.extra },
-								nil,
-								true
-							)
+							Cryptid.manipulate(cards, { value = card.ability.extra })
 						end)
 						check = true
 					end
@@ -8895,12 +9187,7 @@ local oil_lamp = { --You want it? It's yours my friend
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
 							check = true
 							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(cards)
-								Cryptid.misprintize(
-									cards,
-									{ min = card.ability.extra.increase, max = card.ability.extra.increase },
-									nil,
-									true
-								)
+								Cryptid.manipulate(cards, { value = card.ability.extra.increase })
 							end)
 						end
 					end
@@ -9024,8 +9311,8 @@ local pity_prize = {
 			end
 			add_tag(tag)
 			if
-				Card.get_gameset(card) == "modest" and (not context.blueprint and not context.retrigger_joker)
-				or context.forcetrigger
+				Card.get_gameset(card) == "modest"
+				and ((not context.blueprint and not context.retrigger_joker) or context.forcetrigger)
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -9297,6 +9584,7 @@ local zooble = {
 	cost = 6,
 	atlas = "atlasone",
 	order = 132,
+	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -9307,7 +9595,7 @@ local zooble = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.before and context.cardarea == G.jokers then
+		if context.before and context.cardarea == G.jokers and not context.blueprint then
 			if not (next(context.poker_hands["Straight"]) or next(context.poker_hands["Straight Flush"])) then
 				local unique_ranks = {}
 				for i, v in pairs(context.scoring_hand) do
@@ -9881,6 +10169,83 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 		end
 	end,
 }
+
+local yarnball = { -- +1 to all listed probabilities for the highest cat tag level
+	cry_credits = {
+		idea = {
+			"Saturn",
+		},
+		art = {
+			"Darren_The_Frog",
+		},
+		code = {
+			"Lily",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"tag_cry_cat",
+		},
+	},
+	name = "cry_yarnball",
+	key = "yarnball",
+	atlas = "atlasthree",
+	pos = { x = 2, y = 7 },
+	rarity = 3,
+	cost = 8,
+	order = 140,
+	demicoloncompat = false,
+	config = { extra = { oddsmod = 1 }, immutable = { lasthighest = 0 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.oddsmod } }
+	end,
+	update = function(self, card, dt)
+		if G.GAME and G.GAME.tags and card.ability then
+			local highest = 0
+			for i, tag in pairs(G.GAME.tags) do
+				local lvl = tag.ability.level
+				if lvl == nil then
+					lvl = 1
+				end
+
+				-- print("trying comparison of " .. tostring(lvl) .. " > " .. tostring(highest))
+				if tag.key == "tag_cry_cat" and lvl > highest then
+					highest = lvl
+					-- get highest cat tag level
+					-- unfortunately this probably causes lag if you have 2763 cat tags but thats your problem not mine
+				end
+			end
+
+			-- print(card.ability.immutable.lasthighest, highest)
+			if highest ~= card.ability.immutable.lasthighest then
+				for k, v in pairs(G.GAME.probabilities) do
+					G.GAME.probabilities[k] = (v - card.ability.immutable.lasthighest) + highest
+					-- im not fully sure on this, but we're having fun :)
+
+					-- i dont even know if you have to iterate through all of them, but this is what oa6 does
+				end
+				card.ability.immutable.lasthighest = highest
+			end
+		end
+	end,
+	in_pool = function(self)
+		local r = false
+		for _, tag in pairs(G.GAME.tags) do
+			if tag.key == "tag_cry_cat" then
+				r = true
+			end
+		end
+		return r
+	end,
+
+	remove_from_deck = function(self, card, from_debuff)
+		for k, v in pairs(G.GAME.probabilities) do
+			G.GAME.probabilities[k] = (v - card.ability.immutable.lasthighest)
+		end
+	end,
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -9985,6 +10350,12 @@ local miscitems = {
 	stronghold,
 	wtf,
 	clash,
+	the,
+	annihalation,
+	undefined,
+	manylostminds,
+	nebulous,
+	wordscanteven,
 	adroit,
 	penetrating,
 	treacherous,
@@ -10000,6 +10371,7 @@ local miscitems = {
 	highfive,
 	sock_and_sock,
 	brokenhome,
+	--yarnball,
 }
 return {
 	name = "Misc. Jokers",

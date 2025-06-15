@@ -327,7 +327,7 @@ local clock = {
 	pos = { x = 0, y = 1 },
 	mult = 0,
 	boss = {
-		min = 1,
+		min = 2,
 		max = 10,
 	},
 	config = {
@@ -351,7 +351,7 @@ local clock = {
 		elseif G.GAME.round == 0 and G.GAME.skips == 0 then
 			return 0
 		else
-			return 0.1 * (dt * math.min(G.SETTINGS.GAMESPEED, 4) / 4) / 3
+			return 0.1 * ((dt * (G.GAME.modifiers.cry_rush_hour_iii or 1)) * math.min(G.SETTINGS.GAMESPEED, 4) / 4) / 3
 		end
 	end,
 }
@@ -864,22 +864,20 @@ local lavender_loop = {
 		G.GAME.cry_ach_conditions.patience_virtue_earnable = nil
 	end,
 	cry_round_base_mod = function(self, dt)
+		local aaa = 4 * (G.GAME.modifiers.cry_rush_hour_iii or 1)
 		if
 			G.GAME.cry_ach_conditions.patience_virtue_timer > 0
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
-				- dt
-					* (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
-					* (G.SETTINGS.paused and 0 or 1)
-					* G.SETTINGS.GAMESPEED
+				- dt * (G.SETTINGS.paused and 0 or 1) * G.SETTINGS.GAMESPEED
 		elseif G.GAME.current_round.hands_played == 0 then
 			G.GAME.cry_ach_conditions.patience_virtue_earnable = true
 		end
 		if G.SETTINGS.paused or G.STATE == G.STATES.HAND_PLAYED then
 			return 1
 		else
-			return 1.25 ^ (dt / (1.5 / math.min(G.SETTINGS.GAMESPEED, 4) * 4))
+			return 1.25 ^ (dt / (1.5 / math.min(G.SETTINGS.GAMESPEED, 4) * aaa))
 		end
 	end,
 }
@@ -958,29 +956,33 @@ local vermillion_virus = {
 	order = 90,
 	boss_colour = HEX("f65d34"),
 	cry_before_play = function(self)
-		if G.jokers.cards[1] then
-			local idx = pseudorandom(pseudoseed("cry_vermillion_virus"), 1, #G.jokers.cards)
-			if G.jokers.cards[idx] then
-				if G.jokers.cards[idx].config.center.immune_to_vermillion then
-					card_eval_status_text(
-						G.jokers.cards[idx],
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ message = localize("k_nope_ex"), colour = G.C.JOKER_GREY }
-					)
-				else
-					_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
-					G.jokers.cards[idx]:start_dissolve()
-					--G.jokers.cards[idx]:remove_from_deck()
-					_card:add_to_deck()
-					_card:start_materialize()
-					G.jokers.cards[idx] = _card
-					_card:set_card_area(G.jokers)
-					G.jokers:set_ranks()
-					G.jokers:align_cards()
+		local eligible_cards = {}
+		local idx
+		--Check for eligible cards (not eternal and not immune)
+		for i = 1, #G.jokers.cards do
+			if not G.jokers.cards[i].config.center.immune_to_vermillion and not G.jokers.cards[i].ability.eternal then
+				eligible_cards[#eligible_cards + 1] = G.jokers.cards[i]
+			end
+		end
+		if #eligible_cards ~= 0 then
+			--Choose 1 eligible card and get the position of it
+			local option = pseudorandom_element(eligible_cards, pseudoseed("cry_vermillion_virus"))
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == option then
+					idx = i
+					break
 				end
+			end
+			if idx and G.jokers.cards[idx] then
+				_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
+				G.jokers.cards[idx]:start_dissolve()
+				--G.jokers.cards[idx]:remove_from_deck()
+				_card:add_to_deck()
+				_card:start_materialize()
+				G.jokers.cards[idx] = _card
+				_card:set_card_area(G.jokers)
+				G.jokers:set_ranks()
+				G.jokers:align_cards()
 			end
 		end
 	end,
@@ -1005,8 +1007,10 @@ local sapphire_stamp = {
 	order = 92,
 	boss_colour = HEX("4057d6"),
 	cry_before_play = function(self)
-		local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
-		G.hand:remove_from_highlighted(G.hand.highlighted[idx])
+		if #G.hand.highlighted > 0 then
+			local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
+			G.hand:remove_from_highlighted(G.hand.highlighted[idx])
+		end
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then

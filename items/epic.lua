@@ -296,35 +296,9 @@ local sync_catalyst = {
 	immutable = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if ((context.joker_main and not context.debuffed_hand) or context.forcetrigger) and hand_chips and mult then
-			local tot = hand_chips + mult
-			if not tot.array or #tot.array < 2 or tot.array[2] < 2 then --below eXeY notation
-				hand_chips = mod_chips(math.floor(tot / 2))
-				mult = mod_mult(math.floor(tot / 2))
-			else
-				if hand_chips > mult then
-					tot = hand_chips
-				else
-					tot = mult
-				end
-				hand_chips = mod_chips(tot)
-				mult = mod_chips(tot)
-			end
-			update_hand_text({ delay = 0 }, { mult = mult, chips = hand_chips })
+		if (context.joker_main and not context.debuffed_hand) or context.forcetrigger then
 			return {
-				message = localize("k_balanced"),
-				colour = { 0.8, 0.45, 0.85, 1 },
-				func = function()
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						func = function()
-							play_sound("gong", 0.94, 0.3)
-							play_sound("gong", 0.94 * 1.5, 0.2)
-							play_sound("tarot1", 1.5)
-							return true
-						end,
-					}))
-				end,
+				balance = true,
 			}
 		end
 	end,
@@ -428,7 +402,11 @@ local canvas = {
 					num_retriggers = num_retriggers + 1
 				end
 			end
-			if card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2 then
+			if
+				card.T
+				and context.other_card.T
+				and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
+			then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = Card.get_gameset(card) ~= "modest" and num_retriggers or math.min(2, num_retriggers),
@@ -1098,36 +1076,28 @@ local oldcandy = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(
-					math.min(
-						center.ability.immutable.max_hand_size_mod,
-						math.max(1, math.floor(center.ability.extra.hand_size))
-					)
+				math.min(
+					center.ability.immutable.max_hand_size_mod,
+					math.max(1, math.floor(center.ability.extra.hand_size))
 				),
 			},
 		}
 	end,
 	rarity = "cry_epic",
 	cost = 9,
+	blueprint_compat = true,
 	eternal_compat = false,
 	demicoloncompat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if (context.selling_self and not context.blueprint) or context.forcetrigger then
+		if context.selling_self or context.forcetrigger then
 			G.hand:change_size(
-				lenient_bignum(
-					math.min(
-						card.ability.immutable.max_hand_size_mod,
-						math.max(1, math.floor(card.ability.extra.hand_size))
-					)
+				math.min(
+					card.ability.immutable.max_hand_size_mod,
+					math.max(1, math.floor(card.ability.extra.hand_size))
 				)
 			)
 			return nil, true
-		end
-	end,
-	add_to_deck = function(self, card, from_debuff)
-		if card.ability.extra.hand_size > card.ability.immutable.max_hand_size_mod then
-			card.ability.extra.hand_size = card.ability.immutable.max_hand_size_mod
 		end
 	end,
 	cry_credits = {

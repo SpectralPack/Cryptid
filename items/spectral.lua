@@ -914,8 +914,30 @@ local conduit = {
 			trigger = "after",
 			delay = 0.15,
 			func = function()
-				highlighted_1:flip()
-				highlighted_2:flip()
+				if not highlighted_1.edition or not highlighted_1.edition.cry_double_sided then
+					highlighted_1:flip()
+				end
+				if not highlighted_2.edition or not highlighted_2.edition.cry_double_sided then
+					highlighted_2:flip()
+				end
+				if highlighted_1.children.flip then
+					highlighted_1.children.flip:remove()
+					highlighted_1.children.flip = nil
+				end
+
+				if highlighted_1.children.merge_ds then
+					highlighted_1.children.merge_ds:remove()
+					highlighted_1.children.merge_ds = nil
+				end
+				if highlighted_2.children.flip then
+					highlighted_2.children.flip:remove()
+					highlighted_2.children.flip = nil
+				end
+
+				if highlighted_2.children.merge_ds then
+					highlighted_2.children.merge_ds:remove()
+					highlighted_2.children.merge_ds = nil
+				end
 				play_sound("card1", percent)
 				highlighted_1:juice_up(0.3, 0.3)
 				highlighted_2:juice_up(0.3, 0.3)
@@ -929,9 +951,14 @@ local conduit = {
 			delay = 0.15,
 			func = function()
 				local one_edition = highlighted_1.edition
-				highlighted_1:flip()
+				if not highlighted_1.edition or not highlighted_1.edition.cry_double_sided then
+					highlighted_1:flip()
+				end
 				highlighted_1:set_edition(highlighted_2.edition)
-				highlighted_2:flip()
+				if not highlighted_2.edition or not highlighted_2.edition.cry_double_sided then
+					highlighted_2:flip()
+				end
+
 				highlighted_2:set_edition(one_edition)
 				play_sound("card1", percent)
 				highlighted_1:juice_up(0.3, 0.3)
@@ -1122,6 +1149,7 @@ local typhoon = {
 	pos = { x = 0, y = 4 },
 	use = function(self, card, area, copier) --Good enough
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_typhoon" })
 		for i = 1, #G.hand.highlighted do
 			local highlighted = G.hand.highlighted[i]
 			G.E_MANAGER:add_event(Event({

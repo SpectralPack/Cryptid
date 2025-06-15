@@ -1331,7 +1331,7 @@ local better_voucher = {
 					G.P_CENTERS[voucher_key],
 					{ bypass_discovery_center = true, bypass_discovery_ui = true }
 				)
-				Cryptid.misprintize(card)
+				Cryptid.manipulate(card)
 				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
 				card:start_materialize()
 				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
