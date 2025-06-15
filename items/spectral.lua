@@ -1181,6 +1181,73 @@ local typhoon = {
 		end
 	end,
 }
+
+local meld = {
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_spectral",
+			"e_cry_double_sided",
+		},
+	},
+	set = "Spectral",
+	name = "cry-Meld",
+	key = "meld",
+	order = 9,
+	pos = { x = 4, y = 4 },
+	config = { extra = 4 },
+	cost = 4,
+	atlas = "atlasnotjokers",
+	can_use = function(self, card)
+		if
+			#G.jokers.highlighted
+				+ #G.hand.highlighted
+				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
+			== 1
+		then
+			if
+				#G.jokers.highlighted == 1
+				and (Card.no(G.jokers.highlighted[1], "dbl") or G.jokers.highlighted[1].edition)
+			then
+				return false
+			end
+			if #G.hand.highlighted == 1 and G.hand.highlighted[1].edition then
+				return false
+			end
+			return true
+		end
+	end,
+	cry_credits = {
+		art = {
+			"George The Rat",
+		},
+		code = {
+			"Math",
+		},
+		jolly = {
+			"Jolly Open Winner",
+			"Axolotolus",
+		},
+	},
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
+	end,
+	use = function(self, card, area, copier)
+		if #G.jokers.highlighted == 1 then
+			G.jokers.highlighted[1]:remove_from_deck(true)
+			G.jokers.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.jokers.highlighted[1]:add_to_deck(true)
+			G.jokers:remove_from_highlighted(G.jokers.highlighted[1])
+		else
+			G.hand.highlighted[1]:set_edition({ cry_double_sided = true })
+			G.hand:remove_from_highlighted(G.hand.highlighted[1])
+		end
+	end,
+	in_pool = function()
+		return G.GAME.used_vouchers.v_cry_double_slit
+	end,
+}
+
 -- Summoning: To Be Moved Into Epic.lua
 -- Destroy a random joker and create an epic joker
 local summoning = {
@@ -1272,6 +1339,7 @@ local spectrals = {
 	adversary,
 	chambered,
 	conduit,
+	meld,
 	summoning, -- to be moved to epic.lua
 	typhoon, -- to be moved to misc.lua
 	white_hole,

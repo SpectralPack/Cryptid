@@ -3962,8 +3962,7 @@ return {
 				name = "Double Slit",
 				text = {
 					"{C:attention}Meld{} can appear",
-					"in the shop and",
-					"Arcana Packs",
+					"in {C:spectral}Spectral{} Packs",
 				},
 			},
 			v_cry_stickyhand = {
