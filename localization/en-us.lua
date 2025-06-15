@@ -2880,7 +2880,7 @@ return {
 				text = {
 					"Sell this card",
 					"to {C:attention}multiply{} values",
-					"of owned jokers by {C:attention}X#1#{}",
+					"of owned Jokers by {C:attention}X#1#{}",
 				},
 			},
 			j_cry_unity = {
@@ -4257,7 +4257,7 @@ return {
 					"When this Joker is {C:cry_code}triggered{},",
 					"trigger {C:cry_code}#1#",
 					"{C:inactive}Not all cards can be triggered this way{}",
-					"{C:inactive}but all jokers can trigger the other{}",
+					"{C:inactive}but all Jokers can trigger the other{}",
 				},
 			},
 			cry_global_sticker = {
