@@ -3854,10 +3854,9 @@ local quantify = {
 		G.GAME.cry_quantify = true
 	end,
 	init = function()
-
 		local love_mousepressedref = love.mousepressed
-		function love.mousepressed(x,y,button,istouch)
-			love_mousepressedref(x,y,button,istouch)
+		function love.mousepressed(x, y, button, istouch)
+			love_mousepressedref(x, y, button, istouch)
 			if G.GAME.cry_quantify and G.CONTROLLER.hovering.target.config then
 				if Cryptid.handle_quantify(G.CONTROLLER.hovering.target) then
 					G.GAME.USING_CODE = nil
@@ -3870,8 +3869,8 @@ local quantify = {
 						scale = 0.8,
 						hold = 2,
 						align = "cm",
-						offset = { x = 0, y = 0},
-						major = G.play
+						offset = { x = 0, y = 0 },
+						major = G.play,
 					})
 				end
 			end
@@ -3883,22 +3882,28 @@ local quantify = {
 			if not ret and not post then
 				if context.joker_main or context.forcetrigger then
 					if self.config.center.key == "c_base" or self.config.center.set == "Enhanced" then
-						local enhancement = eval_card(self, {cardarea=G.play, main_scoring=true, scoring_hand={}})
+						local enhancement =
+							eval_card(self, { cardarea = G.play, main_scoring = true, scoring_hand = {} })
 						local ret2 = {}
 						local ret3 = {}
 						if enhancement then
 							ret2 = enhancement
 						end
-						local hand_enhancement = eval_card(self, {cardarea=G.hand, main_scoring=true, scoring_hand={}})
+						local hand_enhancement =
+							eval_card(self, { cardarea = G.hand, main_scoring = true, scoring_hand = {} })
 						if hand_enhancement then
 							ret3 = hand_enhancement
-						end 
-						for _, tbl in pairs(ret2) do for i, v in pairs(tbl) do
-							SMODS.calculate_individual_effect({[i]=v}, self, i, v, false)
-						end end
-						for _, tbl in pairs(ret3) do for i, v in pairs(tbl) do
-							SMODS.calculate_individual_effect({[i]=v}, self, i, v, false)
-						end end
+						end
+						for _, tbl in pairs(ret2) do
+							for i, v in pairs(tbl) do
+								SMODS.calculate_individual_effect({ [i] = v }, self, i, v, false)
+							end
+						end
+						for _, tbl in pairs(ret3) do
+							for i, v in pairs(tbl) do
+								SMODS.calculate_individual_effect({ [i] = v }, self, i, v, false)
+							end
+						end
 					end
 					if self.config.center.set == "Booster" then
 						local limit = self.ability.extra
@@ -3907,17 +3912,17 @@ local quantify = {
 						local kindmap = {
 							["Standard"] = "Enhanced",
 							["Buffoon"] = "Joker",
-							["Arcana"] = "Tarot"
+							["Arcana"] = "Tarot",
 						}
 						kind = kindmap[kind] or kind
 						if not G.P_CENTER_POOLS[kind] then
 							kind = "Tarot"
 						end
 						for i = 1, G.jokers.config.card_limit - #G.jokers.cards do
-							if to_big(self.ability.choose ) > to_big(0) then
+							if to_big(self.ability.choose) > to_big(0) then
 								self.ability.choose = self.ability.choose - 1
-								local card = self.config.center.create_card and self.config.center:create_card(self) or 
-								create_card(kind, G.Jokers, nil, nil, nil, nil, nil, "cry_quantify_booster")
+								local card = self.config.center.create_card and self.config.center:create_card(self)
+									or create_card(kind, G.Jokers, nil, nil, nil, nil, nil, "cry_quantify_booster")
 								--G.jokers:emplace(card)
 								if to_big(self.ability.choose) <= to_big(0) then
 									self:start_dissolve()
@@ -3934,7 +3939,7 @@ local quantify = {
 			local tbl = {}
 			for i, v in pairs(G.jokers.cards) do
 				if v.base.nominal and v.base.suit then
-					tbl[#tbl+1] = v
+					tbl[#tbl + 1] = v
 				end
 			end
 			return debuff_handref(self, Cryptid.table_merge(cards, tbl), hand, handname, check)
@@ -3944,27 +3949,32 @@ local quantify = {
 				local highlighted = target
 				--removing from jokers just to readd to jokers is pointless
 				if highlighted and highlighted.area ~= G.consumeables or not G.GAME.modifiers.cry_beta then
-					if highlighted.children.price then 
+					if highlighted.children.price then
 						if to_big(G.GAME.dollars - G.GAME.bankrupt_at) < to_big(highlighted.cost) then
 							return
 						end
 						ease_dollars(-highlighted.cost)
-						highlighted.children.price:remove() 
+						highlighted.children.price:remove()
 					end
 					highlighted.area:remove_card(highlighted)
 					highlighted.children.price = nil
-					if highlighted.children.buy_button then highlighted.children.buy_button:remove() end
+					if highlighted.children.buy_button then
+						highlighted.children.buy_button:remove()
+					end
 					highlighted.children.buy_button = nil
 					remove_nils(highlighted.children)
-					G.E_MANAGER:add_event(Event{
-						func = function() highlighted:highlight(); return true end
-					})
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							highlighted:highlight()
+							return true
+						end,
+					}))
 					G.jokers:emplace(highlighted)
 					return true
 				end
 			end
 		end
-	end
+	end,
 	-- use = function(self, card, area, copier)
 
 	-- end,
