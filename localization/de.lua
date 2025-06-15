@@ -286,7 +286,8 @@ return {
 				name = "Die Uhr",
 				text = {
 					"+0.1X Blindgröße für alle",
-					"12 Sekunden, die du in dieser Ante verbringst.",
+					"12 Sekunden, die du in dieser Ante verbringst,",
+					"multipliziert mit Spielgeschwindigkeit",
 				},
 			},
 			bl_cry_hammer = {
@@ -299,8 +300,8 @@ return {
 			bl_cry_joke = {
 				name = "Der Witz",
 				text = {
-					"Wenn deine Chips mehr als 2x die benötigten sind,",
-					"setze die Ante zu einer Mehrzahl von #1#",
+					"Wenn deine Chips 2x mehr als benötigt sind,",
+					"setze die Ante auf #1#",
 				},
 			},
 			bl_cry_magic = {
@@ -314,7 +315,8 @@ return {
 				name = "Lavendelschleife",
 				text = {
 					"1.25X Blindgröße für alle",
-					"6 Sekunden, die du in dieser Runde verbringst",
+					"6 Sekunden, die du in dieser Runde verbringst,",
+					"multipliziert mit Spielgeschwindigkeit"
 				},
 			},
 			bl_cry_obsidian_orb = {
@@ -327,7 +329,7 @@ return {
 			bl_cry_oldarm = {
 				name = "Nostalgischer Arm",
 				text = {
-					"Du musst 4 oder weniger",
+					"Muss 4 oder weniger",
 					"Karten spielen",
 				},
 			},
@@ -373,63 +375,79 @@ return {
 			bl_cry_oldpillar = {
 				name = "Nostalgische Säule",
 				text = {
-					"Keine Straßen",
+					"Keine Straights",
 				},
 			},
 			bl_cry_oldserpent = {
 				name = "Nostalgische Schlange",
 				text = {
-					"Dividiere Mult durch das Level",
+					"Dividiere Mult durch Level",
 					"der gespielten Pokerhand",
 				},
 			},
 			bl_cry_pin = {
 				name = "Die Stecknadel",
 				text = {
-					"Joker mit epischer oder höherer",
-					"Seltenheit sind geschwächt.",
+					"Joker mit Epischer oder höherer",
+					"Seltenheit sind geschwächt",
 				},
 			},
+			bl_cry_scorch = {
+				name = "Der Brandfleck",
+				text = {
+					"Muss 5 Karten spielen,",
+					"zerstöre alle gespielten",
+					"und abgeworfenen Karten",
+				},
+			},
+			bl_cry_greed = {
+				name = "Die Gier",
+				text = {
+					"+#2# Blindgröße",
+					"pro $#1# wenn ausgewählt",
+ 				},
+ 			},
 			bl_cry_pinkbow = {
 				name = "Pinke Schleife",
 				text = {
 					"Rang der Karten in der Hand",
-					"werden beim Spielen einer Hand verzufälligt",
+					"werden beim Spielen einer Hand zufällig",
 				},
 			},
 			bl_cry_sapphire_stamp = {
 				name = "Saphirstempel",
 				text = {
-					"Du kannst eine weitere Karte auswählen, vor der",
-					"Auswertung wird die Auswahl einer zufälligen Karte aufgehoben",
+					"Wähle eine weitere Karte aus,",
+					"vor Auswertung wird eine",
+					"zufällige Karte abgewählt",
 				},
 			},
 			bl_cry_shackle = {
 				name = "Die Schelle",
 				text = {
-					"Alle negativen Joker",
+					"Alle Negativen Joker",
 					"sind geschwächt",
 				},
 			},
 			bl_cry_striker = {
 				name = "Der Stürmer",
 				text = {
-					"Alle seltenen Joker",
+					"Alle Seltenen Joker",
 					"sind geschwächt",
 				},
 			},
 			bl_cry_tax = {
 				name = "Die Steuer",
 				text = {
-					"Wert einer Hand kann nicht",
-					"mehr als 0.4 Mal das benötigte sein",
+					"Punktzahl einer Hand",
+					"begrenzt auf #1#",
 				},
 			},
 			bl_cry_tornado = {
 				name = "Türkiser Tornado",
 				text = {
 					"Chance von #1# zu #2#, dass",
-					"die gespielte Hand nicht gewertet wird",
+					"gespielte Hand nicht gewertet wird",
 				},
 			},
 			bl_cry_trick = {
@@ -439,6 +457,13 @@ return {
 					"mit dem Gesicht oben in der Hand um",
 				},
 			},
+			bl_cry_trophy = {
+				name = "Lemon Trophy",
+				text = {
+					"Mult kann nicht größer",
+					"sein als Chips",
+ 				},
+ 			},
 			bl_cry_vermillion_virus = {
 				name = "Zinnober Virus",
 				text = {
@@ -449,10 +474,18 @@ return {
 			bl_cry_windmill = {
 				name = "Die Windmühle",
 				text = {
-					"Alle ungewöhnlichen Joker",
+					"Alle Ungewöhnlichen Joker",
 					"sind geschwächt",
 				},
 			},
+			bl_cry_decision = {
+				name = "The Decision",
+				text = {
+					"Fixire Joker beim Spielen oder Abwerfen",
+					"Öffne ein Unheilvoller Clown",
+					"Paket nach der Runde",
+ 				},
+ 			},
 		},
 		Code = {
 			c_cry_class = {
