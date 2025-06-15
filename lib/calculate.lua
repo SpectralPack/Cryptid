@@ -3,6 +3,14 @@
 -- deal with Rigged and Fragile when scoring a playing card
 local ec = eval_card
 function eval_card(card, context)
+	if not card then
+		card = {
+			ability = {},
+			can_calculate = function()
+				return false
+			end,
+		}
+	end
 	if card.will_shatter then
 		return {}, {}
 	end
@@ -306,6 +314,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 						or not orig_ability[dbl_info.base[info_i][1]]
 						or type(orig_ability[dbl_info.base[info_i][1]]) ~= "table"
 						or not orig_ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]
+						or type(orig_ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]) == "string"
 					)
 				then
 					orig_scale_base = orig_ability[dbl_info.base[info_i][1]][dbl_info.base[info_i][2]]
@@ -572,17 +581,21 @@ function Card:calculate_joker(context)
 		and self.edition
 		and self.edition.cry_double_sided
 	then
-		self:init_dbl_side()
-		active_side = self.dbl_side
-		if context.callback then
-			local m = context.callback
-			context.callback = function(card, a, b)
-				m(self, a, b)
+		local dummy = self:get_other_side_dummy()
+		if dummy then
+			active_side = dummy
+			if context.callback then
+				local m = context.callback
+				context.callback = function(card, a, b)
+					m(self, a, b)
+				end
+				context.dbl_side = true
 			end
-			context.dbl_side = true
+		else
+			return
 		end
 	end
-	if active_side.will_shatter then
+	if not active_side or active_side.will_shatter then
 		return
 	end
 	local ggpn = G.GAME.probabilities.normal
@@ -592,7 +605,7 @@ function Card:calculate_joker(context)
 	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = 1e9
 	end
-	local orig_ability = active_side:cry_copy_ability()
+	local orig_ability = copy_table(active_side.ability)
 	local in_context_scaling = false
 	local callback = context.callback
 	if active_side.ability.cry_possessed then
@@ -672,10 +685,7 @@ function Card:calculate_joker(context)
 	if active_side.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
 	end
-	if
-		(next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")))
-		or (active_side.ability.name == "cry-Exponentia" or "cry-Compound Interest")
-	then
+	if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) then
 		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
 	end
 	return ret, trig

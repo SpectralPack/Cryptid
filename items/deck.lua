@@ -119,13 +119,22 @@ local infinite = {
 	name = "cry-Infinite",
 	key = "infinite",
 	order = 2,
-	config = { cry_highlight_limit = 1e20, hand_size = 1 },
+	config = { hand_size = 1 },
 	pos = { x = 3, y = 0 },
 	atlas = "atlasdeck",
-	apply = function(self)
-		G.GAME.modifiers.cry_highlight_limit = self.config.cry_highlight_limit
-	end,
 	unlocked = false,
+	apply = function(self)
+		G.GAME.infinitedeck = true
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.7,
+			func = function()
+				SMODS.change_play_limit(1e6)
+				SMODS.change_discard_limit(1e6)
+				return true
+			end,
+		}))
+	end,
 	check_for_unlock = function(self, args)
 		if args.type == "hand_contents" then
 			if #args.cards >= 6 then
@@ -525,7 +534,7 @@ local glowing = {
 			for i = 1, #G.jokers.cards do
 				if not Card.no(G.jokers.cards[i], "immutable", true) then
 					Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-						Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
+						Cryptid.manipulate(card, { value = 1.25 })
 					end)
 				end
 			end
@@ -854,7 +863,16 @@ local antimatter = {
 					~= 0
 				or skip
 			then
-				G.GAME.modifiers.cry_highlight_limit = 1e20
+				G.GAME.infinitedeck = true
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.7,
+					func = function()
+						SMODS.change_play_limit(1e6)
+						SMODS.change_discard_limit(1e6)
+						return true
+					end,
+				}))
 				G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + 1
 			end
 			-- Wormhole deck
@@ -1063,7 +1081,7 @@ local antimatter = {
 				then
 					for i = 1, #G.jokers.cards do
 						Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-							Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
+							Cryptid.manipulate(card, { value = 1.25 })
 						end)
 					end
 				end

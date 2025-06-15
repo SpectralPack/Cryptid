@@ -1,5 +1,3 @@
---Move all the stuff in here into atlasdeck.png later
---Also a lot of the edition decks have wrong proportions so those also need to get fixed
 local atlasedition = {
 	object_type = "Atlas",
 	key = "atlaseditiondeck",
@@ -335,10 +333,62 @@ return {
 
 			if
 				center
-				and center.name
-					== ("Fortune Teller" or "Shoot the Moon" or "Riff-raff" or "Chaos the Clown" or "Dusk" or "Mime" or "Hack" or "Sock and Buskin" or "Invisible Joker" or "Swashbuckler" or "Smeared Joker" or "Certificate" or "Mr. Bones" or "Diet Cola" or "Luchador" or "Midas Mask" or "Shortcut" or "Seance" or "Superposition" or "Sixth Sense" or "DNA" or "Splash" or "Supernova" or "Pareidolia" or "Raised Fist" or "Marble Joker" or "Four Fingers" or "Joker Stencil" or "Showman" or "Blueprint" or "Oops! All 6s" or "Brainstorm" or "Cartomancer" or "Astronomer" or "Burnt Joker" or "Chicot" or "Perkeo")
+				and (
+					center.name == "Fortune Teller"
+					or center.name == "Shoot the Moon"
+					or center.name == "Riff-raff"
+					or center.name == "Chaos the Clown"
+					or center.name == "Dusk"
+					or center.name == "Mime"
+					or center.name == "Hack"
+					or center.name == "Sock and Buskin"
+					or center.name == "Invisible Joker"
+					or center.name == "Swashbuckler"
+					or center.name == "Smeared Joker"
+					or center.name == "Certificate"
+					or center.name == "Mr. Bones"
+					or center.name == "Diet Cola"
+					or center.name == "Luchador"
+					or center.name == "Midas Mask"
+					or center.name == "Shortcut"
+					or center.name == "Seance"
+					or center.name == "Superposition"
+					or center.name == "Sixth Sense"
+					or center.name == "DNA"
+					or center.name == "Splash"
+					or center.name == "Supernova"
+					or center.name == "Pareidolia"
+					or center.name == "Raised Fist"
+					or center.name == "Marble Joker"
+					or center.name == "Four Fingers"
+					or center.name == "Joker Stencil"
+					or center.name == "Showman"
+					or center.name == "Blueprint"
+					or center.name == "Oops! All 6s"
+					or center.name == "Brainstorm"
+					or center.name == "Cartomancer"
+					or center.name == "Astronomer"
+					or center.name == "Burnt Joker"
+					or center.name == "Chicot"
+					or center.name == "Perkeo"
+				)
 			then
 				self.config.center.immutable = true
+			end
+			G.P_CENTERS.j_hanging_chad.misprintize_caps = { extra = 40 }
+			G.P_CENTERS.c_high_priestess.misprintize_caps = { planets = 100 }
+			G.P_CENTERS.c_emperor.misprintize_caps = { tarots = 100 }
+			if G.P_CENTERS.c_cry_automaton then
+				G.P_CENTERS.c_cry_automaton.misprintize_caps = { create = 100 }
+			end
+			G.P_CENTERS.c_familiar.misprintize_caps = { extra = 100 }
+			G.P_CENTERS.c_grim.misprintize_caps = { extra = 100 }
+			G.P_CENTERS.c_incantation.misprintize_caps = { extra = 100 }
+			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
+			G.P_CENTERS.c_cryptid.misprintize_caps = { extra = 100, max_highlighted = 100 }
+			G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
+			if G.P_CENTERS.c_cry_chambered then
+				G.P_CENTERS.c_cry_chambered.misprintize_caps = { extra = { num_copies = 100 } }
 			end
 			if Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
 				return sa(
@@ -391,8 +441,9 @@ return {
 					and (Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") and (self.back == "viewed_back" or self.edeck_select))
 			then
 				if not G.cry_edeck_select then
-					Cryptid.enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center)
+					Cryptid.enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center, 1)
 					G.cry_edeck_select = true
+					G.cry_edeck_center = Galdur and self.config.center or G.GAME.viewed_back.effect.center
 				else
 					if self.edeck_select then
 						G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] =
@@ -402,10 +453,12 @@ return {
 						definition = G.UIDEF.run_setup("main_menu_play"),
 					})
 					G.cry_edeck_select = nil
+					G.cry_edeck_center = nil
 				end
 			end
 		end
-		function Cryptid.enhancement_config_UI(center)
+		function Cryptid.enhancement_config_UI(center, actual_page)
+			local count_per_page = 6
 			if not center.edeck_type then
 				return
 			end
@@ -434,18 +487,30 @@ return {
 				seal = G.P_SEALS,
 			}
 			local editions = {}
-			for _, v in pairs(pool_table[center.edeck_type]) do
+			for i, v in pairs(pool_table[center.edeck_type]) do
 				if v.key ~= "e_base" and not v.no_edeck then
-					editions[#editions + 1] = (center.edeck_type == "edition" and v.key:sub(3)) or v.key
+					editions[#editions + 1] =
+						{ index = i, center = (center.edeck_type == "edition" and v.key:sub(3)) or v.key }
 				end
 			end
-
-			for i = 1, #editions do
+			local page = (actual_page and actual_page * count_per_page or count_per_page) - (count_per_page - 1)
+			local max_pages = math.floor(#editions / count_per_page)
+			if max_pages * count_per_page < #editions then --idk why this is needed but it is
+				max_pages = max_pages + 1
+			end
+			local modification_options = {}
+			for i = 1, max_pages do
+				table.insert(
+					modification_options,
+					localize("k_page") .. " " .. tostring(i) .. "/" .. tostring(max_pages)
+				)
+			end
+			for i = page, math.min(page + count_per_page - 1, #editions) do
 				local _center = Cryptid.deep_copy(center)
-				_center.config["cry_force_" .. center.edeck_type] = editions[i]
+				_center.config["cry_force_" .. center.edeck_type] = editions[i].center
 				Cryptid.edeck_atlas_update(_center)
 				local card = Cryptid.generic_card(_center)
-				card.edeck_select = editions[i]
+				card.edeck_select = editions[i].center
 				G.your_collection[1]:emplace(card)
 			end
 
@@ -461,11 +526,30 @@ return {
 						config = { align = "cm", minw = 2.5, padding = 0.1, r = 0.1, colour = G.C.BLACK, emboss = 0.05 },
 						nodes = { deck_tables },
 					},
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+							create_option_cycle({
+								options = modification_options,
+								w = 4.5,
+								cycle_shoulders = true,
+								opt_callback = "edeck_page",
+								current_option = actual_page,
+								colour = G.C.RED,
+								no_pips = true,
+								focus_args = { snap_to = true, nav = "wide" },
+							}),
+						},
+					},
 				},
 			})
 			G.FUNCS.overlay_menu({
 				definition = t,
 			})
+		end
+		G.FUNCS.edeck_page = function(args)
+			Cryptid.enhancement_config_UI(G.cry_edeck_center, args.cycle_config.current_option)
 		end
 	end,
 	items = { e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasedition },

@@ -77,4 +77,204 @@ check_for_unlock({ type = "lose_to_specific_blind", blind = cry_defeated_by, amo
 '''
 match_indent = true
 
+# ReAdd pre-cash context for "the decision", to force open a booster when round ends
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.STATE = G.STATES.ROUND_EVAL
+                        G.STATE_COMPLETE = false'''
+position = "before"
+payload = '''
+if G.GAME.blind.config.blind.cry_before_cash and not G.GAME.blind.disabled then
+	G.GAME.blind:cry_before_cash()
+else
+G.GAME.cry_make_a_decision = nil
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.STATE = G.STATES.ROUND_EVAL
+                        G.STATE_COMPLETE = false'''
+position = "after"
+payload = '''
+end
+'''
+match_indent = true
+
+## Always be able to add cursed Jokers
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''if card.ability.set ~= 'Joker' or #G.jokers.cards < G.jokers.config.card_limit + card_limit then
+        e.config.colour = G.C.GREEN
+        e.config.button = 'use_card''''
+position = "after"
+payload = '''
+elseif card.ability.set == 'Joker' and card.config.center.rarity == "cry_cursed" then
+        e.config.colour = G.C.GREEN
+        e.config.button = 'use_card'
+'''
+match_indent = true
+
+## Get back into blind and complete it after using a pack
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2*delayfac,
+          func = function()
+            save_run()
+            return true
+      end}))'''
+position = "at"
+payload = '''
+G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.2*delayfac,
+      func = function()
+      if G.GAME.cry_make_a_decision then
+            G.GAME.cry_make_a_decision = nil
+            G.STATE = G.STATES.ROUND_EVAL
+            G.STATE_COMPLETE = false
+      else
+            save_run()
+      end
+      
+      return true
+end}))
+
+'''
+match_indent = true
+
+## Do not trigger booster pack tags after ending the baneful pack, otherwise it will be awkward
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''for i = 1, #G.GAME.tags do
+        if G.GAME.tags[i]:apply_to_run({type = 'new_blind_choice'}) then break end
+      end'''
+position = "at"
+payload = '''
+for i = 1, #G.GAME.tags do
+	if not G.GAME.cry_make_a_decision then
+		if G.GAME.tags[i]:apply_to_run({type = 'new_blind_choice'}) then break end
+	end
+end
+'''
+match_indent = true
+
+##Part 1 of below:
+[[patches]]
+[patches.pattern]
+target = '''functions/misc_functions.lua'''
+pattern = '''--Control the music here'''
+position = "before"
+payload = '''
+local disable_booster_music = false
+local obj = SMODS.OPENED_BOOSTER
+if obj and obj.config and obj.config.center and obj.config.center.no_music then
+	disable_booster_music = true
+end
+'''
+match_indent = true
+
+## Force music to be Boss Blind music while in baneful pack
+[[patches]]
+[patches.pattern]
+target = '''functions/misc_functions.lua'''
+pattern = '''(G.booster_pack and not G.booster_pack.REMOVED and 'music2') or'''
+position = "at"
+payload = '''(G.booster_pack and not G.booster_pack.REMOVED and not disable_booster_music and 'music2') or'''
+match_indent = true
+
+## If selling luchador inside the baneful buffoon pack and the blind is active, automatically skip it without penalty
+[[patches]]
+[patches.pattern]
+target = '''blind.lua'''
+pattern = '''G.STATE = G.STATES.NEW_ROUND
+            G.STATE_COMPLETE = false'''
+position = "before"
+payload = '''
+
+if G.GAME.cry_make_a_decision and G.STATE == G.STATES.SMODS_BOOSTER_OPENED then
+	SMODS.calculate_context({skipping_booster = true, booster = booster_obj})
+    booster_obj = nil
+	G.FUNCS.end_consumeable()
+else
+'''
+match_indent = true
+##Wrapper of above
+[[patches]]
+[patches.pattern]
+target = '''blind.lua'''
+pattern = '''G.STATE = G.STATES.NEW_ROUND
+            G.STATE_COMPLETE = false'''
+position = "after"
+payload = '''
+end
+'''
+match_indent = true
+
+## If rarity is cursed and no more jokers remain, always spawn Monopoly Money
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''elseif _type == 'Planet' then _pool[#_pool + 1] = "c_pluto"'''
+position = "before"
+payload = '''
+elseif _type == 'Joker' and _rarity == 'cry_cursed' then _pool[#_pool + 1] = "j_cry_monopoly_money"
+'''
+match_indent = true
+
+## In the rare event you have mr bones at hand, also force close
+[[patches]]
+[patches.pattern]
+target = '''blind.lua'''
+pattern = '''self:set_text()
+    self:wiggle()'''
+position = "before"
+payload = '''
+--Function to check if less than size and if they are SAVED.
+G.E_MANAGER:add_event(Event({
+      trigger = 'immediate',
+      func = function()
+      if self.boss and to_big(G.GAME.chips) - G.GAME.blind.chips < to_big(0) and SMODS.saved then
+            if G.GAME.cry_make_a_decision and G.STATE == G.STATES.SMODS_BOOSTER_OPENED then
+                  SMODS.calculate_context({skipping_booster = true, booster = booster_obj})
+                  booster_obj = nil
+                  G.FUNCS.end_consumeable()
+            end
+      end
+      return true
+end
+}))
+'''
+match_indent = true
+
+## Baneful warning
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''G.CONTROLLER.interrupt.focus = true'''
+position = "after"
+payload = '''
+if SMODS.OPENED_BOOSTER.config.center.cry_baneful_punishment then
+G.E_MANAGER:add_event(Event({
+      trigger = 'before',
+      func = function()
+            attention_text({
+                  scale = 0.8,
+                  text = localize("cry_baneful_warning"),
+                  hold = 12,
+                  align = "cm",
+                  offset = { x = 0, y = -2.7 },
+                  major = G.play,
+            })
+            return true
+      end,
+}))
+end
+'''
+match_indent = true
 

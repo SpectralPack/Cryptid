@@ -249,7 +249,7 @@ local tax = {
 	key = "tax",
 	pos = { x = 0, y = 0 },
 	boss = {
-		min = 1,
+		min = 2,
 		max = 10,
 	},
 	atlas = "blinds",
@@ -327,7 +327,7 @@ local clock = {
 	pos = { x = 0, y = 1 },
 	mult = 0,
 	boss = {
-		min = 1,
+		min = 2,
 		max = 10,
 	},
 	config = {
@@ -348,8 +348,10 @@ local clock = {
 	cry_ante_base_mod = function(self, dt)
 		if G.SETTINGS.paused then
 			return 0
+		elseif G.GAME.round == 0 and G.GAME.skips == 0 then
+			return 0
 		else
-			return 0.1 * (dt * math.min(G.SETTINGS.GAMESPEED, 4) / 4) / 3
+			return 0.1 * ((dt * (G.GAME.modifiers.cry_rush_hour_iii or 1)) * math.min(G.SETTINGS.GAMESPEED, 4) / 4) / 3
 		end
 	end,
 }
@@ -457,6 +459,7 @@ local hammer = {
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
 				not SMODS.has_no_rank(card)
+				and not SMODS.has_enhancement(card, "m_cry_abstract")
 				and (
 					card.base.value == "3"
 					or card.base.value == "5"
@@ -492,6 +495,7 @@ local magic = {
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
 				not SMODS.has_no_rank(card)
+				and not SMODS.has_enhancement(card, "m_cry_abstract")
 				and (
 					card.base.value == "2"
 					or card.base.value == "4"
@@ -617,10 +621,9 @@ local pin = {
 			(card.area == G.jokers)
 			and not G.GAME.blind.disabled
 			and (
-				card.config.center.rarity ~= 3
-				and card.config.center.rarity ~= 2
-				and card.config.center.rarity ~= 1
-				and card.config.center.rarity ~= 5
+				card.config.center.rarity == 4
+				or card.config.center.rarity == "cry_epic"
+				or card.config.center.rarity == "cry_exotic"
 			)
 		then
 			return true
@@ -640,7 +643,7 @@ local scorch = {
 	object_type = "Blind",
 	name = "cry-scorch",
 	key = "scorch",
-	pos = { x = 0, y = 18 }, -- use Trick as placeholder icon
+	pos = { x = 0, y = 18 },
 	boss = {
 		min = 1,
 		max = 10,
@@ -673,6 +676,159 @@ local scorch = {
 		else
 			return false
 		end
+	end,
+}
+-- +0.25X blind requirements
+-- for every $5 you have when selected
+local greed = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	config = {
+		money_factor = 5,
+		blind_mod = 0.25,
+		max_scale = 5000,
+	},
+	object_type = "Blind",
+	name = "cry-greed",
+	key = "greed",
+	pos = { x = 0, y = 19 }, -- use Tax as placeholder icon
+	boss = {
+		min = 1,
+		max = 10,
+	},
+	atlas = "blinds",
+	order = 22,
+	boss_colour = HEX("C19030"),
+	mult = 1,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(5),
+				number_format(lenient_bignum((get_blind_amount(G.GAME.round_resets.ante) * 0.25))),
+			},
+		}
+	end,
+	collection_loc_vars = function(self)
+		return {
+			vars = {
+				number_format(5),
+				"(" .. number_format(0.25) .. "X base)",
+			},
+		}
+	end,
+	set_blind = function(self, reset, silent)
+		if to_big(G.GAME.dollars) < to_big(5000) then
+			G.GAME.blind.chips = -- go my equations
+				((get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling) + (math.floor(
+					G.GAME.dollars / 5
+				) * (get_blind_amount(G.GAME.round_resets.ante) * 0.25)))
+		else
+			G.GAME.blind.chips = -- set cap at $5000
+				(
+					(get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling)
+					+ (
+						math.floor(5000 / 5) -- 1000 extra increments
+						* (get_blind_amount(G.GAME.round_resets.ante) * 0.25)
+					)
+				)
+		end
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+	end,
+	disable = function(self, silent)
+		G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+	end,
+}
+--Fasten all jokers after hand or discard
+--After defeat, open a baneful buffoon pack containing:
+---4 cursed jokers (can overflow)
+---a "unique consumeable" that will banish the rightmost joker
+--Only after that, are jokers unfastened
+local decision = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+			"set_cry_cursed",
+		},
+	},
+	mult = 2,
+	object_type = "Blind",
+	name = "cry-Decision",
+	key = "decision",
+	pos = { x = 0, y = 20 },
+	dollars = 5,
+	boss = {
+		min = 4,
+		max = 666666,
+	},
+	atlas = "blinds",
+	order = 22,
+	boss_colour = HEX("474931"),
+	get_loc_debuff_text = function(self)
+		return localize("cry_blind_baneful_pack")
+	end,
+	calculate = function(self, blind, context)
+		if context.discard and not G.GAME.blind.disabled and not G.GAME.cry_fastened then
+			--visual cue to wiggle all jokers
+			G.GAME.cry_fastened = true
+			if G.jokers.cards then
+				G.GAME.blind:wiggle()
+				G.GAME.blind.triggered = true
+				for i, v in pairs(G.jokers.cards) do
+					v:juice_up(0, 0.25)
+				end
+			end
+		end
+	end,
+	cry_before_play = function(self)
+		if not G.GAME.blind.disabled and not G.GAME.cry_fastened then
+			--visual cue to wiggle all jokers
+			G.GAME.cry_fastened = true
+			if G.jokers.cards then
+				G.GAME.blind:wiggle()
+				G.GAME.blind.triggered = true
+				for i, v in pairs(G.jokers.cards) do
+					v:juice_up(0, 0.25)
+				end
+			end
+		end
+	end,
+	cry_before_cash = function(self)
+		--Always fasten if before cash context (gaming chair, debug mode)
+		G.GAME.cry_fastened = true
+		G.GAME.blind:wiggle()
+		G.GAME.blind.triggered = true
+		G.GAME.cry_make_a_decision = true
+		G.E_MANAGER:add_event(Event({
+			trigger = "before",
+			func = function()
+				local key = "p_cry_baneful_1"
+				local card = Card(
+					G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
+					G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
+					G.CARD_W * 1.27,
+					G.CARD_H * 1.27,
+					G.P_CARDS.empty,
+					G.P_CENTERS[key],
+					{ bypass_discovery_center = true, bypass_discovery_ui = true }
+				)
+				card.cost = 0
+				card.from_tag = true
+				G.FUNCS.use_card({ config = { ref_table = card } })
+				card:start_materialize()
+				pack_opened = true
+				return true
+			end,
+		}))
+	end,
+	disable = function(self, silent)
+		G.GAME.cry_fastened = nil
+	end,
+	defeat = function(self, silent)
+		G.GAME.cry_fastened = nil
 	end,
 }
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
@@ -708,22 +864,20 @@ local lavender_loop = {
 		G.GAME.cry_ach_conditions.patience_virtue_earnable = nil
 	end,
 	cry_round_base_mod = function(self, dt)
+		local aaa = 4 * (G.GAME.modifiers.cry_rush_hour_iii or 1)
 		if
 			G.GAME.cry_ach_conditions.patience_virtue_timer > 0
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
-				- dt
-					* (G.GAME.modifiers.cry_rush_hour_iii and 0.5 or 1)
-					* (G.SETTINGS.paused and 0 or 1)
-					* G.SETTINGS.GAMESPEED
+				- dt * (G.SETTINGS.paused and 0 or 1) * G.SETTINGS.GAMESPEED
 		elseif G.GAME.current_round.hands_played == 0 then
 			G.GAME.cry_ach_conditions.patience_virtue_earnable = true
 		end
 		if G.SETTINGS.paused or G.STATE == G.STATES.HAND_PLAYED then
 			return 1
 		else
-			return 1.25 ^ (dt / (1.5 / math.min(G.SETTINGS.GAMESPEED, 4) * 4))
+			return 1.25 ^ (dt / (1.5 / math.min(G.SETTINGS.GAMESPEED, 4) * aaa))
 		end
 	end,
 }
@@ -802,28 +956,33 @@ local vermillion_virus = {
 	order = 90,
 	boss_colour = HEX("f65d34"),
 	cry_before_play = function(self)
-		if G.jokers.cards[1] then
-			local idx = pseudorandom(pseudoseed("cry_vermillion_virus"), 1, #G.jokers.cards)
-			if G.jokers.cards[idx] then
-				if G.jokers.cards[idx].config.center.immune_to_vermillion then
-					card_eval_status_text(
-						G.jokers.cards[idx],
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ message = localize("k_nope_ex"), colour = G.C.JOKER_GREY }
-					)
-				else
-					_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
-					G.jokers.cards[idx]:remove_from_deck()
-					_card:add_to_deck()
-					_card:start_materialize()
-					G.jokers.cards[idx] = _card
-					_card:set_card_area(G.jokers)
-					G.jokers:set_ranks()
-					G.jokers:align_cards()
+		local eligible_cards = {}
+		local idx
+		--Check for eligible cards (not eternal and not immune)
+		for i = 1, #G.jokers.cards do
+			if not G.jokers.cards[i].config.center.immune_to_vermillion and not G.jokers.cards[i].ability.eternal then
+				eligible_cards[#eligible_cards + 1] = G.jokers.cards[i]
+			end
+		end
+		if #eligible_cards ~= 0 then
+			--Choose 1 eligible card and get the position of it
+			local option = pseudorandom_element(eligible_cards, pseudoseed("cry_vermillion_virus"))
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == option then
+					idx = i
+					break
 				end
+			end
+			if idx and G.jokers.cards[idx] then
+				_card = create_card("Joker", G.jokers, nil, nil, nil, nil, nil, "cry_vermillion_virus_gen")
+				G.jokers.cards[idx]:start_dissolve()
+				--G.jokers.cards[idx]:remove_from_deck()
+				_card:add_to_deck()
+				_card:start_materialize()
+				G.jokers.cards[idx] = _card
+				_card:set_card_area(G.jokers)
+				G.jokers:set_ranks()
+				G.jokers:align_cards()
 			end
 		end
 	end,
@@ -848,8 +1007,10 @@ local sapphire_stamp = {
 	order = 92,
 	boss_colour = HEX("4057d6"),
 	cry_before_play = function(self)
-		local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
-		G.hand:remove_from_highlighted(G.hand.highlighted[idx])
+		if #G.hand.highlighted > 0 then
+			local idx = pseudorandom(pseudoseed("cry_sapphire_stamp"), 1, #G.hand.highlighted)
+			G.hand:remove_from_highlighted(G.hand.highlighted[idx])
+		end
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
@@ -1348,6 +1509,21 @@ local obsidian_orb = {
 			end
 		end
 	end,
+	cry_before_cash = function(self)
+		local decision_made = false
+		for k, _ in pairs(G.GAME.defeated_blinds) do
+			s = G.P_BLINDS[k]
+			if s.cry_before_cash then
+				decision_made = true
+				s:cry_before_cash()
+			end
+		end
+		if not decision_made then
+			G.GAME.cry_make_a_decision = nil
+			G.STATE = G.STATES.ROUND_EVAL
+			G.STATE_COMPLETE = false
+		end
+	end,
 	get_loc_debuff_text = function(self)
 		if not G.GAME.blind.debuff_boss then
 			return localize("cry_debuff_obsidian_orb")
@@ -1406,6 +1582,7 @@ local trophy = {
 		end
 	end,
 }
+
 local items_togo = {
 	oldox,
 	oldhouse,
@@ -1427,6 +1604,7 @@ local items_togo = {
 	shackle,
 	pin,
 	scorch,
+	greed,
 	vermillion_virus,
 	tornado,
 	sapphire_stamp,
@@ -1434,5 +1612,6 @@ local items_togo = {
 	clock,
 	lavender_loop,
 	trophy,
+	decision,
 }
 return { name = "Blinds", items = items_togo }

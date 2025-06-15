@@ -651,7 +651,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Manos de póker",
 				text = {
-					"Añade 4 {C:attention}manos de póker{} nuevas",
+					"Añade 5 {C:attention}manos de póker{} nuevas",
 					"y habilita {C:attention}Manos ascendidas",
 				},
 			},
@@ -1769,7 +1769,7 @@ return {
 					"{C:attention}Reactiva{} todos los comodines",
 					"una vez por cada {C:attention}comodín{}",
 					"{C:attention}contento{} vendido esta ronda",
-					"{C:inactive}(Actual:{}{C:attention:} #1#{}{C:inactive} reactivaci#<ones,ón>2#){}",
+					"{C:inactive}(Actual:{}{C:attention:} #1#{}{C:inactive} reactivaci#<ones,ón>1#){}",
 					"{C:inactive,s:0.8}No había suficiente espacio...{}",
 				},
 			},
@@ -1868,7 +1868,7 @@ return {
 					"{C:attention}primer descarte{} de cada ronda",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "Muevo",
 				text = {
 					"Vende esta carta para crear",

@@ -10,6 +10,9 @@ local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod
 Cryptid.path = mod_path
 Cryptid_config = SMODS.current_mod.config
 
+-- Lovely Patch Target, toggles being able to change gameset config. Here for mod support
+Cryptid_config.gameset_toggle = true
+
 -- Enable optional features
 SMODS.current_mod.optional_features = {
 	retrigger_joker = true,
@@ -19,8 +22,10 @@ SMODS.current_mod.optional_features = {
 	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
 	-- These ones add new card areas that Steamodded will calculate through
 	-- Might already be useful for sticker calc
+
+	-- Cryptid uses cardarea deck now
 	cardareas = {
-		--deck = true,
+		deck = true,
 		discard = true, -- used by scorch
 	},
 }
@@ -124,7 +129,7 @@ end
 -- either in [Mod]/Cryptid.lua or [Mod]/Cryptid/*.lua
 for _, mod in pairs(SMODS.Mods) do
 	-- Note: Crashes with lone lua files
-	if mod.path and mod.id ~= "Cryptid" then
+	if not mod.disabled and mod.path and mod.id ~= "Cryptid" then
 		local path = mod.path
 		local files = NFS.getDirectoryItems(path)
 		for _, file in ipairs(files) do
@@ -182,6 +187,14 @@ function SMODS.injectItems(...)
 			end
 		end
 	end
+	Cryptid.inject_pointer_aliases()
+end
+
+local old_repitions = SMODS.calculate_repetitions
+SMODS.calculate_repetitions = function(card, context, reps)
+	local reps = old_repitions(card, context, reps)
+	reps = reps or { 1 }
+	return reps
 end
 
 local cryptidConfigTab = function()

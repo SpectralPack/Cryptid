@@ -11,12 +11,15 @@ local cotton_candy = {
 	cost = 10,
 	atlas = "atlasspooky",
 	order = 130,
-	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
+	demicoloncompat = true,
 	pools = { ["Food"] = true },
 	calculate = function(self, card, context)
-		if context.selling_self and not context.retrigger_joker and not context.blueprint_card then
+		if
+			(context.selling_self and not context.retrigger_joker and not context.blueprint_card)
+			or context.forcetrigger
+		then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if i > 1 then
@@ -42,9 +45,10 @@ local wrapped = {
 	rarity = "cry_candy",
 	cost = 10,
 	atlas = "atlasspooky",
+	order = 131,
 	eternal_compat = false,
 	perishable_compat = false,
-	order = 131,
+	demicoloncompat = true,
 	immutable = true,
 	config = { extra = { rounds = 2 } },
 	pools = { ["Food"] = true },
@@ -96,6 +100,11 @@ local wrapped = {
 					colour = G.C.FILTER,
 				}
 			end
+		end
+		if context.forcetrigger then
+			local card = create_card("Food", G.jokers, nil, nil, nil, nil, nil, "cry_wrapped")
+			card:add_to_deck()
+			G.jokers:emplace(card)
 		end
 	end,
 }
@@ -173,15 +182,9 @@ local choco1 = {
 			end
 		end
 		--create a ghost
-		if not (SMODS.Mods["jen"] or {}).can_load then
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_ghost")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-		else
-			if G.GAME.dollars ~= 0 then
-				ease_dollars((-G.GAME.dollars - 1e6), true)
-			end
-		end
+		local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_ghost")
+		card:add_to_deck()
+		G.jokers:emplace(card)
 	end,
 }
 local choco2 = {
@@ -844,6 +847,7 @@ local trick_or_treat = {
 	blueprint_compat = true,
 	eternal_compat = false,
 	perishable_compat = false,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.selling_self then
 			if
@@ -867,6 +871,15 @@ local trick_or_treat = {
 				local new_cursed = create_card("Joker", G.jokers, nil, "cry_cursed", nil, nil, nil, "cry_trick_curse")
 				new_cursed:add_to_deck()
 				G.jokers:emplace(new_cursed)
+			end
+		end
+		if context.forcetrigger then
+			local spawn_num = to_number(math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies))
+
+			for i = 1, spawn_num do
+				local new_card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")
+				new_card:add_to_deck()
+				G.jokers:emplace(new_card)
 			end
 		end
 	end,
@@ -900,6 +913,7 @@ local candy_basket = {
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
+	demicoloncompat = true,
 	config = {
 		extra = {
 			candies = 0,
@@ -936,11 +950,26 @@ local candy_basket = {
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 			end
 		end
+		if context.forcetrigger then
+			card.ability.immutable.current_win_count = card.ability.immutable.current_win_count + 1
+
+			card.ability.extra.candies = lenient_bignum(
+				card.ability.extra.candies + to_big(card.ability.extra.candy_mod) * card.ability.extra.candy_boss_mod
+			)
+			card.ability.extra.candies =
+				lenient_bignum(to_big(card.ability.extra.candies) + card.ability.extra.candy_mod)
+			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
+			for i = 1, math.floor(math.min(card.ability.immutable.max_spawn, card.ability.extra.candies)) do
+				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_candy_basket")
+				card:add_to_deck()
+				G.jokers:emplace(card)
+			end
+		end
 	end,
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(math.floor(center.ability.extra.candies)),
+				number_format(math.floor(math.min(center.ability.immutable.max_spawn, center.ability.extra.candies))),
 				number_format(center.ability.extra.candy_mod),
 				center.ability.immutable.wins_needed,
 				number_format(
@@ -963,23 +992,24 @@ local blacklist = {
 	cost = 0,
 	atlas = "atlasspooky",
 	order = 136,
-	config = { extra = { blacklist = {} } },
+	config = { extra = { blacklist = 14 } },
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
+	demicoloncompat = true,
 	no_dbl = true,
 	immutable = true,
 	calculate = function(self, card, context)
 		if context.joker_main then
 			local blacklist = false
 			for i = 1, #G.play.cards do
-				if G.play.cards[i]:get_id() == card.ability.extra.blacklist.id then
+				if G.play.cards[i]:get_id() == card.ability.extra.blacklist then
 					blacklist = true
 					break
 				end
 			end
 			for i = 1, #G.hand.cards do
-				if G.hand.cards[i]:get_id() == card.ability.extra.blacklist.id then
+				if G.hand.cards[i]:get_id() == card.ability.extra.blacklist then
 					blacklist = true
 					break
 				end
@@ -994,13 +1024,13 @@ local blacklist = {
 				}
 			else
 				for i = 1, #G.discard.cards do
-					if G.discard.cards[i]:get_id() == card.ability.extra.blacklist.id then
+					if G.discard.cards[i]:get_id() == card.ability.extra.blacklist then
 						blacklist = true
 						break
 					end
 				end
 				for i = 1, #G.deck.cards do
-					if G.deck.cards[i]:get_id() == card.ability.extra.blacklist.id then
+					if G.deck.cards[i]:get_id() == card.ability.extra.blacklist then
 						blacklist = true
 						break
 					end
@@ -1015,14 +1045,31 @@ local blacklist = {
 				end
 			end
 		end
+		if context.forcetrigger then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					card:start_dissolve()
+					return true
+				end,
+			}))
+		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.blacklist =
-			pseudorandom_element(SMODS.Ranks, pseudoseed("cry_blacklist" .. G.GAME.round_resets.ante))
+			pseudorandom_element(SMODS.Ranks, pseudoseed("cry_blacklist" .. G.GAME.round_resets.ante)).id
 	end,
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { localize(center.ability.extra.blacklist and center.ability.extra.blacklist.key or "Ace", "ranks") },
+			vars = {
+				localize(
+					center.ability.extra.blacklist == 14 and "Ace"
+						or center.ability.extra.blacklist == 13 and "King"
+						or center.ability.extra.blacklist == 12 and "Queen"
+						or center.ability.extra.blacklist == 11 and "Jack"
+						or number_format(center.ability.extra.blacklist),
+					"ranks"
+				),
+			},
 		}
 	end,
 }
@@ -1230,6 +1277,7 @@ local candy_dagger = {
 	order = 138,
 	atlas = "atlasspooky",
 	blueprint_compat = true,
+	demicoloncompat = true,
 	immutable = true,
 	calculate = function(self, card, context)
 		local my_pos = nil
@@ -1276,6 +1324,35 @@ local candy_dagger = {
 			G.jokers:emplace(card)
 			return nil, true
 		end
+		if context.forcetrigger and my_pos and G.jokers.cards[my_pos + 1] then
+			local sliced_card = G.jokers.cards[my_pos + 1]
+			sliced_card.getting_sliced = true
+			if sliced_card.config.center.rarity == "cry_exotic" then
+				check_for_unlock({ type = "what_have_you_done" })
+			end
+			G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					G.GAME.joker_buffer = 0
+					card:juice_up(0.8, 0.8)
+					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+					play_sound("slice1", 0.96 + math.random() * 0.08)
+					return true
+				end,
+			}))
+			card_eval_status_text(card, "extra", nil, nil, nil, {
+				message = localize({
+					type = "variable",
+					key = "a_candy",
+					vars = { 1 },
+				}),
+				colour = G.C.RARITY["cry_candy"],
+				no_juice = true,
+			})
+			local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_candy_dagger")
+			card:add_to_deck()
+			G.jokers:emplace(card)
+		end
 	end,
 }
 local candy_cane = {
@@ -1293,6 +1370,7 @@ local candy_cane = {
 	order = 139,
 	atlas = "atlasspooky",
 	blueprint_compat = true,
+	demicoloncompat = true,
 	pools = { ["Food"] = true },
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -1326,6 +1404,42 @@ local candy_cane = {
 			and not context.repetition
 			and not context.retrigger_joker
 		then
+			card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
+			if to_big(card.ability.extra.rounds) > to_big(0) then
+				return {
+					message = { localize("cry_minus_round") },
+					colour = G.C.FILTER,
+				}
+			else
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				return {
+					message = localize("k_extinct_ex"),
+					colour = G.C.FILTER,
+				}
+			end
+		end
+		if context.forcetrigger then
+			ease_dollars(lenient_bignum(card.ability.extra.dollars))
 			card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
 			if to_big(card.ability.extra.rounds) > to_big(0) then
 				return {
@@ -1416,7 +1530,10 @@ local candy_buttons = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
+		-- The find_joker check in calculate_reroll_cost doesn't work if this is the only copy when added to deck (Too early)
+		G.GAME.reroll_limit_buffer = 1
 		calculate_reroll_cost(true)
+		G.GAME.reroll_limit_buffer = nil
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)
@@ -1436,6 +1553,7 @@ local jawbreaker = {
 	order = 141,
 	atlas = "atlasspooky",
 	blueprint_compat = false,
+	demicoloncompat = true,
 	pools = { ["Food"] = true },
 	calculate = function(self, card, context)
 		if
@@ -1449,22 +1567,16 @@ local jawbreaker = {
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if i > 1 then
-						if
-							not Card.no(G.jokers.cards[i - 1], "immune_to_chemach", true)
-							and not Card.no(G.jokers.cards[i - 1], "immutable", true)
-						then
+						if not Card.no(G.jokers.cards[i - 1], "immutable", true) then
 							Cryptid.with_deck_effects(G.jokers.cards[i - 1], function(card)
-								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
+								Cryptid.manipulate(card, { value = 2 })
 							end)
 						end
 					end
 					if i < #G.jokers.cards then
-						if
-							not Card.no(G.jokers.cards[i + 1], "immune_to_chemach", true)
-							and not Card.no(G.jokers.cards[i + 1], "immutable", true)
-						then
+						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
 							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(card)
-								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
+								Cryptid.manipulate(card, { value = 2 })
 							end)
 						end
 					end
@@ -1496,6 +1608,26 @@ local jawbreaker = {
 				colour = G.C.FILTER,
 			}
 		end
+		if context.forcetrigger then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then
+					if i > 1 then
+						if not Card.no(G.jokers.cards[i - 1], "immutable", true) then
+							Cryptid.with_deck_effects(G.jokers.cards[i - 1], function(card)
+								Cryptid.manipulate(card, { value = 2 })
+							end)
+						end
+					end
+					if i < #G.jokers.cards then
+						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
+							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(card)
+								Cryptid.manipulate(card, { value = 2 })
+							end)
+						end
+					end
+				end
+			end
+		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)
@@ -1523,8 +1655,10 @@ local mellowcreme = {
 		return { vars = { number_format(center.ability.extra.sell_mult) } }
 	end,
 	blueprint_compat = true,
+	eternal_compat = false,
+	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.selling_self then
+		if context.selling_self or context.forcetrigger then
 			for k, v in ipairs(G.consumeables.cards) do
 				if v.set_cost then
 					v.ability.extra_value = lenient_bignum(
@@ -1566,9 +1700,10 @@ local brittle = {
 			and context.before
 			and not context.blueprint_card
 			and not context.retrigger_joker
+			and context.scoring_hand
 		then
 			local _card = context.scoring_hand[#context.scoring_hand]
-			if not _card.brittled then
+			if _card and not _card.brittled then
 				card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
 				local enhancement = pseudorandom_element({ "m_stone", "m_gold", "m_steel" }, pseudoseed("cry_brittle"))
 				_card.brittled = true
@@ -1631,6 +1766,7 @@ local monopoly_money = {
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
+	demicoloncompat = true,
 	no_dbl = true,
 	calculate = function(self, card, context)
 		if
@@ -1660,11 +1796,19 @@ local monopoly_money = {
 		if context.selling_self and not context.blueprint_card and not context.retrigger_joker then
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					ease_dollars(math.floor(-0.5 * G.GAME.dollars))
+					ease_dollars(math.floor(0.5 * G.GAME.dollars - G.GAME.dollars))
 					return true
 				end,
 			}))
 			return nil, true
+		end
+		if context.forcetrigger then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					ease_dollars(math.floor(0.5 * G.GAME.dollars - G.GAME.dollars))
+					return true
+				end,
+			}))
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -1730,7 +1874,7 @@ local candy_sticks = {
 				or to_big(card.ability.extra.hands) <= to_big(0)
 			) and G.GAME.blind.disabled
 		then
-			G.GAME.blind:load(card.ability.extra.boss)
+			G.GAME.blind:load(card.ability.immutable.boss)
 			if not context.selling_self then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1811,15 +1955,16 @@ local wonka_bar = {
 	rarity = "cry_candy",
 	cost = 10,
 	eternal_compat = false,
+	demicoloncompat = true,
+	blueprint_compat = true,
 	atlas = "atlasspooky",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { number_format(center.ability.extra) } }
+		return { vars = { center.ability.extra } }
 	end,
 	calculate = function(self, card, context)
-		if context.selling_self and not context.blueprint then
-			card.ability.extra = lenient_bignum(math.floor(card.ability.extra))
-			G.hand.config.highlighted_limit =
-				lenient_bignum(G.hand.config.highlighted_limit + to_big(card.ability.extra))
+		if context.selling_self or context.forcetrigger then
+			SMODS.change_play_limit(math.floor(card.ability.extra))
+			SMODS.change_discard_limit(math.floor(card.ability.extra))
 		end
 	end,
 	cry_credits = {

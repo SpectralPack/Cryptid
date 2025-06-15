@@ -14,7 +14,16 @@ Cryptid.misprintize_value_blacklist = {
 	d_size = false,
 	h_size = false,
 	selected_d6_face = false,
+	cry_hook_id = false,
+	colour = false,
+	suit_nominal_original = false,
+	times_played = false,
 	-- TARGET: Misprintize Value Blacklist (format: key = false, )
+}
+Cryptid.misprintize_bignum_blacklist = {
+	odds = false,
+	cry_prob = false,
+	--nominal = false,
 }
 
 function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level)
@@ -70,9 +79,9 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 	local function num_too_big(initial, min, max, limit)
 		return (
-			to_big(initial) > to_big(max_slots)
-			or to_big(min) > to_big(max_slots)
-			or to_big(max) > to_big(max_slots)
+			to_big(initial) > to_big(limit)
+			or (min and to_big(initial) * min > to_big(limit))
+			or (max and to_big(initial) * max > to_big(limit))
 		)
 	end
 
@@ -86,8 +95,12 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 			then
 				return false
 			end
-
-			return Cryptid.misprintize_value_blacklist[k] or true
+			for key, val in pairs(Cryptid.misprintize_value_blacklist) do
+				if tostring(k) == tostring(key) then
+					return val
+				end
+			end
+			return true
 		end
 
 		for k, v in pairs(tbl) do
@@ -97,7 +110,13 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						Cryptid.base_values[name] = {}
 					end
 					if not Cryptid.base_values[name][k] then
-						Cryptid.base_values[name][k] = tbl[k]
+						if G.P_CENTERS[name] and G.P_CENTERS[name].config[k] then
+							Cryptid.base_values[name][k] = G.P_CENTERS[name].config[k]
+						elseif k == "cry_prob" then
+							Cryptid.base_values[name][k] = 1
+						else
+							Cryptid.base_values[name][k] = tbl[k]
+						end
 					end
 
 					local initial = (stack and tbl[k] or Cryptid.base_values[name][k])
@@ -131,7 +150,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 				end
 			elseif not (k == "immutable") and not (k == "colour") then
 				for _k, _v in pairs(tbl[k]) do
-					if is_number(tbl[k][_k]) and not (_k == "d_size") and not (_k == "h_size") then --Refer to above
+					if is_number(tbl[k][_k]) and can_misprintize_value(_k, tbl[k][_k]) then
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
 						end
@@ -139,33 +158,30 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 							Cryptid.base_values[name][k] = {}
 						end
 						if not Cryptid.base_values[name][k][_k] then
-							Cryptid.base_values[name][k][_k] = tbl[k][_k]
+							if
+								G.P_CENTERS[name]
+								and type(G.P_CENTERS[name].config[k]) == "table"
+								and G.P_CENTERS[name].config[k][_k]
+							then
+								Cryptid.base_values[name][k][_k] = G.P_CENTERS[name].config[k][_k]
+							else
+								Cryptid.base_values[name][k][_k] = tbl[k][_k]
+							end
 						end
 
 						local initial = (stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
 						local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 						local max = override and override.max or G.GAME.modifiers.cry_misprint_max
 
-						if
-							(_k == "odds")
-							and (
-								to_big(initial) > to_big(prob_max)
-								or to_big(min) > to_big(prob_max)
-								or to_big(max) > to_big(prob_max)
-							)
-						then
-							-- print('\t\t\t got "odds"')
+						if (_k == "odds") and num_too_big(initial, min, max, prob_max) then
 							initial = Cryptid.base_values[name][k][_k] * prob_max
 							min = 1
 							max = 1
 						end
 
 						if
-							(
-								k == "slots"
-								-- Hack for jokers that give slots
-								and (name == "j_cry_tenebris" or name == "j_cry_negative")
-							) and num_too_big(initial, min, max, max_slots)
+							(_k == "slots" and (name == "j_cry_tenebris" or name == "j_cry_negative"))
+							and num_too_big(initial, min, max, max_slots)
 						then
 							initial = max_slots
 							min = 1
@@ -173,11 +189,8 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						end
 
 						if
-							(
-								k == "booster_slots"
-								-- Hack for jokers that give booster_slots
-								and (name == "j_cry_booster")
-							) and num_too_big(initial, min, max, max_booster_slots)
+							(_k == "booster_slots" and (name == "j_cry_booster"))
+							and num_too_big(initial, min, max, max_booster_slots)
 						then
 							initial = max_booster_slots
 							min = 1
@@ -186,7 +199,10 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 						tbl[k][_k] = Cryptid.sanity_check(
 							clear and Cryptid.base_values[name][k][_k]
-								or cry_format(Cryptid.calculate_misprint(initial, min, max), "%.2g"),
+								or cry_format(
+									Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level),
+									"%.2g"
+								),
 							big
 						)
 					end
@@ -241,6 +257,7 @@ function Cryptid.sanity_check(val, is_big)
 	return val
 end
 function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_level)
+	local clamps = card.config.center.misprintize_caps or {}
 	if Card.no(card, "immutable", true) then
 		force_reset = true
 	end
@@ -316,6 +333,30 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 			pow_level
 		)
 	end
+	if clamps then
+		for i, v in pairs(clamps) do
+			if type(v) == "table" and not v.tetrate then
+				for i2, v2 in pairs(v) do
+					if to_big(card.ability[i][i2]) > to_big(v2) then
+						card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
+						if
+							to_big(card.ability[i][i2]) > to_big(-1e100)
+							or to_big(card.ability[i][i2]) < to_big(1e100)
+						then
+							card.ability[i][i2] = to_number(card.ability[i][i2])
+						end
+					end
+				end
+			elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
+				if to_big(card.ability[i]) > to_big(v) then
+					card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
+					if to_big(card.ability[i]) > to_big(-1e100) or to_big(card.ability[i]) < to_big(1e100) then
+						card.ability[i] = to_number(card.ability[i])
+					end
+				end
+			end
+		end
+	end
 	if card.ability.consumeable then
 		for k, v in pairs(card.ability.consumeable) do
 			card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
@@ -354,4 +395,150 @@ function Card:get_nominal(mod)
 		+ (self.base.suit_nominal_original or 0) * 0.0001 * mult
 		+ 10 * self.base.face_nominal * rank_mult
 		+ 0.000001 * self.unique_val
+end
+
+function Cryptid.manipulate(card, args)
+	if not args then
+		Cryptid.manipulate(card, {
+			min = G.GAME.modifiers.cry_misprint_min,
+			max = G.GAME.modifiers.cry_misprint_max,
+			type = "X",
+			dont_stack = true,
+		})
+	else
+		if not args.type then
+			args.type = "X"
+		end
+		--hardcoded whatever
+		if card.config.center.set == "Booster" then
+			args.big = false
+		end
+		local caps = card.config.center.misprintize_caps or {}
+		if card.infinifusion then
+			if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then
+				calculate_infinifusion(card, nil, function(i)
+					Cryptid.manipulate(card, args)
+				end)
+			end
+		end
+		Cryptid.manipulate_table(card, card, "ability", args)
+		if card.base then
+			Cryptid.manipulate_table(card, card, "base", args)
+		end
+		if G.GAME.modifiers.cry_misprint_min then
+			--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
+			card.misprint_cost_fac = 1
+				/ Cryptid.log_random(
+					pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
+					override and override.min or G.GAME.modifiers.cry_misprint_min,
+					override and override.max or G.GAME.modifiers.cry_misprint_max
+				)
+			card:set_cost()
+		end
+		if caps then
+			for i, v in pairs(caps) do
+				if type(v) == "table" and not v.tetrate then
+					for i2, v2 in pairs(v) do
+						if to_big(card.ability[i][i2]) > to_big(v2) then
+							card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
+						end
+					end
+				elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
+					if to_big(card.ability[i]) > to_big(v) then
+						card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
+					end
+				end
+			end
+		end
+		if card.ability.consumeable then
+			for k, v in pairs(card.ability.consumeable) do
+				card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
+			end
+		end
+	end
+end
+
+function Cryptid.manipulate_table(card, ref_table, ref_value, args)
+	for i, v in pairs(ref_table[ref_value]) do
+		if
+			(type(v) == "number" or (type(v) == "table" and v.tetrate))
+			and Cryptid.misprintize_value_blacklist[i] ~= false
+		then
+			local num = v
+			if args.dont_stack then
+				if not Cryptid.base_values[card.config.center.key] then
+					Cryptid.base_values[card.config.center.key] = {}
+				end
+				if not Cryptid.base_values[card.config.center.key][i] then
+					Cryptid.base_values[card.config.center.key][i] = v
+				end
+				num = Cryptid.base_values[card.config.center.key][i]
+			end
+			if args.big ~= nil then
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big, i)
+			else
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card), i)
+			end
+		elseif i ~= "immutable" and type(v) == "table" and Cryptid.misprintize_value_blacklist[i] ~= false then
+			Cryptid.manipulate_table(card, ref_table[ref_value], i, args)
+		end
+	end
+end
+
+function Cryptid.manipulate_value(num, args, is_big, name)
+	if args.func then
+		num = args.func(num, args, is_big, name)
+	else
+		if args.min and args.max then
+			local new_args = args
+			local big_min = to_big(args.min)
+			local big_max = to_big(args.max)
+			local new_value = Cryptid.log_random(
+				pseudoseed(args.seed or ("cry_misprint" .. G.GAME.round_resets.ante)),
+				big_min,
+				big_max
+			)
+			if args.type == "+" then
+				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
+					num = to_big(num) + to_big(new_value)
+				end
+			elseif args.type == "X" then
+				if
+					to_big(num) ~= to_big(0) and (to_big(num) ~= to_big(1) or (name ~= "x_chips" and name ~= "x_mult"))
+				then
+					num = to_big(num) * to_big(new_value)
+				end
+			elseif args.type == "hyper" then
+				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
+					num = to_big(num):arrow(args.value.arrows, to_big(new_value))
+				end
+			end
+		elseif args.value then
+			if args.type == "+" then
+				num = to_big(num) + to_big(args.value)
+			elseif args.type == "X" then
+				if
+					to_big(num) ~= to_big(0) and (to_big(num) ~= to_big(1) or (name ~= "x_chips" and name ~= "x_mult"))
+				then
+					num = to_big(num) * to_big(args.value)
+				end
+			elseif args.type == "hyper" then
+				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
+			end
+		end
+	end
+	if Cryptid.misprintize_bignum_blacklist[name] == false then
+		num = to_number(num)
+		return to_number(Cryptid.sanity_check(num, false))
+	end
+	local val = Cryptid.sanity_check(num, is_big)
+	if to_big(val) > to_big(-1e100) and to_big(val) < to_big(1e100) then
+		return to_number(val)
+	end
+	return val
+end
+
+local get_nominalref = Card.get_nominal
+function Card:get_nominal(...)
+	return to_number(get_nominalref(self, ...))
 end

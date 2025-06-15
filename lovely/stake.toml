@@ -19,20 +19,6 @@ end
 '''
 match_indent = true
 
-# Yellow Stake - perishable and rental effects on cards held in hand
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "local effects = {[1] = {playing_card = G.hand.cards[i]:get_end_of_round_effect()}}"
-position = "after"
-payload = '''
--- these are already calculated
--- does mean this patch is pointless now, but i want to leave it here just so it's clear, maybe remove later
--- G.hand.cards[i]:calculate_rental()
--- G.hand.cards[i]:calculate_perishable()
-'''
-match_indent = true
-
 # Yellow Stake - perishable and rental effects on cards in deck and discard pile
 # Double Down
 [[patches]]
@@ -57,11 +43,25 @@ while i <= #G.deck.cards do
 end
 if G.GAME.used_vouchers.v_cry_double_down then
     local function update_dbl(area)
+        local area = G.jokers
         for i = 1, #area.cards do
-            if area.cards[i].dbl_side then
+            if area.cards[i].ability.immutable and type(area.cards[i].ability.immutable.other_side) == "table" then
                 --tweak to do deck effects with on the flip side
-                Cryptid.misprintize(area.cards[i].dbl_side, {min = 1.5, max = 1.5}, nil, true)
-                card_eval_status_text(area.cards[i], "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
+                if not G.P_CENTERS[area.cards[i].ability.immutable.other_side.key].immutable then
+                    if area.cards[i].ability.immutable.other_side and area.cards[i].edition.cry_double_sided then
+                        Cryptid.manipulate_table(
+                        area.cards[i],
+                        area.cards[i].ability.immutable,
+                        "other_side", 
+                        {
+                            value = 1.5, 
+                            type = "X",
+                            big = Cryptid.is_card_big({config = {center = G.P_CENTERS[area.cards[i].ability.immutable.other_side.key]}})
+                        }
+                        )
+                        card_eval_status_text(area.cards[i], "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
+                    end
+                end
             end
         end
     end
@@ -78,7 +78,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if self.ability.name == 'The Hermit' or self.ability.consumeable.hand_type or self.ability.name == 'Temperance' or self.ability.name == 'Black Hole' then"
+pattern = "if self.ability.name == 'The Wheel of Fortune' then"
 position = "before"
 payload = '''
 if self.ability.name == "The Hanged Man" then
@@ -155,14 +155,31 @@ rental = self.ability and self.ability.rental,
 '''
 match_indent = true
 
-
-# Amber Stake - edit number of booster packs
+# Crimson Stake - Disable restocks on even antes
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = "for i = 1, 2 do"
+pattern = '''for _,_ in pairs(G.GAME.current_round.voucher.spawn) do vouchers_to_spawn = vouchers_to_spawn + 1 end
+if vouchers_to_spawn < G.GAME.starting_params.vouchers_in_shop + (G.GAME.modifiers.extra_vouchers or 0) then
+    SMODS.get_next_vouchers(G.GAME.current_round.voucher)
+end
+for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+    if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+        SMODS.add_voucher_to_shop(key)
+    end
+end'''
 position = "at"
-payload = "for i = 1, G.GAME.modifiers.cry_no_boosters and 0 or G.GAME.modifiers.cry_booster_packs or 2 do"
+payload = '''if (G.GAME.modifiers.cry_voucher_restock_antes == nil or G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0) then
+    for _,_ in pairs(G.GAME.current_round.voucher.spawn) do vouchers_to_spawn = vouchers_to_spawn + 1 end
+    if vouchers_to_spawn < G.GAME.starting_params.vouchers_in_shop + (G.GAME.modifiers.extra_vouchers or 0) then
+        SMODS.get_next_vouchers(G.GAME.current_round.voucher)
+    end
+    for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+        if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+            SMODS.add_voucher_to_shop(key)
+        end
+    end
+end'''
 match_indent = true
 
 # Quartz Stake - pinned effect applies in every type of slot
@@ -306,7 +323,7 @@ match_indent = true
 # Emerald Stake - flipped vouchers
 [[patches]]
 [patches.pattern]
-target = "game.lua"
+target = """=[SMODS _ "src/utils.lua"]"""
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
@@ -343,16 +360,6 @@ target = "functions/common_events.lua"
 pattern = "G.GAME.round_resets.blind_states.Small = 'Upcoming'"
 position = "at"
 payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
-match_indent = true
-
-# Ember Stake - grant no money on sell
-# this is NOT ember stake grant no money on sell wtf
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then'''
-position = "at"
-payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
 match_indent = true
 
 # Ember Stake - give no money for selling

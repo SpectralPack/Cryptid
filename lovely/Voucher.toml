@@ -34,10 +34,9 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = '''G.GAME.current_round.voucher = nil'''
-position = "at"
+pattern = '''--G.GAME.current_round.voucher = nil'''
+position = "after"
 payload = '''
--- G.GAME.current_round.voucher = nil
 if self.shop_cry_bonusvoucher then G.GAME.cry_bonusvouchersused[self.shop_cry_bonusvoucher] = true end
 '''
 match_indent = true
@@ -57,23 +56,23 @@ match_indent = true
 
 # initialise the other helpful variables
 # tarot/planet percrates appear here too because why not
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''ecto_minus = 1,'''
-position = "after"
-payload = '''
-cry_bonusvouchercount = 0,
-cry_bonusvouchersused = {},
-cry_percrate = {tarot = 100, planet = 100},
-'''
-match_indent = true
+# [[patches]]
+# [patches.pattern]
+# target = "game.lua"
+# pattern = '''ecto_minus = 1,'''
+# position = "after"
+# payload = '''
+# cry_bonusvouchercount = 0,
+# cry_bonusvouchersused = {},
+# cry_percrate = {tarot = 100, planet = 100},
+# '''
+# match_indent = true
 
 # populate the table with keys
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = '''G.GAME.current_round.voucher = get_next_voucher_key()'''
+pattern = '''G.GAME.current_round.voucher = SMODS.get_next_vouchers()'''
 position = "after"
 payload = '''
 G.GAME.current_round.cry_voucher_stickers = Cryptid.next_voucher_stickers()
@@ -81,7 +80,7 @@ G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition() or {}
 G.GAME.current_round.cry_bonusvouchers = {}
 G.GAME.cry_bonusvouchersused = {}	-- i'm not sure why i'm putting these in two separate tables but it doesn't matter much
 for i = 1, G.GAME.cry_bonusvouchercount do
-	G.GAME.current_round.cry_bonusvouchers[i] = get_next_voucher_key()
+	G.GAME.current_round.cry_bonusvouchers[i] = SMODS.get_next_vouchers()
 end
 '''
 match_indent = true
@@ -90,7 +89,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = '''self.GAME.current_round.voucher = G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_voucher or get_next_voucher_key()'''
+pattern = '''self.GAME.current_round.voucher = forced_voucher and {forced_voucher, spawn = {[forced_voucher] = true }} or SMODS.get_next_vouchers()'''
 position = "after"
 payload = '''
 G.GAME.current_round.cry_voucher_stickers = Cryptid.next_voucher_stickers()
@@ -125,7 +124,7 @@ for i = 1, #G.GAME.current_round.cry_bonusvouchers do
 		local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
 			G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]],{bypass_discovery_center = true, bypass_discovery_ui = true})
 		card.shop_cry_bonusvoucher = i
-		Cryptid.misprintize(card)
+		Cryptid.manipulate(card)
 		if G.GAME.events.ev_cry_choco2 then
 			card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
 			card:set_cost()
@@ -144,7 +143,7 @@ for i = 1, #G.GAME.current_round.cry_bonusvouchers do
 end
 '''
 
-# control the planet/tarot rates
+# control the planet/tarot rates (This needs to be left in to maintain vanilla RNG
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
@@ -159,7 +158,38 @@ payload = '''
 '''
 match_indent = true
 
-# fix total rate
+# Adds adjustability to every other consumable type
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+            table.insert(rates, { type = v, val = G.GAME[v:lower()..'_rate'] })
+'''
+position = "at"
+payload = '''
+local num = G.GAME.cry_percrate and G.GAME.cry_percrate[v:lower()] or 100
+table.insert(rates, { type = v, val = G.GAME[v:lower()..'_rate'] * ((num or 100) / 100) })
+'''
+match_indent = true
+
+# fix total rate (Current Cryptid implementation)
+# [[patches]]
+# [patches.pattern]
+# target = "functions/UI_definitions.lua"
+# pattern = '''
+# total_rate = total_rate + G.GAME[v:lower()..'_rate']
+# '''
+# position = "at"
+# payload = '''
+# if not (v:lower() == 'tarot' or v:lower() == 'planet') then
+# 	total_rate = total_rate + G.GAME[v:lower()..'_rate']
+# else
+# 	total_rate = total_rate + ( G.GAME[v:lower()..'_rate'] * (G.GAME.cry_percrate[v:lower()]/100) )
+# end
+# '''
+# match_indent = true
+
+# fix total rate (IcyEthics Refactor)
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
@@ -168,11 +198,7 @@ total_rate = total_rate + G.GAME[v:lower()..'_rate']
 '''
 position = "at"
 payload = '''
-if not (v:lower() == 'tarot' or v:lower() == 'planet') then
-	total_rate = total_rate + G.GAME[v:lower()..'_rate']
-else
-	total_rate = total_rate + ( G.GAME[v:lower()..'_rate'] * (G.GAME.cry_percrate[v:lower()]/100) )
-end
+total_rate = total_rate + ( G.GAME[v:lower()..'_rate'] * (G.GAME.cry_percrate[v:lower()]/100) )
 '''
 match_indent = true
 

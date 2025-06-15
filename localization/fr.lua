@@ -412,6 +412,13 @@ return {
 					"rareté supérieure sont affaiblis",
 				},
 			},
+			bl_cry_greed = {
+				name = "L'Avarice",
+				text = {
+					"+#2# à la taille de la blinde pour",
+					"chaque $#1# lorsqu'elle est sélectionnée",
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Nœud Rose",
 				text = {
@@ -422,9 +429,9 @@ return {
 			bl_cry_scorch = {
 				name = "La Grille",
 				text = {
-					"Must play 5 cards,",
-					"destroy played and",
-					"discarded cards",
+					"5 cartes doivent être jouées,",
+					"toutes les cartes jouées",
+					"et défaussées sont détruites",
 				},
 			},
 			bl_cry_sapphire_stamp = {
@@ -490,8 +497,25 @@ return {
 					"sont affaiblis",
 				},
 			},
+			bl_cry_decision = {
+				name = "La Décision",
+				text = {
+					"Attache les Jokers après qu'une main",
+					"soit jouée ou défaussée",
+					"Ouvre un Paquet Bouffon Maléfique",
+					"après la manche",
+				},
+			},
 		},
 		Code = {
+			c_cry_assemble = {
+				name = "://ASSEMBLAGE",
+				text = {
+					"Ajoute du {C:cry_code}Multi{}",
+					"à la {C:cry_code}main sélectionnée{} égal au",
+					"nombre de Jokers possédés",
+				},
+			},
 			c_cry_alttab = {
 				name = "://ALTTAB",
 				text = {
@@ -555,12 +579,26 @@ return {
 					"{C:inactive,s:0.8}découvertes pour être valides",
 				},
 			},
+			c_cry_cryfunction = {
+				name = "FONCTION://",
+				text = {
+					"Enregistre les {C:cry_code}trois derniers{} consommables utilisés,",
+					"réutiliser cette carte crée une copie du",
+					"premier consommable avec un sticker {C:cry_code}Fonction://{}",
+				},
+			},
+			c_cry_global = {
+				name = "://GLOBAL",
+				text = {
+					"Définit la carte sélectionnée",
+					"comme carte {C:cry_code}Globale{}",
+				},
+			},
 			c_cry_hook = {
 				name = "ACCROCHER://",
 				text = {
-					"Les deux jokers sélectionnés deviennent {C:cry_code}Accrochés",
-					"{C:inactive,s:0.8}Ne marche seulement si les Jokers se déclenchent dans le même contexte,",
-					"{C:inactive,s:0.8}comme Joker et Le Duo (les deux après le compte)",
+					"Applique {C:cry_code}Accroché{} à",
+					"2 Jokers sélectionnés",
 				},
 			},
 			c_cry_inst = {
@@ -569,6 +607,21 @@ return {
 					"Tire une carte avec la {C:cry_code}couleur{} de la carte sélectionnée",
 					"et une carte avec le {C:cry_code}rang{} de la carte sélectionnée",
 					"{C:inactive}(si possible){}",
+				},
+			},
+			c_cry_keygen = {
+				name = "://KEYGEN",
+				text = {
+					"Crée un coupon {C:cry_code}Périssable Banane{}",
+					"aléatoire, {C:cry_code}détruit{} le dernier coupon créé",
+					"de cette manière",
+				},
+			},
+			c_cry_crylog = {
+				name = "://LOG",
+				text = {
+					"To Be {C:cry_code}Implemented{}",
+					"in a future {C:cry_code}update{}",
 				},
 			},
 			c_cry_machinecode = {
@@ -596,6 +649,13 @@ return {
 					"la fin de la manche",
 				},
 			},
+			c_cry_nperror = {
+				name = "://ERREURNP",
+				text = {
+					"Retourne la {C:cry_code}dernière main jouée{}",
+					"dans votre main",
+				},
+			},
 			c_cry_patch = {
 				name = "://PATCH",
 				text = {
@@ -618,6 +678,13 @@ return {
 					"{C:cry_code}#1#{} carte supplémentaire et",
 					"{C:cry_code}#1#{} choix supplémentaire",
 					"{C:inactive}(Currently {C:cry_code}+#2#{C:inactive})",
+				},
+			},
+			c_cry_quantify = {
+				name = "://QUANTIFY",
+				text = { -- "{C:cry_code}J{C:cry_exotic}o{C:legendary}k{C:cry_epic}e{C:cry_candy}r{C:rare}i{C:uncommon}z{C:common}e{C:dark_edition}!{} an object",
+					"Oh, tu sais,",
+					"{C:cry_code}:){}",
 				},
 			},
 			c_cry_reboot = {
@@ -669,6 +736,13 @@ return {
 				text = {
 					"Crée un Joker",
 					"Nourriture {C:cry_code}Glitché",
+				},
+			},
+			c_cry_cryupdate = {
+				name = "://MISEAJOUR",
+				text = {
+					"on sait {C:cry_code}pas encore{},",
+					"reviens dans la prochaine {C:cry_code}mise à jour{}",
 				},
 			},
 			c_cry_variable = {
@@ -731,6 +805,13 @@ return {
 					"et au {C:attention}Joker Joyeux",
 				},
 			},
+			set_cry_meme = {
+				name = "Mème",
+				text = {
+					"Tout un tas de références",
+					"à de nombreux mèmes",
+				},
+			},
 			set_cry_misc = {
 				name = "Divers",
 				text = {
@@ -757,7 +838,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Mains de poker supplémentaires",
 				text = {
-					"Rajoute 4 nouvelles {C:attention}mains de poker",
+					"Rajoute 5 nouvelles {C:attention}mains de poker",
 					"et active les {C:attention}mains ascensionnées",
 				},
 			},
@@ -904,6 +985,16 @@ return {
 					"marquée#<s>4#, gagne {X:mult,C:white}X#1#{} Multi et",
 					"augmente le nombre de cartes avant la prochaîne augmentation de {C:attention}5{}",
 					"{C:inactive}(Actuellement {X:mult,C:white}X#2#{C:inactive} Multi)",
+				},
+			},
+			m_cry_abstract = {
+				name = "Carte abstraite",
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Multi,",
+					"Compte comme son {C:attention}propre{} rang et couleur",
+					"{C:green}#4# chance#<s>4# sur #5#{} de",
+					"{C:red,E:2}détruire{} la carte lorsqu'elle {C:attention}jouée",
+					"ou {C:attention}à la fin de la manche{} si elle est tenue en main",
 				},
 			},
 		},
@@ -1426,6 +1517,13 @@ return {
 					"contient une {C:attention}#2#",
 				},
 			},
+			j_cry_demicolon = {
+				name = "Deux-points-et-demie",
+				text = {
+					"{C:attention}Force-déclenche{} le Joker",
+					"à droite de celui-ci",
+				},
+			},
 			j_cry_digitalhallucinations = {
 				name = "Hallucinations digitales",
 				text = {
@@ -1611,6 +1709,15 @@ return {
 					"{X:dark_edition,C:white}^#1#{} Multi si",
 					"les cartes jouées n'ont été marqués",
 					"que {C:attention}#2#{} fois ou moins",
+				},
+			},
+			j_cry_familiar_currency = {
+				name = "Monnaie connue",
+				text = {
+					"Crée un {C:attention}Joker Mème{}",
+					"à la fin de la manche",
+					"pour {C:money}$#1#{} {C:inactive}(si possible)",
+					"{C:inactive}(Selon la place disponible)",
 				},
 			},
 			j_cry_filler = {
@@ -2028,7 +2135,7 @@ return {
 					"{C:attention}première défausse{} de chaque manche",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "Mœuf",
 				text = {
 					"Vendre cette carte crée",
@@ -2540,6 +2647,22 @@ return {
 					'{C:inactive,s:0.8}"This prison... to hold... me?"',
 				},
 			},
+			j_cry_sock_and_sock = {
+				name = "Chaussettes de Cirque", -- un cirque plutôt digital, mdr
+				text = {
+					"Redéclenche toutes les",
+					"cartes {C:attention}Abstraites{} {C:attention}#1#{} fois",
+				},
+			},
+			j_cry_brokenhome = {
+				name = "Maison cassée",
+				text = {
+					"{X:mult,C:white} X#1# {} Multi",
+					"{C:green}#2# chance#<s>2# sur #3#{} que cette carte",
+					"soit détruite à la fin",
+					"de la manche",
+				},
+			},
 			j_cry_spaceglobe = {
 				name = "Globe Céleste",
 				text = {
@@ -2720,7 +2843,7 @@ return {
 				text = {
 					"Vendre cette carte",
 					"{C:attention}multiplie{} les valeurs",
-					"des jokers possédés de {C:attention}X1.5{}",
+					"des jokers possédés de {C:attention}X#1#{}",
 				},
 			},
 			j_cry_unity = {
@@ -3701,6 +3824,15 @@ return {
 					"{C:attention}Carte#<s>1# écho",
 				},
 			},
+			c_cry_instability = {
+				name = "Instabilité",
+				text = {
+					"Transforme jusqu'à {C:attention}#1#{}",
+					"carte#<s>1# sélectionnée#<s>1# en",
+					"{C:attention}Carte#<s>1# abstraites",
+				},
+			},
+
 			c_cry_meld = {
 				name = "le Mélange",
 				text = {
@@ -4062,6 +4194,15 @@ return {
 				text = {
 					"Quand ce joker est {C:cry_code}déclenché{},",
 					"déclenche {C:cry_code}#1#",
+					"{C:inactive}Ne marche pas avec toutes les cartes{}",
+					"{C:inactive}mais tous les jokers peuvent déclencher l'autre{}",
+				},
+			},
+			cry_global_sticker = {
+				name = "Global",
+				text = {
+					"Toujours tiré après",
+					"la {C:cry_code}première main tirée{}",
 				},
 			},
 			cry_flickering = {
@@ -4079,6 +4220,22 @@ return {
 					"{C:attention}#1#{} déclenchements",
 				},
 			},
+			cry_function_sticker = {
+				name = "Fonction://",
+				text = {
+					"Crée {C:cry_code}#1#{}",
+					"à l'utilisation",
+				},
+			},
+			cry_function_sticker_desc = { --for function:// card
+				name = "Fonction://",
+				text = {
+					"Crée le consommable",
+					"{C:cry_code}Fonction://{} suivant",
+					"{C:inactive}Actuellement #1#, #2# puis #3#{}",
+				},
+			},
+
 			cry_possessed = {
 				name = "Possédé",
 				text = {
@@ -4368,6 +4525,15 @@ return {
 					"{C:attention}Joker Mème{} parmi {C:attention}#2#{}",
 				},
 			},
+			p_cry_baneful_1 = {
+				name = "Paquet Bouffon Maléfique",
+				text = {
+					"Jusqu'à {C:attention}#1#{} Joker#<s>1#",
+					"parmi {C:attention}#2#{} Joker#<s>2# {X:cry_cursed,C:white}Maudit#<s>2#{}",
+					"{C:attention}Skipping{} will {C:red}banish{}",
+					"{C:attention}rightmost{} owned Joker",
+				},
+			},
 			undiscovered_code = {
 				name = "Non découvert",
 				text = {
@@ -4408,6 +4574,12 @@ return {
 				name = "a",
 				text = {
 					'{C:inactive,s:0.7}"Je déteste cette carte" - SDM_0, 2024{}{}',
+				},
+			},
+			cry_multiuse = {
+				name = "m",
+				text = {
+					"{C:inactive}Réutilisable: ({C:cry_code}#1#{C:inactive} utilisations restantes)",
 				},
 			},
 		},
@@ -4540,6 +4712,11 @@ return {
 			ach_cry_pin = "L'épingle de la honte",
 			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and "J'ai plus besoin de ça"
 				or "Tu te fous de moi",
+			ach_cry_decked = "Remis en jeu",
+			ach_cry_despaired = "Déparaillé",
+			ach_cry_stoned = "Solide",
+			ach_cry_fucked = "Foutu",
+			ach_cry_technically_positive = "Techniquement positif",
 		},
 		achievement_descriptions = {
 			ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
@@ -4564,6 +4741,11 @@ return {
 			ach_cry_what_have_you_done = "Supprimer ou sacrifier un Joker exotique",
 			ach_cry_pin = "Perdre une partie face à l'Épingle",
 			ach_cry_youre_fucking_kidding = "Défausser " .. localize("cry_WholeDeck", "poker_hands"),
+			ach_cry_decked = "Monter " .. localize("cry_WholeDeck", "poker_hands") .. " au niveau 5252",
+			ach_cry_despaired = "Monter " .. localize("cry_UltPair", "poker_hands") .. " au niveau 2222",
+			ach_cry_fucked = "Monter " .. localize("cry_Clusterfuck", "poker_hands") .. " au niveau 69",
+			ach_cry_stoned = "Monter " .. localize("cry_Bulwark", "poker_hands") .. " au niveau 420",
+			ach_cry_technically_positive = "Obtenir un Joker Négatif négatif",
 		},
 		challenge_names = {
 			c_cry_ballin = "Ballin'",
@@ -4617,6 +4799,8 @@ return {
 
 			k_cry_program_pack = "Paquet Programme",
 			k_cry_meme_pack = "Paquet Meme",
+			k_cry_baneful_pack = "Paquet Bouffon Maléfique",
+			cry_baneful_warning = "Passer bannira le Joker le plus à droite",
 
 			cry_critical_hit_ex = "Coup critique!",
 			cry_critical_miss_ex = "Échec critique!",
@@ -4631,6 +4815,7 @@ return {
 			cry_debuff_oldflint = "Pas de Couleur",
 			cry_debuff_oldmark = "No hands containing a Pair",
 			cry_debuff_obsidian_orb = "Applique les capacités de tous les boss battus",
+			cry_blind_baneful_pack = "Après la manche, ouvre un Paquet Bouffon Maléfique",
 
 			cry_tax_placeholder = "(X0.4 taille de la blinde)",
 			cry_joke_placeholder = "(multiple de 8)",
@@ -4679,6 +4864,7 @@ return {
 			cry_again_q = "Encore?",
 			cry_curse = "Malédiction",
 			cry_curse_ex = "Malédiction!",
+			cry_demicolon = "Demi-déclenché!",
 			cry_sobbing = "À l'aide...",
 			cry_gaming = "Gaming",
 			cry_gaming_ex = "Gaming!",
@@ -4697,6 +4883,7 @@ return {
 			cry_unredeemed = "Plus échangé...",
 			cry_active = "Actif",
 			cry_inactive = "Inactif",
+			cry_divorced = "Divorcé!",
 
 			k_disable_music = "Désactiver la musique",
 
@@ -4747,6 +4934,7 @@ return {
 			unique = "Unique",
 			cry_rigged = "Truqué",
 			cry_hooked = "Accroché",
+			cry_global_sticker = "Global",
 			cry_flickering = "Luisant",
 			cry_possessed = "Possédé",
 

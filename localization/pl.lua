@@ -1426,7 +1426,7 @@ return {
 					"{C:attention}pierwsza zrzutka{} rundy",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "M-Jajko",
 				text = {
 					"Sprzedaj tę kartę, aby stworzyć",

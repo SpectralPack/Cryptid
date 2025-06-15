@@ -211,14 +211,14 @@ match_indent = true
 [patches.pattern]
 target = '''=[SMODS _ "src/overrides.lua"]'''
 pattern = '''
-						opt_callback = 'your_collection_tags_page',
-						focus_args = { snap_to = true, nav = 'wide' },
-						current_option = page,
-						colour = G.C.RED,
-						no_pips = true
-					})
-				}
-			}'''
+			opt_callback = 'your_collection_tags_page',
+			focus_args = { snap_to = true, nav = 'wide' },
+			current_option = page,
+			colour = G.ACTIVE_MOD_UI and (G.ACTIVE_MOD_UI.ui_config or {}).collection_option_cycle_colour or G.C.RED,
+			no_pips = true
+		})
+	}
+}'''
 position = "after"
 payload = '''
 ,

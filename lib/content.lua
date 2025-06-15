@@ -15,11 +15,11 @@ SMODS.PokerHand({
 	l_chips = 50,
 	l_mult = 1,
 	example = {
-		{ "S_A", true, "m_stone" },
-		{ "S_A", true, "m_stone" },
-		{ "S_A", true, "m_stone" },
-		{ "S_A", true, "m_stone" },
-		{ "S_A", true, "m_stone" },
+		{ "S_A", true, enhancement = "m_stone" },
+		{ "S_A", true, enhancement = "m_stone" },
+		{ "S_A", true, enhancement = "m_stone" },
+		{ "S_A", true, enhancement = "m_stone" },
+		{ "S_A", true, enhancement = "m_stone" },
 	},
 	atlas = "poker_hands",
 	pos = { x = 0, y = 0 },
@@ -267,6 +267,25 @@ SMODS.PokerHand({
 		return
 	end,
 })
+
+SMODS.PokerHand({
+	key = "None",
+	visible = false,
+	chips = 0,
+	mult = 0,
+	l_chips = 5,
+	l_mult = 0.5,
+	example = {},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 0 },
+	evaluate = function(parts, hand)
+		if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true or Cryptid.enabled("c_cry_nibiru") ~= true then --or Cryptid.enabled("c_cry_asteroidbelt") ~= true then
+			return {}
+		end
+		return { hand and #hand == 0 and G.GAME.hands["cry_None"].visible and {} or nil }
+	end,
+})
+
 SMODS.Rarity({
 	key = "exotic",
 	loc_txt = {},
@@ -312,6 +331,7 @@ SMODS.ConsumableType({
 	default = "c_cry_potion",
 	can_stack = false,
 	can_divide = false,
+	no_collection = true,
 })
 -- Pool used by Food Jokers
 SMODS.ObjectType({
@@ -398,6 +418,14 @@ SMODS.Atlas({
 		G.shared_sticker_pinned =
 			Sprite(0, 0, G.CARD_W, G.CARD_H, G[self.atlas_table][self.key_noloc or self.key], { x = 5, y = 0 })
 	end,
+})
+SMODS.Sound({
+	key = "forcetrigger",
+	path = "forcetrigger.ogg",
+})
+SMODS.Sound({
+	key = "demitrigger",
+	path = "demitrigger.ogg",
 })
 SMODS.Sound({
 	key = "meow1",
@@ -492,9 +520,17 @@ SMODS.Sound({
 	key = "music_big",
 	path = "music_big.ogg",
 	select_music_track = function()
-		return Cryptid_config.Cryptid
+		if G.GAME.cry_music_big then
+			return G.GAME.cry_music_big
+		end
+		if
+			Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.big_music
 			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
+		then
+			G.GAME.cry_music_big = true
+			return true
+		end
 	end,
 })
 SMODS.Sound({

@@ -1,322 +1,6 @@
-local timantti = {
-	cry_credits = {
-		idea = {
-			"Jevonn",
-		},
-		art = {
-			"jenwalter666",
-		},
-		code = {
-			"Math",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_planet",
-		},
-	},
-	object_type = "Consumable",
-	set = "Planet",
-	name = "cry-Timantti",
-	key = "Timantti",
-	pos = { x = 0, y = 2 },
-	config = { hand_types = { "High Card", "Pair", "Two Pair" } },
-	cost = 4,
-	aurinko = true,
-	atlas = "atlasnotjokers",
-	order = 8,
-	can_use = function(self, card)
-		return true
-	end,
-	loc_vars = function(self, info_queue, center)
-		return {
-			vars = {
-				localize("High Card", "poker_hands"),
-				localize("Pair", "poker_hands"),
-				localize("Two Pair", "poker_hands"),
-				number_format(G.GAME.hands["High Card"].level),
-				number_format(G.GAME.hands["Pair"].level),
-				number_format(G.GAME.hands["Two Pair"].level),
-				colours = {
-					(
-						to_big(G.GAME.hands["High Card"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["High Card"].level)):to_number()]
-					),
-					(to_big(G.GAME.hands["Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
-						math.min(7, G.GAME.hands["Pair"].level)
-					):to_number()]),
-					(
-						to_big(G.GAME.hands["Two Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Two Pair"].level)):to_number()]
-					),
-				},
-			},
-		}
-	end,
-	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
-	end,
-	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
-	end,
-	calculate = function(self, card, context)
-		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
-			and (
-				context.scoring_name == "High Card"
-				or context.scoring_name == "Pair"
-				or context.scoring_name == "Two Pair"
-			)
-		then
-			local value = G.P_CENTERS.v_observatory.config.extra
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
-		end
-	end,
-}
-local klubi = {
-	cry_credits = {
-		idea = {
-			"Jevonn",
-		},
-		art = {
-			"jenwalter666",
-		},
-		code = {
-			"Math",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_planet",
-		},
-	},
-	object_type = "Consumable",
-	set = "Planet",
-	name = "cry-Klubi",
-	key = "Klubi",
-	pos = { x = 1, y = 2 },
-	config = { hand_types = { "Three of a Kind", "Straight", "Flush" } },
-	cost = 4,
-	aurinko = true,
-	atlas = "atlasnotjokers",
-	order = 9,
-	can_use = function(self, card)
-		return true
-	end,
-	loc_vars = function(self, info_queue, center)
-		return {
-			vars = {
-				localize("Three of a Kind", "poker_hands"),
-				localize("Straight", "poker_hands"),
-				localize("Flush", "poker_hands"),
-				number_format(G.GAME.hands["Three of a Kind"].level),
-				number_format(G.GAME.hands["Straight"].level),
-				number_format(G.GAME.hands["Flush"].level),
-				colours = {
-					(
-						to_big(G.GAME.hands["Three of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Three of a Kind"].level)):to_number()]
-					),
-					(
-						to_big(G.GAME.hands["Straight"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight"].level)):to_number()]
-					),
-					(to_big(G.GAME.hands["Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_big(
-						math.min(7, G.GAME.hands["Flush"].level)
-					):to_number()]),
-				},
-			},
-		}
-	end,
-	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
-	end,
-	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
-	end,
-	calculate = function(self, card, context)
-		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
-			and (
-				context.scoring_name == "Three of a Kind"
-				or context.scoring_name == "Straight"
-				or context.scoring_name == "Flush"
-			)
-		then
-			local value = G.P_CENTERS.v_observatory.config.extra
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
-		end
-	end,
-}
-local sydan = {
-	cry_credits = {
-		idea = {
-			"Jevonn",
-		},
-		art = {
-			"jenwalter666",
-		},
-		code = {
-			"Math",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_planet",
-		},
-	},
-	object_type = "Consumable",
-	set = "Planet",
-	name = "cry-Sydan",
-	key = "Sydan",
-	pos = { x = 2, y = 2 },
-	config = { hand_types = { "Full House", "Four of a Kind", "Straight Flush" } },
-	cost = 4,
-	aurinko = true,
-	atlas = "atlasnotjokers",
-	order = 10,
-	can_use = function(self, card)
-		return true
-	end,
-	loc_vars = function(self, info_queue, center)
-		return {
-			vars = {
-				localize("Full House", "poker_hands"),
-				localize("Four of a Kind", "poker_hands"),
-				localize("Straight Flush", "poker_hands"),
-				number_format(G.GAME.hands["Full House"].level),
-				number_format(G.GAME.hands["Four of a Kind"].level),
-				number_format(G.GAME.hands["Straight Flush"].level),
-				colours = {
-					(
-						to_big(G.GAME.hands["Full House"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Full House"].level)):to_number()]
-					),
-					(
-						to_big(G.GAME.hands["Four of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Four of a Kind"].level)):to_number()]
-					),
-					(
-						to_big(G.GAME.hands["Straight Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Straight Flush"].level)):to_number()]
-					),
-				},
-			},
-		}
-	end,
-	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
-	end,
-	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
-	end,
-	calculate = function(self, card, context)
-		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
-			and (
-				context.scoring_name == "Full House"
-				or context.scoring_name == "Four of a Kind"
-				or context.scoring_name == "Straight Flush"
-			)
-		then
-			local value = G.P_CENTERS.v_observatory.config.extra
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
-		end
-	end,
-}
-local lapio = {
-	cry_credits = {
-		idea = {
-			"Jevonn",
-		},
-		art = {
-			"jenwalter666",
-		},
-		code = {
-			"Math",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_planet",
-		},
-	},
-	object_type = "Consumable",
-	set = "Planet",
-	name = "cry-Lapio",
-	key = "Lapio",
-	pos = { x = 3, y = 2 },
-	config = { hand_types = { "Five of a Kind", "Flush House", "Flush Five" }, softlock = true },
-	cost = 4,
-	aurinko = true,
-	atlas = "atlasnotjokers",
-	order = 11,
-	can_use = function(self, card)
-		return true
-	end,
-	loc_vars = function(self, info_queue, center)
-		return {
-			vars = {
-				localize("Five of a Kind", "poker_hands"),
-				localize("Flush House", "poker_hands"),
-				localize("Flush Five", "poker_hands"),
-				number_format(G.GAME.hands["Five of a Kind"].level),
-				number_format(G.GAME.hands["Flush House"].level),
-				number_format(G.GAME.hands["Flush Five"].level),
-				colours = {
-					(
-						to_big(G.GAME.hands["Five of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Five of a Kind"].level)):to_number()]
-					),
-					(
-						to_big(G.GAME.hands["Flush House"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush House"].level)):to_number()]
-					),
-					(
-						to_big(G.GAME.hands["Flush Five"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["Flush Five"].level)):to_number()]
-					),
-				},
-			},
-		}
-	end,
-	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
-	end,
-	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
-	end,
-	calculate = function(self, card, context)
-		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
-			and (
-				context.scoring_name == "Five of a Kind"
-				or context.scoring_name == "Flush House"
-				or context.scoring_name == "Flush Five"
-			)
-		then
-			local value = G.P_CENTERS.v_observatory.config.extra
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
-		end
-	end,
-}
-local kaikki = {
+-- Asteroid Belt
+-- Levels up Bulwark (+50/+1)
+local abelt = {
 	cry_credits = {
 		idea = {
 			"HexaCryonic",
@@ -330,80 +14,257 @@ local kaikki = {
 	},
 	dependencies = {
 		items = {
-			"set_cry_planet",
 			"set_cry_poker_hand_stuff",
+			"set_cry_planet",
 		},
 	},
 	object_type = "Consumable",
 	set = "Planet",
-	name = "cry-Kaikki",
-	key = "Kaikki",
-	pos = { x = 3, y = 5 },
-	config = { hand_types = { "cry_Bulwark", "cry_Clusterfuck", "cry_UltPair" }, softlock = true },
-	cost = 4,
-	aurinko = true,
+	key = "asteroidbelt",
+	config = { hand_type = "cry_Bulwark", softlock = true },
+	pos = { x = 1, y = 5 },
+	order = 1,
 	atlas = "atlasnotjokers",
-	order = 12,
-	can_use = function(self, card)
-		return true
+	aurinko = true,
+	set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_disc"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["cry_Bulwark"].level or 1
-		local leveltwo = G.GAME.hands["cry_Clusterfuck"].level or 1
-		local levelthree = G.GAME.hands["cry_UltPair"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
-		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
-
 		return {
 			vars = {
-				localize("cry_Bulwark", "poker_hands"),
-				localize("cry_Clusterfuck", "poker_hands"),
-				localize("cry_UltPair", "poker_hands"),
+				localize("cry_hand_bulwark"),
 				G.GAME.hands["cry_Bulwark"].level,
-				G.GAME.hands["cry_Clusterfuck"].level,
-				G.GAME.hands["cry_UltPair"].level,
+				G.GAME.hands["cry_Bulwark"].l_mult,
+				G.GAME.hands["cry_Bulwark"].l_chips,
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
-					),
-					(
-						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
-					),
-					(
-						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Bulwark"].level))]
 					),
 				},
 			},
 		}
 	end,
-	use = function(self, card, area, copier)
-		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
-	end,
-	bulk_use = function(self, card, area, copier, number)
-		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
-	end,
-	calculate = function(self, card, context)
-		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
-			and (
-				context.scoring_name == "cry_Bulwark"
-				or context.scoring_name == "cry_Clusterfuck"
-				or context.scoring_name == "cry_UltPair"
-			)
-		then
-			local value = G.P_CENTERS.v_observatory.config.extra
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
-		end
-	end,
+	generate_ui = 0,
 }
+-- Void
+-- Upgrades Clusterfuck (+40/+4)
+local void = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	key = "void",
+	order = 2,
+	config = { hand_type = "cry_Clusterfuck", softlock = true },
+	pos = { x = 0, y = 5 },
+	atlas = "atlasnotjokers",
+	aurinko = true,
+	set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				localize("cry_Clusterfuck"),
+				G.GAME.hands["cry_Clusterfuck"].level,
+				G.GAME.hands["cry_Clusterfuck"].l_mult,
+				G.GAME.hands["cry_Clusterfuck"].l_chips,
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Clusterfuck"].level))]
+					),
+				},
+			},
+		}
+	end,
+	generate_ui = 0,
+}
+-- Phobos & Deimos
+-- Upgrades Ultimate Pair (+40/+4)
+local marsmoons = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	key = "marsmoons",
+	order = 3,
+	config = { hand_type = "cry_UltPair", softlock = true },
+	pos = { x = 2, y = 5 },
+	atlas = "atlasnotjokers",
+	aurinko = true,
+	set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_satellite"), get_type_colour(self or card.config, card), nil, 1.2)
+	end,
+	loc_vars = function(self, info_queue, center)
+		local levelone = G.GAME.hands["cry_UltPair"].level or 1
+		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+		if levelone == 1 then
+			planetcolourone = G.C.UI.TEXT_DARK
+		end
+		return {
+			vars = {
+				localize("cry_UltPair"),
+				G.GAME.hands["cry_UltPair"].level,
+				G.GAME.hands["cry_UltPair"].l_mult,
+				G.GAME.hands["cry_UltPair"].l_chips,
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_UltPair"].level))]
+					),
+				},
+			},
+		}
+	end,
+	generate_ui = 0,
+}
+
+-- Order 4 reserved for possible None planet
+-- hehehehehehe
+local nibiru = {
+	cry_credits = {
+		idea = {
+			"cassknows",
+		},
+		art = {
+			"cassknows",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	key = "nibiru",
+	order = 4,
+	config = { hand_type = "cry_None", softlock = true },
+	pos = { x = 0, y = 6 },
+	atlas = "atlasnotjokers",
+	aurinko = true,
+	set_card_type_badge = function(self, card, badges)
+		--use whichever of these fits best, the second literally just removes the badge, and the first is a blank badge
+		--badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
+
+		if badges[1] and badges[1].remove then
+			badges[1]:remove()
+		end
+		badges[1] = nil
+	end,
+	loc_vars = function(self, info_queue, center)
+		local levelone = G.GAME.hands["cry_None"].level or 1
+		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+		if levelone == 1 then
+			planetcolourone = G.C.UI.TEXT_DARK
+		end
+		return {
+			vars = {
+				localize("cry_None"),
+				G.GAME.hands["cry_None"].level,
+				G.GAME.hands["cry_None"].l_mult,
+				G.GAME.hands["cry_None"].l_chips,
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_None"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_None"].level))]
+					),
+				},
+			},
+		}
+	end,
+	generate_ui = 0,
+}
+
+-- The Universe In Its Fucking Entirety
+-- Upgrades The Entire Fucking Deck (+5.25252e28/+5.25252e27)
+local universe = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"HexaCryonic",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_poker_hand_stuff",
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	key = "universe",
+	config = { hand_type = "cry_WholeDeck", softlock = true },
+	pos = { x = 4, y = 5 },
+	order = 5,
+	atlas = "atlasnotjokers",
+	aurinko = true,
+	set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				localize("cry_WholeDeck"),
+				G.GAME.hands["cry_WholeDeck"].level,
+				G.GAME.hands["cry_WholeDeck"].l_mult,
+				G.GAME.hands["cry_WholeDeck"].l_chips,
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_WholeDeck"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_WholeDeck"].level))]
+					),
+				},
+			},
+		}
+	end,
+	generate_ui = 0,
+	cry_credits = {
+		art = { "cassknows" },
+		code = { "lord-ruby" },
+	},
+}
+
+-- Planet.lua
+-- 1 in 5 to upgrade Every poker hand
 local planetlua = {
 	cry_credits = {
 		idea = {
@@ -430,7 +291,7 @@ local planetlua = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 1,
+	order = 101,
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
@@ -702,6 +563,9 @@ local planetlua = {
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -709,6 +573,8 @@ local planetlua = {
 		end
 	end,
 }
+-- Neutron Star
+-- Upgrades a random hand by 1 per Neutron Star used this run
 local nstar = {
 	cry_credits = {
 		idea = {
@@ -807,13 +673,17 @@ local nstar = {
 	end,
 	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
 		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil and context.joker_main then
+			local value = G.GAME.neutronstarsusedinthisrun
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
-					vars = { 1 + (0.10 * G.GAME.neutronstarsusedinthisrun) },
+					vars = { 1 + (0.10 * value) },
 				}),
-				Xmult_mod = 1 + (0.10 * G.GAME.neutronstarsusedinthisrun),
+				Xmult_mod = 1 + (0.10 * value),
 			}
 		end
 	end,
@@ -844,6 +714,9 @@ local nstar = {
 		end
 	end,
 }
+
+-- Sol
+-- Upgrades Ascended Hand Power by 0.05
 local sunplanet = {
 	cry_credits = {
 		idea = {
@@ -872,7 +745,7 @@ local sunplanet = {
 	cost = 4,
 	aurinko = true,
 	atlas = "atlasnotjokers",
-	order = 7,
+	order = 150,
 	config = {
 		extra = 0.05,
 	},
@@ -975,6 +848,9 @@ local sunplanet = {
 			and context.joker_main
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -1003,7 +879,349 @@ local sunplanet = {
 		return false
 	end,
 }
-local abelt = {
+-- Ruutu
+-- Upgrades High Card, Pair and Two Pair
+local ruutu = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	name = "cry-Ruutu",
+	key = "Timantii",
+	pos = { x = 0, y = 2 },
+	config = { hand_types = { "High Card", "Pair", "Two Pair" } },
+	cost = 4,
+	aurinko = true,
+	atlas = "atlasnotjokers",
+	order = 151,
+	can_use = function(self, card)
+		return true
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				localize("High Card", "poker_hands"),
+				localize("Pair", "poker_hands"),
+				localize("Two Pair", "poker_hands"),
+				number_format(G.GAME.hands["High Card"].level),
+				number_format(G.GAME.hands["Pair"].level),
+				number_format(G.GAME.hands["Two Pair"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["High Card"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["High Card"].level))]
+					),
+					(
+						to_big(G.GAME.hands["Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Pair"].level))]
+					),
+					(
+						to_big(G.GAME.hands["Two Pair"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Two Pair"].level))]
+					),
+				},
+			},
+		}
+	end,
+	use = function(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
+	end,
+	calculate = function(self, card, context)
+		if
+			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
+			and (
+				context.scoring_name == "High Card"
+				or context.scoring_name == "Pair"
+				or context.scoring_name == "Two Pair"
+			)
+		then
+			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+				Xmult_mod = value,
+			}
+		end
+	end,
+}
+-- Risti
+-- Upgrades Three Of A Kind, Straight and Flush
+local risti = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	name = "cry-Risti",
+	key = "Klubi",
+	pos = { x = 1, y = 2 },
+	config = { hand_types = { "Three of a Kind", "Straight", "Flush" } },
+	cost = 4,
+	aurinko = true,
+	atlas = "atlasnotjokers",
+	order = 152,
+	can_use = function(self, card)
+		return true
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				localize("Three of a Kind", "poker_hands"),
+				localize("Straight", "poker_hands"),
+				localize("Flush", "poker_hands"),
+				number_format(G.GAME.hands["Three of a Kind"].level),
+				number_format(G.GAME.hands["Straight"].level),
+				number_format(G.GAME.hands["Flush"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Three of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Three of a Kind"].level))]
+					),
+					(
+						to_big(G.GAME.hands["Straight"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Straight"].level))]
+					),
+					(
+						to_big(G.GAME.hands["Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush"].level))]
+					),
+				},
+			},
+		}
+	end,
+	use = function(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
+	end,
+	calculate = function(self, card, context)
+		if
+			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
+			and (
+				context.scoring_name == "Three of a Kind"
+				or context.scoring_name == "Straight"
+				or context.scoring_name == "Flush"
+			)
+		then
+			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+				Xmult_mod = value,
+			}
+		end
+	end,
+}
+-- Hertta
+-- Upgrades Full House, Four Of A Kind and Straight Flush
+local hertta = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	name = "cry-Hertta",
+	key = "Sydan",
+	pos = { x = 2, y = 2 },
+	config = { hand_types = { "Full House", "Four of a Kind", "Straight Flush" } },
+	cost = 4,
+	aurinko = true,
+	atlas = "atlasnotjokers",
+	order = 153,
+	can_use = function(self, card)
+		return true
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				localize("Full House", "poker_hands"),
+				localize("Four of a Kind", "poker_hands"),
+				localize("Straight Flush", "poker_hands"),
+				number_format(G.GAME.hands["Full House"].level),
+				number_format(G.GAME.hands["Four of a Kind"].level),
+				number_format(G.GAME.hands["Straight Flush"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Full House"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Full House"].level))]
+					),
+					(
+						to_big(G.GAME.hands["Four of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Four of a Kind"].level))]
+					),
+					(
+						to_big(G.GAME.hands["Straight Flush"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Straight Flush"].level))]
+					),
+				},
+			},
+		}
+	end,
+	use = function(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
+	end,
+	calculate = function(self, card, context)
+		if
+			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
+			and (
+				context.scoring_name == "Full House"
+				or context.scoring_name == "Four of a Kind"
+				or context.scoring_name == "Straight Flush"
+			)
+		then
+			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+				Xmult_mod = value,
+			}
+		end
+	end,
+}
+-- Pata
+-- Upgrades Five Of A Kind, Flush House and Flush Five
+local pata = {
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"jenwalter666",
+		},
+		code = {
+			"Math",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_planet",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	name = "cry-Pata",
+	key = "Lapio",
+	pos = { x = 3, y = 2 },
+	config = { hand_types = { "Five of a Kind", "Flush House", "Flush Five" }, softlock = true },
+	cost = 4,
+	aurinko = true,
+	atlas = "atlasnotjokers",
+	order = 154,
+	can_use = function(self, card)
+		return true
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				localize("Five of a Kind", "poker_hands"),
+				localize("Flush House", "poker_hands"),
+				localize("Flush Five", "poker_hands"),
+				number_format(G.GAME.hands["Five of a Kind"].level),
+				number_format(G.GAME.hands["Flush House"].level),
+				number_format(G.GAME.hands["Flush Five"].level),
+				colours = {
+					(
+						to_big(G.GAME.hands["Five of a Kind"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Five of a Kind"].level))]
+					),
+					(
+						to_big(G.GAME.hands["Flush House"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush House"].level))]
+					),
+					(
+						to_big(G.GAME.hands["Flush Five"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["Flush Five"].level))]
+					),
+				},
+			},
+		}
+	end,
+	use = function(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
+	end,
+	calculate = function(self, card, context)
+		if
+			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
+			and (
+				context.scoring_name == "Five of a Kind"
+				or context.scoring_name == "Flush House"
+				or context.scoring_name == "Flush Five"
+			)
+		then
+			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+				Xmult_mod = value,
+			}
+		end
+	end,
+}
+-- Kaikki
+-- Upgrades Bulwark, Clusterfuck and Ultimate Pair
+local kaikki = {
 	cry_credits = {
 		idea = {
 			"HexaCryonic",
@@ -1017,181 +1235,85 @@ local abelt = {
 	},
 	dependencies = {
 		items = {
+			"set_cry_planet",
 			"set_cry_poker_hand_stuff",
 		},
 	},
 	object_type = "Consumable",
 	set = "Planet",
-	key = "asteroidbelt",
-	config = { hand_type = "cry_Bulwark", softlock = true },
-	pos = { x = 1, y = 5 },
-	order = 2,
-	atlas = "atlasnotjokers",
+	name = "cry-Kaikki",
+	key = "Kaikki",
+	pos = { x = 3, y = 5 },
+	config = { hand_types = { "cry_Bulwark", "cry_Clusterfuck", "cry_UltPair" }, softlock = true },
+	cost = 4,
 	aurinko = true,
-	set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_planet_disc"), get_type_colour(self or card.config, card), nil, 1.2)
+	atlas = "atlasnotjokers",
+	order = 155,
+	can_use = function(self, card)
+		return true
 	end,
 	loc_vars = function(self, info_queue, center)
+		local levelone = G.GAME.hands["cry_Bulwark"].level or 1
+		local leveltwo = G.GAME.hands["cry_Clusterfuck"].level or 1
+		local levelthree = G.GAME.hands["cry_UltPair"].level or 1
+		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
+		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
+
 		return {
 			vars = {
-				localize("cry_hand_bulwark"),
+				localize("cry_Bulwark", "poker_hands"),
+				localize("cry_Clusterfuck", "poker_hands"),
+				localize("cry_UltPair", "poker_hands"),
 				G.GAME.hands["cry_Bulwark"].level,
-				G.GAME.hands["cry_Bulwark"].l_mult,
-				G.GAME.hands["cry_Bulwark"].l_chips,
+				G.GAME.hands["cry_Clusterfuck"].level,
+				G.GAME.hands["cry_UltPair"].level,
 				colours = {
 					(
 						to_big(G.GAME.hands["cry_Bulwark"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Bulwark"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Bulwark"].level))]
 					),
-				},
-			},
-		}
-	end,
-	generate_ui = 0,
-}
-local void = {
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"HexaCryonic",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_poker_hand_stuff",
-		},
-	},
-	object_type = "Consumable",
-	set = "Planet",
-	key = "void",
-	order = 3,
-	config = { hand_type = "cry_Clusterfuck", softlock = true },
-	pos = { x = 0, y = 5 },
-	atlas = "atlasnotjokers",
-	aurinko = true,
-	set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
-	end,
-	loc_vars = function(self, info_queue, center)
-		return {
-			vars = {
-				localize("cry_Clusterfuck"),
-				G.GAME.hands["cry_Clusterfuck"].level,
-				G.GAME.hands["cry_Clusterfuck"].l_mult,
-				G.GAME.hands["cry_Clusterfuck"].l_chips,
-				colours = {
 					(
 						to_big(G.GAME.hands["cry_Clusterfuck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_Clusterfuck"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_Clusterfuck"].level))]
 					),
-				},
-			},
-		}
-	end,
-	generate_ui = 0,
-}
-local marsmoons = {
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"HexaCryonic",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_poker_hand_stuff",
-		},
-	},
-	object_type = "Consumable",
-	set = "Planet",
-	key = "marsmoons",
-	order = 4,
-	config = { hand_type = "cry_UltPair", softlock = true },
-	pos = { x = 2, y = 5 },
-	atlas = "atlasnotjokers",
-	aurinko = true,
-	set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_planet_satellite"), get_type_colour(self or card.config, card), nil, 1.2)
-	end,
-	loc_vars = function(self, info_queue, center)
-		local levelone = G.GAME.hands["cry_UltPair"].level or 1
-		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-		if levelone == 1 then
-			planetcolourone = G.C.UI.TEXT_DARK
-		end
-		return {
-			vars = {
-				localize("cry_UltPair"),
-				G.GAME.hands["cry_UltPair"].level,
-				G.GAME.hands["cry_UltPair"].l_mult,
-				G.GAME.hands["cry_UltPair"].l_chips,
-				colours = {
 					(
 						to_big(G.GAME.hands["cry_UltPair"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_UltPair"].level)):to_number()]
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["cry_UltPair"].level))]
 					),
 				},
 			},
 		}
 	end,
-	generate_ui = 0,
-}
-local universe = {
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"HexaCryonic",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_poker_hand_stuff",
-		},
-	},
-	object_type = "Consumable",
-	set = "Planet",
-	key = "universe",
-	config = { hand_type = "cry_WholeDeck", softlock = true },
-	pos = { x = 4, y = 5 },
-	order = 5,
-	atlas = "atlasnotjokers",
-	aurinko = true,
-	set_card_type_badge = function(self, card, badges)
-		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
+	use = function(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.hand_types)
 	end,
-	loc_vars = function(self, info_queue, center)
-		return {
-			vars = {
-				localize("cry_UltPair"),
-				G.GAME.hands["cry_WholeDeck"].level,
-				G.GAME.hands["cry_WholeDeck"].l_mult,
-				G.GAME.hands["cry_WholeDeck"].l_chips,
-				colours = {
-					(
-						to_big(G.GAME.hands["cry_WholeDeck"].level) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands["cry_WholeDeck"].level)):to_number()]
-					),
-				},
-			},
-		}
+	bulk_use = function(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.hand_types)
 	end,
-	generate_ui = 0,
+	calculate = function(self, card, context)
+		if
+			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
+			and (
+				context.scoring_name == "cry_Bulwark"
+				or context.scoring_name == "cry_Clusterfuck"
+				or context.scoring_name == "cry_UltPair"
+			)
+		then
+			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+				Xmult_mod = value,
+			}
+		end
+	end,
 }
+-- order 166 reserved for suit planet of TEFD, None and Sol
+
 function Cryptid.suit_level_up(card, copier, number, poker_hands, message)
 	local used_consumable = copier or card
 	if not number then
@@ -1224,6 +1346,27 @@ function Cryptid.suit_level_up(card, copier, number, poker_hands, message)
 		{ mult = 0, chips = 0, handname = "", level = "" }
 	)
 end
-local planet_cards =
-	{ planetlua, nstar, timantti, klubi, sydan, lapio, sunplanet, kaikki, abelt, void, marsmoons, universe }
-return { name = "Planets", init = function() end, items = planet_cards }
+local planet_cards = {
+	abelt,
+	void,
+	marsmoons,
+	-- reserved for None
+	nibiru,
+	universe,
+
+	planetlua,
+	nstar,
+
+	sunplanet,
+	ruutu,
+	risti,
+	hertta,
+	pata,
+	kaikki,
+	-- reserved for tefd/none/sol suit planet
+}
+return {
+	name = "Planets",
+	init = function() end,
+	items = planet_cards,
+}

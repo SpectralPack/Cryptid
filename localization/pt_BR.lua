@@ -645,7 +645,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Poker Hand Stuff",
 				text = {
-					"Add 4 new {C:attention}poker hands",
+					"Add 5 new {C:attention}poker hands",
 					"and enable {C:attention}Ascended hands",
 				},
 			},
@@ -1894,7 +1894,7 @@ return {
 					"{C:attention}primeiro descarte{} de cada rodada",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "Movo",
 				text = {
 					"Venda esta carta para criar",

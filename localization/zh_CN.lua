@@ -923,7 +923,7 @@ return {
 					"{C:attention}开心小丑{}",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "M蛋",
 				text = {
 					"出售这张小丑来创造",

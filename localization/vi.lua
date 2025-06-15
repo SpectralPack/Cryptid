@@ -639,7 +639,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Tay Poker",
 				text = {
-					"Thêm 4 {C:attention}tay poker mới",
+					"Thêm 5 {C:attention}tay poker mới",
 					"và cho phép {C:attention}tay Thăng Thiên",
 				},
 			},
@@ -1775,7 +1775,7 @@ return {
 					"{C:attention}lượt bỏ đầu tiên{} của mỗi ván",
 				},
 			},
-			j_cry_Megg = {
+			j_cry_megg = {
 				name = "Mrứng",
 				text = {
 					"Bán lá này để tạo ra",

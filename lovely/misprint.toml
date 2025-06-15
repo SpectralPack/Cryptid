@@ -30,7 +30,7 @@ target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 '''
 match_indent = true
 
@@ -46,7 +46,7 @@ payload = '''
 G.GAME.pack_choices = ((self.ability.choose and self.ability.extra) and math.min(math.floor(self.ability.extra), self.ability.choose)) or 1
 if G.GAME.modifiers.cry_misprint_min then
     G.GAME.pack_size = self.ability.extra
-    if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
+    if to_big(G.GAME.pack_size) < to_big(1) then G.GAME.pack_size = 1 end
     self.ability.extra = G.GAME.pack_size
     G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), self.ability.choose)
     --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * Cryptid.log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
@@ -56,10 +56,25 @@ if G.GAME.cry_oboe then
     G.GAME.pack_choices = G.GAME.pack_choices + G.GAME.cry_oboe
     G.GAME.cry_oboe = nil
 end
-if G.GAME.boostertag and G.GAME.boostertag > 0 then
+if G.GAME.boostertag and to_big(G.GAME.boostertag) > to_big(0) then
     self.ability.extra = self.ability.extra * 2
     G.GAME.pack_choices = G.GAME.pack_choices * 2
     G.GAME.boostertag = math.max(0, G.GAME.boostertag - 1)
+    if G.GAME.boostertag > 0 then
+    	G.E_MANAGER:add_event(Event({
+		func = function()
+			attention_text({
+				scale = 1,
+				text = localize({ type = "name_text", set = "Tag", key = "tag_cry_booster" }) .. ": " .. localize{type = 'variable', key = ('loyalty_inactive'), vars = {G.GAME.boostertag}},
+				hold = 2,
+				align = "cm",
+				offset = { x = 0, y = -2.7 },
+				major = G.play,
+			})
+			return true
+		end,
+	}))
+    end
 end
 self.ability.extra = math.min(self.ability.extra, 1000)
 G.GAME.pack_choices = math.min(G.GAME.pack_choices, 1000)
@@ -67,13 +82,19 @@ G.GAME.pack_size = self.ability.extra
 '''
 match_indent = true
 
+#idk wtf is going on my head hurts
+#but this should fix it
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if self.ability.name:find('Arcana') then"
+pattern = '''
+booster_obj = self.config.center
+if booster_obj and SMODS.Centers[booster_obj.key] then
+'''
 position = "before"
 payload = '''
-if self.ability.extra < 1 then self.ability.extra = 1 end
+self.ability.extra = to_number(self.ability.extra)
+if to_big(self.ability.extra) < to_big(1) then self.ability.extra = 1 end
 '''
 match_indent = true
 
@@ -84,7 +105,7 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -98,7 +119,7 @@ target = "tag.lua"
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -113,6 +134,14 @@ target = "functions/common_events.lua"
 pattern = "G.GAME.round_resets.ante = G.GAME.round_resets.ante + mod"
 position = "after"
 payload = "G.GAME.round_resets.ante = Big and (to_number(math.floor(to_big(G.GAME.round_resets.ante)))) or math.floor(G.GAME.round_resets.ante)"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "G.GAME.round_resets.blind_ante = G.GAME.round_resets.blind_ante or G.GAME.round_resets.ante"
+position = "after"
+payload = "G.GAME.round_resets.blind_ante = Big and (to_number(math.floor(to_big(G.GAME.round_resets.blind_ante)))) or math.floor(G.GAME.round_resets.blind_ante)"
 match_indent = true
 
 # UI Bugs
@@ -164,23 +193,6 @@ target = "card.lua"
 pattern = "self.ability.consumeable.mod_num = math.min(5, self.ability.consumeable.max_highlighted)"
 position = "at"
 payload = "self.ability.consumeable.mod_num = self.ability.consumeable.max_highlighted"
-match_indent = true
-
-# Infinite Deck
-[[patches]]
-[patches.pattern]
-target = "cardarea.lua"
-pattern = "self.config.highlighted_limit = config.highlight_limit or 5"
-position = "at"
-payload = "self.config.highlighted_limit = config.highlight_limit or G.GAME.modifiers.cry_highlight_limit or 5"
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = "if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > 5 then"
-position = "at"
-payload = "if #G.hand.highlighted <= (G.GAME.stamp_mod and 1 or 0) or G.GAME.blind.block_play then"
 match_indent = true
 
 # Hieroglyph
@@ -292,9 +304,9 @@ position = "after"
 payload = '''
 if (self and self.ability and self.ability.extra_disp) then	-- redeeming through centers isn't misprinted
 	local self_disp = self.ability.extra_disp
-	local orig_disp = self.config.center.config.extra_disp
+	local orig_disp = self.config.center.config.extra_disp or 1
 	local self_extra = self.ability.extra
-	local orig_extra = self.config.center.config.extra
+	local orig_extra = self.config.center.config.extra or 1
 
 	local new_fac = self_disp / orig_disp
 	self.ability.extra = new_fac*orig_extra
@@ -500,5 +512,26 @@ pattern = '''v_planet_tycoon=    {order = 20,     discovered = false, unlocked =
 position = "at"
 payload = '''
 v_planet_tycoon=    {order = 20,     discovered = false, unlocked = false, available = true,cost = 10, name = "Planet Tycoon", pos = {x=2,y=1}, set = "Voucher", config = {extra = 32/9.6, extra_disp = 4}, requires = {'v_planet_merchant'},unlock_condition = {type = 'c_planets_bought', extra = 50}},
+'''
+match_indent = true
+
+#Fix copying jokers with bignum values
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if not strip_edition then "
+position = "before"
+payload = '''
+--misprintize table has to stay around
+--cause i literally cant fix this without it
+Cryptid.misprintize_tbl(
+				new_card.config.center_key,
+				new_card,
+				"ability",
+				nil,
+				{min = 1, max = 1},
+				true,
+				Cryptid.is_card_big(new_card)
+			)
 '''
 match_indent = true

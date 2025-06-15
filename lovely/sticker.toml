@@ -24,11 +24,11 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = "G.GAME.current_round.voucher = get_next_voucher_key()"
+pattern = "G.GAME.current_round.voucher = SMODS.get_next_vouchers()"
 position = "at"
 payload = '''
 if G.GAME.current_round.cry_voucher_stickers.pinned == false then
-	G.GAME.current_round.voucher = get_next_voucher_key()
+	G.GAME.current_round.voucher = SMODS.get_next_vouchers()
 end
 '''
 match_indent = true
@@ -121,7 +121,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = "if self.ability.queue_negative_removal then"
+pattern = "if self.joker_added_to_deck_but_debuffed then"
 position = "before"
 payload = '''
 if self.ability.consumeable and self.pinned and (G.GAME.cry_pinned_consumeables > 0) then

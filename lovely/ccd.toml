@@ -56,6 +56,54 @@ position = "before"
 payload = "if self.ability.set == 'Enhanced' then self.ability.consumeable = nil end"
 match_indent = true
 
+# Remove CCD from enhanced cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if center.consumeable then 
+	self.ability.consumeable = center.config'''
+position = "after"
+payload = '''
+else
+	self.ability.consumeable = nil
+ '''
+match_indent = true
+
+#Fixes for negative CCD cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = """
+if self.edition.type == 'negative' and self.ability.consumeable then
+    badges[#badges + 1] = 'negative_consumable'
+elseif self.edition.type == 'negative' and (self.ability.set == 'Enhanced' or self.ability.set == 'Default') then
+    badges[#badges + 1] = 'negative_playing_card'
+"""
+position = "at"
+payload = """
+if self.edition.type == 'negative' and self.playing_card then
+    badges[#badges + 1] = 'negative_playing_card'
+elseif self.edition.type == 'negative' and self.ability.consumeable then
+    badges[#badges + 1] = 'negative_consumable'
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = """=[SMODS _ "src/overrides.lua"]"""
+pattern = """if self.ability.consumeable then"""
+position = "at"
+payload = """if self.ability.consumeable and not self.playing_card then"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = """if self.ability.consumeable then"""
+position = "at"
+payload = """if self.ability.consumeable and not self.playing_card then"""
+match_indent = true
+
 # ui, ui, ui
 [[patches]]
 [patches.pattern]

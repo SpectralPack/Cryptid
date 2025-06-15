@@ -7,9 +7,9 @@ priority = -1
 [[patches]]
 [patches.pattern]
 target = "card_character.lua"
-pattern = 'self.children.card.states.visible = false'
-position = "before"
-payload = "self.children.card:set_ability(G.P_CENTERS.j_jolly)"
+pattern = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS.j_joker, {bypass_discovery_center = true})'
+position = "at"
+payload = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS.j_jolly, {bypass_discovery_center = true})'
 match_indent = true
 
 [[patches]]
@@ -26,7 +26,7 @@ match_indent = true
 target = "game.lua"
 pattern = 'self:load_profile(G.SETTINGS.profile or 1)'
 position = "before"
-payload = '''Cryptid.profile_prefix = Jen and "J" or "M"
+payload = '''Cryptid.profile_prefix = "M"
 if type(G.SETTINGS.profile) ~= "string" or G.SETTINGS.profile:sub(1, #Cryptid.profile_prefix) ~= Cryptid.profile_prefix then
     G.SETTINGS.profile = Cryptid.profile_prefix .. "1"
 end

@@ -31,10 +31,6 @@ function Game:update(dt)
 end
 
 G.FUNCS.cry_intro_controller = function()
-	if Jen then
-		G.PROFILES[G.SETTINGS.profile].cry_intro_complete = true
-		G.PROFILES[G.SETTINGS.profile].cry_gameset = "madness"
-	end
 	G.PROFILES[G.SETTINGS.profile].cry_intro_progress = G.PROFILES[G.SETTINGS.profile].cry_intro_progress
 		or {
 			state = "start",
@@ -188,7 +184,7 @@ G.FUNCS.cry_intro_part = function(_part)
 		--TODO: localize
 		G.modestBtn = create_UIBox_character_button_with_sprite({
 			sprite = modestSprite,
-			button = "Modest",
+			button = localize("cry_gameset_modest"),
 			id = "modest",
 			func = "cry_modest",
 			colour = G.C.GREEN,
@@ -196,7 +192,7 @@ G.FUNCS.cry_intro_part = function(_part)
 		})
 		G.mainlineBtn = create_UIBox_character_button_with_sprite({
 			sprite = mainlineSprite,
-			button = "Mainline",
+			button = localize("cry_gameset_mainline"),
 			id = "mainline",
 			func = "cry_mainline",
 			colour = G.C.RED,
@@ -204,7 +200,7 @@ G.FUNCS.cry_intro_part = function(_part)
 		})
 		G.madnessBtn = create_UIBox_character_button_with_sprite({
 			sprite = madnessSprite,
-			button = "Madness",
+			button = localize("cry_gameset_madness"),
 			id = "madness",
 			func = "cry_madness",
 			colour = G.C.CRY_EXOTIC,
@@ -547,9 +543,6 @@ end
 
 -- designed to work on any object type
 function Cryptid.gameset(card, center)
-	if Jen then
-		return "madness"
-	end
 	if not center then
 		if not card then
 			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
@@ -569,7 +562,9 @@ function Cryptid.gameset(card, center)
 		if center.tag and center.tag.key then --dumb fix for tags
 			center = center.tag
 		else
-			print("Could not find key for center: " .. tprint(center))
+			if false then
+				print("Could not find key for center: " .. tprint(center))
+			end
 			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
 		end
 	end
@@ -602,6 +597,11 @@ function Card:set_ability(center, y, z)
 	if not center then
 		return
 	end
+	-- Addition by IcyEthics to make compatible with strings used on set_ability. Copied directly from the smods set_ability implementation
+	if type(center) == "string" then
+		assert(G.P_CENTERS[center], ('Could not find center "%s"'):format(center))
+		center = G.P_CENTERS[center]
+	end
 	if not center.config then
 		center.config = {} --crashproofing
 	end
@@ -633,15 +633,19 @@ function Card:set_ability(center, y, z)
 	end
 end
 
---open gameset config UI when clicking on a card in the Cryptid collection
---disable this functionality for Jen's Almanac
-if not Jen then
+-- open gameset config UI when clicking on a card in the Cryptid collection
+-- can be disabled in config
+if Cryptid_config.gameset_toggle then
 	local ccl = Card.click
 	function Card:click()
 		ccl(self)
 		if G.your_collection then
 			for k, v in pairs(G.your_collection) do
-				if self.area == v and G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+				if
+					self.area == v
+					and G.ACTIVE_MOD_UI
+					and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid")
+				then
 					if not self.config.center or self.config.center and self.config.center.set == "Default" then
 						--make a fake center
 						local old_force_gameset = self.config.center and self.config.center.force_gameset
@@ -1115,15 +1119,29 @@ function Cryptid.update_obj_registry(m, force_enable)
 	end
 	if m.obj_table then
 		for k, v in pairs(m.obj_table) do
-			if v.mod and v.mod.id == "Cryptid" then
+			if v.mod and (v.mod.id == "Cryptid" or Cryptid.mod_gameset_whitelist[v.mod.id]) then
 				local en = force_enable or Cryptid.enabled(k)
 				if en == true then
 					if v.cry_disabled then
 						v:enable()
+						if v.key == "set_cry_poker_hand_stuff" then
+							G.PROFILES[G.SETTINGS.profile].cry_none = Cryptid.safe_get(
+								G.PROFILES,
+								G.SETTINGS.profile,
+								"cry_none2"
+							) or nil
+							G.PROFILES[G.SETTINGS.profile].cry_none2 = nil
+						end
 					end
 				else
 					if not v.cry_disabled then
 						v:_disable(en)
+						if v.key == "set_cry_poker_hand_stuff" and G.PROFILES[G.SETTINGS.profile].cry_none then
+							--Remove the none flag if poker hands are disabled because leaving it on can leave to softlocks
+							G.PROFILES[G.SETTINGS.profile].cry_none2 =
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_none")
+							G.PROFILES[G.SETTINGS.profile].cry_none = nil
+						end
 					end
 				end
 			end
@@ -1141,7 +1159,7 @@ function Cryptid.index_items(func, m)
 	end
 	if m.obj_table then
 		for k, v in pairs(m.obj_table) do
-			if v.mod and v.mod.id == "Cryptid" then
+			if v.mod and (v.mod.id == "Cryptid" or Cryptid.mod_gameset_whitelist[v.mod.id]) then
 				func(v)
 			end
 		end
@@ -1335,7 +1353,7 @@ function create_UIBox_your_collection_content_sets()
 
 	local joker_pool = {}
 	for k, v in pairs(SMODS.ContentSet.obj_table) do
-		if v.set == "Content Set" then
+		if v.set == "Content Set" and v.original_mod.id == G.ACTIVE_MOD_UI.id then
 			table.insert(joker_pool, v)
 		end
 	end
@@ -1430,7 +1448,7 @@ function create_UIBox_your_collection_current_set()
 	end
 	Cryptid.index_items(is_in_set)
 	table.sort(joker_pool, function(a, b)
-		return a.cry_order < b.cry_order
+		return (a.cry_order or a.order or pseudorandom(a.key)) < (b.cry_order or b.order or pseudorandom(b.key))
 	end)
 	local joker_options = {}
 	for i = 1, math.ceil(#joker_pool / (5 * #G.your_collection)) do
@@ -1499,12 +1517,12 @@ G.FUNCS.your_collection_content_set_page = function(args)
 	end
 	local joker_pool = {}
 	for k, v in pairs(SMODS.ContentSet.obj_table) do
-		if v.set == "Content Set" then
+		if v.set == "Content Set" and v.original_mod.id == G.ACTIVE_MOD_UI.id then
 			table.insert(joker_pool, v)
 		end
 	end
 	table.sort(joker_pool, function(a, b)
-		return a.cry_order < b.cry_order
+		return (a.cry_order or a.order or pseudorandom(a.key)) < (b.cry_order or b.order or pseudorandom(b.key))
 	end)
 	for i = 1, 5 do
 		for j = 1, #G.your_collection do
@@ -1547,7 +1565,7 @@ G.FUNCS.your_collection_current_set_page = function(args)
 	end
 	Cryptid.index_items(is_in_set)
 	table.sort(joker_pool, function(a, b)
-		return a.cry_order < b.cry_order
+		return (a.cry_order or a.order or pseudorandom(a.key)) < (b.cry_order or b.order or pseudorandom(b.key))
 	end)
 	for i = 1, 5 do
 		for j = 1, #G.your_collection do
@@ -1618,19 +1636,19 @@ end
 -- Hooks for all collection types
 local smcp = SMODS.collection_pool
 SMODS.collection_pool = function(m)
-	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+	if G.ACTIVE_MOD_UI and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid") then
 		-- use SMODS pools instead of vanilla pools, so disabled cards appear
 		if m[1] and m[1].set and m[1].set == "Seal" then
 			m = {}
 			for k, v in pairs(SMODS.Seal.obj_table) do
-				if v.mod and v.mod.id == "Cryptid" then
+				if v.mod and (Cryptid.mod_gameset_whitelist[v.mod.id] or v.mod.id == "Cryptid") then
 					table.insert(m, v)
 				end
 			end
 		elseif m[1] and m[1].set and m[1].set == "Sticker" then
 			m = {}
 			for k, v in pairs(SMODS.Sticker.obj_table) do
-				if v.mod and v.mod.id == "Cryptid" then
+				if v.mod and (Cryptid.mod_gameset_whitelist[v.mod.id] or v.mod.id == "Cryptid") then
 					table.insert(m, v)
 				end
 			end
@@ -1638,19 +1656,19 @@ SMODS.collection_pool = function(m)
 			local set = m[1].set
 			m = {}
 			for k, v in pairs(SMODS.Center.obj_table) do
-				if v.set == set and v.mod and v.mod.id == "Cryptid" then
+				if v.set == set and v.mod and (Cryptid.mod_gameset_whitelist[v.mod.id] or v.mod.id == "Cryptid") then
 					table.insert(m, v)
 				end
 			end
 		end
 		-- Fix blind issues
 		for k, v in pairs(m) do
-			if v.set == "Blind" and v.mod and v.mod.id == "Cryptid" then
+			if v.set == "Blind" and v.mod and (Cryptid.mod_gameset_whitelist[v.mod.id] or v.mod.id == "Cryptid") then
 				v.config = {}
 			end
 		end
 		table.sort(m, function(a, b)
-			return a.cry_order < b.cry_order
+			return (a.cry_order or a.order or pseudorandom(a.key)) < (b.cry_order or b.order or pseudorandom(b.key))
 		end)
 	end
 	return smcp(m)
@@ -1660,7 +1678,7 @@ end
 local mct = modsCollectionTally
 function modsCollectionTally(pool, set)
 	local t = mct(pool, set)
-	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+	if G.ACTIVE_MOD_UI and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid") then
 		local obj_tally = { tally = 0, of = 0 }
 		--infer pool
 		local _set = set or Cryptid.safe_get(pool, 1, "set")
@@ -1715,10 +1733,10 @@ end
 -- Make non-center collections show all cards as centers
 local uibk = create_UIBox_your_collection_decks
 function create_UIBox_your_collection_decks()
-	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+	if G.ACTIVE_MOD_UI and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid") then
 		local generic_collection_pool = {}
 		for k, v in pairs(SMODS.Center.obj_table) do
-			if v.set == "Back" and v.mod and v.mod.id == "Cryptid" then
+			if v.set == "Back" and v.mod and (v.mod.id == "Cryptid" or Cryptid.mod_gameset_whitelist[v.mod.id]) then
 				table.insert(generic_collection_pool, v)
 			end
 		end
@@ -1746,10 +1764,10 @@ end
 
 local uitag = create_UIBox_your_collection_tags
 function create_UIBox_your_collection_tags()
-	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+	if G.ACTIVE_MOD_UI and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid") then
 		local generic_collection_pool = {}
 		for k, v in pairs(SMODS.Tag.obj_table) do
-			if v.set == "Tag" and v.mod and v.mod.id == "Cryptid" then
+			if v.set == "Tag" and v.mod and (v.mod.id == "Cryptid" or Cryptid.mod_gameset_whitelist[v.mod.id]) then
 				table.insert(generic_collection_pool, v)
 			end
 		end
@@ -1769,10 +1787,10 @@ end
 
 local uibl = create_UIBox_your_collection_blinds
 function create_UIBox_your_collection_blinds()
-	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+	if G.ACTIVE_MOD_UI and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid") then
 		local generic_collection_pool = {}
 		for k, v in pairs(SMODS.Blind.obj_table) do
-			if v.set == "Blind" and v.mod and v.mod.id == "Cryptid" then
+			if v.set == "Blind" and v.mod and (v.mod.id == "Cryptid" or Cryptid.mod_gameset_whitelist[v.mod.id]) then
 				table.insert(generic_collection_pool, v)
 			end
 		end
@@ -1792,7 +1810,7 @@ end
 
 local uisl = create_UIBox_your_collection_seals
 function create_UIBox_your_collection_seals()
-	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+	if G.ACTIVE_MOD_UI and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid") then
 		return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Seal, { 5, 5 }, {
 			snap_back = true,
 			infotip = localize("ml_edition_seal_enhancement_explanation"),
@@ -1814,7 +1832,7 @@ end
 
 local uist = create_UIBox_your_collection_stickers
 function create_UIBox_your_collection_stickers()
-	if G.ACTIVE_MOD_UI and G.ACTIVE_MOD_UI.id == "Cryptid" then
+	if G.ACTIVE_MOD_UI and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid") then
 		return SMODS.card_collection_UIBox(SMODS.Stickers, { 5, 5 }, {
 			snap_back = true,
 			hide_single_page = true,
