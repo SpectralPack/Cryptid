@@ -609,7 +609,7 @@ return {
 				text = {
 					"Add {C:cry_code}Mult{} to the",
 					"{C:cry_code}selected hand{} equal to",
-					"how many jokers are owned",
+					"how many Jokers are owned",
 				},
 			},
 			c_cry_inst = {
