@@ -1700,9 +1700,10 @@ local brittle = {
 			and context.before
 			and not context.blueprint_card
 			and not context.retrigger_joker
+			and context.scoring_hand
 		then
 			local _card = context.scoring_hand[#context.scoring_hand]
-			if not _card.brittled then
+			if _card and not _card.brittled then
 				card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
 				local enhancement = pseudorandom_element({ "m_stone", "m_gold", "m_steel" }, pseudoseed("cry_brittle"))
 				_card.brittled = true
