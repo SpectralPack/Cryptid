@@ -1979,6 +1979,74 @@ local wonka_bar = {
 		},
 	},
 }
+
+-- Buttercup
+-- Store items in shop
+local buttercup = {
+	object_type = "Joker",
+	key = "buttercup",
+	name = "cry-Buttercup",
+	pos = { x = 2, y = 3 },
+	config = { extra = { slots = 1 } },
+	rarity = "cry_candy",
+	cost = 3,
+	atlas = "atlasspooky",
+	blueprint_compat = false,
+	eternal_compat = false,
+	demicoloncompat = true,
+	no_dbl = true,
+	order = 147,
+	cry_credits = {
+		idea = { "Squiddy" },
+		art = { "lolxddj" },
+		code = { "#Guigui" },
+	},
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = { center.ability.extra.slots },
+		}
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		if card.cry_storage == nil then
+			local storage_area_config = {
+				type = "play",
+				card_w = G.CARD_W,
+			}
+			card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
+		end
+		if G.GAME.next_shop_cards == nil then
+			G.GAME.next_shop_cards = {}
+		end
+	end,
+	calculate = function(self, card, context)
+		if card.cry_storage == nil then
+			local storage_area_config = {
+				type = "play",
+				card_w = G.CARD_W,
+			}
+			card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
+		end
+		if context.selling_self and not context.blueprint and not context.forcetrigger then
+			if #card.cry_storage.cards > 0 then
+				for i, jok in ipairs(card.cry_storage.cards) do
+					jok.T.w = jok.T.orig.w
+					jok.T.h = jok.T.orig.h
+					G.GAME.next_shop_cards[#G.GAME.next_shop_cards + 1] = jok:save()
+					jok:remove()
+				end
+			end
+			card.cry_storage:remove()
+		end
+		if context.forcetrigger and #card.cry_storage.cards > 0 then
+			for i, jok in ipairs(card.cry_storage.cards) do
+				-- jok.T.w = jok.T.orig.w
+				-- jok.T.h = jok.T.orig.h
+				G.GAME.next_shop_cards[#G.GAME.next_shop_cards + 1] = jok:save()
+			end
+		end
+	end,
+}
+
 items = {
 	cotton_candy,
 	wrapped,
@@ -2012,6 +2080,7 @@ items = {
 	monopoly_money,
 	candy_sticks,
 	wonka_bar,
+	buttercup,
 }
 return {
 	name = "Spooky",

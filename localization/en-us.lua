@@ -1193,6 +1193,14 @@ return {
 					"for {C:mult}-#2#{} Mult",
 				},
 			},
+			j_cry_buttercup = {
+				name = "Buttercup",
+				text = {
+					"Can store {C:attention}#1#{} selected shop item#<s>1#",
+					"When sold: Add the stored item#<s>1#",
+					"to the next shop",
+				},
+			},
 			j_cry_candy_basket = {
 				name = "Candy Basket",
 				text = {
@@ -4917,6 +4925,7 @@ return {
 
 			b_flip = "FLIP",
 			b_merge = "MERGE",
+			b_store = "STORE",
 
 			cry_hand_bulwark = "Bulwark",
 			cry_hand_clusterfuck = "Clusterfuck",

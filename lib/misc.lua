@@ -593,6 +593,7 @@ function Cryptid.safe_get(t, ...)
 	end
 	return current
 end
+
 --Functions used by boss blinds
 function Blind:cry_ante_base_mod(dt)
 	if not self.disabled then
@@ -603,6 +604,7 @@ function Blind:cry_ante_base_mod(dt)
 	end
 	return 0
 end
+
 function Blind:cry_round_base_mod(dt)
 	if not self.disabled then
 		local obj = self.config.blind
@@ -612,6 +614,7 @@ function Blind:cry_round_base_mod(dt)
 	end
 	return 1
 end
+
 function Blind:cry_cap_score(score)
 	if not self.disabled then
 		local obj = self.config.blind
@@ -621,6 +624,7 @@ function Blind:cry_cap_score(score)
 	end
 	return score
 end
+
 function Blind:cry_after_play()
 	if not self.disabled then
 		local obj = self.config.blind
@@ -629,6 +633,7 @@ function Blind:cry_after_play()
 		end
 	end
 end
+
 function Blind:cry_before_play()
 	if not self.disabled then
 		local obj = self.config.blind
@@ -637,6 +642,7 @@ function Blind:cry_before_play()
 		end
 	end
 end
+
 --The decision's ability to show a booster pack
 function Blind:cry_before_cash()
 	if not self.disabled then
@@ -646,6 +652,7 @@ function Blind:cry_before_cash()
 		end
 	end
 end
+
 function Blind:cry_calc_ante_gain()
 	if G.GAME.modifiers.cry_spooky then --here is the best place to check when spooky should apply
 		local card
@@ -666,6 +673,7 @@ function Blind:cry_calc_ante_gain()
 	end
 	return 1
 end
+
 function Cryptid.enhanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
@@ -696,6 +704,7 @@ function Cryptid.enhanced_deck_info(deck)
 	end
 	return ret.edition, ret.enhancement, ret.sticker, ret.suit, ret.seal
 end
+
 function Cryptid.post_process(center)
 	if center.pools and center.pools.M then
 		local vc = center.calculate
@@ -787,6 +796,7 @@ function Cryptid.cry_enhancement_has_specific_suit(card)
 	end
 	return false
 end
+
 function Cryptid.cry_enhancement_get_specific_suit(card)
 	for k, _ in pairs(SMODS.get_enhancements(card)) do
 		if G.P_CENTERS[k].specific_suit then
@@ -804,6 +814,7 @@ function Cryptid.cry_enhancement_has_specific_rank(card)
 	end
 	return false
 end
+
 function Cryptid.cry_enhancement_get_specific_rank(card)
 	for k, _ in pairs(SMODS.get_enhancements(card)) do
 		if G.P_CENTERS[k].specific_rank then
@@ -812,6 +823,7 @@ function Cryptid.cry_enhancement_get_specific_rank(card)
 	end
 	return nil
 end
+
 --For better durability (at the expense of performance), this finds the rank ID of a custom rank (such as abstract).
 function Cryptid.cry_rankname_to_id(rankname)
 	for i, v in pairs(SMODS.Rank.obj_buffer) do
@@ -821,7 +833,82 @@ function Cryptid.cry_rankname_to_id(rankname)
 	end
 	return nil
 end
+-- for buttercup
+function G.FUNCS.can_store_card(e)
+	-- get shop highlighted
+	-- only from the jokers spot
+	local highlighted_shop_cards = {}
+	local areas_to_check = {
+		shop_jokers = G.shop_jokers,
+		shop_vouchers = G.shop_vouchers,
+		shop_booster = G.shop_booster,
+	}
+	local jok = e.config.ref_table
 
+	for key, value in pairs(areas_to_check) do
+		if value == nil then
+			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+			e.config.button = nil
+			return
+		elseif #value.highlighted == 1 and #highlighted_shop_cards == 0 then
+			highlighted_shop_cards[1] = value.highlighted[1]
+		end
+	end
+	if #highlighted_shop_cards == 1 and jok:can_use_storage() then
+		e.config.colour = G.C.BLUE
+		e.config.button = "store_card"
+	else
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+		e.config.button = nil
+	end
+end
+
+function G.FUNCS.store_card(e)
+	G.E_MANAGER:add_event(Event({
+		trigger = "after",
+		delay = 0.1,
+		func = function()
+			local areas_to_check = {
+				shop_jokers = G.shop_jokers,
+				shop_vouchers = G.shop_vouchers,
+				shop_booster = G.shop_booster,
+			}
+			local this_card = e.config.ref_table
+			-- This doesn't take into account the possibility that multiple cards might be selected in different areas
+			-- but can_store_card already does that for us, so who cares tbh
+			for shop_name, shop_area in pairs(areas_to_check) do
+				if #shop_area.highlighted == 1 then
+					local new_card = shop_area.highlighted[1]
+					new_card.T.orig = { w = new_card.T.w, h = new_card.T.h }
+					new_card.T.w = new_card.T.w * 0.5
+					new_card.T.h = new_card.T.h * 0.5
+					new_card.cry_from_shop = shop_name
+					if new_card.children.price then
+						new_card.children.price:remove()
+					end
+					new_card.children.price = nil
+					if new_card.children.buy_button then
+						new_card.children.buy_button:remove()
+					end
+					new_card.children.buy_button = nil
+					shop_area:remove_card(new_card)
+					this_card.cry_storage:emplace(new_card)
+				end
+			end
+			return true
+		end,
+	}))
+end
+
+function Card:can_use_storage()
+	if self.cry_storage ~= nil then
+		return #self.cry_storage.cards < self.ability.extra.slots
+	elseif self.config.center.key == "j_cry_buttercup" then -- "where did my fucking storage go"
+		sendInfoMessage("creating missing card area")
+		self.cry_storage = CardArea(0.5, 0.5, 1, 1, storage_area_config)
+	end
+	return false
+end
 function Cryptid.reset_to_none()
 	update_hand_text({ delay = 0 }, {
 		mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),

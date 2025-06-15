@@ -39,6 +39,7 @@ function get_pack(_key, _type)
 	end
 	return abc
 end
+
 -- get_currrent_pool hook for Deck of Equilibrium and Copies
 local gcp = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
@@ -60,7 +61,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 				pool[i] = "tag_cry_quintuple"
 			end
 		end
-	-- Deck of Equilibrium stuff
+		-- Deck of Equilibrium stuff
 	elseif
 		G.GAME.modifiers.cry_equilibrium
 		and not override_equilibrium_effect
@@ -96,6 +97,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 	end
 	return gcp(_type, _rarity, _legendary, _append)
 end
+
 local gnb = get_new_boss
 function get_new_boss()
 	local bl = gnb()
@@ -210,6 +212,7 @@ function reset_blinds()
 	end
 	rb()
 end
+
 --Init stuff at the start of the game
 local gigo = Game.init_game_object
 function Game:init_game_object()
@@ -547,6 +550,7 @@ function Card:set_cost()
 		self.sell_cost_label = 0
 	end
 end
+
 local sell_card_stuff = Card.sell_card
 function Card:sell_card()
 	if self.config.center.set == "Joker" then
@@ -1408,6 +1412,7 @@ function Controller:queue_L_cursor_press(x, y)
 	end
 	self.L_cursor_queue = { x = x, y = y }
 end
+
 -- Lemon Trophy's effect
 local trophy_mod_mult = mod_mult
 function mod_mult(_mult)
@@ -1417,6 +1422,7 @@ function mod_mult(_mult)
 	end
 	return trophy_mod_mult(_mult)
 end
+
 -- Fix a CCD-related crash
 local cuc = Card.can_use_consumeable
 function Card:can_use_consumeable(any_state, skip_check)
@@ -1590,6 +1596,113 @@ function Card:shatter(volume)
 		blockable = false,
 		delay = 0.51 * dissolve_time,
 	}))
+end
+
+-- Buttercup's store joker mechanic, creates a specified joker
+local ccfs = create_card_for_shop
+function create_card_for_shop(area)
+	local guaranteed_card = Card(
+		area.x,
+		area.y,
+		G.CARD_W,
+		G.CARD_H,
+		nil,
+		G.P_CENTERS.j_jolly,
+		{ bypass_discovery_center = true, bypass_discovery_ui = true }
+	)
+	local areas_to_check = {
+		shop_jokers = G.shop_jokers,
+		shop_vouchers = G.shop_vouchers,
+		shop_booster = G.shop_booster,
+	}
+	local loaded_card_data = nil
+	local loaded_card_pos = -1
+	-- check if there's a card for `area` within `next_shop_cards`,
+	-- then put its data in `loaded_card_data` and its index in the table in `loaded_card_pos`
+	if G.GAME.next_shop_cards and #G.GAME.next_shop_cards > 0 then
+		for i, card in ipairs(G.GAME.next_shop_cards) do
+			sendInfoMessage(card.cry_from_shop, "next_shop_cards")
+			if not card.cry_from_shop then
+				card.cry_from_shop = "shop_jokers"
+			end -- failsafe :3
+			if areas_to_check[card.cry_from_shop] == area and loaded_card_pos == -1 then
+				loaded_card_data = card
+				loaded_card_pos = i
+				break
+			end
+		end
+	end
+	if loaded_card_data then
+		-- guaranteed_card.T.h = G.CARD_H
+		guaranteed_card:load(loaded_card_data, nil)
+		guaranteed_card.VT.h = guaranteed_card.T.h
+		table.remove(G.GAME.next_shop_cards, loaded_card_pos)
+		create_shop_card_ui(guaranteed_card, "Joker", area)
+		guaranteed_card.states.visible = false
+		G.E_MANAGER:add_event(Event({
+			delay = 0.4,
+			trigger = "after",
+			func = function()
+				guaranteed_card:start_materialize()
+				guaranteed_card:set_cost()
+				return true
+			end,
+		}))
+		guaranteed_card:set_cost()
+		return guaranteed_card
+	else
+		guaranteed_card:remove()
+	end
+	return ccfs(area)
+end
+
+-- Again, buttercup, making sure you can savescum safely :gjumbsup:
+local carsv = Card.save
+function Card:save()
+	local saved_table = carsv(self)
+	if self.cry_storage then
+		saved_table.cry_storage = self.cry_storage:save()
+	end
+	if self.cry_from_shop then
+		saved_table.cry_from_shop = self.cry_from_shop
+	end
+	return saved_table
+end
+
+local carld = Card.load
+function Card:load(cardTable, other_card)
+	carld(self, cardTable, other_card)
+
+	local storage_area_config = {
+		type = "play",
+		card_w = G.CARD_W,
+	}
+	if cardTable.cry_storage then
+		self.cry_storage = CardArea(self.T.x, 2, 1, 1, storage_area_config)
+		self.cry_storage:load(cardTable.cry_storage)
+		for i, card in ipairs(self.cry_storage.cards) do
+			card.T.orig = { w = card.T.w, h = card.T.h }
+			card.T.w = card.T.w * 0.5
+			card.T.h = card.T.h * 0.5
+		end
+	end
+	if cardTable.cry_from_shop then
+		self.cry_from_shop = cardTable.cry_from_shop
+	end
+end
+
+-- Attach Buttercup's stored cards card area
+local carmv = Card.move
+function Card:move(dt)
+	carmv(self, dt)
+	if self.cry_storage ~= nil and self.cry_storage.cards ~= nil then
+		self.cry_storage.config.card_limit = #self.cry_storage.cards + 1
+		self.cry_storage.T.w = G.CARD_W * 2
+		self.cry_storage.T.x = self.T.x - (G.CARD_W * 0.5)
+		self.cry_storage.T.y = self.T.y
+		self.cry_storage.VT.x = self.VT.x
+		self.cry_storage.VT.y = self.VT.y
+	end
 end
 
 --Hook for booster skip to automatically destroy and banish the rightmost Joker, regardless of eternal
