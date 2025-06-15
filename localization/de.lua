@@ -1674,9 +1674,9 @@ return {
 					"Erstelle einen {C:legendary}M Joker{} am Ende der Runde",
 					"Jeder {C:attention}Lustige Joker{} oder {C:legendary}M Joker",
 					"gibt {X:dark_edition,C:white}^#1#{} Mult",
-					"Erhöhe anzahl um {X:dark_edition,C:white}^#2#{}",
+					"Erhöhe Anzahl um {X:dark_edition,C:white}^#2#{}",
 					"wenn {C:attention}Lustiger Joker verkauft{} wird",
-					"{C:inactive,s:0.8}(Tredecim exkludiert)",
+					"{C:inactive,s:0.8}(Tredecim ausgenommen)",
 				},
 			},
 			j_cry_mstack = {
@@ -1902,8 +1902,8 @@ return {
 					"{C:attention}-#1#{} Ante wenn",
 					"{C:money}$#2#{} {C:inactive}($#3#){} ausgegeben wurde",
 					"{s:0.8}Bedingung erhöht sich",
-					"{C:attention,s:0.8}expotentiel{s:0.8} für jede benutzung",
-					"{C:money,s:0.8}Nächste erhöhung: {s:1,c:money}$#4#",
+					"{C:attention,s:0.8}expotentiell{s:0.8} für jede Benutzung",
+					"{C:money,s:0.8}Nächste Erhöhung: {s:1,c:money}$#4#",
 				},
 			},
 			j_cry_rescribere = {
@@ -1964,7 +1964,7 @@ return {
 				text = {
 					"Steigende {C:attention}Joker{} steigen",
 					"als ein Grad-{C:attention}#1#{} Polynom",
-					"erhöhe Grad um {C:attention}#2#{}",
+					"Erhöhe Grad um {C:attention}#2#{}",
 					"am Ende der Runde",
 					"{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} ausgenommen)",
 				},
@@ -2607,7 +2607,7 @@ return {
 				text = {
 					"Erstelle eine Karte",
 					"{C:cry_code}deiner Wahl",
-					"{C:inactive,s:0.8}(Exotische Joker exkludiert)",
+					"{C:inactive,s:0.8}(Exotische Joker ausgenommen)",
 				},
 			},
 			c_cry_replica = {
@@ -3000,7 +3000,7 @@ return {
 					"Erstelle {C:attention}#1#{} Kopien des",
 					"als letztes genutzen {C:attention}Tag{}",
 					"in diesem Durchlauf",
-					"{s:0.8,C:inactive}Kopierende Tags exkludiert",
+					"{s:0.8,C:inactive}Kopierende Tags ausgenommen",
 					"{s:0.8,C:inactive}Momentan: {s:0.8,C:attention}#2#",
 				},
 			},
@@ -3062,7 +3062,7 @@ return {
 				text = {
 					"Gibt {C:attention}#1#{} Kopien des",
 					"als nächstes erhaltenen {C:attention}Tags",
-					"{s:0.8,C:inactive}Kopierende Tags exkludiert",
+					"{s:0.8,C:inactive}Kopierende Tags ausgenommen",
 				},
 			},
 		},
@@ -3305,7 +3305,7 @@ return {
 				name = "Enterhaken",
 				text = {
 					"{C:attention}+#1#{} Karten Auswahllimit",
-					"{C:inactive,s:0.7}NOTE: Hiermit kannst du mehr{}",
+					"{C:inactive,s:0.7}Hiermit kannst du viel mehr{}",
 					"{C:inactive,s:0.7}machen als du denkst{}",
 				},
 			},
