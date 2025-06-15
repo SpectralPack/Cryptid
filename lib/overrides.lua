@@ -1641,7 +1641,12 @@ function create_card_for_shop(area)
 				other_card:load(card, nil)
 				other_card.VT.h = other_card.T.h
 				table.remove(G.GAME.next_shop_cards, i)
-				create_shop_card_ui(other_card, G.P_CENTERS[card.save_fields.center],set, areas_to_check[card.cry_from_shop])
+				create_shop_card_ui(
+					other_card,
+					G.P_CENTERS[card.save_fields.center],
+					set,
+					areas_to_check[card.cry_from_shop]
+				)
 				areas_to_check[card.cry_from_shop]:emplace(other_card)
 				other_card.states.visible = false
 				G.E_MANAGER:add_event(Event({

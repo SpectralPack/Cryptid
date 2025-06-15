@@ -2056,13 +2056,15 @@ local buttercup = {
 							v.states.visible = false
 							v:start_dissolve()
 						end
-						if self.cry_storage then self.cry_storage:remove() end
+						if self.cry_storage then
+							self.cry_storage:remove()
+						end
 						return true
-					end
+					end,
 				}))
 			end
 		end
-	end
+	end,
 }
 
 items = {
