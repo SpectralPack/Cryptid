@@ -576,3 +576,4 @@ function G.UIDEF.use_and_sell_buttons(card)
 			end
 		end
 	end
+end
