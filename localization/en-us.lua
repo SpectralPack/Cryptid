@@ -1502,7 +1502,7 @@ return {
 			j_cry_demicolon = {
 				name = "Demicolon",
 				text = {
-					"{C:attention}Force-trigger{} the joker",
+					"{C:attention}Force-trigger{} the Joker",
 					"to the right",
 				},
 			},
