@@ -399,14 +399,12 @@ end
 
 function Cryptid.manipulate(card, args)
 	if not args then
-		if G.GAME.modifiers.cry_misprint_min or G.GAME.modifiers.cry_misprint_max then
-			Cryptid.manipulate(card, {
-				min = G.GAME.modifiers.cry_misprint_min or 1,
-				max = G.GAME.modifiers.cry_misprint_max or 1,
-				type = "X",
-				dont_stack = true,
-			})
-		end
+		Cryptid.manipulate(card, {
+			min = G.GAME.modifiers.cry_misprint_min,
+			max = G.GAME.modifiers.cry_misprint_max,
+			type = "X",
+			dont_stack = true,
+		})
 	else
 		if not args.type then
 			args.type = "X"
