@@ -2475,6 +2475,14 @@ return {
 					"karty w ręcę",
 				},
 			},
+			c_cry_meld = {
+				name = "Wtopienie",
+				text = {
+					"Wybierz {C:attention}jokera{} lub",
+					"{C:attention}kartę rozgrywającą{}, aby",
+					"stała się {C:dark_edition}Dwustronna",
+				},
+			},
 			c_cry_vacuum = {
 				name = "Próżnia",
 				text = {
@@ -2905,14 +2913,6 @@ return {
 				text = {
 					"Ulepsza {C:attention}#1#{} wybraną kartę",
 					"do: {C:attention}Karta Echa",
-				},
-			},
-			c_cry_meld = {
-				name = "Wtopienie",
-				text = {
-					"Wybierz {C:attention}jokera{} lub",
-					"{C:attention}kartę rozgrywającą{}, aby",
-					"stała się {C:dark_edition}Dwustronna",
 				},
 			},
 			c_cry_theblessing = {

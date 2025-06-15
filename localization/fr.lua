@@ -3376,6 +3376,14 @@ return {
 					"gagnez {C:attention}2{} Coupons aléatoires",
 				},
 			},
+			c_cry_meld = {
+				name = "le Mélange",
+				text = {
+					"Transforme un {C:attention}Joker{} ou",
+					"une {C:attention}carte à jouer{} en",
+					"carte {C:dark_edition}Double-face",
+				},
+			},
 			c_cry_typhoon = {
 				name = "Typhon",
 				text = {
@@ -3833,14 +3841,7 @@ return {
 				},
 			},
 
-			c_cry_meld = {
-				name = "le Mélange",
-				text = {
-					"Transforme un {C:attention}Joker{} ou",
-					"une {C:attention}carte à jouer{} en",
-					"carte {C:dark_edition}Double-face",
-				},
-			},
+
 			c_cry_theblessing = {
 				name = "la Bénédiction",
 				text = {

@@ -3448,6 +3448,14 @@ return {
 					"card#<s>1# in your hand",
 				},
 			},
+			c_cry_meld = {
+				name = "Meld",
+				text = {
+					"Select a {C:attention}Joker{} or",
+					"{C:attention}playing card{} to",
+					"become {C:dark_edition}Double-Sided",
+				},
+			},
 			c_cry_vacuum = {
 				name = "Vacuum",
 				text = {
@@ -3893,14 +3901,6 @@ return {
 				text = {
 					"Enhances {C:attention}#1#{} selected card#<s>1#",
 					"into an {C:attention}Abstract Card",
-				},
-			},
-			c_cry_meld = {
-				name = "Meld",
-				text = {
-					"Select a {C:attention}Joker{} or",
-					"{C:attention}playing card{} to",
-					"become {C:dark_edition}Double-Sided",
 				},
 			},
 			c_cry_theblessing = {

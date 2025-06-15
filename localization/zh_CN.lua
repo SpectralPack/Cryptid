@@ -3077,6 +3077,14 @@ return {
 					"牌中添加 {C:cry_azure}蔚蓝蜡封{}",
 				},
 			},
+			c_cry_meld = {
+				name = "融合",
+				text = {
+					"选择一张 {C:attention}小丑{} 或",
+					"{C:attention}扑克牌{} 将其变成",
+					"{C:dark_edition}双面{} ",
+				},
+			},
 			c_cry_vacuum = {
 				name = "虚空",
 				text = {
@@ -3517,14 +3525,6 @@ return {
 				text = {
 					"增强 {C:attention}#1#{} 张选定的卡牌",
 					"为 {C:attention}回响卡",
-				},
-			},
-			c_cry_meld = {
-				name = "融合",
-				text = {
-					"选择一张 {C:attention}小丑{} 或",
-					"{C:attention}扑克牌{} 将其变成",
-					"{C:dark_edition}双面{} ",
 				},
 			},
 			c_cry_theblessing = {

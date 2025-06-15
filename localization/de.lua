@@ -2744,6 +2744,14 @@ return {
 					"bekomme {C:attention}2{} zufällige Gutscheine",
 				},
 			},
+			c_cry_meld = {
+				name = "Verschmelzen",
+				text = {
+					"Wähle einen {C:attention}Joker{} oder eine",
+					"{C:attention}Spielkarte{} welche",
+					"{C:dark_edition}Doppelseitig{} wird",
+				},
+			},
 			c_cry_typhoon = {
 				name = "Taifun",
 				text = {
@@ -3182,14 +3190,6 @@ return {
 				text = {
 					"Verstärkt {C:attention}#1#{} gewählte Karte",
 					"in eine {C:attention}Echo Karte",
-				},
-			},
-			c_cry_meld = {
-				name = "Verschmelzen",
-				text = {
-					"Wähle einen {C:attention}Joker{} oder eine",
-					"{C:attention}Spielkarte{} welche",
-					"{C:dark_edition}Doppelseitig{} wird",
 				},
 			},
 			c_cry_theblessing = {
