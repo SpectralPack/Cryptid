@@ -316,7 +316,7 @@ return {
 				text = {
 					"1.25X Blindgröße für alle",
 					"6 Sekunden, die du in dieser Runde verbringst,",
-					"multipliziert mit Spielgeschwindigkeit"
+					"multipliziert mit Spielgeschwindigkeit",
 				},
 			},
 			bl_cry_obsidian_orb = {
@@ -405,8 +405,8 @@ return {
 				text = {
 					"+#2# Blindgröße",
 					"pro $#1# wenn ausgewählt",
- 				},
- 			},
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pinke Schleife",
 				text = {
@@ -462,8 +462,8 @@ return {
 				text = {
 					"Mult kann nicht größer",
 					"sein als Chips",
- 				},
- 			},
+				},
+			},
 			bl_cry_vermillion_virus = {
 				name = "Zinnober Virus",
 				text = {
@@ -484,8 +484,8 @@ return {
 					"Fixire Joker beim Spielen oder Abwerfen",
 					"Öffne ein Unheilvoller Clown",
 					"Paket nach der Runde",
- 				},
- 			},
+				},
+			},
 		},
 		Code = {
 			c_cry_crash = {
@@ -707,9 +707,9 @@ return {
 					"Erzeugt den Skip-Tag des",
 					"{C:cry_code}aktuellen{} Blinds",
 					"{C:inactive}(Aktuell: {C:cry_code}#1#{C:inactive})",
- 				},
- 			},
- 			c_cry_ctrl_v = {
+				},
+			},
+			c_cry_ctrl_v = {
 				name = "://CTRL+V",
 				text = {
 					"Erstelle eine Kopie einer {C:cry_code}gewälten{}",

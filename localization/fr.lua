@@ -3841,7 +3841,6 @@ return {
 				},
 			},
 
-
 			c_cry_theblessing = {
 				name = "la Bénédiction",
 				text = {
