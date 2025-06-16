@@ -712,7 +712,7 @@ return {
 			c_cry_ctrl_v = {
 				name = "://CTRL+V",
 				text = {
-					"Erstelle eine Kopie einer {C:cry_code}gewälten{}",
+					"Erstelle eine Kopie einer {C:cry_code}gewählten{}",
 					"Spielkarte oder Gebrauchsgegenstand.",
 				},
 			},
@@ -1562,7 +1562,7 @@ return {
 			j_cry_lebaron_james = {
 				name = "LeBaron James",
 				text = {
-					"Gespeilte und gewertete {C:attention}Könige{} geben",
+					"Gespielte und gewertete {C:attention}Könige{} geben",
 					"{C:attention}+#1#{} Handgröße für diese Runde",
 					"und lösen {C:attention}in der Hand{} Effekte aus",
 				},
@@ -1960,7 +1960,7 @@ return {
 				name = "Primus",
 				text = {
 					"Dieser Joker erhält {X:dark_edition,C:white} ^#1# {} Mult",
-					"Wenn alle Karten in der Hand",
+					"Wenn alle gespielten Karten",
 					"{C:attention}Asse{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, oder {C:attention}7{} sind",
 					"{C:inactive}(Momentan {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
 				},
@@ -3257,7 +3257,7 @@ return {
 			v_cry_double_down = {
 				name = "Double Down",
 				text = {
-					"Nach jeder runde,",
+					"Nach jeder Runde,",
 					"{X:dark_edition,C:white} X1.5 {} zu allen Werten",
 					"auf der Rückseite von",
 					"{C:dark_edition}Doppelseitigen{} Karten",
