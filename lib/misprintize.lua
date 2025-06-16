@@ -469,11 +469,11 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 				if not Cryptid.base_values[card.config.center.key] then
 					Cryptid.base_values[card.config.center.key] = {}
 				end
-				if not Cryptid.base_values[card.config.center.key][i..ref_value] and v ~= 0 then
-					Cryptid.base_values[card.config.center.key][i..ref_value]  = v
+				if not Cryptid.base_values[card.config.center.key][i .. ref_value] and v ~= 0 then
+					Cryptid.base_values[card.config.center.key][i .. ref_value] = v
 				end
-				if Cryptid.base_values[card.config.center.key][i..ref_value] then
-					num = Cryptid.base_values[card.config.center.key][i..ref_value]
+				if Cryptid.base_values[card.config.center.key][i .. ref_value] then
+					num = Cryptid.base_values[card.config.center.key][i .. ref_value]
 				end
 			end
 			if args.big ~= nil then
