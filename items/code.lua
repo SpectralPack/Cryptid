@@ -3973,6 +3973,9 @@ local quantify = {
 					return true
 				end
 			end
+			if type(target) == "table" and target.config and target.config.blind then
+
+			end
 		end
 	end,
 	-- use = function(self, card, area, copier)

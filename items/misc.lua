@@ -35,7 +35,6 @@ local echo = {
 	calculate = function(self, card, context)
 		if
 			card.cardarea == G.play
-			context.repetition
 			and pseudorandom("echo")
 				< cry_prob(card.ability.cry_prob or 1, card.ability.extra or 2, card.ability.cry_rigged) / (card.ability.extra or 2)
 		then
