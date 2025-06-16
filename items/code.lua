@@ -3974,7 +3974,6 @@ local quantify = {
 				end
 			end
 			if type(target) == "table" and target.config and target.config.blind then
-
 			end
 		end
 	end,
