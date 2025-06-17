@@ -449,9 +449,12 @@ local choco5 = { --bloodsucker
 			if context.destroying_card:is_suit("Hearts") or context.destroying_card:is_suit("Diamonds") then
 				if pseudorandom(pseudoseed("cry_choco_blood")) < G.GAME.probabilities.normal / 3 then
 					context.destroying_card.will_shatter = true
+					local destroying_Card = context.destroying_card
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							context.destroying_card:start_dissolve()
+							if destroying_card then
+								destroying_card:start_dissolve()
+							end
 							return true
 						end,
 					}))
