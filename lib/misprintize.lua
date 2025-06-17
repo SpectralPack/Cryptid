@@ -398,17 +398,17 @@ function Card:get_nominal(mod)
 end
 
 function Cryptid.manipulate(card, args)
-	if not args then
-		Cryptid.manipulate(card, {
-			min = G.GAME.modifiers.cry_misprint_min,
-			max = G.GAME.modifiers.cry_misprint_max,
-			type = "X",
-			dont_stack = true,
-		})
-	else
+	 if not args then
+	 	Cryptid.manipulate(card, {
+	 		min = G.GAME.modifiers.cry_misprint_min,
+	 		max = G.GAME.modifiers.cry_misprint_max,
+	 		type = "X",
+	 		dont_stack = true,
+	})
+	 else
 		if not args.type then
-			args.type = "X"
-		end
+	 		args.type = "X"
+	 	end
 		--hardcoded whatever
 		if card.config.center.set == "Booster" then
 			args.big = false
@@ -421,10 +421,22 @@ function Cryptid.manipulate(card, args)
 				end)
 			end
 		end
-		Cryptid.manipulate_table(card, card, "ability", args)
-		if card.base then
-			Cryptid.manipulate_table(card, card, "base", args)
+		if not Cryptid.base_values[card.config.center.key] then
+			Cryptid.base_values[card.config.center.key] = {}
+			for i, v in pairs(card.ability) do
+				if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) < to_big(0) then 
+					Cryptid.base_values[card.config.center.key][i.."ability"] = v
+				elseif (type(v) == "table") then 
+					for i2, v2 in pairs(v) do
+						Cryptid.base_values[card.config.center.key][i2..i] = v2
+					end
+				end
+			end
 		end
+	 	Cryptid.manipulate_table(card, card, "ability", args)
+	 	if card.base then
+	 		Cryptid.manipulate_table(card, card, "base", args)
+	 	end
 		if G.GAME.modifiers.cry_misprint_min then
 			--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
 			card.misprint_cost_fac = 1
@@ -450,15 +462,16 @@ function Cryptid.manipulate(card, args)
 				end
 			end
 		end
-		if card.ability.consumeable then
-			for k, v in pairs(card.ability.consumeable) do
-				card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
-			end
-		end
+	 	-- if card.ability.consumeable then
+	 	-- 	for k, v in pairs(card.ability.consumeable) do
+	 	-- 		--card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
+	 	-- 	end
+	 	-- end
 	end
 end
 
 function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
+	if ref_value == "consumeable" then return end
 	for i, v in pairs(ref_table[ref_value]) do
 		if
 			(type(v) == "number" or (type(v) == "table" and v.tetrate))
@@ -466,13 +479,7 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 		then
 			local num = v
 			if args.dont_stack then
-				if not Cryptid.base_values[card.config.center.key] then
-					Cryptid.base_values[card.config.center.key] = {}
-				end
-				if not Cryptid.base_values[card.config.center.key][i .. ref_value] and v ~= 0 then
-					Cryptid.base_values[card.config.center.key][i .. ref_value] = v
-				end
-				if Cryptid.base_values[card.config.center.key][i .. ref_value] then
+				if Cryptid.base_values[card.config.center.key] and Cryptid.base_values[card.config.center.key][i .. ref_value] then
 					num = Cryptid.base_values[card.config.center.key][i .. ref_value]
 				end
 			end

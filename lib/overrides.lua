@@ -1124,9 +1124,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		card:set_edition(edition, true)
 	end
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
-		if G.GAME.modifiers.cry_misprint_min and G.GAME.modifiers.cry_misprint_max then
-			Cryptid.manipulate(card)
-		end
+		Cryptid.manipulate(card)
 	end
 	if card.ability.set == "Joker" and G.GAME.modifiers.cry_common_value_quad then
 		if card.config.center.rarity == 1 then
