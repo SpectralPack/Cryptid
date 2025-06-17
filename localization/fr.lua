@@ -2451,7 +2451,7 @@ return {
 				text = {
 					"Lorsqu'un {C:attention}Paquet Booster{} est passé,",
 					"donne un {C:attention}Badge{} aléatoire",
-					"{C:red,E:2}S'auto-détruit{}"
+					"{C:red,E:2}S'auto-détruit{}",
 				},
 			},
 			j_cry_pot_of_jokes = {
@@ -2677,7 +2677,7 @@ return {
 				unlock = {
 					"Gagner une partie",
 					"avec uniquement",
-					"des {C:attention}Carte Haute"
+					"des {C:attention}Carte Haute",
 				},
 			},
 			j_cry_fleshpanopticon = {
@@ -4326,7 +4326,7 @@ return {
 				text = {
 					"Cette carte est {C:cry_code}prioritaire",
 					"lorsque des cartes sont tirées,",
-					"si possible"
+					"si possible",
 				},
 			},
 			cry_flickering = {
