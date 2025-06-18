@@ -2503,7 +2503,6 @@ local miscitems = {
 	blessing,
 	azure_seal,
 	double_sided,
-	meld,
 	abstract,
 	instability,
 	absolute,
