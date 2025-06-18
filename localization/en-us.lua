@@ -4271,7 +4271,7 @@ return {
 				name = "Global",
 				text = {
 					"Draw this card",
-					"{C:cry_code}Before other cards,{}",
+					"{C:cry_code}Before other cards{},",
 					"if possible",
 				},
 			},
@@ -4963,6 +4963,7 @@ return {
 			k_cry_exotic = "Exotic",
 			k_cry_candy = "Candy",
 			k_cry_cursed = "Cursed",
+
 			k_planet_disc = "Circumstellar Disc",
 			k_planet_satellite = "Natural Satellites",
 			k_planet_universe = Cryptid_config.family_mode and "Universe" or "The Actual Fucking Universe",
