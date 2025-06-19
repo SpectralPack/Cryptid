@@ -917,6 +917,7 @@ function Cryptid.reset_to_none()
 		handname = localize("cry_None", "poker_hands"),
 	})
 end
+
 function Card:is_food()
 	--you cant really check if vanilla jokers are in a pool because its hardcoded
 	--so i have to hardcode it here too for the starfruit unlock
@@ -934,14 +935,4 @@ function Card:is_food()
 	if food[self.config.center.key] or Cryptid.safe_get(self.config.center, "pools", "Food") then
 		return true
 	end
-end
-function Cryptid.table_merge(t1, t2)
-	local tbl = {}
-	for i, v in pairs(t1) do
-		tbl[#tbl + 1] = v
-	end
-	for i, v in pairs(t2) do
-		tbl[#tbl + 1] = v
-	end
-	return tbl
 end
