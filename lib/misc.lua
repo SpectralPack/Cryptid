@@ -918,21 +918,21 @@ function Cryptid.reset_to_none()
 	})
 end
 
-
-
 function Card:is_food()
 	--you cant really check if vanilla jokers are in a pool because its hardcoded
 	--so i have to hardcode it here too for the starfruit unlock
-    local food = {
-        j_gros_michel=true,
-		j_egg=true,
-		j_ice_cream=true,
-		j_cavendish=true,
-		j_turtle_bean=true,
-		j_diet_cola=true,
-		j_popcorn=true,
-		j_ramen=true,
-		j_selzer=true,
-    }
-    if food[self.config.center.key] or Cryptid.safe_get(self.config.center, "pools", "Food") then return true end
+	local food = {
+		j_gros_michel = true,
+		j_egg = true,
+		j_ice_cream = true,
+		j_cavendish = true,
+		j_turtle_bean = true,
+		j_diet_cola = true,
+		j_popcorn = true,
+		j_ramen = true,
+		j_selzer = true,
+	}
+	if food[self.config.center.key] or Cryptid.safe_get(self.config.center, "pools", "Food") then
+		return true
+	end
 end

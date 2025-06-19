@@ -2477,7 +2477,7 @@ local starfruit = {
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				Emult = card.ability.emult
+				Emult = card.ability.emult,
 			}
 		end
 		if context.reroll_shop then
@@ -2509,9 +2509,9 @@ local starfruit = {
 					message = localize("k_eaten_ex"),
 					colour = G.C.RARITY.cry_epic,
 				}
-			else	
+			else
 				return {
-					message = "-^"..number_format(card.ability.emult_mod).." Mult",
+					message = "-^" .. number_format(card.ability.emult_mod) .. " Mult",
 					colour = G.C.RARITY.cry_epic,
 				}
 			end
@@ -2521,14 +2521,14 @@ local starfruit = {
 		return {
 			vars = {
 				number_format(card.ability.emult),
-				number_format(card.ability.emult_mod)
-			}
+				number_format(card.ability.emult_mod),
+			},
 		}
 	end,
 	cry_credits = {
-		art = {"lord.ruby"},
-		code = {"lord.ruby"},
-		idea = {"NinjaBanana"}
+		art = { "lord.ruby" },
+		code = { "lord.ruby" },
+		idea = { "NinjaBanana" },
 	},
 	check_for_unlock = function(self, args)
 		if args.type == "foods_destroyed" and to_big(args.destroyed) >= 2 then
@@ -2546,17 +2546,17 @@ local starfruit = {
 		function Card:remove(...)
 			if self:is_food() and self.area == G.jokers and not G.SETTINGS.paused then
 				G.cry_foods_eaten = (G.cry_foods_eaten or 0) + 1
-				check_for_unlock({type="foods_destroyed", destroyed = G.cry_foods_eaten})
+				check_for_unlock({ type = "foods_destroyed", destroyed = G.cry_foods_eaten })
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						G.cry_foods_eaten = nil
 						return true
-					end
+					end,
 				}))
 			end
 			return card_remove_ref(self, ...)
 		end
-	end
+	end,
 }
 
 return {
@@ -2588,6 +2588,6 @@ return {
 		jtron,
 		clockwork,
 		demicolon,
-		starfruit
+		starfruit,
 	},
 }
