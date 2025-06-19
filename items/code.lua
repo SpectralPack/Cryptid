@@ -4053,15 +4053,15 @@ local delete = {
 		end
 
 		local c = G.shop_jokers.highlighted[1]
-      or G.shop_booster.highlighted[1]
+      		or G.shop_booster.highlighted[1]
   		or G.shop_vouchers.highlighted[1]
 
-    if G.shop_vouchers.highlighted[1] and c.shop_voucher then
-      G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
-      G.GAME.current_round.cry_voucher_edition = nil
-      G.GAME.current_round.cry_voucher_stickers =
-        { eternal = false, perishable = false, rental = false, pinned = false, banana = false }
-    end
+	        if G.shop_vouchers.highlighted[1] and c.shop_voucher then
+	          G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
+	          G.GAME.current_round.cry_voucher_edition = nil
+	      	  G.GAME.current_round.cry_voucher_stickers =
+	          { eternal = false, perishable = false, rental = false, pinned = false, banana = false }
+	        end
 
 		if c.config.center.rarity == "cry_exotic" then
 			check_for_unlock({ type = "what_have_you_done" })
