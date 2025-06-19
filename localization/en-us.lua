@@ -2693,9 +2693,9 @@ return {
 			j_cry_pizza_slice = {
 				name = "Pizza Slice",
 				text = {
-					"This Joker gains {X:mult,C:white}X#1#{}",
+					"This Joker gains {X:mult,C:white}X#1#{} Mult",
 					"per {C:attention}Pizza Slice{} sold",
-					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{}{C:inactive}){}",
+					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{}{C:inactive} Mult){}",
 				},
 			},
 			j_cry_spaceglobe = {
