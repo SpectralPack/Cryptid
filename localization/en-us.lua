@@ -2694,7 +2694,7 @@ return {
 				name = "Pizza Slice",
 				text = {
 					"This Joker gains {X:mult,C:white}X#1#{} Mult",
-					"per {C:attention}Pizza Slice{} sold",
+					"when a {C:attention}Pizza Slice{} is sold",
 					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{}{C:inactive} Mult){}",
 				},
 			},
