@@ -2324,7 +2324,7 @@ local cryupdate = {
 			"HexaCryonic",
 		},
 		art = {
-			"Gemstonez",
+			"gemstonez",
 		},
 		code = {
 			"Nova",
@@ -3827,7 +3827,7 @@ local quantify = {
 			"HexaCryonic",
 		},
 		art = {
-			"?",
+			"gemstonez",
 		},
 		code = {
 			"lord.ruby",
@@ -3846,36 +3846,22 @@ local quantify = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	order = 425,
+	config = {extra = 1},
+	loc_vars = function(self, queue, card)
+		return {
+			vars = {
+				card.ability.extra
+			}
+		}
+	end,
 	can_use = function(self, card)
-		return true
+		local h, t = Cryptid.get_quantify(card)
+		return t > 0 and t <= card.ability.extra
 	end,
 	use = function(self, card)
-		G.GAME.USING_CODE = true
-		G.GAME.cry_quantify = true
+		Cryptid.handle_quantify(Cryptid.get_quantify(card))
 	end,
 	init = function()
-		local love_mousepressedref = love.mousepressed
-		function love.mousepressed(x, y, button, istouch)
-			love_mousepressedref(x, y, button, istouch)
-			if G.GAME.cry_quantify and G.CONTROLLER.hovering.target.config then
-				if Cryptid.handle_quantify(G.CONTROLLER.hovering.target) then
-					G.GAME.USING_CODE = nil
-					G.GAME.cry_quantify = nil
-				else
-					play_sound("tarot1")
-					attention_text({
-						text = localize("k_nope_ex"),
-						backdrop_colour = G.C.SECONDARY_SET.Code,
-						scale = 0.8,
-						hold = 2,
-						align = "cm",
-						offset = { x = 0, y = 0 },
-						major = G.play,
-					})
-				end
-			end
-		end
-
 		local calculate_ref = Card.calculate_joker
 		function Card:calculate_joker(context)
 			local ret, post = calculate_ref(self, context)
@@ -3944,6 +3930,14 @@ local quantify = {
 			end
 			return debuff_handref(self, Cryptid.table_merge(cards, tbl), hand, handname, check)
 		end
+		function Cryptid.get_quantify(card)
+			local highlighted
+			local total = 0
+			for i, v in pairs(G.I.CARD) do
+				if v.highlighted and v ~= card then highlighted = v; total = total + 1 end
+			end
+			return highlighted, total
+		end
 		function Cryptid.handle_quantify(target)
 			if type(target) == "table" and target.calculate_joker then
 				local highlighted = target
@@ -3972,8 +3966,6 @@ local quantify = {
 					G.jokers:emplace(highlighted)
 					return true
 				end
-			end
-			if type(target) == "table" and target.config and target.config.blind then
 			end
 		end
 	end,
