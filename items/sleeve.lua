@@ -487,7 +487,8 @@ if CardSleeves then
 					or (
 						self.get_current_deck_key() == "b_cry_antimatter"
 						and (
-								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8) or 0
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8)
+								or 0
 							)
 							~= 0
 					)
@@ -1264,7 +1265,8 @@ if CardSleeves then
 					or (
 						self.get_current_deck_key() == "b_cry_antimatter"
 						and (
-								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8) or 0
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
+								or 0
 							)
 							~= 0
 					)

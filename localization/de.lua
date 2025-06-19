@@ -4485,7 +4485,9 @@ return {
 			ch_c_cry_sticker_sheet_plus = { "Alle kaufbaren Gegenstände haben alle Sticker" },
 			ch_c_cry_rush_hour = { "Alle Boss Blinds sind {C:attention}Die Uhr{} oder {C:attention}Lavendelschleife" },
 			ch_c_cry_rush_hour_ii = { "Alle Blinds sind {C:attention}Boss Blinds{}" },
-			ch_c_cry_rush_hour_iii = {"{C:attention}Die Uhr{} und {C:attention}Lavendelschleife{} steigen {C:attention}doppelt{} so schnell"},
+			ch_c_cry_rush_hour_iii = {
+				"{C:attention}Die Uhr{} und {C:attention}Lavendelschleife{} steigen {C:attention}doppelt{} so schnell",
+			},
 			ch_c_cry_no_tags = { "Überspringen ist {C:attention}deaktiviert{}" },
 			ch_c_cry_no_vouchers = { "Im Shop erscheinen keine {C:attention}Gutscheine{} mehr" },
 			ch_c_cry_no_boosters = { "Im Shop erscheinen keine {C:attention}Booster Pakete{} mehr" },
