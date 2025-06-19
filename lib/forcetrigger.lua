@@ -939,6 +939,7 @@ function Cryptid.forcetrigger(card, context)
 		if
 			(card.ability.consumeable.max_highlighted or card.ability.name == "Aura")
 			and not card.config.center.force_use
+			--and not card.config.center.force_use
 		then --Cards that require cards in hand to be selected
 			local _cards = {}
 			local targets = {}
@@ -1196,5 +1197,5 @@ function Cryptid.forcetriggerConsumableCheck(card)
 			return false
 		end
 	end
-	return (card.config.center.force_use and card.config.center.demicoloncompat) or not card.config.center.original_mod
+	return (card.config.center.demicoloncompat) or not card.config.center.original_mod
 end
