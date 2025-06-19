@@ -1195,6 +1195,14 @@ return {
 					"for {C:mult}-#2#{} Mult",
 				},
 			},
+			j_cry_buttercup = {
+				name = "Buttercup",
+				text = {
+					"Can store {C:attention}#1#{} selected shop item#<s>1#",
+					"When sold: Add the stored item#<s>1#",
+					"to the next shop",
+				},
+			},
 			j_cry_candy_basket = {
 				name = "Candy Basket",
 				text = {
@@ -1506,6 +1514,14 @@ return {
 				text = {
 					"{C:attention}Force-trigger{} the Joker",
 					"to the right",
+				},
+			},
+			j_cry_starfruit = {
+				name = "Starfruit",
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Mult",
+					"{X:dark_edition,C:white}-^#2#{} Mult per",
+					"{C:attention}reroll{} in the shop",
 				},
 			},
 			j_cry_digitalhallucinations = {
@@ -3442,6 +3458,14 @@ return {
 					"card#<s>1# in your hand",
 				},
 			},
+			c_cry_meld = {
+				name = "Meld",
+				text = {
+					"Select a {C:attention}Joker{} or",
+					"{C:attention}playing card{} to",
+					"become {C:dark_edition}Double-Sided",
+				},
+			},
 			c_cry_vacuum = {
 				name = "Vacuum",
 				text = {
@@ -3889,14 +3913,6 @@ return {
 					"into an {C:attention}Abstract Card",
 				},
 			},
-			c_cry_meld = {
-				name = "Meld",
-				text = {
-					"Select a {C:attention}Joker{} or",
-					"{C:attention}playing card{} to",
-					"become {C:dark_edition}Double-Sided",
-				},
-			},
 			c_cry_theblessing = {
 				name = "The Blessing",
 				text = {
@@ -3956,8 +3972,7 @@ return {
 				name = "Double Slit",
 				text = {
 					"{C:attention}Meld{} can appear",
-					"in the shop and",
-					"Arcana Packs",
+					"in {C:spectral}Spectral{} Packs",
 				},
 			},
 			v_cry_stickyhand = {
@@ -4266,7 +4281,7 @@ return {
 				name = "Global",
 				text = {
 					"Draw this card",
-					"{C:cry_code}Before other cards,{}",
+					"{C:cry_code}Before other cards{},",
 					"if possible",
 				},
 			},
@@ -4919,6 +4934,7 @@ return {
 
 			b_flip = "FLIP",
 			b_merge = "MERGE",
+			b_store = "STORE",
 
 			cry_hand_bulwark = "Bulwark",
 			cry_hand_clusterfuck = "Clusterfuck",
@@ -4957,6 +4973,7 @@ return {
 			k_cry_exotic = "Exotic",
 			k_cry_candy = "Candy",
 			k_cry_cursed = "Cursed",
+
 			k_planet_disc = "Circumstellar Disc",
 			k_planet_satellite = "Natural Satellites",
 			k_planet_universe = Cryptid_config.family_mode and "Universe" or "The Actual Fucking Universe",

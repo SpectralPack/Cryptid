@@ -421,6 +421,18 @@ function Cryptid.manipulate(card, args)
 				end)
 			end
 		end
+		if not Cryptid.base_values[card.config.center.key] then
+			Cryptid.base_values[card.config.center.key] = {}
+			for i, v in pairs(card.ability) do
+				if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) < to_big(0) then
+					Cryptid.base_values[card.config.center.key][i .. "ability"] = v
+				elseif type(v) == "table" then
+					for i2, v2 in pairs(v) do
+						Cryptid.base_values[card.config.center.key][i2 .. i] = v2
+					end
+				end
+			end
+		end
 		Cryptid.manipulate_table(card, card, "ability", args)
 		if card.base then
 			Cryptid.manipulate_table(card, card, "base", args)
@@ -450,15 +462,18 @@ function Cryptid.manipulate(card, args)
 				end
 			end
 		end
-		if card.ability.consumeable then
-			for k, v in pairs(card.ability.consumeable) do
-				card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
-			end
-		end
+		-- if card.ability.consumeable then
+		-- 	for k, v in pairs(card.ability.consumeable) do
+		-- 		--card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
+		-- 	end
+		-- end
 	end
 end
 
-function Cryptid.manipulate_table(card, ref_table, ref_value, args)
+function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
+	if ref_value == "consumeable" then
+		return
+	end
 	for i, v in pairs(ref_table[ref_value]) do
 		if
 			(type(v) == "number" or (type(v) == "table" and v.tetrate))
@@ -466,13 +481,12 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args)
 		then
 			local num = v
 			if args.dont_stack then
-				if not Cryptid.base_values[card.config.center.key] then
-					Cryptid.base_values[card.config.center.key] = {}
+				if
+					Cryptid.base_values[card.config.center.key]
+					and Cryptid.base_values[card.config.center.key][i .. ref_value]
+				then
+					num = Cryptid.base_values[card.config.center.key][i .. ref_value]
 				end
-				if not Cryptid.base_values[card.config.center.key][i] then
-					Cryptid.base_values[card.config.center.key][i] = v
-				end
-				num = Cryptid.base_values[card.config.center.key][i]
 			end
 			if args.big ~= nil then
 				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big, i)

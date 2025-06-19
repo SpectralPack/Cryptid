@@ -1224,7 +1224,7 @@ local antimatter = {
 	unlocked = false,
 	check_for_unlock = function(self, args)
 		if args.type == "win_deck" then
-			if get_deck_win_stake("b_cry_blank") > 0 and get_deck_win_stake() >= 8 then
+			if get_deck_win_stake("b_cry_blank") >= 8 then
 				unlock_card(self)
 			end
 		end

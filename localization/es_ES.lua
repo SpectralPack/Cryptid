@@ -3094,6 +3094,14 @@ return {
 					"de tu mano al azar",
 				},
 			},
+			c_cry_meld = {
+				name = "Fusionar",
+				text = {
+					"Selecciona un {C:attention}comodín{} o",
+					"{C:attention}carta de juego{} para",
+					"hacerla {C:dark_edition}Doble cara",
+				},
+			},
 			c_cry_vacuum = {
 				name = "Vacío",
 				text = {
@@ -3536,14 +3544,7 @@ return {
 					"una {C:attention}Carta de eco",
 				},
 			},
-			c_cry_meld = {
-				name = "Fusionar",
-				text = {
-					"Selecciona un {C:attention}comodín{} o",
-					"{C:attention}carta de juego{} para",
-					"hacerla {C:dark_edition}Doble cara",
-				},
-			},
+
 			c_cry_theblessing = {
 				name = "La bendición",
 				text = {
