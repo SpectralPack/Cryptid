@@ -2477,7 +2477,15 @@ local starfruit = {
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				e_chipsmult = card.ability.emult,
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.emult),
+					},
+				}),
+				Emult_mod = lenient_bignum(card.ability.emult),
+				colour = G.C.DARK_EDITION,
 			}
 		end
 		if context.reroll_shop then
