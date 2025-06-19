@@ -10354,7 +10354,12 @@ local pizza_slice = { -- +1 to all listed probabilities for the highest cat tag 
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				xmult = card.ability.xmult,
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.xmult) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
 			}
 		end
 		if context.selling_card and context.card and context.card.config.center.key == "j_cry_pizza_slice" then
