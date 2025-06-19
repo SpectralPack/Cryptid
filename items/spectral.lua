@@ -869,19 +869,31 @@ local conduit = {
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		local combinedTable = {}
+		dbl = false
+		no_dbl = false
 
 		for _, value in ipairs(G.hand.highlighted) do
 			if value ~= card then
+				if Card.no(value, "dbl") then
+					no_dbl = true
+				elseif value.edition and value.edition.cry_double_sided then
+					dbl = true
+				end
 				table.insert(combinedTable, value)
 			end
 		end
 
 		for _, value in ipairs(G.jokers.highlighted) do
 			if value ~= card then
+				if Card.no(value, "dbl") then
+					no_dbl = true
+				elseif value.edition and value.edition.cry_double_sided then
+					dbl = true
+				end
 				table.insert(combinedTable, value)
 			end
 		end
-		return (#combinedTable == 2)
+		return (#combinedTable == 2 and not (dbl and no_dbl))
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
