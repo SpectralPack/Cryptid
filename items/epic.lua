@@ -2454,6 +2454,111 @@ local demicolon = {
 		code = { "Nova" },
 	},
 }
+
+local starfruit = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_epic",
+		},
+	},
+	name = "cry-starfruit",
+	key = "starfruit",
+	rarity = "cry_epic",
+	cost = 14,
+	order = 300,
+	blueprint_compat = false,
+	demicoloncompat = false,
+	atlas = "atlasepic",
+	pos = { x = 4, y = 5 },
+	config = { emult = 2, emult_mod = 0.2 },
+	immutable = true,
+	pools = { ["Food"] = true },
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				Emult = card.ability.emult
+			}
+		end
+		if context.reroll_shop then
+			card.ability.emult = card.ability.emult - card.ability.emult_mod
+			--floating point precision can kiss my ass istg
+			if card.ability.emult <= 1.00000001 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				return {
+					message = localize("k_eaten_ex"),
+					colour = G.C.RARITY.cry_epic,
+				}
+			else	
+				return {
+					message = "-^"..number_format(card.ability.emult_mod).." Mult",
+					colour = G.C.RARITY.cry_epic,
+				}
+			end
+		end
+	end,
+	loc_vars = function(self, queue, card)
+		return {
+			vars = {
+				number_format(card.ability.emult),
+				number_format(card.ability.emult_mod)
+			}
+		}
+	end,
+	cry_credits = {
+		art = {"lord.ruby"},
+		code = {"lord.ruby"},
+		idea = {"NinjaBanana"}
+	},
+	check_for_unlock = function(self, args)
+		if args.type == "foods_destroyed" and to_big(args.destroyed) >= 2 then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
+	init = function()
+		local card_remove_ref = Card.remove
+		function Card:remove(...)
+			if self:is_food() and self.area == G.jokers and not G.SETTINGS.paused then
+				G.cry_foods_eaten = (G.cry_foods_eaten or 0) + 1
+				check_for_unlock({type="foods_destroyed", destroyed = G.cry_foods_eaten})
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.cry_foods_eaten = nil
+						return true
+					end
+				}))
+			end
+			return card_remove_ref(self, ...)
+		end
+	end
+}
+
 return {
 	name = "Epic Jokers",
 	items = {
@@ -2483,5 +2588,6 @@ return {
 		jtron,
 		clockwork,
 		demicolon,
+		starfruit
 	},
 }

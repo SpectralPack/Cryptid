@@ -1514,6 +1514,14 @@ return {
 					"to the right",
 				},
 			},
+			j_cry_starfruit = {
+				name = "Starfruit",
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Mult",
+					"{X:dark_edition,C:white}-^#2#{} Mult per",
+					"{C:attention}reroll{} in the shop"
+				}
+			},
 			j_cry_digitalhallucinations = {
 				name = "Digital Hallucinations",
 				text = {
