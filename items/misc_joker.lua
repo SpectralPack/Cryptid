@@ -10246,6 +10246,116 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 	end,
 }
 
+local pizza = { -- +1 to all listed probabilities for the highest cat tag level
+	cry_credits = {
+		idea = {
+			"Enemui",
+		},
+		art = {
+			"George The Rat",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"j_cry_pizza_slice"
+		},
+	},
+	name = "cry-pizza",
+	key = "pizza",
+	atlas = "atlastwo",
+	pos = { x = 6, y = 5 },
+	rarity = 3,
+	cost = 8,
+	order = 141,
+	demicoloncompat = true,
+	config = { extra = { rounds_needed = 3, rounds_left = 3, slices = 6 }, immutable = {max_spawn = 100} },
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue+1] = G.P_CENTERS.j_cry_pizza_slice
+		return { vars = { number_format(card.ability.extra.rounds_needed), number_format(card.ability.extra.rounds_left), 
+		number_format(math.min(card.ability.extra.slices, card.ability.immutable.max_spawn)) } }
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round and not context.retrigger_joker and not context.blueprint and not context.individual and not context.repetition then
+			card.ability.extra.rounds_left = card.ability.extra.rounds_left - 1
+			if to_big(card.ability.extra.rounds_left) < to_big(0) then
+				card.ability.extra.rounds_left = 0
+			else
+				return {
+					message = number_format(card.ability.extra.rounds_needed-card.ability.extra.rounds_left).."/"..number_format(card.ability.extra.rounds_needed),
+					colour = G.C.FILTER
+				}
+			end
+		end
+		if context.selling_self or context.forcetrigger then
+			if to_big(card.ability.extra.rounds_left) <= to_big(0) or context.forcetrigger then
+				for i = 1, to_number(math.min(card.ability.extra.slices, card.ability.immutable.max_spawn)), G.jokers.config.card_limit - #G.jokers.cards do
+					SMODS.add_card({
+						key = "j_cry_pizza_slice",
+						area = G.jokers
+					})
+				end
+			end
+		end
+	end
+}
+
+local pizza_slice = { -- +1 to all listed probabilities for the highest cat tag level
+	cry_credits = {
+		idea = {
+			"Enemui",
+		},
+		art = {
+			"George The Rat",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+			"j_cry_pizza"
+		},
+	},
+	name = "cry-pizza_slice",
+	key = "pizza_slice",
+	atlas = "atlastwo",
+	pos = { x = 6, y = 4 },
+	rarity = 3,
+	cost = 8,
+	order = 141,
+	in_pool = function()
+		return false
+	end,
+	demicoloncompat = false,
+	config = { extra = { xmult = 1, xmult_mod = 0.5 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { number_format(card.ability.extra.xmult_mod), number_format(card.ability.extra.xmult)} }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main then
+			return {
+				xmult = card.ability.xmult
+			}
+		end
+		if context.selling_card and context.card and context.card.config.center.key == "j_cry_pizza_slice" then
+			if context.card ~= card then
+				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+				return {
+					message = localize{ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } },
+					colour = G.C.FILTER
+				}
+			end
+		end
+	end
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -10372,6 +10482,8 @@ local miscitems = {
 	sock_and_sock,
 	brokenhome,
 	--yarnball,
+	pizza,
+	pizza_slice
 }
 return {
 	name = "Misc. Jokers",
