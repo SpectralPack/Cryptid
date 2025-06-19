@@ -2687,7 +2687,7 @@ return {
 				text = {
 					"After {C:attention}#1#{} {C:inactive}[#2#]{} round#<s>1#",
 					"sell this Joker to create",
-					"{C:attention}#3#{} Pizza Slices"
+					"{C:attention}#3#{} Pizza Slices",
 				},
 			},
 			j_cry_pizza_slice = {
@@ -2695,7 +2695,7 @@ return {
 				text = {
 					"This Joker gains {X:mult,C:white}X#1#{}",
 					"per {C:attention}Pizza Slice{} sold",
-					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{}{C:inactive}){}"
+					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{}{C:inactive}){}",
 				},
 			},
 			j_cry_spaceglobe = {

@@ -10262,7 +10262,7 @@ local pizza = { -- +1 to all listed probabilities for the highest cat tag level
 	dependencies = {
 		items = {
 			"set_cry_misc_joker",
-			"j_cry_pizza_slice"
+			"j_cry_pizza_slice",
 		},
 	},
 	name = "cry-pizza",
@@ -10273,21 +10273,34 @@ local pizza = { -- +1 to all listed probabilities for the highest cat tag level
 	cost = 8,
 	order = 141,
 	demicoloncompat = true,
-	config = { extra = { rounds_needed = 3, rounds_left = 3, slices = 6 }, immutable = {max_spawn = 100} },
+	config = { extra = { rounds_needed = 3, rounds_left = 3, slices = 6 }, immutable = { max_spawn = 100 } },
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue+1] = G.P_CENTERS.j_cry_pizza_slice
-		return { vars = { number_format(card.ability.extra.rounds_needed), number_format(card.ability.extra.rounds_left), 
-		number_format(math.min(card.ability.extra.slices, card.ability.immutable.max_spawn)) } }
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_cry_pizza_slice
+		return {
+			vars = {
+				number_format(card.ability.extra.rounds_needed),
+				number_format(card.ability.extra.rounds_left),
+				number_format(math.min(card.ability.extra.slices, card.ability.immutable.max_spawn)),
+			},
+		}
 	end,
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.retrigger_joker and not context.blueprint and not context.individual and not context.repetition then
+		if
+			context.end_of_round
+			and not context.retrigger_joker
+			and not context.blueprint
+			and not context.individual
+			and not context.repetition
+		then
 			card.ability.extra.rounds_left = card.ability.extra.rounds_left - 1
 			if to_big(card.ability.extra.rounds_left) < to_big(0) then
 				card.ability.extra.rounds_left = 0
 			else
 				return {
-					message = number_format(card.ability.extra.rounds_needed-card.ability.extra.rounds_left).."/"..number_format(card.ability.extra.rounds_needed),
-					colour = G.C.FILTER
+					message = number_format(card.ability.extra.rounds_needed - card.ability.extra.rounds_left)
+						.. "/"
+						.. number_format(card.ability.extra.rounds_needed),
+					colour = G.C.FILTER,
 				}
 			end
 		end
@@ -10296,12 +10309,12 @@ local pizza = { -- +1 to all listed probabilities for the highest cat tag level
 				for i = 1, to_number(math.min(card.ability.extra.slices, card.ability.immutable.max_spawn)), G.jokers.config.card_limit - #G.jokers.cards do
 					SMODS.add_card({
 						key = "j_cry_pizza_slice",
-						area = G.jokers
+						area = G.jokers,
 					})
 				end
 			end
 		end
-	end
+	end,
 }
 
 local pizza_slice = { -- +1 to all listed probabilities for the highest cat tag level
@@ -10320,7 +10333,7 @@ local pizza_slice = { -- +1 to all listed probabilities for the highest cat tag 
 	dependencies = {
 		items = {
 			"set_cry_misc_joker",
-			"j_cry_pizza"
+			"j_cry_pizza",
 		},
 	},
 	name = "cry-pizza_slice",
@@ -10336,24 +10349,24 @@ local pizza_slice = { -- +1 to all listed probabilities for the highest cat tag 
 	demicoloncompat = false,
 	config = { extra = { xmult = 1, xmult_mod = 0.5 } },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { number_format(card.ability.extra.xmult_mod), number_format(card.ability.extra.xmult)} }
+		return { vars = { number_format(card.ability.extra.xmult_mod), number_format(card.ability.extra.xmult) } }
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				xmult = card.ability.xmult
+				xmult = card.ability.xmult,
 			}
 		end
 		if context.selling_card and context.card and context.card.config.center.key == "j_cry_pizza_slice" then
 			if context.card ~= card then
 				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
 				return {
-					message = localize{ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } },
-					colour = G.C.FILTER
+					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
+					colour = G.C.FILTER,
 				}
 			end
 		end
-	end
+	end,
 }
 
 local miscitems = {
@@ -10483,7 +10496,7 @@ local miscitems = {
 	brokenhome,
 	--yarnball,
 	pizza,
-	pizza_slice
+	pizza_slice,
 }
 return {
 	name = "Misc. Jokers",
