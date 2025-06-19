@@ -470,26 +470,69 @@ if CardSleeves then
 		unlock_condition = { deck = "Antimatter Deck", stake = 1 },
 		loc_vars = function(self, info_queue, center)
 			-- Green Sleeve, Debt Effect
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_green", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				if (self.get_current_deck_key() == "b_green" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8) or 0) ~= 0)) then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_green",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				if
+					self.get_current_deck_key() == "b_green"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8) or 0
+							)
+							~= 0
+					)
+				then
 					self.config.debt_bonus = 2
 					if G.STAGE == G.STAGES.RUN then
 						-- only calculate if we're in a run, otherwise it's bogus
-						self.config.added_bankrupt = self.config.debt_bonus * (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
+						self.config.added_bankrupt = self.config.debt_bonus
+							* (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
 					end
 				end
 			end
 
 			-- CCD Sleeve, set config. (I do not know if this is important, I am just implementing everything that the corresponding Sleeve had)
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_ccd_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_ccd_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				self.config.cry_conveyor = true
 			end
 
 			-- Spooky Sleeve, set config. (Ditto w/ CCD)
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_spooky_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_spooky_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				self.config.cry_spooky = true
 			end
-			
+
 			return { key = Cryptid.gameset_loc(self, { mainline = "balanced", modest = "balanced" }) }
 		end,
 		calculate = function(self, sleeve, context)
@@ -498,8 +541,26 @@ if CardSleeves then
 				local is_booster_pack = card.ability.set == "Booster"
 
 				-- Ghost Sleeve, Special Options
-				if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_ghost", "wins_by_key", "stake_gold") or 0 ~= 0) then
-					if self.get_current_deck_key() == "b_ghost" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8) or 0 ~= 0)) then
+				if
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_ghost",
+						"wins_by_key",
+						"stake_gold"
+					) or 0 ~= 0
+				then
+					if
+						self.get_current_deck_key() == "b_ghost"
+						or (
+							self.get_current_deck_key() == "b_cry_antimatter"
+							and (
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
+								or 0 ~= 0
+							)
+						)
+					then
 						local is_spectral_pack = is_booster_pack and (card.ability.name:find("Spectral"))
 						if is_spectral_pack then
 							print("is spectral pack!")
@@ -509,9 +570,27 @@ if CardSleeves then
 				end
 
 				-- Zodiac Sleeve, Special
-				if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_zodiac", "wins_by_key", "stake_gold") or 0 ~= 0) then
-					if self.get_current_deck_key() == "b_zodiac" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8) or 0 ~= 0)) then
-						if is_booster_pack then 
+				if
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_zodiac",
+						"wins_by_key",
+						"stake_gold"
+					) or 0 ~= 0
+				then
+					if
+						self.get_current_deck_key() == "b_zodiac"
+						or (
+							self.get_current_deck_key() == "b_cry_antimatter"
+							and (
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8)
+								or 0 ~= 0
+							)
+						)
+					then
+						if is_booster_pack then
 						end
 						local is_arcana_pack = is_booster_pack and (card.ability.name:find("Arcana"))
 						if is_arcana_pack then
@@ -527,7 +606,16 @@ if CardSleeves then
 			end
 
 			-- Glowing Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_glowing_sleeve", "wins_by_key", "stake_gold") or 0 ~= 0) then
+			if
+				Cryptid.safe_get(
+					G.PROFILES,
+					G.SETTINGS.profile,
+					"sleeve_usage",
+					"sleeve_cry_glowing_sleeve",
+					"wins_by_key",
+					"stake_gold"
+				) or 0 ~= 0
+			then
 				if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
 					for i = 1, #G.jokers.cards do
 						if not Card.no(G.jokers.cards[i], "immutable", true) then
@@ -541,23 +629,37 @@ if CardSleeves then
 
 			-- Plasma Sleeve, Shop Effect
 			if context.shop_final_pass or context.reroll_shop then
-				if self.get_current_deck_key() == "b_plasma" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8) or 0) ~= 0) then
+				if
+					self.get_current_deck_key() == "b_plasma"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_plasma", "wins", 8)
+								or 0
+							)
+							~= 0
+					)
+				then
 					-- stop controller/mouse from doing anything
-					local hold = 0.6	-- how long to take to ease the costs, and how long to hold the player
+					local hold = 0.6 -- how long to take to ease the costs, and how long to hold the player
 					G.CONTROLLER.locks.shop_reroll = true
-					if G.CONTROLLER:save_cardarea_focus('shop_jokers') then G.CONTROLLER.interrupt.focus = true end
+					if G.CONTROLLER:save_cardarea_focus("shop_jokers") then
+						G.CONTROLLER.interrupt.focus = true
+					end
 
 					local cardareas = {}
 					for _, obj in pairs(G) do
 						if type(obj) == "table" and obj["is"] and obj:is(CardArea) and obj.config.type == "shop" then
-							cardareas[#cardareas+1] = obj
+							cardareas[#cardareas + 1] = obj
 						end
 					end
 					local total_cost, total_items_for_sale = 0, 0
 					for _, cardarea in pairs(cardareas) do
 						for _, card in pairs(cardarea.cards) do
 							card:set_cost()
-							local has_coupon_tag = card.area and card.ability.couponed and (card.area == G.shop_jokers or card.area == G.shop_booster)
+							local has_coupon_tag = card.area
+								and card.ability.couponed
+								and (card.area == G.shop_jokers or card.area == G.shop_booster)
 							if has_coupon_tag then
 								-- tags that set price to 0 (coupon, uncommon, rare, etc)
 								card.cost = 0
@@ -567,70 +669,105 @@ if CardSleeves then
 							total_items_for_sale = total_items_for_sale + 1
 						end
 					end
-					local avg_cost = math.floor((total_cost - 1) / total_items_for_sale)	-- make it always be in favour of the player
+					local avg_cost = math.floor((total_cost - 1) / total_items_for_sale) -- make it always be in favour of the player
 					for _, cardarea in pairs(cardareas) do
 						for _, card in pairs(cardarea.cards) do
 							card.cost = math.max(card.cost, card.base_cost)
 							local mod = avg_cost - card.cost
 							--		 table, value,	mod, floor, timer, not_blockable, delay, ease_type
-							ease_value(card,	"cost", mod, nil,	 nil,	 true,			hold,	 "quad")
+							ease_value(card, "cost", mod, nil, nil, true, hold, "quad")
 							-- card.cost = avg_cost
 							-- card:set_cost()
 						end
 					end
 					G.E_MANAGER:add_event(Event({
-						func = (function()
-							play_sound('gong', 1.2, 0.2)
-							play_sound('gong', 1.2*1.5, 0.1)
-							play_sound('tarot1', 1.6, 0.8)
+						func = function()
+							play_sound("gong", 1.2, 0.2)
+							play_sound("gong", 1.2 * 1.5, 0.1)
+							play_sound("tarot1", 1.6, 0.8)
 							attention_text({
 								scale = 1.3,
 								colour = G.C.GOLD,
-								text = localize('k_balanced'),
+								text = localize("k_balanced"),
 								hold = 1.5,
-								align = 'cm',
-								offset = {x = 0, y = -3.5},
-								major = G.play
+								align = "cm",
+								offset = { x = 0, y = -3.5 },
+								major = G.play,
 							})
 							return true
-						end)
+						end,
 					}))
 					G.E_MANAGER:add_event(Event({
-						trigger = 'after',
+						trigger = "after",
 						delay = hold,
 						func = function()
 							-- allow player to buy cards again, ONLY after having eased prices
 							G.CONTROLLER.interrupt.focus = false
 							G.CONTROLLER.locks.shop_reroll = false
-							G.CONTROLLER:recall_cardarea_focus('shop_jokers')
+							G.CONTROLLER:recall_cardarea_focus("shop_jokers")
 							return true
-						end
+						end,
 					}))
-				end			
+				end
 			end
 
 			-- Green Sleeve, Debt Effect
 			if sleeve.config.debt_bonus then
-				if (context.end_of_round and not context.individual and not context.repetition) then
+				if context.end_of_round and not context.individual and not context.repetition then
 					if not sleeve.config.added_bankrupt then
-						sleeve.config.added_bankrupt = sleeve.config.debt_bonus * (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
+						sleeve.config.added_bankrupt = sleeve.config.debt_bonus
+							* (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
 					end
 					G.GAME.bankrupt_at = G.GAME.bankrupt_at + sleeve.config.added_bankrupt
-					sleeve.config.added_bankrupt = sleeve.config.debt_bonus * (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
+					sleeve.config.added_bankrupt = sleeve.config.debt_bonus
+						* (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
 					G.GAME.bankrupt_at = G.GAME.bankrupt_at - sleeve.config.added_bankrupt
 				end
 			end
 
 			-- Checkered Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_checkered", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				if not (self.get_current_deck_key() == "b_checkered" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_checkered", "wins", 8) or 0) ~= 0)) then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_checkered",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				if
+					not (
+						self.get_current_deck_key() == "b_checkered"
+						or (
+							self.get_current_deck_key() == "b_cry_antimatter"
+							and (
+									Cryptid.safe_get(
+										G.PROFILES,
+										G.SETTINGS.profile,
+										"deck_usage",
+										"b_checkered",
+										"wins",
+										8
+									) or 0
+								)
+								~= 0
+						)
+					)
+				then
 					local card = context.card
-					local force_suits = {["Clubs"] = "Spades", ["Diamonds"] = "Hearts"}
-					local is_playing_card = card and (card.ability.set == "Default" or card.ability.set == "Enhanced") and card.config.card_key
+					local force_suits = { ["Clubs"] = "Spades", ["Diamonds"] = "Hearts" }
+					local is_playing_card = card
+						and (card.ability.set == "Default" or card.ability.set == "Enhanced")
+						and card.config.card_key
 					if (context.create_card or context.modify_playing_card) and card and is_playing_card then
 						for from_suit, to_suit in pairs(force_suits) do
 							if card.base.suit == from_suit then
-								local base = SMODS.Suits[to_suit].card_key .. "_" .. SMODS.Ranks[card.base.value].card_key
+								local base = SMODS.Suits[to_suit].card_key
+									.. "_"
+									.. SMODS.Ranks[card.base.value].card_key
 								local initial = G.GAME.blind == nil or context.create_card
 								card:set_base(G.P_CARDS[base], initial)
 							end
@@ -638,7 +775,6 @@ if CardSleeves then
 					end
 				end
 			end
-
 		end,
 
 		trigger_effect = function(self, args)
@@ -676,7 +812,6 @@ if CardSleeves then
 					end
 				end
 			end
-
 		end,
 		apply = function(self)
 			local function get_random() -- borrowed from CardSleeves
@@ -688,16 +823,28 @@ if CardSleeves then
 			if self.config.debt_bonus then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
-					func = (function()
-				self.config.added_bankrupt = self.config.debt_bonus * (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
+					func = function()
+						self.config.added_bankrupt = self.config.debt_bonus
+							* (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
 						G.GAME.bankrupt_at = G.GAME.bankrupt_at - self.config.added_bankrupt
 						return true
-					end)
+					end,
 				}))
 			end
 
 			-- Legendary Sleeve, Start Joker
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_legendary_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_legendary_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
@@ -712,7 +859,18 @@ if CardSleeves then
 			end
 
 			-- Encoded Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_encoded_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_encoded_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
@@ -742,7 +900,18 @@ if CardSleeves then
 			end
 
 			-- Wormhole Sleeve, Starting Joker
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_wormhole_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_wormhole_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
@@ -758,24 +927,79 @@ if CardSleeves then
 			end
 
 			-- Bountiful Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_bountiful_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_bountiful_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.modifiers.cry_forced_draw_amount = 5
 			end
 			-- Infinite Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_infinite_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_infinite_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.modifiers.cry_highlight_limit = self.config.cry_highlight_limit
 			end
 			-- Misprint Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_misprint_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_misprint_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.modifiers.cry_misprint_min = 1
 				G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * 10
 			end
 			-- CCD Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_ccd_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_ccd_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.modifiers.cry_ccd = true
 			end
 			-- Spooky Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_spooky_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_spooky_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.modifiers.cry_spooky = true
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -791,32 +1015,119 @@ if CardSleeves then
 				}))
 			end
 			-- Redeemed Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_redeemed_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_redeemed_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.modifiers.cry_redeemed = true
 			end
 			-- Balanced Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_misprint_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_misprint_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.modifiers.cry_equilibrium = true
 			end
 			-- Beige Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_beige_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				if (self.get_current_deck_key() == "b_cry_beige" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_beige", "wins", 8) or 0) ~= 0)) then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_beige_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				if
+					self.get_current_deck_key() == "b_cry_beige"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_beige", "wins", 8)
+								or 0
+							)
+							~= 0
+					)
+				then
 					G.GAME.modifiers.cry_uncommon_value_quad = true
 				else
 					G.GAME.modifiers.cry_common_value_quad = true
 				end
 			end
 			-- Wormhole Sleeve, Negative Rate
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_wormhole_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				G.GAME.modifiers.cry_negative_rate = (G.GAME.modifiers.cry_negative_rate or 1) * self.config.cry_negative_rate
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_cry_wormhole_sleeve",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				G.GAME.modifiers.cry_negative_rate = (G.GAME.modifiers.cry_negative_rate or 1)
+					* self.config.cry_negative_rate
 			end
 			-- Abandoned Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_abandoned", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_abandoned",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.starting_params.no_faces = true
 			end
 			-- Erratic Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_erratic", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				if (self.get_current_deck_key() == "b_erratic" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_erratic", "wins", 8) or 0) ~= 0)) then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_erratic",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				if
+					self.get_current_deck_key() == "b_erratic"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_erratic", "wins", 8)
+								or 0
+							)
+							~= 0
+					)
+				then
 					G.GAME.starting_params.dollars = G.GAME.starting_params.dollars + get_random()
 					G.GAME.starting_params.discards = G.GAME.starting_params.discards + get_random()
 					G.GAME.starting_params.hands = G.GAME.starting_params.hands + get_random()
@@ -826,39 +1137,165 @@ if CardSleeves then
 				end
 			end
 			-- Red Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_red", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_red",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.starting_params.discards = G.GAME.starting_params.discards + 1
 			end
 			-- Blue Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_blue", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_blue",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
 			end
 			-- Yellow Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_yellow", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				if not (self.get_current_deck_key() == "b_yellow" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_yellow", "wins", 8) or 0) ~= 0)) then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_yellow",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				if
+					not (
+						self.get_current_deck_key() == "b_yellow"
+						or (
+							self.get_current_deck_key() == "b_cry_antimatter"
+							and (
+									Cryptid.safe_get(
+										G.PROFILES,
+										G.SETTINGS.profile,
+										"deck_usage",
+										"b_yellow",
+										"wins",
+										8
+									) or 0
+								)
+								~= 0
+						)
+					)
+				then
 					G.GAME.starting_params.dollars = G.GAME.starting_params.dollars + 10
 				end
 			end
 			-- Green Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_green", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				if not (self.get_current_deck_key() == "b_green" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8) or 0) ~= 0)) then
-				G.GAME.modifiers.money_per_hand = (G.GAME.modifiers.money_per_hand or 0) + 2
-				G.GAME.modifiers.money_per_discard = (G.GAME.modifiers.money_per_discard or 0) + 1
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_green",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				if
+					not (
+						self.get_current_deck_key() == "b_green"
+						or (
+							self.get_current_deck_key() == "b_cry_antimatter"
+							and (
+									Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_green", "wins", 8)
+									or 0
+								)
+								~= 0
+						)
+					)
+				then
+					G.GAME.modifiers.money_per_hand = (G.GAME.modifiers.money_per_hand or 0) + 2
+					G.GAME.modifiers.money_per_discard = (G.GAME.modifiers.money_per_discard or 0) + 1
 				end
 			end
 			-- Black Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_black", "wins_by_key", "stake_gold") or 0) ~= 0 then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_black",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
 				G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 1
 			end
 			-- Ghost Sleeve, Special Spectral Rate
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_ghost", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				if (self.get_current_deck_key() == "b_ghost" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8) or 0) ~= 0)) then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_ghost",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				if
+					self.get_current_deck_key() == "b_ghost"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8) or 0
+							)
+							~= 0
+					)
+				then
 					G.GAME.spectral_rate = G.GAME.spectral_rate * 2
 				end
 			end
 			-- Painted Sleeve
-			if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_painted", "wins_by_key", "stake_gold") or 0) ~= 0 then
-				if (self.get_current_deck_key() == "b_painted" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_painted", "wins", 8) or 0) ~= 0)) then
+			if
+				(
+					Cryptid.safe_get(
+						G.PROFILES,
+						G.SETTINGS.profile,
+						"sleeve_usage",
+						"sleeve_casl_painted",
+						"wins_by_key",
+						"stake_gold"
+					) or 0
+				) ~= 0
+			then
+				if
+					self.get_current_deck_key() == "b_painted"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_painted", "wins", 8)
+								or 0
+							)
+							~= 0
+					)
+				then
 					if not G.GAME.modifiers.cry_highlight_limit then
 						G.GAME.modifiers.cry_highlight_limit = 5
 					end
@@ -867,13 +1304,24 @@ if CardSleeves then
 					G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + 2
 				end
 			end
-
 		end,
 		int = function(self)
-
 			function Cryptid.antimattersleeve_trigger_final_scoring(self, context, skip)
 				-- Critical Sleeve
-				if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_critical_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 or skip then
+				if
+					(
+							Cryptid.safe_get(
+								G.PROFILES,
+								G.SETTINGS.profile,
+								"sleeve_usage",
+								"sleeve_cry_critical_sleeve",
+								"wins_by_key",
+								"stake_gold"
+							) or 0
+						)
+						~= 0
+					or skip
+				then
 					if context.context == "final_scoring_step" then
 						local crit_poll = pseudorandom(pseudoseed("cry_critical"))
 						crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
@@ -900,7 +1348,23 @@ if CardSleeves then
 				end
 
 				-- Plasma Sleeve
-				if (self.get_current_deck_key() == "b_plasma" or self.get_current_deck_key() == "b_cry_antimatter") and ((Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_plasma", "wins_by_key", "stake_gold") or 0) ~= 0 or skip) then
+				if
+					(self.get_current_deck_key() == "b_plasma" or self.get_current_deck_key() == "b_cry_antimatter")
+					and (
+						(
+								Cryptid.safe_get(
+									G.PROFILES,
+									G.SETTINGS.profile,
+									"sleeve_usage",
+									"sleeve_casl_plasma",
+									"wins_by_key",
+									"stake_gold"
+								) or 0
+							)
+							~= 0
+						or skip
+					)
+				then
 					local tot = context.chips + context.mult
 					context.chips = math.floor(tot / 2)
 					context.mult = math.floor(tot / 2)
@@ -958,17 +1422,43 @@ if CardSleeves then
 				-- If Last Blind was a Boss
 				if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
 					-- Glowing Sleeve, Mult Values Effect
-					if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_glowing_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 or skip then
+					if
+						(
+								Cryptid.safe_get(
+									G.PROFILES,
+									G.SETTINGS.profile,
+									"sleeve_usage",
+									"sleeve_cry_glowing_sleeve",
+									"wins_by_key",
+									"stake_gold"
+								) or 0
+							)
+							~= 0
+						or skip
+					then
 						for i = 1, #G.jokers.cards do
 							Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
 								Cryptid.manipulate(card, { value = 1.25 })
 							end)
 						end
 					end
-					
+
 					-- Legendary Sleeve, Create New Card Effect
 					if G.jokers then
-						if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_legendary_sleeve", "wins_by_key", "stake_gold") or 0) ~= 0 or skip then
+						if
+							(
+									Cryptid.safe_get(
+										G.PROFILES,
+										G.SETTINGS.profile,
+										"sleeve_usage",
+										"sleeve_cry_legendary_sleeve",
+										"wins_by_key",
+										"stake_gold"
+									) or 0
+								)
+								~= 0
+							or skip
+						then
 							if #G.jokers.cards < G.jokers.config.card_limit then
 								local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
 								legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
@@ -979,16 +1469,52 @@ if CardSleeves then
 									G.jokers:emplace(card)
 									return true
 								else
-									card_eval_status_text(G.jokers, "jokers", nil, nil, nil, { message = localize("k_nope_ex"), colour = G.C.RARITY[4] })
+									card_eval_status_text(
+										G.jokers,
+										"jokers",
+										nil,
+										nil,
+										nil,
+										{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
+									)
 								end
 							else
-								card_eval_status_text(G.jokers, "jokers", nil, nil, nil, { message = localize("k_no_room_ex"), colour = G.C.RARITY[4] })
+								card_eval_status_text(
+									G.jokers,
+									"jokers",
+									nil,
+									nil,
+									nil,
+									{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
+								)
 							end
 						end
 					end
 
 					-- Anaglyph Sleeve, Normal
-					if ((Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_anaglyph", "wins_by_key", "stake_gold") or 0) ~= 0) and not (self.get_current_deck_key() == "b_anaglyph" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8) or 0) ~= 0)) or skip then
+					if
+						(
+								(
+									Cryptid.safe_get(
+										G.PROFILES,
+										G.SETTINGS.profile,
+										"sleeve_usage",
+										"sleeve_casl_anaglyph",
+										"wins_by_key",
+										"stake_gold"
+									) or 0
+								) ~= 0
+							)
+							and not (self.get_current_deck_key() == "b_anaglyph" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(
+								G.PROFILES,
+								G.SETTINGS.profile,
+								"deck_usage",
+								"b_anaglyph",
+								"wins",
+								8
+							) or 0) ~= 0))
+						or skip
+					then
 						G.E_MANAGER:add_event(Event({
 							func = function()
 								add_tag(Tag("tag_double"))
@@ -1002,7 +1528,18 @@ if CardSleeves then
 
 				-- Anaglyph Sleeve, Special
 				if context.context == "eval" and not Cryptid.safe_get(G.GAME, "last_blind", "boss") then
-					if self.get_current_deck_key() == "b_anaglyph" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8) or 0) ~= 0) or skip then
+					if
+						self.get_current_deck_key() == "b_anaglyph"
+						or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(
+							G.PROFILES,
+							G.SETTINGS.profile,
+							"deck_usage",
+							"b_anaglyph",
+							"wins",
+							8
+						) or 0) ~= 0)
+						or skip
+					then
 						G.E_MANAGER:add_event(Event({
 							func = function()
 								add_tag(Tag("tag_double"))
@@ -1072,33 +1609,112 @@ if CardSleeves then
 			end
 		end
 		-- Yellow Sleeve, Vouchers (Special)
-		if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_yellow", "wins_by_key", "stake_gold") or 0 ~= 0) or skip then
-			if self.get_current_deck_key() == "b_yellow" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_yellow", "wins", 8) or 0 ~= 0)) then 
+		if
+			(
+				Cryptid.safe_get(
+					G.PROFILES,
+					G.SETTINGS.profile,
+					"sleeve_usage",
+					"sleeve_casl_yellow",
+					"wins_by_key",
+					"stake_gold"
+				) or 0 ~= 0
+			) or skip
+		then
+			if
+				self.get_current_deck_key() == "b_yellow"
+				or (
+					self.get_current_deck_key() == "b_cry_antimatter"
+					and (
+						Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_yellow", "wins", 8)
+						or 0 ~= 0
+					)
+				)
+			then
 				Add_voucher_to_the_table(voucher_table, "v_seed_money")
 			end
 		end
 
 		-- Magic Sleeve, Vouchers
-		if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_magic", "wins_by_key", "stake_gold") or 0 ~= 0) or skip then
-			 if self.get_current_deck_key() == "b_magic" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8) or 0 ~= 0)) then
+		if
+			(
+				Cryptid.safe_get(
+					G.PROFILES,
+					G.SETTINGS.profile,
+					"sleeve_usage",
+					"sleeve_casl_magic",
+					"wins_by_key",
+					"stake_gold"
+				) or 0 ~= 0
+			) or skip
+		then
+			if
+				self.get_current_deck_key() == "b_magic"
+				or (
+					self.get_current_deck_key() == "b_cry_antimatter"
+					and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8) or 0 ~= 0)
+				)
+			then
 				Add_voucher_to_the_table(voucher_table, "v_omen_globe")
-			 else 
-				 Add_voucher_to_the_table(voucher_table, "v_crystal_ball")
-			 end
+			else
+				Add_voucher_to_the_table(voucher_table, "v_crystal_ball")
+			end
 		end
 
 		-- Nebula Sleeve, Vouchers
-		if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_nebula", "wins_by_key", "stake_gold") or 0 ~= 0) or skip then
-			if (self.get_current_deck_key() == "b_nebula" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8) or 0 ~= 0))) then
+		if
+			(
+				Cryptid.safe_get(
+					G.PROFILES,
+					G.SETTINGS.profile,
+					"sleeve_usage",
+					"sleeve_casl_nebula",
+					"wins_by_key",
+					"stake_gold"
+				) or 0 ~= 0
+			) or skip
+		then
+			if
+				self.get_current_deck_key() == "b_nebula"
+				or (
+					self.get_current_deck_key() == "b_cry_antimatter"
+					and (
+						Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_nebula", "wins", 8)
+						or 0 ~= 0
+					)
+				)
+			then
 				Add_voucher_to_the_table(voucher_table, "v_observatory")
-			 else
+			else
 				Add_voucher_to_the_table(voucher_table, "v_telescope")
 			end
 		end
 
 		-- Zodiac Sleeve, Vouchers
-		if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_zodiac", "wins_by_key", "stake_gold") or 0 ~= 0) or skip then
-			if not (self.get_current_deck_key() == "b_zodiac" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8) or 0 ~= 0))) then
+		if
+			(
+				Cryptid.safe_get(
+					G.PROFILES,
+					G.SETTINGS.profile,
+					"sleeve_usage",
+					"sleeve_casl_zodiac",
+					"wins_by_key",
+					"stake_gold"
+				) or 0 ~= 0
+			) or skip
+		then
+			if
+				not (
+					self.get_current_deck_key() == "b_zodiac"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+							Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_zodiac", "wins", 8)
+							or 0 ~= 0
+						)
+					)
+				)
+			then
 				Add_voucher_to_the_table(voucher_table, "v_tarot_merchant")
 				Add_voucher_to_the_table(voucher_table, "v_planet_merchant")
 				Add_voucher_to_the_table(voucher_table, "v_overstock_norm")
@@ -1106,8 +1722,28 @@ if CardSleeves then
 		end
 
 		-- Balanced Sleeve, Vouchers
-		if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_cry_equilibrium_sleeve", "wins_by_key", "stake_gold") or 0 ~= 0) or skip then
-			if self.get_current_deck_key() == "b_cry_equilibrium" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8) or 0 ~= 0)) then
+		if
+			(
+				Cryptid.safe_get(
+					G.PROFILES,
+					G.SETTINGS.profile,
+					"sleeve_usage",
+					"sleeve_cry_equilibrium_sleeve",
+					"wins_by_key",
+					"stake_gold"
+				) or 0 ~= 0
+			) or skip
+		then
+			if
+				self.get_current_deck_key() == "b_cry_equilibrium"
+				or (
+					self.get_current_deck_key() == "b_cry_antimatter"
+					and (
+						Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_equilibrium", "wins", 8)
+						or 0 ~= 0
+					)
+				)
+			then
 				-- I thought that overstock multi would be a good way to extend the theme of this deck, without letting the game add duplicate vouchers. ~ Slaaneshi Kitten
 				Add_voucher_to_the_table(voucher_table, "v_cry_overstock_multi")
 			else
@@ -1124,16 +1760,60 @@ if CardSleeves then
 		end
 
 		-- Magic Sleeve, Consumables
-		if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_magic", "wins_by_key", "stake_gold") or 0 ~= 0) or skip then
-			if not (self.get_current_deck_key() == "b_magic" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8) or 0 ~= 0))) then
+		if
+			(
+				Cryptid.safe_get(
+					G.PROFILES,
+					G.SETTINGS.profile,
+					"sleeve_usage",
+					"sleeve_casl_magic",
+					"wins_by_key",
+					"stake_gold"
+				) or 0 ~= 0
+			) or skip
+		then
+			if
+				not (
+					self.get_current_deck_key() == "b_magic"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+							Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_magic", "wins", 8)
+							or 0 ~= 0
+						)
+					)
+				)
+			then
 				table.insert(consumable_table, "c_fool")
 				table.insert(consumable_table, "c_fool")
 			end
 		end
 
 		-- Ghost Sleeve, Consumables
-		if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", "sleeve_casl_ghost", "wins_by_key", "stake_gold") or 0 ~= 0) or skip then
-			if not (self.get_current_deck_key() == "b_ghost" or (self.get_current_deck_key() == "b_cry_antimatter" and (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8) or 0 ~= 0))) then
+		if
+			(
+				Cryptid.safe_get(
+					G.PROFILES,
+					G.SETTINGS.profile,
+					"sleeve_usage",
+					"sleeve_casl_ghost",
+					"wins_by_key",
+					"stake_gold"
+				) or 0 ~= 0
+			) or skip
+		then
+			if
+				not (
+					self.get_current_deck_key() == "b_ghost"
+					or (
+						self.get_current_deck_key() == "b_cry_antimatter"
+						and (
+							Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_ghost", "wins", 8)
+							or 0 ~= 0
+						)
+					)
+				)
+			then
 				table.insert(consumable_table, "c_hex")
 			end
 		end
