@@ -2477,13 +2477,13 @@ local starfruit = {
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				e_mult = card.ability.emult,
+				e_chipsmult = card.ability.emult,
 			}
 		end
 		if context.reroll_shop then
 			card.ability.emult = card.ability.emult - card.ability.emult_mod
 			--floating point precision can kiss my ass istg
-			if card.ability.emult <= 1.00000001 then
+			if to_number(card.ability.emult) <= 1.00000001 then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("tarot1")
