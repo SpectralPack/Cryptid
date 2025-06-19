@@ -937,8 +937,8 @@ function Cryptid.forcetrigger(card, context)
 	elseif card.ability.consumeable and Cryptid.forcetriggerConsumableCheck(card) then
 		G.cry_force_use = true
 		if
-			(card.ability.consumeable.max_highlighted
-			or card.ability.name == "Aura") and not card.config.center.bulk_use
+			(card.ability.consumeable.max_highlighted or card.ability.name == "Aura")
+			and not card.config.center.bulk_use
 		then --Cards that require cards in hand to be selected
 			local _cards = {}
 			local targets = {}
@@ -946,10 +946,8 @@ function Cryptid.forcetrigger(card, context)
 			--Get all cards that we can target
 			for k, v in ipairs(G.hand.cards) do
 				if
-					not (
-						(card.ability.name == "Aura")
-						and (v.edition or v.will_be_editioned)
-					) and not v.will_be_destroyed
+					not ((card.ability.name == "Aura") and (v.edition or v.will_be_editioned))
+					and not v.will_be_destroyed
 				then
 					_cards[#_cards + 1] = v
 				end
@@ -1004,7 +1002,9 @@ function Cryptid.forcetrigger(card, context)
 			local ggpn = G.GAME.probabilities.normal
 			G.GAME.probabilities.normal = 1e9
 
-			if not card.config.center.force_use then card:use_consumeable() else
+			if not card.config.center.force_use then
+				card:use_consumeable()
+			else
 				card.config.center:force_use(card, card.area)
 			end
 
