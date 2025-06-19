@@ -3846,12 +3846,12 @@ local quantify = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	order = 425,
-	config = {extra = 1},
+	config = { extra = 1 },
 	loc_vars = function(self, queue, card)
 		return {
 			vars = {
-				card.ability.extra
-			}
+				card.ability.extra,
+			},
 		}
 	end,
 	can_use = function(self, card)
@@ -3934,7 +3934,10 @@ local quantify = {
 			local highlighted
 			local total = 0
 			for i, v in pairs(G.I.CARD) do
-				if v.highlighted and v ~= card then highlighted = v; total = total + 1 end
+				if v.highlighted and v ~= card then
+					highlighted = v
+					total = total + 1
+				end
 			end
 			return highlighted, total
 		end

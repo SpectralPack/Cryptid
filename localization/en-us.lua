@@ -675,8 +675,7 @@ return {
 				text = { -- "{C:cry_code}J{C:cry_exotic}o{C:legendary}k{C:cry_epic}e{C:cry_candy}r{C:rare}i{C:uncommon}z{C:common}e{C:dark_edition}!{} an object",
 					"Transfer {C:attention}#1#{} selected",
 					"{C:attention}Card#<s>1#{}, or {C:attention}Booster#<s>1#{}",
-					"to the {C:attention}Jokers{} tray"
-					
+					"to the {C:attention}Jokers{} tray",
 				},
 			},
 			c_cry_divide = {
