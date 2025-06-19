@@ -1476,16 +1476,18 @@ local rework = {
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
 			return card.ability.set == "Joker"
 		end)
-		return #cards == 1 and not cards[1].ability.eternal and cards[1].ability.name
-		~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
-			card
-		) == "madness"))
+		return #cards == 1
+			and not cards[1].ability.eternal
+			and cards[1].ability.name
+				~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
+					card
+				) == "madness"))
 	end,
 	use = function(self, card, area, copier)
-		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
 			return card.ability.set == "Joker"
 		end)
 		local jkr = cards[1]
@@ -1633,10 +1635,14 @@ local merge = {
 	cost = 4,
 	order = 407,
 	can_use = function(self, card)
-		local hand = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
-		local consumeables = Cryptid.get_highlighted_cards({G.consumeables}, card, 1, 1, function(card) return card.ability.consumeable end)
-		if #hand ~= 1 or #consumeables ~= 1 or
-			consumeables[1].ability.eternal
+		local hand = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
+		local consumeables = Cryptid.get_highlighted_cards({ G.consumeables }, card, 1, 1, function(card)
+			return card.ability.consumeable
+		end)
+		if
+			#hand ~= 1
+			or #consumeables ~= 1
+			or consumeables[1].ability.eternal
 			or consumeables[1].ability.set == "Unique"
 		then
 			return false
@@ -1644,8 +1650,10 @@ local merge = {
 		return true
 	end,
 	use = function(self, card, area, copier)
-		local hand = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
-		local consumeables = Cryptid.get_highlighted_cards({G.consumeables}, card, 1, 1, function(card) return card.ability.consumeable end)
+		local hand = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
+		local consumeables = Cryptid.get_highlighted_cards({ G.consumeables }, card, 1, 1, function(card)
+			return card.ability.consumeable
+		end)
 		if #hand == 1 and #consumeables == 1 then
 			G.E_MANAGER:add_event(Event({
 				trigger = "immediate",
@@ -1733,16 +1741,17 @@ local commit = {
 	cost = 4,
 	order = 408,
 	can_use = function(self, card)
-		local jokers = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card) return card.ability.set == "Joker" end)
+		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
+			return card.ability.set == "Joker"
+		end)
 		return #jokers == 1
 			and not jokers[1].ability.eternal
-			and not (
-				type(jokers[1].config.center.rarity) == "number"
-				and jokers[1].config.center.rarity >= 5
-			)
+			and not (type(jokers[1].config.center.rarity) == "number" and jokers[1].config.center.rarity >= 5)
 	end,
 	use = function(self, card, area, copier)
-		local jokers = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card) return card.ability.set == "Joker" end)
+		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
+			return card.ability.set == "Joker"
+		end)
 		local deleted_joker_key = jokers[1].config.center.key
 		local rarity = jokers[1].config.center.rarity
 		local legendary = nil
@@ -2140,7 +2149,7 @@ local seed = {
 	atlas = "atlasnotjokers",
 	order = 411,
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.jokers, G.hand, G.consumeables, G.pack_cards}, card, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers, G.hand, G.consumeables, G.pack_cards }, card, 1, 1)
 		--the card itself and one other card
 		return #cards == 1
 	end,
@@ -2148,7 +2157,7 @@ local seed = {
 		info_queue[#info_queue + 1] = { key = "cry_rigged", set = "Other", vars = {} }
 	end,
 	use = function(self, card, area, copier)
-		local cards = Cryptid.get_highlighted_cards({G.jokers, G.hand, G.consumeables, G.pack_cards}, card, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers, G.hand, G.consumeables, G.pack_cards }, card, 1, 1)
 		if cards[1] then
 			cards[1].ability.cry_rigged = true
 			if cards[1].config.center.key == "j_cry_googol_play" then
@@ -2395,14 +2404,14 @@ local hook = {
 	atlas = "atlasnotjokers",
 	order = 414,
 	can_use = function(self, card)
-		local jokers = Cryptid.get_highlighted_cards({G.jokers}, card, 2, 2)
+		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 2, 2)
 		return #jokers == 2
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
 	end,
 	use = function(self, card, area, copier)
-		local jokers = Cryptid.get_highlighted_cards({G.jokers}, card, 2, 2)
+		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 2, 2)
 		local card1 = jokers[1]
 		local card2 = jokers[2]
 		if card1 and card2 then
@@ -2583,7 +2592,7 @@ local assemble = {
 		if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then
 			aaa = -1
 		end
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, aaa+1, 999)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, aaa + 1, 999)
 		return (#cards > aaa and #G.jokers.cards > 1)
 	end,
 	use = function(self, card, area, copier)
@@ -2592,7 +2601,7 @@ local assemble = {
 		if G.PROFILES[G.SETTINGS.profile].cry_none then
 			num = -1
 		end
-		local hand = Cryptid.get_highlighted_cards({G.hand}, card, num+1, G.hand.config.highlighted_limit)
+		local hand = Cryptid.get_highlighted_cards({ G.hand }, card, num + 1, G.hand.config.highlighted_limit)
 		if #hand > num and not G.cry_force_use then
 			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(hand)]
 		else
@@ -2601,10 +2610,11 @@ local assemble = {
 				func = function()
 					local text = G.FUNCS.get_poker_hand_info(G.play.cards)
 					print(text)
-					upgrade_hand = G.GAME.hands[text] or (G.PROFILES[G.SETTINGS.profile].cry_none and G.GAME.hands["cry_None"])
+					upgrade_hand = G.GAME.hands[text]
+						or (G.PROFILES[G.SETTINGS.profile].cry_none and G.GAME.hands["cry_None"])
 					upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
 					return true
-				end
+				end,
 			}))
 		end
 		if upgrade_hand then
@@ -2665,12 +2675,12 @@ local inst = {
 		return {}
 	end,
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
 		return #cards == 1
 	end,
 	use = function(self, card, area, copier)
 		local same = 0
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
 		for i = 1, #G.deck.cards do
 			if G.deck.cards[i].base.value == cards[1].base.value then
 				same = i
@@ -2688,7 +2698,7 @@ local inst = {
 	bulk_use = function(self, card, area, copier, number)
 		for j = 1, number do
 			local same = 0
-			local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+			local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
 			for i = 1, #G.deck.cards do
 				if G.deck.cards[i].base.value == cards[1].base.value then
 					same = i
@@ -3244,7 +3254,7 @@ local class = {
 
 			if enh_suffix then
 				local TempCard = {}
-				local cards = Cryptid.get_highlighted_cards({G.hand}, {}, 1, G.CODE_MAX_HIGHLIGHT)
+				local cards = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, G.CODE_MAX_HIGHLIGHT)
 				for i = 1, #cards do
 					TempCard[i] = cards[i]
 				end
@@ -3402,7 +3412,6 @@ local class = {
 		G.ENTERED_ENH = pseudorandom_element(choices, pseudoseed("forceclass"))
 		G.FUNCS.class_cancel()
 		G.FUNCS.class_apply()
-		
 	end,
 }
 -- ://Global
@@ -3434,7 +3443,7 @@ local global = {
 	atlas = "atlasnotjokers",
 	order = 422,
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
 		return #cards == 1
 	end,
 	loc_vars = function(self, info_queue, card)
@@ -3444,7 +3453,7 @@ local global = {
 		if area then
 			area:remove_from_highlighted(card)
 		end
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
 		if cards[1] then
 			cards[1].ability.cry_global_sticker = true
 		end
@@ -3686,7 +3695,7 @@ local variable = {
 
 			if rank_suffix then
 				local TempCard = {}
-				local cards = Cryptid.get_highlighted_cards({G.hand}, {}, 1, G.CODE_MAX_HIGHLIGHT)
+				local cards = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, G.CODE_MAX_HIGHLIGHT)
 				for i = 1, #cards do
 					TempCard[i] = cards[i]
 				end
@@ -3820,7 +3829,9 @@ local variable = {
 					}))
 					delay(0.5)
 				end
-				if G.CHOOSE_RANK then G.CHOOSE_RANK:remove() end
+				if G.CHOOSE_RANK then
+					G.CHOOSE_RANK:remove()
+				end
 				G.CODE_MAX_HIGHLIGHT = nil
 			end
 		end
@@ -4013,11 +4024,15 @@ local multiply = {
 	pos = { x = 10, y = 2 },
 	cost = 4,
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card) return  not Card.no(card, "immutable", true) end)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
+			return not Card.no(card, "immutable", true)
+		end)
 		return #cards == 1
 	end,
 	use = function(self, card, area, copier)
-		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card) return  not Card.no(card, "immutable", true) end)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
+			return not Card.no(card, "immutable", true)
+		end)
 		if cards[1] and not cards[1].config.cry_multiply then
 			cards[1].config.cry_multiply = 1
 		end
@@ -4276,13 +4291,13 @@ local ctrl_v = {
 		return {}
 	end,
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.hand, G.consumeables, G.pack_cards}, card, 1, 1, function(card)
+		local cards = Cryptid.get_highlighted_cards({ G.hand, G.consumeables, G.pack_cards }, card, 1, 1, function(card)
 			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
 		end)
 		return #cards == 1
 	end,
 	use = function(self, card, area, copier)
-		local cards = Cryptid.get_highlighted_cards({G.hand, G.consumeables, G.pack_cards}, card, 1, 1, function(card)
+		local cards = Cryptid.get_highlighted_cards({ G.hand, G.consumeables, G.pack_cards }, card, 1, 1, function(card)
 			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
 		end)
 		if cards[1] then
@@ -4339,9 +4354,15 @@ local ctrl_v = {
 		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		local cards = Cryptid.get_highlighted_cards({G.hand, G.consumeables, G.pack_cards}, cards, 1, 1, function(card)
-			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
-		end)
+		local cards = Cryptid.get_highlighted_cards(
+			{ G.hand, G.consumeables, G.pack_cards },
+			cards,
+			1,
+			1,
+			function(card)
+				return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
+			end
+		)
 		for i = 1, number do
 			if cards[1] then
 				if cards[1].area == G.hand then
@@ -4381,7 +4402,7 @@ local ctrl_v = {
 							if Incantation then
 								card:setQty(1)
 							end
-	
+
 							-- Edit by IcyEthics: Needed to choose between not allowing copying playing cards or adding them to deck. Made it so they're added to deck.
 							if card.ability.set == "Default" or card.ability.set == "Enhanced" then
 								table.insert(G.playing_cards, card)
@@ -4614,11 +4635,11 @@ local source = {
 	atlas = "atlasnotjokers",
 	pos = { x = 2, y = 4 },
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.max_highlighted)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, card.ability.max_highlighted)
 		return #cards > 0 and #cards <= to_number(card.ability.max_highlighted)
 	end,
 	use = function(self, card, area, copier) --Good enough
-		local cards = Cryptid.get_highlighted_cards({G.hand}, {}, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, 1)
 		for i = 1, #cards do
 			local highlighted = cards[i]
 			G.E_MANAGER:add_event(Event({

@@ -639,14 +639,14 @@ local ritual = {
 	atlas = "atlasnotjokers",
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.max_highlighted, function(card)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, card.ability.max_highlighted, function(card)
 			return not card.edition
 		end)
 		return #cards > 0 and #cards <= card.ability.max_highlighted
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.max_highlighted, function(card)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, card.ability.max_highlighted, function(card)
 			return not card.edition
 		end)
 		for i = 1, #cards do
@@ -916,7 +916,7 @@ local conduit = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		local combinedTable = Cryptid.get_highlighted_cards({G.hand, G.jokers}, card, 2, 2)
+		local combinedTable = Cryptid.get_highlighted_cards({ G.hand, G.jokers }, card, 2, 2)
 		local highlighted_1 = combinedTable[1]
 		local highlighted_2 = combinedTable[2]
 		G.E_MANAGER:add_event(Event({
@@ -1177,7 +1177,7 @@ local typhoon = {
 	use = function(self, card, area, copier) --Good enough
 		local used_consumable = copier or card
 		check_for_unlock({ cry_used_consumable = "c_cry_typhoon" })
-		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.max_highlighted)
+		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, card.ability.max_highlighted)
 		for i = 1, #cards do
 			local highlighted = cards[i]
 			G.E_MANAGER:add_event(Event({
@@ -1230,7 +1230,7 @@ local meld = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({G.jokers, G.hand}, card, 1, 1, function(card)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers, G.hand }, card, 1, 1, function(card)
 			return not Card.no(card, "dbl") and not card.edition
 		end)
 		return #cards == 1
@@ -1251,7 +1251,7 @@ local meld = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
 	use = function(self, card, area, copier)
-		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1)
 		if #cards == 1 then
 			cards[1]:remove_from_deck(true)
 			cards[1]:set_edition({ cry_double_sided = true })
