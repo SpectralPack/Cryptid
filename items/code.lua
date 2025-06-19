@@ -304,6 +304,10 @@ local crash = {
 		local f = pseudorandom_element(crashes, pseudoseed("cry_crash"))
 		f(self, card, area, copier)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 	init = function(self)
 		function create_UIBox_crash(card)
 			G.E_MANAGER:add_event(Event({
@@ -943,6 +947,10 @@ local keygen = {
 			end,
 		}))
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://Payload
 -- Triple interest gained on next cash out, stacks exponentially (multiplicative on modest)
@@ -987,6 +995,10 @@ local payload = {
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult) ^ to_big(number)
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- ://Exploit
@@ -1370,6 +1382,10 @@ local malware = {
 			}))
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://NPERROR
 -- Add last played hand back to your hand, multi-use 2
@@ -1422,6 +1438,10 @@ local crynperror = {
 			end
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://Rework
 -- Destroy a selected joker, create a Rework Tag of that joker with an upgraded edition via collection
@@ -1456,24 +1476,19 @@ local rework = {
 		return { vars = {} }
 	end,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta then
-			return #G.jokers.highlighted == 1
-				and not G.jokers.highlighted[1].ability.eternal
-				and G.jokers.highlighted[1].ability.name
-					~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
-						card
-					) == "madness"))
-		else
-			return #G.jokers.highlighted == 2
-				and not G.jokers.highlighted[1].ability.eternal
-				and G.jokers.highlighted[1].ability.name
-					~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
-						card
-					) == "madness"))
-		end
+		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card)
+			return card.ability.set == "Joker"
+		end)
+		return #cards == 1 and not cards[1].ability.eternal and cards[1].ability.name
+		~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
+			card
+		) == "madness"))
 	end,
 	use = function(self, card, area, copier)
-		local jkr = G.jokers.highlighted[1]
+		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card)
+			return card.ability.set == "Joker"
+		end)
+		local jkr = cards[1]
 		local found_index = 1
 		if jkr.edition then
 			for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
@@ -1506,6 +1521,10 @@ local rework = {
 				return true
 			end,
 		}))
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- Rework Tag
@@ -1614,86 +1633,76 @@ local merge = {
 	cost = 4,
 	order = 407,
 	can_use = function(self, card)
-		if #G.hand.highlighted ~= 1 + (card.area == G.hand and 1 or 0) then
-			return false
-		end
-		if #G.consumeables.highlighted ~= 1 + (card.area == G.consumeables and 1 or 0) then
-			return false
-		end
-		local n = 1
-		if G.hand.highlighted[1] == card then
-			n = 2
-		end
-		if G.hand.highlighted[n].ability.consumeable then
-			return false
-		end
-		local m = 1
-		if G.consumeables.highlighted[1] == card then
-			m = 2
-		end
-		if
-			G.consumeables.highlighted[m].ability.eternal
-			or G.consumeables.highlighted[m].ability.set == "Unique"
-			or not G.consumeables.highlighted[m].ability.consumeable
+		local hand = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		local consumeables = Cryptid.get_highlighted_cards({G.consumeables}, card, 1, 1, function(card) return card.ability.consumeable end)
+		if #hand ~= 1 or #consumeables ~= 1 or
+			consumeables[1].ability.eternal
+			or consumeables[1].ability.set == "Unique"
 		then
 			return false
 		end
 		return true
 	end,
 	use = function(self, card, area, copier)
-		G.E_MANAGER:add_event(Event({
-			trigger = "immediate",
-			func = function()
-				G.cry_mergearea1 =
-					CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
-				G.cry_mergearea2 =
-					CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
-				area:remove_from_highlighted(card)
-				local key = G.consumeables.highlighted[1].config.center.key
-				local c = G.consumeables.highlighted[1]
-				local CARD = G.hand.highlighted[1]
-				card:start_dissolve()
-				play_sound("card1")
-				G.consumeables:remove_from_highlighted(c)
-				CARD.area = G.cry_mergearea1
-				c.area = G.cry_mergearea2
-				draw_card(G.hand, G.cry_mergearea1, 1, "up", true, CARD)
-				draw_card(G.consumeables, G.cry_mergearea2, 1, "up", true, c)
-				delay(0.2)
-				CARD:flip()
-				c:flip()
-				delay(0.2)
-				local percent = 0.85 + (1 - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.2,
-					func = function()
-						play_sound("timpani")
-						c:start_dissolve(nil, nil, 0)
-						CARD:flip()
-						CARD:set_ability(G.P_CENTERS[key], true, nil)
-						play_sound("tarot2", percent)
-						CARD:juice_up(0.3, 0.3)
-						return true
-					end,
-				}))
-				delay(0.5)
-				draw_card(G.cry_mergearea1, G.hand, 1, "up", true, CARD)
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.5,
-					func = function()
-						G.cry_mergearea2:remove_card(c)
-						G.cry_mergearea2:remove()
-						G.cry_mergearea1:remove()
-						G.cry_mergearea1 = nil
-						G.cry_mergearea2 = nil
-						return true
-					end,
-				}))
-				return true
-			end,
-		}))
+		local hand = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		local consumeables = Cryptid.get_highlighted_cards({G.consumeables}, card, 1, 1, function(card) return card.ability.consumeable end)
+		if #hand == 1 and #consumeables == 1 then
+			G.E_MANAGER:add_event(Event({
+				trigger = "immediate",
+				func = function()
+					G.cry_mergearea1 =
+						CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+					G.cry_mergearea2 =
+						CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+					local key = consumeables[1].config.center.key
+					local c = consumeables[1]
+					local CARD = hand[1]
+					play_sound("card1")
+					G.consumeables:remove_from_highlighted(c)
+					CARD.area = G.cry_mergearea1
+					c.area = G.cry_mergearea2
+					draw_card(G.hand, G.cry_mergearea1, 1, "up", true, CARD)
+					draw_card(G.consumeables, G.cry_mergearea2, 1, "up", true, c)
+					delay(0.2)
+					CARD:flip()
+					c:flip()
+					delay(0.2)
+					local percent = 0.85 + (1 - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.2,
+						func = function()
+							play_sound("timpani")
+							c:start_dissolve(nil, nil, 0)
+							CARD:flip()
+							CARD:set_ability(G.P_CENTERS[key], true, nil)
+							play_sound("tarot2", percent)
+							CARD:juice_up(0.3, 0.3)
+							return true
+						end,
+					}))
+					delay(0.5)
+					draw_card(G.cry_mergearea1, G.hand, 1, "up", true, CARD)
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.5,
+						func = function()
+							G.cry_mergearea2:remove_card(c)
+							G.cry_mergearea2:remove()
+							G.cry_mergearea1:remove()
+							G.cry_mergearea1 = nil
+							G.cry_mergearea2 = nil
+							return true
+						end,
+					}))
+					return true
+				end,
+			}))
+		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- ://Commit
@@ -1724,27 +1733,18 @@ local commit = {
 	cost = 4,
 	order = 408,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta or card.area == G.pack_cards then
-			return #G.jokers.highlighted == 1
-				and not G.jokers.highlighted[1].ability.eternal
-				and not (
-					type(G.jokers.highlighted[1].config.center.rarity) == "number"
-					and G.jokers.highlighted[1].config.center.rarity >= 5
-				)
-		else
-			return #G.jokers.highlighted == 2
-				and not G.jokers.highlighted[1].ability.eternal
-				and not (type(G.jokers.highlighted[1].config.center.rarity) == "number" and G.jokers.highlighted[1].config.center.rarity >= 5)
-				and not G.jokers.highlighted[2].ability.eternal
-				and not (
-					type(G.jokers.highlighted[2].config.center.rarity) == "number"
-					and G.jokers.highlighted[2].config.center.rarity >= 5
-				)
-		end
+		local jokers = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card) return card.ability.set == "Joker" end)
+		return #jokers == 1
+			and not jokers[1].ability.eternal
+			and not (
+				type(jokers[1].config.center.rarity) == "number"
+				and jokers[1].config.center.rarity >= 5
+			)
 	end,
 	use = function(self, card, area, copier)
-		local deleted_joker_key = G.jokers.highlighted[1].config.center.key
-		local rarity = G.jokers.highlighted[1].config.center.rarity
+		local jokers = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card) return card.ability.set == "Joker" end)
+		local deleted_joker_key = jokers[1].config.center.key
+		local rarity = jokers[1].config.center.rarity
 		local legendary = nil
 		--please someone add a rarity api to steamodded
 		if rarity == 1 then
@@ -1762,7 +1762,7 @@ local commit = {
 			trigger = "before",
 			delay = 0.75,
 			func = function()
-				G.jokers.highlighted[1]:start_dissolve(nil, _first_dissolve)
+				jokers[1]:start_dissolve(nil, _first_dissolve)
 				_first_dissolve = true
 				return true
 			end,
@@ -1782,6 +1782,10 @@ local commit = {
 				return true
 			end,
 		}))
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- ://MACHINECODE
@@ -1853,7 +1857,7 @@ local machinecode = {
 			local card = create_card("Consumeables", G.consumeables, nil, nil, nil, nil, k.key)
 			card:set_edition({ cry_glitched = true })
 			card:add_to_deck()
-			if Incantation then
+			if card.setQty then
 				card:setQty(v)
 			end
 			G.consumeables:emplace(card)
@@ -2055,6 +2059,10 @@ local machinecode = {
 			}
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://Spaghetti
 -- Creates a random Glitched food joker
@@ -2098,6 +2106,10 @@ local spaghetti = {
 		card:add_to_deck()
 		G.jokers:emplace(card)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://Seed
 -- Gives any card Rigged
@@ -2128,29 +2140,22 @@ local seed = {
 	atlas = "atlasnotjokers",
 	order = 411,
 	can_use = function(self, card)
+		local cards = Cryptid.get_highlighted_cards({G.jokers, G.hand, G.consumeables, G.pack_cards}, card, 1, 1)
 		--the card itself and one other card
-		return #G.jokers.highlighted
-				+ #G.hand.highlighted
-				+ (not G.GAME.modifiers.cry_beta and #G.consumeables.highlighted or 0)
-				+ (G.pack_cards and #G.pack_cards.highlighted or 0)
-			--+ (G.shop_cards and #G.shop_cards.highlighted or 0) TODO: this so you can use seed when it's in shop
-			== 2
+		return #cards == 1
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_rigged", set = "Other", vars = {} }
 	end,
 	use = function(self, card, area, copier)
-		if area then
-			area:remove_from_highlighted(card)
-		end
-		if G.jokers.highlighted[1] then
-			G.jokers.highlighted[1].ability.cry_rigged = true
-			if G.jokers.highlighted[1].config.center.key == "j_cry_googol_play" then
+		local cards = Cryptid.get_highlighted_cards({G.jokers, G.hand, G.consumeables, G.pack_cards}, card, 1, 1)
+		if cards[1] then
+			cards[1].ability.cry_rigged = true
+			if cards[1].config.center.key == "j_cry_googol_play" then
 				check_for_unlock({ type = "googol_play_rigged" })
 			end
 		end
-		if G.hand.highlighted[1] then
-			G.hand.highlighted[1].ability.cry_rigged = true
+		if cards[1].area == G.hand then
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
 				func = function()
@@ -2159,12 +2164,10 @@ local seed = {
 				end,
 			}))
 		end
-		if G.consumeables.highlighted[1] then
-			G.consumeables.highlighted[1].ability.cry_rigged = true
-		end
-		if Cryptid.safe_get(G, "pack_cards", "highlighted", 1) then
-			G.pack_cards.highlighted[1].ability.cry_rigged = true
-		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- Rigged sticker, guarantees listed odds (most of the time)
@@ -2316,6 +2319,10 @@ local patch = {
 			}))
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://Update, TBD, missing art
 local cryupdate = {
@@ -2388,27 +2395,16 @@ local hook = {
 	atlas = "atlasnotjokers",
 	order = 414,
 	can_use = function(self, card)
-		local count = 0
-		for _, v in ipairs(G.jokers.highlighted) do
-			if not v.ability.consumeable then
-				count = count + 1
-			end
-		end
-		return G.GAME.modifiers.cry_beta and count == 3 or count == 2
+		local jokers = Cryptid.get_highlighted_cards({G.jokers}, card, 2, 2)
+		return #jokers == 2
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
 	end,
 	use = function(self, card, area, copier)
-		local card1 = nil
-		local card2 = nil
-		for i = 1, #G.jokers.highlighted do
-			if not card1 and G.jokers.highlighted[i] ~= card and not G.jokers.highlighted[i].ability.consumeable then
-				card1 = G.jokers.highlighted[i]
-			elseif G.jokers.highlighted[i] ~= card and not G.jokers.highlighted[i].ability.consumeable then
-				card2 = G.jokers.highlighted[i]
-			end
-		end
+		local jokers = Cryptid.get_highlighted_cards({G.jokers}, card, 2, 2)
+		local card1 = jokers[1]
+		local card2 = jokers[2]
 		if card1 and card2 then
 			if card1.ability.cry_hooked then
 				for _, v in ipairs(G.jokers.cards) do
@@ -2446,6 +2442,10 @@ local hook = {
 			end
 			Cardstart_dissolveRef(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- Hooked Sticker
@@ -2546,6 +2546,10 @@ local oboe = {
 	bulk_use = function(self, card, area, copier, number)
 		G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + (card.ability.extra.choices * number)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://Assemble
 -- Add the number of jokers to selected hand's +mult
@@ -2579,11 +2583,8 @@ local assemble = {
 		if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then
 			aaa = -1
 		end
-		if not G.GAME.modifiers.cry_beta then
-			return (#G.hand.highlighted > aaa and #G.jokers.cards > 0)
-		else
-			return (#G.hand.highlighted > aaa and #G.jokers.cards > 1)
-		end
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, aaa+1, 999)
+		return (#cards > aaa and #G.jokers.cards > 1)
 	end,
 	use = function(self, card, area, copier)
 		local upgrade_hand
@@ -2591,10 +2592,20 @@ local assemble = {
 		if G.PROFILES[G.SETTINGS.profile].cry_none then
 			num = -1
 		end
-		if #G.hand.highlighted > num then
-			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
-		elseif #G.play.cards > num then
-			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
+		local hand = Cryptid.get_highlighted_cards({G.hand}, card, num+1, G.hand.config.highlighted_limit)
+		if #hand > num and not G.cry_force_use then
+			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(hand)]
+		else
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				func = function()
+					local text = G.FUNCS.get_poker_hand_info(G.play.cards)
+					print(text)
+					upgrade_hand = G.GAME.hands[text] or (G.PROFILES[G.SETTINGS.profile].cry_none and G.GAME.hands["cry_None"])
+					upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
+					return true
+				end
+			}))
 		end
 		if upgrade_hand then
 			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
@@ -2616,6 +2627,10 @@ local assemble = {
 			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards * number
 			G.hand:unhighlight_all()
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- ://Instantiate
@@ -2650,25 +2665,21 @@ local inst = {
 		return {}
 	end,
 	can_use = function(self, card)
-		local selected_cards = {}
-		for i = 1, #G.hand.highlighted do
-			if G.hand.highlighted[i] ~= card then
-				selected_cards[#selected_cards + 1] = G.hand.highlighted[i]
-			end
-		end
-		return #selected_cards == 1
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		return #cards == 1
 	end,
 	use = function(self, card, area, copier)
 		local same = 0
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
 		for i = 1, #G.deck.cards do
-			if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+			if G.deck.cards[i].base.value == cards[1].base.value then
 				same = i
 				draw_card(G.deck, G.hand, nil, nil, false, G.deck.cards[i])
 				break
 			end
 		end
 		for i = 1, #G.deck.cards do
-			if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit and i ~= same then
+			if G.deck.cards[i].base.suit == cards[1].base.suit and i ~= same then
 				draw_card(G.deck, G.hand, nil, nil, false, G.deck.cards[i])
 				break
 			end
@@ -2677,20 +2688,25 @@ local inst = {
 	bulk_use = function(self, card, area, copier, number)
 		for j = 1, number do
 			local same = 0
+			local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
 			for i = 1, #G.deck.cards do
-				if G.deck.cards[i].base.value == G.hand.highlighted[1].base.value then
+				if G.deck.cards[i].base.value == cards[1].base.value then
 					same = i
 					draw_card(G.deck, G.hand, nil, nil, false, G.deck.cards[i])
 					break
 				end
 			end
 			for i = 1, #G.deck.cards do
-				if G.deck.cards[i].base.suit == G.hand.highlighted[1].base.suit and i ~= same then
+				if G.deck.cards[i].base.suit == cards[1].base.suit and i ~= same then
 					draw_card(G.deck, G.hand, nil, nil, false, G.deck.cards[i])
 					break
 				end
 			end
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- ://Revert
@@ -2758,6 +2774,10 @@ local revert = {
 			end
 			sr()
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- Function://
@@ -2866,6 +2886,10 @@ local cryfunction = {
 				}))
 			end
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- Function:// Sticker
@@ -3039,6 +3063,10 @@ local run = {
 			return ret
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://Class
 -- Change a selected card's enhancement to one of your choosing (or nil)
@@ -3103,6 +3131,7 @@ local class = {
 				instance_type = "POPUP",
 			},
 		})
+		G.CODE_MAX_HIGHLIGHT = card.ability.max_highlighted
 		G.CHOOSE_ENH.alignment.offset.y = 0
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
 		G.CHOOSE_ENH:align_to_major()
@@ -3215,8 +3244,9 @@ local class = {
 
 			if enh_suffix then
 				local TempCard = {}
-				for i = 1, #G.hand.highlighted do
-					TempCard[i] = G.hand.highlighted[i]
+				local cards = Cryptid.get_highlighted_cards({G.hand}, {}, 1, G.CODE_MAX_HIGHLIGHT)
+				for i = 1, #cards do
+					TempCard[i] = cards[i]
 				end
 				G.PREVIOUS_ENTERED_ENH = G.ENTERED_ENH
 				G.GAME.USING_CODE = false
@@ -3339,14 +3369,40 @@ local class = {
 					end,
 				}))
 				delay(0.5)
-				G.CHOOSE_ENH:remove()
+				if G.CHOOSE_ENH then
+					G.CHOOSE_ENH:remove()
+				end
+				G.CODE_MAX_HIGHLIGHT = nil
 			end
 		end
 
 		G.FUNCS.class_cancel = function()
 			G.GAME.USING_CODE = false
-			G.CHOOSE_ENH:remove()
+			if G.CHOOSE_ENH then
+				G.CHOOSE_ENH:remove()
+			end
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		G.CODE_MAX_HIGHLIGHT = card.ability.max_highlighted
+		local choices = {
+			"bonus",
+			"mult",
+			"wild",
+			"glass",
+			"steel",
+			"stone",
+			"gold",
+			"lucky",
+			"echo",
+			"light",
+			"abstract",
+		}
+		G.ENTERED_ENH = pseudorandom_element(choices, pseudoseed("forceclass"))
+		G.FUNCS.class_cancel()
+		G.FUNCS.class_apply()
+		
 	end,
 }
 -- ://Global
@@ -3378,19 +3434,8 @@ local global = {
 	atlas = "atlasnotjokers",
 	order = 422,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta then
-			if #G.consumeables.highlighted == 0 then
-				return #G.hand.highlighted == 2
-			else
-				return (#G.hand.highlighted == 1 and #G.consumeables.highlighted == 1)
-			end
-		else
-			if #G.jokers.highlighted == 0 then
-				return #G.hand.highlighted == 2
-			else
-				return (#G.hand.highlighted == 1 and #G.jokers.highlighted == 1)
-			end
-		end
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		return #cards == 1
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_global_sticker", set = "Other", vars = {} }
@@ -3399,9 +3444,14 @@ local global = {
 		if area then
 			area:remove_from_highlighted(card)
 		end
-		if G.hand.highlighted[1] then
-			G.hand.highlighted[1].ability.cry_global_sticker = true
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, 1)
+		if cards[1] then
+			cards[1].ability.cry_global_sticker = true
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- Global sticker
@@ -3520,6 +3570,7 @@ local variable = {
 				instance_type = "POPUP",
 			},
 		})
+		G.CODE_MAX_HIGHLIGHT = card.ability.max_highlighted
 		G.CHOOSE_RANK.alignment.offset.y = 0
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
 		G.CHOOSE_RANK:align_to_major()
@@ -3635,8 +3686,9 @@ local variable = {
 
 			if rank_suffix then
 				local TempCard = {}
-				for i = 1, #G.hand.highlighted do
-					TempCard[i] = G.hand.highlighted[i]
+				local cards = Cryptid.get_highlighted_cards({G.hand}, {}, 1, G.CODE_MAX_HIGHLIGHT)
+				for i = 1, #cards do
+					TempCard[i] = cards[i]
 				end
 				G.PREVIOUS_ENTERED_RANK = G.ENTERED_RANK
 				G.GAME.USING_CODE = false
@@ -3768,14 +3820,25 @@ local variable = {
 					}))
 					delay(0.5)
 				end
-				G.CHOOSE_RANK:remove()
+				if G.CHOOSE_RANK then G.CHOOSE_RANK:remove() end
+				G.CODE_MAX_HIGHLIGHT = nil
 			end
 		end
 
 		G.FUNCS.variable_cancel = function()
-			G.CHOOSE_RANK:remove()
+			if G.CHOOSE_RANK then
+				G.CHOOSE_RANK:remove()
+			end
 			G.GAME.USING_CODE = false
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		G.CODE_MAX_HIGHLIGHT = card.ability.max_highlighted
+		local choices = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" }
+		G.ENTERED_RANK = pseudorandom_element(choices, pseudoseed("forceclass"))
+		G.FUNCS.variable_cancel()
+		G.FUNCS.variable_apply()
 	end,
 }
 -- ://Log
@@ -3950,22 +4013,16 @@ local multiply = {
 	pos = { x = 10, y = 2 },
 	cost = 4,
 	can_use = function(self, card)
-		if not G.GAME.modifiers.cry_beta or card.area == G.pack_cards then
-			return #G.jokers.highlighted == 1 and not Card.no(G.jokers.highlighted[1], "immutable", true)
-		else
-			return #G.jokers.highlighted == 2
-				and not (
-					Card.no(G.jokers.highlighted[1], "immutable", true)
-					or Card.no(G.jokers.highlighted[2], "immutable", true)
-				)
-		end
+		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card) return  not Card.no(card, "immutable", true) end)
+		return #cards == 1
 	end,
 	use = function(self, card, area, copier)
-		if not G.jokers.highlighted[1].config.cry_multiply then
-			G.jokers.highlighted[1].config.cry_multiply = 1
+		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1, function(card) return  not Card.no(card, "immutable", true) end)
+		if cards[1] and not cards[1].config.cry_multiply then
+			cards[1].config.cry_multiply = 1
 		end
-		G.jokers.highlighted[1].config.cry_multiply = G.jokers.highlighted[1].config.cry_multiply * 2
-		Cryptid.with_deck_effects(G.jokers.highlighted[1], function(card)
+		cards[1].config.cry_multiply = cards[1].config.cry_multiply * 2
+		Cryptid.with_deck_effects(cards[1], function(card)
 			Cryptid.manipulate(card, { value = 2 })
 		end)
 	end,
@@ -3984,6 +4041,10 @@ local multiply = {
 				end
 			end
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 
@@ -4177,6 +4238,10 @@ local alttab = {
 		}))
 		delay(1.1)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://Ctrl-V
 -- Creates a copy of a selected playing card or consumable
@@ -4211,131 +4276,130 @@ local ctrl_v = {
 		return {}
 	end,
 	can_use = function(self, card)
-		if G.pack_cards and G.pack_cards.highlighted then
-			for i = 1, #G.pack_cards.highlighted do
-				if
-					G.pack_cards.highlighted[i].ability
-					and (
-						G.pack_cards.highlighted[i].ability.consumeable
-						or G.pack_cards.highlighted[i].ability.set == "Default"
-						or G.pack_cards.highlighted[i].ability.set == "Enhanced"
-					)
-				then
-					-- nothing
-				else
-					return false
-				end
-			end
-		end
-
-		return #G.hand.highlighted + #G.consumeables.highlighted + (G.pack_cards and #G.pack_cards.highlighted or 0)
-			== 2
+		local cards = Cryptid.get_highlighted_cards({G.hand, G.consumeables, G.pack_cards}, card, 1, 1, function(card)
+			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
+		end)
+		return #cards == 1
 	end,
 	use = function(self, card, area, copier)
-		if area then
-			area:remove_from_highlighted(card)
-		end
-		if G.hand.highlighted[1] then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					local card = copy_card(G.hand.highlighted[1])
-					card:add_to_deck()
-					table.insert(G.playing_cards, card)
-					G.hand:emplace(card)
-					playing_card_joker_effects({ card })
-					return true
-				end,
-			}))
-		end
-		if G.consumeables.highlighted[1] then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					local card = copy_card(G.consumeables.highlighted[1])
-					if card.ability.name and card.ability.name == "cry-Chambered" then
-						card.ability.extra.num_copies = 1
-					end
-					card:add_to_deck()
-					if Incantation then
-						card:setQty(1)
-					end
-					G.consumeables:emplace(card)
-					return true
-				end,
-			}))
-		end
-		if G.pack_cards and G.pack_cards.highlighted[1] then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					local card = copy_card(G.pack_cards.highlighted[1])
-					if card.ability.name and card.ability.name == "cry-Chambered" then
-						card.ability.extra.num_copies = 1
-					end
-					card:add_to_deck()
-					if Incantation then
-						card:setQty(1)
-					end
-
-					-- Edit by IcyEthics: Needed to choose between not allowing copying playing cards or adding them to deck. Made it so they're added to deck.
-					if card.ability.set == "Default" or card.ability.set == "Enhanced" then
+		local cards = Cryptid.get_highlighted_cards({G.hand, G.consumeables, G.pack_cards}, card, 1, 1, function(card)
+			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
+		end)
+		if cards[1] then
+			if cards[1].area == G.hand then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(cards[1])
+						card:add_to_deck()
 						table.insert(G.playing_cards, card)
 						G.hand:emplace(card)
 						playing_card_joker_effects({ card })
-					else
+						return true
+					end,
+				}))
+			elseif cards[1].area == G.consumeables then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(cards[1])
+						if card.ability.name and card.ability.name == "cry-Chambered" then
+							card.ability.extra.num_copies = 1
+						end
+						card:add_to_deck()
+						if Incantation then
+							card:setQty(1)
+						end
 						G.consumeables:emplace(card)
-					end
-					return true
-				end,
-			}))
+						return true
+					end,
+				}))
+			elseif cards[1].area == G.pacl_cards then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local card = copy_card(cards[1])
+						if card.ability.name and card.ability.name == "cry-Chambered" then
+							card.ability.extra.num_copies = 1
+						end
+						card:add_to_deck()
+						if Incantation then
+							card:setQty(1)
+						end
+
+						-- Edit by IcyEthics: Needed to choose between not allowing copying playing cards or adding them to deck. Made it so they're added to deck.
+						if card.ability.set == "Default" or card.ability.set == "Enhanced" then
+							table.insert(G.playing_cards, card)
+							G.hand:emplace(card)
+							playing_card_joker_effects({ card })
+						else
+							G.consumeables:emplace(card)
+						end
+						return true
+					end,
+				}))
+			end
+		end
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local cards = Cryptid.get_highlighted_cards({G.hand, G.consumeables, G.pack_cards}, cards, 1, 1, function(card)
+			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
+		end)
+		for i = 1, number do
+			if cards[1] then
+				if cards[1].area == G.hand then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local card = copy_card(cards[1])
+							card:add_to_deck()
+							table.insert(G.playing_cards, card)
+							G.hand:emplace(card)
+							playing_card_joker_effects({ card })
+							return true
+						end,
+					}))
+				elseif cards[1].area == G.consumeables then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local card = copy_card(cards[1])
+							if card.ability.name and card.ability.name == "cry-Chambered" then
+								card.ability.extra.num_copies = 1
+							end
+							card:add_to_deck()
+							if Incantation then
+								card:setQty(1)
+							end
+							G.consumeables:emplace(card)
+							return true
+						end,
+					}))
+				elseif cards[1].area == G.pacl_cards then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local card = copy_card(cards[1])
+							if card.ability.name and card.ability.name == "cry-Chambered" then
+								card.ability.extra.num_copies = 1
+							end
+							card:add_to_deck()
+							if Incantation then
+								card:setQty(1)
+							end
+	
+							-- Edit by IcyEthics: Needed to choose between not allowing copying playing cards or adding them to deck. Made it so they're added to deck.
+							if card.ability.set == "Default" or card.ability.set == "Enhanced" then
+								table.insert(G.playing_cards, card)
+								G.hand:emplace(card)
+								playing_card_joker_effects({ card })
+							else
+								G.consumeables:emplace(card)
+							end
+							return true
+						end,
+					}))
+				end
+			end
 		end
 	end,
-	bulk_use = function(self, card, area, copier, number)
-		for i = 1, number do
-			if area then
-				area:remove_from_highlighted(card)
-			end
-			if G.hand.highlighted[1] then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local card = copy_card(G.hand.highlighted[1])
-						card:add_to_deck()
-						G.hand:emplace(card)
-						return true
-					end,
-				}))
-			end
-			if G.consumeables.highlighted[1] then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local card = copy_card(G.consumeables.highlighted[1])
-						if card.ability.name and card.ability.name == "cry-Chambered" then
-							card.ability.extra.num_copies = 1
-						end
-						card:add_to_deck()
-						if Incantation then
-							card:setQty(1)
-						end
-						G.consumeables:emplace(card)
-						return true
-					end,
-				}))
-			end
-			if G.pack_cards and G.pack_cards.highlighted[1] then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local card = copy_card(G.pack_cards.highlighted[1])
-						if card.ability.name and card.ability.name == "cry-Chambered" then
-							card.ability.extra.num_copies = 1
-						end
-						card:add_to_deck()
-						if Incantation then
-							card:setQty(1)
-						end
-						G.consumeables:emplace(card)
-						return true
-					end,
-				}))
-			end
-		end
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- ://Reboot
@@ -4392,6 +4456,10 @@ local reboot = {
 			end,
 		}))
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 -- ://;
 -- Ends the current non-boss blind, skips cash out
@@ -4442,6 +4510,10 @@ local semicolon = {
 			"other"
 		)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 
 -- Automaton (Tarot)
@@ -4478,12 +4550,13 @@ local automaton = {
 		return #G.consumeables.cards < G.consumeables.config.card_limit or card.area == G.consumeables
 	end,
 	use = function(self, card, area, copier)
+		local forceuse = G.cry_force_use
 		for i = 1, math.min(card.ability.consumeable.create, G.consumeables.config.card_limit - #G.consumeables.cards) do
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
 				delay = 0.4,
 				func = function()
-					if G.consumeables.config.card_limit > #G.consumeables.cards then
+					if G.consumeables.config.card_limit > #G.consumeables.cards or forceuse then
 						play_sound("timpani")
 						local _card = create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_automaton")
 						_card:add_to_deck()
@@ -4495,6 +4568,10 @@ local automaton = {
 			}))
 		end
 		delay(0.6)
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- Source (Spectral)
@@ -4536,9 +4613,14 @@ local source = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	pos = { x = 2, y = 4 },
+	can_use = function(self, card)
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.max_highlighted)
+		return #cards > 0 and #cards <= to_number(card.ability.max_highlighted)
+	end,
 	use = function(self, card, area, copier) --Good enough
-		for i = 1, #G.hand.highlighted do
-			local highlighted = G.hand.highlighted[i]
+		local cards = Cryptid.get_highlighted_cards({G.hand}, {}, 1, 1)
+		for i = 1, #cards do
+			local highlighted = cards[i]
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound("tarot1")
@@ -4566,6 +4648,10 @@ local source = {
 				end,
 			}))
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 -- Green Seal

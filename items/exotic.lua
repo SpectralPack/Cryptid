@@ -56,6 +56,10 @@ local gateway = {
 		}))
 		delay(0.6)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 local iterum = {
 	dependencies = {

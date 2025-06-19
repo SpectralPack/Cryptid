@@ -79,6 +79,10 @@ local eclipse = {
 
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 -- Light (Enhancement)
 -- When triggered with 5 other cards, gain 0.2 Xmult
@@ -168,6 +172,10 @@ local seraph = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_light
 
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
 	end,
 }
 -- Abstract (Enhancement)
@@ -300,6 +308,10 @@ local instability = {
 
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 
 -- Blessing
@@ -335,11 +347,12 @@ local blessing = {
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		local forceuse = G.cry_force_use
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
 			func = function()
-				if G.consumeables.config.card_limit > #G.consumeables.cards then
+				if G.consumeables.config.card_limit > #G.consumeables.cards or forceuse then
 					play_sound("timpani")
 					local forced_key = Cryptid.random_consumable("blessing", nil, "c_cry_blessing")
 					local _card = create_card(
@@ -360,6 +373,10 @@ local blessing = {
 			end,
 		}))
 		delay(0.6)
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 

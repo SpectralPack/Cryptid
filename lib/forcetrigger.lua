@@ -935,11 +935,10 @@ function Cryptid.forcetrigger(card, context)
 			end
 		end
 	elseif card.ability.consumeable and Cryptid.forcetriggerConsumableCheck(card) then
+		G.cry_force_use = true
 		if
-			card.ability.consumeable.max_highlighted
-			or card.ability.name == "Aura"
-			or card.ability.name == "cry-global"
-			or card.ability.name == "cry-Inst"
+			(card.ability.consumeable.max_highlighted
+			or card.ability.name == "Aura") and not card.config.center.original_mod
 		then --Cards that require cards in hand to be selected
 			local _cards = {}
 			local targets = {}
@@ -948,7 +947,7 @@ function Cryptid.forcetrigger(card, context)
 			for k, v in ipairs(G.hand.cards) do
 				if
 					not (
-						(card.ability.name == "Aura" or card.ability.name == "cry-Ritual")
+						(card.ability.name == "Aura")
 						and (v.edition or v.will_be_editioned)
 					) and not v.will_be_destroyed
 				then
@@ -962,7 +961,7 @@ function Cryptid.forcetrigger(card, context)
 				--Choose random targets for consumable
 				for i = 1, highlight_count do
 					local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
-					if card.ability.name == "Aura" or card.ability.name == "cry-Ritual" then
+					if card.ability.name == "Aura" then
 						selected_card.will_be_editioned = true
 					end
 					if card.ability.name == "The Hanged Man" then
@@ -989,31 +988,6 @@ function Cryptid.forcetrigger(card, context)
 
 				card:use_consumeable()
 
-				--Not sure how to do input correctly, so random is what you get.
-				if card.ability.name == "cry-Class" then
-					local choices = {
-						"bonus",
-						"mult",
-						"wild",
-						"glass",
-						"steel",
-						"stone",
-						"gold",
-						"lucky",
-						"echo",
-						"light",
-						"abstract",
-					}
-					G.ENTERED_ENH = pseudorandom_element(choices, pseudoseed("forceclass"))
-					G.FUNCS.class_cancel()
-					G.FUNCS.class_apply()
-				elseif card.ability.name == "cry-Variable" then
-					local choices = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" }
-					G.ENTERED_RANK = pseudorandom_element(choices, pseudoseed("forceclass"))
-					G.FUNCS.variable_cancel()
-					G.FUNCS.variable_apply()
-				end
-
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						G.hand:unhighlight_all()
@@ -1024,165 +998,19 @@ function Cryptid.forcetrigger(card, context)
 				--Unhighlight once events are created
 				G.hand:unhighlight_all()
 			end
-		elseif
-			card.ability.name == "cry-Commit"
-			or card.ability.name == "cry-Rework"
-			or card.ability.name == "cry-Multiply"
-		then --Cards that require Jokers to be selected
-			local _cards = {}
-
-			for k, v in ipairs(G.jokers.cards) do
-				if not v.will_be_destroyed then
-					_cards[#_cards + 1] = v
-				end
-			end
-
-			if #_cards > 0 then
-				local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
-				if card.ability.name == "cry-Commit" or card.ability.name == "cry-Rework" then
-					selected_card.will_be_destroyed = true
-				end
-				G.jokers:add_to_highlighted(selected_card, true)
-
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						G.jokers:add_to_highlighted(selected_card, true)
-						selected_card.will_be_destroyed = nil
-						play_sound("card1", 1)
-						return true
-					end,
-				}))
-
-				card:use_consumeable()
-
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						G.jokers:unhighlight_all()
-						return true
-					end,
-				}))
-
-				G.jokers:unhighlight_all()
-			end
-		elseif card.ability.name == "cry-conduit" or card.ability.name == "cry-Seed" then --Cards that work with both playing cards and jokers
-			local _cards = {}
-			local targets = {}
-
-			for k, v in ipairs(G.hand.cards) do
-				if not v.will_be_destroyed then
-					_cards[#_cards + 1] = v
-				end
-			end
-			for k, v in ipairs(G.jokers.cards) do
-				if not v.will_be_destroyed and v ~= card then
-					_cards[#_cards + 1] = v
-				end
-			end
-
-			local highlight_count = to_number(math.min(#_cards, card.ability.name == "cry-conduit" and 2 or 1))
-
-			if #_cards >= highlight_count then
-				for i = 1, highlight_count do
-					local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
-					targets[#targets + 1] = table.remove(_cards, card_key)
-
-					if selected_card.area == G.hand then
-						G.hand:add_to_highlighted(selected_card, true)
-					else
-						G.jokers:add_to_highlighted(selected_card, true)
-					end
-				end
-
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						for _, v in ipairs(targets) do
-							if v.area == G.hand then
-								G.hand:add_to_highlighted(v, true)
-							else
-								G.jokers:add_to_highlighted(v, true)
-							end
-							play_sound("card1", 1)
-						end
-						return true
-					end,
-				}))
-
-				card:use_consumeable()
-
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						G.hand:unhighlight_all()
-						G.jokers:unhighlight_all()
-						return true
-					end,
-				}))
-
-				G.hand:unhighlight_all()
-				G.jokers:unhighlight_all()
-			end
-		elseif card.ability.name == "cry-Merge" then --I banned this card from being forcetriggered after I wrote this code, but it seems a waste to delete it.
-			local _cards = {}
-			local _cards2 = {}
-
-			for k, v in ipairs(G.hand.cards) do
-				if not v.ability.consumeable and not v.will_be_destroyed and not v.will_be_merged then
-					_cards[#_cards + 1] = v
-				end
-			end
-			for k, v in ipairs(G.consumeables.cards) do
-				if
-					v.ability.consumeable
-					and not v.ability.eternal
-					and v.ability.set ~= "Unique"
-					and not v.will_be_destroyed
-					and v ~= card
-				then
-					_cards2[#_cards2 + 1] = v
-				end
-			end
-
-			if #_cards > 0 and #_cards2 > 0 then
-				local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("forcehighlight"))
-				selected_card.will_be_merged = true
-				G.hand:add_to_highlighted(selected_card, true)
-
-				local selected_consum, consum_key = pseudorandom_element(_cards2, pseudoseed("forcehighlight"))
-				selected_consum.will_be_destroyed = true
-				G.consumeables:add_to_highlighted(selected_card, true)
-
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						G.hand:add_to_highlighted(selected_card, true)
-						selected_card.will_be_merged = nil
-						G.consumeables:add_to_highlighted(selected_consum, true)
-						selected_card.will_be_destroyed = nil
-						return true
-					end,
-				}))
-
-				card:use_consumeable()
-
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						G.hand:unhighlight_all()
-						G.consumeables:unhighlight_all()
-						return true
-					end,
-				}))
-
-				G.hand:unhighlight_all()
-				G.consumeables:unhighlight_all()
-			end
 		else
 			-- Copy rigged code to guarantee WoF and Planet.lua
 
 			local ggpn = G.GAME.probabilities.normal
 			G.GAME.probabilities.normal = 1e9
 
-			card:use_consumeable()
+			if not card.config.center.force_use then card:use_consumeable() else
+				card.config.center:force_use(card, card.area)
+			end
 
 			G.GAME.probabilities.normal = ggpn
 		end
+		G.cry_force_use = nil
 	end
 	return results
 end
@@ -1358,7 +1186,7 @@ function Cryptid.forcetriggerConsumableCheck(card)
 	end
 	local banned = {
 		"cry-Exploit",
-		"cry-Merge",
+		--"cry-Merge",
 		"cry-Divide",
 		"cry-Delete",
 		"cry-Pointer",
@@ -1368,5 +1196,5 @@ function Cryptid.forcetriggerConsumableCheck(card)
 			return false
 		end
 	end
-	return true
+	return (card.config.center.force_use and card.config.center.demicoloncompat) or not card.config.center.original_mod
 end

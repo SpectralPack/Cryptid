@@ -117,10 +117,14 @@ local lock = {
 			func = function()
 				play_sound("card1", 1.1)
 				target:flip()
-				target:set_eternal(true)
+				target.ability.eternal = true
 				return true
 			end,
 		}))
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 local vacuum = {
@@ -210,6 +214,10 @@ local vacuum = {
 		end
 		ease_dollars(earnings * card.ability.extra)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 local hammerspace = {
 	cry_credits = {
@@ -281,6 +289,10 @@ local hammerspace = {
 				end,
 			}))
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 local trade = {
@@ -419,6 +431,10 @@ local trade = {
 			}))
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 local replica = {
 	cry_credits = {
@@ -500,6 +516,10 @@ local replica = {
 		end
 		delay(0.5)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 local analog = {
 	cry_credits = {
@@ -577,6 +597,10 @@ local analog = {
 		end
 		ease_ante(math.min(card.ability.ante, card.ability.immutable.max_ante))
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 local ritual = {
 	cry_credits = {
@@ -615,35 +639,18 @@ local ritual = {
 	atlas = "atlasnotjokers",
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
-		if card.area ~= G.hand then
-			local check = true
-			if #G.hand.highlighted > card.ability.max_highlighted then
-				check = nil
-			end
-			if #G.hand.highlighted < 1 then
-				check = nil
-			end
-			for index, card in ipairs(G.hand.highlighted) do
-				if G.hand.highlighted[index].edition then
-					check = nil
-				end
-			end
-			return G.hand and (#G.hand.highlighted <= card.ability.max_highlighted) and check
-		else
-			local idx = 1
-			local check = true
-			for index, card in ipairs(G.hand.highlighted) do
-				if G.hand.highlighted[index].edition and not G.hand.highlighted[index] == card then
-					check = nil
-				end
-			end
-			return G.hand and (#G.hand.highlighted <= (card.ability.max_highlighted + 1)) and check
-		end
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.max_highlighted, function(card)
+			return not card.edition
+		end)
+		return #cards > 0 and #cards <= card.ability.max_highlighted
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		for i = 1, #G.hand.highlighted do
-			local highlighted = G.hand.highlighted[i]
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.max_highlighted, function(card)
+			return not card.edition
+		end)
+		for i = 1, #cards do
+			local highlighted = cards[i]
 			if highlighted ~= card then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -682,6 +689,10 @@ local ritual = {
 				}))
 			end
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 local adversary = {
@@ -777,6 +788,10 @@ local adversary = {
 			end,
 		}))
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 local chambered = {
 	cry_credits = {
@@ -846,6 +861,10 @@ local chambered = {
 			)
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 local conduit = {
 	cry_credits = {
@@ -897,19 +916,7 @@ local conduit = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		local combinedTable = {}
-
-		for _, value in ipairs(G.hand.highlighted) do
-			if value ~= card then
-				table.insert(combinedTable, value)
-			end
-		end
-
-		for _, value in ipairs(G.jokers.highlighted) do
-			if value ~= card then
-				table.insert(combinedTable, value)
-			end
-		end
+		local combinedTable = Cryptid.get_highlighted_cards({G.hand, G.jokers}, card, 2, 2)
 		local highlighted_1 = combinedTable[1]
 		local highlighted_2 = combinedTable[2]
 		G.E_MANAGER:add_event(Event({
@@ -997,6 +1004,10 @@ local conduit = {
 				return true
 			end,
 		}))
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 
@@ -1118,6 +1129,10 @@ local white_hole = {
 			{ mult = 0, chips = 0, handname = "", level = "" }
 		)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 
 local typhoon = {
@@ -1162,8 +1177,9 @@ local typhoon = {
 	use = function(self, card, area, copier) --Good enough
 		local used_consumable = copier or card
 		check_for_unlock({ cry_used_consumable = "c_cry_typhoon" })
-		for i = 1, #G.hand.highlighted do
-			local highlighted = G.hand.highlighted[i]
+		local cards = Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.max_highlighted)
+		for i = 1, #cards do
+			local highlighted = cards[i]
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound("tarot1")
@@ -1192,6 +1208,10 @@ local typhoon = {
 			}))
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 
 local meld = {
@@ -1207,27 +1227,13 @@ local meld = {
 	key = "meld",
 	order = 9,
 	pos = { x = 4, y = 4 },
-	config = { extra = 4 },
 	cost = 4,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		if
-			#G.jokers.highlighted
-				+ #G.hand.highlighted
-				- (G.hand.highlighted[1] and G.hand.highlighted[1] == self and 1 or 0)
-			== 1
-		then
-			if
-				#G.jokers.highlighted == 1
-				and (Card.no(G.jokers.highlighted[1], "dbl") or G.jokers.highlighted[1].edition)
-			then
-				return false
-			end
-			if #G.hand.highlighted == 1 and G.hand.highlighted[1].edition then
-				return false
-			end
-			return true
-		end
+		local cards = Cryptid.get_highlighted_cards({G.jokers, G.hand}, card, 1, 1, function(card)
+			return not Card.no(card, "dbl") and not card.edition
+		end)
+		return #cards == 1
 	end,
 	cry_credits = {
 		art = {
@@ -1245,18 +1251,23 @@ local meld = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
 	use = function(self, card, area, copier)
-		if #G.jokers.highlighted == 1 then
-			G.jokers.highlighted[1]:remove_from_deck(true)
-			G.jokers.highlighted[1]:set_edition({ cry_double_sided = true })
-			G.jokers.highlighted[1]:add_to_deck(true)
-			G.jokers:remove_from_highlighted(G.jokers.highlighted[1])
+		local cards = Cryptid.get_highlighted_cards({G.jokers}, card, 1, 1)
+		if #cards == 1 then
+			cards[1]:remove_from_deck(true)
+			cards[1]:set_edition({ cry_double_sided = true })
+			cards[1]:add_to_deck(true)
+			G.jokers:remove_from_highlighted(cards[1])
 		else
-			G.hand.highlighted[1]:set_edition({ cry_double_sided = true })
-			G.hand:remove_from_highlighted(G.hand.highlighted[1])
+			cards[1]:set_edition({ cry_double_sided = true })
+			G.hand:remove_from_highlighted(cards[1])
 		end
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_double_slit
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 
@@ -1337,6 +1348,10 @@ local summoning = {
 			end,
 		}))
 		delay(0.6)
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
 	end,
 }
 

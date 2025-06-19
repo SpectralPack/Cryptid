@@ -46,6 +46,10 @@ local abelt = {
 		}
 	end,
 	generate_ui = 0,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 -- Void
 -- Upgrades Clusterfuck (+40/+4)
@@ -95,6 +99,10 @@ local void = {
 		}
 	end,
 	generate_ui = 0,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 -- Phobos & Deimos
 -- Upgrades Ultimate Pair (+40/+4)
@@ -149,6 +157,10 @@ local marsmoons = {
 		}
 	end,
 	generate_ui = 0,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 
 -- Order 4 reserved for possible None planet
@@ -207,6 +219,14 @@ local nibiru = {
 		}
 	end,
 	generate_ui = 0,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
+	cry_credits = {
+		art = { "cassknows" },
+		code = { "lord-ruby" },
+	},
 }
 
 -- The Universe In Its Fucking Entirety
@@ -257,10 +277,10 @@ local universe = {
 		}
 	end,
 	generate_ui = 0,
-	cry_credits = {
-		art = { "cassknows" },
-		code = { "lord-ruby" },
-	},
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 
 -- Planet.lua
@@ -572,6 +592,10 @@ local planetlua = {
 			}
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 -- Neutron Star
 -- Upgrades a random hand by 1 per Neutron Star used this run
@@ -712,6 +736,10 @@ local nstar = {
 			end
 			return chosen_hand
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
 	end,
 }
 
@@ -878,6 +906,10 @@ local sunplanet = {
 		end
 		return false
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 -- Ruutu
 -- Upgrades High Card, Pair and Two Pair
@@ -962,6 +994,10 @@ local ruutu = {
 				Xmult_mod = value,
 			}
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
 	end,
 }
 -- Risti
@@ -1048,6 +1084,10 @@ local risti = {
 			}
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 -- Hertta
 -- Upgrades Full House, Four Of A Kind and Straight Flush
@@ -1133,6 +1173,10 @@ local hertta = {
 			}
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
 }
 -- Pata
 -- Upgrades Five Of A Kind, Flush House and Flush Five
@@ -1217,6 +1261,10 @@ local pata = {
 				Xmult_mod = value,
 			}
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
 	end,
 }
 -- Kaikki
@@ -1310,6 +1358,10 @@ local kaikki = {
 				Xmult_mod = value,
 			}
 		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
 	end,
 }
 -- order 166 reserved for suit planet of TEFD, None and Sol
