@@ -955,6 +955,25 @@ return {
 					"wenn sie gewertet wird",
 				},
 			},
+			m_cry_light = {
+				name = "Lichtkarte",
+				text = {
+					"Wenn mit {C:attention}#4#{} {C:inactive}(#3#){} anderen",
+					"Spielkarten ausgelöst, erhalte {X:mult,C:white}X#1#{} Mult und",
+					"erhöhe Bedingung um {C:attention}5{}",
+					"{C:inactive}(Aktuell {X:mult,C:white}X#2#{C:inactive} Mult)",
+				},
+			},
+			m_cry_abstract = {
+				name = "Abstrakte Karte",
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Mult,",
+					"Counts as its {C:attention}own{} rank and suit",
+					"{C:green}#4# in #5#{} chance to",
+					"{C:red,E:2}destroy{} card when held at",
+					"{C:attention}round end{} or {C:attention}hand played{}",
+				},
+			},
 		},
 		Joker = {
 			j_cry_adroit = {
