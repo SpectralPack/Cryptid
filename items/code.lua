@@ -4051,37 +4051,25 @@ local delete = {
 		if not G.GAME.cry_banned_pcards then
 			G.GAME.cry_banned_pcards = {}
 		end
-		local a = nil
-		local c = nil
-		local _p = nil
-		if G.shop_jokers.highlighted[1] then
-			_p = not not G.shop_jokers.highlighted[1].base.value
-			a = G.shop_jokers
-			c = G.shop_jokers.highlighted[1]
-		end
-		if G.shop_booster.highlighted[1] then
-			_p = not not G.shop_booster.highlighted[1].base.value
-			a = G.shop_booster
-			c = G.shop_booster.highlighted[1]
-		end
-		if G.shop_vouchers.highlighted[1] then
-			_p = not not G.shop_vouchers.highlighted[1].base.value
-			a = G.shop_vouchers
-			c = G.shop_vouchers.highlighted[1]
-			if c.shop_voucher then
-				G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
-				G.GAME.current_round.cry_voucher_edition = nil
-				G.GAME.current_round.cry_voucher_stickers =
-					{ eternal = false, perishable = false, rental = false, pinned = false, banana = false }
-			end
-		end
+
+		local c = G.shop_jokers.highlighted[1]
+      		or G.shop_booster.highlighted[1]
+  		or G.shop_vouchers.highlighted[1]
+
+	        if G.shop_vouchers.highlighted[1] and c.shop_voucher then
+	          G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
+	          G.GAME.current_round.cry_voucher_edition = nil
+	      	  G.GAME.current_round.cry_voucher_stickers =
+	          { eternal = false, perishable = false, rental = false, pinned = false, banana = false }
+	        end
+
 		if c.config.center.rarity == "cry_exotic" then
 			check_for_unlock({ type = "what_have_you_done" })
 		end
 
 		G.GAME.cry_banished_keys[c.config.center.key] = true
 
-		if _p then
+		if not not c.base.value then -- is there a case where ~= nil would fail here?
 			for k, v in pairs(G.P_CARDS) do
 				-- bans a specific rank AND suit
 				if v.value == c.base.value and v.suit == c.base.suit then
