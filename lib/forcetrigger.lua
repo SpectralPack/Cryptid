@@ -938,7 +938,7 @@ function Cryptid.forcetrigger(card, context)
 		G.cry_force_use = true
 		if
 			(card.ability.consumeable.max_highlighted or card.ability.name == "Aura")
-			and not card.config.center.bulk_use
+			and not card.config.center.force_use
 		then --Cards that require cards in hand to be selected
 			local _cards = {}
 			local targets = {}
