@@ -2477,7 +2477,7 @@ local starfruit = {
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				Emult = card.ability.emult,
+				e_mult = card.ability.emult,
 			}
 		end
 		if context.reroll_shop then
