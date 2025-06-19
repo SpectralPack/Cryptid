@@ -671,3 +671,17 @@ pattern = """limit = limit - 1 + (not card.debuff and card.edition and card.edit
 position = "at"
 payload = """limit = limit - 1 + (card.edition and card.edition.card_limit or 0)"""
 match_indent = true
+
+
+#This fixes a double-sided green seal cards crashing the game while trying to open "View deck" while flipped inside the random deck selection in a booster pack
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "for k, v in pairs(other.ability.seal or {}) do"
+position = "at"
+payload = '''
+local safe_seal = type(other.ability.seal) == "table" and other.ability.seal or {}
+for k, v in pairs(safe_seal) do
+'''
+match_indent = true
+
