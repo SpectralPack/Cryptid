@@ -80,9 +80,6 @@ local eclipse = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	demicoloncompat = true,
-	force_use = function(self, card, area)
-		card:use_consumeable(area)
-	end,
 }
 -- Light (Enhancement)
 -- When triggered with 5 other cards, gain 0.2 Xmult
@@ -174,9 +171,6 @@ local seraph = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	demicoloncompat = true,
-	force_use = function(self, card, area)
-		card:use_consumeable(area)
-	end,
 }
 -- Abstract (Enhancement)
 -- Has its own rank/suit
@@ -309,9 +303,6 @@ local instability = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	demicoloncompat = true,
-	force_use = function(self, card, area)
-		card:use_consumeable(area)
-	end,
 }
 
 -- Blessing

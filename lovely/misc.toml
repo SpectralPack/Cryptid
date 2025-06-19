@@ -684,21 +684,3 @@ local safe_seal = type(other.ability.seal) == "table" and other.ability.seal or 
 for k, v in pairs(safe_seal) do
 '''
 match_indent = true
-
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = '''
-    for i=1, #G.hand.highlighted do
-        G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() G.hand.highlighted[i]:set_ability(G.P_CENTERS[self.ability.consumeable.mod_conv]);return true end }))
-    end 
-'''
-position = "at"
-payload = '''
-	local cards = Cryptid.get_highlighted_cards({G.hand}, self, 1, self.ability.max_highlighted)
-    for i=1, #cards do
-        G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.1,func = function() cards[i]:set_ability(G.P_CENTERS[self.ability.consumeable.mod_conv]);return true end }))
-    end 
-'''
-match_indent = true

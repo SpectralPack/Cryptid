@@ -2609,7 +2609,6 @@ local assemble = {
 				trigger = "after",
 				func = function()
 					local text = G.FUNCS.get_poker_hand_info(G.play.cards)
-					print(text)
 					upgrade_hand = G.GAME.hands[text]
 						or (G.PROFILES[G.SETTINGS.profile].cry_none and G.GAME.hands["cry_None"])
 					upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards

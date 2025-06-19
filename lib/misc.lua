@@ -969,7 +969,7 @@ function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)
 		for i, v in pairs(cards) do
 			v.f_use_order = i
 		end
-		pseudoshuffle(cards, pseudoseed("forccehighlight" or seed))
+		pseudoshuffle(cards, pseudoseed("forcehighlight" or seed))
 		local actual = {}
 		for i = 1, max do
 			if cards[i] and not cards[i].checked and actual ~= ignore then
