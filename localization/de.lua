@@ -1,4 +1,5 @@
 --Translation by Foegro
+--Proofreading and Additions by Avery (@onichama)
 return {
 	descriptions = {
 		Back = {
@@ -968,14 +969,42 @@ return {
 				name = "Abstrakte Karte",
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult,",
-					"Counts as its {C:attention}own{} rank and suit",
-					"{C:green}#4# in #5#{} chance to",
-					"{C:red,E:2}destroy{} card when held at",
-					"{C:attention}round end{} or {C:attention}hand played{}",
+					"Zählt als {C:attention}eigener{} Rank und Farbe",
+					"Chance von {C:green}#4# in #5#{}, Karte zu",
+					"{C:red,E:2}zerstören{} wenn in der Hand",
+					"am {C:attention}Ende der Runde{} oder",
+					"wenn {C:attention}Hand gespielt{} wird",
 				},
 			},
 		},
 		Joker = {
+			j_cry_test_modest = {
+				name = "Test Joker",
+				text = {
+					"{C:chips}+#1#{} Chip#<s>1#",
+				},
+			},
+			j_cry_test_mainline = {
+				name = "Test Joker",
+				text = {
+					"{C:chips}+#1#{} Chip#<s>1#",
+					"{C:money}+$44{} am Anfang des {C:attention}Blinds{}",
+				},
+			},
+			j_cry_test_madness = {
+				name = "Test Joker",
+				text = {
+					"{C:chips}+#1#{} Chip#<s>1#",
+					"{C:money}+$44444{} am Anfang des {C:attention}Blinds{}",
+				},
+			},
+			j_cry_test_cryptid_in_2025 = {
+				name = "Test Joker",
+				text = {
+					"{C:chips}+#1#{} Chip#<s>1#",
+					"{C:money}+$44444{} am Anfang des {C:attention}Blinds{}",
+				},
+			},
 			j_cry_adroit = {
 				name = "Geschickter Joker",
 				text = {
@@ -988,8 +1017,9 @@ return {
 				name = "Nostalgische Googol Play Karte",
 				text = {
 					"Verkaufe diese Karte um",
-					"{C:attention}2{} Kopien von dem linkesten {C:attention}Joker{} zu machen",
+					"{C:attention}#1#{} Kopie#<n>1# von dem linkesten {C:attention}Joker{} zu machen",
 					"{C:inactive,s:0.8}Kopiert keine Nostalgischen Googol Play Karten{}",
+					"{C:inactive}(Muss Platz haben){}",
 				},
 			},
 			j_cry_altgoogol_balanced = {
@@ -1014,6 +1044,38 @@ return {
 			j_cry_apjoker = {
 				name = "AP Joker",
 				text = { "{X:mult,C:white} X#1# {} Mult gegen {C:attention}Boss Blinds{}" },
+			},
+			j_cry_arsonist = {
+				name = "Brandstifter",
+				text = {
+					"Wenn gespielte Hand",
+					"ein {C:attention}Full House{} enthält,",
+					"{C:red}zerstöre{} alle Karten",
+					"nach Auszählung",
+				},
+			},
+			j_cry_astral_bottle = {
+				name = "Astral in einer Flasche",
+				text = {
+					"Wenn verkauft, füge {C:dark_edition}Astral{}",
+					"und {C:attention}Verderblich{} einem",
+					"zufälligen {C:attention}Joker{} hinzu",
+				},
+			},
+			j_cry_astral_bottle_mainline = {
+				name = "Astral in einer Flasche",
+				text = {
+					"Wenn verkauft, füge {C:dark_edition}Astral{}",
+					"und {C:attention}Verderblich{} einem",
+					"anderen, zufälligen {C:attention}Joker{} hinzu",
+				},
+			},
+			j_cry_astral_bottle_madness = {
+				name = "Astral in einer Flasche",
+				text = {
+					"Wenn verkauft, füge {C:dark_edition}Astral{}",
+					"einem zufälligen {C:attention}Joker{} hinzu",
+				},
 			},
 			j_cry_big_cube = {
 				name = "Großer Würfel",
@@ -1052,7 +1114,7 @@ return {
 			j_cry_blurred = {
 				name = "Verschwommener Joker",
 				text = {
-					"Erhalte {C:blue}+#1#{} Hand/Hände wenn",
+					"Erhalte {C:blue}+#1#{} H#<ände,and>1# wenn",
 					"{C:attention}Blind{} ausgewählt wird",
 				},
 			},
@@ -1080,14 +1142,14 @@ return {
 					"gespielte {C:attention}Bonus{} Karte, die",
 					"{C:attention}Joker-{} oder {C:attention}Verbrauchgegenstände-Slots",
 					"um {C:dark_edition}1{} zu erhöhen wenn sie gewertet werden.",
-					"{C:red}Funktioniert einmal pro Runde",
+					"{C:red}Funktioniert zweimal pro Runde",
 					"{C:inactive,s:0.8}(Gleiche Chance für Beide){}",
 				},
 			},
 			j_cry_booster = {
 				name = "Booster Joker",
 				text = {
-					"{C:attention}+#1#{} Booster Paket Slot",
+					"{C:attention}+#1#{} Booster Paket Slot#<s>1#",
 					"im Shop verfügbar",
 				},
 			},
@@ -1099,20 +1161,25 @@ return {
 					"{C:attention}Spielkarte{} erneut {C:attention}auszulösen{}",
 					"{C:inactive,s:0.8}Funktioniert nicht auf andere Lange Weilen{}",
 				},
+				unlock = {
+					"Mache nichts auf dem",
+					"Titelbildschirm für",
+					"{C:attention}10 Minuten{}",
+				},
 			},
 			j_cry_brittle = {
 				name = "Zerbrechliche Süßigkeit",
 				text = {
 					"Für die nächsten {C:attention}#1#{} Hände,",
-					"füge {C:attention}Stein{}, {C:attention}Gold{}, oder {C:attention}Stahl{} zu",
-					"der rechtesten gewerteten Karte hinzu",
+					"füge {C:attention}Stein{}, {C:attention}Gold{}, oder {C:attention}Stahl{}",
+					"zur gewerteten Karte ganz rechts hinzu",
 				},
 			},
 			j_cry_bubblem = {
 				name = "Blasen M",
 				text = {
 					"Erstelle einen {C:dark_edition}Foil {C:attention}Lustigen Joker{}",
-					"wenn gespielte Hand einen",
+					"wenn gespielte Hand ein",
 					"{C:attention}#1#{} enthält.",
 					"{C:red,E:2}Zerstört sich selbst{}",
 				},
@@ -1124,6 +1191,14 @@ return {
 					"für {C:mult}+#2#{} Mult",
 					"Chance von {C:green}1 zu 4{}",
 					"für {C:mult}-#2#{} Mult",
+				},
+			},
+			j_cry_buttercup = {
+				name = "Butterblume",
+				text = {
+					"Kann {C:attention}#1#{} gewählt#<e,en>1# Gegen#<stände,stand>1# im Shop speichern",
+					"Wenn verkauft: Füge d#<ie,en>1# gespeicherten Gegen#<stände,stand>1#",
+					"dem nächsten Shop hinzu", --man, german can be needlessly complicated #-.-
 				},
 			},
 			j_cry_candy_basket = {
