@@ -1337,14 +1337,14 @@ return {
 					"gespielte Hand",
 					"ein {C:attention}#2#{} enthält",
 				},
-				unlock {
+				unlock = {
 					"Gewinne einen Durchlauf",
 					"mit {E:1,C:attention}Ultimatives Paar{}",
 					"als letzte Hand",
 				},
 			},
 			j_cry_the = {
-				name = "Der", --that's how it is translated in spongebob season 2 episode 17a
+				name = "Der",
 				text = {
 					"{X:mult,C:white} X#1# {} Mult wenn",
 					"gespielte Hand {C:attention}#2# ist",
@@ -1366,7 +1366,7 @@ return {
 			j_cry_clockwork = {
 				name = "Uhrwerk Joker",
 				text = {
-					"Löse Stahlkarten in der Hand alle {C:attention}#9#{} {C:inactive}(#1#){} Hände erneut aus"
+					"Löse Stahlkarten in der Hand alle {C:attention}#9#{} {C:inactive}(#1#){} Hände erneut aus",
 					"Dieser Joker erhält {X:mult,C:white}X#6#{} Mult {C:inactive}(X#5#){} alle {C:attention}#10#{} {C:inactive}(#2#){} Hände",
 					"Verwandle die erste gepielte Karte in eine Stahlkarte alle {C:attention}#11#{} {C:inactive}(#3#){} Hände",
 					"Stahlkarten in der Hand geben +{X:mult,C:white}X#8#{} Mult {C:inactive}(X#7#){} alle {C:attention}#12#{} {C:inactive}(#4#){} Hände",
@@ -1417,8 +1417,8 @@ return {
 				name = "Copy/Paste",
 				text = {
 					"Chance von {C:green}#1# zu #2#{}, eine Kopie",
-					"der genutzen {C:code}Code{} Karte zu erzeugen"
-					"{C:red}Funktioniert einmal pro Runde{}"
+					"der genutzen {C:code}Code{} Karte zu erzeugen",
+					"{C:red}Funktioniert einmal pro Runde{}",
 					"{C:inactive}(Muss Platz haben)",
 				},
 			},
@@ -1434,7 +1434,7 @@ return {
 				name = "Copy/Paste",
 				text = {
 					"Chance von {C:green}#1# zu #2#{}, eine Kopie",
-					"der genutzen {C:code}Code{} Karte zu erzeugen"
+					"der genutzen {C:code}Code{} Karte zu erzeugen",
 					"{C:inactive}(Muss Platz haben)",
 				},
 			},
@@ -1860,7 +1860,7 @@ return {
 					"{X:red,C:white} X#3# {} Mult",
 				},
 				unlock = {
-					"Erziele eine Punktzahl"
+					"Erziele eine Punktzahl",
 					"von {C:attention}1.0e100{} Chips",
 					"mit einer einzelnen Hand",
 				},
@@ -1977,6 +1977,7 @@ return {
 					"Alle {C:attention}Überspringen{}-Tags",
 					"werden {C:attention}Katzen-Tags{}",
 				},
+			},
 			j_cry_kooky = {
 				name = "Wahnsinniger Joker",
 				text = {
