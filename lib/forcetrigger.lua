@@ -1197,5 +1197,5 @@ function Cryptid.forcetriggerConsumableCheck(card)
 			return false
 		end
 	end
-	return (card.config.center.demicoloncompat) or not card.config.center.original_mod
+	return card.config.center.demicoloncompat or not card.config.center.original_mod
 end
