@@ -2472,7 +2472,6 @@ local starfruit = {
 	atlas = "atlasepic",
 	pos = { x = 4, y = 5 },
 	config = { emult = 2, emult_mod = 0.2 },
-	immutable = true,
 	pools = { ["Food"] = true },
 	calculate = function(self, card, context)
 		if context.joker_main then
