@@ -308,7 +308,7 @@ local sync_catalyst = {
 		},
 		art = {
 			"Ein13",
-			"George The Rat"
+			"George The Rat",
 		},
 		code = {
 			"Math",
@@ -1884,7 +1884,7 @@ local soccer = {
 		},
 		art = {
 			"Ein13",
-			"George The Rat"
+			"George The Rat",
 		},
 		code = {
 			"Jevonn",

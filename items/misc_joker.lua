@@ -1370,7 +1370,7 @@ local eternalflame = {
 		},
 		art = {
 			"Missingnumber",
-			"George The Rat"
+			"George The Rat",
 		},
 		code = {
 			"Jevonn",
