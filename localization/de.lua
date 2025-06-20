@@ -1621,20 +1621,20 @@ return {
 				name = "Energia",
 				text = {
 					"Wenn du einen {C:attention}Tag{} erhälst,",
-					"erstelle {C:attention}#1#{} Kopien",
+					"erstelle {C:attention}#1#{} Kopie#<n>1#",
 					"und {C:attention}erhöhe{} die Nummer der",
 					"Kopien um {C:attention}#2#",
 				},
 			},
 			j_cry_equilib = {
-				name = "Ass Äqui­li­b­ri­um",
+				name = "Ass Äquilibrium",
 				text = {
 					"Joker erscheinen in der",
-					"Reinfolge der {C:attention}Sammlung{}",
-					"Erstelle {C:attention}#1#{} {C:dark_edition}Negative(n){} Joker",
+					"Reihenfolge der {C:attention}Sammlung{}",
+					"Erzeuge {C:attention}#1#{} {C:dark_edition}#<Negative,Negativen>1#{} Joker",
 					"wenn eine Hand gespielt wird.",
 					"{C:cry_exotic,s:0.8}Exotische {C:inactive,s:0.8}oder höhere Joker können nicht erscheinen",
-					"{s:0.8}Letzter erstellter Joker: {C:attention,s:0.8}#2#",
+					"{s:0.8}Letzter erzeugter Joker: {C:attention,s:0.8}#2#",
 				},
 			},
 			j_cry_error = {
@@ -1648,14 +1648,23 @@ return {
 				text = {
 					"Dieser Joker bekommt {X:mult,C:white} X#1# {} Mult",
 					"für jede {C:attention}verkaufte{} Karte",
-					"{C:inactive}(Momentan {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"mit {C:attention}Verkaufswert{} von mindestens {C:money}$3{}",
+					"{C:inactive}(Aktuell {X:mult,C:white} X#2# {C:inactive} Mult)",
+				},
+			},
+			j_cry_eternalflame2 = {
+				name = "Ewige Flamme",
+				text = {
+					"Dieser Joker bekommt {X:mult,C:white} X#1# {} Mult",
+					"für jede {C:attention}verkaufte{} Karte",
+					"{C:inactive}(Aktuell {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
 			},
 			j_cry_exoplanet = {
 				name = "Exoplanet",
 				text = {
-					"{C:dark_edition}Holographische{} Karten",
-					"geben {C:mult}+#1#{} Mult",
+					"Andere {C:dark_edition}Holographische{} Karten",
+					"geben je {C:mult}+#1#{} Mult",
 				},
 			},
 			j_cry_exponentia = {
@@ -1663,7 +1672,32 @@ return {
 				text = {
 					"Dieser Joker bekommt {X:dark_edition,C:white} ^#1# {} Mult",
 					"wenn {X:red,C:white} XMult {} ausgelöst wird.",
-					"{C:inactive}(Momentan {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+					"{C:inactive}(Aktuell {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+				},
+			},
+			j_cry_exposed = {
+				name = "Bloßgestellt",
+				text = {
+					"Löse alle gewerteten nicht-{C:attention}Bildkarten{}",
+					"{C:attention}#1#{} #<weitere Male, weiteres Mal>1# aus",
+					"Alle {C:attention}Bildkarten{} sind geschwächt",
+				},
+			},
+			j_cry_eyeofhagane = {
+				name = "Auge von Hagane",
+				text = {
+					"Alle gespielten {C:attention}Bildkarten{}",
+					"werden {C:attention}Stahlkarten{}",
+					"wenn gewertet",
+				},
+			},
+			j_cry_highfive = {
+				name = "High Five",
+				text = {
+					"Wenn der höchste {C:attention}gewertete Rang{}",
+					"{C:attention}5{} ist, wandle {C:attention}alle{} gewerteten",
+					"Karten in {C:attention}5{} um",
+					"{s:0.8,C:inactive}Asse werden als 1 angesehen",
 				},
 			},
 			j_cry_facile = {
@@ -1671,7 +1705,16 @@ return {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult wenn",
 					"gespielte Karten {C:attention}#2#{}",
-					"oder weniger mal ausgelöst werden.",
+					"oder weniger mal ausgelöst werden",
+				},
+			},
+			j_cry_familiar_currency = {
+				name = "Vertraute Währung",
+				text = {
+					"Erzeuge einen {C:attention}Meme-Joker{}",
+					"am Ende der Runde",
+					"für {C:money}$#1#{} {C:inactive}(falls möglich)",
+					"{C:inactive}(Muss Platz haben)",
 				},
 			},
 			j_cry_filler = {
@@ -1679,7 +1722,11 @@ return {
 				text = {
 					"{X:mult,C:white} X#1# {} Mult wenn",
 					"gespielte Hand",
-					"eine {C:attention}#2#{} enthält",
+					"ein(e) {C:attention}#2#{} enthält",
+				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"ohne eine {E:1,C:attention}High Card{} zu spielen",
 				},
 			},
 			j_cry_fractal = {
@@ -1687,14 +1734,19 @@ return {
 				text = {
 					"{C:attention}+#1#{} Karten Auswahllimit",
 				},
+				unlock = {
+					"Spiele ein {C:attention}Straight Flush{}",
+					"ohne das der {C:attention}Straight",
+					"ein {C:attention}Flush{} enthält",
+				},
 			},
 			j_cry_flip_side = {
-				name = "Auf der anderen Seite...",
+				name = "Andererseits...",
 				text = {
 					"{C:dark_edition}Doppelseitige{} Joker nutzen",
 					"ihre Rückseite für Effekte",
 					"statt der Vorderseite",
-					"{C:attention}Löse{} alle {C:dark_edition}Doppelseitigen{} Joker erneut {C:attention}aus",
+					"{C:attention}Löse{} alle {C:dark_edition}Doppelseitigen{} Joker {C:attention}erneut aus",
 				},
 			},
 			j_cry_foodm = {
@@ -1716,19 +1768,27 @@ return {
 					"ein {C:attention}#2#{} enthält",
 				},
 			},
+			--woudld you look at that, yet another joker out of order
+			j_cry_undefined = {
+				name = "Undefinierter Joker",
+				text = {
+					"{C:red}+#1#{} Mult wenn gespielte",
+					"Hand {C:attention}#2#{} ist",
+				},
+			},
 			j_cry_formidiulosus = {
 				name = "Formidiulosus",
 				text = {
 					"Wenn ein {X:cry_cursed,C:white}Verfluchter{} Joker erhalten wird, zerstöre ihn",
-					"Erstelle {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Süßigkeiten{} am Ende des Shops",
+					"Erstelle {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Süßigkeit#<en>1#{} am Ende des Shops",
 					"{X:dark_edition,C:white}+^#2#{} Mult für jeden {C:cry_candy}Süßigkeitenjoker{} den du besitzt",
-					"{C:inactive}(Momenan {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
+					"{C:inactive}(Aktuell {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
 				},
 			},
 			j_cry_foxy = {
-				name = "Fuchsiger Joker",
+				name = "Ausgefuchster Joker",
 				text = {
-					"{C:chips}+#1#{} Chips wenn",
+					"{C:chips}+#1#{} Chip#<s>1# wenn",
 					"gespielte Hand",
 					"ein {C:attention}#2#{} enthält",
 				},
@@ -1743,7 +1803,7 @@ return {
 				},
 			},
 			j_cry_fuckedup = {
-				name = "Abgefuckter Joker",
+				name = Cryptid_config.family_mode and "Aufgeräumter Joker" or "Abgefuckter Joker",
 				text = {
 					"{C:red}+#1#{} Mult wenn",
 					"gespielte Hand",
@@ -1754,14 +1814,14 @@ return {
 				name = "Garden der Kreuzungen",
 				text = {
 					"Verdiene {C:money}$#1#{} wenn {C:attention}gespielte Hand{}",
-					"Ein {C:attention}Ass{} und eine {C:attention}7{} enthält",
+					"ein {C:attention}Ass{} und eine {C:attention}7{} enthält",
 				},
 			},
 			j_cry_gemino = {
 				name = "Gemini",
 				text = {
 					"{C:attention}Verdoppelt{} alle Werte",
-					"des linkesten {C:attention}Jokers",
+					"des {C:attention}Jokers{} ganz links",
 					"am Ende der Runde",
 				},
 			},
@@ -1769,9 +1829,9 @@ return {
 				name = "Geist",
 				text = {
 					"Am Ende der Runde:",
-					"Chance von {C:green}#1# zu #2#{} einen",
+					"Chance von {C:green}#1# zu #3#{} einen",
 					"zufälligen {C:attention}Joker{} zu {C:attention}besetzen",
-					"Chance von {C:green}#1# zu #3#{}",
+					"Chance von {C:green}#2# zu #4#{}",
 					"{E:2,C:red}sich selbst zu zerstören",
 				},
 			},
@@ -1780,7 +1840,7 @@ return {
 				text = {
 					"{C:red}+#1#{} Mult wenn",
 					"gespielte Hand",
-					"eine {C:attention}#2#{} enthält",
+					"ein {C:attention}#2#{} enthält",
 				},
 			},
 			j_cry_goldjoker = {
@@ -1799,8 +1859,13 @@ return {
 					"Chance von {C:green}#1# zu #2#{} für",
 					"{X:red,C:white} X#3# {} Mult",
 				},
+				unlock = {
+					"Erziele eine Punktzahl"
+					"von {C:attention}1.0e100{} Chips",
+					"mit einer einzelnen Hand",
+				},
 			},
-			j_cry_happy = {
+			j_cry_happy = { -- :D
 				name = ":D",
 				text = {
 					"Erstelle einen zufälligen {C:attention}Joker{}",
@@ -1815,8 +1880,8 @@ return {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult nachdem du",
 					"{C:attention}114{} Hände{} gespielt hast",
-					"{C:inactive}(Momentan #2#/114){}",
-					"{C:inactive,s:0.8}Es gibt keinen Platz so schön wie dein Zuhause!{}",
+					"{C:inactive}(Aktuell #2#/114){}",
+					"{C:inactive,s:0.8}Es gibt keinen Platz wie dein Zuhause!{}",
 				},
 			},
 			j_cry_home = {
@@ -1826,12 +1891,23 @@ return {
 					"gespielte Hand",
 					"ein {C:attention}#2#{} enthält",
 				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"ohne ein {E:1,C:attention}Full House{} zu spielen",
+				},
 			},
 			j_cry_hunger = {
 				name = "Consume-able",
 				text = {
 					"Verdiene {C:money}$#1#{} wenn",
 					"ein {C:attention}Verbrauchsgegenstand{} benutzt wird",
+				},
+			},
+			j_cry_huntingseason = {
+				name = "Jagdsaison",
+				text = {
+					"Wenn gespielte Hand genau {C:attention}3{} Karten enthält,",
+					"{C:red}zerstöre{} die Karte {C:attention}in der Mitte{} nach der Wertung",
 				},
 			},
 			j_cry_iterum = {
@@ -1841,6 +1917,7 @@ return {
 					"{C:attention}#2#{} Mal mehr aus,",
 					"jede Karte gibt",
 					"{X:mult,C:white} X#1# {} Mult wenn gewertet",
+					"{C:inactive}(Maximal {}{C:attention}#3#{}{C:inactive} mal)",
 				},
 			},
 			j_cry_jawbreaker = {
@@ -1851,14 +1928,19 @@ return {
 					"{E:2,C:red}Zerstört sich selbst{}",
 				},
 			},
-			j_cry_jimball = {
+			j_cry_jimball = { -- avery's fav!
 				name = "Jimball",
 				text = {
 					"Dieser Joker bekommt {X:mult,C:white} X#1# {} Mult",
 					"für jede {C:attention}aufeinenderfolgende{} gespielte Hand",
 					"währende du deine",
 					"am meisten gespielte {C:attention}Pokerhand{} spielst",
-					"{C:inactive}(Momentan {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(Aktuell {X:mult,C:white} X#2# {C:inactive} Mult)",
+				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"mit {C:attention}einem einzigen Typ{}",
+					"{C:attention}Pokerhand",
 				},
 			},
 			j_cry_jollysus = {
@@ -1868,7 +1950,7 @@ return {
 					"Wenn ein Joker {C:attention}verkauft{} wird",
 					"{C:red}Funktioniert einmal pro Runde{}",
 					"{C:inactive}#1#{}",
-					"{C:inactive,s:0.8}Seems legit...{}",
+					"{C:inactive,s:0.8}Scheint echt zu sein...{}",
 				},
 			},
 			j_cry_jtron = {
@@ -1876,7 +1958,7 @@ return {
 				text = {
 					"Dieser Joker bekommt {X:dark_edition,C:white} ^#1# {} Mult",
 					"für jeden Standard {C:attention}Joker{}",
-					"{C:inactive}(Momentan {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
+					"{C:inactive}(Aktuell {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
 				},
 			},
 			j_cry_kidnap = {
@@ -1888,6 +1970,13 @@ return {
 					"{C:inactive}(Aktuell {C:money}$#2#{C:inactive})",
 				},
 			},
+			j_cry_kittyprinter = {
+				name = "Katzendrucker",
+				text = {
+					"{X:mult,C:white} X#1# {} Mult",
+					"Alle {C:attention}Überspringen{}-Tags",
+					"werden {C:attention}Katzen-Tags{}",
+				},
 			j_cry_kooky = {
 				name = "Wahnsinniger Joker",
 				text = {
@@ -1902,7 +1991,7 @@ return {
 					"Dieser Joker bekommt",
 					"{X:mult,C:white} X#1# {} Mult wenn",
 					"jede gespielte {C:attention}Karte{} gewertet wird",
-					"{C:inactive}(Momenan {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(Aktuell {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
 			},
 			j_cry_kscope = {
@@ -1911,6 +2000,12 @@ return {
 					"Füge {C:dark_edition}Polychrom{} zu",
 					"einem zufälligen {C:attention}Joker{} hinzu",
 					"wenn {C:attention}Boss Blind{} besiegt wird",
+				},
+				unlock = {
+					"Besiege einen {C:attention}Boss Blind",
+					"mit mindestens {C:attention}5{}",
+					"{C:attention}Spielkarten{} oder",
+					"{C:attention}Jokern{} mit {C:attention}Edition{}",
 				},
 			},
 			j_cry_lebaron_james = {
