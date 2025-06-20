@@ -308,6 +308,7 @@ local sync_catalyst = {
 		},
 		art = {
 			"Ein13",
+			"George The Rat"
 		},
 		code = {
 			"Math",
@@ -995,7 +996,7 @@ local number_blocks = {
 			"Jevonn",
 		},
 		art = {
-			"Jevonn",
+			"George The Rat",
 		},
 		code = {
 			"Math",
@@ -1882,7 +1883,8 @@ local soccer = {
 			"Mjiojio",
 		},
 		art = {
-			"HexaCryonic",
+			"Ein13",
+			"George The Rat"
 		},
 		code = {
 			"Jevonn",
@@ -2078,7 +2080,7 @@ local spectrogram = {
 			"AlexZGreat",
 		},
 		art = {
-			"SMG9000",
+			"Ein13",
 		},
 		code = {
 			"AlexZGreat",

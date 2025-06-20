@@ -445,7 +445,7 @@ local queensgambit = {
 			"Project666",
 		},
 		art = {
-			"Ein13",
+			"Missingnumber",
 		},
 		code = {
 			--wonder what happened to this guy
@@ -1369,7 +1369,8 @@ local eternalflame = {
 			"Dovahkiin1307",
 		},
 		art = {
-			"Jevonn",
+			"Missingnumber",
+			"George The Rat"
 		},
 		code = {
 			"Jevonn",
@@ -2621,7 +2622,7 @@ local apjoker = {
 			"HexaCryonic",
 		},
 		art = {
-			"HexaCryonic",
+			"unexian",
 		},
 		code = {
 			"Jevonn",

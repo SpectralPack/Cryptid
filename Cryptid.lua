@@ -8,7 +8,7 @@ if not Cryptid then
 end
 local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod is loaded, but the local variable will retain Cryptid's path
 Cryptid.path = mod_path
-Cryptid_config = SMODS.current_mod.config
+Cryptid_config = SMODS.current_mod.config or {} --is this nil check needed? idk but i saw crash reports related to this
 
 -- Lovely Patch Target, toggles being able to change gameset config. Here for mod support
 Cryptid_config.gameset_toggle = true
