@@ -73,12 +73,12 @@ return {
 				},
 			},
 			b_cry_conveyor = {
-				name = "Conveyor Deck",
+				name = "Конвейерная колода",
 				text = {
-					"Jokers may {C:attention}not{} be moved",
-					"At start of round,",
-					"{C:attention}duplicate{} rightmost Joker",
-					"and {C:attention}destroy{} leftmost Joker",
+					"Джокеров {C:attention}нельзя{} двигать",
+					"в начале раунда,",
+					"{C:attention}дублирует{} самого правого джокера",
+					"и {C:attention}уничтожает{} самого левого джокера",
 				},
 			},
 			b_cry_critical = {
@@ -108,7 +108,7 @@ return {
 				},
 			},
 			b_cry_glowing = {
-				name = "Glowing Deck",
+				name = "Светящаяся колода",
 				text = {
 					"Умножает значения всех",
 					"джокеров на {X:dark_edition,C:white} X1.25 {}",
@@ -646,21 +646,21 @@ return {
 			j_cry_bonk = {
 				name = "Bonk",
 				text = {
-					"Each {C:attention}Joker{} gives {C:chips}+#1#{} Chips",
-					"Increase amount by {C:chips}+#2#{} if",
-					"{C:attention} poker hand{} is a {C:attention}#3#{}",
-					"{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chips instead{}",
+					"Каждый {C:attention}Джокер{} дает {C:chips}+#1#{} фишек",
+					"Увеличивает значение на {C:chips}+#2#{} если",
+					"{C:attention}покерная рука{} это {C:attention}#3#{}",
+					"{C:inactive,s:0.8}Веселые Джокеры вместо этого дают{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}фишек{}",
 				},
 			},
 			j_cry_bonusjoker = {
-				name = "Bonus Joker",
+				name = "Бонусный Джокер",
 				text = {
-					"{C:green}#1# in #2#{} chance for each",
-					"played {C:attention}Bonus{} card to increase",
-					"{C:attention}Joker{} or {C:attention}Consumable slots",
-					"by {C:dark_edition}1{} when scored",
-					"{C:red}Works twice per round",
-					"{C:inactive,s:0.8}(Equal chance for each){}",
+					"{C:green}#1# из #2#{} шанс что каждая",
+					"сыгранная {C:attention}Бонусная{} карта увеличит",
+					"{C:attention}слоты для {C:attention}джокеров{} или {C:attention}расходников",
+					"на {C:dark_edition}1{} когда засчитана",
+					"{C:red}Работает дважды за раунд",
+					"{C:inactive,s:0.8}(Равный шанс у каждой){}",
 				},
 			},
 			j_cry_booster = {
@@ -754,11 +754,11 @@ return {
 				},
 			},
 			j_cry_coin = {
-				name = "Crypto Coin",
+				name = "Крипто Монета",
 				text = {
-					"Earn between",
-					"{C:money}$#1#{} and {C:money}$#2#{} for",
-					"each Joker {C:attention}sold{}",
+					"Получите между",
+					"{C:money}$#1#{} и {C:money}$#2#{} за",
+					"каждого {C:attention}проданного{} джокера",
 				},
 			},
 			j_cry_compound_interest = {
@@ -771,12 +771,12 @@ return {
 				},
 			},
 			j_cry_copypaste = {
-				name = "Copy/Paste",
+				name = "Копировать/Вставить",
 				text = {
-					"When a {C:cry_code}Code{} card is used,",
-					"{C:green}#1# in #2#{} chance to add a copy",
-					"to your consumable area",
-					"{C:inactive}(Must have room)",
+					"Когда карта {C:cry_code}Кода{} использована,",
+					"{C:green}#1# из #2#{} шанс создает её копию",
+					"в вашей зоне расходуемых",
+					"{C:inactive}(Должно быть место)",
 				},
 			},
 			j_cry_crustulum = {
