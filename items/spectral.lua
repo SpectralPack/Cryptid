@@ -640,7 +640,7 @@ local ritual = {
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
 		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, card.ability.max_highlighted, function(card)
-			return not card.editionand not card.will_be_editioned
+			return not card.edition and not card.will_be_editioned
 		end)
 		return #cards > 0 and #cards <= card.ability.max_highlighted
 	end,
