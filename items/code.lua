@@ -1742,7 +1742,7 @@ local commit = {
 	order = 408,
 	can_use = function(self, card)
 		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
-			return card.ability.set == "Joker"
+			return card.ability.set == "Joker" and not card.getting_sliced
 		end)
 		return #jokers == 1
 			and not jokers[1].ability.eternal
@@ -1750,10 +1750,11 @@ local commit = {
 	end,
 	use = function(self, card, area, copier)
 		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
-			return card.ability.set == "Joker"
+			return card.ability.set == "Joker" and not card.getting_sliced
 		end)
 		local deleted_joker_key = jokers[1].config.center.key
 		local rarity = jokers[1].config.center.rarity
+		jokers[1].getting_sliced = true
 		local legendary = nil
 		--please someone add a rarity api to steamodded
 		if rarity == 1 then

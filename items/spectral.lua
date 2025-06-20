@@ -640,18 +640,19 @@ local ritual = {
 	pos = { x = 5, y = 1 },
 	can_use = function(self, card)
 		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, card.ability.max_highlighted, function(card)
-			return not card.edition
+			return not card.editionand not card.will_be_editioned
 		end)
 		return #cards > 0 and #cards <= card.ability.max_highlighted
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, card.ability.max_highlighted, function(card)
-			return not card.edition
+			return not card.edition and not card.will_be_editioned
 		end)
 		for i = 1, #cards do
 			local highlighted = cards[i]
 			if highlighted ~= card then
+				highlighted.will_be_editioned = true
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("tarot1")
@@ -674,6 +675,7 @@ local ritual = {
 									highlighted:set_edition({ negative = true })
 								end
 							end
+							highlighted.will_be_editioned = nil
 						end
 						return true
 					end,
