@@ -2007,10 +2007,10 @@ return {
 				},
 			},
 			c_cry_gateway = {
-				name = "Ворота",
+				name = "Врата",
 				text = {
 					"Создайте случайного",
-					"{C:cry_exotic,E:1}Экзотического{C:attention} Джокера{}, уничтожьте",
+					"{C:cry_exotic,E:1}Экзотического{C:attention} джокера{}, уничтожьте",
 					"всех других джокеров",
 				},
 			},
@@ -2023,37 +2023,37 @@ return {
 				},
 			},
 			c_cry_lock = {
-				name = "Lock",
+				name = "Замок",
 				text = {
-					"Remove {C:red}all{} stickers",
-					"from {C:red}all{} Jokers,",
-					"then apply {C:purple,E:1}Eternal{}",
-					"to a random {C:attention}Joker{}",
+					"Уберите {C:red}все{} наклейки",
+					"со {C:red}всех{} джокеров,",
+					"затем добавьте {C:purple,E:1}Вечную наклейку{}",
+					"случайному {C:attention}джокеру{}",
 				},
 			},
 			c_cry_pointer = {
 				name = "POINTER://",
 				text = {
-					"Create a card",
-					"of {C:cry_code}your choice",
-					"{C:inactive,s:0.8}(Exotic Jokers #1#excluded)",
+					"Создает карту",
+					"{C:cry_code}вашего выбора",
+					"{C:inactive,s:0.8}(исключая Экзотических джокеров)",
 				},
 			},
 			c_cry_replica = {
 				name = "Replica",
 				text = {
-					"Convert all cards",
-					"held in hand",
-					"to a {C:attention}random{}",
-					"card held in hand",
+					"Конвертирует все",
+					"карты в руке",
+					"в {C:attention}случайную{}",
+					"карту в вашей руке",
 				},
 			},
 			c_cry_source = {
-				name = "Source",
+				name = "Исходник",
 				text = {
-					"Add a {C:cry_code}Green Seal{}",
-					"to {C:attention}#1#{} selected",
-					"card in your hand",
+					"Добавьте {C:cry_code}Зеленую печать{}",
+					"на {C:attention}#1#{} выбранную",
+					"карту в вашей руке",
 				},
 			},
 			c_cry_summoning = {
