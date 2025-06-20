@@ -1219,7 +1219,7 @@ return {
 			j_cry_candy_cane = {
 				name = "Zuckerstange",
 				text = {
-					"Für die nächsten {C:attention}#1#{} Runden,",
+					"Für die nächste#<n>1# {C:attention}#1#{} Runde#<n>1#,",
 					"geben gespielte Karten {C:money}$#2#",
 					"wenn {C:attention}erneut ausgelöst",
 				},
@@ -1227,7 +1227,7 @@ return {
 			j_cry_candy_dagger = {
 				name = "Süßigkeitendolch",
 				text = {
-					"Wenn {C:attention}Blind{} ausgewält wurde,",
+					"Wenn {C:attention}Blind{} ausgewält wird,",
 					"zerstöre rechten Joker",
 					"um eine {C:cry_candy}Süßigkeit{} zu erstellen.",
 				},
@@ -1236,7 +1236,7 @@ return {
 				name = "Zuckerstöcke",
 				text = {
 					"Der Effekt der nächsten Boss Blind ist nicht aktiv",
-					"bis {C:attention}#1#{} Hand gespielt wurde.",
+					"bis {C:attention}#1#{} #<Hände,Hand>1# gespielt wurde.",
 				},
 			},
 			j_cry_canvas = {
@@ -1246,6 +1246,11 @@ return {
 					"{C:attention}so oft neu aus{} wie du nicht-{C:blue}Gewöhnliche{C:attention} Joker{}",
 					"auf der rechten Seite hast",
 				},
+				unlock = {
+					"Löse einen {C:attention}Joker",
+					"{C:attention}114{} Mal in einer",
+					"Hand erneut aus",
+				},
 			},
 			j_cry_canvas_balanced = {
 				name = "Leinwand",
@@ -1253,27 +1258,36 @@ return {
 					"{C:attention}Löse{} alle {C:attention}Joker{} auf der linken Seite",
 					"{C:attention}so oft neu aus{} wie du nicht-{C:blue}Gewöhnliche{C:attention} Joker{}",
 					"auf der rechten Seite hast",
-					"{C:inactive}(Up to 2 retriggers)",
+					"{C:inactive}(Bis zu 2 Mal)",
 				},
 				unlock = {
 					"Löse einen {C:attention}Joker",
-					"{C:attention}114{} mal in einer",
-					"Hand erneut aus.",
+					"{C:attention}114{} Mal in einer",
+					"Hand erneut aus",
 				},
 			},
 			j_cry_caramel = {
 				name = "Karamell",
 				text = {
 					"Jede gespielte Karte gibt",
-					"für die nächsten {C:attention}#2#{} Runden",
 					"{X:mult,C:white}X#1#{} Mult wenn gewertet",
+					"für die nächste#<n>2# {C:attention}#2#{} Runde#<n>2#",
+				},
+			},
+			j_cry_cat_owl = {
+				name = "Katzen-Eule",
+				text = {
+					"{C:attention}Lucky Cards{} werden auch",
+					"als {C:attention}Echo Karten{} gewertet",
+					"{C:attention}Echo Karten{} werden auch",
+					"als {C:attention}Glückkarten{} gewertet",
 				},
 			},
 			j_cry_chad = {
 				name = "Chad",
 				text = {
-					"Löse {C:attention}linkesten{} Joker",
-					"{C:attention}#1#{} weitere(s) Mal(e) aus",
+					"Löse den Joker {C:attention}ganz links{}",
+					"{C:attention}#1#{} #<weitere Male,weiteres Mal>1# aus",
 				},
 			},
 			j_cry_chili_pepper = {
@@ -1281,17 +1295,17 @@ return {
 				text = {
 					"Dieser Joker bekommt {X:mult,C:white} X#2# {} Mult",
 					"am Ende der Runde,",
-					"{C:red,E:2}zerstört sich selbst{} nach {C:attention}#3#{} Runden",
-					"{C:inactive}(Momentan{} {X:mult,C:white} X#1# {} {C:inactive}Mult){}",
+					"{C:red,E:2}zerstört sich selbst{} nach {C:attention}#3#{} Runde#<n>3#",
+					"{C:inactive}(Aktuell{} {X:mult,C:white} X#1# {} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_chocolate_dice = {
 				name = "Schokoladenwürfel",
 				text = {
-					"Werfe einen {C:green}Zehnerwürfel{} wenn",
+					"Werfe einen {C:green}D10{} wenn",
 					"{C:attention}Boss Blind{} besiegt wurde",
 					"um ein {C:cry_ascendant,E:1}Event{} zu starten.",
-					"{C:inactive}(Currently: #1#)",
+					"{C:inactive}(Aktuell: #1#)",
 				},
 			},
 			j_cry_circulus_pistoris = {
@@ -1299,7 +1313,7 @@ return {
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Chips und {X:dark_edition,C:white}^#1#{} Mult",
 					"wenn {C:attention}genau{} #2#",
-					"Hände übrig sind.",
+					"#<Hände,Hand>2# übrig #<sind,ist>2#",
 				},
 			},
 			j_cry_circus = {
@@ -1310,6 +1324,11 @@ return {
 					"{C:legendary}Legendäre{} Joker geben {X:mult,C:white} X#3# {} Mult",
 					"{C:cry_exotic}Exotische{} Joker geben {X:mult,C:white} X#4# {} Mult",
 				},
+				unlock = {
+					"Erhalten einen {C:red}Seltenen{},",
+					"{C:cry_epic}Epischen{} und {C:legendary}Legendären{}",
+					"Joker vor {C.attention}Ante 9{}";
+				},
 			},
 			j_cry_clash = {
 				name = "Der Kampf",
@@ -1318,6 +1337,40 @@ return {
 					"gespielte Hand",
 					"ein {C:attention}#2#{} enthält",
 				},
+				unlock {
+					"Gewinne einen Durchlauf",
+					"mit {E:1,C:attention}Ultimatives Paar{}",
+					"als letzte Hand",
+				},
+			},
+			j_cry_the = {
+				name = "Der", --that's how it is translated in spongebob season 2 episode 17a
+				text = {
+					"{X:mult,C:white} X#1# {} Mult wenn",
+					"gespielte Hand {C:attention}#2# ist",
+				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"mit {E:1,C:attention}Nichts{}",
+					"als letzte Hand",
+				},
+			},
+			j_cry_clicked_cookie = {
+				name = "Angeklickter Keks",
+				text = {
+					"{C:chips}+#1#{} Chip#<s>1#",
+					"{C:chips}-#2#{} Chip#<s>2# wenn",
+					"du {C:attention}klickst",
+				},
+			},
+			j_cry_clockwork = {
+				name = "Uhrwerk Joker",
+				text = {
+					"Löse Stahlkarten in der Hand alle {C:attention}#9#{} {C:inactive}(#1#){} Hände erneut aus"
+					"Dieser Joker erhält {X:mult,C:white}X#6#{} Mult {C:inactive}(X#5#){} alle {C:attention}#10#{} {C:inactive}(#2#){} Hände",
+					"Verwandle die erste gepielte Karte in eine Stahlkarte alle {C:attention}#11#{} {C:inactive}(#3#){} Hände",
+					"Stahlkarten in der Hand geben +{X:mult,C:white}X#8#{} Mult {C:inactive}(X#7#){} alle {C:attention}#12#{} {C:inactive}(#4#){} Hände",
+				},
 			},
 			j_cry_CodeJoker = {
 				name = "Code Joker",
@@ -1325,6 +1378,22 @@ return {
 					"Erstelle eine {C:dark_edition}Negative{}",
 					"{C:cry_code}Code Karte{} wenn",
 					"{C:attention}Blind{} ausgewählt wird",
+				},
+				unlock = {
+					"Entdecke {C:attention}jede",
+					"{C:cry_code}Code Karte",
+				},
+			},
+			j_cry_CodeJoker_modest = {
+				name = "Code Joker",
+				text = {
+					"Erstelle eine {C:dark_edition}Negative{}",
+					"{C:cry_code}Code Karte{} wenn",
+					"{C:attention}Boss Blind{} ausgewählt wird",
+				},
+				unlock = {
+					"Entdecke {C:attention}jede",
+					"{C:cry_code}Code Karte",
 				},
 			},
 			j_cry_coin = {
@@ -1347,9 +1416,25 @@ return {
 			j_cry_copypaste = {
 				name = "Copy/Paste",
 				text = {
-					"Wenn eine {C:cry_code}Code{} Karte benutzt wird,",
-					"Chance von {C:green}#1# zu #2#{} um eine Kopie",
-					"zu deinen Verbrauchsgegenständen hinzuzufügen",
+					"Chance von {C:green}#1# zu #2#{}, eine Kopie",
+					"der genutzen {C:code}Code{} Karte zu erzeugen"
+					"{C:red}Funktioniert einmal pro Runde{}"
+					"{C:inactive}(Muss Platz haben)",
+				},
+			},
+			j_cry_copypaste_modest = {
+				name = "Copy/Paste",
+				text = {
+					"Kopiere gezogene",
+					"{C:cry_code}Code{} Karten",
+					"{C:inactive}(Muss Platz haben)",
+				},
+			},
+			j_cry_copypaste_madness = {
+				name = "Copy/Paste",
+				text = {
+					"Chance von {C:green}#1# zu #2#{}, eine Kopie",
+					"der genutzen {C:code}Code{} Karte zu erzeugen"
 					"{C:inactive}(Muss Platz haben)",
 				},
 			},
@@ -1363,10 +1448,10 @@ return {
 			j_cry_crustulum = {
 				name = "Crustulum",
 				text = {
-					"Dieser Joker bekommt {C:chips}+#2#{} Chips",
+					"Dieser Joker bekommt {C:chips}+#2#{} Chip#<s>2#",
 					"für jede {C:attention}Aktualisierung{} im Shop",
 					"{C:green}Alle Aktualisierungen sind kostenlos{}",
-					"{C:inactive}(Momentan {C:chips}+#1#{C:inactive} chips)",
+					"{C:inactive}(Aktuell {C:chips}+#1#{C:inactive} Chip#<s>1#)",
 				},
 			},
 			j_cry_cryptidmoment = {
@@ -1380,7 +1465,7 @@ return {
 			j_cry_cube = {
 				name = "Würfel",
 				text = {
-					"{C:chips}+#1#{} Chips",
+					"{C:chips}+#1#{} Chip#<s>1#",
 				},
 			},
 			j_cry_curse_sob = {
@@ -1391,13 +1476,17 @@ return {
 					"{C:dark_edition,E:1}du kannst nicht entkommen...{}",
 					"{C:inactive}(Muss Platz haben){}",
 				},
+				unlock = {
+					"Erhalte einen {C:purple}Ewigen{}",
+					"{C:attention}Obelisk",
+				},
 			},
 			j_cry_cursor = {
 				name = "Cursor",
 				text = {
-					"Dieser Joker bekommt {C:chips}+#2#{} Chips",
+					"Dieser Joker bekommt {C:chips}+#2#{} Chip#<s>2#",
 					"für jede {C:attention}gekaufte{} Karte",
-					"{C:inactive}(Momentan {C:chips}+#1#{C:inactive} Chips)",
+					"{C:inactive}(Aktuell {C:chips}+#1#{C:inactive} Chip#<s>1#)",
 				},
 			},
 			j_cry_cut = {
@@ -1407,7 +1496,7 @@ return {
 					"eine zufällige {C:cry_code}Code{} Karte",
 					"und bekommt {X:mult,C:white} X#1# {} Mult",
 					"am Ende des {C:attention}Shops{}",
-					"{C:inactive}(Momentan {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(Aktuell {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
 			},
 			j_cry_delirious = {
