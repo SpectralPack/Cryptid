@@ -820,13 +820,13 @@ return {
 				},
 			},
 			j_cry_cut = {
-				name = "Cut",
+				name = "Разрез",
 				text = {
-					"This Joker destroys",
-					"a random {C:cry_code}Code{} card",
-					"and gains {X:mult,C:white} X#1# {} Mult",
-					"at the end of the {C:attention}shop{}",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"Этот джокер уничтожает",
+					"случайную карту {C:cry_code}Кода{}",
+					"и получает {X:mult,C:white} X#1# {} множ.",
+					"в конце {C:attention}магазина{}",
+					"{C:inactive}(Сейчас {X:mult,C:white} X#2# {C:inactive} множ.)",
 				},
 			},
 			j_cry_delirious = {
@@ -939,10 +939,10 @@ return {
 				},
 			},
 			j_cry_exoplanet = {
-				name = "Exoplanet",
+				name = "Экзопланета",
 				text = {
-					"{C:dark_edition}Holographic{} cards",
-					"each give {C:mult}+#1#{} Mult",
+					"{C:dark_edition}Голографические{} карты",
+					"дают {C:mult}+#1#{} множ.",
 				},
 			},
 			j_cry_exponentia = {
@@ -1027,7 +1027,7 @@ return {
 				},
 			},
 			j_cry_giggly = {
-				name = "Absurd Joker",
+				name = "Абсурдный джокер",
 				text = {
 					"{C:red}+#1#{} Mult if played",
 					"hand contains",
@@ -1035,7 +1035,7 @@ return {
 				},
 			},
 			j_cry_goldjoker = {
-				name = "Gold Joker",
+				name = "Золотой джокер",
 				text = {
 					"Earn {C:money}#1#%{} of total",
 					"money at end of round",
@@ -1062,7 +1062,7 @@ return {
 				},
 			},
 			j_cry_happyhouse = {
-				name = "Happy House",
+				name = "Счастливый дом",
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult only after",
 					"playing {C:attention}114{} hands{}",
@@ -1071,11 +1071,11 @@ return {
 				},
 			},
 			j_cry_home = {
-				name = "The Home",
+				name = "Дом",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
-					"hand contains",
-					"a {C:attention}#2#",
+					"{X:mult,C:white} X#1# {} множ. если сыгранная",
+					"содержит",
+					"{C:attention}#2#",
 				},
 			},
 			j_cry_hunger = {
@@ -1105,7 +1105,7 @@ return {
 				},
 			},
 			j_cry_jollysus = {
-				name = "Jolly Joker?",
+				name = "Веселый джокер?",
 				text = {
 					"Create a {C:dark_edition}Jolly{} Joker",
 					"when a Joker is {C:attention}sold{}",
@@ -1141,11 +1141,11 @@ return {
 				},
 			},
 			j_cry_kscope = {
-				name = "Kaleidoscope",
+				name = "Калейдоскоп",
 				text = {
-					"Add {C:dark_edition}Polychrome{} to",
-					"a random {C:attention}Joker{} when",
-					"{C:attention}Boss Blind{} is defeated",
+					"Добавляет {C:dark_edition}Полихром{} к",
+					"случайному {C:attention}джокеру{} когда",
+					"{C:attention}блайнд босс{} побежден",
 				},
 			},
 			j_cry_lightupthenight = {
@@ -1156,12 +1156,12 @@ return {
 				},
 			},
 			j_cry_longboi = {
-				name = "Monster",
+				name = "Монстр",
 				text = {
-					"Give future copies of",
-					"this Joker {X:mult,C:white}X#1#{} Mult",
-					"at end of round",
-					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
+					"Дает будущим копиям",
+					"этого джокера {X:mult,C:white}X#1#{} множ.",
+					"в конце раунда",
+					"{C:inactive}(Сейчас {X:mult,C:white}X#2#{C:inactive} множ.){}",
 				},
 			},
 			j_cry_loopy = {
@@ -1175,7 +1175,7 @@ return {
 				},
 			},
 			j_cry_lucky_joker = {
-				name = "Счастливый Джокер",
+				name = "Счастливый джокер",
 				text = {
 					"Получите {C:money}$#1#{} каждый раз когда",
 					"{C:attention}Счастливая{} карта {C:green}успешно{}",
@@ -1216,7 +1216,7 @@ return {
 				},
 			},
 			j_cry_magnet = {
-				name = "Магнит на Холодильник",
+				name = "Магнит на холодильник",
 				text = {
 					"Получайте {C:money}$#1#{} в конце раунда",
 					"Дает {X:money,C:white} X#2# {} если",
@@ -1283,7 +1283,7 @@ return {
 				},
 			},
 			j_cry_meteor = {
-				name = "Метеоритный Дождь",
+				name = "Метеоритный дождь",
 				text = {
 					"{C:dark_edition}Фольговые{} карты",
 					"дают {C:chips}+#1#{} фишек",
@@ -1356,9 +1356,9 @@ return {
 				},
 			},
 			j_cry_negative = {
-				name = "Negative Joker",
+				name = "Негативный джокер",
 				text = {
-					"{C:dark_edition}+#1#{C:attention} Joker{} slots",
+					"{C:dark_edition}+#1#{}слотов для {C:attention}джокеров{}",
 				},
 			},
 			j_cry_nice = {
@@ -1386,7 +1386,7 @@ return {
 				},
 			},
 			j_cry_notebook = {
-				name = "Notebook",
+				name = "Блокнот",
 				text = {
 					"{C:green} #1# in #2#{} chance to gain {C:dark_edition}+1{} Joker",
 					"slot per {C:attention}reroll{} in the shop",
@@ -1422,7 +1422,7 @@ return {
 				},
 			},
 			j_cry_oldblueprint = {
-				name = "Старый Чертеж",
+				name = "Старый чертеж",
 				text = {
 					"Копирует способность",
 					"{C:attention}джокера{} справа",
@@ -1450,22 +1450,22 @@ return {
 				},
 			},
 			j_cry_panopticon = {
-				name = "Panopticon",
+				name = "Паноптикум",
 				text = {
-					"All hands are considered the",
-					"{C:attention}last hand{} of each round", -- +$4
+					"Все руки считаются",
+					"{C:attention}последними руками{} каждого раунда", -- +$4
 				},
 			},
 			j_cry_pickle = {
-				name = "Pickle",
+				name = "Огурчик",
 				text = {
-					"When {C:attention}Blind{} is skipped, create",
-					"{C:attention}#1#{} Tags, reduced by",
-					"{C:red}#2#{} when {C:attention}Blind{} is selected",
+					"Когда {C:attention}блайнд{} пропущен, создает",
+					"{C:attention}#1#{} тегов, уменьшается на",
+					"{C:red}#2#{} когда {C:attention}блайнд{} выбран",
 				},
 			},
 			j_cry_pirate_dagger = {
-				name = "Pirate Dagger",
+				name = "Пиратский кинжал",
 				text = {
 					"When {C:attention}Blind{} is selected,",
 					"destroy Joker to the right",
@@ -1475,11 +1475,11 @@ return {
 				},
 			},
 			j_cry_pot_of_jokes = {
-				name = "Pot of Jokes",
+				name = "Горшок шуток",
 				text = {
-					"{C:attention}#1#{} hand size,",
-					"increases by",
-					"{C:blue}#2#{} every round",
+					"{C:attention}#1#{} размер руки,",
+					"увеличивается на",
+					"{C:blue}#2#{} каждый раунд",
 				},
 			},
 			j_cry_primus = {
