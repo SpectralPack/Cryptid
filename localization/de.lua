@@ -1507,12 +1507,36 @@ return {
 					"einen {C:attention}#2#{} enthält",
 				},
 			},
+			j_cry_demicolon = {
+				name = "Demicolon",
+				text = {
+					"{C:attention}Erzwinge Auslösen{} des Jokers",
+					"auf der rechten Seite",
+				},
+			},
+			j_cry_starfruit = { --why is this here and not alphabetically sorted? cause en-us.lua said so
+				name = "Sternfrucht",
+				text = {
+					"{X:dark_edition,C:white}^#1#{} Mult",
+					"{X:dark_edition,C:white}-^#2#{} Mult pro",
+					"{C:attention}Aktualisierung{} im Shop",
+				},
+			},
+			j_cry_digitalhallucinations = {
+				name = "Digitale Halluzinationen",
+				text = {
+					"Wenn ein {C:attention}Booster Paket{} geöffnet wird,",
+					"Chance von {C:green}#1# in #2#{}, eine",
+					"zufällige {C:dark_edition}Negative{} Karte",
+					"dieses {C:attention}Typs{} zu erzeugen",
+				},
+			},
 			j_cry_discreet = {
 				name = "Diskreter Joker",
 				text = {
 					"{C:chips}+#1#{} Chips wenn",
 					"gespielte Hand",
-					"einen {C:attention}#2#{} enthält",
+					"ein {C:attention}#2#{} enthält",
 				},
 			},
 			j_cry_doodlem = {
@@ -1527,10 +1551,18 @@ return {
 			["j_cry_Double Scale"] = {
 				name = "Doppelwaage",
 				text = {
-					"Steigende {C:attention}Jokers{}",
+					"Steigende {C:attention}Joker{}",
 					"steigen {C:attention}Quadratisch",
 					"{C:inactive,s:0.8}(z.B. +1, +3, +6, +10)",
 					"{C:inactive,s:0.8}(wächst um +1, +2, +3)",
+				},
+			},
+			["j_cry_Double Scale_modest"] = {
+				name = "Doppelwaage",
+				text = {
+					"Steigende {C:attention}Joker{}",
+					"steigen {C:attention}doppelt{} so schnell",
+					'{C:inactive,s:0.8}"Es heißt Doppelwaage, nicht Quadratische Waage!"',
 				},
 			},
 			j_cry_dropshot = {
@@ -1539,7 +1571,7 @@ return {
 					"Dieser Joker bekommt {X:mult,C:white} X#1# {} Mult für",
 					"jede gespielte, aber {C:attention}nicht gewertete{} {V:1}#2#{} Karte,",
 					"Farbe ändert sich jede Runde",
-					"{C:inactive}(Momentan {X:mult,C:white} X#3# {C:inactive} Mult)",
+					"{C:inactive}(Aktuell {X:mult,C:white} X#3# {C:inactive} Mult)",
 				},
 			},
 			j_cry_dubious = {
@@ -1549,6 +1581,11 @@ return {
 					"gespielte Hand",
 					"eine {C:attention}#2#{} enthält",
 				},
+				unlock = {
+					"Spiele eine {C:attention}High Card{}",
+					"mit {C:attention}4{} Karten",
+					"der {C:attention}gleichen Farbe",
+				},
 			},
 			j_cry_duos = {
 				name = "Die Duos",
@@ -1557,6 +1594,10 @@ return {
 					"gespielte Hand",
 					"ein {C:attention}#2#{} enthält",
 				},
+				unlock = {
+					"Gewinne einen Durchlauf,",
+					"ohne {E:1,C:attention}Two Pair{} zu spielen",
+				},
 			},
 			j_cry_duplicare = {
 				name = "Duplicare",
@@ -1564,7 +1605,7 @@ return {
 					"Dieser Joker bekommt {X:mult,C:white} X#2# {} Mult",
 					"wenn ein {C:attention}Joker{} oder eine",
 					"Spielkarte ausgelöst wird",
-					"{C:inactive}(Momentan {X:mult,C:white} X#1# {C:inactive} Mult)",
+					"{C:inactive}(Aktuell {X:mult,C:white} X#1# {C:inactive} Mult)",
 				},
 			},
 			j_cry_effarcire = {
