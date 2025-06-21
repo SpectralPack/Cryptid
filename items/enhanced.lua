@@ -419,11 +419,19 @@ return {
 		end
 		local ss = Card.set_seal
 		function Card:set_seal(seal, y, z)
-			return ss(self, not self.no_forced_seal and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_seal or seal, y, z)
+			return ss(
+				self,
+				not self.no_forced_seal and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_seal or seal,
+				y,
+				z
+			)
 		end
 		local cs = Card.change_suit
 		function Card:change_suit(new_suit)
-			return cs(self, not self.no_forced_suit and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_suit or new_suit)
+			return cs(
+				self,
+				not self.no_forced_suit and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_suit or new_suit
+			)
 		end
 		local ccl = Card.click
 		function Card:click()
