@@ -3351,7 +3351,7 @@ return {
 				text = {
 					"applies the {C:attention}effects{}",
 					"and {C:attention}special effects{}",
-					"of {C:attention}every{} slevee won",
+					"of {C:attention}every{} sleeve won",
 					"with {C:gold}Gold Stake{}",
 					"{C:red}WIP",
 				},
@@ -4534,6 +4534,7 @@ return {
 					"unredeemed each round",
 				},
 			},
+			-- TODO fix typo
 			cry_perishable_consumeable = {
 				name = "Perishable",
 				text = {
