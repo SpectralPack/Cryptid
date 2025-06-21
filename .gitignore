@@ -3,3 +3,4 @@
 .luarc.json
 .lovelyignore
 .idea/*
+*.diff
