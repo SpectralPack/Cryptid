@@ -1256,15 +1256,17 @@ local meld = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_double_sided
 	end,
 	use = function(self, card, area, copier)
-		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers, G.hand }, card, 1, 1)
 		if #cards == 1 then
-			cards[1]:remove_from_deck(true)
-			cards[1]:set_edition({ cry_double_sided = true })
-			cards[1]:add_to_deck(true)
-			G.jokers:remove_from_highlighted(cards[1])
-		else
-			cards[1]:set_edition({ cry_double_sided = true })
-			G.hand:remove_from_highlighted(cards[1])
+			if cards[1].area == G.jokers then
+				cards[1]:remove_from_deck(true)
+				cards[1]:set_edition({ cry_double_sided = true })
+				cards[1]:add_to_deck(true)
+				G.jokers:remove_from_highlighted(cards[1])
+			else
+				cards[1]:set_edition({ cry_double_sided = true })
+				G.hand:remove_from_highlighted(cards[1])
+			end
 		end
 	end,
 	in_pool = function()
