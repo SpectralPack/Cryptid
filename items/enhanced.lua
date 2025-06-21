@@ -76,7 +76,7 @@ Cryptid.edeck_atlas_update = function(self)
 	if not sprite then
 		error(self.edeck_type)
 	end
-	local enh_info = { Cryptid.enhanced_deck_info(self) }
+	local enh_info = { Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {}) }
 	sprite = sprite[enh_info[sprite.order]] or sprite.default
 	self.atlas, self.pos = sprite.atlas, sprite.pos
 	return sprite
@@ -94,7 +94,7 @@ local e_deck = {
 	order = 17,
 	pos = { x = 5, y = 2 },
 	loc_vars = function(self, info_queue, center)
-		local aaa = Cryptid.enhanced_deck_info(self)
+		local aaa = Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {})
 		return { vars = { localize({ type = "name_text", set = "Edition", key = "e_" .. aaa }) } }
 	end,
 	edeck_type = "edition",
@@ -390,7 +390,7 @@ return {
 			if G.P_CENTERS.c_cry_chambered then
 				G.P_CENTERS.c_cry_chambered.misprintize_caps = { extra = { num_copies = 100 } }
 			end
-			if Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
+			if not G.SETTINGS.paused and Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
 				return sa(
 					self,
 					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement)
@@ -405,7 +405,7 @@ return {
 		end
 		local se = Card.set_edition
 		function Card:set_edition(edition, y, z, force)
-			if not force then
+			if not force and not G.SETTINGS.paused then
 				return se(
 					self,
 					(not self.no_forced_edition and G.GAME.modifiers.cry_force_edition)
@@ -419,11 +419,11 @@ return {
 		end
 		local ss = Card.set_seal
 		function Card:set_seal(seal, y, z)
-			return ss(self, not self.no_forced_seal and G.GAME.modifiers.cry_force_seal or seal, y, z)
+			return ss(self, not self.no_forced_seal and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_seal or seal, y, z)
 		end
 		local cs = Card.change_suit
 		function Card:change_suit(new_suit)
-			return cs(self, not self.no_forced_suit and G.GAME.modifiers.cry_force_suit or new_suit)
+			return cs(self, not self.no_forced_suit and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_suit or new_suit)
 		end
 		local ccl = Card.click
 		function Card:click()
@@ -441,9 +441,9 @@ return {
 					and (Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") and (self.back == "viewed_back" or self.edeck_select))
 			then
 				if not G.cry_edeck_select then
-					Cryptid.enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center, 1)
 					G.cry_edeck_select = true
 					G.cry_edeck_center = Galdur and self.config.center or G.GAME.viewed_back.effect.center
+					Cryptid.enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center, 1)
 				else
 					if self.edeck_select then
 						G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] =
