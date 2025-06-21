@@ -100,7 +100,7 @@ local e_deck = {
 	edeck_type = "edition",
 	config = { cry_no_edition_price = true },
 	apply = function(self)
-		local aaa = Cryptid.enhanced_deck_info(self)
+		local aaa = Cryptid.enhanced_deck_info({})
 		G.GAME.modifiers.cry_force_edition = aaa
 		--Ban Edition tags (They will never redeem)
 		for k, v in pairs(G.P_TAGS) do
