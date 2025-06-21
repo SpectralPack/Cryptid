@@ -2914,7 +2914,7 @@ local function_sticker = {
 	atlas = "sticker",
 	pos = { x = 3, y = 5 },
 	config = {},
-	key = "cry_function_sticker_desc",
+	key = "cry_function_sticker",
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
