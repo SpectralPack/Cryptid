@@ -2,3 +2,4 @@
 .vscode/*
 .luarc.json
 .lovelyignore
+.idea/*
