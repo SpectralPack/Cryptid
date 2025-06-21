@@ -1890,7 +1890,7 @@ local fspinner = {
 			"Jevonn",
 		},
 		art = {
-			"Lil. Mr. Slipstream"
+			"Lil. Mr. Slipstream",
 		},
 		code = {
 			"Jevonn",
