@@ -3059,8 +3059,102 @@ return {
 			},
 		},
 		Planet = {
+			c_cry_asteroidbelt = {
+				name = "Asteroidengürtel",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} Mult and",
+					"{C:chips}+#4#{} Chip#<s>4#",
+				},
+			},
+			c_cry_void = {
+				name = "Leere",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} Mult and",
+					"{C:chips}+#4#{} Chip#<s>4#",
+				},
+			},
+			c_cry_marsmoons = {
+				name = "Phobos & Deimos",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} Mult and",
+					"{C:chips}+#4#{} Chip#<s>4#",
+				},
+			},
+			-- Reserved Spot For None Hand Planet
+			c_cry_nibiru = {
+				name = "Nibiru",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} Mult and",
+					"{C:chips}+#4#{} Chip#<s>4#",
+				},
+			},
+			c_cry_universe = {
+				name = Cryptid_config.family_mode and "Universum" or "Das Universum In Seiner Verfickten Gesamtheit",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} Mult and",
+					"{C:chips}+#4#{} Chip#<s>4#",
+				},
+			},
+			c_cry_planetlua = {
+				name = "Planet.lua",
+				text = {
+					"Chance von {C:green}#1# zu #2#{}",
+					"Jede {C:legendary,E:1}Pokerhand{}",
+					"um {C:attention}1{} Level aufzuwerten",
+				},
+			},
+			c_cry_nstar = {
+				name = "Neutronenstern",
+				text = {
+					"Verbessere eine zufällige",
+					"Pokerhand um",
+					"{C:attention}1{} Level für jeden",
+					"{C:attention}Neutronenstern{}",
+					"der in diesem Durchlauf",
+					"genutzt wurde",
+					"{C:inactive}(Aktuell {C:attention}#1#{C:inactive}){}",
+				},
+			},
+			c_cry_sunplanet = {
+				name = "Sol",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Erhöhe Stärke von",
+					"{C:attention}Aufgestiegenen{} Händen um {X:gold,C:white}#2#{}",
+					"{C:inactive}(Aktuell {X:gold,C:white}X(#3#^asc){C:inactive})",
+				},
+			},
+			c_cry_Timantii = {
+				name = "Ruutu",
+				text = {
+					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+					"Aufwertung für",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"und {C:attention}#3#{}",
+				},
+			},
 			c_cry_Klubi = {
 				name = "Klubi",
+				text = {
+					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+					"Aufwertung für",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"und {C:attention}#3#{}",
+				},
+			},
+			c_cry_Sydan = {
+				name = "Hertta",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
 					"Aufwertung für",
@@ -3087,82 +3181,6 @@ return {
 					"{C:attention}#1#{},",
 					"{C:attention}#2#{},",
 					"und {C:attention}#3#{}",
-				},
-			},
-			c_cry_nstar = {
-				name = "Neutronenstern",
-				text = {
-					"Verbessere eine zufällige",
-					"Pokerhand um",
-					"{C:attention}1{} Level für jeden",
-					"{C:attention}Neutronenstern{}",
-					"der in diesem Durchlauf",
-					"genutzt wurde",
-					"{C:inactive}(Momentan{C:attention} #1#{C:inactive}){}",
-				},
-			},
-			c_cry_planetlua = {
-				name = "Planet.lua",
-				text = {
-					"Chance von {C:green}#1# zu #2#{} jede",
-					"{C:legendary,E:1}Pokerhand{}",
-					"um {C:attention}1{} Level aufzuwerten",
-				},
-			},
-			c_cry_Sydan = {
-				name = "Sydan",
-				text = {
-					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-					"Aufwertung für",
-					"{C:attention}#1#{},",
-					"{C:attention}#2#{},",
-					"und {C:attention}#3#{}",
-				},
-			},
-			c_cry_Timantti = {
-				name = "Timantti",
-				text = {
-					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-					"Aufwertung für",
-					"{C:attention}#1#{},",
-					"{C:attention}#2#{},",
-					"und {C:attention}#3#{}",
-				},
-			},
-			c_cry_marsmoons = {
-				name = "Phobos & Deimos",
-				text = {
-					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
-					"{C:attention}#2#",
-					"{C:mult}+#3#{} Mult und",
-					"{C:chips}+#4#{} Chips",
-				},
-			},
-			c_cry_void = {
-				name = "Leere",
-				text = {
-					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
-					"{C:attention}#2#",
-					"{C:mult}+#3#{} Mult und",
-					"{C:chips}+#4#{} Chips",
-				},
-			},
-			c_cry_asteroidbelt = {
-				name = "Asteroidengürtel",
-				text = {
-					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
-					"{C:attention}#2#",
-					"{C:mult}+#3#{} Mult und",
-					"{C:chips}+#4#{} Chips",
-				},
-			},
-			c_cry_universe = {
-				name = "Das Universum in seiner verfickten Gesamtheit.",
-				text = {
-					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Aufwertung für",
-					"{C:attention}#2#",
-					"{C:mult}+#3#{} Mult und",
-					"{C:chips}+#4#{} Chips",
 				},
 			},
 		},

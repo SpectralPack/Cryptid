@@ -3110,7 +3110,6 @@ return {
 					"{C:chips}+#4#{} chip#<s>4#",
 				},
 			},
-
 			c_cry_universe = {
 				name = Cryptid_config.family_mode and "Universe" or "The Universe In Its Fucking Entirety",
 				text = {
