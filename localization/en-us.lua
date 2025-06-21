@@ -2870,6 +2870,7 @@ return {
 					"{C:attention}#2#",
 				},
 			},
+			-- i wanted to correct this typo, but its not even used anywhere?? (well, except other localizations lol)
 			j_cry_annihalation = {
 				name = "The Complete and Utter Annihilation of Everything That Makes Balatro Sacred",
 				text = {
