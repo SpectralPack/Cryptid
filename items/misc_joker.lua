@@ -226,7 +226,7 @@ local maximized = {
 			"Gold",
 		},
 		art = {
-			"Gold",
+			"George The Rat",
 		},
 		code = {
 			"Math",
@@ -1890,8 +1890,7 @@ local fspinner = {
 			"Jevonn",
 		},
 		art = {
-			"Jevonn",
-			"George the Rat",
+			"Lil. Mr. Slipstream"
 		},
 		code = {
 			"Jevonn",
