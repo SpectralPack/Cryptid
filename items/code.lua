@@ -2907,6 +2907,7 @@ local cryfunction = {
 local function_sticker = {
 	dependencies = {
 		items = {
+			"set_cry_code",
 			"c_cry_cryfunction",
 		},
 	},
@@ -2952,6 +2953,8 @@ local function_sticker = {
 			return "None"
 		end
 		return {
+			key = "cry_function_sticker",
+			set = "Other",
 			vars = {
 				lclze(1),
 				lclze(2),
