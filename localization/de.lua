@@ -1329,7 +1329,7 @@ return {
 				unlock = {
 					"Erhalten einen {C:red}Seltenen{},",
 					"{C:cry_epic}Epischen{} und {C:legendary}Legendären{}",
-					"Joker vor {C.attention}Ante 9{}";
+					"Joker vor {C.attention}Ante 9{}",
 				},
 			},
 			j_cry_clash = {
@@ -2755,7 +2755,7 @@ return {
 				},
 				unlock = {
 					"Gewinne einen Durchlauf mit",
-					"{E:1,C:attention}Bollwerk{} als letzte Hand"
+					"{E:1,C:attention}Bollwerk{} als letzte Hand",
 				},
 			},
 			j_cry_subtle = {
@@ -3722,7 +3722,7 @@ return {
 				name = "Katzen-Tag",
 				text = {
 					"Miau.",
-					"{C:inactive}Level {C:dark_edition}#1#"
+					"{C:inactive}Level {C:dark_edition}#1#",
 				},
 			},
 			tag_cry_console = {
