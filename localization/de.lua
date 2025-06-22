@@ -1576,6 +1576,11 @@ return {
 					"Farbe ändert sich jede Runde",
 					"{C:inactive}(Aktuell {X:mult,C:white} X#3# {C:inactive} Mult)",
 				},
+				unlock = {
+					"Spiele eine {C:attention}High Card{}",
+					"mit {C:attention}4{} Karten",
+					"{C:attention}derselben Farbe",
+				},
 			},
 			j_cry_dubious = {
 				name = "Dubioser Joker",
@@ -2534,13 +2539,18 @@ return {
 					"Zufälliger Effekt jede {C:attention}Ante{}",
 					--TODO this joker still pulls some english text from somewhere :(
 				},
+				unlock = {
+					"Chance von {C:green}1 zu 20{},",
+					"diese Karte freizuschalten",
+					"beim {C:attention}Game Over",
+				},
 			},
 			j_cry_sacrifice = {
 				name = "Opfer",
 				text = {
 					"Erstelle #3# {C:green}Ungewöhnlich#<e,en>3#{} Joker",
 					"und #2# {C:attention}Lustig#<e,en>2# Joker{} wenn",
-					"eine {C:spectral}Geisterkarte{} benutzt wird",
+					"eine {C:spectral}Geister{}-Karte benutzt wird",
 					"{C:red}Funktioniert einmal pro Runde{}",
 					"{C:inactive}#1#{}",
 				},
@@ -2916,6 +2926,11 @@ return {
 					"{X:mult,C:white} X#1# {} Mult, wenn",
 					"gespielte Hand",
 					"ein {C:attention}#2#{} enthält",
+				},
+				unlock = {
+					"Gewinne einen Durchlauf",
+					"mit {E:1,C:attention}Flush House",
+					"als letzter Hand",
 				},
 			},
 			-- TN: both 'Universe' and 'Universum' translate to 'Universum', so i had to find a different word
@@ -3326,6 +3341,26 @@ return {
 					"Chance von {C:green}1 in 5{} einen Weiteren zu erstellen",
 					"wenn Boss Blind besiegt wurde",
 					"{C:inactive}(Muss Platz haben){}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Antimaterie-Hülle",
+				text = {
+					"Übernimmt die {C:attention}Effekte{}",
+					"und {C:attention}Spezialeffekte{}",
+					"aller Deckhüllen",
+					"{C:red}WIP",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Antimaterie-Hülle",
+				text = {
+					"Übernimmt die {C:attention}Effekte{}",
+					"und {C:attention}Spezialeffekt{}",
+					"{C:attention}aller{} Deckhüllen",
+					"auf denen ein Durchlauf auf",
+					"{C:gold}Goldener Einsatz{} gewonnen wurde",
+					"{C:red}WIP",
 				},
 			},
 		},
@@ -3923,11 +3958,18 @@ return {
 				text = {
 					"Setzt Ante zu {C:attention}#1#{}",
 				},
+				unlock = {
+					"Erreiche Ante {C:attention}36",
+				},
 			},
 			v_cry_blankcanvas = {
 				name = "Leere Leinwand",
 				text = {
 					"{C:attention}+#1#{} Handgröße",
+				},
+				unlock = {
+					"Reduziere deine {C:attention}Handgröße",
+					"auf {C:attention}0",
 				},
 			},
 			v_cry_clone_machine = {
@@ -3960,13 +4002,38 @@ return {
 					"erscheinen mit",
 					"einer {C:dark_edition}Edition{}",
 				},
+				unlock = {
+					"Entdecke",
+					"alle {C:attention}Editionen",
+				},
 			},
+			-- RESERVATION FOR CRYSTAL BALL T3
+			-- RESERVATION FOR TELESCOPE T3
+			-- v_cry_scope = {
+			-- 	name = "Galaktischer Horizont",
+			-- 	text = {
+			-- 		"Erzeuge die {C:planet}Planeten{}-",
+			-- 		"Karte für gespielte",
+			-- 		"{C:attention}Pokerhand{}",
+			-- 		"{C:inactive}(Muss Platz haben){}",
+			-- 	},
+			-- 	unlock = {
+			-- 		"Nutze {C:attention}50{} {C:planet}Planeten{}-",
+			-- 		"Karten aus",
+			-- 		"{C:attention}Booster Paketen{}",
+			-- 		"in einem Durchlauf",
+			-- 	},
+			-- },
 			v_cry_dexterity = {
 				name = "Geschicklichkeit",
 				text = {
 					"Bekomme dauerhaft",
 					"{C:blue}+#1#{} #<Hände,Hand>1#",
 					"pro Runde",
+				},
+				unlock = {
+					"Spiele insgesamt {C:attention}5000{}",
+					"{C:attention}Spielkarten{}",
 				},
 			},
 			v_cry_double_down = {
@@ -3998,12 +4065,20 @@ return {
 				text = {
 					"{C:dark_edition}+#1#{} Joker Slot(s)",
 				},
+				unlock = {
+					"Löse {C:dark_edition}Antimaterie",
+					"{C:attention}10{} Mal ein",
+				},
 			},
 			v_cry_massproduct = {
 				name = "Massenproduktion",
 				text = {
 					"Alle Karten und Pakete",
 					"im Shop kosten {C:attention}$1{}",
+				},
+				unlock = {
+					"Löse {C:attention}25 Gutscheine",
+					"in einem Durchlauf ein",
 				},
 			},
 			v_cry_moneybean = {
@@ -4013,13 +4088,23 @@ return {
 					"für Zinsen",
 					"zu {C:money}$#1#{}",
 				},
+				unlock = {
+					"Maximiere die",
+					"{C:attention}Zinseinnahmen{}",
+					"für den {C:attention}gesamten Durchlauf",
+				},
 			},
 			v_cry_overstock_multi = {
 				name = "Multibestand",
 				text = {
-					"{C:attention}+#1#{} Karten Slot(s) und",
-					"{C:attention}+#1#{} Booster Paket Slot(s)",
+					"{C:attention}+#1#{} Karten Slot#<s>1# und",
+					"{C:attention}+#1#{} Booster Paket Slot#<s>1#",
 					"im Shop",
+				},
+				unlock = {
+					"Gib {C:attention}1000$",
+					"im Shop aus",
+					"in einem Durchlauf",
 				},
 			},
 			v_cry_pacclimator = {
@@ -4029,6 +4114,10 @@ return {
 					"{C:attention}X#1#{} öfter im Shop.",
 					"Alle zukünftigen {C:planet}Planeten{}",
 					"Karten sind {C:green}kostenlos{}",
+				},
+				unlock = {
+					"Kaufe insgesamt {C:attention}100{}",
+					"{C:planet}Planeten{}-Karten im Shop",
 				},
 			},
 			v_cry_pairamount_plus = {
@@ -4067,12 +4156,17 @@ return {
 					"Alle Aktualisierungen",
 					"kosten {C:attention}$2{}",
 				},
+				unlock = {
+					"{C:attention}Aktualisiere{} den Shop",
+					"insgesamt {C:attention}250 Mal{}",
+					"in einem Durchlauf",
+				},
 			},
 			v_cry_satellite_uplink = {
 				name = "Satellitenverbindung",
 				text = {
 					"{C:cry_code}Code{} Karten können",
-					"in allen {C:attention}HimmelPaketen{}",
+					"in allen {C:attention}Himmel{}-Paketen",
 					"erscheinen",
 				},
 			},
@@ -4093,6 +4187,10 @@ return {
 					"Alle zukünftigen {C:tarot}Tarot{}",
 					"Karten sind {C:green}kostenlos{}",
 				},
+				unlock = {
+					"Kaufe insgesamt {C:attention}100{}",
+					"{C:tarot}Tarot{}-Karten im Shop",
+				},
 			},
 			v_cry_tag_printer = {
 				name = "Tag Drucker",
@@ -4108,6 +4206,10 @@ return {
 					"Bekomme dauerhaft",
 					"{C:red}+#1#{} #<Abwürfe,Abwurf>1#",
 					"pro Runde",
+				},
+				unlock = {
+					"Wirf insgesamt {C:attention}5000{}",
+					"{C:attention}Spielkarten{} ab",
 				},
 			},
 			v_cry_stickyhand = {
@@ -4246,11 +4348,11 @@ return {
 					"{s:0.8}Nostalgische Süßigkeit, Fast Food M, etc.",
 				},
 			},
-			v_cry_choco0 = {
-				name = "",
+			ev_cry_choco0 = {
+				name = "Mögliche Events",
 				text = {
-					"Details eines aktiven",
-					"{C:cry_ascendant,E:1}Events{} werden hier erscheinen",
+					"{T:ev_cry_choco1}1{} {T:ev_cry_choco2}2{} {T:ev_cry_choco3}3{} {T:ev_cry_choco4}4{} {T:ev_cry_choco5}5{}",
+					"{T:ev_cry_choco6}6{} {T:ev_cry_choco7}7{} {T:ev_cry_choco8}8{} {T:ev_cry_choco9}9{} {T:ev_cry_choco10}10{}",
 				},
 			},
 			ev_cry_choco1 = {
