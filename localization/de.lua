@@ -2803,7 +2803,7 @@ return {
 				unlock = {
 					"Gewinne einen Durchlauf mit",
 					"{E:1,C:attention}Flush Five{} als letzte Hand",
-				}
+				},
 			},
 			j_cry_sync_catalyst = {
 				name = "Sync Katalysator",
@@ -3720,7 +3720,10 @@ return {
 			},
 			tag_cry_cat = {
 				name = "Katzen-Tag",
-				text = { "Miau.", "{C:inactive}Level {C:dark_edition}#1#" }, -- (=^･w･^=)
+				text = {
+					"Miau.",
+					"{C:inactive}Level {C:dark_edition}#1#"
+				},
 			},
 			tag_cry_console = {
 				name = "Konsolen-Tag",
@@ -4570,14 +4573,14 @@ return {
 					"{C:inactive}Mehrmals: ({C:cry_code}#1#{C:inactive} übrig)",
 				},
 			},
-			Unique = {
-				c_cry_potion = {
-					name = "Trank",
-					text = {
-						"Gibt einen unbekannten",
-						"{C:attention}Fluch{} wenn genutzt",
-						"{C:inactive,s:0.7}Von Schokoladenwürfel erhalten",
-					},
+		},
+		Unique = {
+			c_cry_potion = {
+				name = "Trank",
+				text = {
+					"Gibt einen unbekannten",
+					"{C:attention}Fluch{} wenn genutzt",
+					"{C:inactive,s:0.7}Von Schokoladenwürfel erhalten",
 				},
 			},
 		},
