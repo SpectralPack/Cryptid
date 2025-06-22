@@ -782,18 +782,18 @@ return {
 			j_cry_crustulum = {
 				name = "Crustulum",
 				text = {
-					"This Joker gains {C:chips}+#2#{} Chips",
-					"per {C:attention}reroll{} in the shop",
-					"{C:green}All rerolls are free{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chips)",
+					"Этот джокер дает {C:chips}+#2#{} фишек",
+					"за каждый {C:attention}переброс{} в лавке",
+					"{C:green}Все перебросы бесплатные{}",
+					"{C:inactive}(Сейчас {C:chips}+#1#{C:inactive} фишек)",
 				},
 			},
 			j_cry_cryptidmoment = {
-				name = "M Chain",
+				name = "Цепь М",
 				text = {
-					"Sell this card to",
-					"add {C:money}$#1#{} of {C:attention}sell value{}",
-					"to every {C:attention}Joker{} card",
+					"Продайте эту карту",
+					"чтобы добавить {C:money}$#1#{} {C:attention}к цене продажи{}",
+					"каждого {C:attention}джокера{}",
 				},
 			},
 			j_cry_cube = {
@@ -805,10 +805,10 @@ return {
 			j_cry_curse_sob = {
 				name = "Sob",
 				text = {
-					"{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}run...{}",
-					"{C:edition,E:1}you cannot{} {C:cry_ascendant,E:1}hide...{}",
-					"{C:dark_edition,E:1}you cannot escape...{}",
-					"{C:inactive}(Must have room){}",
+					"{C:edition,E:1}ты не можешь{} {C:cry_ascendant,E:1}бежать...{}",
+					"{C:edition,E:1}ты не можешь{} {C:cry_ascendant,E:1}прятаться...{}",
+					"{C:dark_edition,E:1}ты не можешь...{}",
+					"{C:inactive}(Должно быть место){}",
 				},
 			},
 			j_cry_cursor = {
