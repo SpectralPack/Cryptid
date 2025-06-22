@@ -2870,6 +2870,7 @@ return {
 					"{C:attention}#2#",
 				},
 			},
+			-- i wanted to correct this typo, but its not even used anywhere?? (well, except other localizations lol)
 			j_cry_annihalation = {
 				name = "The Complete and Utter Annihilation of Everything That Makes Balatro Sacred",
 				text = {
@@ -3109,7 +3110,6 @@ return {
 					"{C:chips}+#4#{} chip#<s>4#",
 				},
 			},
-
 			c_cry_universe = {
 				name = Cryptid_config.family_mode and "Universe" or "The Universe In Its Fucking Entirety",
 				text = {
@@ -3351,7 +3351,7 @@ return {
 				text = {
 					"applies the {C:attention}effects{}",
 					"and {C:attention}special effects{}",
-					"of {C:attention}every{} slevee won",
+					"of {C:attention}every{} sleeve won",
 					"with {C:gold}Gold Stake{}",
 					"{C:red}WIP",
 				},
@@ -4534,6 +4534,7 @@ return {
 					"unredeemed each round",
 				},
 			},
+			-- TODO fix typo
 			cry_perishable_consumeable = {
 				name = "Perishable",
 				text = {
