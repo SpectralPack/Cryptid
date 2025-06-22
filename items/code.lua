@@ -2907,6 +2907,7 @@ local cryfunction = {
 local function_sticker = {
 	dependencies = {
 		items = {
+			"set_cry_code",
 			"c_cry_cryfunction",
 		},
 	},
@@ -2914,14 +2915,14 @@ local function_sticker = {
 	atlas = "sticker",
 	pos = { x = 3, y = 5 },
 	config = {},
-	key = "cry_function_sticker_desc",
+	key = "cry_function_sticker",
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
 	order = 607,
 	draw = function(self, card) --don't draw shine
-		G.shared_stickers[self.key].role.draw_major = card
-		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+		G.shared_stickers["cry_function_sticker"].role.draw_major = card
+		G.shared_stickers["cry_function_sticker"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
 	end,
 	-- loc_vars = function(self, info_queue, card)
 	-- 	info_queue[#info_queue + 1] = {
@@ -2952,6 +2953,8 @@ local function_sticker = {
 			return "None"
 		end
 		return {
+			key = "cry_function_sticker",
+			set = "Other",
 			vars = {
 				lclze(1),
 				lclze(2),

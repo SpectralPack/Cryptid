@@ -308,6 +308,7 @@ local sync_catalyst = {
 		},
 		art = {
 			"Ein13",
+			"George The Rat",
 		},
 		code = {
 			"Math",
@@ -995,7 +996,7 @@ local number_blocks = {
 			"Jevonn",
 		},
 		art = {
-			"Jevonn",
+			"George The Rat",
 		},
 		code = {
 			"Math",
@@ -1882,7 +1883,8 @@ local soccer = {
 			"Mjiojio",
 		},
 		art = {
-			"HexaCryonic",
+			"Ein13",
+			"George The Rat",
 		},
 		code = {
 			"Jevonn",
@@ -2078,7 +2080,7 @@ local spectrogram = {
 			"AlexZGreat",
 		},
 		art = {
-			"SMG9000",
+			"Ein13",
 		},
 		code = {
 			"AlexZGreat",
@@ -2472,7 +2474,6 @@ local starfruit = {
 	atlas = "atlasepic",
 	pos = { x = 4, y = 5 },
 	config = { emult = 2, emult_mod = 0.2 },
-	immutable = true,
 	pools = { ["Food"] = true },
 	calculate = function(self, card, context)
 		if context.joker_main then

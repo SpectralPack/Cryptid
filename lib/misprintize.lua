@@ -462,11 +462,14 @@ function Cryptid.manipulate(card, args)
 				end
 			end
 		end
-		-- if card.ability.consumeable then
-		-- 	for k, v in pairs(card.ability.consumeable) do
-		-- 		--card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
-		-- 	end
-		-- end
+		local config = copy_table(card.config.center.config)
+		if card.ability.consumeable then
+			for k, v in pairs(card.ability.consumeable) do
+				card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
+			end
+		end
+		--ew ew ew ew
+		G.P_CENTERS[card.config.center.key].config = config
 	end
 end
 

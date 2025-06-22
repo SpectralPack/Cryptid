@@ -14,23 +14,6 @@ SMODS.DrawStep({
 						self.params.viewed_back
 					) == "table" and self.params.viewed_back or (self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back))
 				or Back(G.P_CENTERS["b_red"])
-			if currentBack.effect.config.cry_force_edition and not currentBack.effect.config.cry_antimatter then
-				if currentBack.effect.config.cry_force_edition_shader then
-					self.children.back:draw_shader(
-						currentBack.effect.config.cry_force_edition_shader,
-						nil,
-						self.ARGS.send_to_shader,
-						true
-					)
-				else
-					self.children.back:draw_shader(
-						currentBack.effect.config.cry_force_edition,
-						nil,
-						self.ARGS.send_to_shader,
-						true
-					)
-				end
-			end
 			if
 				currentBack.effect.config.cry_force_seal
 				and not currentBack.effect.config.hide_seal
