@@ -1015,7 +1015,8 @@ local sapphire_stamp = {
 	set_blind = function(self, reset, silent)
 		if not reset then
 			G.GAME.stamp_mod = true
-			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + 1
+			SMODS.change_play_limit(1)
+			SMODS.change_discard_limit(1)
 		end
 	end,
 	defeat = function(self, silent)
@@ -1023,7 +1024,8 @@ local sapphire_stamp = {
 			G.GAME.stamp_mod = nil
 		end
 		if not G.GAME.blind.disabled then
-			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
+			SMODS.change_play_limit(-1)
+			SMODS.change_discard_limit(-1)
 		end
 	end,
 	disable = function(self, silent)
@@ -1031,7 +1033,8 @@ local sapphire_stamp = {
 			G.GAME.stamp_mod = nil
 		end
 		if not G.GAME.blind.disabled then
-			G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 1
+			SMODS.change_play_limit(-1)
+			SMODS.change_discard_limit(-1)
 		end
 	end,
 }
