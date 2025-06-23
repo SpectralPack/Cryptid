@@ -750,8 +750,8 @@ local mosaic = {
 	get_weight = function(self)
 		return G.GAME.edition_rate * self.weight
 	end,
-	loc_vars = function(self, info_queue)
-		return { vars = { self.config.x_chips } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card and card.edition and card.edition.x_chips or self.config.x_chips } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -764,7 +764,7 @@ local mosaic = {
 				and context.cardarea == G.play
 			)
 		then
-			return { x_chips = self.config.x_chips } -- updated value
+			return { x_chips = card and card.edition and card.edition.x_chips or self.config.x_chips } -- updated value
 		end
 		if context.joker_main then
 			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
@@ -1177,8 +1177,8 @@ local astral = {
 		return G.GAME.edition_rate * self.weight
 	end,
 	config = { e_mult = 1.1, trigger = nil },
-	loc_vars = function(self, info_queue)
-		return { vars = { self.config.e_mult } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card and card.edition and card.edition.e_mult or self.config.e_mult } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -1191,7 +1191,7 @@ local astral = {
 				and context.cardarea == G.play
 			)
 		then
-			return { e_mult = self.config.e_mult } -- updated value
+			return { e_mult = card and card.edition and card.edition.e_mult or self.config.e_mult } -- updated value
 		end
 		if context.joker_main then
 			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
@@ -1257,10 +1257,11 @@ local blurred = {
 			)
 		then
 			local extra_retrigger = pseudorandom("cry_blurred")
-				<= G.GAME.probabilities.normal / self.config.retrigger_chance
+				<= G.GAME.probabilities.normal / (card and card.edition and card.edition.retrigger_chance or self.config.retrigger_chance)
 			return {
 				message = localize("cry_again_q"),
-				repetitions = self.config.retriggers + (extra_retrigger and self.config.extra_retriggers or 0),
+				repetitions = (card and card.edition and card.edition.retriggers or self.config.retriggers) + 
+							  (extra_retrigger and card and card.edition and card.edition.extra_retriggers or self.config.extra_retriggers or 0),
 				card = card,
 			}
 		end
@@ -1329,9 +1330,13 @@ local noisy = {
 				and context.cardarea == G.play
 			)
 		then
+			local min_mult = card and card.edition and card.edition.min_mult or self.config.min_mult
+			local max_mult = card and card.edition and card.edition.max_mult or self.config.max_mult
+			local min_chips = card and card.edition and card.edition.min_chips or self.config.min_chips
+			local max_chips = card and card.edition and card.edition.max_chips or self.config.max_chips
 			return {
-				mult = pseudorandom("cry_noisy_mult", self.config.min_mult, self.config.max_mult),
-				chips = pseudorandom("cry_noisy_chips", self.config.min_chips, self.config.max_chips),
+				mult = pseudorandom("cry_noisy_mult", min_mult, max_mult),
+				chips = pseudorandom("cry_noisy_chips", min_chips, max_chips),
 			} -- updated value
 		end
 		if context.joker_main then
@@ -1681,8 +1686,8 @@ local jollyedition = {
 	shader = "m",
 	disable_base_shader = true,
 	disable_shadow = true,
-	loc_vars = function(self, info_queue)
-		return { vars = { self.config.mult } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card and card.edition and card.edition.mult or self.config.mult } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -1695,7 +1700,7 @@ local jollyedition = {
 				and context.cardarea == G.play
 			)
 		then
-			return { mult = self.config.mult } -- updated value
+			return { card and card.edition and card.edition.mult or self.config.mult } -- updated value
 		end
 		if context.joker_main then
 			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
@@ -1818,18 +1823,18 @@ local glass_edition = {
 	weight = 7,
 	extra_cost = 2,
 	config = { x_mult = 3, shatter_chance = 8, trigger = nil },
-	loc_vars = function(self, info_queue)
+	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				(self.config.shatter_chance - 1),
-				self.config.shatter_chance,
-				self.config.x_mult,
+				((card and card.edition and card.edition.shatter_chance or self.config.shatter_chance) - 1),
+				(card and card.edition and card.edition.shatter_chance or self.config.shatter_chance),
+				card and card.edition and card.edition.x_mult or self.config.x_mult,
 			},
 		}
 	end,
 	calculate = function(self, card, context)
 		if context.edition and context.cardarea == G.jokers and card.config.trigger then
-			return { x_mult = self.config.x_mult }
+			return { x_mult = card and card.edition and card.edition.x_mult or self.config.x_mult }
 		end
 
 		if
@@ -1947,8 +1952,8 @@ local gold_edition = {
 	extra_cost = 4,
 	in_shop = true,
 	config = { dollars = 2, active = true },
-	loc_vars = function(self, info_queue)
-		return { vars = { self.config.dollars } }
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card and card.edition and card.edition.dollars or self.config.dollars } }
 	end,
 	sound = {
 		sound = "cry_e_golden",
@@ -1974,7 +1979,7 @@ local gold_edition = {
 				and context.consumeable == card
 			)
 		then
-			return { p_dollars = self.config.dollars } -- updated value
+			return { p_dollars = card and card.edition and card.edition.dollars or self.config.dollars } -- updated value
 		end
 	end,
 }
