@@ -975,15 +975,11 @@ local conduit = {
 				if not highlighted_1.edition or not highlighted_1.edition.cry_double_sided then
 					highlighted_1:flip()
 				end
-				if highlighted_2.edition then
-					highlighted_1:set_edition(highlighted_2.edition)
-				end
+				highlighted_1:set_edition(highlighted_2.edition)
 				if not highlighted_2.edition or not highlighted_2.edition.cry_double_sided then
 					highlighted_2:flip()
 				end
-				if one_edition then
-					highlighted_2:set_edition(one_edition)
-				end
+				highlighted_2:set_edition(one_edition)
 				play_sound("card1", percent)
 				highlighted_1:juice_up(0.3, 0.3)
 				highlighted_2:juice_up(0.3, 0.3)
