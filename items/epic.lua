@@ -421,7 +421,7 @@ local canvas = {
 			"Mystic Misclick",
 		},
 		art = {
-			"Mystic Misclick",
+			"Lil. Mr. Slipstream",
 		},
 		code = {
 			"Math",
@@ -1044,7 +1044,7 @@ local double_scale = {
 			"Mystic Misclick",
 		},
 		art = {
-			"AlezZGreat",
+			"lord.ruby",
 		},
 		code = {
 			"Math",
