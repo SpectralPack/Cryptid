@@ -1257,11 +1257,16 @@ local blurred = {
 			)
 		then
 			local extra_retrigger = pseudorandom("cry_blurred")
-				<= G.GAME.probabilities.normal / (card and card.edition and card.edition.retrigger_chance or self.config.retrigger_chance)
+				<= G.GAME.probabilities.normal
+					/ (card and card.edition and card.edition.retrigger_chance or self.config.retrigger_chance)
 			return {
 				message = localize("cry_again_q"),
-				repetitions = (card and card.edition and card.edition.retriggers or self.config.retriggers) + 
-							  (extra_retrigger and card and card.edition and card.edition.extra_retriggers or self.config.extra_retriggers or 0),
+				repetitions = (card and card.edition and card.edition.retriggers or self.config.retriggers)
+					+ (
+						extra_retrigger and card and card.edition and card.edition.extra_retriggers
+						or self.config.extra_retriggers
+						or 0
+					),
 				card = card,
 			}
 		end
