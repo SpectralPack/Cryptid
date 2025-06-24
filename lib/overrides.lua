@@ -746,7 +746,8 @@ function SMODS.create_mod_badges(obj, badges)
 			}
 		end
 	end
-	if Cryptid.safe_get(G, "ACTIVE_MOD_UI", "id") == "Cryptid" and obj and not obj.force_gameset then
+	local id = obj and obj.mod and obj.mod.id
+	if Cryptid.safe_get(G, "ACTIVE_MOD_UI", "id") == (id) and obj and not obj.force_gameset and Cryptid.mod_gameset_whitelist[id] then
 		local set = Cryptid.gameset(obj)
 		if set == "disabled" or obj.set == "Content Set" then
 			return
