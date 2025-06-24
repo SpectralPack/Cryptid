@@ -453,31 +453,31 @@ function Cryptid.manipulate(card, args)
 						end
 					end
 				end
-				local config = copy_table(card.config.center.config)
-				if card.ability.consumeable then
-					for k, v in pairs(card.ability.consumeable) do
-						card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
-					end
-				end
-				--ew ew ew ew
-				G.P_CENTERS[card.config.center.key].config = config
-				if not Cryptid.base_values[card.config.center.key] then
-					Cryptid.base_values[card.config.center.key] = {}
-					for i, v in pairs(card.ability) do
-						if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) < to_big(0) then
-							Cryptid.base_values[card.config.center.key][i .. "ability"] = v
-						elseif type(v) == "table" then
-							for i2, v2 in pairs(v) do
-								Cryptid.base_values[card.config.center.key][i2 .. i] = v2
-							end
-						end
-					end
+			end
+			local config = copy_table(card.config.center.config)
+			if card.ability.consumeable then
+				for k, v in pairs(card.ability.consumeable) do
+					card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
 				end
 			end
 			if not args.bypass_checks and not args.no_deck_effects then
 				Cryptid.with_deck_effects(card, func)
 			else
 				func(card)
+			end
+			--ew ew ew ew
+			G.P_CENTERS[card.config.center.key].config = config
+			if not Cryptid.base_values[card.config.center.key] then
+				Cryptid.base_values[card.config.center.key] = {}
+				for i, v in pairs(config) do
+					if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) ~= to_big(0) then
+						Cryptid.base_values[card.config.center.key][i .. "ability"] = v
+					elseif type(v) == "table" then
+						for i2, v2 in pairs(v) do
+							Cryptid.base_values[card.config.center.key][i2 .. i] = v2
+						end
+					end
+				end
 			end
 		end
 		return true
@@ -497,9 +497,10 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 			if args.dont_stack then
 				if
 					Cryptid.base_values[card.config.center.key]
-					and Cryptid.base_values[card.config.center.key][i .. ref_value]
+					and (Cryptid.base_values[card.config.center.key][i .. ref_value] or 
+					(ref_value == "ability" and Cryptid.base_values[card.config.center.key][i .. "consumeable"]))
 				then
-					num = Cryptid.base_values[card.config.center.key][i .. ref_value]
+					num = Cryptid.base_values[card.config.center.key][i .. ref_value] or Cryptid.base_values[card.config.center.key][i .. "consumeable"]
 				end
 			end
 			if args.big ~= nil then
