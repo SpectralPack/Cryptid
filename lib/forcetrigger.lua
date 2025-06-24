@@ -21,13 +21,15 @@ function Cryptid.forcetrigger(card, context)
 	end
 	local results = {}
 	local check = Cryptid.forcetriggerVanillaCheck(card)
-	G.E_MANAGER:add_event(Event({
-		trigger = "before",
-		func = function()
-			play_sound("cry_forcetrigger", 1, 0.6)
-			return true
-		end,
-	}))
+	if not Talisman.config_file.disable_anims then
+		G.E_MANAGER:add_event(Event({
+			trigger = "before",
+			func = function()
+				play_sound("cry_forcetrigger", 1, 0.6)
+				return true
+			end,
+		}))
+	end
 	if not check and card.ability.set == "Joker" then
 		local demicontext = Cryptid.deep_copy(context)
 		demicontext.forcetrigger = true

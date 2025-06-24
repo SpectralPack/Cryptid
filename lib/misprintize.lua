@@ -421,18 +421,6 @@ function Cryptid.manipulate(card, args)
 				end)
 			end
 		end
-		if not Cryptid.base_values[card.config.center.key] then
-			Cryptid.base_values[card.config.center.key] = {}
-			for i, v in pairs(card.ability) do
-				if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) < to_big(0) then
-					Cryptid.base_values[card.config.center.key][i .. "ability"] = v
-				elseif type(v) == "table" then
-					for i2, v2 in pairs(v) do
-						Cryptid.base_values[card.config.center.key][i2 .. i] = v2
-					end
-				end
-			end
-		end
 		Cryptid.manipulate_table(card, card, "ability", args)
 		if card.base then
 			Cryptid.manipulate_table(card, card, "base", args)
@@ -470,6 +458,18 @@ function Cryptid.manipulate(card, args)
 		end
 		--ew ew ew ew
 		G.P_CENTERS[card.config.center.key].config = config
+		if not Cryptid.base_values[card.config.center.key] then
+			Cryptid.base_values[card.config.center.key] = {}
+			for i, v in pairs(card.ability) do
+				if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) < to_big(0) then
+					Cryptid.base_values[card.config.center.key][i .. "ability"] = v
+				elseif type(v) == "table" then
+					for i2, v2 in pairs(v) do
+						Cryptid.base_values[card.config.center.key][i2 .. i] = v2
+					end
+				end
+			end
+		end
 	end
 end
 
