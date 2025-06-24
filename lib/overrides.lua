@@ -318,6 +318,7 @@ Cryptid.C = {
 cry_pointer_dt = 0
 cry_jimball_dt = 0
 cry_glowing_dt = 0
+cry_glowing_dt2 = 0
 function Game:update(dt)
 	upd(self, dt)
 	if not Cryptid.member_count_delay then
@@ -354,6 +355,7 @@ function Game:update(dt)
 		cry_pointer_dt = cry_pointer_dt + dt
 		cry_jimball_dt = cry_jimball_dt + dt
 		cry_glowing_dt = cry_glowing_dt + dt
+		cry_glowing_dt2 = cry_glowing_dt2 + dt
 	end
 	--Update sprite positions each frame on certain cards to give the illusion of an animated card
 	if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
@@ -377,6 +379,19 @@ function Game:update(dt)
 	if G.P_CENTERS and G.P_CENTERS.b_cry_glowing and cry_glowing_dt > 0.1 then
 		cry_glowing_dt = 0
 		local glowingobj = G.P_CENTERS.b_cry_glowing
+		if glowingobj.pos.x == 1 and glowingobj.pos.y == 4 then
+			glowingobj.pos.x = 0
+			glowingobj.pos.y = 0
+		elseif glowingobj.pos.x < 4 then
+			glowingobj.pos.x = glowingobj.pos.x + 1
+		elseif glowingobj.pos.y < 6 then
+			glowingobj.pos.x = 0
+			glowingobj.pos.y = glowingobj.pos.y + 1
+		end
+	end
+	if G.P_CENTERS and G.P_CENTERS.sleeve_cry_glowing_sleeve and cry_glowing_dt2 > 0.1 then
+		cry_glowing_dt2 = 0
+		local glowingobj = G.P_CENTERS.sleeve_cry_glowing_sleeve
 		if glowingobj.pos.x == 1 and glowingobj.pos.y == 4 then
 			glowingobj.pos.x = 0
 			glowingobj.pos.y = 0
