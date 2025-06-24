@@ -398,7 +398,7 @@ function Card:get_nominal(mod)
 end
 
 function Cryptid.manipulate(card, args)
-	if not Card.no(card, "immutable", true) or args.bypass_checks then
+	if not Card.no(card, "immutable", true) or (args and args.bypass_checks) then
 		if not args then
 			return Cryptid.manipulate(card, {
 				min = G.GAME.modifiers.cry_misprint_min,
