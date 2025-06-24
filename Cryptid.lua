@@ -187,6 +187,45 @@ function SMODS.injectItems(...)
 			end
 		end
 	end
+	G.P_CENTERS.j_stencil.immutable = true
+	G.P_CENTERS.j_four_fingers.immutable = true
+	G.P_CENTERS.j_mime.immutable = true
+	G.P_CENTERS.j_ceremonial.immutable = true
+	G.P_CENTERS.j_marble.immutable = true
+	G.P_CENTERS.j_dusk.immutable = true
+	G.P_CENTERS.j_raised_fist.immutable = true
+	G.P_CENTERS.j_chaos.immutable = true
+	G.P_CENTERS.j_hack.immutable = true
+	G.P_CENTERS.j_pareidolia.immutable = true
+	G.P_CENTERS.j_supernova.immutable = true
+	G.P_CENTERS.j_space.immutable = true
+	G.P_CENTERS.j_dna.immutable = true
+	G.P_CENTERS.j_splash.immutable = true
+	G.P_CENTERS.j_sixth_sense.immutable = true
+	G.P_CENTERS.j_superposition.immutable = true
+	G.P_CENTERS.j_seance.immutable = true
+	G.P_CENTERS.j_riff_raff.immutable = true
+	G.P_CENTERS.j_shortcut.immutable = true
+	G.P_CENTERS.j_midas_mask.immutable = true
+	G.P_CENTERS.j_luchador.immutable = true
+	G.P_CENTERS.j_fortune_teller.immutable = true
+	G.P_CENTERS.j_diet_cola.immutable = true
+	G.P_CENTERS.j_mr_bones.immutable = true
+	G.P_CENTERS.j_sock_and_buskin.immutable = true
+	G.P_CENTERS.j_swashbuckler.immutable = true
+	G.P_CENTERS.j_certificate.immutable = true
+	G.P_CENTERS.j_smeared.immutable = true
+	G.P_CENTERS.j_ring_master.immutable = true
+	G.P_CENTERS.j_blueprint.immutable = true
+	G.P_CENTERS.j_oops.immutable = true
+	G.P_CENTERS.j_invisible.immutable = true
+	G.P_CENTERS.j_brainstorm.immutable = true
+	G.P_CENTERS.j_shoot_the_moon.immutable = true
+	G.P_CENTERS.j_cartomancer.immutable = true
+	G.P_CENTERS.j_astronomer.immutable = true
+	G.P_CENTERS.j_burnt.immutable = true
+	G.P_CENTERS.j_chicot.immutable = true
+	G.P_CENTERS.j_perkeo.immutable = true
 	Cryptid.inject_pointer_aliases()
 end
 

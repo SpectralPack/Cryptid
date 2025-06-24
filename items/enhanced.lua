@@ -325,56 +325,6 @@ return {
 	init = function()
 		local sa = Card.set_ability
 		function Card:set_ability(center, y, z)
-			--adding immutable to cards because
-			-- A they are hardcoded and unaffected by misprintize but still have a description that changes because of it
-			-- B so they ignore misprintize in order to keep vanilla descripton accurate (ex hack shouldn't be able to trigger more than once)
-			-- C so Gemini doesn't say they are compatible when they are not
-			-- D Invisible Joker
-
-			if
-				center
-				and (
-					center.name == "Fortune Teller"
-					or center.name == "Shoot the Moon"
-					or center.name == "Riff-raff"
-					or center.name == "Chaos the Clown"
-					or center.name == "Dusk"
-					or center.name == "Mime"
-					or center.name == "Hack"
-					or center.name == "Sock and Buskin"
-					or center.name == "Invisible Joker"
-					or center.name == "Swashbuckler"
-					or center.name == "Smeared Joker"
-					or center.name == "Certificate"
-					or center.name == "Mr. Bones"
-					or center.name == "Diet Cola"
-					or center.name == "Luchador"
-					or center.name == "Midas Mask"
-					or center.name == "Shortcut"
-					or center.name == "Seance"
-					or center.name == "Superposition"
-					or center.name == "Sixth Sense"
-					or center.name == "DNA"
-					or center.name == "Splash"
-					or center.name == "Supernova"
-					or center.name == "Pareidolia"
-					or center.name == "Raised Fist"
-					or center.name == "Marble Joker"
-					or center.name == "Four Fingers"
-					or center.name == "Joker Stencil"
-					or center.name == "Showman"
-					or center.name == "Blueprint"
-					or center.name == "Oops! All 6s"
-					or center.name == "Brainstorm"
-					or center.name == "Cartomancer"
-					or center.name == "Astronomer"
-					or center.name == "Burnt Joker"
-					or center.name == "Chicot"
-					or center.name == "Perkeo"
-				)
-			then
-				self.config.center.immutable = true
-			end
 			G.P_CENTERS.j_hanging_chad.misprintize_caps = { extra = 40 }
 			G.P_CENTERS.c_high_priestess.misprintize_caps = { planets = 100 }
 			G.P_CENTERS.c_emperor.misprintize_caps = { tarots = 100 }
