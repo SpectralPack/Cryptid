@@ -405,7 +405,7 @@ function Cryptid.manipulate(card, args)
 				max = G.GAME.modifiers.cry_misprint_max,
 				type = "X",
 				dont_stack = true,
-				bypass_checks = true,
+				no_deck_effects = true,
 			})
 		else
 			local func = function(card)
