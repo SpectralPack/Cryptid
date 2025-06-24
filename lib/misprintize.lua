@@ -398,78 +398,88 @@ function Card:get_nominal(mod)
 end
 
 function Cryptid.manipulate(card, args)
-	if not args then
-		Cryptid.manipulate(card, {
-			min = G.GAME.modifiers.cry_misprint_min,
-			max = G.GAME.modifiers.cry_misprint_max,
-			type = "X",
-			dont_stack = true,
-		})
-	else
-		if not args.type then
-			args.type = "X"
-		end
-		--hardcoded whatever
-		if card.config.center.set == "Booster" then
-			args.big = false
-		end
-		local caps = card.config.center.misprintize_caps or {}
-		if card.infinifusion then
-			if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then
-				calculate_infinifusion(card, nil, function(i)
-					Cryptid.manipulate(card, args)
-				end)
-			end
-		end
-		Cryptid.manipulate_table(card, card, "ability", args)
-		if card.base then
-			Cryptid.manipulate_table(card, card, "base", args)
-		end
-		if G.GAME.modifiers.cry_misprint_min then
-			--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
-			card.misprint_cost_fac = 1
-				/ Cryptid.log_random(
-					pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-					override and override.min or G.GAME.modifiers.cry_misprint_min,
-					override and override.max or G.GAME.modifiers.cry_misprint_max
-				)
-			card:set_cost()
-		end
-		if caps then
-			for i, v in pairs(caps) do
-				if type(v) == "table" and not v.tetrate then
-					for i2, v2 in pairs(v) do
-						if to_big(card.ability[i][i2]) > to_big(v2) then
-							card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
+	if not Card.no(card, "immutable", true) or args.bypass_checks then 
+		if not args then
+			return Cryptid.manipulate(card, {
+				min = G.GAME.modifiers.cry_misprint_min,
+				max = G.GAME.modifiers.cry_misprint_max,
+				type = "X",
+				dont_stack = true,
+			})
+		else
+			local func = function(card)
+				if not args.type then
+					args.type = "X"
+				end
+				--hardcoded whatever
+				if card.config.center.set == "Booster" then
+					args.big = false
+				end
+				local caps = card.config.center.misprintize_caps or {}
+				if card.infinifusion then
+					if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then
+						calculate_infinifusion(card, nil, function(i)
+							Cryptid.manipulate(card, args)
+						end)
+					end
+				end
+				Cryptid.manipulate_table(card, card, "ability", args)
+				if card.base then
+					Cryptid.manipulate_table(card, card, "base", args)
+				end
+				if G.GAME.modifiers.cry_misprint_min then
+					--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
+					card.misprint_cost_fac = 1
+						/ Cryptid.log_random(
+							pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
+							override and override.min or G.GAME.modifiers.cry_misprint_min,
+							override and override.max or G.GAME.modifiers.cry_misprint_max
+						)
+					card:set_cost()
+				end
+				if caps then
+					for i, v in pairs(caps) do
+						if type(v) == "table" and not v.tetrate then
+							for i2, v2 in pairs(v) do
+								if to_big(card.ability[i][i2]) > to_big(v2) then
+									card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
+								end
+							end
+						elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
+							if to_big(card.ability[i]) > to_big(v) then
+								card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
+							end
 						end
 					end
-				elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
-					if to_big(card.ability[i]) > to_big(v) then
-						card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
+				end
+				local config = copy_table(card.config.center.config)
+				if card.ability.consumeable then
+					for k, v in pairs(card.ability.consumeable) do
+						card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
+					end
+				end
+				--ew ew ew ew
+				G.P_CENTERS[card.config.center.key].config = config
+				if not Cryptid.base_values[card.config.center.key] then
+					Cryptid.base_values[card.config.center.key] = {}
+					for i, v in pairs(card.ability) do
+						if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) < to_big(0) then
+							Cryptid.base_values[card.config.center.key][i .. "ability"] = v
+						elseif type(v) == "table" then
+							for i2, v2 in pairs(v) do
+								Cryptid.base_values[card.config.center.key][i2 .. i] = v2
+							end
+						end
 					end
 				end
 			end
-		end
-		local config = copy_table(card.config.center.config)
-		if card.ability.consumeable then
-			for k, v in pairs(card.ability.consumeable) do
-				card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
+			if not args.bypass_checks and not args.no_deck_effects then
+				Cryptid.with_deck_effects(card, func)
+			else
+				func(card)
 			end
 		end
-		--ew ew ew ew
-		G.P_CENTERS[card.config.center.key].config = config
-		if not Cryptid.base_values[card.config.center.key] then
-			Cryptid.base_values[card.config.center.key] = {}
-			for i, v in pairs(card.ability) do
-				if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) < to_big(0) then
-					Cryptid.base_values[card.config.center.key][i .. "ability"] = v
-				elseif type(v) == "table" then
-					for i2, v2 in pairs(v) do
-						Cryptid.base_values[card.config.center.key][i2 .. i] = v2
-					end
-				end
-			end
-		end
+		return true
 	end
 end
 

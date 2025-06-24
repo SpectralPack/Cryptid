@@ -4040,9 +4040,7 @@ local multiply = {
 			cards[1].config.cry_multiply = 1
 		end
 		cards[1].config.cry_multiply = cards[1].config.cry_multiply * 2
-		Cryptid.with_deck_effects(cards[1], function(card)
-			Cryptid.manipulate(card, { value = 2 })
-		end)
+		Cryptid.manipulate(cards[1], { value = 2 })
 	end,
 	init = function(self)
 		--reset Jokers at end of round
@@ -4052,9 +4050,7 @@ local multiply = {
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].config.cry_multiply then
 					m = G.jokers.cards[i].config.cry_multiply
-					Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-						Cryptid.manipulate(card, { value = 1 / m })
-					end)
+					Cryptid.manipulate(G.jokers.cards[i], { value = 1 / m })
 					G.jokers.cards[i].config.cry_multiply = nil
 				end
 			end

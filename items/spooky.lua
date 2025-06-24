@@ -1571,16 +1571,12 @@ local jawbreaker = {
 				if G.jokers.cards[i] == card then
 					if i > 1 then
 						if not Card.no(G.jokers.cards[i - 1], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i - 1], function(card)
-								Cryptid.manipulate(card, { value = 2 })
-							end)
+								Cryptid.manipulate(G.jokers.cards[i - 1], { value = 2 })
 						end
 					end
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(card)
-								Cryptid.manipulate(card, { value = 2 })
-							end)
+								Cryptid.manipulate(G.jokers.cards[i + 1], { value = 2 })
 						end
 					end
 				end
@@ -1616,16 +1612,12 @@ local jawbreaker = {
 				if G.jokers.cards[i] == card then
 					if i > 1 then
 						if not Card.no(G.jokers.cards[i - 1], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i - 1], function(card)
-								Cryptid.manipulate(card, { value = 2 })
-							end)
+								Cryptid.manipulate(G.jokers.cards[i - 1], { value = 2 })
 						end
 					end
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(card)
-								Cryptid.manipulate(card, { value = 2 })
-							end)
+								Cryptid.manipulate(G.jokers.cards[i + 1], { value = 2 })
 						end
 					end
 				end

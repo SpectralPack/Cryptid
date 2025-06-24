@@ -185,9 +185,7 @@ if CardSleeves then
 			if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
 				for i = 1, #G.jokers.cards do
 					if not Card.no(G.jokers.cards[i], "immutable", true) then
-						Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-							Cryptid.manipulate(card, { value = 1.25 })
-						end)
+							Cryptid.manipulate(G.jokers.cards[i], { value = 1.25 })
 					end
 				end
 			end
@@ -620,9 +618,7 @@ if CardSleeves then
 				if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
 					for i = 1, #G.jokers.cards do
 						if not Card.no(G.jokers.cards[i], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-								Cryptid.manipulate(card, { value = 1.25 })
-							end)
+								Cryptid.manipulate(G.jokers.cards[i], { value = 1.25 })
 						end
 					end
 				end
@@ -1439,9 +1435,7 @@ if CardSleeves then
 						or skip
 					then
 						for i = 1, #G.jokers.cards do
-							Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-								Cryptid.manipulate(card, { value = 1.25 })
-							end)
+								Cryptid.manipulate(G.jokers.cards[i], { value = 1.25 })
 						end
 					end
 
