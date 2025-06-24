@@ -497,10 +497,13 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 			if args.dont_stack then
 				if
 					Cryptid.base_values[card.config.center.key]
-					and (Cryptid.base_values[card.config.center.key][i .. ref_value] or 
-					(ref_value == "ability" and Cryptid.base_values[card.config.center.key][i .. "consumeable"]))
+					and (
+						Cryptid.base_values[card.config.center.key][i .. ref_value]
+						or (ref_value == "ability" and Cryptid.base_values[card.config.center.key][i .. "consumeable"])
+					)
 				then
-					num = Cryptid.base_values[card.config.center.key][i .. ref_value] or Cryptid.base_values[card.config.center.key][i .. "consumeable"]
+					num = Cryptid.base_values[card.config.center.key][i .. ref_value]
+						or Cryptid.base_values[card.config.center.key][i .. "consumeable"]
 				end
 			end
 			if args.big ~= nil then
