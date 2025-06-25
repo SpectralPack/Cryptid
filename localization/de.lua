@@ -1787,7 +1787,7 @@ return {
 				name = "Formidiulosus",
 				text = {
 					"Wenn ein {X:cry_cursed,C:white}Verfluchter{} Joker erhalten wird, zerstöre ihn,",
-					"eErstelle {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Süßigkeit#<en>1#{} am Ende des Shops,",
+					"Erstelle {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Süßigkeit#<en>1#{} am Ende des Shops,",
 					"{X:dark_edition,C:white}+^#2#{} Mult für jeden {C:cry_candy}Süßigkeiten-Joker{} den du besitzt",
 					"{C:inactive}(Aktuell {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
 				},
@@ -3513,6 +3513,7 @@ return {
 			},
 		},
 		Stake = {
+			-- TODO translate colours...
 			stake_cry_pink = {
 				name = "Pinker Einsatz",
 				colour = "Pink", --this is used for auto-generated sticker localization
@@ -3523,7 +3524,7 @@ return {
 			},
 			stake_cry_brown = {
 				name = "Brauner Einsatz",
-				colour = "Brown",
+				colour = "Braun",
 				text = {
 					"Alle {C:attention}Sticker{} sind",
 					"gegenseitig Kompatibel",
@@ -3531,7 +3532,7 @@ return {
 			},
 			stake_cry_yellow = {
 				name = "Gelber Einsatz",
-				colour = "Yellow",
+				colour = "Gelb",
 				text = {
 					"{C:attention}Sticker{} können auf",
 					"allen kaufbaren Gegenständen erscheinen",
@@ -3554,28 +3555,28 @@ return {
 			},
 			stake_cry_gray = {
 				name = "Grauer Einsatz",
-				colour = "Gray",
+				colour = "Grau",
 				text = {
 					"Aktualisierungen erhöhen sich um {C:attention}$2{}",
 				},
 			},
 			stake_cry_crimson = {
 				name = "Karmesin Einsatz",
-				colour = "Crimson",
+				colour = "Karmesin",
 				text = {
 					"Gutscheine füllen sich auf allen {C:attention}geraden{} Antes auf",
 				},
 			},
 			stake_cry_diamond = {
 				name = "Diamant Einsatz",
-				colour = "Diamond",
+				colour = "Diamant",
 				text = {
 					"Zum Gewinnen must du Ante {C:attention}10{} besiegen",
 				},
 			},
 			stake_cry_amber = {
 				name = "Bernstein Einsatz",
-				colour = "Amber",
+				colour = "Bernstein",
 				text = {
 					"{C:attention}-1{} Booster Paket Slots",
 				},
@@ -3597,7 +3598,7 @@ return {
 			},
 			stake_cry_ruby = {
 				name = "Rubin Einsatz",
-				colour = "Ruby",
+				colour = "Rubin",
 				text = {
 					"{C:attention}Big{} Blinds können",
 					"{C:attention}Boss{} Blinds werden",
@@ -3612,7 +3613,7 @@ return {
 			},
 			stake_cry_sapphire = {
 				name = "Saphir Einsatz",
-				colour = "Sapphire",
+				colour = "Saphir",
 				text = {
 					"Verliere {C:attention}25%{} deines momentanen Geldes",
 					"am Ende der Ante",
@@ -3621,7 +3622,7 @@ return {
 			},
 			stake_cry_emerald = {
 				name = "Smaragd Einsatz",
-				colour = "Emerald",
+				colour = "Smaragd",
 				text = {
 					"Karten, Pakete und Gutscheine",
 					"können mit {C:attention}Gesicht nach unten{} sein",
@@ -3630,14 +3631,14 @@ return {
 			},
 			stake_cry_platinum = {
 				name = "Platin Einsatz",
-				colour = "Platinum",
+				colour = "Platin",
 				text = {
 					"Small Blinds sind {C:attention}entfernt{}",
 				},
 			},
 			stake_cry_twilight = {
 				name = "Zwielichtiger Einsatz",
-				colour = "Twilight",
+				colour = "Zwielichtig",
 				text = {
 					"Karten können {C:attention}Banane{} sein",
 					"{s:0.8,C:inactive}(Chance von 1 zu 10, dass die Karte am Ende der Runde zerstört wird){}",
@@ -3645,7 +3646,7 @@ return {
 			},
 			stake_cry_verdant = {
 				name = "Grasgrüner Einsatz",
-				colour = "Verdant",
+				colour = "Grasgrüner",
 				text = {
 					"Benötigte Punktzahl skaliert",
 					"schneller für jede {C:attention}Ante",
@@ -3653,14 +3654,14 @@ return {
 			},
 			stake_cry_ember = {
 				name = "Glühender Einsatz",
-				colour = "Ember",
+				colour = "Glühend",
 				text = {
 					"Alle Gegenstände geben beim Verkaufen kein Geld",
 				},
 			},
 			stake_cry_dawn = {
 				name = "Dämmernder Einsatz",
-				colour = "Dawn",
+				colour = "Dämmernd",
 				text = {
 					"Tarot- und Geister-Karten beeinflussen",
 					"{C:attention}1{} Karte weniger",
@@ -3669,7 +3670,7 @@ return {
 			},
 			stake_cry_horizon = {
 				name = "Horizont Einsatz",
-				colour = "Horizon",
+				colour = "Horizont",
 				text = {
 					"Wenn Blind ausgewählt ist, füge eine",
 					"{C:attention}zufällige Karte{} zum Deck hinzu",
@@ -3677,7 +3678,7 @@ return {
 			},
 			stake_cry_blossom = {
 				name = "Blühender Einsatz",
-				colour = "Blossom",
+				colour = "Blühend",
 				text = {
 					"{C:attention}Letzte{} Boss Blinds können nun",
 					"in {C:attention}allen{} Antes auftauchen",
@@ -3685,7 +3686,7 @@ return {
 			},
 			stake_cry_azure = {
 				name = "Azurblauer Einsatz",
-				colour = "Azure",
+				colour = "Azurblauer",
 				text = {
 					"Werte auf Jokern sind",
 					"um {C:attention}20%{} reduziert",
@@ -3693,7 +3694,7 @@ return {
 			},
 			stake_cry_ascendant = {
 				name = "Aufgestiegener Einsatz",
-				colour = "Ascendant",
+				colour = "Aufgestiegen",
 				text = {
 					"{C:attention}-1{} Shop Slots",
 				},
