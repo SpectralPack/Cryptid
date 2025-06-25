@@ -3833,18 +3833,15 @@ local rnjoker = {
 	config = {},
 	order = 59,
 	loc_vars = function(self, info_queue, card)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.cond_value or 0)
 		local vars = {
 			vars = {
 				(card.ability.extra and card.ability.extra.value_mod and card.ability.extra.value) or 0,
 				(card.ability.extra and card.ability.extra.value and card.ability.extra.value_mod)
 					or (card.ability.extra and card.ability.extra.value)
 					or 0,
-				card.ability.extra and card.ability.extra.cond_value or 0,
-				cry_prob(
-					card.ability.cry_prob,
-					card.ability.extra and card.ability.extra.cond_value or 0,
-					card.ability.cry_rigged
-				),
+				denom,
+				num
 			},
 		}
 		if card.ability.extra and card.ability.extra.color then
@@ -4074,14 +4071,7 @@ local rnjoker = {
 								end
 							elseif j.cond == "odds" then
 								if
-									pseudorandom("rnj")
-									< (
-										cry_prob(
-											card.ability.cry_prob,
-											card.ability.extra.cond_value,
-											card.ability.cry_rigged
-										) / card.ability.extra.cond_value
-									)
+								SMODS.pseudorandom_probability(card, "rnj", 1, card and card.ability.extra.cond_value or 0)
 								then
 									cond_passed = true
 								end
@@ -4363,14 +4353,7 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-								pseudorandom("rnj")
-								< (
-									cry_prob(
-										card.ability.cry_prob,
-										card.ability.extra.cond_value,
-										card.ability.cry_rigged
-									) / card.ability.extra.cond_value
-								)
+								SMODS.pseudorandom_element(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 							then
 								cond_passed = true
 							end
@@ -4453,14 +4436,7 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-								pseudorandom("rnj")
-								< (
-									cry_prob(
-										card.ability.cry_prob,
-										card.ability.extra.cond_value,
-										card.ability.cry_rigged
-									) / card.ability.extra.cond_value
-								)
+							SMODS.pseudorandom_probability(card, "rnj", 1, card and card.ability.extra.cond_value or 0)
 							then
 								cond_passed = true
 							end
@@ -7631,10 +7607,11 @@ local oldblueprint = {
 				},
 			}
 		end
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				num,
+				denom
 			},
 			main_end = main_end,
 		}
@@ -7827,14 +7804,14 @@ local busdriver = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
-		local prob = cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-		local oddy = math.max(1, card.ability.extra.odds)
+		local num, denom = SMODS.get_probability_vars(card, 3, card and card.ability.extra.odds or self.config.extra.odds)
+		local num2 = denom - num
 		return {
 			vars = {
-				(oddy - 1 / prob),
+				num,
 				number_format(card.ability.extra.mult),
-				oddy,
-				(1 / prob),
+				denom,
+				num2,
 			},
 		}
 	end,
@@ -7842,9 +7819,7 @@ local busdriver = {
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			local oddy = math.max(1, card.ability.extra.odds)
 			if
-				pseudorandom("busdriver")
-				< 1
-					- (1 / (cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) * oddy))
+				SMODS.pseudorandom_element(card, "cry_busdriver", 3, card and card.ability.extra.odds or self.config.extra.odds)
 			then
 				return {
 					message = localize({
@@ -9368,8 +9343,9 @@ local digitalhallucinations = {
 	order = 130,
 	config = { odds = 2 },
 	loc_vars = function(self, info_queue, card)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.odds or self.config.odds)
 		return {
-			vars = { cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged), card.ability.odds },
+			vars = { num, denom },
 		}
 	end,
 	atlas = "atlasthree",
@@ -9383,8 +9359,7 @@ local digitalhallucinations = {
 		if
 			context.open_booster
 			and (
-				pseudorandom("digi")
-				< cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged) / card.ability.odds
+				SMODS.pseudorandom_element(card, "digi", 1, card and card.ability.odds or self.config.odds)
 			)
 		then
 			local boosty = context.card

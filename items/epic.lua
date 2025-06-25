@@ -211,10 +211,11 @@ local googol_play = {
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 4, y = 0 } },
 	loc_vars = function(self, info_queue, card)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				num,
+				denom,
 				number_format(card.ability.extra.Xmult),
 			},
 		}
@@ -222,8 +223,7 @@ local googol_play = {
 	calculate = function(self, card, context)
 		if
 			context.joker_main
-			and pseudorandom("cry_googol_play")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+			and SMODS.pseudorandom_element(card, "cry_googol_play", 1, card and card.ability.extra.odds or self.config.extra.odds)
 		then
 			return {
 				message = localize({
@@ -877,10 +877,11 @@ local boredom = {
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				num,
+				denom
 			},
 		}
 	end,
@@ -892,9 +893,7 @@ local boredom = {
 			and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
 		then
 			if
-				pseudorandom("cry_boredom_joker")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
+				SMODS.pseudorandom_element(card, "cry_boredom_joker", 1, card and card.ability.extra.odds or self.config.extra.odds)
 			then
 				return {
 					message = localize("k_again_ex"),
@@ -908,8 +907,7 @@ local boredom = {
 		if
 			context.repetition
 			and context.cardarea == G.play
-			and pseudorandom("cry_boredom_card")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+			and SMODS.pseudorandom_element(card, "cry_boredom_card", 1, card and card.ability.extra.odds or self.config.extra.odds)
 		then
 			return {
 				message = localize("k_again_ex"),
@@ -1470,10 +1468,10 @@ local bonusjoker = {
 	enhancement_gate = "m_bonus",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				num, denom,
 				number_format(card.ability.extra.add),
 			},
 		}
@@ -1483,8 +1481,7 @@ local bonusjoker = {
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_bonus") then
 				if
-					pseudorandom("bonusjoker")
-						< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+					SMODS.pseudorandom_probability(card, "bonusjoker", 1, card and card.ability.extra.odds or self.config.extra.odds)
 					and card.ability.immutable.check < 2
 					and not context.retrigger_joker
 				then
@@ -1579,10 +1576,11 @@ local multjoker = {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_mult
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_cryptid
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				num,
+				denom
 			},
 		}
 	end,
@@ -1594,9 +1592,7 @@ local multjoker = {
 				and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 			then
 				if
-					pseudorandom("multjoker")
-					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-						/ card.ability.extra.odds
+					SMODS.pseudorandom_probability(card, "multjoker", 1, card and card.ability.extra.odds or self.config.extra.odds)
 				then
 					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 					G.E_MANAGER:add_event(Event({
