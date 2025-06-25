@@ -10342,13 +10342,13 @@ local pizza_slice = { -- +1 to all listed probabilities for the highest cat tag 
 	in_pool = function()
 		return false
 	end,
-	demicoloncompat = false,
+	demicoloncompat = true,
 	config = { extra = { xmult = 1, xmult_mod = 0.5 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { number_format(card.ability.extra.xmult_mod), number_format(card.ability.extra.xmult) } }
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				message = localize({
 					type = "variable",
