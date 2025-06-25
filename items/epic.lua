@@ -1454,7 +1454,7 @@ local bonusjoker = {
 			odds = 8,
 			add = 1,
 		},
-		immutable = { check = 0 },
+		immutable = { check = 0, max = 100 },
 	},
 	dependencies = {
 		items = {
@@ -1474,7 +1474,7 @@ local bonusjoker = {
 			vars = {
 				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
 				card.ability.extra.odds,
-				number_format(card.ability.extra.add),
+				number_format(math.min(card.ability.extra.add, card.ability.immutable.max)),
 			},
 		}
 	end,
@@ -1493,13 +1493,13 @@ local bonusjoker = {
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.add)
+						G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + math.min(card.ability.extra.add, card.ability.immutable.max))
 					else
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
 						G.consumeables.config.card_limit =
-							lenient_bignum(G.consumeables.config.card_limit + to_big(card.ability.extra.add))
+							lenient_bignum(G.consumeables.config.card_limit + to_big(math.min(card.ability.extra.add, card.ability.immutable.max)))
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1529,13 +1529,13 @@ local bonusjoker = {
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.add)
+				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + cmath.min(card.ability.extra.add, card.ability.immutable.max))
 			else
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
 				G.consumeables.config.card_limit =
-					lenient_bignum(G.consumeables.config.card_limit + to_big(card.ability.extra.add))
+					lenient_bignum(G.consumeables.config.card_limit + to_big(math.min(card.ability.extra.add, card.ability.immutable.max)))
 			end
 			return {
 				extra = { focus = card, message = localize("k_upgrade_ex") },
