@@ -1493,13 +1493,17 @@ local bonusjoker = {
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + math.min(card.ability.extra.add, card.ability.immutable.max))
+						G.jokers.config.card_limit = lenient_bignum(
+							G.jokers.config.card_limit + math.min(card.ability.extra.add, card.ability.immutable.max)
+						)
 					else
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.consumeables.config.card_limit =
-							lenient_bignum(G.consumeables.config.card_limit + to_big(math.min(card.ability.extra.add, card.ability.immutable.max)))
+						G.consumeables.config.card_limit = lenient_bignum(
+							G.consumeables.config.card_limit
+								+ to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
+						)
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1529,13 +1533,17 @@ local bonusjoker = {
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + cmath.min(card.ability.extra.add, card.ability.immutable.max))
+				G.jokers.config.card_limit = lenient_bignum(
+					G.jokers.config.card_limit + cmath.min(card.ability.extra.add, card.ability.immutable.max)
+				)
 			else
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.consumeables.config.card_limit =
-					lenient_bignum(G.consumeables.config.card_limit + to_big(math.min(card.ability.extra.add, card.ability.immutable.max)))
+				G.consumeables.config.card_limit = lenient_bignum(
+					G.consumeables.config.card_limit
+						+ to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
+				)
 			end
 			return {
 				extra = { focus = card, message = localize("k_upgrade_ex") },
