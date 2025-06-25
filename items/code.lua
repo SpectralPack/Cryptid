@@ -5026,7 +5026,8 @@ local copypaste = {
 		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or 2)
 		return {
 			vars = {
-				num, denom
+				num,
+				denom,
 			}, -- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
 			key = Cryptid.gameset_loc(self, { madness = "madness", exp_modest = "modest" }),
 		}
@@ -5066,7 +5067,12 @@ local copypaste = {
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				if
-				SMODS.pseudorandom_probability(card, "cry_copypaste_joker", 1, card and card.ability.extra.odds or 2)
+					SMODS.pseudorandom_probability(
+						card,
+						"cry_copypaste_joker",
+						1,
+						card and card.ability.extra.odds or 2
+					)
 				then
 					G.E_MANAGER:add_event(Event({
 						func = function()

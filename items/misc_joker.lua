@@ -3841,7 +3841,7 @@ local rnjoker = {
 					or (card.ability.extra and card.ability.extra.value)
 					or 0,
 				denom,
-				num
+				num,
 			},
 		}
 		if card.ability.extra and card.ability.extra.color then
@@ -4071,7 +4071,12 @@ local rnjoker = {
 								end
 							elseif j.cond == "odds" then
 								if
-								SMODS.pseudorandom_probability(card, "rnj", 1, card and card.ability.extra.cond_value or 0)
+									SMODS.pseudorandom_probability(
+										card,
+										"rnj",
+										1,
+										card and card.ability.extra.cond_value or 0
+									)
 								then
 									cond_passed = true
 								end
@@ -4353,7 +4358,11 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-								SMODS.pseudorandom_element(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+								SMODS.pseudorandom_element(
+									card,
+									1,
+									card and card.ability.extra.odds or self.config.extra.odds
+								)
 							then
 								cond_passed = true
 							end
@@ -4436,7 +4445,12 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-							SMODS.pseudorandom_probability(card, "rnj", 1, card and card.ability.extra.cond_value or 0)
+								SMODS.pseudorandom_probability(
+									card,
+									"rnj",
+									1,
+									card and card.ability.extra.cond_value or 0
+								)
 							then
 								cond_passed = true
 							end
@@ -7607,11 +7621,12 @@ local oldblueprint = {
 				},
 			}
 		end
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
 				num,
-				denom
+				denom,
 			},
 			main_end = main_end,
 		}
@@ -7804,7 +7819,8 @@ local busdriver = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
-		local num, denom = SMODS.get_probability_vars(card, 3, card and card.ability.extra.odds or self.config.extra.odds)
+		local num, denom =
+			SMODS.get_probability_vars(card, 3, card and card.ability.extra.odds or self.config.extra.odds)
 		local num2 = denom - num
 		return {
 			vars = {
@@ -7819,7 +7835,12 @@ local busdriver = {
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			local oddy = math.max(1, card.ability.extra.odds)
 			if
-				SMODS.pseudorandom_element(card, "cry_busdriver", 3, card and card.ability.extra.odds or self.config.extra.odds)
+				SMODS.pseudorandom_element(
+					card,
+					"cry_busdriver",
+					3,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				return {
 					message = localize({
@@ -9358,9 +9379,7 @@ local digitalhallucinations = {
 
 		if
 			context.open_booster
-			and (
-				SMODS.pseudorandom_element(card, "digi", 1, card and card.ability.odds or self.config.odds)
-			)
+			and (SMODS.pseudorandom_element(card, "digi", 1, card and card.ability.odds or self.config.odds))
 		then
 			local boosty = context.card
 			-- finally mod compat?

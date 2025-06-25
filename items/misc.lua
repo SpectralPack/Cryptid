@@ -29,7 +29,7 @@ local echo = {
 			vars = {
 				card and card.ability.retriggers or self.config.retriggers,
 				num,
-				denom
+				denom,
 			},
 		}
 	end,
@@ -210,15 +210,23 @@ local abstract = {
 	config = { extra = { Emult = 1.15, odds_after_play = 2, odds_after_round = 4, marked = false, survive = false } },
 	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
 	loc_vars = function(self, info_queue, card)
-		local num1, denom1 = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play)
-		local num2, denom2 = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round)
+		local num1, denom1 = SMODS.get_probability_vars(
+			card,
+			1,
+			card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play
+		)
+		local num2, denom2 = SMODS.get_probability_vars(
+			card,
+			1,
+			card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round
+		)
 		return {
 			vars = {
 				card.ability.extra.Emult,
 				num1,
 				denom1,
 				num2,
-				denom2
+				denom2,
 			},
 		}
 	end,
@@ -230,7 +238,12 @@ local abstract = {
 			and not card.ability.extra.marked
 			and not card.ability.eternal
 			and not card.ability.extra.survive --this presvents repitition of shatter chance by shutting it out once it confirms to "survive"
-			and SMODS.pseudorandom_probability(card, "cry_abstract_destroy", 1, card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play)
+			and SMODS.pseudorandom_probability(
+				card,
+				"cry_abstract_destroy",
+				1,
+				card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play
+			)
 		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
 			card.ability.extra.marked = true
 		elseif context.cardarea == G.play and not card.ability.extra.marked then
@@ -2539,7 +2552,12 @@ return {
 		function Card:calculate_abstract_break()
 			if self.config.center_key == "m_cry_abstract" and not self.ability.extra.marked then
 				if
-					SMODS.pseudorandom_probability(card, "cry_abstract_destroy2", 1, card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round)
+					SMODS.pseudorandom_probability(
+						card,
+						"cry_abstract_destroy2",
+						1,
+						card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round
+					)
 				then
 					self.ability.extra.marked = true
 					--KUFMO HAS abstract!!!!111!!!

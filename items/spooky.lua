@@ -854,7 +854,12 @@ local trick_or_treat = {
 	calculate = function(self, card, context)
 		if context.selling_self then
 			if
-				SMODS.pseudorandom_probability(card, "cry_trick_or_treat", 1, card and card.ability.extra.odds or self.config.extra.odds)
+				SMODS.pseudorandom_probability(
+					card,
+					"cry_trick_or_treat",
+					1,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				local spawn_num =
 					to_number(math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies))
@@ -881,10 +886,12 @@ local trick_or_treat = {
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num, denom,
+				num,
+				denom,
 				number_format(center.ability.extra.num_candies),
 			},
 		}
@@ -1099,7 +1106,12 @@ local ghost = {
 			and not context.retrigger_joker
 		then
 			if
-				SMODS.pseudorandom_probability(card, "cry_ghost_destroy", 1, (card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate)
+				SMODS.pseudorandom_probability(
+					card,
+					"cry_ghost_destroy",
+					1,
+					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
+				)
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1120,7 +1132,12 @@ local ghost = {
 			end
 			--todo: let multiple ghosts possess multiple jokers
 			if
-				SMODS.pseudorandom_probability(card, "planetlua", 1, (card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate)
+				SMODS.pseudorandom_probability(
+					card,
+					"planetlua",
+					1,
+					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
+				)
 			then
 				for i = 1, #G.jokers.cards do
 					G.jokers.cards[i].ability.cry_possessed = nil
@@ -1141,8 +1158,16 @@ local ghost = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_possessed" }
-		local num, denom = SMODS.get_probability_vars(card, 1, (card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate)
-		local num2, denom2 = SMODS.get_probability_vars(card, 1, (card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate)
+		local num, denom = SMODS.get_probability_vars(
+			card,
+			1,
+			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
+		)
+		local num2, denom2 = SMODS.get_probability_vars(
+			card,
+			1,
+			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
+		)
 		return {
 			vars = {
 				num2,
@@ -1743,7 +1768,12 @@ local monopoly_money = {
 			and not (context.card == card)
 		then
 			if
-				SMODS.pseudorandom_probability(card, "cry_monopoly", 1, card and card.ability.extra.odds or self.config.extra.odds)
+				SMODS.pseudorandom_probability(
+					card,
+					"cry_monopoly",
+					1,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1777,11 +1807,12 @@ local monopoly_money = {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
 				num,
-				denom
+				denom,
 			},
 		}
 	end,
