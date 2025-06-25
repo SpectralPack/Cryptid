@@ -560,7 +560,6 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				end
 			elseif args.type == "^" then
 				num = to_big(num) ^ to_big(args.value)
-			end
 			elseif args.type == "hyper" then
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end
