@@ -2469,14 +2469,14 @@ local starfruit = {
 	rarity = "cry_epic",
 	cost = 14,
 	order = 300,
-	blueprint_compat = false,
-	demicoloncompat = false,
+	blueprint_compat = true,
+	demicoloncompat = true,
 	atlas = "atlasepic",
 	pos = { x = 4, y = 5 },
 	config = { emult = 2, emult_mod = 0.2 },
 	pools = { ["Food"] = true },
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				message = localize({
 					type = "variable",
@@ -2489,7 +2489,7 @@ local starfruit = {
 				colour = G.C.DARK_EDITION,
 			}
 		end
-		if context.reroll_shop then
+		if context.reroll_shop or context.forcetrigger then
 			card.ability.emult = card.ability.emult - card.ability.emult_mod
 			--floating point precision can kiss my ass istg
 			if to_number(card.ability.emult) <= 1.00000001 then
