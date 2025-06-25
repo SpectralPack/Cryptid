@@ -1878,7 +1878,9 @@ function end_round()
 			G.PROFILES[G.SETTINGS.profile].cry_none = true
 		end
 	end
-	end_roundref()
+	if not Cryptid.enabled("set_cry_poker_hand_stuff") then
+		end_roundref()
+	end
 	G.E_MANAGER:add_event(Event({
 		trigger = "after",
 		func = function()
