@@ -672,9 +672,10 @@ return {
 			},
 			c_cry_quantify = {
 				name = "://QUANTIFY",
-				text = { -- "{C:cry_code}J{C:cry_exotic}o{C:legendary}k{C:cry_epic}e{C:cry_candy}r{C:rare}i{C:uncommon}z{C:common}e{C:dark_edition}!{} an object",
-					"To Be {C:cry_code}Implemented{}",
-					"in a future {C:cry_code}update{}",
+				text = {
+					"Transfer {C:attention}#1#{} selected",
+					"{C:attention}Card#<s>1#{}, or {C:attention}Booster#<s>1#{}",
+					"to the {C:attention}Jokers{} tray",
 				},
 			},
 			c_cry_divide = {

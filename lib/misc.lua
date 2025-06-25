@@ -989,3 +989,14 @@ function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)
 	end
 	return {}
 end
+
+function Cryptid.table_merge(t1, t2)
+	local tbl = {}
+	for i, v in pairs(t1) do
+		tbl[#tbl + 1] = v
+	end
+	for i, v in pairs(t2) do
+		tbl[#tbl + 1] = v
+	end
+	return tbl
+end
