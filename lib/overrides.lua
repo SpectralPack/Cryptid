@@ -849,7 +849,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		forced_key = "c_base"
 	end
 
-	if forced_key then --vanilla behavior change, mainly for M Joker reasons
+	if forced_key and not G.GAME.banned_keys[forced_key] then
 		_type = (G.P_CENTERS[forced_key].set ~= "Default" and G.P_CENTERS[forced_key].set or _type)
 	end
 
