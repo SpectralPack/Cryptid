@@ -845,36 +845,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			forced_key = G.P_CENTER_POOLS["Joker"][aeqactive].key
 		end
 	end
-	--should pool be skipped with a forced key
-	if not forced_key and soulable and not G.GAME.banned_keys["c_soul"] then
-		for _, v in ipairs(SMODS.Consumable.legendaries) do
-			if
-				(_type == v.type.key or _type == v.soul_set)
-				and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul)
-			then
-				if pseudo("soul_" .. v.key .. _type .. G.GAME.round_resets.ante) > (1 - v.soul_rate) then
-					forced_key = v.key
-				end
-			end
-		end
-		if
-			(_type == "Tarot" or _type == "Spectral" or _type == "Tarot_Planet")
-			and not (G.GAME.used_jokers["c_soul"] and not next(find_joker("Showman")))
-		then
-			if pseudo("soul_" .. _type .. G.GAME.round_resets.ante) > 0.997 then
-				forced_key = "c_soul"
-			end
-		end
-		if
-			(_type == "Planet" or _type == "Spectral")
-			and not (G.GAME.used_jokers["c_black_hole"] and not next(find_joker("Showman")))
-		then
-			if pseudo("soul_" .. _type .. G.GAME.round_resets.ante) > 0.997 then
-				forced_key = "c_black_hole"
-			end
-		end
-	end
-
 	if _type == "Base" then
 		forced_key = "c_base"
 	end
