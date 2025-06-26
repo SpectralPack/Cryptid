@@ -401,8 +401,8 @@ function Cryptid.manipulate(card, args)
 	if not Card.no(card, "immutable", true) or (args and args.bypass_checks) then
 		if not args then
 			return Cryptid.manipulate(card, {
-				min = G.GAME.modifiers.cry_misprint_min,
-				max = G.GAME.modifiers.cry_misprint_max,
+				min = (G.GAME.modifiers.cry_misprint_min or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
+				max = (G.GAME.modifiers.cry_misprint_max or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
 				type = "X",
 				dont_stack = true,
 				no_deck_effects = true,

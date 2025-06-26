@@ -808,7 +808,7 @@ function calculate_reroll_cost(skip_increment)
 		+ G.GAME.current_round.reroll_cost_increase
 end
 
--- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
+local create_card_ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	local area = area or G.jokers
 	local pseudo = function(x)
@@ -821,7 +821,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		end
 		ps = Cryptid.predict_pseudoseed
 	end
-	local center = G.P_CENTERS.b_red
 	if (_type == "Joker" or _type == "Meme") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
@@ -881,20 +880,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 
 	if forced_key then --vanilla behavior change, mainly for M Joker reasons
-		center = G.P_CENTERS[forced_key]
-		_type = (center.set ~= "Default" and center.set or _type)
-	else
-		gcparea = area
-		local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
-		gcparea = nil
-		center = pseudorandom_element(_pool, ps(_pool_key))
-		local it = 1
-		while center == "UNAVAILABLE" do
-			it = it + 1
-			center = pseudorandom_element(_pool, ps(_pool_key .. "_resample" .. it))
-		end
-
-		center = G.P_CENTERS[center]
+		_type = (G.P_CENTERS[forced_key].set ~= "Default" and G.P_CENTERS[forced_key].set or _type)
 	end
 
 	local front = (
@@ -906,7 +892,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	) or nil
 
 	if area == "ERROR" then
-		local ret = (front or center)
+		local ret = (front or G.P_CENTERS[forced_key] or G.P_CENTERS.b_red)
 		if not ret.config then
 			ret.config = {}
 		end
@@ -922,28 +908,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		return ret --the config.center.key stuff prevents a crash with Jen's Almanac hook
 	end
 
-	local card = Card(
-		area and (area.T.x + area.T.w / 2) or 0,
-		area and area.T.y or 0,
-		G.CARD_W * (center and center.set == "Booster" and 1.27 or 1),
-		G.CARD_H * (center and center.set == "Booster" and 1.27 or 1),
-		front,
-		center,
-		{
-			bypass_discovery_center = area == G.shop_jokers
-				or area == G.pack_cards
-				or area == G.shop_vouchers
-				or (G.shop_demo and area == G.shop_demo)
-				or area == G.jokers
-				or area == G.consumeables,
-			bypass_discovery_ui = area == G.shop_jokers
-				or area == G.pack_cards
-				or area == G.shop_vouchers
-				or (G.shop_demo and area == G.shop_demo),
-			discover = area == G.jokers or area == G.consumeables,
-			bypass_back = G.GAME.selected_back.pos,
-		}
-	)
+	local card = create_card_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+	local center = card and card.config and card.config.center or {}
+	if front then
+		card:set_base(front, true)
+	end
 	if front and G.GAME.modifiers.cry_force_suit then
 		card:change_suit(G.GAME.modifiers.cry_force_suit)
 	end
@@ -952,22 +921,10 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	if front and G.GAME.modifiers.cry_force_edition then
 		card:set_edition({ [G.GAME.modifiers.cry_force_edition] = true }, true, true)
+		card:add_to_deck()
 	end
 	if front and G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
-	end
-	if card.ability.consumeable and not skip_materialize then
-		card:start_materialize()
-	end
-	for k, v in ipairs(SMODS.Sticker.obj_buffer) do
-		local sticker = SMODS.Stickers[v]
-		if
-			sticker.should_apply
-			and type(sticker.should_apply) == "function"
-			and sticker:should_apply(card, center, area)
-		then
-			sticker:apply(card, true)
-		end
 	end
 	if
 		G.GAME.modifiers.cry_force_sticker == "eternal"
@@ -1115,11 +1072,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			then
 				card.cry_flipped = true
 			end
-		end
-		if _type == "Joker" and not G.GAME.modifiers.cry_force_edition then
-			local edition = poll_edition("edi" .. (key_append or "") .. G.GAME.round_resets.ante)
-			card:set_edition(edition)
-			check_for_unlock({ type = "have_edition" })
 		end
 	end
 	if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing then
