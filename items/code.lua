@@ -4697,6 +4697,7 @@ local automaton = {
 	key = "automaton",
 	pos = { x = 12, y = 1 },
 	config = { create = 1 },
+	misprintize_caps = { create = 100 },
 	order = 602,
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, card)
