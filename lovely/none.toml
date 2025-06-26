@@ -282,3 +282,21 @@ if not text or text == "NULL" then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+            if (not G.hand.cards[1]) and G.deck.cards[1] then 
+                G.STATE = G.STATES.DRAW_TO_HAND
+                G.STATE_COMPLETE = false
+            else
+'''
+position = "at"
+payload = '''
+            if (not G.hand.cards[1]) and G.deck.cards[1] and not G.PROFILES[G.SETTINGS.profile].cry_none then 
+                G.STATE = G.STATES.DRAW_TO_HAND
+                G.STATE_COMPLETE = false
+            else
+'''
+match_indent = true
