@@ -4,7 +4,7 @@ function Cryptid.demicolonGetTriggerable(card)
 	if not card then
 		return n
 	end
-	if Card.no(card, "demicoloncompat", true) or Cryptid.forcetriggerVanillaCheck(card) then
+	if Card.no(card, "demicoloncompat", true) or Card.no(card, "demicolon_compat", true) or Cryptid.forcetriggerVanillaCheck(card) then
 		n[1] = true
 	else
 		n[1] = false
