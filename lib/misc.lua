@@ -1030,3 +1030,10 @@ function Cryptid.get_circus_description()
 	end
 	return desc
 end
+
+function Cryptid.add_circus_rarity(rarity, dontreload)
+	Cryptid.circus_rarities[rarity.rarity] = rarity
+	if not dontreload then
+		Cryptid.reload_localization()
+	end
+end
