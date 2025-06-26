@@ -1121,8 +1121,7 @@ local circus = {
 	name = "cry-circus",
 	key = "circus",
 	pos = { x = 4, y = 4 },
-	config = {
-	},
+	config = {},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1136,42 +1135,44 @@ local circus = {
 		local mults = {}
 		Cryptid.circus_rarities["exotic"].colour = G.C.CRY_EXOTIC
 		for i, v in pairs(Cryptid.circus_rarities) do
-			extra_rarities[#extra_rarities+1] = v
+			extra_rarities[#extra_rarities + 1] = v
 		end
-		table.sort(extra_rarities, function(a, b) return a.order < b.order end)
-		mults.colours = {
-			
-		}
+		table.sort(extra_rarities, function(a, b)
+			return a.order < b.order
+		end)
+		mults.colours = {}
 		for i, v in pairs(extra_rarities) do
 			if not v.hidden then
-				mults[#mults+1] = number_format(center.ability.extra[tostring(v.rarity).."_mult_mod"])
+				mults[#mults + 1] = number_format(center.ability.extra[tostring(v.rarity) .. "_mult_mod"])
 				mults.colours[#mults.colours + 1] = v.colour
 			end
 		end
 		return {
 			vars = mults,
 		}
-	end,	
+	end,
 	set_ability = function(self, center)
 		local extra_rarities = {}
 		local mults = {}
 		local mult_numbers = {}
 		for i, v in pairs(Cryptid.circus_rarities) do
-			extra_rarities[#extra_rarities+1] = v
+			extra_rarities[#extra_rarities + 1] = v
 		end
-		table.sort(extra_rarities, function(a, b) return a.order < b.order end)
+		table.sort(extra_rarities, function(a, b)
+			return a.order < b.order
+		end)
 		for i, v in pairs(extra_rarities) do
-			mult_numbers[tostring(v.rarity).."_mult_mod"] = v.base_mult
-			mults[v.rarity] = tostring(v.rarity).."_mult_mod"
+			mult_numbers[tostring(v.rarity) .. "_mult_mod"] = v.base_mult
+			mults[v.rarity] = tostring(v.rarity) .. "_mult_mod"
 		end
 		if not self.config.extra then
 			self.config.extra = mult_numbers
 			center.ability.extra = mult_numbers
 			self.config.immutable = {
-				rarity_map = mults
+				rarity_map = mults,
 			}
 			center.ability.immutable = {
-				rarity_map = mults
+				rarity_map = mults,
 			}
 		end
 	end,
@@ -1180,7 +1181,6 @@ local circus = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-
 		if context.other_joker and card ~= context.other_joker then
 			local mod_key = card.ability.immutable.rarity_map[context.other_joker.config.center.rarity]
 			if mod_key and card.ability.extra[mod_key] and to_big(card.ability.extra[mod_key]) > to_big(1) then
@@ -1211,9 +1211,7 @@ local circus = {
 				end
 			end
 			return {
-				Xmult_mod = (
-					total
-				),
+				Xmult_mod = total,
 			}
 		end
 	end,

@@ -238,10 +238,11 @@ function SMODS.injectItems(...)
 	Cryptid.inject_pointer_aliases()
 
 	--this has to be here because the colors dont exist earlier then this
-	Cryptid.circus_rarities["rare"] = {rarity = 3, base_mult = 2, order = 1, colour = G.C.RARITY.Rare}
-	Cryptid.circus_rarities["epic"] ={rarity = "cry_epic", base_mult = 3, order = 2, colour = G.C.RARITY.cry_epic}
-	Cryptid.circus_rarities["legendary"] ={rarity = 4, base_mult = 4, order = 3, colour = G.C.RARITY.Legendary}
-	Cryptid.circus_rarities["exotic"] ={rarity = "cry_exotic", base_mult = 20, order = 4, colour = G.C.RARITY.cry_exotic}
+	Cryptid.circus_rarities["rare"] = { rarity = 3, base_mult = 2, order = 1, colour = G.C.RARITY.Rare }
+	Cryptid.circus_rarities["epic"] = { rarity = "cry_epic", base_mult = 3, order = 2, colour = G.C.RARITY.cry_epic }
+	Cryptid.circus_rarities["legendary"] = { rarity = 4, base_mult = 4, order = 3, colour = G.C.RARITY.Legendary }
+	Cryptid.circus_rarities["exotic"] =
+		{ rarity = "cry_exotic", base_mult = 20, order = 4, colour = G.C.RARITY.cry_exotic }
 
 	Cryptid.reload_localization()
 end
