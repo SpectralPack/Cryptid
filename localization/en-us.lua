@@ -1319,12 +1319,7 @@ return {
 			},
 			j_cry_circus = {
 				name = "Circus",
-				text = {
-					"{C:red}Rare{} Jokers each give {X:mult,C:white} X#1# {} Mult",
-					"{C:cry_epic}Epic{} Jokers each give {X:mult,C:white} X#2# {} Mult",
-					"{C:legendary}Legendary{} Jokers each give {X:mult,C:white} X#3# {} Mult",
-					"{C:cry_exotic}Exotic{} Jokers each give {X:mult,C:white} X#4# {} Mult",
-				},
+				text = Cryptid.get_circus_description(), --for translaters: this is automatically localized you can copy it over as long as cry_circus_generic is translated too
 				unlock = {
 					"Obtain a {C:red}Rare{},",
 					"{C:cry_epic}Epic{} and {C:legendary}Legendary{}",
@@ -5023,6 +5018,8 @@ return {
 			b_reset_gameset_modest = "Reset Gameset Config (Modest)",
 			b_reset_gameset_mainline = "Reset Gameset Config (Mainline)",
 			b_reset_gameset_madness = "Reset Gameset Config (Madness)",
+
+			cry_circus_generic = "{V:#1#}#2#{} Jokers each give {X:mult,C:white} X#3# {} Mult"
 		},
 		labels = {
 			food_jokers = "Food Jokers",

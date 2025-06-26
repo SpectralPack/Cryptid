@@ -1122,20 +1122,6 @@ local circus = {
 	key = "circus",
 	pos = { x = 4, y = 4 },
 	config = {
-		extra = {
-			rare_mult_mod = 2,
-			epic_mult_mod = 3,
-			legend_mult_mod = 4,
-			exotic_mult_mod = 20,
-		},
-		immutable = {
-			rarity_map = {
-				[3] = "rare_mult_mod",
-				[4] = "legend_mult_mod",
-				["cry_epic"] = "epic_mult_mod",
-				["cry_exotic"] = "exotic_mult_mod",
-			},
-		},
 	},
 	dependencies = {
 		items = {
@@ -1144,55 +1130,89 @@ local circus = {
 	},
 	atlas = "atlasepic",
 	order = 33,
+
 	loc_vars = function(self, info_queue, center)
-		return {
-			vars = {
-				number_format(center.ability.extra.rare_mult_mod),
-				number_format(center.ability.extra.epic_mult_mod),
-				number_format(center.ability.extra.legend_mult_mod),
-				number_format(center.ability.extra.exotic_mult_mod),
-			},
+		local extra_rarities = {}
+		local mults = {}
+		Cryptid.circus_rarities["exotic"].colour = G.C.CRY_EXOTIC
+		for i, v in pairs(Cryptid.circus_rarities) do
+			extra_rarities[#extra_rarities+1] = v
+		end
+		table.sort(extra_rarities, function(a, b) return a.order < b.order end)
+		mults.colours = {
+			
 		}
+		for i, v in pairs(extra_rarities) do
+			if not v.hidden then
+				mults[#mults+1] = number_format(center.ability.extra[tostring(v.rarity).."_mult_mod"])
+				mults.colours[#mults.colours + 1] = v.colour
+			end
+		end
+		return {
+			vars = mults,
+		}
+	end,	
+	set_ability = function(self, center)
+		local extra_rarities = {}
+		local mults = {}
+		local mult_numbers = {}
+		for i, v in pairs(Cryptid.circus_rarities) do
+			extra_rarities[#extra_rarities+1] = v
+		end
+		table.sort(extra_rarities, function(a, b) return a.order < b.order end)
+		for i, v in pairs(extra_rarities) do
+			mult_numbers[tostring(v.rarity).."_mult_mod"] = v.base_mult
+			mults[v.rarity] = tostring(v.rarity).."_mult_mod"
+		end
+		if not self.config.extra then
+			self.config.extra = mult_numbers
+			center.ability.extra = mult_numbers
+			self.config.immutable = {
+				rarity_map = mults
+			}
+			center.ability.immutable = {
+				rarity_map = mults
+			}
+		end
 	end,
 	rarity = "cry_epic",
 	cost = 16,
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		local function calculate_xmult(mult_mod)
-			if not Talisman.config_file.disable_anims then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						context.other_joker:juice_up(0.5, 0.5)
-						return true
-					end,
-				}))
-			end
-
-			local xmult = lenient_bignum(math.max(1, to_big(card.ability.extra.Xmult)) * to_big(mult_mod))
-			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(xmult) },
-				}),
-				Xmult_mod = xmult,
-			}
-		end
 
 		if context.other_joker and card ~= context.other_joker then
 			local mod_key = card.ability.immutable.rarity_map[context.other_joker.config.center.rarity]
-			if mod_key then
-				return calculate_xmult(card.ability.extra[mod_key])
+			if mod_key and card.ability.extra[mod_key] and to_big(card.ability.extra[mod_key]) > to_big(1) then
+				if not Talisman.config_file.disable_anims then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							context.other_joker:juice_up(0.5, 0.5)
+							return true
+						end,
+					}))
+				end
+				local xmult = card.ability.extra[mod_key]
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(xmult) },
+					}),
+					Xmult_mod = xmult,
+				}
 			end
 		end
 		if context.forcetrigger then
+			local total = 1
+			for i, v in pairs(card.ability.extra) do
+				if type(v) == "number" or (type(v) == "table" and v.tetrate) then
+					total = total * v
+				end
+			end
 			return {
 				Xmult_mod = (
-					card.ability.extra.rare_mult_mod
-					* card.ability.extra.epic_mult_mod
-					* card.ability.extra.legend_mult_mod
-					* card.ability.extra.exotic_mult_mod
+					total
 				),
 			}
 		end

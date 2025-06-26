@@ -1000,3 +1000,31 @@ function Cryptid.table_merge(t1, t2)
 	end
 	return tbl
 end
+
+function Cryptid.get_circus_description()
+	local desc = {}
+	local ind = 1
+	local extra_rarities = {}
+	for i, v in pairs(Cryptid.circus_rarities) do
+		if not v.hidden then
+			extra_rarities[#extra_rarities+1] = v
+		end
+	end
+	table.sort(extra_rarities, function(a, b) return a.order < b.order end)
+	for i, v in pairs(extra_rarities) do
+		local rarity = v.rarity
+		rarity = localize(({
+            [1] = "k_common",
+            [2] = "k_uncommon",
+            [3] = "k_rare",
+            [4] = "k_legendary"
+        })[rarity] or "k_"..rarity)
+		local orig = localize("cry_circus_generic")
+		orig = string.gsub(orig, "#1#", ind)
+		orig = string.gsub(orig, "#2#", rarity)
+		orig = string.gsub(orig, "#3#", "#"..tostring(ind).."#")
+		desc[#desc+1] = orig
+		ind = ind + 1
+	end
+	return desc
+end

@@ -624,6 +624,7 @@ local pin = {
 				card.config.center.rarity == 4
 				or card.config.center.rarity == "cry_epic"
 				or card.config.center.rarity == "cry_exotic"
+				or Cryptid.pin_debuff[card.config.center.rarity]
 			)
 		then
 			return true
