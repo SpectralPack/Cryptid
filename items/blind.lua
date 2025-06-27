@@ -833,7 +833,6 @@ local decision = {
 	end,
 }
 
-
 local repulsor = {
 	dependencies = {
 		items = {
