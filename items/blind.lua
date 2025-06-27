@@ -766,7 +766,7 @@ local decision = {
 		max = 666666,
 	},
 	atlas = "blinds",
-	order = 22,
+	order = 23,
 	boss_colour = HEX("474931"),
 	get_loc_debuff_text = function(self)
 		return localize("cry_blind_baneful_pack")
@@ -832,6 +832,59 @@ local decision = {
 		G.GAME.cry_fastened = nil
 	end,
 }
+
+
+local repulsor = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	mult = 2,
+	object_type = "Blind",
+	name = "cry-repulsor",
+	key = "repulsor",
+	pos = { x = 0, y = 0 },
+	dollars = 5,
+	boss = {
+		min = 4,
+		max = 666666,
+	},
+	atlas = "blinds_two",
+	order = 24,
+	boss_colour = HEX("7c5798"),
+	calculate = function(self, blind, context)
+		if not G.GAME.blind.disabled then
+			if context.before then
+				for i, v in pairs(G.jokers.cards) do
+					if v ~= G.jokers.cards[1] and v ~= G.jokers.cards[#G.jokers.cards] then
+						if not v.debuff then
+							G.GAME.blind.triggered = true
+							v.debuff = true
+							v.debuff_from_repulsor = true
+						end
+					end
+				end
+			end
+			if context.retrigger_joker_check and not context.retrigger_joker then
+				if context.other_card == G.jokers.cards[1] or context.other_card == G.jokers.cards[#G.jokers.cards] then
+					return {
+						repetitions = 1,
+					}
+				end
+			end
+			if context.after then
+				for i, v in pairs(G.jokers.cards) do
+					if v.debuff_from_repulsor then
+						v.debuff = nil
+						v.debuff_from_repulsor = true
+					end
+				end
+			end
+		end
+	end,
+}
+
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 local lavender_loop = {
@@ -1609,6 +1662,7 @@ local items_togo = {
 	pin,
 	scorch,
 	greed,
+	repulsor,
 	vermillion_virus,
 	tornado,
 	sapphire_stamp,

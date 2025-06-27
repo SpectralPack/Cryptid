@@ -405,6 +405,14 @@ return {
 					"per $#1# when selected",
 				},
 			},
+			bl_cry_repulsor = {
+				name = "The Repulsor",
+				text = {
+					"Retrigger rightmost and",
+					"leftmost Jokers, all other",
+					"Jokers do not trigger",
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pink Bow",
 				text = {

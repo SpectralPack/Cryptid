@@ -717,6 +717,15 @@ SMODS.Atlas({
 	py = 34,
 	frames = 21,
 })
+--splitting these up because like more than 20 on one atlas is a crime
+SMODS.Atlas({
+	key = "blinds_two",
+	atlas_table = "ANIMATION_ATLAS",
+	path = "bl_cry_two.png",
+	px = 34,
+	py = 34,
+	frames = 21,
+})
 SMODS.Atlas({
 	key = "nostalgia",
 	atlas_table = "ANIMATION_ATLAS",
