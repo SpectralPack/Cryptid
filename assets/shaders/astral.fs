@@ -12,6 +12,9 @@ extern MY_HIGHP_OR_MEDIUMP vec2 image_details;
 extern bool shadow;
 extern MY_HIGHP_OR_MEDIUMP vec4 burn_colour_1;
 extern MY_HIGHP_OR_MEDIUMP vec4 burn_colour_2;
+extern MY_HIGHP_OR_MEDIUMP vec2 mouse_screen_pos;
+extern MY_HIGHP_OR_MEDIUMP float hovering;
+extern MY_HIGHP_OR_MEDIUMP float screen_scale;
 
 vec4 dissolve_mask(vec4 tex, vec2 texture_coords, vec2 uv)
 {
@@ -94,20 +97,144 @@ vec4 HSL(vec4 c)
 	return hsl;
 }
 
+vec4 RGBtoHSV(vec4 rgb)
+{
+    vec4 hsv;
+    float minVal = min(min(rgb.r, rgb.g), rgb.b);
+    float maxVal = max(max(rgb.r, rgb.g), rgb.b);
+    float delta = maxVal - minVal;
+
+    // Value
+    hsv.z = maxVal;
+
+    // Saturation
+    if (maxVal != 0.0)
+        hsv.y = delta / maxVal;
+    else {
+        // r = g = b = 0, s = 0, v is undefined
+        hsv.y = 0.0;
+        hsv.x = -1.0;
+        return hsv;
+    }
+
+    // Hue
+    if (rgb.r == maxVal)
+        hsv.x = (rgb.g - rgb.b) / delta;      // between yellow & magenta
+    else if (rgb.g == maxVal)
+        hsv.x = 2.0 + (rgb.b - rgb.r) / delta;  // between cyan & yellow
+    else
+        hsv.x = 4.0 + (rgb.r - rgb.g) / delta;  // between magenta & cyan
+
+    hsv.x = hsv.x * (1.0 / 6.0);
+    if (hsv.x < 0.0)
+        hsv.x += 1.0;
+
+    // Alpha
+    hsv.w = rgb.a;
+
+    return hsv;
+}
+
+vec4 HSVtoRGB(vec4 hsv) {
+    vec4 rgb;
+
+    float h = hsv.x * 6.0;
+    float c = hsv.z * hsv.y;
+    float x = c * (1.0 - abs(mod(h, 2.0) - 1.0));
+    float m = hsv.z - c;
+
+    if (h < 1.0) {
+        rgb = vec4(c, x, 0.0, hsv.a);
+    } else if (h < 2.0) {
+        rgb = vec4(x, c, 0.0, hsv.a);
+    } else if (h < 3.0) {
+        rgb = vec4(0.0, c, x, hsv.a);
+    } else if (h < 4.0) {
+        rgb = vec4(0.0, x, c, hsv.a);
+    } else if (h < 5.0) {
+        rgb = vec4(x, 0.0, c, hsv.a);
+    } else {
+        rgb = vec4(c, 0.0, x, hsv.a);
+    }
+
+    rgb.rgb += m;
+
+    return rgb;
+}
+
+float bitxor(float val1, float val2)
+{
+	float outp = 0;
+	for(int i = 1; i < 9; i++) outp += floor(mod(mod(floor(val1*pow(2,-i)),pow(2,i))+mod(floor(val2*pow(2,-i)),pow(2,i)),2))*pow(2,i);
+	return outp/256;
+}
+
+float mod2(float val1, float mod1)
+{
+    val1 /= mod1;
+    val1 -= floor(val1);
+    return(mod1 * val1);
+}
+
+#define PI 3.14159265358979323846
+
+float rand(vec2 c){
+	return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
+}
+
+float noise(vec2 p, float freq ){
+	float unit = 1/freq;
+	vec2 ij = floor(p/unit);
+	vec2 xy = mod(p,unit)/unit;
+	//xy = 3.*xy*xy-2.*xy*xy*xy;
+	xy = .5*(1.-cos(PI*xy));
+	float a = rand((ij+vec2(0.,0.)));
+	float b = rand((ij+vec2(1.,0.)));
+	float c = rand((ij+vec2(0.,1.)));
+	float d = rand((ij+vec2(1.,1.)));
+	float x1 = mix(a, b, xy.x);
+	float x2 = mix(c, d, xy.x);
+	return mix(x1, x2, xy.y);
+}
+
+float pNoise(vec2 p, int res){
+	float persistance = .5;
+	float n = 0.;
+	float normK = 0.;
+	float f = 4.;
+	float amp = 1.;
+	int iCount = 0;
+	for (int i = 0; i<50; i++){
+		n+=amp*noise(p, f);
+		f*=2.;
+		normK+=amp;
+		amp*=persistance;
+		if (iCount == res) break;
+		iCount++;
+	}
+	float nf = n/normK;
+	return nf*nf*nf*nf;
+}
+
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
     vec4 tex = Texel(texture, texture_coords);
 	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
 
+	// Dummy, doesn't do anything but at least it makes the shader useable
+    if (uv.x > uv.x * 2.){
+        uv = astral;
+    }
+
+    float mod = astral.r * 1.0;
+
 	number low = min(tex.r, min(tex.g, tex.b));
     number high = max(tex.r, max(tex.g, tex.b));
 	number delta = high - low;
 
-	number saturation_fac = 1. - max(0., 0.05*(1.1-delta));
+	//vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
 
-	vec4 hsl = HSL(vec4(tex.r*saturation_fac, tex.g*saturation_fac, tex.b, tex.a));
-
-	float t = astral.y*2.221 + mod(time,1.);
+	float t = astral.y*2.221 + time;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/texture_details.ba;
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 50.;
 
@@ -119,21 +246,47 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
         cos(length(field_part1) / 19.483) + sin(length(field_part2) / 33.155) * cos(field_part2.y / 15.73) +
         cos(length(field_part3) / 27.193) * sin(field_part3.x / 21.92) ))/2.;
 
-    float res = (.5 + .5* cos( (astral.x) * 2.612 + ( field + -.5 ) *3.14));
-	hsl.x = .8;
-	hsl.y = hsl.y * 0.8;
-	hsl.z = hsl.z * 0.2 + 0.6 * sin(hsl.z/2.5 - res/4. + sin(astral.y)/8. + 0.5)/1.4;
+
+    vec4 pixel = Texel(texture, texture_coords);
+
+    float cx = uv_scaled_centered.x * 1;
+    float cy = uv_scaled_centered.y * 1;
+
+
+
+    vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
+
+
+    // |y| = 50, |x| = 50
 
     tex.rgb = RGB(hsl).rgb;
 
-	if (tex[3] < 0.7)
-		tex[3] = tex[3]/3.;
+    vec2 mouse_offset = (screen_coords.xy - mouse_screen_pos.xy)/screen_scale;
+
+    float scaled_uvy = (uv.y +mouse_offset.y -0.5)*5*1.338;
+    float scaled_uvx = (uv.x +mouse_offset.x -0.5)*5;
+    float norm_uv = sqrt(scaled_uvx*scaled_uvx + scaled_uvy*scaled_uvy);
+
+    pixel = vec4(pixel.rgb * 0.0 + tex.rgb * tex.a, pixel.a);
+
+    float res = (.5 + .5* cos( (astral.x) * 2.612 + ( field + -.5 ) *3.14));
+    vec4 textp = RGB(hsl);
+    tex.rgb = textp.rgb;
+
+	float stars = ((pNoise(uv*10 + t/15.0, 10)*pNoise(uv*10 + t/15.0, 10)+1.5)/1+0.15 + ((pNoise(uv*12 + t/15.0, 10)+1.2)/1+0.3))/2.2+0.05 + 0.007*norm_uv * 1.1;
+
+	float clusters = (pNoise(uv*10.0-t/15.0, 10)+1.5)/1.5-0.25 + 0.007*norm_uv;
+
+	float super_clusters = (pNoise(uv/15.0, 10)+0.1)/2+0.3 - 0.008*norm_uv;
+
+    clusters *= clusters * clusters * clusters * 0.4;
+    stars *= stars * stars;
+    super_clusters *= super_clusters * super_clusters;
+
+	colour.rgb = vec3(0.6, 0.45, 1) * (((clusters + stars + super_clusters)+0.1)) * 0.285;
+
 	return dissolve_mask(tex*colour, texture_coords, uv);
 }
-
-extern MY_HIGHP_OR_MEDIUMP vec2 mouse_screen_pos;
-extern MY_HIGHP_OR_MEDIUMP float hovering;
-extern MY_HIGHP_OR_MEDIUMP float screen_scale;
 
 #ifdef VERTEX
 vec4 position( mat4 transform_projection, vec4 vertex_position )

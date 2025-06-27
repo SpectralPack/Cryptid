@@ -1147,6 +1147,10 @@ local astral = {
 		code = {
 			"Math",
 		},
+		art = {
+			"lord.ruby",
+			"Oiiman"
+		}
 	},
 	object_type = "Edition",
 	dependencies = {
