@@ -10302,7 +10302,7 @@ local pizza = { -- +1 to all listed probabilities for the highest cat tag level
 		end
 		if context.selling_self or context.forcetrigger then
 			if to_big(card.ability.extra.rounds_left) <= to_big(0) or context.forcetrigger then
-				for i = 1, to_number(math.min(card.ability.extra.slices, card.ability.immutable.max_spawn)), G.jokers.config.card_limit - #G.jokers.cards do
+				for i = 1, to_number(math.min(math.min(card.ability.extra.slices, card.ability.immutable.max_spawn), G.jokers.config.card_limit - #G.jokers.cards + 1)) do
 					SMODS.add_card({
 						key = "j_cry_pizza_slice",
 						area = G.jokers,
