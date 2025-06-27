@@ -1149,8 +1149,8 @@ local astral = {
 		},
 		art = {
 			"lord.ruby",
-			"Oiiman"
-		}
+			"Oiiman",
+		},
 	},
 	object_type = "Edition",
 	dependencies = {
