@@ -194,7 +194,9 @@ position = "at"
 payload = '''
 local tagatlas = G.ASSET_ATLAS[(not self.hide_ability) and G.P_TAGS[self.key].atlas or "tags"]
 if self.ability.shiny and not self.hide_ability then
-	if not G.P_TAGS[self.key].atlas then
+	if G.P_TAGS[self.key].shiny_atlas then
+		tagatlas = G.ASSET_ATLAS[G.P_TAGS[self.key].shiny_atlas]
+	elseif not G.P_TAGS[self.key].atlas then
 		tagatlas = G.ASSET_ATLAS['cry_shinyv']
 	elseif G.P_TAGS[self.key].atlas == 'cry_tag_cry' then
 		tagatlas = G.ASSET_ATLAS['cry_shinyc']
