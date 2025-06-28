@@ -10478,6 +10478,75 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 	end
 }
 
+local poor_joker = { -- +1 to all listed probabilities for the highest cat tag level
+	cry_credits = {
+		idea = {
+			"DoNotSus",
+		},
+		art = {
+			"Darren_the_frog",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-poor_joker",
+	key = "poor_joker",
+	atlas = "atlasone",
+	pos = { x = 3, y = 6 },
+	rarity = 2,
+	cost = 6,
+	order = 144,
+	demicoloncompat = true,
+	blueprint_compat = true,
+	config = { extra = {mult = 0, mult_mod = 4} },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { number_format(card.ability.extra.mult_mod), number_format(card.ability.extra.mult) } }
+	end,
+	calculate = function(self, card, context)
+		if context.rental or context.forcetrigger then
+			card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.mult_mod
+			if not context.forcetrigger then
+				return {
+					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra.mult } }),
+					colour = G.C.FILTER,
+				}
+			end
+		end
+		if context.joker_main or context.forcetrigger then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_mult",
+					vars = { number_format(card.ability.extra.mult) },
+				}),
+				mult_mod = lenient_bignum(card.ability.extra.mult),
+			}
+		end
+	end,
+	in_pool = function()
+		for i, v in pairs(G.I.CARD) do
+			if v.rental then
+				return true
+			end
+		end
+	end,
+	init = function()
+		local calcuate_rental_ref = Card.calculate_rental
+		function Card:calculate_rental(...)
+			local ret = calcuate_rental_ref(self, ...)
+			SMODS.calculate_context({rental = true, other_card = self, cardarea = self.area})
+			return ret
+		end
+	end
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -10607,7 +10676,10 @@ local miscitems = {
 	pizza,
 	pizza_slice,
 	paved_joker,
-	fading_joker
+	fading_joker,
+	poor_joker
+}
+
 return {
 	name = "Misc. Jokers",
 	init = function()
