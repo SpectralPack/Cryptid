@@ -2707,7 +2707,7 @@ return {
 				text = {
 					"Stone Cards may fill",
 					"gaps of {C:attention}#1#{} in",
-					"{C:attention}Straights{} and {C:attention}Flushes{}"
+					"{C:attention}Straights{} and {C:attention}Flushes{}",
 				},
 			},
 			j_cry_spaceglobe = {

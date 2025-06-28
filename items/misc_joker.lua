@@ -10534,7 +10534,7 @@ local miscitems = {
 	--yarnball,
 	pizza,
 	pizza_slice,
-	paved_joker
+	paved_joker,
 }
 return {
 	name = "Misc. Jokers",

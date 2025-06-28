@@ -1965,7 +1965,7 @@ end
 
 get_straight_ref = get_straight
 function get_straight(hand, min_length, skip, wrap)
-    min_length = (min_length or 5)
+	min_length = (min_length or 5)
 	min_length = min_length + Cryptid.get_paved_joker()
 	return get_straight_ref(hand, min_length, skip, wrap)
-end 
+end
