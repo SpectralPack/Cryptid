@@ -20,3 +20,45 @@ position = "at"
 payload = "ret.playing_card = ret.playing_card or {}"
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+    local tuples = {}
+    local ret = {}
+'''
+position = "before"
+payload = "local stones = Cryptid.get_paved_joker()"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+if next(ranks[l]) then
+'''
+position = "at"
+payload = "if next(ranks[l]) or stones > 0 then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+if i > min_length and not any_tuple then
+'''
+position = "at"
+payload = "if i > min_length and not any_tuple or stones > 0 then"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+tuples = new_tuples
+'''
+position = "after"
+payload = '''
+stones = stones - 1
+'''
+match_indent = true

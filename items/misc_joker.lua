@@ -10242,7 +10242,7 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 	end,
 }
 
-local pizza = { -- +1 to all listed probabilities for the highest cat tag level
+local pizza = {
 	cry_credits = {
 		idea = {
 			"Enemui",
@@ -10318,7 +10318,7 @@ local pizza = { -- +1 to all listed probabilities for the highest cat tag level
 	end,
 }
 
-local pizza_slice = { -- +1 to all listed probabilities for the highest cat tag level
+local pizza_slice = {
 	cry_credits = {
 		idea = {
 			"Enemui",
@@ -10372,6 +10372,37 @@ local pizza_slice = { -- +1 to all listed probabilities for the highest cat tag 
 				}
 			end
 		end
+	end,
+}
+
+local paved_joker = { -- +1 to all listed probabilities for the highest cat tag level
+	cry_credits = {
+		idea = {
+			"InspectorB",
+		},
+		art = {
+			"gemstonez",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-paved_joker",
+	key = "paved_joker",
+	atlas = "atlasone",
+	pos = { x = 1, y = 6 },
+	rarity = 1,
+	cost = 4,
+	order = 142,
+	config = { extra = 1 },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { number_format(math.floor(card.ability.extra)) } }
 	end,
 }
 
@@ -10503,6 +10534,7 @@ local miscitems = {
 	--yarnball,
 	pizza,
 	pizza_slice,
+	paved_joker
 }
 return {
 	name = "Misc. Jokers",

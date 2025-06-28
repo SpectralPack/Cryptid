@@ -1957,3 +1957,15 @@ function CardArea:shuffle(_seed)
 
 	SMODS.calculate_context({ cry_shuffling_area = true, cardarea = self, cry_post_shuffle = true })
 end
+
+local smods_four_fingers = SMODS.four_fingers
+function SMODS.four_fingers()
+	return smods_four_fingers() - Cryptid.get_paved_joker()
+end
+
+get_straight_ref = get_straight
+function get_straight(hand, min_length, skip, wrap)
+    min_length = (min_length or 5)
+	min_length = min_length + Cryptid.get_paved_joker()
+	return get_straight_ref(hand, min_length, skip, wrap)
+end 
