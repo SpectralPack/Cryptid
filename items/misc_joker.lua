@@ -10435,7 +10435,7 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 	order = 143,
 	demicoloncompat = true,
 	blueprint_compat = true,
-	config = { extra = {xmult = 1, xmult_mod = 1} },
+	config = { extra = { xmult = 1, xmult_mod = 1 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { number_format(card.ability.extra.xmult_mod), number_format(card.ability.extra.xmult) } }
 	end,
@@ -10471,11 +10471,11 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 		local calcuate_parishable_ref = Card.calculate_perishable
 		function Card:calculate_perishable(...)
 			if self.ability.perish_tally == 1 then
-				SMODS.calculate_context({perishable_debuffed = true, other_card = self, cardarea = self.area})
+				SMODS.calculate_context({ perishable_debuffed = true, other_card = self, cardarea = self.area })
 			end
 			return calcuate_parishable_ref(self, ...)
 		end
-	end
+	end,
 }
 
 local poor_joker = { -- +1 to all listed probabilities for the highest cat tag level
@@ -10505,7 +10505,7 @@ local poor_joker = { -- +1 to all listed probabilities for the highest cat tag l
 	order = 144,
 	demicoloncompat = true,
 	blueprint_compat = true,
-	config = { extra = {mult = 0, mult_mod = 4} },
+	config = { extra = { mult = 0, mult_mod = 4 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { number_format(card.ability.extra.mult_mod), number_format(card.ability.extra.mult) } }
 	end,
@@ -10541,10 +10541,10 @@ local poor_joker = { -- +1 to all listed probabilities for the highest cat tag l
 		local calcuate_rental_ref = Card.calculate_rental
 		function Card:calculate_rental(...)
 			local ret = calcuate_rental_ref(self, ...)
-			SMODS.calculate_context({rental = true, other_card = self, cardarea = self.area})
+			SMODS.calculate_context({ rental = true, other_card = self, cardarea = self.area })
 			return ret
 		end
-	end
+	end,
 }
 
 local miscitems = {
@@ -10677,7 +10677,7 @@ local miscitems = {
 	pizza_slice,
 	paved_joker,
 	fading_joker,
-	poor_joker
+	poor_joker,
 }
 
 return {

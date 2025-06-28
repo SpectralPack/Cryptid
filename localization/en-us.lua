@@ -2716,7 +2716,7 @@ return {
 					"This Joker Gains",
 					"{X:mult,C:white}X#1#{} Mult whenever",
 					"a {C:attention}Perishable{} card is debuffed",
-					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}"
+					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_poor_joker = {
@@ -2725,7 +2725,7 @@ return {
 					"This Joker Gains",
 					"{C:mult}+#1#{} Mult whenever",
 					"a {C:attention}Rental{} card takes money",
-					"{C:inactive}(Currently{} {C:mult}+#2#{} {C:inactive}Mult){}"
+					"{C:inactive}(Currently{} {C:mult}+#2#{} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_spaceglobe = {
