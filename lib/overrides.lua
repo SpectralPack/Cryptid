@@ -2034,7 +2034,6 @@ function Cryptid.unique_combinations(tbl, sub, min)
 		end
 	end)
 end
-
 get_straight_ref = get_straight
 function get_straight(hand, min_length, skip, wrap)
 	local permutations = {}
@@ -2046,7 +2045,7 @@ function get_straight(hand, min_length, skip, wrap)
 			if v.config.center.key ~= "m_stone" then
 				cards[#cards + 1] = v
 				for i, v in pairs(Cryptid.next_ranks(v:get_id(), nil, stones)) do --this means its inaccurate in some situations like K S S S S but its fine there isnt a better way
-					ranks[#ranks + 1] = v
+					ranks[v] = true
 				end
 			end
 			if v:get_id() >= 11 then
@@ -2057,10 +2056,14 @@ function get_straight(hand, min_length, skip, wrap)
 					"Jack",
 					10
 				}
-				for i, v in pairs(new_ranks) do ranks[#ranks+1] = v end
+				for i, v in pairs(new_ranks) do ranks[v] = true end
 			end
 		end
-		for i, v in Cryptid.unique_combinations(ranks) do
+		local rranks = {}
+		for i, v in pairs(ranks) do
+			rranks[#rranks+1] = i
+		end	
+		for i, v in Cryptid.unique_combinations(rranks) do
 			if #i == stones then
 				permutations[#permutations + 1] = i
 			end
