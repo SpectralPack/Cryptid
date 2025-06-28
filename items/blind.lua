@@ -884,6 +884,34 @@ local repulsor = {
 	end,
 }
 
+local chromatic = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	mult = 2,
+	object_type = "Blind",
+	name = "cry-chromatic",
+	key = "chromatic",
+	pos = { x = 0, y = 1 },
+	dollars = 5,
+	boss = {
+		min = 1,
+		max = 666666,
+	},
+	atlas = "blinds_two",
+	order = 25,
+	boss_colour = HEX("a34f98"),
+	cry_modify_score = function(self, score)
+		if math.floor(G.GAME.current_round.hands_played + 1) % 2 == 1 then
+			return score * -1
+		else
+			return score
+		end
+	end,
+}
+
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 local lavender_loop = {
@@ -1670,5 +1698,6 @@ local items_togo = {
 	lavender_loop,
 	trophy,
 	decision,
+	chromatic
 }
 return { name = "Blinds", items = items_togo }

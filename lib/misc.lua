@@ -621,6 +621,9 @@ end
 function Blind:cry_cap_score(score)
 	if not self.disabled then
 		local obj = self.config.blind
+		if obj.cry_modify_score and type(obj.cry_modify_score) == "function" then
+			score = obj:cry_modify_score(score)
+		end
 		if obj.cry_cap_score and type(obj.cry_cap_score) == "function" then
 			return obj:cry_cap_score(score)
 		end

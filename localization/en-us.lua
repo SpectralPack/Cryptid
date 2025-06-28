@@ -413,6 +413,14 @@ return {
 					"Jokers do not trigger",
 				},
 			},
+			bl_cry_chromatic = {
+				name = "The Chromatic",
+				text = {
+					"Hand score is",
+					"subtracted on",
+					"odd numbered hands"
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pink Bow",
 				text = {
