@@ -418,7 +418,7 @@ return {
 				text = {
 					"Hand score is",
 					"subtracted on",
-					"odd numbered hands"
+					"odd numbered hands",
 				},
 			},
 			bl_cry_pinkbow = {

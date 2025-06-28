@@ -1698,6 +1698,6 @@ local items_togo = {
 	lavender_loop,
 	trophy,
 	decision,
-	chromatic
+	chromatic,
 }
 return { name = "Blinds", items = items_togo }
