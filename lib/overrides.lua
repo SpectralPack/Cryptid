@@ -1964,6 +1964,7 @@ function SMODS.four_fingers()
 end
 
 function Cryptid.create_dummy_from_stone(rank)
+	local r = rank
 	rank = tonumber(rank) or ({
 		Ace = 14,
 		King = 13,
@@ -1979,6 +1980,7 @@ function Cryptid.create_dummy_from_stone(rank)
 		},
 		base = {
 			id = rank,
+			value = rank >= 11 and "Queen" or "10"
 		},
 	}
 end
@@ -2047,6 +2049,16 @@ function get_straight(hand, min_length, skip, wrap)
 					ranks[#ranks + 1] = v
 				end
 			end
+			if v:get_id() >= 11 then
+				new_ranks = {
+					"Ace",
+					"King",
+					"Queen",
+					"Jack",
+					10
+				}
+				for i, v in pairs(new_ranks) do ranks[#ranks+1] = v end
+			end
 		end
 		for i, v in Cryptid.unique_combinations(ranks) do
 			if #i == stones then
@@ -2066,7 +2078,7 @@ function get_straight(hand, min_length, skip, wrap)
 					actual[#actual + 1] = d
 				end
 			end
-			local ret = get_straight_ref(actual, min_length + stones, skip, wrap)
+			local ret = get_straight_ref(actual, min_length + stones, skip, true)
 			if ret and #ret > 0 then
 				return ret
 			end
