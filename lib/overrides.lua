@@ -1963,9 +1963,111 @@ function SMODS.four_fingers()
 	return smods_four_fingers() - Cryptid.get_paved_joker()
 end
 
+function Cryptid.create_dummy_from_stone(rank)
+	rank = tonumber(rank) or ({
+		Ace=14,
+		King=13,
+		Queen=12,
+		Jack=11,
+	})[rank] or rank
+	return {
+		get_id = function() return rank end,
+		config = {
+			center = {}
+		},
+		base = {
+			id = rank
+		}
+	}
+end
+function Cryptid.next_ranks(key, start, recurse)
+	key = ({
+		["14"] = "Ace",
+		["13"] = "King",
+		["12"] = "Queen",
+		["11"] = "Jack"
+	})[tostring(key)] or key
+	local rank = SMODS.Ranks[tostring(key)]
+	local ret = {}
+	if not rank or (not start and not wrap and rank.straight_edge) then return ret end
+	for _,v in ipairs(rank.next) do
+		ret[#ret+1] = v
+		local curr = #ret
+		if recurse and recurse > 0 then
+			for i, v in pairs(Cryptid.next_ranks(ret[#ret], start, recurse - 1)) do
+				ret[#ret+1] = v
+			end
+		end
+	end
+	return ret
+end
+
+local function append (t, new)
+    local clone = {}
+    for _, item in ipairs (t) do
+        clone [#clone + 1] = item
+    end
+    clone [#clone + 1] = new
+    return clone
+end
+
+function Cryptid.unique_combinations(tbl, sub, min)
+    sub = sub or {}
+    min = min or 1
+	local wrap, yield = coroutine.wrap, coroutine.yield
+    return wrap (function ()
+        if #sub > 0 then
+            yield (sub) -- yield short combination.
+        end
+        if #sub < #tbl then
+            for i = min, #tbl do    -- iterate over longer combinations.
+                for combo in Cryptid.unique_combinations (tbl, append (sub, tbl [i]), i + 1) do
+                    yield (combo)
+                end
+            end
+        end
+    end)
+end
+
 get_straight_ref = get_straight
 function get_straight(hand, min_length, skip, wrap)
-	min_length = (min_length or 5)
-	min_length = min_length + Cryptid.get_paved_joker()
-	return get_straight_ref(hand, min_length, skip, wrap)
+	local permutations = {}
+	local ranks = {}
+	local cards = {}
+	local stones = Cryptid.get_paved_joker()
+	if stones > 0 then
+		for i, v in pairs(hand) do
+			if v.config.center.key ~= "m_stone" then
+				cards[#cards+1] = v
+				for i, v in pairs(Cryptid.next_ranks(v:get_id(), nil, stones)) do --this means its inaccurate in some situations like K S S S S but its fine there isnt a better way
+					ranks[#ranks+1] = v
+				end
+			end
+		end
+		for i, v in Cryptid.unique_combinations(ranks) do
+			if #i == stones then
+				permutations[#permutations+1] = i
+			end
+		end
+		for i, v in ipairs(permutations) do
+			local actual = {}
+			local ranks = {}
+			for i, v in pairs(cards) do 
+				actual[#actual+1] = v 
+				ranks[v:get_id()] = true
+			end
+			for i, p in pairs(v) do
+				local d = Cryptid.create_dummy_from_stone(p) 
+				if not ranks[d:get_id()] then
+					actual[#actual+1] = d
+				end
+			end
+			local ret = get_straight_ref(actual, min_length + stones, skip, wrap)
+			if ret and #ret > 0 then
+				return ret
+			end
+		end
+	end
+
+	return get_straight_ref(hand, min_length + stones, skip, wrap)
 end
