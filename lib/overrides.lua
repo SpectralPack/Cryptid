@@ -1980,7 +1980,7 @@ function Cryptid.create_dummy_from_stone(rank)
 		},
 		base = {
 			id = rank,
-			value = rank >= 11 and "Queen" or "10"
+			value = rank >= 11 and "Queen" or "10",
 		},
 	}
 end
@@ -2055,9 +2055,11 @@ function get_straight(hand, min_length, skip, wrap)
 					"King",
 					"Queen",
 					"Jack",
-					10
+					10,
 				}
-				for i, v in pairs(new_ranks) do ranks[#ranks+1] = v end
+				for i, v in pairs(new_ranks) do
+					ranks[#ranks + 1] = v
+				end
 			end
 		end
 		for i, v in Cryptid.unique_combinations(ranks) do
