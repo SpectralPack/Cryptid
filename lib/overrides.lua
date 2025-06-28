@@ -853,9 +853,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		_type = (G.P_CENTERS[forced_key].set ~= "Default" and G.P_CENTERS[forced_key].set or _type)
 	end
 
-	local front = (
-		SMODS.set_create_card_front and (_type == "Base" or _type == "Enhanced")
-	) or nil
+	local front = (SMODS.set_create_card_front and (_type == "Base" or _type == "Enhanced")) or nil
 
 	if area == "ERROR" then
 		local ret = (front or G.P_CENTERS[forced_key] or G.P_CENTERS.b_red)
