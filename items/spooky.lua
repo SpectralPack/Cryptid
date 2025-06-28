@@ -1215,7 +1215,7 @@ local rotten_egg = {
 	},
 	rarity = "cry_cursed",
 	cost = 0,
-	order = 138,
+	order = 136.1, --gross but cryptid doesnt partition orderings and im not shifting everything
 	atlas = "atlasspooky",
 	blueprint_compat = false,
 	eternal_compat = false,
