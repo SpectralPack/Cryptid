@@ -1126,7 +1126,7 @@ return {
 					"all current and future Jokers to {C:attention}$#1#{}",
 					"Reduce sell value of all {C:attention}Jokers{} by {C:attention}$#2#{}",
 					"at end of round, After Gaining {C:attention}$#3#{} {C:inactive}[#4#]{}",
-					"from selling {C:attention}Jokers{}, {C:red}Self-destruct{}"
+					"from selling {C:attention}Jokers{}, {C:red}Self-destruct{}",
 				},
 			},
 			j_cry_blender = {

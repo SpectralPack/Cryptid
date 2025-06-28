@@ -1235,19 +1235,26 @@ local rotten_egg = {
 		end
 	end,
 	calculate = function(self, card, context)
-		if context.end_of_round
+		if
+			context.end_of_round
 			and not context.blueprint
 			and not context.individual
 			and not context.repetition
-			and not context.retrigger_joker then
+			and not context.retrigger_joker
+		then
 			for i, v in pairs(G.jokers.cards) do
 				v.sell_cost = v.sell_cost - 1
 			end
 			return {
-				message = localize("k_downgraded_ex")
+				message = localize("k_downgraded_ex"),
 			}
 		end
-		if context.selling_card and context.card.ability.set == "Joker" and context.card and context.card.sell_cost ~= 0 then
+		if
+			context.selling_card
+			and context.card.ability.set == "Joker"
+			and context.card
+			and context.card.sell_cost ~= 0
+		then
 			card.ability.extra.left_money = card.ability.extra.left_money - context.card.sell_cost
 			if to_big(card.ability.extra.left_money) <= to_big(0) then
 				G.E_MANAGER:add_event(Event({
@@ -1256,9 +1263,11 @@ local rotten_egg = {
 						return true
 					end,
 				}))
-			else		
+			else
 				return {
-					message = number_format(card.ability.extra.needed_money-card.ability.extra.left_money).."/"..number_format(card.ability.extra.needed_money)
+					message = number_format(card.ability.extra.needed_money - card.ability.extra.left_money)
+						.. "/"
+						.. number_format(card.ability.extra.needed_money),
 				}
 			end
 		end
@@ -1287,10 +1296,10 @@ local rotten_egg = {
 			local c = set_costref(self, ...)
 			if G.GAME.cry_rotten_amount then
 				self.sell_cost = G.GAME.cry_rotten_amount
-				self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
+				self.sell_cost_label = self.facing == "back" and "?" or number_format(self.sell_cost)
 			end
 		end
-	end
+	end,
 }
 
 local spookydeck = {
