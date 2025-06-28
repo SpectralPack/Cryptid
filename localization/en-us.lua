@@ -1111,6 +1111,16 @@ return {
 					"{C:inactive,s:0.8}Rank does not change",
 				},
 			},
+			j_cry_rotten_egg = {
+				name = "Rotten Egg",
+				text = {
+					"When Obtained Set sell value of",
+					"all current and future Jokers to {C:attention}$#1#{}",
+					"Reduce sell value of all {C:attention}Jokers{} by {C:attention}$#2#{}",
+					"at end of round, After Gaining {C:attention}$#3#{} {C:inactive}[#4#]{}",
+					"from selling {C:attention}Jokers{}, {C:red}Self-destruct{}"
+				},
+			},
 			j_cry_blender = {
 				name = "Blender",
 				text = {
@@ -5018,6 +5028,8 @@ return {
 			k_cry_exotic = "Exotic",
 			k_cry_candy = "Candy",
 			k_cry_cursed = "Cursed",
+
+			k_downgraded_ex = "Downgraded!",
 
 			k_planet_disc = "Circumstellar Disc",
 			k_planet_satellite = "Natural Satellites",

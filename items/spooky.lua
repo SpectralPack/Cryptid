@@ -1195,6 +1195,104 @@ local possessed = {
 	no_sticker_sheet = true,
 	badge_colour = HEX("aaaaaa"),
 }
+
+local rotten_egg = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+		},
+	},
+	key = "rotten_egg",
+	pos = { x = 3, y = 3 },
+	config = {
+		extra = {
+			starting_money = 1,
+			lose_money = 1,
+			needed_money = 10,
+			left_money = 10,
+		},
+	},
+	rarity = "cry_cursed",
+	cost = 0,
+	order = 138,
+	atlas = "atlasspooky",
+	blueprint_compat = false,
+	eternal_compat = false,
+	perishable_compat = false,
+	demicoloncompat = true,
+	no_dbl = true,
+	add_to_deck = function(self, card, from_debuff)
+		G.GAME.cry_rotten_amount = card.ability.extra.starting_money
+		for i, v in pairs(G.jokers.cards) do
+			v:set_cost()
+		end
+	end,
+	remove_from_deck = function()
+		G.GAME.cry_rotten_amount = nil
+		for i, v in pairs(G.jokers.cards) do
+			v:set_cost()
+		end
+	end,
+	calculate = function(self, card, context)
+		if context.end_of_round
+			and not context.blueprint
+			and not context.individual
+			and not context.repetition
+			and not context.retrigger_joker then
+			for i, v in pairs(G.jokers.cards) do
+				v.sell_cost = v.sell_cost - 1
+			end
+			return {
+				message = localize("k_downgraded_ex")
+			}
+		end
+		if context.selling_card and context.card.ability.set == "Joker" and context.card and context.card.sell_cost ~= 0 then
+			card.ability.extra.left_money = card.ability.extra.left_money - context.card.sell_cost
+			if to_big(card.ability.extra.left_money) <= to_big(0) then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						card:start_dissolve()
+						return true
+					end,
+				}))
+			else		
+				return {
+					message = number_format(card.ability.extra.needed_money-card.ability.extra.left_money).."/"..number_format(card.ability.extra.needed_money)
+				}
+			end
+		end
+		if context.forcetrigger then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					card:start_dissolve()
+					return true
+				end,
+			}))
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.starting_money),
+				number_format(card.ability.extra.lose_money),
+				number_format(card.ability.extra.needed_money),
+				number_format(card.ability.extra.left_money),
+			},
+		}
+	end,
+	init = function()
+		local set_costref = Card.set_cost
+		function Card:set_cost(...)
+			local c = set_costref(self, ...)
+			if G.GAME.cry_rotten_amount then
+				self.sell_cost = G.GAME.cry_rotten_amount
+				self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
+			end
+		end
+	end
+}
+
 local spookydeck = {
 	object_type = "Back",
 	dependencies = {
@@ -2083,6 +2181,7 @@ items = {
 	trick_or_treat,
 	candy_basket,
 	blacklist,
+	rotten_egg,
 	--ghost,
 	--possessed,
 	spookydeck,
