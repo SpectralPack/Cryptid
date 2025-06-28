@@ -3964,7 +3964,7 @@ return {
 				text = {
 					"Shop Items cost {C:attention}X#1#{}",
 					"as much, Obtain a {C:attention}Copy{}",
-					"of the next bought card"
+					"of the next bought card",
 				},
 			},
 			tag_cry_lens = {
@@ -3972,7 +3972,7 @@ return {
 				text = {
 					"Apply {C:dark_edition}Negative{}",
 					"to {C:attention}#1#{} Random",
-					"consumable#<s>1#"
+					"consumable#<s>1#",
 				},
 			},
 			tag_cry_palette_cleanser = {
@@ -3980,7 +3980,7 @@ return {
 				text = {
 					"Remove a {C:attention}random{}",
 					"sticker from a {C:attention}random{}",
-					"Joker or Playing card"
+					"Joker or Playing card",
 				},
 			},
 		},

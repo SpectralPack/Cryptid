@@ -1442,7 +1442,7 @@ local clone = {
 	config = { type = "item_bought", cost_fac = 1.5 },
 	key = "clone",
 	loc_vars = function(self, info_queue)
-		return { vars = {self.config.cost_fac} }
+		return { vars = { self.config.cost_fac } }
 	end,
 	min_ante = 4,
 	apply = function(self, tag, context)
@@ -1464,7 +1464,7 @@ local clone = {
 							end
 						end
 						return true
-					end
+					end,
 				}))
 				G.CONTROLLER.locks[lock] = nil
 				return true
@@ -1479,7 +1479,7 @@ local clone = {
 			local r = buy_ref(e)
 			if r ~= false then
 				for i = 1, #G.GAME.tags do
-					G.GAME.tags[i]:apply_to_run({type = 'item_bought', card = e.config.ref_table})
+					G.GAME.tags[i]:apply_to_run({ type = "item_bought", card = e.config.ref_table })
 				end
 			end
 			return r
@@ -1489,13 +1489,16 @@ local clone = {
 			local c = set_costref(self, ...)
 			local has
 			for i = 1, #G.GAME.tags do
-				if G.GAME.tags[i].key == "tag_cry_clone" then has = true; break end
+				if G.GAME.tags[i].key == "tag_cry_clone" then
+					has = true
+					break
+				end
 			end
 			if has then
 				self.cost = self.cost * 1.5
 			end
 		end
-	end
+	end,
 }
 
 local lens = {
@@ -1523,8 +1526,8 @@ local lens = {
 	config = { type = "immediate", negatives = 2 },
 	key = "lens",
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue+1] = G.P_CENTERS.e_negative
-		return { vars = {self.config.negatives} }
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		return { vars = { self.config.negatives } }
 	end,
 	min_ante = 4,
 	apply = function(self, tag, context)
@@ -1533,7 +1536,7 @@ local lens = {
 			for i, v in pairs(G.consumeables.cards) do
 				if not v.edition or not v.edition.negative then
 					if not v.will_be_editioned then
-						c[#c+1] = v
+						c[#c + 1] = v
 					end
 				end
 			end
@@ -1587,7 +1590,7 @@ local palette_cleanser = {
 	order = 30,
 	atlas = "tag_cry",
 	pos = { x = 0, y = 4 },
-	config = { type = "immediate"},
+	config = { type = "immediate" },
 	key = "palette_cleanser",
 	loc_vars = function(self, info_queue)
 		return { vars = {} }
@@ -1599,21 +1602,21 @@ local palette_cleanser = {
 			for i, v in pairs(G.jokers.cards) do
 				if v:has_stickers() then
 					if not v.will_be_cleansed then
-						c[#c+1] = v
+						c[#c + 1] = v
 					end
 				end
 			end
 			for i, v in pairs(G.deck.cards) do
 				if v:has_stickers() then
 					if not v.will_be_cleansed then
-						c[#c+1] = v
+						c[#c + 1] = v
 					end
 				end
 			end
 			for i, v in pairs(G.hand.cards) do
 				if v:has_stickers() then
 					if not v.will_be_cleansed then
-						c[#c+1] = v
+						c[#c + 1] = v
 					end
 				end
 			end
@@ -1640,26 +1643,26 @@ local palette_cleanser = {
 		for i, v in pairs(G.jokers.cards) do
 			if not v:has_stickers() then
 				if not v.will_be_cleansed then
-					c[#c+1] = v
+					c[#c + 1] = v
 				end
 			end
 		end
 		for i, v in pairs(G.deck.cards) do
 			if not v:has_stickers() then
 				if not v.will_be_cleansed then
-					c[#c+1] = v
+					c[#c + 1] = v
 				end
 			end
 		end
 		for i, v in pairs(G.hand.cards) do
 			if not v:has_stickers() then
 				if not v.will_be_cleansed then
-					c[#c+1] = v
+					c[#c + 1] = v
 				end
 			end
 		end
 		return #c > 0
-	end
+	end,
 }
 
 local tagitems = {
