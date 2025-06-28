@@ -1060,3 +1060,27 @@ function Cryptid.get_paved_joker()
 	total = math.min(stones, total)
 	return total
 end
+
+
+function Card:has_stickers()
+	for i, v in pairs(SMODS.Sticker.obj_table) do
+		if self.ability[i] then
+			return true
+		end
+	end
+end
+function Card:remove_random_sticker(seed)
+	local s = {}
+	for i, v in pairs(SMODS.Sticker.obj_table) do
+		if not v.hidden and i ~= "cry_absolute" and self.ability[i] then
+			s[#s+1] = i
+		end
+	end
+	if #s > 0 then
+		local sticker = pseudorandom_element(s, pseudoseed(seed))
+		self.ability[sticker] = nil
+		if sticker == "perishable" then
+			self.ability.perish_tally = nil
+		end
+	end
+end

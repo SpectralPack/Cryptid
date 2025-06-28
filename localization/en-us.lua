@@ -3959,6 +3959,30 @@ return {
 					"{s:0.8,C:inactive}Copying Tags excluded",
 				},
 			},
+			tag_cry_clone = {
+				name = "Clone Tag",
+				text = {
+					"Shop Items cost {C:attention}X#1#{}",
+					"as much, Obtain a {C:attention}Copy{}",
+					"of the next bought card"
+				},
+			},
+			tag_cry_lens = {
+				name = "Lens Tag",
+				text = {
+					"Apply {C:dark_edition}Negative{}",
+					"to {C:attention}#1#{} Random",
+					"consumable#<s>1#"
+				},
+			},
+			tag_cry_palette_cleanser = {
+				name = "Palette Cleanser Tag",
+				text = {
+					"Remove a {C:attention}random{}",
+					"sticker from a {C:attention}random{}",
+					"Joker or Playing card"
+				},
+			},
 		},
 		Tarot = {
 			c_cry_automaton = {
