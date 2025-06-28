@@ -854,11 +854,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 
 	local front = (
-		(_type == "Base" or _type == "Enhanced")
-		and (
-			pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
-			or G.P_CARDS["S_T"]
-		)
+		SMODS.set_create_card_front and (_type == "Base" or _type == "Enhanced")
 	) or nil
 
 	if area == "ERROR" then
@@ -880,9 +876,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 
 	local card = create_card_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	local center = card and card.config and card.config.center or {}
-	if front then
-		card:set_base(front, true)
-	end
 	if front and G.GAME.modifiers.cry_force_suit then
 		card:change_suit(G.GAME.modifiers.cry_force_suit)
 	end
