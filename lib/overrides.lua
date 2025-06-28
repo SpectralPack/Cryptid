@@ -2056,13 +2056,15 @@ function get_straight(hand, min_length, skip, wrap)
 					"Jack",
 					10,
 				}
-				for i, v in pairs(new_ranks) do ranks[v] = true end
+				for i, v in pairs(new_ranks) do
+					ranks[v] = true
+				end
 			end
 		end
 		local rranks = {}
 		for i, v in pairs(ranks) do
-			rranks[#rranks+1] = i
-		end	
+			rranks[#rranks + 1] = i
+		end
 		for i, v in Cryptid.unique_combinations(rranks) do
 			if #i == stones then
 				permutations[#permutations + 1] = i
