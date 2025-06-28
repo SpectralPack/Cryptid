@@ -2710,6 +2710,15 @@ return {
 					"{C:attention}Straights{} and {C:attention}Flushes{}"
 				},
 			},
+			j_cry_fading_joker = {
+				name = "Fading Joker",
+				text = {
+					"This Joker Gains",
+					"{X:mult,C:white}X#1#{} Mult whenever",
+					"a {C:attention}Perishable{} card is debuffed",
+					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}"
+				},
+			},
 			j_cry_spaceglobe = {
 				name = "Celestial Globe",
 				text = {

@@ -10353,6 +10353,17 @@ local pizza_slice = {
 		return { vars = { number_format(card.ability.extra.xmult_mod), number_format(card.ability.extra.xmult) } }
 	end,
 	calculate = function(self, card, context)
+		if context.selling_card and context.card and context.card.config.center.key == "j_cry_pizza_slice" then
+			if context.card ~= card then
+				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+				if not context.forcetrigger then
+					return {
+						message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
+						colour = G.C.FILTER,
+					}
+				end
+			end
+		end
 		if context.joker_main or context.forcetrigger then
 			return {
 				message = localize({
@@ -10362,15 +10373,6 @@ local pizza_slice = {
 				}),
 				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
 			}
-		end
-		if context.selling_card and context.card and context.card.config.center.key == "j_cry_pizza_slice" then
-			if context.card ~= card then
-				card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
-				return {
-					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
-					colour = G.C.FILTER,
-				}
-			end
 		end
 	end,
 }
@@ -10404,6 +10406,76 @@ local paved_joker = { -- +1 to all listed probabilities for the highest cat tag 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { number_format(math.floor(card.ability.extra)) } }
 	end,
+}
+
+local fading_joker = { -- +1 to all listed probabilities for the highest cat tag level
+	cry_credits = {
+		idea = {
+			"DoNotSus",
+		},
+		art = {
+			"lord.ruby",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-paved_joker",
+	key = "fading_joker",
+	atlas = "atlasone",
+	pos = { x = 2, y = 6 },
+	rarity = 2,
+	cost = 6,
+	order = 143,
+	demicoloncompat = true,
+	blueprint_compat = true,
+	config = { extra = {xmult = 1, xmult_mod = 1} },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { number_format(card.ability.extra.xmult_mod), number_format(card.ability.extra.xmult) } }
+	end,
+	calculate = function(self, card, context)
+		if context.perishable_debuffed or context.forcetrigger then
+			card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.xmult_mod
+			if not context.forcetrigger then
+				return {
+					message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.xmult } }),
+					colour = G.C.FILTER,
+				}
+			end
+		end
+		if context.joker_main or context.forcetrigger then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.xmult) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
+			}
+		end
+	end,
+	in_pool = function()
+		for i, v in pairs(G.I.CARD) do
+			if v.perishable and v.perish_tally and to_big(v.perish_tally) > to_big(0) then
+				return true
+			end
+		end
+	end,
+	init = function()
+		local calcuate_parishable_ref = Card.calculate_perishable
+		function Card:calculate_perishable(...)
+			if self.ability.perish_tally == 1 then
+				SMODS.calculate_context({perishable_debuffed = true, other_card = self, cardarea = self.area})
+			end
+			return calcuate_parishable_ref(self, ...)
+		end
+	end
 }
 
 local miscitems = {
@@ -10534,7 +10606,8 @@ local miscitems = {
 	--yarnball,
 	pizza,
 	pizza_slice,
-	paved_joker
+	paved_joker,
+	fading_joker
 }
 return {
 	name = "Misc. Jokers",
