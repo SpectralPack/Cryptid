@@ -1640,24 +1640,26 @@ local palette_cleanser = {
 	end,
 	in_pool = function()
 		local c = {}
-		for i, v in pairs(G.jokers.cards) do
-			if not v:has_stickers() then
-				if not v.will_be_cleansed then
-					c[#c + 1] = v
+		if G.jokers then
+			for i, v in pairs(G.jokers.cards) do
+				if not v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
 				end
 			end
-		end
-		for i, v in pairs(G.deck.cards) do
-			if not v:has_stickers() then
-				if not v.will_be_cleansed then
-					c[#c + 1] = v
+			for i, v in pairs(G.deck.cards) do
+				if not v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
 				end
 			end
-		end
-		for i, v in pairs(G.hand.cards) do
-			if not v:has_stickers() then
-				if not v.will_be_cleansed then
-					c[#c + 1] = v
+			for i, v in pairs(G.hand.cards) do
+				if not v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
 				end
 			end
 		end
