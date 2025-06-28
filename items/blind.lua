@@ -935,7 +935,9 @@ local landlord = {
 		if context.after then
 			local jokers = {}
 			for i, v in pairs(G.jokers.cards) do
-				if not v.ability.rental then jokers[#jokers+1] = v end
+				if not v.ability.rental then
+					jokers[#jokers + 1] = v
+				end
 			end
 			if #jokers > 0 then
 				G.E_MANAGER:add_event(Event({
@@ -944,12 +946,12 @@ local landlord = {
 						joker.ability.rental = true
 						joker:juice_up()
 						return true
-					end
+					end,
 				}))
 			end
 			G.GAME.blind.triggered = true
 		end
-	end
+	end,
 }
 
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
@@ -1739,6 +1741,6 @@ local items_togo = {
 	trophy,
 	decision,
 	chromatic,
-	landlord
+	landlord,
 }
 return { name = "Blinds", items = items_togo }

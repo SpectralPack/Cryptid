@@ -426,7 +426,7 @@ return {
 				text = {
 					"Apply rental to",
 					"a random Joker",
-					"when hand is played"
+					"when hand is played",
 				},
 			},
 			bl_cry_pinkbow = {
