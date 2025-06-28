@@ -10608,7 +10608,6 @@ local miscitems = {
 	pizza_slice,
 	paved_joker,
 	fading_joker
-}
 return {
 	name = "Misc. Jokers",
 	init = function()

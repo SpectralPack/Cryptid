@@ -1045,10 +1045,14 @@ function Cryptid.get_paved_joker()
 	end
 	local stones = 0
 	for i, v in pairs(G.hand.highlighted) do
-		if v.config.center.key == "m_stone" then stones = stones + 1 end
+		if v.config.center.key == "m_stone" then
+			stones = stones + 1
+		end
 	end
 	for i, v in pairs(G.play.cards) do
-		if v.config.center.key == "m_stone" then stones = stones + 1 end
+		if v.config.center.key == "m_stone" then
+			stones = stones + 1
+		end
 	end
 	total = math.min(stones, total)
 	return total
