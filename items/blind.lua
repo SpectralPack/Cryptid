@@ -912,6 +912,46 @@ local chromatic = {
 	end,
 }
 
+local landlord = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	mult = 2,
+	object_type = "Blind",
+	name = "cry-landlord",
+	key = "landlord",
+	pos = { x = 0, y = 2 },
+	dollars = 5,
+	boss = {
+		min = 1,
+		max = 666666,
+	},
+	atlas = "blinds_two",
+	order = 26,
+	boss_colour = HEX("c89f13"),
+	calculate = function(self, blind, context)
+		if context.after then
+			local jokers = {}
+			for i, v in pairs(G.jokers.cards) do
+				if not v.ability.rental then jokers[#jokers+1] = v end
+			end
+			if #jokers > 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local joker = pseudorandom_element(jokers, pseudoseed("cry_landlord"))
+						joker.ability.rental = true
+						joker:juice_up()
+						return true
+					end
+				}))
+			end
+			G.GAME.blind.triggered = true
+		end
+	end
+}
+
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 local lavender_loop = {
@@ -1698,6 +1738,7 @@ local items_togo = {
 	lavender_loop,
 	trophy,
 	decision,
-	chromatic
+	chromatic,
+	landlord
 }
 return { name = "Blinds", items = items_togo }

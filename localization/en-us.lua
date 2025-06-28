@@ -421,6 +421,14 @@ return {
 					"odd numbered hands"
 				},
 			},
+			bl_cry_landlord = {
+				name = "The Landlord",
+				text = {
+					"Apply rental to",
+					"a random Joker",
+					"when hand is played"
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pink Bow",
 				text = {
