@@ -1365,6 +1365,113 @@ local kaikki = {
 	end,
 }
 -- order 166 reserved for suit planet of TEFD, None and Sol
+local voxel = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+			"Icyethics",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_planet",
+			"set_cry_code",
+			"c_cry_declare"
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	name = "cry-Voxel",
+	key = "voxel",
+	pos = { x = 1, y = 6 },
+	config = { hand_types = { "cry_Declare0", "cry_Declare1", "cry_Declare2" }, softlock = true },
+	cost = 4,
+	aurinko = true,
+	atlas = "atlasnotjokers",
+	order = 167,
+	can_use = function(self, card)
+		return true
+	end,
+	loc_vars = function(self, info_queue, center)
+		local levelone = G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1
+		local leveltwo = G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1
+		local levelthree = G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1
+		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+		local planetcolourtwo = G.C.HAND_LEVELS[math.min(leveltwo, 7)]
+		local planetcolourthree = G.C.HAND_LEVELS[math.min(levelthree, 7)]
+
+		return {
+			vars = {
+				G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].declare_cards and localize("cry_Declare0", "poker_hands") or localize("cry_code_empty"),
+				G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].declare_cards and localize("cry_Declare1", "poker_hands") or localize("cry_code_empty"),
+				G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].declare_cards and localize("cry_Declare2", "poker_hands") or localize("cry_code_empty"),
+				G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1,
+				G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1,
+				G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1,
+				colours = {
+					(
+						to_big(G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7,  G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1))]
+					),
+					(
+						to_big(G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7,  G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1))]
+					),
+					(
+						to_big(G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7,  G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1))]
+					),
+				},
+			},
+		}
+	end,
+	use = function(self, card, area, copier)
+		local hand_types = {
+			G.GAME.hands.cry_Declare0 and G.GAME.hands.cry_Declare0.declare_cards and "cry_Declare0",
+			G.GAME.hands.cry_Declare1 and G.GAME.hands.cry_Declare1.declare_cards and "cry_Declare1",
+			G.GAME.hands.cry_Declare2 and G.GAME.hands.cry_Declare2.declare_cards and "cry_Declare2"
+		}
+		Cryptid.suit_level_up(card, copier, 1, hand_types)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		local hand_types = {
+			G.GAME.hands.cry_Declare0 and G.GAME.hands.cry_Declare0.declare_cards and "cry_Declare0",
+			G.GAME.hands.cry_Declare1 and G.GAME.hands.cry_Declare1.declare_cards and "cry_Declare1",
+			G.GAME.hands.cry_Declare2 and G.GAME.hands.cry_Declare2.declare_cards and "cry_Declare2"
+		}
+		Cryptid.suit_level_up(card, copier, number, hand_types)
+	end,
+	calculate = function(self, card, context)
+		if
+			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
+			and (
+				context.scoring_name == "cry_Declare0"
+				or context.scoring_name == "cry_Declare1"
+				or context.scoring_name == "cry_Declare2"
+			)
+		then
+			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card.ability.immutable and card.ability.immutable.overflow_amount or 1)
+			end
+			return {
+				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
+				Xmult_mod = value,
+			}
+		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
+}
 
 function Cryptid.suit_level_up(card, copier, number, poker_hands, message)
 	local used_consumable = copier or card
@@ -1416,6 +1523,7 @@ local planet_cards = {
 	pata,
 	kaikki,
 	-- reserved for tefd/none/sol suit planet
+	voxel
 }
 return {
 	name = "Planets",

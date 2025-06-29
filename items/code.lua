@@ -2860,11 +2860,12 @@ local declare = {
 					})[(G.GAME.DECLARE_USED or 0) + 1],
 					"poker_hands"
 				),
-				number_format(-G.GAME.DECLARE_USED),
+				number_format(3-(G.GAME.DECLARE_USED or 0)),
 			},
 		}
 	end,
 	can_use = function(self, card)
+		G.GAME.DECLARE_USED = G.GAME.DECLARE_USED or 0
 		return (G.GAME.DECLARE_USED or 0) < 3
 	end,
 	use = function(self, card, area, copier)
@@ -2993,7 +2994,7 @@ local declare = {
 				if not suitless then
 					if (SMODS.has_no_suit(v) and not suits["suitless"]) or not suits[v.base.suit] then
 						suits[SMODS.has_no_suit(v) and "suitless" or v.base.suit] = true
-						complexity = complexity + 0.45
+						complexity = complexity + 0.65
 					end
 				end
 			end
@@ -3003,8 +3004,8 @@ local declare = {
 			complexity = complexity * 0.75
 			local mult = complexity
 			local chips = complexity * 8.45 --arbitrary just shake it up a little
-			local l_mult = complexity * 0.1
-			local l_chips = complexity
+			local l_mult = math.min(complexity * 0.15, 0.5)
+			local l_chips = math.min(complexity * 1.5, 5)
 			local declare_cards = {}
 			for i, v in pairs(cards) do
 				local card = {
@@ -3056,7 +3057,7 @@ local declare = {
 		local is_visibleref = SMODS.is_poker_hand_visible
 		function SMODS.is_poker_hand_visible(handname)
 			if not SMODS.PokerHands[handname] then
-				return G.GAME.hands[handname].visible
+				return G.GAME.hands[handname] and G.GAME.hands[handname].visible
 			end
 			return is_visibleref(handname)
 		end

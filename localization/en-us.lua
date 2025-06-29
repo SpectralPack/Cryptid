@@ -3263,6 +3263,16 @@ return {
 					"and {C:attention}#3#{}",
 				},
 			},
+			c_cry_voxel = {
+				name = "Voxel",
+				text = {
+					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+				},
+			},
 		},
 		Sleeve = {
 			sleeve_cry_beige_sleeve = {
@@ -5044,6 +5054,7 @@ return {
 			cry_code_with_suits = "INCLUDE SUITS",
 			cry_code_without_suits = "IGNORE SUITS",
 			cry_code_suitless = "Hand does not require specific suits",
+			cry_code_empty = "[Declare Hand]",
 
 			b_flip = "FLIP",
 			b_merge = "MERGE",

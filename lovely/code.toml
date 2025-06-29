@@ -764,10 +764,10 @@ payload = '''
 				results[key] = {}
 			end
 		end
-		if not results["cry_Declare0"] then results["cry_Declare0"] = {} end
-		if not results["cry_Declare1"] then results["cry_Declare1"] = {} end
-		if not results["cry_Declare2"] then results["cry_Declare2"] = {} end
 	end
+	if not results["cry_Declare0"] then results["cry_Declare0"] = {} end
+	if not results["cry_Declare1"] then results["cry_Declare1"] = {} end
+	if not results["cry_Declare2"] then results["cry_Declare2"] = {} end
 '''
 match_indent = true
 
