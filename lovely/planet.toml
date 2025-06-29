@@ -17,7 +17,7 @@ elseif v.config.hand_type then
     softlocked = G.GAME.hands[v.config.hand_type].played == 0
 elseif v.config.hand_types then
     for _, h in pairs(v.config.hand_types) do
-        if G.GAME.hands[h].played > 0 then
+        if (G.GAME.handscry_Declare or 0) > 0 then
             softlocked = false
         end
     end

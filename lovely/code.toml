@@ -785,12 +785,9 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = 'functions/common_events.lua'
-pattern = '''
-if G.GAME.hands[h].played > 0 then
-'''
+target = "functions/common_events.lua"
+pattern = "if G.GAME.hands[h].played > 0 then"
 position = "at"
 payload = '''
-if (G.GAME.hands[h].played or 0) > 0 then
 '''
 match_indent = true
