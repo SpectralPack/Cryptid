@@ -1382,7 +1382,7 @@ local voxel = {
 		items = {
 			"set_cry_planet",
 			"set_cry_code",
-			"c_cry_declare"
+			"c_cry_declare",
 		},
 	},
 	object_type = "Consumable",
@@ -1408,24 +1408,45 @@ local voxel = {
 
 		return {
 			vars = {
-				G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].declare_cards and localize("cry_Declare0", "poker_hands") or localize("cry_code_empty"),
-				G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].declare_cards and localize("cry_Declare1", "poker_hands") or localize("cry_code_empty"),
-				G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].declare_cards and localize("cry_Declare2", "poker_hands") or localize("cry_code_empty"),
+				G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].declare_cards and localize(
+					"cry_Declare0",
+					"poker_hands"
+				) or localize("cry_code_empty"),
+				G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].declare_cards and localize(
+					"cry_Declare1",
+					"poker_hands"
+				) or localize("cry_code_empty"),
+				G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].declare_cards and localize(
+					"cry_Declare2",
+					"poker_hands"
+				) or localize("cry_code_empty"),
 				G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1,
 				G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1,
 				G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1,
 				colours = {
 					(
-						to_big(G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_number(math.min(7,  G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1))]
+						to_big(G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1)
+								== to_big(1)
+							and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(
+							math.min(7, G.GAME.hands["cry_Declare0"] and G.GAME.hands["cry_Declare0"].level or 1)
+						)]
 					),
 					(
-						to_big(G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_number(math.min(7,  G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1))]
+						to_big(G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1)
+								== to_big(1)
+							and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(
+							math.min(7, G.GAME.hands["cry_Declare1"] and G.GAME.hands["cry_Declare1"].level or 1)
+						)]
 					),
 					(
-						to_big(G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1) == to_big(1) and G.C.UI.TEXT_DARK
-						or G.C.HAND_LEVELS[to_number(math.min(7,  G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1))]
+						to_big(G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1)
+								== to_big(1)
+							and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(
+							math.min(7, G.GAME.hands["cry_Declare2"] and G.GAME.hands["cry_Declare2"].level or 1)
+						)]
 					),
 				},
 			},
@@ -1435,7 +1456,7 @@ local voxel = {
 		local hand_types = {
 			G.GAME.hands.cry_Declare0 and G.GAME.hands.cry_Declare0.declare_cards and "cry_Declare0",
 			G.GAME.hands.cry_Declare1 and G.GAME.hands.cry_Declare1.declare_cards and "cry_Declare1",
-			G.GAME.hands.cry_Declare2 and G.GAME.hands.cry_Declare2.declare_cards and "cry_Declare2"
+			G.GAME.hands.cry_Declare2 and G.GAME.hands.cry_Declare2.declare_cards and "cry_Declare2",
 		}
 		Cryptid.suit_level_up(card, copier, 1, hand_types)
 	end,
@@ -1443,7 +1464,7 @@ local voxel = {
 		local hand_types = {
 			G.GAME.hands.cry_Declare0 and G.GAME.hands.cry_Declare0.declare_cards and "cry_Declare0",
 			G.GAME.hands.cry_Declare1 and G.GAME.hands.cry_Declare1.declare_cards and "cry_Declare1",
-			G.GAME.hands.cry_Declare2 and G.GAME.hands.cry_Declare2.declare_cards and "cry_Declare2"
+			G.GAME.hands.cry_Declare2 and G.GAME.hands.cry_Declare2.declare_cards and "cry_Declare2",
 		}
 		Cryptid.suit_level_up(card, copier, number, hand_types)
 	end,
@@ -1523,7 +1544,7 @@ local planet_cards = {
 	pata,
 	kaikki,
 	-- reserved for tefd/none/sol suit planet
-	voxel
+	voxel,
 }
 return {
 	name = "Planets",

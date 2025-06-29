@@ -2860,7 +2860,7 @@ local declare = {
 					})[(G.GAME.DECLARE_USED or 0) + 1],
 					"poker_hands"
 				),
-				number_format(3-(G.GAME.DECLARE_USED or 0)),
+				number_format(3 - (G.GAME.DECLARE_USED or 0)),
 			},
 		}
 	end,
