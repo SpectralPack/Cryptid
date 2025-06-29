@@ -1139,10 +1139,10 @@ return {
 			j_cry_rotten_egg = {
 				name = "Rotten Egg",
 				text = {
-					"When Obtained Set sell value of",
+					"When obtained, set sell value of",
 					"all current and future Jokers to {C:attention}$#1#{}",
 					"Reduce sell value of all {C:attention}Jokers{} by {C:attention}$#2#{}",
-					"at end of round, After Gaining {C:attention}$#3#{} {C:inactive}[#4#]{}",
+					"At end of round, after gaining {C:attention}$#3#{} {C:inactive}[#4#]{}",
 					"from selling {C:attention}Jokers{}, {C:red}Self-destruct{}",
 				},
 			},
@@ -2757,7 +2757,7 @@ return {
 			j_cry_poor_joker = {
 				name = "Poor Joker",
 				text = {
-					"This Joker Gains",
+					"This Joker gains",
 					"{C:mult}+#1#{} Mult whenever",
 					"a {C:attention}Rental{} card takes money",
 					"{C:inactive}(Currently{} {C:mult}+#2#{} {C:inactive}Mult){}",
@@ -3972,7 +3972,7 @@ return {
 				name = "Clone Tag",
 				text = {
 					"Shop Items cost {C:attention}X#1#{}",
-					"as much, Obtain a {C:attention}Copy{}",
+					"as much, obtain a {C:attention}Copy{}",
 					"of the next bought card",
 				},
 			},
@@ -3980,7 +3980,7 @@ return {
 				name = "Lens Tag",
 				text = {
 					"Apply {C:dark_edition}Negative{}",
-					"to {C:attention}#1#{} Random",
+					"to {C:attention}#1#{} random",
 					"consumable#<s>1#",
 				},
 			},
@@ -3989,7 +3989,7 @@ return {
 				text = {
 					"Remove a {C:attention}random{}",
 					"sticker from a {C:attention}random{}",
-					"Joker or Playing card",
+					"Joker or playing card",
 				},
 			},
 		},
