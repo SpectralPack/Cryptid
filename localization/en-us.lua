@@ -5010,6 +5010,7 @@ return {
 			b_code_cards = "Code Cards",
 			b_unique_cards = "Unique Cards",
 			b_pull = "PULL",
+			b_playing_cards = "Playing Cards",
 			cry_hooked_ex = "Hooked!",
 			k_end_blind = "End Blind",
 			k_cry_shiny = "Shiny",

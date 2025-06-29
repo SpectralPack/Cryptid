@@ -29,25 +29,125 @@ local pointer = {
 		return true
 	end,
 	use = function(self, card, area, copier)
+		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
+			G.GAME.CODE_DESTROY_CARD = copy_card(card)
+			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
+		else
+			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
+		end
 		G.GAME.USING_CODE = true
-		G.GAME.USING_POINTER = true
-		G.ENTERED_CARD = ""
-		G.CHOOSE_CARD = UIBox({
-			definition = create_UIBox_pointer(card),
-			config = {
-				align = "cm",
-				offset = { x = 0, y = 10 },
-				major = G.ROOM_ATTACH,
-				bond = "Weak",
-				instance_type = "POPUP",
-			},
-		})
-		G.CHOOSE_CARD.alignment.offset.y = 0
-		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_CARD:align_to_major()
-		check_for_unlock({ cry_used_consumable = "c_cry_pointer" })
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.USING_POINTER = true
+				G.FUNCS.overlay_menu({definition = create_UIBox_your_collection()})
+				return true
+			end
+		}))
+		G.GAME.POINTER_SUBMENU = nil
 	end,
 	init = function(self)
+		local ccl = Card.click
+		function Card:click()
+			if G.GAME.USING_POINTER then
+				if not self.debuff then
+					if self.config.center.consumeable then
+						local copy = copy_card(self)
+						copy:add_to_deck()
+						G.consumeables:emplace(copy)
+						G.FUNCS.exit_overlay_menu_code()
+						ccl(self)
+						if G.GAME.CODE_DESTROY_CARD then
+							G.GAME.CODE_DESTROY_CARD:start_dissolve()
+							G.GAME.CODE_DESTROY_CARD = nil
+						end
+					elseif self.config.center.set == "Booster" then
+						G.FUNCS.exit_overlay_menu_code()
+						local card = copy_card(self)
+						card.cost = 0
+						card.from_tag = true
+						G.FUNCS.use_card({ config = { ref_table = card } })
+						card:start_materialize()
+						created = true
+						ccl(self)
+						if G.GAME.CODE_DESTROY_CARD then
+							G.GAME.CODE_DESTROY_CARD:start_dissolve()
+							G.GAME.CODE_DESTROY_CARD = nil
+						end
+					elseif self.config.center.key == "c_base" or self.config.center.set == "Enhanced" or self.edition or G.GAME.POINTER_SUBMENU == "Edition" then
+						--submenu stuff
+						if G.GAME.POINTER_SUBMENU == "Rank" then
+							G.GAME.POINTER_PLAYING.rank = self.base.value
+							G.FUNCS.overlay_menu{
+								definition = create_UIBox_pointer_suit()
+							}
+						elseif G.GAME.POINTER_SUBMENU == "Suit" then
+							G.GAME.POINTER_PLAYING.suit = self.base.suit
+							G.FUNCS.overlay_menu{
+								definition = create_UIBox_pointer_enhancement()
+							}
+						elseif G.GAME.POINTER_SUBMENU == "Enhancement" then
+							G.GAME.POINTER_PLAYING.center = self.config.center.key
+							G.FUNCS.overlay_menu{
+								definition = create_UIBox_pointer_edition()
+							}
+						elseif G.GAME.POINTER_SUBMENU == "Edition" then
+							if self.edition then
+								G.GAME.POINTER_PLAYING.edition = self.edition.key
+							end
+							G.FUNCS.overlay_menu{
+								definition = create_UIBox_pointer_seal()
+							}
+						elseif G.GAME.POINTER_SUBMENU == "Seal" then
+							G.GAME.POINTER_PLAYING.seal = self.seal
+							local card = SMODS.create_card{key=G.GAME.POINTER_PLAYING.center, rank = G.GAME.POINTER_PLAYING.rank, suit = G.GAME.POINTER_PLAYING.suit}
+							print(G.GAME.POINTER_PLAYING.center)
+							card:set_ability(G.P_CENTERS[G.GAME.POINTER_PLAYING.center])
+							if G.GAME.POINTER_PLAYING.seal then card:set_seal(G.GAME.POINTER_PLAYING.seal) end
+							if G.GAME.POINTER_PLAYING.edition then card:set_edition(G.GAME.POINTER_PLAYING.edition) end
+							if G.STATE == G.STATES.SELECTING_HAND then
+								G.hand:emplace(card)
+							else
+								G.deck:emplace(card)
+							end
+							table.insert(G.playing_cards, card)
+							G.FUNCS.exit_overlay_menu_code()
+							G.GAME.POINTER_PLAYING = nil
+							if G.GAME.CODE_DESTROY_CARD then
+								G.GAME.CODE_DESTROY_CARD:start_dissolve()
+								G.GAME.CODE_DESTROY_CARD = nil
+							end
+						end
+					else
+						G.ENTERED_CARD = self.config.center.key
+						local ret = G.FUNCS.pointer_apply()
+						G.FUNCS.pointer_cancel()
+						if ret then
+							G.FUNCS.exit_overlay_menu_code()
+							ccl(self)
+							if G.GAME.CODE_DESTROY_CARD then
+								G.GAME.CODE_DESTROY_CARD:start_dissolve()
+								G.GAME.CODE_DESTROY_CARD = nil
+							end
+						else
+							G.GAME.USING_CODE = true
+							G.GAME.USING_POINTER = true
+						end
+					end
+				end
+			else
+				ccl(self)
+			end
+		end
+		local emplace_ref = CardArea.emplace
+		function CardArea:emplace(card, ...)
+			if G.GAME.USING_POINTER then
+				if Cryptid.pointergetblist(card.config.center.key)[1] then
+					card.debuff = true
+				end
+			end
+			return emplace_ref(self, card, ...)
+		end
+
 		function create_UIBox_pointer(card)
 			G.E_MANAGER:add_event(Event({
 				blockable = false,
@@ -135,7 +235,9 @@ local pointer = {
 			return t
 		end
 		G.FUNCS.pointer_cancel = function()
-			G.CHOOSE_CARD:remove()
+			if G.CHOOSE_CARD then
+				G.CHOOSE_CARD:remove()
+			end
 			G.GAME.USING_CODE = false
 			G.GAME.USING_POINTER = false
 			G.DEBUG_POINTER = false
@@ -250,11 +352,13 @@ local pointer = {
 					created = true
 				end
 				if created then
-					G.CHOOSE_CARD:remove()
+					if G.CHOOSE_CARD then
+						G.CHOOSE_CARD:remove()
+					end
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
 					G.DEBUG_POINTER = false
-					return
+					return true
 				end
 			end
 

@@ -1083,3 +1083,267 @@ function Card:remove_random_sticker(seed)
 		end
 	end
 end
+
+
+function create_UIBox_class()
+	return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Enhanced, {4,4}, {
+        no_materialize = true,
+        snap_back = true,
+        h_mod = 1.03,
+        --infotip = localize('ml_edition_seal_enhancement_explanation'),
+        hide_single_page = true,
+		back_func = "exit_overlay_menu_code"
+    })	
+end
+
+function create_UIBox_variable_code()
+	local cards = {}
+	local ranks = {}
+	for i, v in pairs(SMODS.Ranks) do
+		cards[#cards+1] = G.P_CENTERS.c_base
+		ranks[#ranks+1] = i
+	end
+	table.sort(ranks, function(a, b)
+		return SMODS.Ranks[a].id < SMODS.Ranks[b].id
+	end)
+	return SMODS.card_collection_UIBox(cards, {5,5,5}, {
+        no_materialize = true,
+        snap_back = true,
+        h_mod = 1.03,
+        --infotip = localize('ml_edition_seal_enhancement_explanation'),
+        hide_single_page = true,
+		back_func = "exit_overlay_menu_code",
+		modify_card = function(card, center, i, j)
+			SMODS.change_base(card, "Spades", ranks[(j-1)*5+i])
+		end
+    })	
+end
+
+function create_UIBox_exploit()
+	local cards = {}
+	local ranks = {}
+	for i, v in pairs(G.P_CENTER_POOLS.Planet) do
+		if v.config.handname then
+			cards[#cards+1] = v
+		end
+	end
+	table.sort(ranks, function(a, b)
+		return G.GAME.hands[a.config.handname].order < G.GAME.hands[b.config.handname]
+	end)
+	return SMODS.card_collection_UIBox(cards, {5,5,5}, {
+        no_materialize = true,
+        snap_back = true,
+        h_mod = 1.03,
+        --infotip = localize('ml_edition_seal_enhancement_explanation'),
+        hide_single_page = true,
+		back_func = "exit_overlay_menu_code",
+    })	
+end
+
+G.FUNCS.exit_overlay_menu_code = function(e)
+	G.FUNCS.exit_overlay_menu(e)
+	G.GAME.USING_CLASS = nil
+	G.GAME.USING_CODE = nil
+	G.GAME.USING_VARIABLE = nil
+	G.GAME.USING_EXPLOIT_HAND = nil
+	G.GAME.USING_EXPLOIT = nil
+	G.GAME.USING_POINTER = nil
+	G.GAME.POINTER_SUBMENU = nil
+	G.GAME.POINTER_PLAYING = nil
+	if G.GAME.CODE_DESTROY_CARD and G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse then
+		G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse - 1
+		G.GAME.CODE_DESTROY_CARD = nil
+	end
+end
+
+function G.UIDEF.exploit_menu()
+	return create_UIBox_generic_options({contents ={create_tabs(
+	  {
+			tabs = {
+				{
+				label = localize('b_poker_hands'),
+				chosen = true,
+				tab_definition_function = create_UIBox_current_hands_exploit,
+			},
+		},
+		tab_h = 8,
+		snap_to_nav = true
+	  }
+	)}
+	})
+end
+
+function create_UIBox_current_hands_exploit(simple)
+	local ref = create_UIBox_current_hand_row
+	local ret = create_UIBox_current_hands(simple)
+	create_UIBox_current_hand_row = ref
+	return ret
+end
+
+local htref = create_UIBox_hand_tip
+function create_UIBox_hand_tip(handname)
+	if G.GAME.USING_EXPLOIT then
+		G.GAME.USING_EXPLOIT_HAND = handname
+	end
+	return htref(handname)
+end
+
+local lcpref = Controller.L_cursor_press
+function Controller:L_cursor_press(x, y)
+	lcpref(self, x, y)
+	if G and G.GAME and G.GAME.hands and G.GAME.USING_EXPLOIT_HAND then
+		if G.CONTROLLER.cursor_hover and G.CONTROLLER.cursor_hover.target and G.CONTROLLER.cursor_hover.target.config and
+		G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip and G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler and 
+		G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler.args and G.GAME.hands[G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler.args] then
+			if G.GAME.CODE_DESTROY_CARD then
+				G.GAME.CODE_DESTROY_CARD:start_dissolve()
+				G.GAME.CODE_DESTROY_CARD = nil
+			end
+			G.GAME.cry_exploit_override = G.GAME.USING_EXPLOIT_HAND
+			G.FUNCS.exit_overlay_menu_code()
+		end
+	end
+end
+
+
+function create_UIBox_pointer_rank()
+	G.GAME.POINTER_SUBMENU = "Rank"
+	G.GAME.POINTER_PLAYING = {}
+	local cards = {}
+	local ranks = {}
+	for i, v in pairs(SMODS.Ranks) do
+		cards[#cards+1] = G.P_CENTERS.c_base
+		ranks[#ranks+1] = i
+	end
+	table.sort(ranks, function(a, b)
+		return SMODS.Ranks[a].id < SMODS.Ranks[b].id
+	end)
+	return SMODS.card_collection_UIBox(cards, {5,5,5}, {
+        no_materialize = true,
+        snap_back = true,
+        h_mod = 1.03,
+        --infotip = localize('ml_edition_seal_enhancement_explanation'),
+        hide_single_page = true,
+		back_func = "your_collection",
+		modify_card = function(card, center, i, j)
+			SMODS.change_base(card, "Spades", ranks[(j-1)*5+i])
+			if center.hidden or center.no_noe or center.no_pointer or center.no_code or center.no_variable or center.no_class then
+				card.deuff = true
+			end
+		end
+    })	
+end
+
+
+function create_UIBox_pointer_suit()
+	G.GAME.POINTER_SUBMENU = "Suit"
+	local cards = {}
+	local suits = {}
+	for i, v in pairs(SMODS.Suits) do
+		cards[#cards+1] = G.P_CENTERS.c_base
+		suits[#suits+1] = i
+	end
+	table.sort(suits, function(a, b)
+		return SMODS.Suits[a].suit_nominal < SMODS.Suits[b].suit_nominal
+	end)
+	return SMODS.card_collection_UIBox(cards, {4,4,4}, {
+        no_materialize = true,
+        snap_back = true,
+        h_mod = 1.03,
+        --infotip = localize('ml_edition_seal_enhancement_explanation'),
+        hide_single_page = true,
+		back_func = "your_collection",
+		modify_card = function(card, center, i, j)
+			SMODS.change_base(card, suits[(j-1)*4+i], G.GAME.POINTER_PLAYING.rank)
+			if center.hidden or center.no_noe or center.no_pointer or center.no_code or center.no_variable or center.no_class then
+				card.deuff = true
+			end
+		end
+    })	
+end
+
+function create_UIBox_pointer_enhancement()
+	G.GAME.POINTER_SUBMENU = "Enhancement"
+	return create_UIBox_your_collection_enhancements_pointer()
+end
+
+function create_UIBox_pointer_edition()
+	G.GAME.POINTER_SUBMENU = "Edition"
+	return create_UIBox_your_collection_editions_pointer()
+end
+
+function create_UIBox_pointer_seal()
+	G.GAME.POINTER_SUBMENU = "Seal"
+	return create_UIBox_your_collection_seals_pointer()
+end
+
+G.FUNCS.your_collection_create_card_rank = function(e)
+	G.SETTINGS.paused = true
+	G.FUNCS.overlay_menu{
+	  definition = create_UIBox_pointer_rank(),
+	}
+end
+
+
+create_UIBox_your_collection_enhancements_pointer = function()
+	local cards = {
+		G.P_CENTERS.c_base
+	}
+	for i, v in pairs(G.P_CENTER_POOLS.Enhanced) do cards[#cards+1] = v end
+    return SMODS.card_collection_UIBox(cards, {4,4}, {
+        no_materialize = true,
+        snap_back = true,
+        h_mod = 1.03,
+        hide_single_page = true,
+		modify_card = function(card, center)
+			SMODS.change_base(card, G.GAME.POINTER_PLAYING.suit, G.GAME.POINTER_PLAYING.rank)
+			if center.hidden or center.no_noe or center.no_pointer or center.no_code or center.no_variable or center.no_class then
+				card.deuff = true
+			end
+		end
+    })
+end 
+  
+
+create_UIBox_your_collection_editions_pointer = function()
+    return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Edition, {5,5}, {
+        snap_back = true,
+        h_mod = 1.03,
+        hide_single_page = true,
+        collapse_single_page = true,
+        modify_card = function(card, center)
+            if center.discovered then 
+				card:set_edition(center.key, true, true) 
+				SMODS.change_base(card, G.GAME.POINTER_PLAYING.suit, G.GAME.POINTER_PLAYING.rank)
+				card:set_ability(G.P_CENTERS[G.GAME.POINTER_PLAYING.center])
+				if center.hidden or center.no_noe or center.no_pointer or center.no_code or center.no_variable or center.no_class then
+					card.deuff = true
+				end
+			end
+        end,
+    })
+end
+
+
+create_UIBox_your_collection_seals_pointer = function()
+	local cards = {
+		{key = nil}
+	}
+	for i, v in pairs(G.P_CENTER_POOLS.Seal) do cards[#cards+1] = v end
+    return SMODS.card_collection_UIBox(cards, {5,5}, {
+        snap_back = true,
+        hide_single_page = true,
+        collapse_single_page = true,
+        center = 'c_base',
+        h_mod = 1.03,
+        modify_card = function(card, center)
+            card:set_seal(center.key, true)
+			SMODS.change_base(card, G.GAME.POINTER_PLAYING.suit, G.GAME.POINTER_PLAYING.rank)
+			card:set_ability(G.P_CENTERS[G.GAME.POINTER_PLAYING.center])
+			card:set_edition(G.GAME.POINTER_PLAYING.edition, true, true)
+			if center.hidden or center.no_noe or center.no_pointer or center.no_code or center.no_variable or center.no_class then
+				card.deuff = true
+			end
+        end,
+    })
+end

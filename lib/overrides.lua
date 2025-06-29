@@ -407,22 +407,6 @@ function Game:update(dt)
 			v.children.back:set_sprite_pos(G.P_CENTERS.b_cry_glowing.pos or G.P_CENTERS["b_red"].pos)
 		end
 	end
-	if not G.OVERLAY_MENU and not G.CHOOSE_CARD and G.GAME.USING_POINTER then
-		G.CHOOSE_CARD = UIBox({
-			definition = create_UIBox_pointer(card),
-			config = {
-				align = "cm",
-				offset = { x = 0, y = 10 },
-				major = G.ROOM_ATTACH,
-				bond = "Weak",
-				instance_type = "POPUP",
-			},
-		})
-		G.CHOOSE_CARD.alignment.offset.y = 0
-		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_CARD:align_to_major()
-	end
-
 	--Increase the blind size for The Clock and Lavender Loop
 	local choices = { "Small", "Big", "Boss" }
 	G.GAME.CRY_BLINDS = G.GAME.CRY_BLINDS or {}
