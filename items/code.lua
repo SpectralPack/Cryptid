@@ -1045,7 +1045,7 @@ local exploit = {
 		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_EXPLOIT = true
-		G.FUNCS.overlay_menu({definition = G.UIDEF.exploit_menu()})
+		G.FUNCS.overlay_menu({ definition = G.UIDEF.exploit_menu() })
 	end,
 }
 -- ://Malware
@@ -2871,16 +2871,15 @@ local class = {
 		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
-		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1)
-		 then
+		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
 			G.GAME.CODE_DESTROY_CARD = copy_card(card)
 			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-		 else
+		else
 			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
-		 end
+		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_CLASS = card.ability.max_highlighted
-		G.FUNCS.overlay_menu({definition = create_UIBox_class()})
+		G.FUNCS.overlay_menu({ definition = create_UIBox_class() })
 	end,
 	init = function(self)
 		local ccl = Card.click
@@ -2903,7 +2902,7 @@ local class = {
 					end
 					G.hand:unhighlight_all()
 					ccl(self)
-					if G.GAME.CODE_DESTROY_CARD then	
+					if G.GAME.CODE_DESTROY_CARD then
 						G.GAME.CODE_DESTROY_CARD:start_dissolve()
 						G.GAME.CODE_DESTROY_CARD = nil
 					end
@@ -3106,7 +3105,7 @@ local variable = {
 		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_VARIABLE = card.ability.max_highlighted
-		G.FUNCS.overlay_menu({definition = create_UIBox_variable_code()})
+		G.FUNCS.overlay_menu({ definition = create_UIBox_variable_code() })
 	end,
 	init = function(self)
 		local ccl = Card.click

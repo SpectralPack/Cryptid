@@ -39,9 +39,9 @@ local pointer = {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.USING_POINTER = true
-				G.FUNCS.overlay_menu({definition = create_UIBox_your_collection()})
+				G.FUNCS.overlay_menu({ definition = create_UIBox_your_collection() })
 				return true
-			end
+			end,
 		}))
 		G.GAME.POINTER_SUBMENU = nil
 	end,
@@ -73,37 +73,50 @@ local pointer = {
 							G.GAME.CODE_DESTROY_CARD:start_dissolve()
 							G.GAME.CODE_DESTROY_CARD = nil
 						end
-					elseif self.config.center.key == "c_base" or self.config.center.set == "Enhanced" or self.edition or G.GAME.POINTER_SUBMENU == "Edition" then
+					elseif
+						self.config.center.key == "c_base"
+						or self.config.center.set == "Enhanced"
+						or self.edition
+						or G.GAME.POINTER_SUBMENU == "Edition"
+					then
 						--submenu stuff
 						if G.GAME.POINTER_SUBMENU == "Rank" then
 							G.GAME.POINTER_PLAYING.rank = self.base.value
-							G.FUNCS.overlay_menu{
-								definition = create_UIBox_pointer_suit()
-							}
+							G.FUNCS.overlay_menu({
+								definition = create_UIBox_pointer_suit(),
+							})
 						elseif G.GAME.POINTER_SUBMENU == "Suit" then
 							G.GAME.POINTER_PLAYING.suit = self.base.suit
-							G.FUNCS.overlay_menu{
-								definition = create_UIBox_pointer_enhancement()
-							}
+							G.FUNCS.overlay_menu({
+								definition = create_UIBox_pointer_enhancement(),
+							})
 						elseif G.GAME.POINTER_SUBMENU == "Enhancement" then
 							G.GAME.POINTER_PLAYING.center = self.config.center.key
-							G.FUNCS.overlay_menu{
-								definition = create_UIBox_pointer_edition()
-							}
+							G.FUNCS.overlay_menu({
+								definition = create_UIBox_pointer_edition(),
+							})
 						elseif G.GAME.POINTER_SUBMENU == "Edition" then
 							if self.edition then
 								G.GAME.POINTER_PLAYING.edition = self.edition.key
 							end
-							G.FUNCS.overlay_menu{
-								definition = create_UIBox_pointer_seal()
-							}
+							G.FUNCS.overlay_menu({
+								definition = create_UIBox_pointer_seal(),
+							})
 						elseif G.GAME.POINTER_SUBMENU == "Seal" then
 							G.GAME.POINTER_PLAYING.seal = self.seal
-							local card = SMODS.create_card{key=G.GAME.POINTER_PLAYING.center, rank = G.GAME.POINTER_PLAYING.rank, suit = G.GAME.POINTER_PLAYING.suit}
+							local card = SMODS.create_card({
+								key = G.GAME.POINTER_PLAYING.center,
+								rank = G.GAME.POINTER_PLAYING.rank,
+								suit = G.GAME.POINTER_PLAYING.suit,
+							})
 							print(G.GAME.POINTER_PLAYING.center)
 							card:set_ability(G.P_CENTERS[G.GAME.POINTER_PLAYING.center])
-							if G.GAME.POINTER_PLAYING.seal then card:set_seal(G.GAME.POINTER_PLAYING.seal) end
-							if G.GAME.POINTER_PLAYING.edition then card:set_edition(G.GAME.POINTER_PLAYING.edition) end
+							if G.GAME.POINTER_PLAYING.seal then
+								card:set_seal(G.GAME.POINTER_PLAYING.seal)
+							end
+							if G.GAME.POINTER_PLAYING.edition then
+								card:set_edition(G.GAME.POINTER_PLAYING.edition)
+							end
 							if G.STATE == G.STATES.SELECTING_HAND then
 								G.hand:emplace(card)
 							else
