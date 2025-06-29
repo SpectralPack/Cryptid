@@ -134,24 +134,30 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_Clusterfuck"] = 8,
 		["cry_UltPair"] = 8,
 		["cry_WholeDeck"] = 52,
+		["cry_Declare0"] = G.GAME.hands.cry_Declare0 and G.GAME.hands.cry_Declare0.declare_cards and #G.GAME.hands.cry_Declare0.declare_cards,
+		["cry_Declare1"] = G.GAME.hands.cry_Declare1 and G.GAME.hands.cry_Declare1.declare_cards and #G.GAME.hands.cry_Declare1.declare_cards,
+		["cry_Declare2"] = G.GAME.hands.cry_Declare2 and G.GAME.hands.cry_Declare2.declare_cards and #G.GAME.hands.cry_Declare2.declare_cards
 	}
+	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
+	if hand_table[text] and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
+		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
+				and #_cards - hand_table[text]
+			or #scoring_hand - hand_table[text]
+
+		if G.GAME.hands[text] and G.GAME.hands[text].declare_cards then
+			G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + (Cryptid.declare_hand_ascended_counter(_cards, G.GAME.hands[text]) - #scoring_hand)
+		end
+	else
+		G.GAME.current_round.current_hand.cry_asc_num = 0
+	end
 	-- Change mult and chips colors if hand is ascended
-	if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] and not hidden then
+	if G.GAME.current_round.current_hand.cry_asc_num > 0 and not hidden then
 		ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
 		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
 	else
 		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
 		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
 	end
-	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
-	if hand_table[text] and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
-		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
-				and #_cards - hand_table[text]
-			or #scoring_hand - hand_table[text]
-	else
-		G.GAME.current_round.current_hand.cry_asc_num = 0
-	end
-
 	G.GAME.current_round.current_hand.cry_asc_num = math.max(0, G.GAME.current_round.current_hand.cry_asc_num)
 	if G.GAME.cry_exploit_override then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + 1

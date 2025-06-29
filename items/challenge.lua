@@ -486,6 +486,14 @@ function Game:start_run(args)
 	if G.GAME.modifiers.cry_no_consumables then
 		G.GAME.joker_rate = 1e300
 	end
+	for i, v in pairs(G.handlist) do
+		if v == "cry_Declare0" then d0 = true end
+	end
+	if not d0 then
+		table.insert(G.handlist, 1, "cry_Declare0")
+		table.insert(G.handlist, 1, "cry_Declare1")
+		table.insert(G.handlist, 1, "cry_Declare2")
+	end
 end
 local challenges = {
 	sticker_sheet,

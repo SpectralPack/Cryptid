@@ -686,3 +686,102 @@ payload = '''
 		end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+	for k, _hand in pairs(SMODS.PokerHands) do
+		results[k] = _hand.evaluate(parts, hand) or {}
+	end
+'''
+position = "after"
+payload = '''
+	local hands = {
+		G.GAME.hands.cry_Declare0,
+		G.GAME.hands.cry_Declare1,
+		G.GAME.hands.cry_Declare2,
+	}
+	for i, v in pairs(hands) do
+		if v.index then
+			local is_this_hand = true
+			local cards = {}
+			if v.declare_cards then
+				local satisfied = true
+				for i, v in pairs(v.declare_cards) do
+					local rank
+					local suit
+					for i2, v2 in pairs(hand) do
+						if not v2.canfit then
+							if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then 
+								if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then
+									v2.canfit = true
+								end
+							end
+						end
+						if not v2.marked and not (suit and rank) then
+							if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then rank = true end
+							if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then suit = true end
+							if not (suit and rank) then
+								suit = false
+								rank = false
+							end
+							if suit and rank then
+								cards[#cards+1] = v2
+								v2.marked = true
+							end
+						end
+					end
+					if not rank or not suit then satisfied = false end
+				end
+				for i2, v2 in pairs(hand) do
+					v2.marked = false
+					if v2.canfit then
+						cards[#cards+1] = v2
+						v2.canfit = nil
+					end
+				end
+				if not satisfied then is_this_hand = false end
+			end
+			if is_this_hand then
+				key = "cry_Declare"..tostring(v.index)
+				local tbl = {cards}
+				local skey = ({
+					[0] = "Flush",
+					[1] = "Straight",
+					[2] = "Full House"
+				})[v.index]
+				results[key] = tbl
+				results[skey] = tbl
+				if skey == "Full House" then
+					results["Three of a Kind"] = tbl
+					results["Two Pair"] = tbl
+					results["Pair"] = tbl
+				end
+				results.top = tbl
+			else
+				key = "cry_Declare"..tostring(v.index)			
+				results[key] = {}
+			end
+		end
+		if not results["cry_Declare0"] then results["cry_Declare0"] = {} end
+		if not results["cry_Declare1"] then results["cry_Declare1"] = {} end
+		if not results["cry_Declare2"] then results["cry_Declare2"] = {} end
+	end
+'''
+match_indent = true
+
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+for k, v in pairs(SMODS.PokerHands[key]) do
+'''
+position = "at"
+payload = '''
+for k, v in pairs(SMODS.PokerHands[key] or {}) do
+'''
+match_indent = true
+

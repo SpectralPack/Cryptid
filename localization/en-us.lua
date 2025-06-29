@@ -755,6 +755,15 @@ return {
 					"{C:cry_code}without{} cashing out",
 				},
 			},
+			c_cry_declare = {
+				name = "://DECLARE",
+				text = {
+					"Your {C:attention}currently{} selected cards",
+					"become a {C:cry_code}new{} Poker hand which is",
+					"considered to contain a {C:attention}#1#{}",
+					"You may create up to {C:attention}3{} {C:inactive}[#2#]{} Hands"
+				},
+			},
 		},
 		["Content Set"] = {
 			set_cry_blind = {
@@ -4862,6 +4871,10 @@ return {
 				"Are you insane?",
 			},
 			["cry_None"] = { "A hand containing 0 cards" },
+
+			["cry_Declare0"] = { "Always counts as a Straight" },
+			["cry_Declare1"] = { "Always counts as a Flush" },
+			["cry_Declare2"] = { "Always counts as a Full House" },
 		},
 		achievement_names = {
 			ach_cry_ace_in_crash = "Pocket ACE",
@@ -5027,6 +5040,10 @@ return {
 			cry_code_create_previous = "CREATE PREVIOUS",
 			cry_code_execute = "EXECUTE",
 			cry_code_cancel = "CANCEL",
+			cry_code_enter_hand = "ENTER POKER HAND NAME",
+			cry_code_with_suits = "INCLUDE SUITS",
+			cry_code_without_suits = "IGNORE SUITS",
+			cry_code_suitless = "Hand does not require specific suits",
 
 			b_flip = "FLIP",
 			b_merge = "MERGE",
