@@ -605,16 +605,17 @@ pattern = '''
 '''
 position = "before"
 payload = '''
-	local enhanced = (not G.GAME.USING_POINTER and UIBox_button({button = 'your_collection_enhancements', label = {localize('b_enhanced_cards')}, minw = 5})) 
+	local use_pointer = G.GAME.USING_POINTER or G.GAME.POINTER_COLLECTION
+	local enhanced = (not use_pointer and UIBox_button({button = 'your_collection_enhancements', label = {localize('b_enhanced_cards')}, minw = 5}))
 		or UIBox_button({button = 'your_collection_create_card_rank', label = {localize('b_playing_cards')}, minw = 5, minh = 3.4, id = 'your_collection_create_card'})
-	local seals = (not G.GAME.USING_POINTER and  UIBox_button({button = 'your_collection_seals', label = {localize('b_seals')}, minw = 5, id = 'your_collection_seals'})) or nil
-	local editions = not G.GAME.USING_POINTER and UIBox_button({button = 'your_collection_editions', label = {localize('b_editions')}, count = G.DISCOVER_TALLIES.editions, minw = 5, id = 'your_collection_editions'}) or nil
+	local seals = (not use_pointer and  UIBox_button({button = 'your_collection_seals', label = {localize('b_seals')}, minw = 5, id = 'your_collection_seals'})) or nil
+	local editions = not use_pointer and UIBox_button({button = 'your_collection_editions', label = {localize('b_editions')}, count = G.DISCOVER_TALLIES.editions, minw = 5, id = 'your_collection_editions'}) or nil
 
-	local blinds = UIBox_button({button = 'your_collection_blinds', label = {localize('b_blinds')}, count = G.DISCOVER_TALLIES.blinds, minw = 5, minh = (G.GAME.USING_POINTER and 2.8 or 2.0), id = 'your_collection_blinds', focus_args = {snap_to = true}})
-	local other = not G.GAME.USING_POINTER and UIBox_button({button = 'your_collection_other_gameobjects', label = {localize('k_other')}, minw = 5, id = 'your_collection_other_gameobjects', focus_args = {snap_to = true}}) or nil
+	local blinds = UIBox_button({button = 'your_collection_blinds', label = {localize('b_blinds')}, count = G.DISCOVER_TALLIES.blinds, minw = 5, minh = (use_pointer and 2.8 or 2.0), id = 'your_collection_blinds', focus_args = {snap_to = true}})
+	local other = not use_pointer and UIBox_button({button = 'your_collection_other_gameobjects', label = {localize('k_other')}, minw = 5, id = 'your_collection_other_gameobjects', focus_args = {snap_to = true}}) or nil
 
-	local decks = not G.GAME.USING_POINTER and UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minw = 5}) or nil
-	local vouchers = UIBox_button({button = 'your_collection_vouchers', label = {localize('b_vouchers')}, count = G.DISCOVER_TALLIES.vouchers, minw = 5, id = 'your_collection_vouchers', minh = G.GAME.USING_POINTER and 2.0})
+	local decks = not use_pointer and UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minw = 5}) or nil
+	local vouchers = UIBox_button({button = 'your_collection_vouchers', label = {localize('b_vouchers')}, count = G.DISCOVER_TALLIES.vouchers, minw = 5, id = 'your_collection_vouchers', minh = use_pointer and 2.0})
 '''
 match_indent = true
 

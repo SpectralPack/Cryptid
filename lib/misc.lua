@@ -1149,6 +1149,7 @@ G.FUNCS.exit_overlay_menu_code = function(e)
 	G.GAME.USING_POINTER = nil
 	G.GAME.POINTER_SUBMENU = nil
 	G.GAME.POINTER_PLAYING = nil
+	G.GAME.POINTER_COLLECTION = nil
 	if G.GAME.CODE_DESTROY_CARD and G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse then
 		G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse - 1
 		G.GAME.CODE_DESTROY_CARD = nil
