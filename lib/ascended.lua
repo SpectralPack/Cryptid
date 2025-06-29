@@ -134,9 +134,15 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_Clusterfuck"] = 8,
 		["cry_UltPair"] = 8,
 		["cry_WholeDeck"] = 52,
-		["cry_Declare0"] = G.GAME.hands.cry_Declare0 and G.GAME.hands.cry_Declare0.declare_cards and #G.GAME.hands.cry_Declare0.declare_cards,
-		["cry_Declare1"] = G.GAME.hands.cry_Declare1 and G.GAME.hands.cry_Declare1.declare_cards and #G.GAME.hands.cry_Declare1.declare_cards,
-		["cry_Declare2"] = G.GAME.hands.cry_Declare2 and G.GAME.hands.cry_Declare2.declare_cards and #G.GAME.hands.cry_Declare2.declare_cards
+		["cry_Declare0"] = G.GAME.hands.cry_Declare0
+			and G.GAME.hands.cry_Declare0.declare_cards
+			and #G.GAME.hands.cry_Declare0.declare_cards,
+		["cry_Declare1"] = G.GAME.hands.cry_Declare1
+			and G.GAME.hands.cry_Declare1.declare_cards
+			and #G.GAME.hands.cry_Declare1.declare_cards,
+		["cry_Declare2"] = G.GAME.hands.cry_Declare2
+			and G.GAME.hands.cry_Declare2.declare_cards
+			and #G.GAME.hands.cry_Declare2.declare_cards,
 	}
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
 	if hand_table[text] and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
@@ -145,7 +151,8 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			or #scoring_hand - hand_table[text]
 
 		if G.GAME.hands[text] and G.GAME.hands[text].declare_cards then
-			G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + (Cryptid.declare_hand_ascended_counter(_cards, G.GAME.hands[text]) - #scoring_hand)
+			G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num
+				+ (Cryptid.declare_hand_ascended_counter(_cards, G.GAME.hands[text]) - #scoring_hand)
 		end
 	else
 		G.GAME.current_round.current_hand.cry_asc_num = 0

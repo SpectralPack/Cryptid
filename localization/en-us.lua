@@ -761,7 +761,7 @@ return {
 					"Your {C:attention}currently{} selected cards",
 					"become a {C:cry_code}new{} Poker hand which is",
 					"considered to contain a {C:attention}#1#{}",
-					"You may create up to {C:attention}3{} {C:inactive}[#2#]{} Hands"
+					"You may create up to {C:attention}3{} {C:inactive}[#2#]{} Hands",
 				},
 			},
 		},

@@ -1401,8 +1401,12 @@ function Cryptid.declare_hand_ascended_counter(hand, declarehand)
 		local rank
 		for i2, v2 in pairs(hand) do
 			if not v2.marked then
-				if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then rank = true end
-				if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then suit = true end
+				if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then
+					rank = true
+				end
+				if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then
+					suit = true
+				end
 				if not (suit and rank) then
 					suit = false
 					rank = false
@@ -1413,7 +1417,9 @@ function Cryptid.declare_hand_ascended_counter(hand, declarehand)
 				end
 			end
 		end
-		if not rank or not suit then how_many_fit = 0 end
+		if not rank or not suit then
+			how_many_fit = 0
+		end
 		total = total + how_many_fit
 	end
 	for i2, v2 in pairs(hand) do

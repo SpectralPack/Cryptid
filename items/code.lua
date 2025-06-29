@@ -2851,14 +2851,17 @@ local declare = {
 	loc_vars = function(self, q, card)
 		return {
 			vars = {
-				localize(({
-					"Straight",
-					"Flush",
-					"Full House",
-					"Full House"
-				})[(G.GAME.DECLARE_USED or 0) + 1], "poker_hands"),
-				number_format(-G.GAME.DECLARE_USED)
-			}
+				localize(
+					({
+						"Straight",
+						"Flush",
+						"Full House",
+						"Full House",
+					})[(G.GAME.DECLARE_USED or 0) + 1],
+					"poker_hands"
+				),
+				number_format(-G.GAME.DECLARE_USED),
+			},
 		}
 	end,
 	can_use = function(self, card)
@@ -2881,7 +2884,7 @@ local declare = {
 		G.CHOOSE_CARD.alignment.offset.y = 0
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
 		G.CHOOSE_CARD:align_to_major()
-    end,
+	end,
 	init = function()
 		function create_UIBox_declare(card)
 			G.E_MANAGER:add_event(Event({
@@ -2956,115 +2959,117 @@ local declare = {
 			})
 			return t
 		end
-        G.FUNCS.declare_cancel = function()
+		G.FUNCS.declare_cancel = function()
 			if G.CHOOSE_CARD then
 				G.CHOOSE_CARD:remove()
 			end
 			G.GAME.USING_CODE = false
 			G.GAME.USING_DECLARE = false
 		end
-        G.FUNCS.declare_apply = function()
-            G.GAME.hands["cry_Declare"..tostring(G.GAME.DECLARE_USED or 0)] = Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD)
-            G.GAME.DECLARE_USED = (G.GAME.DECLARE_USED or 0) + 1
-            G.FUNCS.declare_cancel()
-        end
-        G.FUNCS.declare_apply_suitless = function()
-            G.GAME.hands["cry_Declare"..tostring(G.GAME.DECLARE_USED or 0)] = Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD, true)
-            G.GAME.DECLARE_USED = (G.GAME.DECLARE_USED or 0) + 1
-            G.FUNCS.declare_cancel()
-        end
-        Cryptid.create_declare_hand = function(cards, name, suitless)
-            if G.ENTERED_CARD == "" then
-                G.ENTERED_CARD = "cry_Declare"..tostring(G.GAME.DECLARE_USED or 0)
-            end
-            local complexity = #cards
-            local ranks = {}
-            local suits = {}
-            for i, v in pairs(cards) do
-                if not ranks[v:get_id()] then
-                    ranks[v:get_id()] = true
-                    complexity = complexity + 0.85
-                end
-                if not suitless then
-                    if (SMODS.has_no_suit(v) and not suits["suitless"]) or not suits[v.base.suit] then
-                        suits[SMODS.has_no_suit(v) and "suitless" or v.base.suit] = true
-                        complexity = complexity + 0.45
-                    end
-                end
-            end
-            if #cards > 5 then
-                complexity = complexity * 1.25 ^ (#cards - 5)
-            end
-            complexity = complexity * 0.75
-            local mult = complexity
-            local chips = complexity * 8.45 --arbitrary just shake it up a little
-            local l_mult = complexity * 0.1
-            local l_chips = complexity
-            local declare_cards = {}
-            for i, v in pairs(cards) do
-                local card = {
-                    rank = v:get_id() > 0 and v:get_id() or "rankless",
-                    suit = not suitless and (SMODS.has_no_suit(v) and "suitless" or v.base.suit),
-                }
-                declare_cards[#declare_cards+1] = card
-            end
-            for i, v in pairs(G.GAME.hands) do
-                v.order = (v.order or 0) + 1
-            end
-            local desc = localize("cry_Declare"..tostring(G.GAME.DECLARE_USED or 0), "poker_hand_descriptions")
-            desc[#desc+1] = localize("cry_code_suitless")
-            return {
-                order = 1,
-                l_mult = l_mult,
-                l_chips = l_chips,
-                mult = mult,
-                chips = chips,
-                example = Cryptid.create_declare_example(cards, suitless),
-                visible = true,
-                played = 0,
-                _saved_d_v = true,
-                played_this_round = 0,
-                s_mult = mult,
-                s_chips = chips,
-                from_declare = true,
-                declare_cards = declare_cards,
-                declare_name = G.ENTERED_CARD,
-                level = 1,
-                index = G.GAME.DECLARE_USED or 0,
-                desc_text = suitless and desc or nil,
-            }
-        end
-        local localize_ref = localize
-        function localize(first, second, ...)
-            if second == "poker_hands" then
-                if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].declare_name then
-                    return G.GAME.hands[first].declare_name
-                end
-            end
-            if second == "poker_hand_descriptions" then
-                if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].desc_text then
-                    return G.GAME.hands[first].desc_text
-                end
-            end
-            return localize_ref(first, second, ...)
-        end
-        local is_visibleref = SMODS.is_poker_hand_visible
-        function SMODS.is_poker_hand_visible(handname)
-            if not SMODS.PokerHands[handname]
-                then return G.GAME.hands[handname].visible
-            end
-            return is_visibleref(handname)
-        end
-        function Cryptid.create_declare_example(cards, suitless)
-            local c = {}
-            for i, v in pairs(cards) do
-                local key = SMODS.Suits[v.base.suit].card_key.."_"..SMODS.Ranks[v.base.value].card_key
-                local enhancement = (SMODS.has_no_suit(v) and "m_stone") or (suitless and "m_wild") or nil
-                c[#c+1] = {key, true, enhancement = enhancement}
-            end
-            return c
-        end
-    end
+		G.FUNCS.declare_apply = function()
+			G.GAME.hands["cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)] =
+				Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD)
+			G.GAME.DECLARE_USED = (G.GAME.DECLARE_USED or 0) + 1
+			G.FUNCS.declare_cancel()
+		end
+		G.FUNCS.declare_apply_suitless = function()
+			G.GAME.hands["cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)] =
+				Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD, true)
+			G.GAME.DECLARE_USED = (G.GAME.DECLARE_USED or 0) + 1
+			G.FUNCS.declare_cancel()
+		end
+		Cryptid.create_declare_hand = function(cards, name, suitless)
+			if G.ENTERED_CARD == "" then
+				G.ENTERED_CARD = "cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)
+			end
+			local complexity = #cards
+			local ranks = {}
+			local suits = {}
+			for i, v in pairs(cards) do
+				if not ranks[v:get_id()] then
+					ranks[v:get_id()] = true
+					complexity = complexity + 0.85
+				end
+				if not suitless then
+					if (SMODS.has_no_suit(v) and not suits["suitless"]) or not suits[v.base.suit] then
+						suits[SMODS.has_no_suit(v) and "suitless" or v.base.suit] = true
+						complexity = complexity + 0.45
+					end
+				end
+			end
+			if #cards > 5 then
+				complexity = complexity * 1.25 ^ (#cards - 5)
+			end
+			complexity = complexity * 0.75
+			local mult = complexity
+			local chips = complexity * 8.45 --arbitrary just shake it up a little
+			local l_mult = complexity * 0.1
+			local l_chips = complexity
+			local declare_cards = {}
+			for i, v in pairs(cards) do
+				local card = {
+					rank = v:get_id() > 0 and v:get_id() or "rankless",
+					suit = not suitless and (SMODS.has_no_suit(v) and "suitless" or v.base.suit),
+				}
+				declare_cards[#declare_cards + 1] = card
+			end
+			for i, v in pairs(G.GAME.hands) do
+				v.order = (v.order or 0) + 1
+			end
+			local desc = localize("cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0), "poker_hand_descriptions")
+			desc[#desc + 1] = localize("cry_code_suitless")
+			return {
+				order = 1,
+				l_mult = l_mult,
+				l_chips = l_chips,
+				mult = mult,
+				chips = chips,
+				example = Cryptid.create_declare_example(cards, suitless),
+				visible = true,
+				played = 0,
+				_saved_d_v = true,
+				played_this_round = 0,
+				s_mult = mult,
+				s_chips = chips,
+				from_declare = true,
+				declare_cards = declare_cards,
+				declare_name = G.ENTERED_CARD,
+				level = 1,
+				index = G.GAME.DECLARE_USED or 0,
+				desc_text = suitless and desc or nil,
+			}
+		end
+		local localize_ref = localize
+		function localize(first, second, ...)
+			if second == "poker_hands" then
+				if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].declare_name then
+					return G.GAME.hands[first].declare_name
+				end
+			end
+			if second == "poker_hand_descriptions" then
+				if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].desc_text then
+					return G.GAME.hands[first].desc_text
+				end
+			end
+			return localize_ref(first, second, ...)
+		end
+		local is_visibleref = SMODS.is_poker_hand_visible
+		function SMODS.is_poker_hand_visible(handname)
+			if not SMODS.PokerHands[handname] then
+				return G.GAME.hands[handname].visible
+			end
+			return is_visibleref(handname)
+		end
+		function Cryptid.create_declare_example(cards, suitless)
+			local c = {}
+			for i, v in pairs(cards) do
+				local key = SMODS.Suits[v.base.suit].card_key .. "_" .. SMODS.Ranks[v.base.value].card_key
+				local enhancement = (SMODS.has_no_suit(v) and "m_stone") or (suitless and "m_wild") or nil
+				c[#c + 1] = { key, true, enhancement = enhancement }
+			end
+			return c
+		end
+	end,
 }
 
 -- ://Class
