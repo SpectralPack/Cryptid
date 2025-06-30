@@ -782,12 +782,3 @@ payload = '''
 for k, v in pairs(SMODS.PokerHands[key] or {}) do
 '''
 match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = "if G.GAME.hands[h].played > 0 then"
-position = "at"
-payload = '''
-'''
-match_indent = true

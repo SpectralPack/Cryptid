@@ -532,16 +532,16 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 			)
 			if args.type == "+" then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
-					num = to_big(num) + to_big(new_value)
+					num = num + new_value
 				end
 			elseif args.type == "X" then
 				if
 					to_big(num) ~= to_big(0) and (to_big(num) ~= to_big(1) or (name ~= "x_chips" and name ~= "x_mult"))
 				then
-					num = to_big(num) * to_big(new_value)
+					num = num * new_value
 				end
 			elseif args.type == "^" then
-				num = to_big(num) ^ to_big(new_value)
+				num = to_big(num) ^ new_value
 			elseif args.type == "hyper" then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
 					num = to_big(num):arrow(args.value.arrows, to_big(new_value))
@@ -550,16 +550,16 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 		elseif args.value then
 			if args.type == "+" then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
-					num = to_big(num) + to_big(args.value)
+					num = num + to_big(args.value)
 				end
 			elseif args.type == "X" then
 				if
 					to_big(num) ~= to_big(0) and (to_big(num) ~= to_big(1) or (name ~= "x_chips" and name ~= "x_mult"))
 				then
-					num = to_big(num) * to_big(args.value)
+					num = num * args.value
 				end
 			elseif args.type == "^" then
-				num = to_big(num) ^ to_big(args.value)
+				num = to_big(num) ^ args.value
 			elseif args.type == "hyper" then
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end
