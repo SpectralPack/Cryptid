@@ -3017,8 +3017,6 @@ local declare = {
 			for i, v in pairs(G.GAME.hands) do
 				v.order = (v.order or 0) + 1
 			end
-			local desc = localize("cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0), "poker_hand_descriptions")
-			desc[#desc + 1] = localize("cry_code_suitless")
 			return {
 				order = 1,
 				l_mult = l_mult,
@@ -3037,7 +3035,7 @@ local declare = {
 				declare_name = G.ENTERED_CARD,
 				level = 1,
 				index = G.GAME.DECLARE_USED or 0,
-				desc_text = suitless and desc or nil,
+				suitless = suitless
 			}
 		end
 		local localize_ref = localize
@@ -3048,8 +3046,8 @@ local declare = {
 				end
 			end
 			if second == "poker_hand_descriptions" then
-				if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].desc_text then
-					return G.GAME.hands[first].desc_text
+				if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].suitless then
+					return localize_ref(first.."_suitless", second, ...)
 				end
 			end
 			return localize_ref(first, second, ...)

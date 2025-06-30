@@ -4885,6 +4885,10 @@ return {
 			["cry_Declare0"] = { "Always counts as a Straight" },
 			["cry_Declare1"] = { "Always counts as a Flush" },
 			["cry_Declare2"] = { "Always counts as a Full House" },
+
+			["cry_Declare0_suitless"] = { "Always counts as a Straight","Hand does not need specific suits" },
+			["cry_Declare1_suitless"] = { "Always counts as a Flush","Hand does not need specific suits" },
+			["cry_Declare2_suitless"] = { "Always counts as a Full House","Hand does not need specific suits" },
 		},
 		achievement_names = {
 			ach_cry_ace_in_crash = "Pocket ACE",
