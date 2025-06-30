@@ -109,7 +109,6 @@ local pointer = {
 								rank = G.GAME.POINTER_PLAYING.rank,
 								suit = G.GAME.POINTER_PLAYING.suit,
 							})
-							print(G.GAME.POINTER_PLAYING.center)
 							card:set_ability(G.P_CENTERS[G.GAME.POINTER_PLAYING.center])
 							if G.GAME.POINTER_PLAYING.seal then
 								card:set_seal(G.GAME.POINTER_PLAYING.seal)
