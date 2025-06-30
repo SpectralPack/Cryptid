@@ -619,7 +619,7 @@ return {
 					"de cette manière",
 				},
 			},
-			c_cry_crylog = {
+			c_cry_log = {
 				name = "://LOG",
 				text = {
 					"To Be {C:cry_code}Implemented{}",

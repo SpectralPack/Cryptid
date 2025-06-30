@@ -666,7 +666,7 @@ return {
 					"zu einem {C:cry_code}gewählten{} Rang",
 				},
 			},
-			c_cry_crylog = {
+			c_cry_log = {
 				name = "://LOG",
 				text = {
 					"Kommt in einem",

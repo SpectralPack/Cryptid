@@ -1796,7 +1796,6 @@ local machinecode = {
 				config = {
 					object = DynaText({
 						string = arr,
-						colours = { G.C.BLACK },
 						pop_in_rate = 9999999,
 						silent = true,
 						random_element = true,
@@ -3412,7 +3411,7 @@ local variable = {
 -- next 5 cards/packs in shop,
 -- draw order for current blind (if in blind),
 -- Multi-use 2
-local crylog = {
+local log = {
 	cry_credits = {
 		idea = {
 			"HexaCryonic",
@@ -3421,7 +3420,7 @@ local crylog = {
 			"HexaCryonic",
 		},
 		code = {
-			"Nova",
+			"lord.ruby",
 		},
 	},
 	dependencies = {
@@ -3432,21 +3431,180 @@ local crylog = {
 	object_type = "Consumable",
 	set = "Code",
 	name = "cry-Log",
-	key = "crylog",
+	key = "log",
 	pos = { x = 12, y = 4 },
 	cost = 4,
 	atlas = "atlasnotjokers",
 	order = 424,
 	can_use = function(self, card)
-		return false
+		return true
 	end,
-	-- use = function(self, card, area, copier)
-
-	-- end,
+	use = function(self, card, area, copier)
+		G.GAME.USING_LOG = true
+		local chosen_effect = pseudorandom_element({
+			"ANTE", "QUEUE", G.GAME.blind.in_blind and "DRAW"
+		}, pseudoseed("crylog_effect"))
+		if chosen_effect == "ANTE" then
+			local pseudorandom = copy_table(G.GAME.pseudorandom)
+			local bl = get_new_boss()
+			G.GAME.LOG_BOSS = bl
+			local voucher = SMODS.get_next_vouchers()
+			G.GAME.LOG_VOUCHER = voucher
+			G.GAME.pseudorandom = copy_table(pseudorandom)
+			if bl then
+				G.GAME.bosses_used[bl] = (G.GAME.bosses_used[bl] or 1) - 1
+			end
+			G.GAME.USING_CODE = true
+			G.CHOOSE_CARD = UIBox({
+				definition = create_UIBox_log({
+					bl and G.localization.descriptions.Blind[bl].name or "None",
+					voucher and G.localization.descriptions.Voucher[voucher[1]].name or "None"
+				}, localize("cry_code_antevoucher")),
+				config = {
+					align = "cm",
+					offset = { x = 0, y = 10 },
+					major = G.ROOM_ATTACH,
+					bond = "Weak",
+					instance_type = "POPUP",
+				},
+			})
+			G.CHOOSE_CARD.alignment.offset.y = 0
+			G.ROOM.jiggle = G.ROOM.jiggle + 1
+			G.CHOOSE_CARD:align_to_major()
+		elseif chosen_effect == "QUEUE" then	
+			local pseudorandom = copy_table(G.GAME.pseudorandom)
+			local j = {
+			}
+			for i = 1, 5 do
+				j[#j+1] = G.localization.descriptions["Joker"][Cryptid.predict_joker("sho")].name
+			end
+			G.GAME.pseudorandom = copy_table(pseudorandom)
+			G.GAME.USING_CODE = true
+			G.CHOOSE_CARD = UIBox({
+				definition = create_UIBox_log(j, localize("cry_code_nextjokers")),
+				config = {
+					align = "cm",
+					offset = { x = 0, y = 10 },
+					major = G.ROOM_ATTACH,
+					bond = "Weak",
+					instance_type = "POPUP",
+				},
+			})
+			G.CHOOSE_CARD.alignment.offset.y = 0
+			G.ROOM.jiggle = G.ROOM.jiggle + 1
+			G.CHOOSE_CARD:align_to_major()
+		elseif chosen_effect == "DRAW" then
+			local j = {
+			}
+			for i = 1, 10 do
+				local card = G.deck.cards[#G.deck.cards+1-i]
+				j[#j+1] = localize(card.base.value, "ranks").." of "..localize(card.base.suit, "suits_plural")
+			end
+			G.GAME.USING_CODE = true
+			G.CHOOSE_CARD = UIBox({
+				definition = create_UIBox_log(j, localize("cry_code_nextcards")),
+				config = {
+					align = "cm",
+					offset = { x = 0, y = 10 },
+					major = G.ROOM_ATTACH,
+					bond = "Weak",
+					instance_type = "POPUP",
+				},
+			})
+			G.CHOOSE_CARD.alignment.offset.y = 0
+			G.ROOM.jiggle = G.ROOM.jiggle + 1
+			G.CHOOSE_CARD:align_to_major()
+		end
+		G.GAME.USING_LOG = nil
+	end,
+	init = function()
+		local get_voucherref = SMODS.get_next_vouchers
+		function SMODS.get_next_vouchers(vouchers)
+			if G.GAME.LOG_VOUCHER then
+				local v = copy_table(G.GAME.LOG_VOUCHER)
+				if not G.GAME.USING_LOG then
+					G.GAME.LOG_VOUCHER = nil
+				end
+				return v
+			else
+				return get_voucherref(vouchers)
+			end
+		end
+		local get_bossref = get_new_boss
+		function get_new_boss(...)
+			if G.GAME.LOG_BOSS then
+				local v = ""..G.GAME.LOG_BOSS
+				if not G.GAME.USING_LOG then
+					G.GAME.LOG_BOSS = nil
+				end
+				return v
+			end
+			return get_bossref(...)
+		end
+		function Cryptid.predict_joker(seed)
+			local _pool, _pool_key = get_current_pool("Joker", nil, nil, seed)
+			center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+			local it = 1
+			while center == 'UNAVAILABLE' do
+				it = it + 1
+				center = pseudorandom_element(_pool, pseudoseed(_pool_key..('_resample'..it) ))
+			end
+	
+			return center
+		end
+		function create_UIBox_log(options, mtype)
+			G.E_MANAGER:add_event(Event({
+				blockable = false,
+				func = function()
+					G.REFRESH_ALERTS = true
+					return true
+				end,
+			}))
+			local contents = {}
+			contents[#contents+1] = {
+				n = G.UIT.R,
+				config = { align = "cm" },
+				nodes = {{n=G.UIT.T, config={text = mtype, lang = G.LANGUAGES['en-us'], scale = 0.45, colour = G.C.WHITE, shadow = true}}}
+			}
+			for i, v in pairs(options) do
+				contents[#contents+1] = {
+					n = G.UIT.R,
+					config = { align = "cm" },
+					nodes = {{n=G.UIT.T, config={text = v, lang = G.LANGUAGES['en-us'], scale = 0.45, colour = G.C.WHITE, shadow = true}}}
+				}
+			end
+			contents[#contents+1] = {
+				n = G.UIT.R,
+				config = { align = "cm" },
+				nodes = {
+					UIBox_button({
+						colour = G.C.RED,
+						button = "log_cancel",
+						label = { localize("cry_code_exit") },
+						minw = 4.5,
+						focus_args = { snap_to = true },
+					}),
+				},
+			}
+			local t = create_UIBox_generic_options({
+				no_back = true,
+				colour = HEX("04200c"),
+				outline_colour = G.C.SECONDARY_SET.Code,
+				contents = contents
+			})
+			return t
+		end
+		G.FUNCS.log_cancel = function()
+			if G.CHOOSE_CARD then
+				G.CHOOSE_CARD:remove()
+			end
+			G.GAME.USING_CODE = false
+		end
+	end
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-} -- UNIMPLEMENTED
+}
 -- ://Quantify
 -- Jokerize! an object
 local quantify = {
@@ -4959,7 +5117,6 @@ local code_cards = {
 	seed,
 	rigged,
 	patch,
-	-- cryupdate, -- WIP: no effect
 	hook,
 	hooked,
 	oboe,
@@ -4974,7 +5131,7 @@ local code_cards = {
 	global,
 	global_sticker,
 	variable,
-	-- crylog, -- this will be implemented later on
+	log,
 	quantify,
 	divide,
 	multiply,

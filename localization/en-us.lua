@@ -687,11 +687,15 @@ return {
 					"to a {C:cry_code}chosen{} rank",
 				},
 			},
-			c_cry_crylog = {
+			c_cry_log = {
 				name = "://LOG",
 				text = {
-					"To Be {C:cry_code}Implemented{}",
-					"in a future {C:cry_code}update{}",
+					"Show a {C:cry_code}readout{} of either: ",
+					"{C:attention}next{} antes {C:attention}Boss-Blind{} and {C:attention}Voucher{},",
+					"the next {C:attention}5{} {C:attention}Jokers{} from the shop, or",
+					"the next {C:attention}10{} playing cards to be {C:attention}drawn{}",
+					"{C:inactive}(If in a Blind){}"
+					
 				},
 			},
 			c_cry_quantify = {
@@ -5059,6 +5063,10 @@ return {
 			cry_code_without_suits = "IGNORE SUITS",
 			cry_code_suitless = "Hand does not require specific suits",
 			cry_code_empty = "[Declare Hand]",
+			cry_code_exit = "EXIT",
+			cry_code_antevoucher = "Next Boss Blind and Voucher",
+			cry_code_nextjokers = "Next Shop Jokers",
+			cry_code_nextcards = "Next Drawn Cards",
 
 			b_flip = "FLIP",
 			b_merge = "MERGE",
