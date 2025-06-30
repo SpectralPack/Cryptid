@@ -2998,8 +2998,10 @@ local declare = {
 			end
 			local s = #suits - 1
 			local r = #ranks - 1
-			local mult = math.floor((complexity/1.41428)^2.25 + s + r)
-			if mult < 1 then mult = 1 end
+			local mult = math.floor((complexity / 1.41428) ^ 2.25 + s + r)
+			if mult < 1 then
+				mult = 1
+			end
 			local chips = math.floor(mult * 9.55)
 			local l_chips = chips * 0.25
 			local l_mult = mult * 0.25
