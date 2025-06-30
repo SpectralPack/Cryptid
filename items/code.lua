@@ -2987,25 +2987,22 @@ local declare = {
 			local ranks = {}
 			local suits = {}
 			for i, v in pairs(cards) do
-				if not ranks[v:get_id()] then
-					ranks[v:get_id()] = true
-					complexity = complexity + 0.85
-				end
-				if not suitless then
-					if (SMODS.has_no_suit(v) and not suits["suitless"]) or not suits[v.base.suit] then
-						suits[SMODS.has_no_suit(v) and "suitless" or v.base.suit] = true
-						complexity = complexity + 0.65
-					end
+				if not ranks[v.base.value] then
+					ranks[v.base.value] = true
 				end
 			end
-			if #cards > 5 then
-				complexity = complexity * 1.25 ^ (#cards - 5)
+			for i, v in pairs(cards) do
+				if not suits[v.base.suit] and not suitless then
+					suits[v.base.suit] = true
+				end
 			end
-			complexity = complexity * 0.75
-			local mult = complexity
-			local chips = complexity * 8.45 --arbitrary just shake it up a little
-			local l_mult = math.min(complexity * 0.15, 0.5)
-			local l_chips = math.min(complexity * 1.5, 5)
+			local s = #suits - 1
+			local r = #ranks - 1
+			local mult = math.floor((complexity/1.41428)^2.25 + s + r)
+			if mult < 1 then mult = 1 end
+			local chips = math.floor(mult * 9.55)
+			local l_chips = chips * 0.25
+			local l_mult = mult * 0.25
 			local declare_cards = {}
 			for i, v in pairs(cards) do
 				local card = {
