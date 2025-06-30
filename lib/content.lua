@@ -293,15 +293,12 @@ SMODS.PokerHand({
 	mult = 0,
 	l_chips = 0,
 	l_mult = 0,
-	example = {
-	},
+	example = {},
 	atlas = "poker_hands",
 	pos = { x = 0, y = 0 },
 	above_hand = "cry_UltPair",
 	order_offset = 1000,
-	evaluate = function(parts, hand)
-		
-	end,
+	evaluate = function(parts, hand) end,
 })
 SMODS.PokerHand({
 	key = "Declare1",
@@ -310,15 +307,12 @@ SMODS.PokerHand({
 	mult = 0,
 	l_chips = 0,
 	l_mult = 0,
-	example = {
-	},
+	example = {},
 	atlas = "poker_hands",
 	pos = { x = 0, y = 0 },
 	above_hand = "cry_UltPair",
 	order_offset = 1001,
-	evaluate = function(parts, hand)
-		
-	end,
+	evaluate = function(parts, hand) end,
 })
 SMODS.PokerHand({
 	key = "Declare2",
@@ -327,15 +321,12 @@ SMODS.PokerHand({
 	mult = 0,
 	l_chips = 0,
 	l_mult = 0,
-	example = {
-	},
+	example = {},
 	atlas = "poker_hands",
 	pos = { x = 0, y = 0 },
 	above_hand = "cry_UltPair",
 	order_offset = 1002,
-	evaluate = function(parts, hand)
-		
-	end,
+	evaluate = function(parts, hand) end,
 })
 
 SMODS.Rarity({

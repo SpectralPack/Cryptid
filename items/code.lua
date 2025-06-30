@@ -3035,7 +3035,7 @@ local declare = {
 				declare_name = G.ENTERED_CARD,
 				level = 1,
 				index = G.GAME.DECLARE_USED or 0,
-				suitless = suitless
+				suitless = suitless,
 			}
 		end
 		local localize_ref = localize
@@ -3047,7 +3047,7 @@ local declare = {
 			end
 			if second == "poker_hand_descriptions" then
 				if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].suitless then
-					return localize_ref(first.."_suitless", second, ...)
+					return localize_ref(first .. "_suitless", second, ...)
 				end
 			end
 			return localize_ref(first, second, ...)
