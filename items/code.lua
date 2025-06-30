@@ -3442,7 +3442,9 @@ local log = {
 	use = function(self, card, area, copier)
 		G.GAME.USING_LOG = true
 		local chosen_effect = pseudorandom_element({
-			"ANTE", "QUEUE", G.GAME.blind.in_blind and "DRAW"
+			"ANTE",
+			"QUEUE",
+			G.GAME.blind.in_blind and "DRAW",
 		}, pseudoseed("crylog_effect"))
 		if chosen_effect == "ANTE" then
 			local pseudorandom = copy_table(G.GAME.pseudorandom)
@@ -3458,7 +3460,7 @@ local log = {
 			G.CHOOSE_CARD = UIBox({
 				definition = create_UIBox_log({
 					bl and G.localization.descriptions.Blind[bl].name or "None",
-					voucher and G.localization.descriptions.Voucher[voucher[1]].name or "None"
+					voucher and G.localization.descriptions.Voucher[voucher[1]].name or "None",
 				}, localize("cry_code_antevoucher")),
 				config = {
 					align = "cm",
@@ -3471,12 +3473,11 @@ local log = {
 			G.CHOOSE_CARD.alignment.offset.y = 0
 			G.ROOM.jiggle = G.ROOM.jiggle + 1
 			G.CHOOSE_CARD:align_to_major()
-		elseif chosen_effect == "QUEUE" then	
+		elseif chosen_effect == "QUEUE" then
 			local pseudorandom = copy_table(G.GAME.pseudorandom)
-			local j = {
-			}
+			local j = {}
 			for i = 1, 5 do
-				j[#j+1] = G.localization.descriptions["Joker"][Cryptid.predict_joker("sho")].name
+				j[#j + 1] = G.localization.descriptions["Joker"][Cryptid.predict_joker("sho")].name
 			end
 			G.GAME.pseudorandom = copy_table(pseudorandom)
 			G.GAME.USING_CODE = true
@@ -3494,11 +3495,10 @@ local log = {
 			G.ROOM.jiggle = G.ROOM.jiggle + 1
 			G.CHOOSE_CARD:align_to_major()
 		elseif chosen_effect == "DRAW" then
-			local j = {
-			}
+			local j = {}
 			for i = 1, 10 do
-				local card = G.deck.cards[#G.deck.cards+1-i]
-				j[#j+1] = localize(card.base.value, "ranks").." of "..localize(card.base.suit, "suits_plural")
+				local card = G.deck.cards[#G.deck.cards + 1 - i]
+				j[#j + 1] = localize(card.base.value, "ranks") .. " of " .. localize(card.base.suit, "suits_plural")
 			end
 			G.GAME.USING_CODE = true
 			G.CHOOSE_CARD = UIBox({
@@ -3533,7 +3533,7 @@ local log = {
 		local get_bossref = get_new_boss
 		function get_new_boss(...)
 			if G.GAME.LOG_BOSS then
-				local v = ""..G.GAME.LOG_BOSS
+				local v = "" .. G.GAME.LOG_BOSS
 				if not G.GAME.USING_LOG then
 					G.GAME.LOG_BOSS = nil
 				end
@@ -3545,11 +3545,11 @@ local log = {
 			local _pool, _pool_key = get_current_pool("Joker", nil, nil, seed)
 			center = pseudorandom_element(_pool, pseudoseed(_pool_key))
 			local it = 1
-			while center == 'UNAVAILABLE' do
+			while center == "UNAVAILABLE" do
 				it = it + 1
-				center = pseudorandom_element(_pool, pseudoseed(_pool_key..('_resample'..it) ))
+				center = pseudorandom_element(_pool, pseudoseed(_pool_key .. ("_resample" .. it)))
 			end
-	
+
 			return center
 		end
 		function create_UIBox_log(options, mtype)
@@ -3561,19 +3561,41 @@ local log = {
 				end,
 			}))
 			local contents = {}
-			contents[#contents+1] = {
+			contents[#contents + 1] = {
 				n = G.UIT.R,
 				config = { align = "cm" },
-				nodes = {{n=G.UIT.T, config={text = mtype, lang = G.LANGUAGES['en-us'], scale = 0.45, colour = G.C.WHITE, shadow = true}}}
+				nodes = {
+					{
+						n = G.UIT.T,
+						config = {
+							text = mtype,
+							lang = G.LANGUAGES["en-us"],
+							scale = 0.45,
+							colour = G.C.WHITE,
+							shadow = true,
+						},
+					},
+				},
 			}
 			for i, v in pairs(options) do
-				contents[#contents+1] = {
+				contents[#contents + 1] = {
 					n = G.UIT.R,
 					config = { align = "cm" },
-					nodes = {{n=G.UIT.T, config={text = v, lang = G.LANGUAGES['en-us'], scale = 0.45, colour = G.C.WHITE, shadow = true}}}
+					nodes = {
+						{
+							n = G.UIT.T,
+							config = {
+								text = v,
+								lang = G.LANGUAGES["en-us"],
+								scale = 0.45,
+								colour = G.C.WHITE,
+								shadow = true,
+							},
+						},
+					},
 				}
 			end
-			contents[#contents+1] = {
+			contents[#contents + 1] = {
 				n = G.UIT.R,
 				config = { align = "cm" },
 				nodes = {
@@ -3590,7 +3612,7 @@ local log = {
 				no_back = true,
 				colour = HEX("04200c"),
 				outline_colour = G.C.SECONDARY_SET.Code,
-				contents = contents
+				contents = contents,
 			})
 			return t
 		end
@@ -3600,7 +3622,7 @@ local log = {
 			end
 			G.GAME.USING_CODE = false
 		end
-	end
+	end,
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,

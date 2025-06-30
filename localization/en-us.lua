@@ -694,8 +694,7 @@ return {
 					"{C:attention}next{} antes {C:attention}Boss-Blind{} and {C:attention}Voucher{},",
 					"the next {C:attention}5{} {C:attention}Jokers{} from the shop, or",
 					"the next {C:attention}10{} playing cards to be {C:attention}drawn{}",
-					"{C:inactive}(If in a Blind){}"
-					
+					"{C:inactive}(If in a Blind){}",
 				},
 			},
 			c_cry_quantify = {
