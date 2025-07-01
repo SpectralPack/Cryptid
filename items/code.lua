@@ -2826,6 +2826,7 @@ local declare = {
 	cry_credits = {
 		idea = {
 			"Ronnec",
+			"cassknows"
 		},
 		art = {
 			"lord.ruby",
