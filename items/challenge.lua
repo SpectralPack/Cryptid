@@ -496,6 +496,7 @@ function Game:start_run(args)
 		table.insert(G.handlist, 1, "cry_Declare1")
 		table.insert(G.handlist, 1, "cry_Declare2")
 	end
+	Cryptid.base_values = {}
 end
 local challenges = {
 	sticker_sheet,
