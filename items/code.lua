@@ -4279,7 +4279,7 @@ local ctrl_v = {
 						return true
 					end,
 				}))
-			elseif cards[1].area == G.pacl_cards then
+			elseif cards[1].area == G.pack_cards then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local card = copy_card(cards[1])
