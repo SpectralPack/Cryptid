@@ -4057,7 +4057,7 @@ return {
 				text = {
 					"Enlève un sticker {C:attention}aléatoire{}",
 					"d'un Joker ou carte à jouer",
-					"{C:attention}aléatoire{}"
+					"{C:attention}aléatoire{}",
 				},
 			},
 		},
@@ -4947,9 +4947,18 @@ return {
 			["cry_Declare1"] = { "Compte toujours comme une Couleur" },
 			["cry_Declare2"] = { "Compte toujours comme un Full" },
 
-			["cry_Declare0_suitless"] = { "Compte toujours comme une Quinte", "La main n'a pas besoin de couleurs particulières" },
-			["cry_Declare1_suitless"] = { "Compte toujours comme une Couleur", "La main n'a pas besoin de couleurs particulières" },
-			["cry_Declare2_suitless"] = { "Compte toujours comme un Full", "La main n'a pas besoin de couleurs particulières" },
+			["cry_Declare0_suitless"] = {
+				"Compte toujours comme une Quinte",
+				"La main n'a pas besoin de couleurs particulières",
+			},
+			["cry_Declare1_suitless"] = {
+				"Compte toujours comme une Couleur",
+				"La main n'a pas besoin de couleurs particulières",
+			},
+			["cry_Declare2_suitless"] = {
+				"Compte toujours comme un Full",
+				"La main n'a pas besoin de couleurs particulières",
+			},
 		},
 		achievement_names = {
 			ach_cry_ace_in_crash = "ACE de poche",
