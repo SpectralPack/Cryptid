@@ -3633,7 +3633,7 @@ local log = {
 								focus_args = { snap_to = true },
 							}),
 						},
-					}
+					},
 				},
 			})
 			return t
