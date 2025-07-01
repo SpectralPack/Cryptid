@@ -445,13 +445,15 @@ function Cryptid.manipulate(card, args)
 				end
 			end
 			local config = copy_table(card.config.center.config)
-			Cryptid.base_values[card.config.center.key] = {}
-			for i, v in pairs(config) do
-				if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) ~= to_big(0) then
-					Cryptid.base_values[card.config.center.key][i .. "ability"] = v
-				elseif type(v) == "table" then
-					for i2, v2 in pairs(v) do
-						Cryptid.base_values[card.config.center.key][i2 .. i] = v2
+			if not Cryptid.base_values[card.config.center.key] then
+				Cryptid.base_values[card.config.center.key] = {}
+				for i, v in pairs(config) do
+					if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) ~= to_big(0) then
+						Cryptid.base_values[card.config.center.key][i .. "ability"] = v
+					elseif type(v) == "table" then
+						for i2, v2 in pairs(v) do
+							Cryptid.base_values[card.config.center.key][i2 .. i] = v2
+						end
 					end
 				end
 			end
