@@ -1047,23 +1047,26 @@ function Cryptid.add_circus_rarity(rarity, dontreload)
 end
 
 function Cryptid.get_paved_joker()
-	local total = 0
-	for i, v in pairs(SMODS.find_card("j_cry_paved_joker")) do
-		total = total + v.ability.extra
-	end
-	local stones = 0
-	for i, v in pairs(G.hand.highlighted) do
-		if v.config.center.key == "m_stone" then
-			stones = stones + 1
+	if G.hand then
+		local total = 0
+		for i, v in pairs(SMODS.find_card("j_cry_paved_joker")) do
+			total = total + v.ability.extra
 		end
-	end
-	for i, v in pairs(G.play.cards) do
-		if v.config.center.key == "m_stone" then
-			stones = stones + 1
+		local stones = 0
+		for i, v in pairs(G.hand.highlighted) do
+			if v.config.center.key == "m_stone" then
+				stones = stones + 1
+			end
 		end
+		for i, v in pairs(G.play.cards) do
+			if v.config.center.key == "m_stone" then
+				stones = stones + 1
+			end
+		end
+		total = math.min(stones, total)
+		return total
 	end
-	total = math.min(stones, total)
-	return total
+	return 0
 end
 
 function Card:has_stickers()
