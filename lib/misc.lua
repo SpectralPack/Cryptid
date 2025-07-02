@@ -735,7 +735,12 @@ end
 -- For resetting localization on the fly for family friendly toggle
 function Cryptid.reload_localization()
 	SMODS.handle_loc_file(Cryptid.path)
+	Cryptid.handle_other_localizations()
 	return init_localization()
+end
+-- Purely for crossmod purposes
+function Cryptid.handle_other_localizations()
+
 end
 
 -- Checks if all jokers in shop will have editions (via Curate, Edition Decks, etc.)
