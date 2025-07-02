@@ -739,9 +739,7 @@ function Cryptid.reload_localization()
 	return init_localization()
 end
 -- Purely for crossmod purposes
-function Cryptid.handle_other_localizations()
-
-end
+function Cryptid.handle_other_localizations() end
 
 -- Checks if all jokers in shop will have editions (via Curate, Edition Decks, etc.)
 -- Will cause edition tags to Nope!
