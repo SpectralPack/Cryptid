@@ -740,7 +740,7 @@ SMODS.UndiscoveredSprite({
 	key = "Code",
 	atlas = "atlasnotjokers",
 	path = "atlasnotjokers.png",
-	pos = { x = 9, y = 5 },
+	pos = { x = 12, y = 6 },
 	px = 71,
 	py = 95,
 })
