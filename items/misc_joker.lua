@@ -7567,7 +7567,7 @@ local coin = {
 		if (context.selling_card and context.card.ability.set == "Joker") or context.forcetrigger then
 			local mod = math.floor(
 				pseudorandom(pseudoseed("coin"))
-					* (Card.get_gameset(card) ~= "modest" and center.ability.immutable.money_mod or 4)
+					* (Card.get_gameset(card) ~= "modest" and card.ability.immutable.money_mod or 4)
 			) + 1
 			local option = lenient_bignum(to_big(card.ability.extra.money) * mod)
 			ease_dollars(option)
