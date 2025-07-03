@@ -505,7 +505,6 @@ end
 local sc = Card.set_cost
 function Card:set_cost()
 	-- Makes the edition cost increase usually present not apply if this variable is true
-	-- Used for some of the Jen's almanac edition decks because having the price increase apply was "unfun"
 	if self.edition and G.GAME.modifiers.cry_no_edition_price then
 		local m = Cryptid.deep_copy(self.edition)
 		self.edition = nil
@@ -550,6 +549,10 @@ function Card:set_cost()
 	if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
 		self.sell_cost = 0
 		self.sell_cost_label = 0
+	--Rotten Egg
+	elseif G.GAME.cry_rotten_amount then
+		self.sell_cost = G.GAME.cry_rotten_amount
+		self.sell_cost_label = self.facing == "back" and "?" or number_format(self.sell_cost)
 	end
 end
 

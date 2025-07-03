@@ -1290,16 +1290,6 @@ local rotten_egg = {
 			},
 		}
 	end,
-	init = function()
-		local set_costref = Card.set_cost
-		function Card:set_cost(...)
-			local c = set_costref(self, ...)
-			if G.GAME.cry_rotten_amount then
-				self.sell_cost = G.GAME.cry_rotten_amount
-				self.sell_cost_label = self.facing == "back" and "?" or number_format(self.sell_cost)
-			end
-		end
-	end,
 }
 
 local spookydeck = {
