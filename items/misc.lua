@@ -1992,12 +1992,6 @@ local double_sided = {
 			"set_cry_misc",
 		},
 	},
-	-- 	gameset_config = {
-	-- 		modest = { disabled = true },
-	-- 		mainline = { disabled = true },
-	-- 		madness = { disabled = true },
-	-- 		exp = {},
-	-- 	},
 	extra_gamesets = { "exp" },
 	key = "double_sided",
 	shader = false,

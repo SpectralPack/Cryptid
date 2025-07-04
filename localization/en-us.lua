@@ -1043,21 +1043,21 @@ return {
 					"a {C:attention}#2#",
 				},
 			},
-			j_cry_altgoogol = {
-				name = "Nostalgic Googol Play Card",
+			j_cry_googol_play= {
+				name = "Googol Play Card",
 				text = {
-					"Sell this card to create",
+					"After {C:attention}#2#{}{C:inactive}[#3#] rounds Sell this card to create",
 					"{C:attention}#1#{} cop#<ies,y>1# of the leftmost {C:attention}Joker{}",
-					"{C:inactive,s:0.8}Does not copy Nostalgic Googol Play Cards{}",
+					"{C:inactive,s:0.8}Does not copy Googol Play Cards{}",
 					"{C:inactive}(Must have room){}",
 				},
 			},
-			j_cry_altgoogol_balanced = {
-				name = "Nostalgic Googol Play Card",
+			j_cry_googol_play_balanced = {
+				name = "Googol Play Card",
 				text = {
-					"Sell this card to create",
+					"After {C:attention}#2#{}{C:inactive}[#3#] rounds Sell this card to create",
 					"{C:attention}#1#{} cop#<ies,y>1# of the leftmost {C:attention}Joker{}",
-					"{C:inactive,s:0.8}Does not copy Nostalgic Googol Play Cards{}",
+					"{C:inactive,s:0.8}Does not copy Googol Play Cards{}",
 					"{C:inactive}(Must have room){}",
 					--todo: add "removes negative from copy" like Ankh/Invis Joker
 				},
@@ -1182,8 +1182,9 @@ return {
 				name = "Boredom",
 				text = {
 					"{C:green}#1# in #2#{} chance to",
-					"{C:attention}retrigger{} each {C:attention}Joker{}",
-					"or {C:attention}played card{}",
+					"{C:attention}retrigger{} a random {C:attention}Joker{}",
+					"{C:green}#1# in #2#{} chance to",
+					"retrigger each {C:attention}played card{}",
 					"{C:inactive,s:0.8}Does not affect other Boredom{}",
 				},
 				unlock = {
@@ -1267,23 +1268,9 @@ return {
 			j_cry_canvas = {
 				name = "Canvas",
 				text = {
-					"{C:attention}Retrigger{} all {C:attention}Jokers{} to the left",
-					"once for {C:attention}every{} non-{C:blue}Common{C:attention} Joker{}",
-					"to the right of this Joker",
-				},
-				unlock = {
-					"Retrigger a {C:attention}Joker",
-					"{C:attention}114{} times",
-					"in one hand",
-				},
-			},
-			j_cry_canvas_balanced = {
-				name = "Canvas",
-				text = {
-					"{C:attention}Retrigger{} all {C:attention}Jokers{} to the left",
-					"once for {C:attention}every{} non-{C:blue}Common{C:attention} Joker{}",
-					"to the right of this Joker",
-					"{C:inactive}(Up to 2 retriggers)",
+					"{C:attention}Retrigger{} the leftmost {C:attention}Joker{}",
+					"once for {C:attention}every{} unique {C:attention}Joker Rarity{C:attention}",
+					"currently held",
 				},
 				unlock = {
 					"Retrigger a {C:attention}Joker",
@@ -1872,17 +1859,6 @@ return {
 					"Payout increases by {C:money}#2#%{}",
 					"when each played {C:attention}Gold{}",
 					"card is scored",
-				},
-			},
-			j_cry_googol_play = {
-				name = "Googol Play Card",
-				text = {
-					"{C:green}#1# in #2#{} chance for",
-					"{X:red,C:white} X#3# {} Mult",
-				},
-				unlock = {
-					"Score {C:attention}1.0e100{} Chips",
-					"in a single hand",
 				},
 			},
 			j_cry_happy = {
@@ -4870,7 +4846,6 @@ return {
 			ach_cry_cryptid_the_cryptid = "Cryptid the Cryptid",
 			ach_cry_exodia = "Exodia",
 			ach_cry_freak_house = "Freak House",
-			ach_cry_googol_play_pass = "Googol Play Pass",
 			ach_cry_haxxor = "H4xx0r",
 			ach_cry_home_realtor = "Home Realtor",
 			ach_cry_jokes_on_you = "Joke's on You, Pal!",
@@ -4900,7 +4875,6 @@ return {
 			ach_cry_cryptid_the_cryptid = "Use Cryptid on Cryptid",
 			ach_cry_exodia = "Have 5 Exotic Jokers",
 			ach_cry_freak_house = "Play a Flush House consisting of 6s and 9s of Hearts whilst possessing Nice",
-			ach_cry_googol_play_pass = "Rig a Googol Play Card",
 			ach_cry_haxxor = "Use a cheat code",
 			ach_cry_home_realtor = "Activate Happy House before Ante 8 (without DoE/Antimatter)",
 			ach_cry_jokes_on_you = "Trigger The Joke's effect on Ante 1 and win the run",

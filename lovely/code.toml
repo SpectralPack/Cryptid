@@ -30,23 +30,39 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = "if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then"
+pattern = '''
+if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then
+	add_round_eval_row({bonus = true, name='interest', pitch = pitch, dollars = G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)})
+	pitch = pitch + 0.06
+	if (not G.GAME.seeded and not G.GAME.challenge) or SMODS.config.seeded_unlocks then
+		if G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5) == G.GAME.interest_amount*G.GAME.interest_cap/5 then 
+			G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak + 1
+		else
+			G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = 0
+		end
+	end
+	check_for_unlock({type = 'interest_streak'})
+	dollars = dollars + G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)
+end
+'''
 position = "at"
 payload = '''
-if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest and G.GAME.cry_payload then
-    add_round_eval_row({bonus = true, payload = G.GAME.cry_payload, name='interest_payload', pitch = pitch, dollars = G.GAME.interest_amount*G.GAME.cry_payload*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)})
+if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then
+	local interest = Cryptid.get_interest(true)
+    if G.GAME.cry_payload then add_round_eval_row({bonus = true, payload = G.GAME.cry_payload, name='interest_payload', pitch = pitch, dollars = interest}) else
+	add_round_eval_row({bonus = true, name='interest', pitch = pitch, dollars = G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)}) end
     pitch = pitch + 0.06
     if not G.GAME.seeded and not G.GAME.challenge then
-        if G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5) == G.GAME.interest_amount*G.GAME.interest_cap/5 then
+        if to_big(G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)) >= to_big(G.GAME.interest_amount*G.GAME.interest_cap/5) then
             G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak + 1
         else
             G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = 0
         end
     end
     check_for_unlock({type = 'interest_streak'})
-    dollars = dollars + G.GAME.interest_amount*G.GAME.cry_payload*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)
+    dollars = dollars + interest
     G.GAME.cry_payload = nil
-elseif G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then'''
+end'''
 match_indent = true
 
 # Revert - fix a crash

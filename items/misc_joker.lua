@@ -2,7 +2,6 @@
 gameset_config = {
         modest = {extra = {chips = 1}, center = {rarity = 1, blueprint_compat = false, immutable = true, no_dbl = false}},
 		mainline = {center = {rarity = 2, blueprint_compat = true, immutable = true, no_dbl = true}},
-        madness = {extra = {chips = 100}, center = {rarity = 3}},
 		cryptid_in_2025 = {extra = {chips = 1e308}, center = {rarity = "cry_exotic"}},
  },
 ]]
@@ -396,7 +395,7 @@ local queensgambit = {
 	name = "cry-Queen's Gambit",
 	key = "queens_gambit",
 	pos = { x = 1, y = 0 },
-	rarity = 1,
+	rarity = 2,
 	order = 7,
 	cost = 7,
 	immutable = true,
@@ -572,7 +571,7 @@ local whip = {
 	pos = { x = 5, y = 3 },
 	config = {
 		extra = {
-			Xmult_mod = 0.5,
+			Xmult_mod = 0.2,
 			x_mult = 1,
 		},
 	},
@@ -767,7 +766,7 @@ local cursor = {
 	},
 	name = "cry-Cursor",
 	key = "cursor",
-	config = { extra = { chips = 0, chip_mod = 8 } },
+	config = { extra = { chips = 0, chip_mod = 6 } },
 	gameset_config = {
 		modest = {
 			extra = {
@@ -1251,7 +1250,7 @@ local compound_interest = {
 	config = {
 		extra = {
 			percent_mod = 3,
-			percent = 12,
+			percent = 20,
 		},
 	},
 	pos = { x = 3, y = 2 },
@@ -1268,28 +1267,11 @@ local compound_interest = {
 			},
 		}
 	end,
-	calc_dollar_bonus = function(self, card)
-		if to_big(G.GAME.dollars) > to_big(0) then
-			local bonus = lenient_bignum(
-				math.max(0, math.floor(0.01 * to_big(card.ability.extra.percent) * (G.GAME.dollars or 1)))
-			)
-
-			local old = lenient_bignum(card.ability.extra.percent)
-
-			card.ability.extra.percent =
-				lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-
-			Cryptid.apply_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent, {
-				base = { { "extra", "percent" } },
-				scaler = { { "extra", "percent_mod" } },
-				scaler_base = { card.ability.extra.percent_mod },
-			})
-			if to_big(bonus) > to_big(0) then
-				return bonus
-			end
-		else
-			return 0
-		end
+	cry_calc_interest = function(self, card, interest)
+		local old = lenient_bignum(card.ability.extra.percent)
+		card.ability.extra.percent =
+		lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
+		return (1+old/100) * interest
 	end,
 	cry_credits = {
 		idea = {
@@ -8691,7 +8673,7 @@ local kidnap = {
 	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 4 },
+		extra = { money = 2 },
 	},
 	gameset_config = {
 		modest = {

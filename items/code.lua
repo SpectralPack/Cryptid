@@ -991,10 +991,7 @@ local payload = {
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
-		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult)
-	end,
-	bulk_use = function(self, card, area, copier, number)
-		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult) ^ to_big(number)
+		G.GAME.cry_payload = 3
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
@@ -1895,12 +1892,6 @@ local seed = {
 	end,
 	use = function(self, card, area, copier)
 		local cards = Cryptid.get_highlighted_cards({ G.jokers, G.hand, G.consumeables, G.pack_cards }, card, 1, 1)
-		if cards[1] then
-			cards[1].ability.cry_rigged = true
-			if cards[1].config.center.key == "j_cry_googol_play" then
-				check_for_unlock({ type = "googol_play_rigged" })
-			end
-		end
 		if cards[1].area == G.hand then
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
