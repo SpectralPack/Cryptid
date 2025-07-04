@@ -753,9 +753,7 @@ function SMODS.create_mod_badges(obj, badges)
 		end
 		badges[#badges + 1] = create_badge(
 			card_type,
-			set == "modest" and G.C.GREEN
-				or set == "mainline" and G.C.PURPLE
-				or G.C.CRY_ASCENDANT
+			set == "modest" and G.C.GREEN or set == "mainline" and G.C.PURPLE or G.C.CRY_ASCENDANT
 		)
 	end
 end

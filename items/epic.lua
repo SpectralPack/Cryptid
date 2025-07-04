@@ -1785,10 +1785,7 @@ local altgoogol = {
 	end,
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
-		if
-			(context.selling_self and not context.retrigger_joker and not context.blueprint)
-			or context.forcetrigger
-		then
+		if (context.selling_self and not context.retrigger_joker and not context.blueprint) or context.forcetrigger then
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] ~= card then

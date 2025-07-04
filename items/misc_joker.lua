@@ -8596,7 +8596,7 @@ local astral_bottle = {
 		},
 	},
 	name = "cry-astral_bottle",
-	extra_gamesets = { "exp_modest", "exp_mainline"},
+	extra_gamesets = { "exp_modest", "exp_mainline" },
 	key = "astral_bottle",
 	eternal_compat = false,
 	pos = { x = 7, y = 0 },

@@ -686,11 +686,7 @@ local antimatter = {
 		if context.context ~= "final_scoring_step" then
 			Cryptid.antimatter_trigger(self, context, false)
 		else
-			return Cryptid.antimatter_trigger_final_scoring(
-				self,
-				context,
-				false
-			)
+			return Cryptid.antimatter_trigger_final_scoring(self, context, false)
 		end
 	end,
 	apply = function(self)
