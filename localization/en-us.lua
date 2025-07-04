@@ -1046,7 +1046,7 @@ return {
 			j_cry_googol_play = {
 				name = "Googol Play Card",
 				text = {
-					"After {C:attention}#2#{}{C:inactive}[#3#] rounds Sell this card to create",
+					"After {C:attention}#2#{} {C:inactive}[#3#]{} rounds Sell this card to create",
 					"{C:attention}#1#{} cop#<ies,y>1# of the leftmost {C:attention}Joker{}",
 					"{C:inactive,s:0.8}Does not copy Googol Play Cards{}",
 					"{C:inactive}(Must have room){}",
@@ -1861,6 +1861,17 @@ return {
 					"card is scored",
 				},
 			},
+			j_cry_altgoogol = {
+				name = "Nostalgic Googol Play Card",
+				text = {
+					"{C:green}#1# in #2#{} chance for",
+					"{X:red,C:white} X#3# {} Mult",
+				},
+				unlock = {
+					"Score {C:attention}1.0e100{} Chips",
+					"in a single hand",
+				},
+			},
 			j_cry_happy = {
 				name = ":D",
 				text = {
@@ -2619,21 +2630,6 @@ return {
 			j_cry_soccer = {
 				name = "One for All", --changed the name from latin because this isn't exotic
 				text = {
-					"{C:attention}+#1#{} Joker slot#<s>1#",
-					"{C:attention}+#1#{} Booster Pack slot#<s>1#",
-					"{C:attention}+#1#{} hand size",
-					"{C:attention}+#1#{} consumable slot#<s>1#",
-					"{C:attention}+#1#{} card#<s>1# in shop",
-					"{C:attention}+#1#{} voucher slot#<s>1#",
-				},
-				unlock = {
-					"Win a run with",
-					"only {C:attention}High Card",
-				},
-			},
-			j_cry_soccer_balanced = {
-				name = "One for All", --changed the name from latin because this isn't exotic
-				text = {
 					"{C:attention}+#1#{} Booster Pack slot#<s>1#",
 					"{C:attention}+#1#{} hand size",
 					"{C:attention}+#1#{} consumable slot#<s>1#",
@@ -2856,7 +2852,7 @@ return {
 				name = "Translucent Joker",
 				text = {
 					"Sell this card to create",
-					"a {C:attention}Banana Perishable{} copy",
+					"a {C:attention}Perishable{} copy",
 					"of a random {C:attention}Joker{}",
 					"{s:0.8,C:inactive}(Copy bypasses perish compat)",
 				},

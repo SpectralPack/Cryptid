@@ -208,41 +208,27 @@ local googol_play = {
 			cost = 15,
 			copies = 1,
 			rounds = 3,
-			rounds_left = 3,
+			rounds_left = 3
 		},
 		mainline = { copies = 2, rounds = 3, rounds_left = 3 },
 	},
 	loc_vars = function(self, info_queue, center)
-		return {
-			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
-			vars = { center.ability.copies, center.ability.rounds, center.ability.rounds_left },
-		}
+		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }), vars = { center.ability.copies, center.ability.rounds, center.ability.rounds_left } }
 	end,
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
 		if context.after and not context.retrigger_joker and not context.blueprint then
 			card.ability.rounds_left = card.ability.rounds_left - 1
 			if to_big(card.ability.rounds_left) <= to_big(0) then
-				local eval = function(card)
-					return not card.REMOVED
-				end
+				local eval = function(card) return not card.REMOVED end
 				juice_card_until(self, eval, true)
 			end
 			return {
-				message = to_big(card.ability.rounds_left) > to_big(0)
-						and ((card.ability.rounds - card.ability.rounds_left) .. "/" .. card.ability.rounds)
-					or localize("k_active_ex"),
-				colour = G.C.FILTER,
+				message = to_big(card.ability.rounds_left) > to_big(0) and ((card.ability.rounds-card.ability.rounds_left)..'/'..card.ability.rounds) or localize('k_active_ex'),
+				colour = G.C.FILTER
 			}
 		end
-		if
-			(
-				context.selling_self
-				and not context.retrigger_joker
-				and not context.blueprint
-				and to_big(card.ability.rounds_left) <= to_big(0)
-			) or context.forcetrigger
-		then
+		if (context.selling_self and not context.retrigger_joker and not context.blueprint and to_big(card.ability.rounds_left) <= to_big(0)) or context.forcetrigger then
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] ~= card then
@@ -433,16 +419,12 @@ local canvas = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if
-			context.retrigger_joker_check
-			and not context.retrigger_joker
-			and context.other_card == G.jokers.cards[1]
-		then
+		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card == G.jokers.cards[1] then
 			local num_retriggers = 0
 			local rarities = {}
 			for i = 1, #G.jokers.cards do
 				local joker = G.jokers.cards[i]
-				if not rarities[joker.config.center.rarity] then
+				if not rarities[joker	.config.center.rarity] then
 					rarities[joker.config.center.rarity] = true
 					num_retriggers = num_retriggers + 1
 				end
@@ -928,7 +910,7 @@ local boredom = {
 			local cards = {}
 			for i, v in pairs(G.jokers.cards) do
 				if v.config.center.key ~= "j_cry_boredom" then
-					cards[#cards + 1] = v
+					cards[#cards+1] = v
 				end
 			end
 			local joker = pseudorandom_element(cards, pseudoseed("cry_boredom_joker"))
@@ -1017,11 +999,16 @@ local number_blocks = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.after and not context.blueprint and not context.before and not context.after then
+		if
+			context.after
+			and not context.blueprint
+			and not context.before
+			and not context.after
+		then
 			for i, v in pairs(G.hand.cards) do
 				if v:get_id() == G.GAME.current_round.cry_nb_card.id and not v.debuff then
 					card.ability.extra.money =
-						lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
+					lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
 					card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 					return nil, true
 				end
@@ -1783,6 +1770,92 @@ local goldjoker = {
 -- Sell this card to create 2 copies of the leftmost Joker
 -- Still needs updated description
 
+local altgoogol = {
+	object_type = "Joker",
+	name = "cry-altgoogol",
+	key = "altgoogol",
+	config = {
+		extra = {
+			Xmult = 12,
+			odds = 8,
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_epic",
+		},
+	},
+	gameset_config = {
+		modest = { extra = { Xmult = 9, odds = 8 } },
+	},
+	pos = { x = 4, y = 3 },
+	rarity = "cry_epic",
+	cost = 10,
+	order = 14,
+	blueprint_compat = true,
+	demicoloncompat = true,
+	atlas = "atlasepic",
+	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+				number_format(card.ability.extra.Xmult),
+			},
+		}
+	end,
+	calculate = function(self, card, context)
+		if
+			context.joker_main
+			and pseudorandom("cry_googol_play")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+		then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.Xmult) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+			}
+		end
+		if context.forcetrigger then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.Xmult) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+			}
+		end
+	end,
+	cry_credits = {
+		idea = {
+			".asdom",
+		},
+		art = {
+			"Linus Goof Balls",
+		},
+		code = {
+			"Math",
+		},
+	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "chip_score" and to_big(args.chips) >= to_big(1e100) then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
+}
+
 -- One For All
 -- +1 Joker slot, Booster Pack slot, hand size, consumable slot, shop slot
 local soccer = {
@@ -1807,7 +1880,6 @@ local soccer = {
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
 		local mod = card.ability.extra.holygrail
-		G.jokers.config.card_limit = G.jokers.config.card_limit + ((Card.get_gameset(card) == "modest") and 0 or mod)
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit + mod
 		G.hand:change_size(mod)
 		SMODS.change_booster_limit(mod)
@@ -1816,7 +1888,6 @@ local soccer = {
 	remove_from_deck = function(self, card, from_debuff)
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
 		local mod = card.ability.extra.holygrail
-		G.jokers.config.card_limit = G.jokers.config.card_limit + ((Card.get_gameset(card) == "modest") and 0 or -mod)
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit - mod
 		G.hand:change_size(-mod)
 		SMODS.change_booster_limit(-mod)

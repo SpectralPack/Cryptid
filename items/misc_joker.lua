@@ -3217,7 +3217,7 @@ local mondrian = {
 	pos = { x = 5, y = 3 },
 	config = {
 		extra = {
-			extra = 0.25,
+			extra = 0.15,
 			x_mult = 1,
 		},
 	},
@@ -7525,7 +7525,7 @@ local coin = {
 	pos = { x = 0, y = 2 },
 	config = {
 		extra = { money = 1 },
-		immutable = { money_mod = 10 },
+		immutable = { money_mod = 5 },
 	},
 	rarity = 1,
 	order = 53,
@@ -7535,7 +7535,7 @@ local coin = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(center.ability.extra.money),
+				number_format(center.ability.extra.money-1),
 				number_format(
 					center.ability.extra.money
 						* (Card.get_gameset(card) ~= "modest" and center.ability.immutable.money_mod or 4)
@@ -7548,8 +7548,8 @@ local coin = {
 		if (context.selling_card and context.card.ability.set == "Joker") or context.forcetrigger then
 			local mod = math.floor(
 				pseudorandom(pseudoseed("coin"))
-					* (Card.get_gameset(card) ~= "modest" and card.ability.immutable.money_mod or 4)
-			) + 1
+					* ((Card.get_gameset(card) ~= "modest" and card.ability.immutable.money_mod or 4) + 1)
+			)
 			local option = lenient_bignum(to_big(card.ability.extra.money) * mod)
 			ease_dollars(option)
 			card_eval_status_text(
@@ -7670,7 +7670,7 @@ local oldblueprint = {
 	key = "oldblueprint",
 	pos = { x = 2, y = 1 },
 	config = { extra = { odds = 4 } },
-	rarity = 1,
+	rarity = 2,
 	cost = 6,
 	order = 83,
 	blueprint_compat = true,
@@ -7989,7 +7989,6 @@ local translucent = {
 	dependencies = {
 		items = {
 			"set_cry_misc_joker",
-			"banana",
 		},
 	},
 	name = "cry-translucent Joker",
@@ -8002,6 +8001,9 @@ local translucent = {
 	eternal_compat = false,
 	demicoloncompat = true,
 	atlas = "atlasthree",
+	loc_vars = function(self, queue, card) 
+		queue[#queue+1] = {set="Other",key="perishable", vars = {5, 5}}
+	end,
 	calculate = function(self, card, context)
 		if (context.selling_self and not (context.retrigger_joker or context.blueprint)) or context.forcetrigger then
 			local jokers = {}
@@ -8017,7 +8019,6 @@ local translucent = {
 					local _card =
 						copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
 					_card:add_to_deck()
-					_card:set_banana(true)
 					_card.ability.perishable = true -- Done manually to bypass perish compat
 					_card.ability.perish_tally = G.GAME.perishable_rounds
 					G.jokers:emplace(_card)
