@@ -1435,7 +1435,7 @@ function Cryptid.declare_hand_ascended_counter(hand, declarehand)
 end
 
 function Cryptid.get_interest(add_rows)
-	local interest = math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)
+	local interest = math.min(math.floor(G.GAME.dollars / 5), G.GAME.interest_cap / 5)
 	interst = interest * G.GAME.interest_amount
 	for _, a in pairs(SMODS.get_card_areas("jokers")) do
 		for i, c in pairs(a.cards) do

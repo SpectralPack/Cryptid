@@ -208,27 +208,41 @@ local googol_play = {
 			cost = 15,
 			copies = 1,
 			rounds = 3,
-			rounds_left = 3
+			rounds_left = 3,
 		},
 		mainline = { copies = 2, rounds = 3, rounds_left = 3 },
 	},
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }), vars = { center.ability.copies, center.ability.rounds, center.ability.rounds_left } }
+		return {
+			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
+			vars = { center.ability.copies, center.ability.rounds, center.ability.rounds_left },
+		}
 	end,
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
 		if context.after and not context.retrigger_joker and not context.blueprint then
 			card.ability.rounds_left = card.ability.rounds_left - 1
 			if to_big(card.ability.rounds_left) <= to_big(0) then
-				local eval = function(card) return not card.REMOVED end
+				local eval = function(card)
+					return not card.REMOVED
+				end
 				juice_card_until(self, eval, true)
 			end
 			return {
-				message = to_big(card.ability.rounds_left) > to_big(0) and ((card.ability.rounds-card.ability.rounds_left)..'/'..card.ability.rounds) or localize('k_active_ex'),
-				colour = G.C.FILTER
+				message = to_big(card.ability.rounds_left) > to_big(0)
+						and ((card.ability.rounds - card.ability.rounds_left) .. "/" .. card.ability.rounds)
+					or localize("k_active_ex"),
+				colour = G.C.FILTER,
 			}
 		end
-		if (context.selling_self and not context.retrigger_joker and not context.blueprint and to_big(card.ability.rounds_left) <= to_big(0)) or context.forcetrigger then
+		if
+			(
+				context.selling_self
+				and not context.retrigger_joker
+				and not context.blueprint
+				and to_big(card.ability.rounds_left) <= to_big(0)
+			) or context.forcetrigger
+		then
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] ~= card then
@@ -419,7 +433,11 @@ local canvas = {
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card == G.jokers.cards[1] then
+		if
+			context.retrigger_joker_check
+			and not context.retrigger_joker
+			and context.other_card == G.jokers.cards[1]
+		then
 			local num_retriggers = 0
 			local rarities = {}
 			for i = 1, #G.jokers.cards do
@@ -910,7 +928,7 @@ local boredom = {
 			local cards = {}
 			for i, v in pairs(G.jokers.cards) do
 				if v.config.center.key ~= "j_cry_boredom" then
-					cards[#cards+1] = v
+					cards[#cards + 1] = v
 				end
 			end
 			local joker = pseudorandom_element(cards, pseudoseed("cry_boredom_joker"))
@@ -999,16 +1017,11 @@ local number_blocks = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if
-			context.after
-			and not context.blueprint
-			and not context.before
-			and not context.after
-		then
+		if context.after and not context.blueprint and not context.before and not context.after then
 			for i, v in pairs(G.hand.cards) do
 				if v:get_id() == G.GAME.current_round.cry_nb_card.id and not v.debuff then
 					card.ability.extra.money =
-					lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
+						lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
 					card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
 					return nil, true
 				end

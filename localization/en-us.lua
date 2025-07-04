@@ -1043,7 +1043,7 @@ return {
 					"a {C:attention}#2#",
 				},
 			},
-			j_cry_googol_play= {
+			j_cry_googol_play = {
 				name = "Googol Play Card",
 				text = {
 					"After {C:attention}#2#{}{C:inactive}[#3#] rounds Sell this card to create",

@@ -1269,9 +1269,8 @@ local compound_interest = {
 	end,
 	cry_calc_interest = function(self, card, interest)
 		local old = lenient_bignum(card.ability.extra.percent)
-		card.ability.extra.percent =
-		lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-		return (1+old/100) * interest
+		card.ability.extra.percent = lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
+		return (1 + old / 100) * interest
 	end,
 	cry_credits = {
 		idea = {
