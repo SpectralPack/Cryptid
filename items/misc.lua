@@ -393,7 +393,7 @@ local azure_seal = {
 	name = "cry-Azure-Seal",
 	key = "azure",
 	badge_colour = HEX("1d4fd7"),
-	config = { planets_amount = 3 },
+	config = { planets_amount = 2 },
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.planets_amount } }
 	end,
@@ -741,7 +741,7 @@ local mosaic = {
 	shader = "mosaic",
 	in_shop = true,
 	extra_cost = 5,
-	config = { x_chips = 2.5, trigger = nil },
+	config = { x_chips = 2, trigger = nil },
 	sound = {
 		sound = "cry_e_mosaic",
 		per = 1,
@@ -937,15 +937,15 @@ local glitched = {
 	on_apply = function(card)
 		if not card.ability.cry_glitched then
 			Cryptid.manipulate(card, {
-				min = 0.1,
-				max = 10,
+				min = 0.25,
+				max = 4,
 			})
 
 			if card.config.center.apply_glitched then
 				card.config.center:apply_glitched(card, function(val)
 					return Cryptid.manipulate_value(val, {
-						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
-						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
+						min = 0.25 * (G.GAME.modifiers.cry_misprint_min or 1),
+						max = 4 * (G.GAME.modifiers.cry_misprint_max or 1),
 						type = "X",
 					}, Cryptid.is_card_big(card))
 				end)
@@ -1280,8 +1280,8 @@ local noisy_stats = {
 		chips = 0,
 	},
 	max = {
-		mult = 30,
-		chips = 150,
+		mult = 8,
+		chips = 64,
 	},
 }
 local noisy = {
@@ -1823,12 +1823,12 @@ local glass_edition = {
 	},
 	weight = 7,
 	extra_cost = 2,
-	config = { x_mult = 3, shatter_chance = 8, trigger = nil },
+	config = { x_mult = 3, odds = 8, trigger = nil },
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				((card and card.edition and card.edition.shatter_chance or self.config.shatter_chance) - 1),
-				(card and card.edition and card.edition.shatter_chance or self.config.shatter_chance),
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
 				card and card.edition and card.edition.x_mult or self.config.x_mult,
 			},
 		}
@@ -1845,10 +1845,8 @@ local glass_edition = {
 		then
 			if
 				not card.ability.eternal
-				and not (
-					pseudorandom(pseudoseed("cry_fragile"))
-					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
-				)
+				and pseudorandom("cry_fragile_destroy")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
 				-- this event call might need to be pushed later to make more sense
 				G.E_MANAGER:add_event(Event({
@@ -1875,10 +1873,8 @@ local glass_edition = {
 		if context.main_scoring and context.cardarea == G.play then
 			if
 				not card.ability.eternal
-				and (
-					pseudorandom(pseudoseed("cry_fragile"))
-					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
-				)
+				and pseudorandom("cry_fragile_destroy")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
 				card.config.will_shatter = true
 			end
@@ -1952,7 +1948,7 @@ local gold_edition = {
 	weight = 7,
 	extra_cost = 4,
 	in_shop = true,
-	config = { dollars = 2, active = true },
+	config = { dollars = 1, active = true },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card and card.edition and card.edition.dollars or self.config.dollars } }
 	end,
