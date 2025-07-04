@@ -2746,8 +2746,8 @@ local magnet = {
 			slots = 4,
 		},
 		immutable = {
-			Xmoney = 4
-		}
+			Xmoney = 4,
+		},
 	},
 	gameset_config = {
 		modest = {
@@ -2756,8 +2756,8 @@ local magnet = {
 				slots = 3,
 			},
 			immutable = {
-				Xmoney = 3
-			}
+				Xmoney = 3,
+			},
 		},
 	},
 	rarity = 1,
@@ -8322,7 +8322,9 @@ local oldinvisible = {
 						func = function()
 							local card =
 								copy_card(pseudorandom_element(eligibleJokers, pseudoseed("cry_oldinvis")), nil)
-							if card.edition and card.edition.negative then card:set_edition() end
+							if card.edition and card.edition.negative then
+								card:set_edition()
+							end
 							card:add_to_deck()
 							G.jokers:emplace(card)
 							return true

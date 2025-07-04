@@ -2166,28 +2166,28 @@ local jtron = {
 		end
 		if context.end_of_round then
 			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
-				G.E_MANAGER:add_event(Event{
+				G.E_MANAGER:add_event(Event({
 					func = function()
-						SMODS.add_card{
-							key="j_joker",
-							area=G.jokers
-						}
+						SMODS.add_card({
+							key = "j_joker",
+							area = G.jokers,
+						})
 						return true
-					end
-				})
+					end,
+				}))
 			end
 		end
 		if context.forcetrigger then
 			G.GAME.joker_buffer = G.GAME.joker_buffer + 1
-			G.E_MANAGER:add_event(Event{
+			G.E_MANAGER:add_event(Event({
 				func = function()
-					SMODS.add_card{
-						key="j_joker",
-						area=G.jokers
-					}
+					SMODS.add_card({
+						key = "j_joker",
+						area = G.jokers,
+					})
 					return true
-				end
-			})
+				end,
+			}))
 			return {
 				message = localize({
 					type = "variable",
@@ -2701,6 +2701,6 @@ return {
 		clockwork,
 		demicolon,
 		starfruit,
-		chad
+		chad,
 	},
 }
