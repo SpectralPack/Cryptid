@@ -7535,7 +7535,7 @@ local coin = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(center.ability.extra.money-1),
+				number_format(center.ability.extra.money - 1),
 				number_format(
 					center.ability.extra.money
 						* (Card.get_gameset(card) ~= "modest" and center.ability.immutable.money_mod or 4)
@@ -8001,8 +8001,8 @@ local translucent = {
 	eternal_compat = false,
 	demicoloncompat = true,
 	atlas = "atlasthree",
-	loc_vars = function(self, queue, card) 
-		queue[#queue+1] = {set="Other",key="perishable", vars = {5, 5}}
+	loc_vars = function(self, queue, card)
+		queue[#queue + 1] = { set = "Other", key = "perishable", vars = { 5, 5 } }
 	end,
 	calculate = function(self, card, context)
 		if (context.selling_self and not (context.retrigger_joker or context.blueprint)) or context.forcetrigger then
