@@ -9326,8 +9326,8 @@ local pity_prize = {
 	pos = { x = 5, y = 5 },
 	config = {
 		extra = {
-			active = true
-		}
+			active = true,
+		},
 	},
 	rarity = 1,
 	cost = 2,
@@ -9336,9 +9336,12 @@ local pity_prize = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, { modest = "modest" }), vars = {
-			center.ability.extra.active and localize("cry_active") or localize("cry_inactive")
-		} }
+		return {
+			key = Cryptid.gameset_loc(self, { modest = "modest" }),
+			vars = {
+				center.ability.extra.active and localize("cry_active") or localize("cry_inactive"),
+			},
+		}
 	end,
 	calculate = function(self, card, context)
 		if context.after then

@@ -1384,7 +1384,7 @@ return {
 				text = {
 					"Create a {C:cry_code}Code Card{} when",
 					"{C:attention}Blind{} is selected",
-					"{C:inactive}(Must have room){}"
+					"{C:inactive}(Must have room){}",
 				},
 				unlock = {
 					"Discover {C:attention}every",
@@ -2418,7 +2418,7 @@ return {
 					"On skipping a {C:attention}Booster Pack{},",
 					"gain a random {C:attention}Tag{}",
 					"{C:red}Works once per round{}",
-					"{C:inactive}(Currently #1#){}"
+					"{C:inactive}(Currently #1#){}",
 				},
 			},
 			j_cry_pity_prize_modest = {

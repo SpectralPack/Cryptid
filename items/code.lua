@@ -4740,10 +4740,7 @@ local CodeJoker = {
 	demicoloncompat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if
-			context.setting_blind
-			and not (context.blueprint_card or self).getting_sliced
-		then
+		if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				play_sound("timpani")
 				local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
@@ -4822,7 +4819,7 @@ local copypaste = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				card.ability.extra.ckt and localize("cry_inactive") or localize("cry_active")
+				card.ability.extra.ckt and localize("cry_inactive") or localize("cry_active"),
 			},
 			key = Cryptid.gameset_loc(self, { exp_modest = "modest" }),
 		}

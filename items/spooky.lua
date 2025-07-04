@@ -23,7 +23,9 @@ local cotton_candy = {
 			local jokers = {}
 			for i, v in pairs(G.jokers.cards) do
 				if not v.edition or not v.edition.negative then
-					if v ~= card then jokers[#jokers+1] = v end
+					if v ~= card then
+						jokers[#jokers + 1] = v
+					end
 				end
 			end
 			pseudorandom_element(jokers, pseudoseed("cry_cotton_candy")):set_edition({ negative = true })
