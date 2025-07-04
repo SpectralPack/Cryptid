@@ -914,18 +914,18 @@ local boredom = {
 				end
 			end
 			local joker = pseudorandom_element(cards, pseudoseed("cry_boredom_joker"))
-			joker.cry_boredom_marked = true
+			joker.cry_boredom_marked = card
 		end
 		if context.after then
 			for i, v in pairs(G.jokers.cards) do
-				joker.cry_boredom_marked = nil
+				v.cry_boredom_marked = nil
 			end
 		end
 		if
 			context.retrigger_joker_check
 			and not context.retrigger_joker
 			and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
-			and context.other_card.cry_boredom_marked
+			and context.other_card.cry_boredom_marked == card
 		then
 			if
 				pseudorandom("cry_boredom_joker")
