@@ -595,6 +595,9 @@ SMODS.Sound({
 	},
 	pitch = 1,
 	select_music_track = function()
+		if G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" then
+			G.PROFILES[G.SETTINGS.profile].cry_gameset = "mainline"
+		end
 		return G.STAGE == G.STAGES.MAIN_MENU
 			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest")
 			and Cryptid_config.Cryptid.alt_bg_music

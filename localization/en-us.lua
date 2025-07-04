@@ -1414,7 +1414,7 @@ return {
 			j_cry_compound_interest = {
 				name = "Compound Interest",
 				text = {
-					"Earn {C:money}#1#%{} of total money",
+					"Earn {C:money}#1#%{} more interest",
 					"at end of round,",
 					"increases by {C:money}#2#%{} per",
 					"consecutive payout",
@@ -1547,16 +1547,16 @@ return {
 					"for each {C:attention}Jolly Joker{}",
 				},
 			},
-			["j_cry_Double Scale"] = { -- ?????????????
-				name = "Double Scale",
-				text = {
-					"Scaling {C:attention}Jokers{}",
-					"scale {C:attention}quadratically",
-					"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
-					"{C:inactive,s:0.8}(grows by +1, +2, +3)",
-				},
-			},
-			["j_cry_Double Scale_modest"] = {
+			-- ["j_cry_Double Scale"] = { -- ?????????????
+			-- 	name = "Double Scale",
+			-- 	text = {
+			-- 		"Scaling {C:attention}Jokers{}",
+			-- 		"scale {C:attention}quadratically",
+			-- 		"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
+			-- 		"{C:inactive,s:0.8}(grows by +1, +2, +3)",
+			-- 	},
+			-- },
+			["j_cry_Double Scale"] = {
 				name = "Double Scale",
 				text = {
 					"Scaling {C:attention}Jokers{}",
@@ -1846,9 +1846,9 @@ return {
 			j_cry_goldjoker = {
 				name = "Gold Joker",
 				text = {
-					"Earn {C:money}#1#%{} of total",
-					"money at end of round",
-					"Payout increases by {C:money}#2#%{}",
+					"Earn {C:money}#1#%{} more",
+					"interest at end of round",
+					"Percentage increases by {C:money}#2#%{}",
 					"when each played {C:attention}Gold{}",
 					"card is scored",
 				},
@@ -2319,7 +2319,7 @@ return {
 				text = {
 					"Earn {C:money}$#1#{} at end of round",
 					"Increase payout by {C:money}$#2#{}",
-					"for each {C:attention}#3#{} held in hand,",
+					"if a {C:attention}#3#{} is held in hand,",
 					"rank changes every round",
 				},
 			},

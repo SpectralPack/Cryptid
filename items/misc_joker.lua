@@ -1927,7 +1927,7 @@ local waluigi = {
 				if not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							context.other_joker:juice_up(0.5, 0.5)
+							context.other_card:juice_up(0.5, 0.5)
 							return true
 						end,
 					}))
@@ -1940,6 +1940,7 @@ local waluigi = {
 					vars = { number_format(card.ability.extra.Xmult) },
 				}),
 				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				card = card
 			}
 		end
 	end,
