@@ -4720,7 +4720,7 @@ local encoded = {
 	end,
 }
 -- Code Joker
--- Creates a Negative Code card when starting blind
+-- Creates a Code card when starting blind
 local CodeJoker = {
 	dependencies = {
 		items = {
@@ -4732,10 +4732,6 @@ local CodeJoker = {
 	name = "cry-CodeJoker",
 	key = "CodeJoker",
 	pos = { x = 2, y = 4 },
-	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
-		return { key = Cryptid.gameset_loc(self, { exp_modest = "modest" }) }
-	end,
 	extra_gamesets = { "exp_modest" },
 	rarity = "cry_epic",
 	cost = 11,
@@ -4747,24 +4743,19 @@ local CodeJoker = {
 		if
 			context.setting_blind
 			and not (context.blueprint_card or self).getting_sliced
-			and (G.GAME.blind:get_type() == "Boss" or Cryptid.gameset(card) ~= "exp_modest")
 		then
-			play_sound("timpani")
-			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
-			card:set_edition({
-				negative = true,
-			})
-			card:add_to_deck()
-			G.consumeables:emplace(card)
-			card:juice_up(0.3, 0.5)
-			return nil, true
+			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+				play_sound("timpani")
+				local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
+				card:add_to_deck()
+				G.consumeables:emplace(card)
+				card:juice_up(0.3, 0.5)
+				return nil, true
+			end
 		end
 		if context.forcetrigger then
 			play_sound("timpani")
 			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
-			card:set_edition({
-				negative = true,
-			})
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			card:juice_up(0.3, 0.5)
@@ -4822,7 +4813,6 @@ local copypaste = {
 	order = 302,
 	config = {
 		extra = {
-			odds = 2,
 			ckt = nil,
 		},
 	}, -- what is a ckt
@@ -4832,13 +4822,8 @@ local copypaste = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				card and cry_prob(
-					math.min(card.ability.extra.odds / 2, card.ability.cry_prob or 1),
-					card.ability.extra.odds,
-					card.ability.cry_rigged
-				) or 1,
-				card and card.ability.extra.odds or 2,
-			}, -- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+				card.ability.extra.ckt and localize("cry_inactive") or localize("cry_active")
+			},
 			key = Cryptid.gameset_loc(self, { exp_modest = "modest" }),
 		}
 	end,
@@ -4874,35 +4859,26 @@ local copypaste = {
 			and not context.consumeable.beginning_end
 			and not card.ability.extra.ckt
 			and Cryptid.gameset(card) ~= "exp_modest"
+			and not card.ability.used
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				if
-					pseudorandom("cry_copypaste_joker")
-					< cry_prob(
-							math.min(card.ability.extra.odds / 2, card.ability.cry_prob),
-							card.ability.extra.odds,
-							card.ability.cry_rigged
-						)
-						/ card.ability.extra.odds
-				then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							local cards = copy_card(context.consumeable)
-							cards:add_to_deck()
-							G.consumeables:emplace(cards)
-							return true
-						end,
-					}))
-					card_eval_status_text(
-						context.blueprint_cards or card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ message = localize("k_copied_ex") }
-					)
-					card.ability.extra.ckt = true
-				end
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local cards = copy_card(context.consumeable)
+						cards:add_to_deck()
+						G.consumeables:emplace(cards)
+						return true
+					end,
+				}))
+				card_eval_status_text(
+					context.blueprint_cards or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_copied_ex") }
+				)
+				card.ability.extra.ckt = true
 			end
 		elseif
 			context.end_of_round

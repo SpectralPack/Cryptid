@@ -9324,7 +9324,11 @@ local pity_prize = {
 	name = "cry-Pity-Prize",
 	key = "pity_prize",
 	pos = { x = 5, y = 5 },
-	config = {},
+	config = {
+		extra = {
+			active = true
+		}
+	},
 	rarity = 1,
 	cost = 2,
 	atlas = "atlastwo",
@@ -9332,62 +9336,72 @@ local pity_prize = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, { modest = "modest" }), vars = {} }
+		return { key = Cryptid.gameset_loc(self, { modest = "modest" }), vars = {
+			center.ability.extra.active and localize("cry_active") or localize("cry_inactive")
+		} }
 	end,
 	calculate = function(self, card, context)
+		if context.after then
+			card.ability.extra.active = true
+		end
 		if context.skipping_booster or context.forcetrigger then
-			local tag_key
-			repeat
-				tag_key = get_next_tag_key("cry_pity_prize")
-			until tag_key ~= "tag_boss" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
-			-- this is my first time seeing repeat... wtf
-			local tag = Tag(tag_key)
-			tag.ability.shiny = Cryptid.is_shiny()
-			if tag.name == "Orbital Tag" then
-				local _poker_hands = {}
-				for k, v in pairs(G.GAME.hands) do
-					if v.visible then
-						_poker_hands[#_poker_hands + 1] = k
-					end
+			if card.ability.extra.active or context.forcetrigger then
+				if not context.forcetrigger then
+					card.ability.extra.active = false
 				end
-				tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pity_prize"))
+				local tag_key
+				repeat
+					tag_key = get_next_tag_key("cry_pity_prize")
+				until tag_key ~= "tag_boss" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
+				-- this is my first time seeing repeat... wtf
+				local tag = Tag(tag_key)
+				tag.ability.shiny = Cryptid.is_shiny()
+				if tag.name == "Orbital Tag" then
+					local _poker_hands = {}
+					for k, v in pairs(G.GAME.hands) do
+						if v.visible then
+							_poker_hands[#_poker_hands + 1] = k
+						end
+					end
+					tag.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pity_prize"))
+				end
+				add_tag(tag)
+				if
+					Card.get_gameset(card) == "modest"
+					and ((not context.blueprint and not context.retrigger_joker) or context.forcetrigger)
+				then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							play_sound("tarot1")
+							card.T.r = -0.2
+							card:juice_up(0.3, 0.4)
+							card.states.drag.is = true
+							card.children.center.pinch.x = true
+							G.E_MANAGER:add_event(Event({
+								trigger = "after",
+								delay = 0.3,
+								blockable = false,
+								func = function()
+									G.jokers:remove_card(card)
+									card:remove()
+									card = nil
+									return true
+								end,
+							}))
+							return true
+						end,
+					}))
+					card_eval_status_text(
+						card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
+					)
+				end
+				return nil, true
 			end
-			add_tag(tag)
-			if
-				Card.get_gameset(card) == "modest"
-				and ((not context.blueprint and not context.retrigger_joker) or context.forcetrigger)
-			then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("tarot1")
-						card.T.r = -0.2
-						card:juice_up(0.3, 0.4)
-						card.states.drag.is = true
-						card.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card = nil
-								return true
-							end,
-						}))
-						return true
-					end,
-				}))
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_extinct_ex"), colour = G.C.FILTER }
-				)
-			end
-			return nil, true
 		end
 	end,
 	cry_credits = {
@@ -9798,8 +9812,8 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 	pos = { x = 4, y = 5 },
 	order = 134,
 	immutable = true,
-	rarity = 2,
-	cost = 7,
+	rarity = 3,
+	cost = 8,
 	blueprint_compat = false,
 	atlas = "atlasone",
 	calculate = function(self, card, context)

@@ -867,20 +867,16 @@ local M = {
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		if not center.edition or (center.edition and not center.edition.negative) then
-			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
-		end
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if (context.setting_blind and not (context.blueprint_card or self).getting_sliced) or context.forcetrigger then
-			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
-			card:set_edition({
-				negative = true,
-			})
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			return nil, true
+			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+				local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
+				card:add_to_deck()
+				G.jokers:emplace(card)
+				return nil, true
+			end
 		end
 	end,
 	pools = { ["M"] = true },
@@ -1946,11 +1942,10 @@ local fleshpanopticon = {
 	name = "cry-fleshpanopticon",
 	key = "fleshpanopticon",
 	pos = { x = 0, y = 5 },
-	config = { extra = { boss_size = 20 } },
+	config = { extra = { boss_size = 10 } },
 	dependencies = {
 		items = {
 			"set_cry_epic",
-			"c_cry_gateway",
 		},
 	},
 	immutable = true,
@@ -1959,7 +1954,7 @@ local fleshpanopticon = {
 	order = 146,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
+		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_soul" }
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
@@ -2008,7 +2003,7 @@ local fleshpanopticon = {
 						nil,
 						nil,
 						nil,
-						Cryptid.enabled("c_cry_gateway") and "c_cry_gateway" or "c_soul",
+						"c_soul",
 						"sup"
 					)
 					card:set_edition({ negative = true }, true)

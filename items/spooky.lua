@@ -20,16 +20,13 @@ local cotton_candy = {
 			(context.selling_self and not context.retrigger_joker and not context.blueprint_card)
 			or context.forcetrigger
 		then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] == card then
-					if i > 1 then
-						G.jokers.cards[i - 1]:set_edition({ negative = true })
-					end
-					if i < #G.jokers.cards then
-						G.jokers.cards[i + 1]:set_edition({ negative = true })
-					end
+			local jokers = {}
+			for i, v in pairs(G.jokers.cards) do
+				if not v.edition or not v.edition.negative then
+					if v ~= card then jokers[#jokers+1] = v end
 				end
 			end
+			pseudorandom_element(jokers, pseudoseed("cry_cotton_candy")):set_edition({ negative = true })
 		end
 	end,
 }

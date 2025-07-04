@@ -1382,27 +1382,27 @@ return {
 			j_cry_CodeJoker = {
 				name = "Code Joker",
 				text = {
-					"Create a {C:dark_edition}Negative{}",
-					"{C:cry_code}Code Card{} when",
+					"Create a {C:cry_code}Code Card{} when",
 					"{C:attention}Blind{} is selected",
+					"{C:inactive}(Must have room){}"
 				},
 				unlock = {
 					"Discover {C:attention}every",
 					"{C:cry_code}Code Card",
 				},
 			},
-			j_cry_CodeJoker_modest = {
-				name = "Code Joker",
-				text = {
-					"Create a {C:dark_edition}Negative{}",
-					"{C:cry_code}Code Card{} when",
-					"{C:attention}Boss Blind{} is selected",
-				},
-				unlock = {
-					"Discover {C:attention}every",
-					"{C:cry_code}Code Card",
-				},
-			},
+			-- j_cry_CodeJoker_modest = {
+			-- 	name = "Code Joker",
+			-- 	text = {
+			-- 		"Create a {C:dark_edition}Negative{}",
+			-- 		"{C:cry_code}Code Card{} when",
+			-- 		"{C:attention}Boss Blind{} is selected",
+			-- 	},
+			-- 	unlock = {
+			-- 		"Discover {C:attention}every",
+			-- 		"{C:cry_code}Code Card",
+			-- 	},
+			-- },
 			j_cry_coin = {
 				name = "Crypto Coin",
 				text = {
@@ -1423,10 +1423,10 @@ return {
 			j_cry_copypaste = {
 				name = "Copy/Paste",
 				text = {
-					"{C:green}#1# in #2#{} chance to duplicate",
-					"used {C:cry_code}Code{} cards",
+					"Duplicate used {C:cry_code}Code{} cards",
 					"{C:red}Works once per round{}",
 					"{C:inactive}(Must have room)",
+					"{C:inactive}(Currently #1#)",
 				},
 			},
 			j_cry_copypaste_modest = {
@@ -1437,19 +1437,11 @@ return {
 					"{C:inactive}(Must have room)",
 				},
 			},
-			j_cry_copypaste_madness = {
-				name = "Copy/Paste",
-				text = {
-					"{C:green}#1# in #2#{} chance to duplicate",
-					"used {C:cry_code}Code{} cards",
-					"{C:inactive}(Must have room)",
-				},
-			},
 			j_cry_cotton_candy = {
 				name = "Cotton Candy",
 				text = {
-					"When sold, adjacent",
-					"{C:attention}Jokers{} become {C:dark_edition}Negative{}",
+					"When sold, apply {C:dark_edition}Negative{}",
+					"to a {C:attention}random{} Joker",
 				},
 			},
 			j_cry_crustulum = {
@@ -2425,6 +2417,8 @@ return {
 				text = {
 					"On skipping a {C:attention}Booster Pack{},",
 					"gain a random {C:attention}Tag{}",
+					"{C:red}Works once per round{}",
+					"{C:inactive}(Currently #1#){}"
 				},
 			},
 			j_cry_pity_prize_modest = {
