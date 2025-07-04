@@ -668,9 +668,6 @@ local antimatter = {
 			"set_cry_deck",
 		},
 	},
-	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, { mainline = "balanced", modest = "balanced" }) }
-	end,
 	name = "cry-Antimatter",
 	order = 76,
 	key = "antimatter",
@@ -687,17 +684,17 @@ local antimatter = {
 	pos = { x = 2, y = 0 },
 	calculate = function(self, back, context)
 		if context.context ~= "final_scoring_step" then
-			Cryptid.antimatter_trigger(self, context, Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
+			Cryptid.antimatter_trigger(self, context, false)
 		else
 			return Cryptid.antimatter_trigger_final_scoring(
 				self,
 				context,
-				Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness"
+				false
 			)
 		end
 	end,
 	apply = function(self)
-		Cryptid.antimatter_apply(Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
+		Cryptid.antimatter_apply(false)
 	end,
 	atlas = "atlasdeck",
 	init = function(self)

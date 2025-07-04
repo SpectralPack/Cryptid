@@ -531,8 +531,6 @@ if CardSleeves then
 			then
 				self.config.cry_spooky = true
 			end
-
-			return { key = Cryptid.gameset_loc(self, { mainline = "balanced", modest = "balanced" }) }
 		end,
 		calculate = function(self, sleeve, context)
 			if context.create_card and context.card then

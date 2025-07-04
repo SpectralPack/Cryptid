@@ -5,20 +5,13 @@ return {
 				name = "Antimatter Deck",
 				text = {
 					"Applies the {C:legendary,E:1}upsides{}",
-					"of {C:attention}every{} deck",
+					"of {C:attention}every{} deck won",
+					"with {C:gold}Gold Stake{}",
 				},
 				unlock = {
 					"Win a run",
 					"with {C:attention}Blank Deck",
 					"on {C:attention}Gold Stake",
-				},
-			},
-			b_cry_antimatter_balanced = {
-				name = "Antimatter Deck",
-				text = {
-					"Applies the {C:legendary,E:1}upsides{}",
-					"of {C:attention}every{} deck won",
-					"with {C:gold}Gold Stake{}",
 				},
 			},
 			b_cry_beige = {
@@ -1097,21 +1090,6 @@ return {
 					"When sold, apply {C:dark_edition}Astral{}",
 					"and {C:attention}Perishable{} to",
 					"a random {C:attention}Joker{}",
-				},
-			},
-			j_cry_astral_bottle_mainline = {
-				name = "Astral in a Bottle",
-				text = {
-					"When sold, apply {C:dark_edition}Astral{}",
-					"and {C:attention}Perishable{} to",
-					"different, random {C:attention}Jokers{}",
-				},
-			},
-			j_cry_astral_bottle_madness = {
-				name = "Astral in a Bottle",
-				text = {
-					"When sold, apply {C:dark_edition}Astral{}",
-					"to a random {C:attention}Joker{}",
 				},
 			},
 			j_cry_big_cube = {
@@ -3416,15 +3394,6 @@ return {
 				},
 			},
 			sleeve_cry_antimatter_sleeve = {
-				name = "Antimatter Sleeve",
-				text = {
-					"applies the {C:attention}effects{}",
-					"and {C:attention}special effects{}",
-					"of all deck sleeves",
-					"{C:red}WIP",
-				},
-			},
-			sleeve_cry_antimatter_sleeve_balanced = {
 				name = "Antimatter Sleeve",
 				text = {
 					"applies the {C:attention}effects{}",

@@ -2,7 +2,6 @@
 gameset_config = {
         modest = {extra = {chips = 1}, center = {rarity = 1, blueprint_compat = false, immutable = true, no_dbl = false}},
 		mainline = {center = {rarity = 2, blueprint_compat = true, immutable = true, no_dbl = true}},
-        madness = {extra = {chips = 100}, center = {rarity = 3}},
 		cryptid_in_2025 = {extra = {chips = 1e308}, center = {rarity = "cry_exotic"}},
  },
 -- Card.get_gameset(card) ~= "modest"
@@ -1780,10 +1779,6 @@ local altgoogol = {
 			copies = 1,
 		},
 		mainline = { copies = 2 },
-		madness = {
-			center = { blueprint_compat = true },
-			copies = 2,
-		},
 	},
 	loc_vars = function(self, info_queue, center)
 		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }), vars = { center.ability.copies } }
@@ -1791,7 +1786,7 @@ local altgoogol = {
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
 		if
-			(context.selling_self and not context.retrigger_joker and (gameset == "madness" or not context.blueprint))
+			(context.selling_self and not context.retrigger_joker and not context.blueprint)
 			or context.forcetrigger
 		then
 			local jokers = {}
@@ -2370,8 +2365,7 @@ local demicolon = {
 	object_type = "Joker",
 	gameset_config = {
 		modest = { disabled = true },
-		mainline = { disabled = true },
-		madness = { disabled = false },
+		mainline = { disabled = false },
 		experimental = { disabled = false },
 	},
 	dependencies = {

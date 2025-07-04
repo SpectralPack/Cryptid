@@ -8596,7 +8596,7 @@ local astral_bottle = {
 		},
 	},
 	name = "cry-astral_bottle",
-	extra_gamesets = { "exp_modest", "exp_mainline", "exp_madness" },
+	extra_gamesets = { "exp_modest", "exp_mainline"},
 	key = "astral_bottle",
 	eternal_compat = false,
 	pos = { x = 7, y = 0 },
@@ -8610,23 +8610,11 @@ local astral_bottle = {
 		if not center.edition or (center.edition and not center.edition.cry_astral) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
 		end
-		return {
-			key = Cryptid.gameset_loc(
-				self,
-				{ exp_modest = "mainline", exp_mainline = "mainline", exp_madness = "madness" }
-			),
-		}
 	end,
 	calculate = function(self, card, context)
 		if (context.selling_self and not context.retrigger_joker and not context.blueprint) or context.forcetrigger then
 			local g = Cryptid.gameset(card)
 			local effect = { { astral = true, perishable = true } }
-			if g == "exp_modest" or g == "exp_mainline" then
-				effect = { { astral = true }, { perishable = true } }
-			end
-			if g == "exp_madness" then
-				effect = { { astral = true } }
-			end
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff and not G.jokers.cards[i].edition then

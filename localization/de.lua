@@ -8,19 +8,12 @@ return {
 				text = {
 					"Hat die {C:legendary,E:1}positiven Effekte{}",
 					"von {C:attention}jedem{} Deck",
+					"mit dem du {C:gold}Goldenen Einsatz{} gewonnen hast",
 				},
 				unlock = {
 					"Gewinne einen Durchlauf",
 					"mit {C:attention}Unbedrucktem Deck",
 					"auf {C:attention}Goldener Einsatz",
-				},
-			},
-			b_cry_antimatter_balanced = {
-				name = "Antimaterie Deck",
-				text = {
-					"Hat die {C:legendary,E:1}positiven Effekte{}",
-					"von {C:attention}jedem{} Deck",
-					"mit dem du {C:gold}Goldenen Einsatz{} gewonnen hast",
 				},
 			},
 			b_cry_beige = {
@@ -1061,22 +1054,7 @@ return {
 				text = {
 					"Wenn verkauft, füge {C:dark_edition}Astral{}",
 					"und {C:attention}Verderblich{} einem",
-					"zufälligen {C:attention}Joker{} hinzu",
-				},
-			},
-			j_cry_astral_bottle_mainline = {
-				name = "Astral in einer Flasche",
-				text = {
-					"Wenn verkauft, füge {C:dark_edition}Astral{}",
-					"und {C:attention}Verderblich{} einem",
 					"anderen, zufälligen {C:attention}Joker{} hinzu",
-				},
-			},
-			j_cry_astral_bottle_madness = {
-				name = "Astral in einer Flasche",
-				text = {
-					"Wenn verkauft, füge {C:dark_edition}Astral{}",
-					"einem zufälligen {C:attention}Joker{} hinzu",
 				},
 			},
 			j_cry_big_cube = {

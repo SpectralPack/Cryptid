@@ -1221,9 +1221,7 @@ local rework = {
 		return #cards == 1
 			and not cards[1].ability.eternal
 			and cards[1].ability.name
-				~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
-					card
-				) == "madness"))
+				~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or "Diet Cola")
 	end,
 	use = function(self, card, area, copier)
 		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
@@ -2125,7 +2123,6 @@ local hook = {
 	gameset_config = {
 		modest = { disabled = true },
 		mainline = { disabled = false },
-		madness = { disabled = false },
 		experimental = { disabled = false },
 	},
 	dependencies = {
@@ -4851,7 +4848,7 @@ local copypaste = {
 				) or 1,
 				card and card.ability.extra.odds or 2,
 			}, -- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
-			key = Cryptid.gameset_loc(self, { madness = "madness", exp_modest = "modest" }),
+			key = Cryptid.gameset_loc(self, { exp_modest = "modest" }),
 		}
 	end,
 	atlas = "atlasepic",
@@ -4913,9 +4910,7 @@ local copypaste = {
 						nil,
 						{ message = localize("k_copied_ex") }
 					)
-					if Card.get_gameset(card) ~= "madness" then
-						card.ability.extra.ckt = true
-					end
+					card.ability.extra.ckt = true
 				end
 			end
 		elseif
