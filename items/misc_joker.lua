@@ -1385,6 +1385,7 @@ local eternalflame = {
 			}
 		elseif
 			context.selling_card
+			and context.card.config.center.set == "Joker"
 			and (context.card.sell_cost >= 2 or Card.get_gameset(card) ~= "modest")
 			and not context.blueprint
 		then
@@ -1574,56 +1575,6 @@ local seal_the_deal = {
 		},
 		code = {
 			"AlexZGreat",
-		},
-	},
-}
-local chad = {
-	object_type = "Joker",
-	dependencies = {
-		items = {
-			"set_cry_meme",
-		},
-	},
-	name = "cry-Chad",
-	key = "chad",
-	pos = { x = 0, y = 3 },
-	order = 71,
-	config = {
-		extra = { retriggers = 2 },
-		immutable = { max_retriggers = 25 },
-	},
-	pools = { ["Meme"] = true },
-	rarity = 3,
-	cost = 10,
-	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
-		return { vars = { math.min(center.ability.immutable.max_retriggers, center.ability.extra.retriggers) } }
-	end,
-	atlas = "atlasone",
-	calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
-			if context.other_card == G.jokers.cards[1] then
-				return {
-					message = localize("k_again_ex"),
-					repetitions = to_number(
-						math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)
-					),
-					card = card,
-				}
-			else
-				return nil, true
-			end
-		end
-	end,
-	cry_credits = {
-		idea = {
-			"Jevonn",
-		},
-		art = {
-			"SDM_0",
-		},
-		code = {
-			"Math",
 		},
 	},
 }
@@ -1961,7 +1912,7 @@ local waluigi = {
 	key = "waluigi",
 	pos = { x = 0, y = 3 },
 	soul_pos = { x = 1, y = 3 },
-	config = { extra = { Xmult = 2.5 } },
+	config = { extra = { Xmult = 1.4 } },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { number_format(center.ability.extra.Xmult) } }
 	end,
@@ -1971,25 +1922,17 @@ local waluigi = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		if context.other_joker and context.other_joker.ability.set == "Joker" then
-			if not Talisman.config_file.disable_anims then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						context.other_joker:juice_up(0.5, 0.5)
-						return true
-					end,
-				}))
+		if context.post_trigger or context.forcetrigger then
+			if not context.forcetrigger then
+				if not Talisman.config_file.disable_anims then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							context.other_joker:juice_up(0.5, 0.5)
+							return true
+						end,
+					}))
+				end
 			end
-			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
-			}
-		end
-		if context.forcetrigger then
 			return {
 				message = localize({
 					type = "variable",
@@ -2025,7 +1968,7 @@ local wario = {
 	order = 88,
 	pos = { x = 2, y = 3 },
 	soul_pos = { x = 3, y = 3 },
-	config = { extra = { money = 3 } },
+	config = { extra = { money = 2 } },
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { number_format(center.ability.extra.money) } }
@@ -2800,17 +2743,21 @@ local magnet = {
 	config = {
 		extra = {
 			money = 2,
-			Xmoney = 5,
 			slots = 4,
 		},
+		immutable = {
+			Xmoney = 4
+		}
 	},
 	gameset_config = {
 		modest = {
 			extra = {
 				money = 2,
-				Xmoney = 3,
 				slots = 3,
 			},
+			immutable = {
+				Xmoney = 3
+			}
 		},
 	},
 	rarity = 1,
@@ -2822,7 +2769,7 @@ local magnet = {
 		return {
 			vars = {
 				number_format(center.ability.extra.money),
-				number_format(center.ability.extra.Xmoney),
+				number_format(center.ability.immutable.Xmoney),
 				number_format(center.ability.extra.slots),
 			},
 		}
@@ -2830,12 +2777,12 @@ local magnet = {
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.forcetrigger then
-			ease_dollars(lenient_bignum(to_big(card.ability.extra.money) * card.ability.extra.Xmoney))
+			ease_dollars(lenient_bignum(to_big(card.ability.extra.money) * center.ability.immutable.Xmoney))
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
 		if to_big(#G.jokers.cards) <= to_big(card.ability.extra.slots) then
-			return lenient_bignum(to_big(card.ability.extra.money) * card.ability.extra.Xmoney)
+			return lenient_bignum(to_big(card.ability.extra.money) * center.ability.immutable.Xmoney)
 		else
 			return lenient_bignum(card.ability.extra.money)
 		end
@@ -7588,7 +7535,7 @@ local wheelhope = {
 	pos = { x = 1, y = 1 },
 	config = {
 		extra = {
-			extra = 0.5,
+			extra = 0.2,
 			x_mult = 1,
 		},
 	},
@@ -7911,7 +7858,7 @@ local busdriver = {
 	},
 	name = "cry-busdriver",
 	key = "busdriver",
-	config = { extra = { mult = 50, odds = 4 } },
+	config = { extra = { mult = 25, odds = 4 } },
 	pos = { x = 5, y = 1 },
 	rarity = 2,
 	cost = 7,
@@ -8375,6 +8322,7 @@ local oldinvisible = {
 						func = function()
 							local card =
 								copy_card(pseudorandom_element(eligibleJokers, pseudoseed("cry_oldinvis")), nil)
+							if card.edition and card.edition.negative then card:set_edition() end
 							card:add_to_deck()
 							G.jokers:emplace(card)
 							return true
@@ -10672,7 +10620,6 @@ local miscitems = {
 	big_cube,
 	nice,
 	sus,
-	chad,
 	jimball,
 	waluigi,
 	wario,

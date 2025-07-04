@@ -921,7 +921,7 @@ local candy_basket = {
 		extra = {
 			candies = 0,
 			candy_mod = 1,
-			candy_boss_mod = 2,
+			candy_boss_mod = 1,
 		},
 		immutable = {
 			current_win_count = 0,
@@ -1588,7 +1588,7 @@ local candy_buttons = {
 	pos = { x = 1, y = 2 },
 	order = 140,
 	rarity = "cry_candy",
-	config = { extra = { rerolls = 15 } },
+	config = { extra = { rerolls = 10 } },
 	cost = 10,
 	atlas = "atlasspooky",
 	blueprint_compat = true,

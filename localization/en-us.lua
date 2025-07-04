@@ -1655,7 +1655,7 @@ return {
 				name = "Eternal Flame",
 				text = {
 					"This Joker gains {X:mult,C:white} X#1# {} Mult",
-					"for each card {C:attention}sold{} with",
+					"for each Joker {C:attention}sold{} with",
 					"at least {C:money}$3{} of {C:attention}sell value",
 					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
@@ -1664,7 +1664,7 @@ return {
 				name = "Eternal Flame",
 				text = {
 					"This Joker gains {X:mult,C:white} X#1# {} Mult",
-					"for each card {C:attention}sold{}",
+					"for each Joker {C:attention}sold{}",
 					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
 				},
 			},
@@ -1965,9 +1965,11 @@ return {
 			j_cry_jtron = {
 				name = "Jimbo-tron 9000",
 				text = {
-					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+					"This Joker gains {X:mult,C:white} X#1# {} Mult",
 					"for each default {C:attention}Joker{}",
-					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
+					"Generate a default {C:attention}Joker{} at the end of round",
+					"{C:inactive}(Must have room){}",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 				},
 			},
 			j_cry_kidnap = {
@@ -3004,7 +3006,7 @@ return {
 				name = "Waluigi",
 				text = {
 					"All Jokers give",
-					"{X:mult,C:white} X#1# {} Mult",
+					"{X:mult,C:white} X#1# {} Mult when triggered",
 				},
 			},
 			j_cry_wario = {

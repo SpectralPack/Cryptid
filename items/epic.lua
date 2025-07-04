@@ -614,10 +614,15 @@ local error_joker = {
 					jokers[#jokers + 1] = G.jokers.cards[i]
 				end
 			end
+			local buff = 0
+			local cards = #G.jokers.cards
 			for i = 1, #jokers do
-				local card = copy_card(jokers[i])
-				card:add_to_deck()
-				G.jokers:emplace(card)
+				if cards + buff < G.jokers.config.card_limit then
+					local card = copy_card(jokers[i])
+					card:add_to_deck()
+					G.jokers:emplace(card)
+					buff = buff + 1
+				end
 			end
 			return nil, true
 		end
@@ -1711,7 +1716,7 @@ local goldjoker = {
 	config = {
 		extra = {
 			percent_mod = 2,
-			percent = 0,
+			percent = 10,
 		},
 	},
 	dependencies = {
@@ -1759,12 +1764,9 @@ local goldjoker = {
 			end
 		end
 	end,
-	calc_dollar_bonus = function(self, card)
-		local bonus =
-			lenient_bignum(math.max(0, math.floor(0.01 * to_big(card.ability.extra.percent) * (G.GAME.dollars or 0))))
-		if to_big(bonus) > to_big(0) then
-			return bonus
-		end
+	cry_calc_interest = function(self, card, interest)
+		local old = lenient_bignum(card.ability.extra.percent)
+		return (1 + old / 100) * interest
 	end,
 	cry_credits = {
 		idea = {
@@ -2153,26 +2155,49 @@ local jtron = {
 			return {
 				message = localize({
 					type = "variable",
-					key = "a_powmult",
+					key = "a_xmult",
 					vars = {
 						number_format(card.ability.immutable.current),
 					},
 				}),
-				Emult_mod = lenient_bignum(card.ability.immutable.current),
-				colour = G.C.DARK_EDITION,
+				Xmult_mod = lenient_bignum(card.ability.immutable.current),
+				colour = G.C.MULT,
 			}
 		end
+		if context.end_of_round then
+			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+				G.E_MANAGER:add_event(Event{
+					func = function()
+						SMODS.add_card{
+							key="j_joker",
+							area=G.jokers
+						}
+						return true
+					end
+				})
+			end
+		end
 		if context.forcetrigger then
+			G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+			G.E_MANAGER:add_event(Event{
+				func = function()
+					SMODS.add_card{
+						key="j_joker",
+						area=G.jokers
+					}
+					return true
+				end
+			})
 			return {
 				message = localize({
 					type = "variable",
-					key = "a_powmult",
+					key = "a_xmult",
 					vars = {
 						number_format(1 + to_big(card.ability.extra.bonus)),
 					},
 				}),
-				Emult_mod = lenient_bignum(1 + to_big(card.ability.extra.bonus)),
-				colour = G.C.DARK_EDITION,
+				Xmult_mod = lenient_bignum(1 + to_big(card.ability.extra.bonus)),
+				colour = G.C.MULT,
 			}
 		end
 	end,
@@ -2595,6 +2620,57 @@ local starfruit = {
 	end,
 }
 
+local chad = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_meme",
+		},
+	},
+	name = "cry-Chad",
+	key = "chad",
+	pos = { x = 0, y = 3 },
+	order = 301,
+	config = {
+		extra = { retriggers = 2 },
+		immutable = { max_retriggers = 25 },
+	},
+	pools = { ["Meme"] = true },
+	rarity = "cry_epic",
+	cost = 10,
+	blueprint_compat = true,
+	loc_vars = function(self, info_queue, center)
+		return { vars = { math.min(center.ability.immutable.max_retriggers, center.ability.extra.retriggers) } }
+	end,
+	atlas = "atlasone",
+	calculate = function(self, card, context)
+		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= self then
+			if context.other_card == G.jokers.cards[1] then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = to_number(
+						math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)
+					),
+					card = card,
+				}
+			else
+				return nil, true
+			end
+		end
+	end,
+	cry_credits = {
+		idea = {
+			"Jevonn",
+		},
+		art = {
+			"SDM_0",
+		},
+		code = {
+			"Math",
+		},
+	},
+}
+
 return {
 	name = "Epic Jokers",
 	items = {
@@ -2625,5 +2701,6 @@ return {
 		clockwork,
 		demicolon,
 		starfruit,
+		chad
 	},
 }
