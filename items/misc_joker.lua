@@ -1940,7 +1940,7 @@ local waluigi = {
 					vars = { number_format(card.ability.extra.Xmult) },
 				}),
 				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
-				card = card
+				card = card,
 			}
 		end
 	end,
