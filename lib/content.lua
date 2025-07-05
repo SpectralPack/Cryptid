@@ -532,7 +532,7 @@ SMODS.Sound({
 })
 SMODS.Sound({
 	key = "xchip",
-	path = "MultiplicativeChips.wav"
+	path = "MultiplicativeChips.wav",
 })
 SMODS.Sound({
 	key = "studiofromhelsinki",
