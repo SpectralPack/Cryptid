@@ -456,20 +456,15 @@ function Cryptid.next_voucher_stickers(booster)
 		v["force"] = G.GAME.modifiers.cry_sticker_sheet_plus
 			or (G.GAME.modifiers.cry_force_sticker and G.GAME.modifiers.cry_force_sticker == k)
 	end
-	if
-		G.GAME.modifiers.cry_sticker_sheet_plus
-		or G.GAME.modifiers.cry_force_sticker
-	then
+	if G.GAME.modifiers.cry_sticker_sheet_plus or G.GAME.modifiers.cry_force_sticker then
 		if (G.GAME.modifiers.enable_eternals_in_shop and checks.eternal.poll > odds) or checks.eternal.force then
 			ret.eternal = true
 		end
 		if
 			(
-				(
-					G.GAME.modifiers.enable_perishables_in_shop
-					and checks.eternal.poll > odds - rate
-					and checks.eternal.poll <= odds
-				)
+				G.GAME.modifiers.enable_perishables_in_shop
+				and checks.eternal.poll > odds - rate
+				and checks.eternal.poll <= odds
 			) or checks.perishable.force
 		then
 			ret.perishable = true

@@ -260,7 +260,7 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 		end
 	end
 	if
-		(not force_reset)
+		not force_reset
 			and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
 			and not stack
 		or not Card.no(card, "immutable", true)

@@ -833,7 +833,7 @@ local chambered = {
 						func = function()
 							Overflow.set_amount(card_copy, card.ability.extra.num_copies)
 							return true
-						end
+						end,
 					}))
 					return true
 				end,

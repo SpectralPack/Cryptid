@@ -1211,11 +1211,13 @@ local rework = {
 			return card.ability.set == "Joker"
 		end)
 		local jkr = cards[1]
-		if not jkr then return {
-			vars = {
-				"None"
+		if not jkr then
+			return {
+				vars = {
+					"None",
+				},
 			}
-		} end
+		end
 		local found_index = 1
 		if jkr.edition then
 			for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
@@ -1230,7 +1232,7 @@ local rework = {
 			found_index = found_index - #G.P_CENTER_POOLS.Edition
 		end
 		local rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
-		return { vars = {(G.localization.descriptions.Edition[rework_edition] or {}).name or "ERROR"} }
+		return { vars = { (G.localization.descriptions.Edition[rework_edition] or {}).name or "ERROR" } }
 	end,
 	can_use = function(self, card)
 		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
@@ -1245,7 +1247,9 @@ local rework = {
 			return card.ability.set == "Joker"
 		end)
 		local jkr = cards[1]
-		if not jkr then return end
+		if not jkr then
+			return
+		end
 		local found_index = 1
 		if jkr.edition then
 			for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
@@ -4168,7 +4172,8 @@ local ctrl_v = {
 	end,
 	can_use = function(self, card)
 		local cards = Cryptid.get_highlighted_cards({ G.hand, G.consumeables, G.pack_cards }, card, 1, 1, function(card)
-			return (card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced") and not card.config.center.hidden
+			return (card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced")
+				and not card.config.center.hidden
 		end)
 		return #cards == 1
 	end,

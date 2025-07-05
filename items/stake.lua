@@ -302,7 +302,7 @@ return {
 	end,
 	items = {
 		stake_atlas,
-		
+
 		ruby,
 		topaz,
 		quartz,
@@ -311,6 +311,6 @@ return {
 		ember,
 		horizon,
 		blossom,
-		ascendant
+		ascendant,
 	},
 }

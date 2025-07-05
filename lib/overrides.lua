@@ -35,7 +35,9 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 				pool[i] = "tag_cry_triple"
 			end
 			-- Tag Printer: Turn Double tags and Triple Tags into Quadruple Tags
-			if (pool[i] == "tag_double" or pool[i] == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_clone_machine then
+			if
+				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_clone_machine
+			then
 				pool[i] = "tag_cry_quadruple"
 			end
 		end
@@ -915,9 +917,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				card:set_eternal(true)
 			end
 			if G.GAME.modifiers.enable_perishables_in_shop then
-				if
-					((eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7))
-				then
+				if (eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7) then
 					card:set_perishable(true)
 				end
 			end
@@ -2007,11 +2007,12 @@ function get_straight(hand, min_length, skip, wrap)
 	return get_straight_ref(hand, min_length + stones, skip, wrap)
 end
 
-
 local poll_editionref = poll_edition
 function poll_edition(_key, _mod, _no_neg, _guaranteed)
 	if not _guaranteed and G.GAME.modifiers.cry_rarer_modifications then
-		if pseudorandom("cry_rarer_modifications") < G.GAME.modifiers.cry_rarer_modifications then return nil end
+		if pseudorandom("cry_rarer_modifications") < G.GAME.modifiers.cry_rarer_modifications then
+			return nil
+		end
 	end
 	return poll_editionref(_key, _mod, _no_neg, _guaranteed)
 end

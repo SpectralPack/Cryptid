@@ -245,7 +245,7 @@ return {
 				text = {
 					"When a {C:attention}Boss-Blind{} is",
 					"defeated, Upgrade the {C:attention}rarity{}",
-					"of the leftmost Joker"
+					"of the leftmost Joker",
 				},
 				unlock = {
 					"Obtain an {C:cry_exotic}Exotic{C:attention} Joker",
@@ -648,7 +648,7 @@ return {
 					"Saves the {C:cry_code}Last Three{} consumables used,",
 					"using this card again creates a copy of",
 					"the first with a {C:cry_code}Function://{} sticker",
-					"{C:inactive}(Hidden consumables excluded){}"
+					"{C:inactive}(Hidden consumables excluded){}",
 				},
 			},
 			c_cry_run = {
@@ -733,7 +733,7 @@ return {
 				text = {
 					"Create a {C:cry_code}copy{} of a selected",
 					"playing card or consumable",
-					"{C:inactive}(Hidden consumables excluded){}"
+					"{C:inactive}(Hidden consumables excluded){}",
 				},
 			},
 			c_cry_reboot = {
@@ -3349,7 +3349,7 @@ return {
 				text = {
 					"When a {C:attention}Boss-Blind{} is",
 					"defeated, Upgrade the {C:attention}rarity{}",
-					"of the leftmost Joker"
+					"of the leftmost Joker",
 				},
 			},
 			sleeve_cry_legendary_sleeve = {
@@ -3403,7 +3403,7 @@ return {
 				text = {
 					"Swap the {C:attention}editions{} of",
 					"{C:attention}2{} selected playing cards or {C:attention}Jokers{}",
-					"{C:inactive}(Both cards must be the same type){}"
+					"{C:inactive}(Both cards must be the same type){}",
 				},
 			},
 			c_cry_gateway = {
@@ -3523,15 +3523,15 @@ return {
 			},
 			stake_cry_topaz = {
 				name = "Topaz Stake",
-				colour = "Topaz", 
+				colour = "Topaz",
 				text = {
 					"Interest rate is",
-					"now every {C:attention}$8{}"
+					"now every {C:attention}$8{}",
 				},
 			},
 			stake_cry_quartz = {
 				name = "Quartz Stake",
-				colour = "Quartz", 
+				colour = "Quartz",
 				text = {
 					"Jokers may be {C:attention}Pinned{}",
 					"{s:0.8,C:inactive}(Stays pinned to the leftmost position){}",
@@ -3539,20 +3539,19 @@ return {
 			},
 			stake_cry_diamond = {
 				name = "Diamond Stake",
-				colour = "Diamond", 
+				colour = "Diamond",
 				text = {
 					"Cards can be {C:attention}Banana{}",
 					"{s:0.8,C:inactive}(1 in 10 chance of being destroyed each round){}",
 				},
 			},
 
-
 			stake_cry_ember = {
 				name = "Ember Stake",
 				colour = "Ember",
 				text = {
 					"Lose {C:attention}$1{} when",
-					"a card is sold"
+					"a card is sold",
 				},
 			},
 			stake_cry_horizon = {
@@ -3560,7 +3559,7 @@ return {
 				colour = "Horizon",
 				text = {
 					"Showdown blinds now",
-					"appear every {C:attention}6{} antes"
+					"appear every {C:attention}6{} antes",
 				},
 			},
 			stake_cry_blossom = {
@@ -3568,7 +3567,7 @@ return {
 				colour = "Blossom",
 				text = {
 					"{C:attention}Natural{} modifications",
-					"are rarer"
+					"are rarer",
 				},
 			},
 			stake_cry_ascendant = {
@@ -3577,7 +3576,7 @@ return {
 				text = {
 					"Buying items increases",
 					"shop {C:attention}costs{} for",
-					"the current ante"
+					"the current ante",
 				},
 			},
 		},

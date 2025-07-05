@@ -220,10 +220,15 @@ local wormhole = {
 	pos = { x = 3, y = 4 },
 	atlas = "atlasdeck",
 	calculate = function(self, back, context)
-		if context.end_of_round
+		if
+			context.end_of_round
 			and not context.individual
 			and not context.repetition
-			and not context.blueprint and G.GAME.blind and G.GAME.blind.config.blind and G.GAME.blind.config.blind.boss then
+			and not context.blueprint
+			and G.GAME.blind
+			and G.GAME.blind.config.blind
+			and G.GAME.blind.config.blind.boss
+		then
 			if G.jokers.cards[1] and G.jokers.cards[1].config.center.rarity ~= "cry_exotic" then
 				Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
 					Cryptid.upgrade_rarity(card, "cry_wormhole")
