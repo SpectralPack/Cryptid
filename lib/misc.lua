@@ -1434,8 +1434,13 @@ function Cryptid.declare_hand_ascended_counter(hand, declarehand)
 	return total
 end
 
+function Cryptid.interest_rate()
+	return G.GAME.modifiers.cry_interest_rate or 5
+end
+
 function Cryptid.get_interest(add_rows)
-	local interest = math.min(math.floor(G.GAME.dollars / 5), G.GAME.interest_cap / 5)
+	local rate = Cryptid.interest_rate()
+	local interest = math.min(math.floor(G.GAME.dollars / rate), G.GAME.interest_cap / 5)
 	interst = interest * G.GAME.interest_amount
 	for _, a in pairs(SMODS.get_card_areas("jokers")) do
 		for i, c in pairs(a.cards) do
@@ -1446,4 +1451,80 @@ function Cryptid.get_interest(add_rows)
 	end
 	interest = interest * (G.GAME.cry_payload or 1)
 	return interest
+end
+
+function Cryptid.is_in_shop(key, consumable)
+	local center = G.P_CENTERS[key]
+	if center.hidden or center.no_doe or center.no_collection then return
+	elseif G.GAME.banned_keys[key] or not center.unlocked then return
+	elseif center.set == "Joker" then
+		if type(center.rarity) == "number" and center.rarity <= 3 then
+			return center.unlocked or nil
+		end
+	else
+		if consumable then
+			if center.set == "Tarot" then return G.GAME.tarot_rate*(G.GAME.cry_percrate.tarot/100) > 0 or nil end
+			if center.set == "Planet" then return G.GAME.planet_rate*(G.GAME.cry_percrate.planet/100) > 0 or nil end
+			if center.set == "Spectral" then return G.GAME.spectral_rate > 0 or nil end
+			local num = G.GAME.cry_percrate and G.GAME.cry_percrate[center.set:lower()] or 100
+			local val = G.GAME[center.set:lower()..'_rate'] * ((num or 100) / 100)
+			return val > 0
+		end
+	end
+	if center.in_pool then
+		return center:in_pool()
+	end
+end
+
+function Cryptid.get_equilibrium_pool()
+	local P_CRY_ITEMS = {}
+	local valid_pools = { "Joker" , "Consumeables", "Booster" }
+	for _, id in ipairs(valid_pools) do
+		for k, v in pairs(G.P_CENTER_POOLS[id]) do
+			if not Cryptid.no(v, "doe", k) and Cryptid.is_in_shop(v.key, id == "Consumeables") then
+				P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
+			end
+		end
+	end
+	local _pool, _pool_key = get_current_pool('Voucher', nil, nil, nil, true)
+	for i, v in pairs(_pool) do
+		if v ~= "UNAVAILABLE" then P_CRY_ITEMS[#P_CRY_ITEMS+1] = v end
+	end
+	for k, v in pairs(G.P_CARDS) do
+		if not Cryptid.no(v, "doe", k) then
+			P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
+		end
+	end
+	return P_CRY_ITEMS
+end
+
+function Cryptid.upgrade_rarity(card, seed)
+	local rarity = ({
+		"Common",
+		"Uncommon",
+		"Rare",
+		"Legendary"
+	})[card.config.center.rarity] or card.config.center.rarity
+	if rarity ~= "cry_exotic" then
+		local next_rarity = rarity
+		for i, v in pairs(Cryptid.rarity_table) do
+			if v == rarity then
+				next_rarity = Cryptid.rarity_table[i+1] or next_rarity
+			end
+		end
+		local next_rarity = ({
+			Common = 1,
+			Uncommon = 2,
+			Rare = 3,
+			Legendary = 4
+		})[next_rarity] or next_rarity
+		local center = pseudorandom_element(G.P_JOKER_RARITY_POOLS[next_rarity], pseudoseed(seed))
+		card:flip()
+		delay(1)
+		card:set_ability(center)
+		delay(1)
+		card:flip()
+		delay(1)
+		card:juice_up()
+	end
 end

@@ -544,11 +544,14 @@ local rerollexchange = { -- Reroll Surplus T3; All rerolls cost $2
 			},
 		}
 	end,
-	redeem = function(self)
-		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost - self.ability.extra
-		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost - self.ability.extra)
+	redeem = function(selfm, card)
+		G.GAME.backup_cost = G.GAME.backup_cost or G.GAME.round_resets.reroll_cost
+		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost - card.ability.extra
+		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost - card.ability.extra)
 	end,
-	unredeem = function(self)
+	unredeem = function(self, card)
+		G.GAME.round_resets.reroll_cost = G.GAME.backup_cost + card.ability.extra
+		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + card.ability.extra)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				calculate_reroll_cost(true)
@@ -1208,7 +1211,6 @@ local triple = { --Copies voucher triple tag
 			and context.tag.key ~= "tag_double"
 			and context.tag.key ~= "tag_cry_triple"
 			and context.tag.key ~= "tag_cry_quadruple"
-			and context.tag.key ~= "tag_cry_quintuple"
 			and context.tag.key ~= "tag_cry_memory"
 		then
 			local lock = tag.ID
@@ -1219,10 +1221,6 @@ local triple = { --Copies voucher triple tag
 				end
 				for i = 1, tag.config.num do
 					local tag = Tag(context.tag.key)
-					if context.tag.key == "tag_cry_rework" then
-						tag.ability.rework_edition = context.tag.ability.rework_edition
-						tag.ability.rework_key = context.tag.ability.rework_key
-					end
 					add_tag(tag)
 				end
 				G.orbital_hand = nil
@@ -1272,7 +1270,6 @@ local quadruple = { --Tag printer voucher quadruple tag
 			and context.tag.key ~= "tag_double"
 			and context.tag.key ~= "tag_cry_triple"
 			and context.tag.key ~= "tag_cry_quadruple"
-			and context.tag.key ~= "tag_cry_quintuple"
 			and context.tag.key ~= "tag_cry_memory"
 		then
 			local lock = tag.ID
@@ -1283,10 +1280,6 @@ local quadruple = { --Tag printer voucher quadruple tag
 				end
 				for i = 1, tag.config.num do
 					local tag = Tag(context.tag.key)
-					if context.tag.key == "tag_cry_rework" then
-						tag.ability.rework_edition = context.tag.ability.rework_edition
-						tag.ability.rework_key = context.tag.ability.rework_key
-					end
 					add_tag(tag)
 				end
 				G.orbital_hand = nil
@@ -1299,70 +1292,6 @@ local quadruple = { --Tag printer voucher quadruple tag
 	end,
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_tag_printer
-	end,
-}
-local quintuple = { --Clone machine voucher quintuple tag
-	cry_credits = {
-		idea = {
-			"Catman",
-			"Mystic Misclick",
-		},
-		art = {
-			"5381",
-		},
-		code = {
-			"Math",
-		},
-	},
-	object_type = "Tag",
-	dependencies = {
-		items = {
-			"set_cry_tag",
-			"v_cry_clone_machine",
-		},
-	},
-	atlas = "tag_cry",
-	name = "cry-Quintuple Tag",
-	order = 22,
-	pos = { x = 2, y = 1 },
-	config = { type = "tag_add", num = 4 },
-	key = "quintuple",
-	loc_vars = function(self, info_queue)
-		return { vars = { self.config.num } }
-	end,
-	apply = function(self, tag, context)
-		if
-			context.type == "tag_add"
-			and context.tag.key ~= "tag_double"
-			and context.tag.key ~= "tag_cry_triple"
-			and context.tag.key ~= "tag_cry_quadruple"
-			and context.tag.key ~= "tag_cry_quintuple"
-			and context.tag.key ~= "tag_cry_memory"
-		then
-			local lock = tag.ID
-			G.CONTROLLER.locks[lock] = true
-			tag:yep("+", G.C.RED, function()
-				if context.tag.ability and context.tag.ability.orbital_hand then
-					G.orbital_hand = context.tag.ability.orbital_hand
-				end
-				for i = 1, tag.config.num do
-					local tag = Tag(context.tag.key)
-					if context.tag.key == "tag_cry_rework" then
-						tag.ability.rework_edition = context.tag.ability.rework_edition
-						tag.ability.rework_key = context.tag.ability.rework_key
-					end
-					add_tag(tag)
-				end
-				G.orbital_hand = nil
-				G.CONTROLLER.locks[lock] = nil
-				return true
-			end)
-			tag.triggered = true
-			return true
-		end
-	end,
-	in_pool = function()
-		return G.GAME.used_vouchers.v_cry_clone_machine
 	end,
 }
 -- If Tier 3 Vouchers is loaded, make Cryptid function as Tier 4 Vouchers
@@ -1421,7 +1350,6 @@ local voucheritems = {
 
 	triple,
 	quadruple,
-	quintuple,
 }
 return {
 	name = "Vouchers",

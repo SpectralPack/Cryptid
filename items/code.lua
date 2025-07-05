@@ -1206,25 +1206,16 @@ local rework = {
 	order = 406,
 	pos = { x = 10, y = 3 },
 	cost = 4,
-	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] =
-			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]", "n" } }
-		return { vars = {} }
-	end,
-	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
-			return card.ability.set == "Joker"
-		end)
-		return #cards == 1
-			and not cards[1].ability.eternal
-			and cards[1].ability.name
-				~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or "Diet Cola")
-	end,
-	use = function(self, card, area, copier)
+	loc_vars = function(self, info_queue, card)
 		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
 			return card.ability.set == "Joker"
 		end)
 		local jkr = cards[1]
+		if not jkr then return {
+			vars = {
+				"None"
+			}
+		} end
 		local found_index = 1
 		if jkr.edition then
 			for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
@@ -1238,22 +1229,43 @@ local rework = {
 		if found_index > #G.P_CENTER_POOLS.Edition then
 			found_index = found_index - #G.P_CENTER_POOLS.Edition
 		end
-		local tag = Tag("tag_cry_rework")
-		if not tag.ability then
-			tag.ability = {}
+		local rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
+		return { vars = {(G.localization.descriptions.Edition[rework_edition] or {}).name or "ERROR"} }
+	end,
+	can_use = function(self, card)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
+			return card.ability.set == "Joker"
+		end)
+		return #cards == 1
+			and cards[1].ability.name
+				~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or "Diet Cola")
+	end,
+	use = function(self, card, area, copier)
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
+			return card.ability.set == "Joker"
+		end)
+		local jkr = cards[1]
+		if not jkr then return end
+		local found_index = 1
+		if jkr.edition then
+			for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
+				if v.key == jkr.edition.key then
+					found_index = i
+					break
+				end
+			end
 		end
-		if jkr.config.center.key == "c_base" then
-			jkr.config.center.key = "j_scholar"
+		found_index = found_index + 1
+		if found_index > #G.P_CENTER_POOLS.Edition then
+			found_index = found_index - #G.P_CENTER_POOLS.Edition
 		end
-		tag.ability.rework_key = jkr.config.center.key
-		tag.ability.rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
-		add_tag(tag)
+		local rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
 		--SMODS.Tags.tag_cry_rework.apply(tag, {type = "store_joker_create"})
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
 			delay = 0.75,
 			func = function()
-				jkr:start_dissolve()
+				jkr:set_edition(rework_edition)
 				return true
 			end,
 		}))
@@ -1261,84 +1273,6 @@ local rework = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-}
--- Rework Tag
--- Upgraded edition refers to the next edition along in the collection; base -> foil -> holo -> poly -> negative -> etc
-local rework_tag = {
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"Math",
-		},
-	},
-	dependencies = {
-		items = {
-			"c_cry_rework",
-		},
-	},
-	object_type = "Tag",
-	atlas = "tag_cry",
-	name = "cry-Rework Tag",
-	order = 610,
-	pos = { x = 0, y = 3 },
-	config = { type = "store_joker_create" },
-	key = "rework",
-	ability = { rework_edition = nil, rework_key = nil },
-	loc_vars = function(self, info_queue, tag)
-		local function p(w)
-			r = ""
-			local vowels = { "a", "e", "i", "o", "u" }
-			for i, v in ipairs(vowels) do
-				if string.sub(string.lower(w), 1, 1) == v then
-					r = "n"
-					break
-				end
-			end
-			return r
-		end
-		local ed = Cryptid.safe_get(tag, "ability", "rework_edition")
-				and localize({ type = "name_text", set = "Edition", key = tag.ability.rework_edition })
-			or "[" .. string.lower(localize("k_edition")) .. "]"
-		return {
-			vars = {
-				ed,
-				Cryptid.safe_get(tag, "ability", "rework_key")
-						and localize({ type = "name_text", set = "Joker", key = tag.ability.rework_key })
-					or "[" .. string.lower(localize("k_joker")) .. "]",
-				string.sub(ed, 1, 1) ~= "[" and p(ed) or "n",
-			},
-		}
-	end,
-	apply = function(self, tag, context)
-		if context.type == "store_joker_create" then
-			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
-			create_shop_card_ui(card, "Joker", context.area)
-			card:set_edition((tag.ability.rework_edition or "e_foil"), true, nil, true)
-			card.states.visible = false
-			tag:yep("+", G.C.FILTER, function()
-				card:start_materialize()
-				return true
-			end)
-			tag.triggered = true
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.5,
-				func = function()
-					save_run() --fixes savescum bugs hopefully?
-					return true
-				end,
-			}))
-			return card
-		end
-	end,
-	in_pool = function()
-		return false
 	end,
 }
 -- ://Merge
@@ -4234,7 +4168,7 @@ local ctrl_v = {
 	end,
 	can_use = function(self, card)
 		local cards = Cryptid.get_highlighted_cards({ G.hand, G.consumeables, G.pack_cards }, card, 1, 1, function(card)
-			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
+			return (card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced") and not card.config.center.hidden
 		end)
 		return #cards == 1
 	end,
@@ -5178,7 +5112,6 @@ local code_cards = {
 	malware,
 	crynperror,
 	rework,
-	rework_tag,
 	merge,
 	commit,
 	machinecode,

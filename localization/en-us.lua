@@ -243,10 +243,9 @@ return {
 			b_cry_wormhole = {
 				name = "Wormhole Deck",
 				text = {
-					"Start with an {C:cry_exotic}Exotic{C:attention} Joker",
-					"Jokers are {C:attention}20X{} more",
-					"likely to be {C:dark_edition}Negative",
-					"{C:attention}-2{} Joker slots",
+					"When a {C:attention}Boss-Blind{} is",
+					"defeated, Upgrade the {C:attention}rarity{}",
+					"of the leftmost Joker"
 				},
 				unlock = {
 					"Obtain an {C:cry_exotic}Exotic{C:attention} Joker",
@@ -548,9 +547,8 @@ return {
 			c_cry_rework = {
 				name = "://REWORK",
 				text = {
-					"Destroy a {C:cry_code}selected{} Joker,",
-					"create a {C:cry_code}Rework Tag{} with",
-					"an {C:cry_code}upgraded{} edition",
+					"{C:cry_code}Upgrade{} the edition of",
+					"a {C:cry_code}selected{} Joker",
 					"{C:inactive,s:0.8}Upgrades using order in the Collection",
 				},
 			},
@@ -650,6 +648,7 @@ return {
 					"Saves the {C:cry_code}Last Three{} consumables used,",
 					"using this card again creates a copy of",
 					"the first with a {C:cry_code}Function://{} sticker",
+					"{C:inactive}(Hidden consumables excluded){}"
 				},
 			},
 			c_cry_run = {
@@ -734,6 +733,7 @@ return {
 				text = {
 					"Create a {C:cry_code}copy{} of a selected",
 					"playing card or consumable",
+					"{C:inactive}(Hidden consumables excluded){}"
 				},
 			},
 			c_cry_reboot = {
@@ -3347,10 +3347,9 @@ return {
 			sleeve_cry_wormhole_sleeve = {
 				name = "Wormhole Sleeve",
 				text = {
-					"Start with an {C:cry_exotic}Exotic{C:attention} Joker",
-					"Jokers are {C:attention}20X{} more",
-					"likely to be {C:dark_edition}Negative",
-					"{C:attention}-2{} Joker slots",
+					"When a {C:attention}Boss-Blind{} is",
+					"defeated, Upgrade the {C:attention}rarity{}",
+					"of the leftmost Joker"
 				},
 			},
 			sleeve_cry_legendary_sleeve = {
@@ -3385,8 +3384,8 @@ return {
 				name = "Analog",
 				text = {
 					"Create {C:attention}#1#{} cop#<ies,y>1# of a",
-					"random {C:attention}Joker{}, destroy",
-					"all other Jokers, {C:attention}+#2#{} Ante",
+					"random {C:attention}Joker{}",
+					"{C:attention}+#2#{} Ante",
 				},
 			},
 			c_cry_chambered = {
@@ -3404,6 +3403,7 @@ return {
 				text = {
 					"Swap the {C:attention}editions{} of",
 					"{C:attention}2{} selected playing cards or {C:attention}Jokers{}",
+					"{C:inactive}(Both cards must be the same type){}"
 				},
 			},
 			c_cry_gateway = {
@@ -3436,7 +3436,7 @@ return {
 				text = {
 					"Create a card",
 					"of {C:cry_code}your choice",
-					"{C:inactive,s:0.8}(Exotic Jokers excluded)",
+					"{C:inactive,s:0.8}(Exotic Jokers and Hidden consumables excluded)",
 				},
 			},
 			c_cry_replica = {
@@ -3512,199 +3512,72 @@ return {
 					"{C:attention}Remove{} all other hand levels",
 				},
 			},
-			c_cry_white_hole2 = {
-				name = "White Hole",
-				text = {
-					"{C:attention}Remove{} all hand levels,",
-					"upgrade {C:legendary,E:1}most played{} poker hand",
-					"by {C:attention}3{} for each removed level",
-				},
-			},
 		},
 		Stake = {
-			stake_cry_pink = {
-				name = "Pink Stake",
-				colour = "Pink", --this is used for auto-generated sticker localization
+			stake_cry_ruby = {
+				name = "Ruby Stake",
+				colour = "Ruby", --this is used for auto-generated sticker localization
 				text = {
-					"Required score scales",
-					"faster for each {C:attention}Ante",
+					"Win Ante is {C:attention}12{}",
 				},
 			},
-			stake_cry_brown = {
-				name = "Brown Stake",
-				colour = "Brown",
+			stake_cry_topaz = {
+				name = "Topaz Stake",
+				colour = "Topaz", 
 				text = {
-					"All {C:attention}stickers{} are compatible",
-					"with each other",
-				},
-			},
-			stake_cry_yellow = {
-				name = "Yellow Stake",
-				colour = "Yellow",
-				text = {
-					"{C:attention}Stickers{} can appear on",
-					"all purchasable items",
-				},
-			},
-			stake_cry_jade = {
-				name = "Jade Stake",
-				colour = "Jade",
-				text = {
-					"Cards can be drawn {C:attention}face down{}",
-				},
-			},
-			stake_cry_cyan = {
-				name = "Cyan Stake",
-				colour = "Cyan",
-				text = {
-					"{C:green}Uncommon{} and {C:red}Rare{} Jokers are",
-					"less likely to appear",
-				},
-			},
-			stake_cry_gray = {
-				name = "Gray Stake",
-				colour = "Gray",
-				text = {
-					"Rerolls increase by {C:attention}$2{} each",
-				},
-			},
-			stake_cry_crimson = {
-				name = "Crimson Stake",
-				colour = "Crimson",
-				text = {
-					"Vouchers restock on {C:attention}even{} Antes",
-				},
-			},
-			stake_cry_diamond = {
-				name = "Diamond Stake",
-				colour = "Diamond",
-				text = {
-					"Must beat Ante {C:attention}10{} to win",
-				},
-			},
-			stake_cry_amber = {
-				name = "Amber Stake",
-				colour = "Amber",
-				text = {
-					"{C:attention}-1{} Booster Pack slot",
-				},
-			},
-			stake_cry_bronze = {
-				name = "Bronze Stake",
-				colour = "Bronze",
-				text = {
-					"Vouchers are {C:attention}50%{} more expensive",
+					"Interest rate is",
+					"now every {C:attention}$8{}"
 				},
 			},
 			stake_cry_quartz = {
 				name = "Quartz Stake",
-				colour = "Quartz",
+				colour = "Quartz", 
 				text = {
-					"Jokers can be {C:attention}Pinned{}",
+					"Jokers may be {C:attention}Pinned{}",
 					"{s:0.8,C:inactive}(Stays pinned to the leftmost position){}",
 				},
 			},
-			stake_cry_ruby = {
-				name = "Ruby Stake",
-				colour = "Ruby",
-				text = {
-					"{C:attention}Big{} Blinds can become",
-					"{C:attention}Boss{} Blinds",
-				},
-			},
-			stake_cry_glass = {
-				name = "Glass Stake",
-				colour = "Glass",
-				text = {
-					"Cards can {C:attention}shatter{} when scored",
-				},
-			},
-			stake_cry_sapphire = {
-				name = "Sapphire Stake",
-				colour = "Sapphire",
-				text = {
-					"Lose {C:attention}25%{} of current money",
-					"at end of Ante",
-					"{s:0.8,C:inactive}(Up to $10){}",
-				},
-			},
-			stake_cry_emerald = {
-				name = "Emerald Stake",
-				colour = "Emerald",
-				text = {
-					"Cards, packs, and vouchers",
-					"can be {C:attention}face down{}",
-					"{s:0.8,C:inactive}(Unable to be viewed until purchased){}",
-				},
-			},
-			stake_cry_platinum = {
-				name = "Platinum Stake",
-				colour = "Platinum",
-				text = {
-					"Small Blinds are {C:attention}removed{}",
-				},
-			},
-			stake_cry_twilight = {
-				name = "Twilight Stake",
-				colour = "Twilight",
+			stake_cry_diamond = {
+				name = "Diamond Stake",
+				colour = "Diamond", 
 				text = {
 					"Cards can be {C:attention}Banana{}",
 					"{s:0.8,C:inactive}(1 in 10 chance of being destroyed each round){}",
 				},
 			},
-			stake_cry_verdant = {
-				name = "Verdant Stake",
-				colour = "Verdant",
-				text = {
-					"Required score scales",
-					"faster for each {C:attention}Ante",
-				},
-			},
+
+
 			stake_cry_ember = {
 				name = "Ember Stake",
 				colour = "Ember",
 				text = {
-					"All items give no money when sold",
-				},
-			},
-			stake_cry_dawn = {
-				name = "Dawn Stake",
-				colour = "Dawn",
-				text = {
-					"Tarots and Spectrals target {C:attention}1",
-					"fewer card",
-					"{s:0.8,C:inactive}(Minimum of 1){}",
+					"Lose {C:attention}$1{} when",
+					"a card is sold"
 				},
 			},
 			stake_cry_horizon = {
 				name = "Horizon Stake",
 				colour = "Horizon",
 				text = {
-					"When blind selected, add a",
-					"{C:attention}random card{} to deck",
+					"Showdown blinds now",
+					"appear every {C:attention}6{} antes"
 				},
 			},
 			stake_cry_blossom = {
 				name = "Blossom Stake",
 				colour = "Blossom",
 				text = {
-					"{C:attention}Final{} Boss Blinds can appear",
-					"in {C:attention}any{} Ante",
-				},
-			},
-			stake_cry_azure = {
-				name = "Azure Stake",
-				colour = "Azure",
-				text = {
-					"Values on Jokers are reduced",
-					"by {C:attention}20%{}",
+					"{C:attention}Natural{} modifications",
+					"are rarer"
 				},
 			},
 			stake_cry_ascendant = {
 				name = "Ascendant Stake",
 				colour = "Ascendant",
 				text = {
-					"{C:attention}-1{} Shop slot",
+					"Buying items increases",
+					"shop {C:attention}costs{} for",
+					"the current ante"
 				},
 			},
 		},
@@ -3879,21 +3752,6 @@ return {
 					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
 					"next selected {C:attention}Tag",
 					"{s:0.8,C:inactive}Copying Tags excluded",
-				},
-			},
-			tag_cry_quintuple = {
-				name = "Quintuple Tag",
-				text = {
-					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
-					"next selected {C:attention}Tag",
-					"{s:0.8,C:inactive}Copying Tags excluded",
-				},
-			},
-			tag_cry_rework = {
-				name = "Rework Tag",
-				text = {
-					"Shop has a#3#",
-					"{C:dark_edition}#1# {C:cry_code}#2#",
 				},
 			},
 			tag_cry_schematic = {

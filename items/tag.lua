@@ -69,7 +69,7 @@ local epic_tag = {
 				card.states.visible = false
 				tag:yep("+", G.C.RARITY.cry_epic, function()
 					card:start_materialize()
-					card.misprint_cost_fac = 0.5
+					card.misprint_cost_fac = 1
 					card:set_cost()
 					return true
 				end)
@@ -502,7 +502,6 @@ local memory = {
 				and self.key ~= "tag_cry_memory"
 				and self.key ~= "tag_cry_triple"
 				and self.key ~= "tag_cry_quadruple"
-				and self.key ~= "tag_cry_quintuple"
 				and self.key ~= "tag_ortalab_rewind"
 			then
 				G.GAME.cry_last_tag_used = self.key

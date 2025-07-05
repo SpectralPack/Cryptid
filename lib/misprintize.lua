@@ -260,20 +260,11 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 		end
 	end
 	if
-		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
+		(not force_reset)
 			and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
 			and not stack
 		or not Card.no(card, "immutable", true)
 	then
-		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
-			if not override then
-				override = {}
-			end
-			override.min = override.min or G.GAME.modifiers.cry_misprint_min or 1
-			override.max = override.max or G.GAME.modifiers.cry_misprint_max or 1
-			override.min = override.min * G.GAME.modifiers.cry_jkr_misprint_mod
-			override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
-		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
 			Cryptid.misprintize_tbl(
 				card.config.center_key,
@@ -391,8 +382,8 @@ function Cryptid.manipulate(card, args)
 	if not Card.no(card, "immutable", true) or (args and args.bypass_checks) then
 		if not args then
 			return Cryptid.manipulate(card, {
-				min = (G.GAME.modifiers.cry_misprint_min or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
-				max = (G.GAME.modifiers.cry_misprint_max or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
+				min = (G.GAME.modifiers.cry_misprint_min or 1),
+				max = (G.GAME.modifiers.cry_misprint_max or 1),
 				type = "X",
 				dont_stack = true,
 				no_deck_effects = true,

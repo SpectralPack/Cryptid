@@ -16,22 +16,7 @@ function get_pack(_key, _type)
 	--Convert banned keys back to what it was originally
 	G.GAME.banned_keys = copy_table(temp_banned)
 	if G.GAME.modifiers.cry_equilibrium then
-		if not P_CRY_ITEMS then
-			P_CRY_ITEMS = {}
-			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
-			for _, id in ipairs(valid_pools) do
-				for k, v in pairs(G.P_CENTER_POOLS[id]) do
-					if not Cryptid.no(v, "doe", k) then
-						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-					end
-				end
-			end
-			for k, v in pairs(G.P_CARDS) do
-				if not Cryptid.no(v, "doe", k) then
-					P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-				end
-			end
-		end
+		P_CRY_ITEMS = P_CRY_ITEMS or Cryptid.get_equilibrium_pool()
 		return G.P_CENTERS[pseudorandom_element(
 			P_CRY_ITEMS,
 			pseudoseed("cry_equipackbrium" .. G.GAME.round_resets.ante)
@@ -46,19 +31,12 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 	if type == "Tag" then
 		for i = 1, #pool do
 			-- Copies: Turn Double tags into Triple Tags
-			if pool[i] == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
+			if pool[i] == "tag_double" and G.GAME.used_vouchers.v_cry_tag_printers then
 				pool[i] = "tag_cry_triple"
 			end
 			-- Tag Printer: Turn Double tags and Triple Tags into Quadruple Tags
-			if (pool[i] == "tag_double" or pool[i] == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
+			if (pool[i] == "tag_double" or pool[i] == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_clone_machine then
 				pool[i] = "tag_cry_quadruple"
-			end
-			-- Clone Machine: Turn Double tags and Triple Tags as well as Quadruple Tags into Quintuple Tags
-			if
-				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple" or pool[i] == "tag_cry_quadruple")
-				and G.GAME.used_vouchers.v_cry_clone_machine
-			then
-				pool[i] = "tag_cry_quintuple"
 			end
 		end
 		-- Deck of Equilibrium stuff
@@ -76,19 +54,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 			and _type ~= "Stake"
 		then
 			-- we're regenerating the pool every time because of banned keys but it's fine tbh
-			P_CRY_ITEMS = {}
-			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
-			for _, id in ipairs(valid_pools) do
-				for k, v in pairs(G.P_CENTER_POOLS[id]) do
-					if
-						v.unlocked == true
-						and not Cryptid.no(v, "doe", k)
-						and not (G.GAME.banned_keys[v.key] or G.GAME.cry_banished_keys[v.key])
-					then
-						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-					end
-				end
-			end
+			P_CRY_ITEMS = P_CRY_ITEMS or Cryptid.get_equilibrium_pool()
 			if #P_CRY_ITEMS <= 0 then
 				P_CRY_ITEMS[#P_CRY_ITEMS + 1] = "v_blank"
 			end
@@ -172,6 +138,9 @@ function Blind:defeat(s)
 		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"])
 	then
 		G.GAME.defeated_blinds[self.config.blind.key] = true
+	end
+	if obj.boss then
+		G.GAME.inflation = 0
 	end
 end
 
@@ -289,26 +258,18 @@ end
 local upd = Game.update
 
 --init colors so they have references
-G.C.CRY_TWILIGHT = { 0, 0, 0, 0 }
-G.C.CRY_VERDANT = { 0, 0, 0, 0 }
 G.C.CRY_EMBER = { 0, 0, 0, 0 }
-G.C.CRY_DAWN = { 0, 0, 0, 0 }
 G.C.CRY_HORIZON = { 0, 0, 0, 0 }
 G.C.CRY_BLOSSOM = { 0, 0, 0, 0 }
-G.C.CRY_AZURE = { 0, 0, 0, 0 }
 G.C.CRY_ASCENDANT = { 0, 0, 0, 0 }
 G.C.CRY_JOLLY = { 0, 0, 0, 0 }
 G.C.CRY_GREENGRADIENT = { 0, 0, 0, 0 }
 G.C.CRY_ALTGREENGRADIENT = { 0, 0, 0, 0 }
 Cryptid.C = {
 	EXOTIC = { HEX("708b91"), HEX("1e9eba") },
-	TWILIGHT = { HEX("0800ff"), HEX("aa00ff") },
-	VERDANT = { HEX("00ff22"), HEX("f4ff57") },
 	EMBER = { HEX("ff0000"), HEX("ffae00") },
-	DAWN = { HEX("00aaff"), HEX("ff00e3") },
 	HORIZON = { HEX("c8fd09"), HEX("1ee7d9") },
 	BLOSSOM = { HEX("ff09da"), HEX("ffd121") },
-	AZURE = { HEX("0409ff"), HEX("63dcff") },
 	ASCENDANT = { HEX("2e00f5"), HEX("e5001d") },
 	JOLLY = { HEX("6ec1f5"), HEX("456b84") },
 	SELECTED = { HEX("e38039"), HEX("ccdd1b") },
@@ -533,18 +494,6 @@ function Card:set_cost()
 		self.cost = 0
 	end
 
-	--Multiplies voucher cost by G.GAME.modifiers.cry_voucher_price_hike
-	--Used by bronze stake to make vouchers %50 more expensive
-	if self.ability.set == "Voucher" and G.GAME.modifiers.cry_voucher_price_hike then
-		self.cost = math.floor(self.cost * G.GAME.modifiers.cry_voucher_price_hike)
-		--Update related costs
-		self.sell_cost = math.max(1, math.floor(self.cost / 2)) + (self.ability.extra_value or 0)
-		if self.area and self.ability.couponed and (self.area == G.shop_jokers or self.area == G.shop_booster) then
-			self.cost = 0
-		end
-		self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
-	end
-
 	--Makes Cursed Jokers always sell for $0
 	if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
 		self.sell_cost = 0
@@ -584,6 +533,9 @@ function Card:sell_card()
 				table.insert(G.GAME.jokers_sold, "j_jolly")
 			end
 		end
+	end
+	if G.GAME.modifiers.cry_sell_price then
+		ease_dollars(G.GAME.modifiers.cry_sell_price)
 	end
 	--G.P_CENTERS.j_jolly
 	sell_card_stuff(self)
@@ -764,8 +716,6 @@ function calculate_reroll_cost(skip_increment)
 	if not limit then
 		if next(find_joker("cry-candybuttons")) then
 			limit = 1
-		elseif G.GAME.used_vouchers.v_cry_rerollexchange then
-			limit = 2
 		end
 	end
 	if not G.GAME.current_round.free_rerolls or G.GAME.current_round.free_rerolls < 0 then
@@ -789,7 +739,6 @@ function calculate_reroll_cost(skip_increment)
 	G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase or 0
 	if not skip_increment then
 		G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase
-			+ (G.GAME.modifiers.cry_reroll_scaling or 1)
 	end
 	G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost)
 		+ G.GAME.current_round.reroll_cost_increase
@@ -944,7 +893,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if card.ability.name == "cry-Cube" then
 		card:set_eternal(true)
 	end
-	if _type == "Joker" or (G.GAME.modifiers.cry_any_stickers and not G.GAME.modifiers.cry_sticker_sheet) then
+	if _type == "Joker" then
 		if G.GAME.modifiers.all_eternal then
 			card:set_eternal(true)
 		end
@@ -967,14 +916,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			end
 			if G.GAME.modifiers.enable_perishables_in_shop then
 				if
-					not G.GAME.modifiers.cry_eternal_perishable_compat
-					and ((eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7))
-				then
-					card:set_perishable(true)
-				end
-				if
-					G.GAME.modifiers.cry_eternal_perishable_compat
-					and pseudorandom("cry_per" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
+					((eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7))
 				then
 					card:set_perishable(true)
 				end
@@ -992,17 +934,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				card.pinned = true
 			end
 			if
-				not G.GAME.modifiers.cry_eternal_perishable_compat
-				and G.GAME.modifiers.enable_banana
+				G.GAME.modifiers.enable_banana
 				and (pseudorandom("cry_banana" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7)
 				and (eternal_perishable_poll <= 0.7)
-			then
-				card.ability.banana = true
-			end
-			if
-				G.GAME.modifiers.cry_eternal_perishable_compat
-				and G.GAME.modifiers.enable_banana
-				and (pseudorandom("cry_banana" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7)
 			then
 				card.ability.banana = true
 			end
@@ -1014,7 +948,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				end
 			end
 			if
-				not card.ability.eternal
+				card.ability.eternal
 				and G.GAME.modifiers.cry_enable_flipped_in_shop
 				and pseudorandom("cry_flip" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
 			then
@@ -1410,10 +1344,12 @@ function set_consumeable_usage(card)
 		end
 		G.GAME.cry_function_stupid_workaround[i] = G.GAME.cry_last_used_consumeables[i]
 	end
-	local nextindex = #G.GAME.cry_last_used_consumeables + 1
-	G.GAME.cry_last_used_consumeables[nextindex] = card.config.center_key
-	if nextindex > 3 then
-		table.remove(G.GAME.cry_last_used_consumeables, 1)
+	if not card.config.center.hidden then
+		local nextindex = #G.GAME.cry_last_used_consumeables + 1
+		G.GAME.cry_last_used_consumeables[nextindex] = card.config.center_key
+		if nextindex > 3 then
+			table.remove(G.GAME.cry_last_used_consumeables, 1)
+		end
 	end
 	scuref(card)
 end
@@ -2069,4 +2005,13 @@ function get_straight(hand, min_length, skip, wrap)
 	end
 
 	return get_straight_ref(hand, min_length + stones, skip, wrap)
+end
+
+
+local poll_editionref = poll_edition
+function poll_edition(_key, _mod, _no_neg, _guaranteed)
+	if not _guaranteed and G.GAME.modifiers.cry_rarer_modifications then
+		if pseudorandom("cry_rarer_modifications") < G.GAME.modifiers.cry_rarer_modifications then return nil end
+	end
+	return poll_editionref(_key, _mod, _no_neg, _guaranteed)
 end
