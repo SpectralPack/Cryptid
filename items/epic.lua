@@ -1954,7 +1954,7 @@ local fleshpanopticon = {
 	order = 146,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_soul" }
+		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_soul" }
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
