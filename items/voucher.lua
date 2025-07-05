@@ -446,7 +446,7 @@ local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost
 				card.ability.discount_percentage
 			}
 		}
-	end
+	end,
 	redeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -543,7 +543,7 @@ local rerollexchange = { -- Reroll Surplus T3; All rerolls cost $2
 				card.ability.extra
 			}
 		}
-	end
+	end,
 	redeem = function(self)
 		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost - self.ability.extra
 		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost - self.ability.extra)
@@ -906,7 +906,7 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	pools = { ["Tier3"] = true },
 	config = {
 		ante_mod = 1
-	}
+	},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.ante_mod } }
 	end,
