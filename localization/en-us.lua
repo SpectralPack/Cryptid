@@ -2075,7 +2075,7 @@ return {
 				text = {
 					"Create a {C:attention}Jolly Joker{} when",
 					"{C:attention}Blind{} is selected",
-					"{C:inactive}(Must have room){}"
+					"{C:inactive}(Must have room){}",
 				},
 			},
 			j_cry_macabre = {

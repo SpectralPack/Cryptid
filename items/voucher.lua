@@ -40,7 +40,7 @@ local copies = { -- DTag T1; Double tags become Triple Tags and are 2X as common
 		local tinit = Tag.init
 		function Tag:init(tag, for_collection, _blind_type)
 			if not for_collection then
-				if tag == "tag_double" and G.GAME.used_vouchers.v_cry_tag_printer  then
+				if tag == "tag_double" and G.GAME.used_vouchers.v_cry_tag_printer then
 					tag = "tag_cry_triple"
 				end
 				if (tag == "tag_double" or tag == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_clone_machine then
@@ -78,7 +78,7 @@ local tag_printer = { --DTag T2; Double tags become Quadruple Tags and are 3X as
 	pos = { x = 1, y = 2 },
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_triple", specific_vars = { 2 } }		
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_triple", specific_vars = { 2 } }
 		return { vars = {} }
 	end,
 	requires = { "v_cry_copies" },
@@ -438,13 +438,13 @@ local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost
 	requires = { "v_liquidation" },
 	pools = { ["Tier3"] = true },
 	config = {
-		discount_percent = 75
+		discount_percent = 75,
 	},
 	loc_vars = function(self, q, card)
 		return {
 			vars = {
-				card.ability.discount_percentage
-			}
+				card.ability.discount_percentage,
+			},
 		}
 	end,
 	redeem = function(self)
@@ -534,14 +534,14 @@ local rerollexchange = { -- Reroll Surplus T3; All rerolls cost $2
 	pos = { x = 6, y = 2 },
 	requires = { "v_reroll_glut" },
 	pools = { ["Tier3"] = true },
-	config ={
-		extra = -5
+	config = {
+		extra = -5,
 	},
 	loc_vars = function(self, _, card)
 		return {
 			vars = {
-				card.ability.extra
-			}
+				card.ability.extra,
+			},
 		}
 	end,
 	redeem = function(self)
@@ -905,7 +905,7 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	requires = { "v_petroglyph" },
 	pools = { ["Tier3"] = true },
 	config = {
-		ante_mod = 1
+		ante_mod = 1,
 	},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.ante_mod } }
