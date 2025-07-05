@@ -523,6 +523,18 @@ SMODS.Sound({
 	path = "e_golden.ogg",
 })
 SMODS.Sound({
+	key = "emult",
+	path = "ExponentialMult.wav",
+})
+SMODS.Sound({
+	key = "echips",
+	path = "ExponentialChips.wav",
+})
+SMODS.Sound({
+	key = "xchip",
+	path = "MultiplicativeChips.wav"
+})
+SMODS.Sound({
 	key = "studiofromhelsinki",
 	path = "studiofromhelsinki.ogg",
 })

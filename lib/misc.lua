@@ -563,6 +563,7 @@ Cryptid.mod_whitelist = {
 }
 
 function Cryptid.is_card_big(joker)
+	if not Talisman then return false end
 	local center = joker.config and joker.config.center
 	if not center then
 		return false

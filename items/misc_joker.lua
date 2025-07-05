@@ -1924,7 +1924,7 @@ local waluigi = {
 	calculate = function(self, card, context)
 		if context.post_trigger or context.forcetrigger then
 			if not context.forcetrigger then
-				if not Talisman.config_file.disable_anims then
+				if Talisman and not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							context.other_card:juice_up(0.5, 0.5)
@@ -1979,18 +1979,6 @@ local wario = {
 			return {
 				dollars = lenient_bignum(card.ability.extra.money),
 				card = context.other_context and context.other_context.blueprint_card or context.other_card or nil,
-				-- This function isn't working properly :sob:
-				--[[func = function()
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if not Talisman.config_file.disable_anims then
-								(context.blueprint_card or card):juice_up(0.5, 0.5)
-							end
-							return true
-						end,
-					}))
-					return true
-				end,--]]
 			}
 		end
 	end,
@@ -3589,7 +3577,7 @@ local meteor = {
 			and context.other_joker.edition.foil == true
 			and card ~= context.other_joker
 		then
-			if not Talisman.config_file.disable_anims then
+			if Talisman and not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						context.other_joker:juice_up(0.5, 0.5)
@@ -3685,7 +3673,7 @@ local exoplanet = {
 			and context.other_joker.edition.holo == true
 			and card ~= context.other_joker
 		then
-			if not Talisman.config_file.disable_anims then
+			if Talisman and not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						context.other_joker:juice_up(0.5, 0.5)
@@ -3781,7 +3769,7 @@ local stardust = {
 			and context.other_joker.edition.polychrome == true
 			and card ~= context.other_joker
 		then
-			if not Talisman.config_file.disable_anims then
+			if Talisman and not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						context.other_joker:juice_up(0.5, 0.5)
@@ -8458,7 +8446,7 @@ local universe = {
 			and context.other_joker.edition.cry_astral == true
 			and card ~= context.other_joker
 		then
-			if not Talisman.config_file.disable_anims then
+			if Talisman and not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						context.other_joker:juice_up(0.5, 0.5)

@@ -523,7 +523,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				end
 			elseif args.type == "^" then
 				num = to_big(num) ^ new_value
-			elseif args.type == "hyper" then
+			elseif args.type == "hyper" and SMODS.Mods.Talisman and SMODS.Mods.Talisman.can_load then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
 					num = to_big(num):arrow(args.value.arrows, to_big(new_value))
 				end
@@ -541,7 +541,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				end
 			elseif args.type == "^" then
 				num = to_big(num) ^ args.value
-			elseif args.type == "hyper" then
+			elseif args.type == "hyper" and SMODS.Mods.Talisman and SMODS.Mods.Talisman.can_load then
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end
 		end

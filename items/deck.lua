@@ -451,7 +451,7 @@ local critical = {
 				check = 2
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						play_sound("talisman_emult", 1)
+						play_sound("cryptid_emult", 1)
 						attention_text({
 							scale = 1.4,
 							text = localize("cry_critical_hit_ex"),
@@ -978,7 +978,7 @@ local antimatter = {
 						update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
 						G.E_MANAGER:add_event(Event({
 							func = function()
-								play_sound("talisman_emult", 1)
+								play_sound("cryptid_emult", 1)
 								attention_text({
 									scale = 1.4,
 									text = localize("cry_critical_hit_ex"),

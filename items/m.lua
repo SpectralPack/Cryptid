@@ -684,7 +684,7 @@ local bonk = {
 		end
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
 			if context.other_joker:is_jolly() then
-				if not Talisman.config_file.disable_anims then
+				if Talisman and not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							context.other_joker:juice_up(0.5, 0.5)
@@ -703,7 +703,7 @@ local bonk = {
 					chip_mod = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
 				}
 			else
-				if not Talisman.config_file.disable_anims then
+				if Talisman and not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							context.other_joker:juice_up(0.5, 0.5)
@@ -1557,7 +1557,7 @@ local mprime = {
 					context.other_joker:is_jolly() or Cryptid.safe_get(context.other_joker.config.center, "pools", "M")
 				)
 			then
-				if not Talisman.config_file.disable_anims then
+				if Talisman and not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							context.other_joker:juice_up(0.5, 0.5)

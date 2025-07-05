@@ -684,3 +684,26 @@ local safe_seal = type(other.ability.seal) == "table" and other.ability.seal or 
 for k, v in pairs(safe_seal) do
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "elseif eval_type == 'dollars' then"
+position = "before"
+payload = '''
+elseif eval_type == 'e_chips' then 
+	sound = 'cry_echip'
+	amt = amt
+	text = '^' .. amt
+	colour = G.C.CHIPS
+	config.type = 'fade'
+	config.scale = 0.7
+elseif eval_type == 'e_mult' then 
+	sound = 'cry_emult'
+	amt = amt
+	text = '^' .. amt .. ' ' .. localize('k_mult')
+	colour = G.C.MULT
+	config.type = 'fade'
+	config.scale = 0.7
+'''
+match_indent = true
