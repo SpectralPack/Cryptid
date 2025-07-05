@@ -33,7 +33,6 @@ local copies = { -- DTag T1; Double tags become Triple Tags and are 2X as common
 	pos = { x = 1, y = 1 },
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_triple", specific_vars = { 2 } }
 		return { vars = {} }
 	end,
 	init = function(self)
@@ -41,17 +40,11 @@ local copies = { -- DTag T1; Double tags become Triple Tags and are 2X as common
 		local tinit = Tag.init
 		function Tag:init(tag, for_collection, _blind_type)
 			if not for_collection then
-				if tag == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
+				if tag == "tag_double" and G.GAME.used_vouchers.v_cry_tag_printer  then
 					tag = "tag_cry_triple"
 				end
-				if (tag == "tag_double" or tag == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
+				if (tag == "tag_double" or tag == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_clone_machine then
 					tag = "tag_cry_quadruple"
-				end
-				if
-					(tag == "tag_double" or tag == "tag_cry_triple" or tag == "tag_cry_quadruple")
-					and G.GAME.used_vouchers.v_cry_clone_machine
-				then
-					tag = "tag_cry_quintuple"
 				end
 			end
 			return tinit(self, tag, for_collection, _blind_type)
@@ -85,7 +78,7 @@ local tag_printer = { --DTag T2; Double tags become Quadruple Tags and are 3X as
 	pos = { x = 1, y = 2 },
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_quadruple", specific_vars = { 3 } }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_triple", specific_vars = { 2 } }		
 		return { vars = {} }
 	end,
 	requires = { "v_cry_copies" },
@@ -273,7 +266,7 @@ local grapplinghook = { -- CSL T2; +2 card selection limit
 		},
 	},
 	key = "grapplinghook",
-	config = { extra = 2 },
+	config = { extra = 1 },
 	atlas = "atlasvoucher",
 	order = 20008,
 	pos = { x = 1, y = 5 },
@@ -444,11 +437,21 @@ local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost
 	pos = { x = 6, y = 4 },
 	requires = { "v_liquidation" },
 	pools = { ["Tier3"] = true },
+	config = {
+		discount_percent = 75
+	},
+	loc_vars = function(self, q, card)
+		return {
+			vars = {
+				card.ability.discount_percentage
+			}
+		}
+	end
 	redeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.backup_discount_percent = G.GAME.backup_discount_percent or G.GAME.discount_percent
-				G.GAME.discount_percent = 100
+				G.GAME.discount_percent = card.ability.discount_percentage
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()
@@ -531,16 +534,19 @@ local rerollexchange = { -- Reroll Surplus T3; All rerolls cost $2
 	pos = { x = 6, y = 2 },
 	requires = { "v_reroll_glut" },
 	pools = { ["Tier3"] = true },
+	config ={
+		extra = -5
+	},
+	loc_vars = function(self, _, card)
+		return {
+			vars = {
+				card.ability.extra
+			}
+		}
+	end
 	redeem = function(self)
-		--most of the code for this (one line) is in cryptid.lua, check out the reroll function there
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				if G.GAME.current_round.reroll_cost > 2 then
-					G.GAME.current_round.reroll_cost = 2
-				end
-				return true
-			end,
-		}))
+		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost - self.ability.extra
+		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost - self.ability.extra)
 	end,
 	unredeem = function(self)
 		G.E_MANAGER:add_event(Event({
@@ -764,7 +770,7 @@ local moneybean = { -- Seed Money T3; Raise the cap on interest earned in each r
 		},
 	},
 	key = "moneybean",
-	config = { extra = 1e300 },
+	config = { extra = 75 },
 	atlas = "atlasvoucher",
 	order = 32668,
 	pos = { x = 5, y = 1 },
@@ -813,7 +819,7 @@ local fabric = { -- Blank Voucher T3; +2 Joker slots
 		},
 	},
 	key = "fabric",
-	config = { extra = 2 },
+	config = { extra = 1 },
 	atlas = "atlasvoucher",
 	order = 32669,
 	pos = { x = 6, y = 0 },
@@ -898,15 +904,15 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	pos = { x = 5, y = 2 },
 	requires = { "v_petroglyph" },
 	pools = { ["Tier3"] = true },
-	loc_vars = function(self, info_queue)
-		return { vars = { Cryptid.asteroglyph_ante() } }
+	config = {
+		ante_mod = 1
+	}
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.ante_mod } }
 	end,
 	redeem = function(self)
-		local mod = -G.GAME.round_resets.ante + Cryptid.asteroglyph_ante()
+		local mod = -card.ability.ante_mod
 		ease_ante(mod)
-		G.GAME.modifiers.cry_astero_ante = (G.GAME.modifiers.cry_astero_ante or 0) > 0
-				and math.min(math.ceil(G.GAME.modifiers.cry_astero_ante ^ 1.13), 1e300)
-			or 1
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.round_resets.blind_ante = mod
@@ -924,17 +930,6 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 		end
 		if args.type == "cry_unlock_all" then
 			unlock_card(self)
-		end
-	end,
-	init = function(self)
-		function Cryptid.asteroglyph_ante()
-			if not (G.GAME or {}).modifiers then
-				return 0
-			end
-			if not G.GAME.modifiers.cry_astero_ante then
-				G.GAME.modifiers.cry_astero_ante = 0
-			end
-			return G.GAME.modifiers.cry_astero_ante
 		end
 	end,
 }
@@ -1028,7 +1023,7 @@ local clone_machine = { -- DTag Voucher T3; Double tags become Quintuple Tags an
 	pools = { ["Tier3"] = true },
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_double" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_quintuple", specific_vars = { 4 } }
+		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_quadruple", specific_vars = { 3 } }
 		return { vars = {} }
 	end,
 	requires = { "v_cry_tag_printer" },
@@ -1123,7 +1118,7 @@ local hyperspacetether = { -- CSL T3; +2 card selection limit, all* selected car
 		},
 	},
 	key = "hyperspacetether",
-	config = { extra = 2 },
+	config = { extra = 1 },
 	atlas = "atlasvoucher",
 	pos = { x = 2, y = 5 },
 	order = 32767,

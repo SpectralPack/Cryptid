@@ -2136,6 +2136,7 @@ local hook = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
+		info_queue[#info_queue + 1] = { key = "cry_flickering", set = "Other", vars = { 8, 8 } }
 	end,
 	use = function(self, card, area, copier)
 		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 2, 2)

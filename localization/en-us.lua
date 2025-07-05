@@ -2075,6 +2075,7 @@ return {
 				text = {
 					"Create a {C:attention}Jolly Joker{} when",
 					"{C:attention}Blind{} is selected",
+					"{C:inactive}(Must have room){}"
 				},
 			},
 			j_cry_macabre = {
@@ -3986,8 +3987,7 @@ return {
 			v_cry_copies = {
 				name = "Copies",
 				text = {
-					"Double Tags become",
-					"{C:attention}Triple Tags{} and are",
+					"Double Tags are",
 					"{C:attention}2X{} as common",
 				},
 			},
@@ -3995,7 +3995,7 @@ return {
 				name = "Tag Printer",
 				text = {
 					"Double Tags become",
-					"{C:attention}Quadruple Tags{} and",
+					"{C:attention}Triple Tags{} and",
 					"are {C:attention}3X{} as common",
 				},
 			},
@@ -4076,7 +4076,7 @@ return {
 				name = "Mass Production",
 				text = {
 					"All cards and packs",
-					"in shop cost {C:attention}$1{}",
+					"in shop are {C:attention}#1#%{} off",
 				},
 				unlock = {
 					"Redeem {C:attention}25",
@@ -4099,8 +4099,8 @@ return {
 			v_cry_rerollexchange = {
 				name = "Reroll Exchange",
 				text = {
-					"All rerolls",
-					"cost {C:attention}$2{}",
+					"Reroll costs",
+					"starts at {C:attention}$#1#{}",
 				},
 				unlock = {
 					"{C:attention}Reroll{} the shop",
@@ -4211,7 +4211,7 @@ return {
 			v_cry_asteroglyph = {
 				name = "Asteroglyph",
 				text = {
-					"Set Ante to {C:attention}#1#{}",
+					"{C:attention}-#1#{} Ante",
 				},
 				unlock = {
 					"Reach Ante {C:attention}36",
@@ -4233,7 +4233,7 @@ return {
 				name = "Clone Machine",
 				text = {
 					"Double Tags become",
-					"{C:attention}Quintuple Tags{} and",
+					"{C:attention}Quadruple Tags{} and",
 					"are {C:attention}4X{} as common",
 				},
 			},
