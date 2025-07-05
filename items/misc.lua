@@ -1165,7 +1165,7 @@ local astral = {
 	in_shop = true,
 	extra_cost = 9,
 	sound = {
-		sound = "talisman_emult",
+		sound = "cry_emult",
 		per = 1,
 		vol = 0.5,
 	},

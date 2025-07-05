@@ -19,6 +19,7 @@ Cryptid currently adds:
 
 ### Frequently asked questions
 * Credit to @jenwalter666 for creating this FAQ (forwarded from Cryptid Discord)
+* Edits to reflect some changed made by @lord.ruby
 
 ## General
 

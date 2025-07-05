@@ -691,6 +691,13 @@ target = "functions/common_events.lua"
 pattern = "elseif eval_type == 'dollars' then"
 position = "before"
 payload = '''
+elseif eval_type == 'x_chips' then 
+	sound = 'cry_xchip'
+	amt = amt
+	text = 'X' .. amt
+	colour = G.C.CHIPS
+	config.type = 'fade'
+	config.scale = 0.7
 elseif eval_type == 'e_chips' then 
 	sound = 'cry_echip'
 	amt = amt
