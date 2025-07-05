@@ -119,7 +119,7 @@ return {
 					"{C:attention}same chance{} of",
 					"appearing in shops,",
 					"start run with",
-					"{C:attention,T:v_overstock_plus}Overstock Plus",
+					"{C:attention,T:v_overstock_norm}Overstock",
 				},
 				unlock = {
 					"Have {C:attention}100 Jokers",

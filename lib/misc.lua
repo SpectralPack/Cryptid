@@ -1466,6 +1466,15 @@ function Cryptid.is_in_shop(key, consumable)
 		if type(center.rarity) == "number" and center.rarity <= 3 then
 			return center.unlocked or nil
 		end
+		local rare = ({
+			"Common",
+			"Uncommon",
+			"Rare",
+		})[center.rarity] or center.rarity
+		if SMODS.Rarities[rare] and (SMODS.Rarities[rare].get_weight or (SMODS.Rarities[rare].default_weight and SMODS.Rarities[rare].default_weight > 0)) then
+			return center.unlocked or nil
+		end
+		return nil
 	else
 		if consumable then
 			if center.set == "Tarot" then
@@ -1485,6 +1494,7 @@ function Cryptid.is_in_shop(key, consumable)
 	if center.in_pool then
 		return center:in_pool()
 	end
+	return center.unlocked or nil
 end
 
 function Cryptid.get_equilibrium_pool()
