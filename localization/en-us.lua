@@ -2073,8 +2073,7 @@ return {
 			j_cry_M = {
 				name = "M",
 				text = {
-					"Create a {C:dark_edition}Negative{}",
-					"{C:attention}Jolly Joker{} when",
+					"Create a {C:attention}Jolly Joker{} when",
 					"{C:attention}Blind{} is selected",
 				},
 			},

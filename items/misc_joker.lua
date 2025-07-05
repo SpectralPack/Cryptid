@@ -482,7 +482,7 @@ local wee_fib = {
 	config = {
 		extra = {
 			mult = 0,
-			mult_mod = 3,
+			mult_mod = 2,
 		},
 	},
 	gameset_config = {
