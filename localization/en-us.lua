@@ -3519,6 +3519,7 @@ return {
 				colour = "Ruby", --this is used for auto-generated sticker localization
 				text = {
 					"Win Ante is {C:attention}12{}",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 			stake_cry_topaz = {
@@ -3527,6 +3528,7 @@ return {
 				text = {
 					"Interest rate is",
 					"now every {C:attention}$8{}",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 			stake_cry_quartz = {
@@ -3535,6 +3537,7 @@ return {
 				text = {
 					"Jokers may be {C:attention}Pinned{}",
 					"{s:0.8,C:inactive}(Stays pinned to the leftmost position){}",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 			stake_cry_diamond = {
@@ -3543,6 +3546,7 @@ return {
 				text = {
 					"Cards can be {C:attention}Banana{}",
 					"{s:0.8,C:inactive}(1 in 10 chance of being destroyed each round){}",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 
@@ -3552,6 +3556,7 @@ return {
 				text = {
 					"Lose {C:attention}$1{} when",
 					"a card is sold",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 			stake_cry_horizon = {
@@ -3560,6 +3565,7 @@ return {
 				text = {
 					"Showdown blinds now",
 					"appear every {C:attention}6{} antes",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 			stake_cry_blossom = {
@@ -3568,6 +3574,7 @@ return {
 				text = {
 					"{C:attention}Natural{} modifications",
 					"are rarer",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 			stake_cry_ascendant = {
@@ -3577,6 +3584,7 @@ return {
 					"Buying items increases",
 					"shop {C:attention}costs{} for",
 					"the current ante",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 		},
