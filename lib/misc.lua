@@ -1471,7 +1471,13 @@ function Cryptid.is_in_shop(key, consumable)
 			"Uncommon",
 			"Rare",
 		})[center.rarity] or center.rarity
-		if SMODS.Rarities[rare] and (SMODS.Rarities[rare].get_weight or (SMODS.Rarities[rare].default_weight and SMODS.Rarities[rare].default_weight > 0)) then
+		if
+			SMODS.Rarities[rare]
+			and (
+				SMODS.Rarities[rare].get_weight
+				or (SMODS.Rarities[rare].default_weight and SMODS.Rarities[rare].default_weight > 0)
+			)
+		then
 			return center.unlocked or nil
 		end
 		return nil
