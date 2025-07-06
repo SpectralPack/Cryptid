@@ -1924,7 +1924,7 @@ return {
 				name = "Jawbreaker",
 				text = {
 					"When {C:attention}Boss Blind{} defeated,",
-					"{C:attention}double{} values of adjacent Jokers",
+					"Temporarily {C:attention}Double{} values of adjacent Jokers",
 					"{E:2,C:red}self destructs{}",
 				},
 			},
@@ -2347,8 +2347,9 @@ return {
 			j_cry_oil_lamp = {
 				name = "Oil Lamp",
 				text = {
-					"Increase values of {C:attention}Joker{} to the right",
-					"by {C:attention}X#1#{} at end of round",
+					"Temporarily Increase values of {C:attention}Joker{}",
+					"to the right by {C:attention}Twenty{} Percent",
+					"for the remainder of this ante"
 				},
 			},
 			j_cry_oldblueprint = {
@@ -2925,9 +2926,10 @@ return {
 			j_cry_tropical_smoothie = {
 				name = "Tropical Smoothie",
 				text = {
-					"Sell this card",
-					"to {C:attention}multiply{} values",
-					"of owned Jokers by {C:attention}X#1#{}",
+					"Sell this card to",
+					"Temporarily Increase values of  all",
+					"{C:attention}Jokers{} by {C:attention}Fifty{} Percent",
+					"for the remainder of this ante"
 				},
 			},
 			j_cry_unity = {
@@ -3293,7 +3295,7 @@ return {
 					"{C:attention}same chance{} of",
 					"appearing in shops,",
 					"start run with",
-					"{C:attention,T:v_overstock_plus}+2 Shop Slots",
+					"{C:attention}+1 Shop Slots",
 				},
 			},
 			sleeve_cry_glowing_sleeve = {

@@ -1668,11 +1668,15 @@ local jawbreaker = {
 					if i > 1 then
 						if not Card.no(G.jokers.cards[i - 1], "immutable", true) then
 							Cryptid.manipulate(G.jokers.cards[i - 1], { value = 2 })
+							local v = G.jokers.cards[i - 1]
+							v.config.cry_oil_lamp = (v.config.cry_oil_lamp or 1) * card.ability.extra
 						end
 					end
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
 							Cryptid.manipulate(G.jokers.cards[i + 1], { value = 2 })
+							local v = G.jokers.cards[i + 1]
+							v.config.cry_oil_lamp = (v.config.cry_oil_lamp or 1) * card.ability.extra
 						end
 					end
 				end
