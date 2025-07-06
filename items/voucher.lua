@@ -438,7 +438,7 @@ local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost
 	requires = { "v_liquidation" },
 	pools = { ["Tier3"] = true },
 	config = {
-		discount_percent = 75,
+		discount_percentage = 75,
 	},
 	loc_vars = function(self, q, card)
 		return {
@@ -447,7 +447,7 @@ local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost
 			},
 		}
 	end,
-	redeem = function(self)
+	redeem = function(self, card)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.backup_discount_percent = G.GAME.backup_discount_percent or G.GAME.discount_percent
@@ -546,12 +546,13 @@ local rerollexchange = { -- Reroll Surplus T3; All rerolls cost $2
 	end,
 	redeem = function(selfm, card)
 		G.GAME.backup_cost = G.GAME.backup_cost or G.GAME.round_resets.reroll_cost
-		G.GAME.round_resets.reroll_cost = G.GAME.round_resets.reroll_cost - card.ability.extra
-		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost - card.ability.extra)
+		G.GAME.round_resets.reroll_cost = card.ability.extra
+		G.GAME.current_round.reroll_cost = card.ability.extra
+		G.GAME.current_round.reroll_cost_increase = 0
 	end,
 	unredeem = function(self, card)
-		G.GAME.round_resets.reroll_cost = G.GAME.backup_cost + card.ability.extra
-		G.GAME.current_round.reroll_cost = math.max(0, G.GAME.current_round.reroll_cost + card.ability.extra)
+		G.GAME.round_resets.reroll_cost = G.GAME.backup_cost
+		G.GAME.current_round.reroll_cost = G.GAME.backup_cost
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				calculate_reroll_cost(true)
@@ -780,7 +781,7 @@ local moneybean = { -- Seed Money T3; Raise the cap on interest earned in each r
 	requires = { "v_money_tree" },
 	pools = { ["Tier3"] = true },
 	loc_vars = function(self, info_queue, card)
-		return { vars = { (card and card.ability.extra or self.config.extra) / 5 } }
+		return { vars = { (card and card.ability.extra or self.config.extra) } }
 	end,
 	redeem = function(self, card) -- this doesn't really matter with the whole interest overwrite
 		G.E_MANAGER:add_event(Event({
