@@ -841,7 +841,7 @@ local antimatter = {
 				or skip
 			then
 				G.GAME.modifiers.cry_misprint_min = 1
-				G.GAME.modifiers.cry_misprint_max = 10
+				G.GAME.modifiers.cry_misprint_max = 4
 			end
 			-- Infinite Deck
 			if
@@ -860,29 +860,6 @@ local antimatter = {
 					end,
 				}))
 				G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + 1
-			end
-			-- Wormhole deck
-			if
-				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_wormhole", "wins", 8) or 0)
-					~= 0
-				or skip
-			then
-				G.GAME.modifiers.cry_negative_rate = 20
-
-				if Cryptid.enabled("set_cry_exotic") == true then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if G.jokers then
-								local card =
-									create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
-								card:add_to_deck()
-								card:start_materialize()
-								G.jokers:emplace(card)
-								return true
-							end
-						end,
-					}))
-				end
 			end
 			-- Redeemed deck
 			if
@@ -1130,6 +1107,22 @@ local antimatter = {
 							return true
 						end,
 					}))
+				end
+				--Wormhole Deck
+				if
+					context.end_of_round
+					and not context.individual
+					and not context.repetition
+					and not context.blueprint
+					and G.GAME.blind
+					and G.GAME.blind.config.blind
+					and G.GAME.blind.config.blind.boss
+				then
+					if G.jokers.cards[1] and G.jokers.cards[1].config.center.rarity ~= "cry_exotic" then
+						Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
+							Cryptid.upgrade_rarity(card, "cry_wormhole")
+						end)
+					end
 				end
 			end
 		end
