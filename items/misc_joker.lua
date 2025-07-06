@@ -2734,18 +2734,12 @@ local magnet = {
 			money = 2,
 			slots = 4,
 		},
-		immutable = {
-			Xmoney = 4,
-		},
 	},
 	gameset_config = {
 		modest = {
 			extra = {
 				money = 2,
 				slots = 3,
-			},
-			immutable = {
-				Xmoney = 3,
 			},
 		},
 	},
@@ -2758,7 +2752,7 @@ local magnet = {
 		return {
 			vars = {
 				number_format(center.ability.extra.money),
-				number_format(center.ability.immutable.Xmoney),
+				4 - (Card.get_gameset(card) == "modest" and 1 or 0),
 				number_format(center.ability.extra.slots),
 			},
 		}
@@ -2766,12 +2760,12 @@ local magnet = {
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.forcetrigger then
-			ease_dollars(lenient_bignum(to_big(card.ability.extra.money) * center.ability.immutable.Xmoney))
+			ease_dollars(lenient_bignum(to_big(card.ability.extra.money) * (4 - (Card.get_gameset(card) == "modest" and 1 or 0))))
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
 		if to_big(#G.jokers.cards) <= to_big(card.ability.extra.slots) then
-			return lenient_bignum(to_big(card.ability.extra.money) * center.ability.immutable.Xmoney)
+			return lenient_bignum(to_big(card.ability.extra.money) * (4 - (Card.get_gameset(card) == "modest" and 1 or 0)))
 		else
 			return lenient_bignum(card.ability.extra.money)
 		end
