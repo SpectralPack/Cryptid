@@ -1564,7 +1564,6 @@ end
 local er = end_round
 function end_round()
 	er()
-	print(G.GAME.round_resets.blind_states)
 	if G.GAME.round_resets.blind_states.Big == "Defeated" then
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i].config.cry_oil_lamp then
