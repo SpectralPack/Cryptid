@@ -220,6 +220,9 @@ function Cryptid.pluralize(str, vars)
 		table.sort(keys, function(a, b)
 			return a < b
 		end)
+		if not (tonumber(num) or is_number(num)) then
+			num = 1
+		end
 		for _, k in ipairs(keys) do
 			if fch(checks[k], "=") then
 				if to_big(math.abs(num - k)) < to_big(0.001) then
