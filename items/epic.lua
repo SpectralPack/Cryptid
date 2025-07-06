@@ -2735,7 +2735,8 @@ local oil_lamp = { --You want it? It's yours my friend
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
 							check = true
 							Cryptid.manipulate(G.jokers.cards[i + 1], { value = card.ability.extra.increase })
-							G.jokers.cards[i + 1].config.cry_oil_lamp = (G.jokers.cards[i + 1].config.cry_oil_lamp or 1) * card.ability.extra.increase
+							G.jokers.cards[i + 1].config.cry_oil_lamp = (G.jokers.cards[i + 1].config.cry_oil_lamp or 1)
+								* card.ability.extra.increase
 						end
 					end
 				end
@@ -2796,6 +2797,6 @@ return {
 		demicolon,
 		starfruit,
 		chad,
-		oil_lamp
+		oil_lamp,
 	},
 }

@@ -2349,7 +2349,7 @@ return {
 				text = {
 					"Temporarily Increase values of {C:attention}Joker{}",
 					"to the right by {C:attention}Twenty{} Percent",
-					"for the remainder of this ante"
+					"for the remainder of this ante",
 				},
 			},
 			j_cry_oldblueprint = {
@@ -2929,7 +2929,7 @@ return {
 					"Sell this card to",
 					"Temporarily Increase values of  all",
 					"{C:attention}Jokers{} by {C:attention}Fifty{} Percent",
-					"for the remainder of this ante"
+					"for the remainder of this ante",
 				},
 			},
 			j_cry_unity = {
