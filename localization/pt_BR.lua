@@ -645,7 +645,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Poker Hand Stuff",
 				text = {
-					"Add 4 new {C:attention}poker hands",
+					"Add 5 new {C:attention}poker hands",
 					"and enable {C:attention}Ascended hands",
 				},
 			},
@@ -3112,6 +3112,14 @@ return {
 					"em sua mão",
 				},
 			},
+			c_cry_meld = {
+				name = "Fusão",
+				text = {
+					"Selecione um {C:attention}Curinga{} ou",
+					"{C:attention}carta de jogo{} para",
+					"se tornar {C:dark_edition}Duas Caras",
+				},
+			},
 			c_cry_vacuum = {
 				name = "Vácuo",
 				text = {
@@ -3553,14 +3561,6 @@ return {
 				text = {
 					"Aprimora {C:attention}#1#{} carta#<s>1# selecionada",
 					"em uma {C:attention}Carta Eco",
-				},
-			},
-			c_cry_meld = {
-				name = "Fusão",
-				text = {
-					"Selecione um {C:attention}Curinga{} ou",
-					"{C:attention}carta de jogo{} para",
-					"se tornar {C:dark_edition}Duas Caras",
 				},
 			},
 			c_cry_theblessing = {

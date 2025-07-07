@@ -56,6 +56,10 @@ local gateway = {
 		}))
 		delay(0.6)
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		self:use(card, area)
+	end,
 }
 local iterum = {
 	dependencies = {
@@ -238,7 +242,7 @@ local universum = {
 									.. tostring(vals.level)
 								if is_number(vals.level) then
 									G.hand_text_area.hand_level.config.colour =
-										G.C.HAND_LEVELS[to_big(math.min(vals.level, 7)):to_number()]
+										G.C.HAND_LEVELS[to_number(math.min(vals.level, 7))]
 								else
 									G.hand_text_area.hand_level.config.colour = G.C.HAND_LEVELS[1]
 								end
@@ -739,6 +743,7 @@ local primus = {
 			if check then
 				card.ability.extra.Emult =
 					lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
+				card.children.floating_sprite:set_sprite_pos({ x = 8, y = 6 })
 				return {
 					card_eval_status_text(card, "extra", nil, nil, nil, {
 						message = localize("k_upgrade_ex"),
@@ -748,6 +753,7 @@ local primus = {
 			end
 		end
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
+			card.children.floating_sprite:set_sprite_pos({ x = 8, y = 6 })
 			return {
 				message = localize({
 					type = "variable",
@@ -759,6 +765,9 @@ local primus = {
 				Emult_mod = lenient_bignum(card.ability.extra.Emult),
 				colour = G.C.DARK_EDITION,
 			}
+		end
+		if context.end_of_round then
+			card.children.floating_sprite:set_sprite_pos({ x = 2, y = 4 })
 		end
 		if context.forcetrigger then
 			card.ability.extra.Emult = lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
@@ -785,7 +794,7 @@ local primus = {
 	end,
 	cry_credits = {
 		idea = { "Jevonn" },
-		art = { "Jevonn" },
+		art = { "George the Rat" },
 		code = { "Jevonn" },
 	},
 }
@@ -907,6 +916,9 @@ local stella_mortis = {
 				if Incantation then
 					quota = planet_to_destroy:getEvalQty()
 				end
+				if Overflow then
+					quaota = planet_to_destroy.ability.immutable and planet_to_destroy.ability.immutable.overflow_amount
+				end
 				planet_to_destroy.getting_sliced = true
 				card.ability.extra.Emult =
 					lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
@@ -917,6 +929,7 @@ local stella_mortis = {
 						return true
 					end,
 				}))
+				planet_to_destroy.dissolve = 0 --timing issues related to crossmod stuff
 				if not (context.blueprint_card or self).getting_sliced then
 					card_eval_status_text((context.blueprint_card or card), "extra", nil, nil, nil, {
 						message = localize({
@@ -1238,9 +1251,7 @@ local gemino = {
 			local check = false
 			local card = G.jokers.cards[1]
 			if not Card.no(G.jokers.cards[1], "immutable", true) then
-				Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
-					Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
-				end)
+				Cryptid.manipulate(G.jokers.cards[1], { value = 2 })
 				check = true
 			end
 			if check then

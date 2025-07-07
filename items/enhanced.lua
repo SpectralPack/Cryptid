@@ -1,5 +1,3 @@
---Move all the stuff in here into atlasdeck.png later
---Also a lot of the edition decks have wrong proportions so those also need to get fixed
 local atlasedition = {
 	object_type = "Atlas",
 	key = "atlaseditiondeck",
@@ -78,7 +76,7 @@ Cryptid.edeck_atlas_update = function(self)
 	if not sprite then
 		error(self.edeck_type)
 	end
-	local enh_info = { Cryptid.enhanced_deck_info(self) }
+	local enh_info = { Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {}) }
 	sprite = sprite[enh_info[sprite.order]] or sprite.default
 	self.atlas, self.pos = sprite.atlas, sprite.pos
 	return sprite
@@ -96,13 +94,13 @@ local e_deck = {
 	order = 17,
 	pos = { x = 5, y = 2 },
 	loc_vars = function(self, info_queue, center)
-		local aaa = Cryptid.enhanced_deck_info(self)
+		local aaa = Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {})
 		return { vars = { localize({ type = "name_text", set = "Edition", key = "e_" .. aaa }) } }
 	end,
 	edeck_type = "edition",
 	config = { cry_no_edition_price = true },
 	apply = function(self)
-		local aaa = Cryptid.enhanced_deck_info(self)
+		local aaa = Cryptid.enhanced_deck_info({})
 		G.GAME.modifiers.cry_force_edition = aaa
 		--Ban Edition tags (They will never redeem)
 		for k, v in pairs(G.P_TAGS) do
@@ -327,58 +325,7 @@ return {
 	init = function()
 		local sa = Card.set_ability
 		function Card:set_ability(center, y, z)
-			--adding immutable to cards because
-			-- A they are hardcoded and unaffected by misprintize but still have a description that changes because of it
-			-- B so they ignore misprintize in order to keep vanilla descripton accurate (ex hack shouldn't be able to trigger more than once)
-			-- C so Gemini doesn't say they are compatible when they are not
-			-- D Invisible Joker
-
-			if
-				center
-				and (
-					center.name == "Fortune Teller"
-					or center.name == "Shoot the Moon"
-					or center.name == "Riff-raff"
-					or center.name == "Chaos the Clown"
-					or center.name == "Dusk"
-					or center.name == "Mime"
-					or center.name == "Hack"
-					or center.name == "Sock and Buskin"
-					or center.name == "Hanging Chad"
-					or center.name == "Invisible Joker"
-					or center.name == "Swashbuckler"
-					or center.name == "Smeared Joker"
-					or center.name == "Certificate"
-					or center.name == "Mr. Bones"
-					or center.name == "Diet Cola"
-					or center.name == "Luchador"
-					or center.name == "Midas Mask"
-					or center.name == "Shortcut"
-					or center.name == "Seance"
-					or center.name == "Superposition"
-					or center.name == "Sixth Sense"
-					or center.name == "DNA"
-					or center.name == "Splash"
-					or center.name == "Supernova"
-					or center.name == "Pareidolia"
-					or center.name == "Raised Fist"
-					or center.name == "Marble Joker"
-					or center.name == "Four Fingers"
-					or center.name == "Joker Stencil"
-					or center.name == "Showman"
-					or center.name == "Blueprint"
-					or center.name == "Oops! All 6s"
-					or center.name == "Brainstorm"
-					or center.name == "Cartomancer"
-					or center.name == "Astronomer"
-					or center.name == "Burnt Joker"
-					or center.name == "Chicot"
-					or center.name == "Perkeo"
-				)
-			then
-				self.config.center.immutable = true
-			end
-			if Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
+			if not G.SETTINGS.paused and Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
 				return sa(
 					self,
 					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement)
@@ -393,7 +340,7 @@ return {
 		end
 		local se = Card.set_edition
 		function Card:set_edition(edition, y, z, force)
-			if not force then
+			if not force and not G.SETTINGS.paused then
 				return se(
 					self,
 					(not self.no_forced_edition and G.GAME.modifiers.cry_force_edition)
@@ -407,11 +354,19 @@ return {
 		end
 		local ss = Card.set_seal
 		function Card:set_seal(seal, y, z)
-			return ss(self, not self.no_forced_seal and G.GAME.modifiers.cry_force_seal or seal, y, z)
+			return ss(
+				self,
+				not self.no_forced_seal and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_seal or seal,
+				y,
+				z
+			)
 		end
 		local cs = Card.change_suit
 		function Card:change_suit(new_suit)
-			return cs(self, not self.no_forced_suit and G.GAME.modifiers.cry_force_suit or new_suit)
+			return cs(
+				self,
+				not self.no_forced_suit and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_suit or new_suit
+			)
 		end
 		local ccl = Card.click
 		function Card:click()
@@ -429,9 +384,9 @@ return {
 					and (Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") and (self.back == "viewed_back" or self.edeck_select))
 			then
 				if not G.cry_edeck_select then
-					Cryptid.enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center, 1)
 					G.cry_edeck_select = true
 					G.cry_edeck_center = Galdur and self.config.center or G.GAME.viewed_back.effect.center
+					Cryptid.enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center, 1)
 				else
 					if self.edeck_select then
 						G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] =

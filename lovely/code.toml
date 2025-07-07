@@ -84,11 +84,11 @@ end
 [[patches]]
 [patches.regex]
 target = "functions/common_events.lua"
-pattern = '''localize\('ph_mr_bones'\)..' '\}, colours = \{G.C.FILTER'''
+pattern = '''localize\(type\(SMODS.saved\) == 'string' and SMODS.saved or 'ph_mr_bones'\)..' '\}, colours = \{G.C.FILTER'''
 position = 'at'
 # match_indent = true
 line_prepend = ''
-payload = '''(G.GAME.current_round.semicolon and ";" or localize('ph_mr_bones'))..' '}, colours = {(G.GAME.current_round.semicolon and G.C.SET.Code or G.C.FILTER)'''
+payload = '''(G.GAME.current_round.semicolon and ";" or localize(type(SMODS.saved) == 'string' and SMODS.saved or 'ph_mr_bones'))..' '}, colours = {(G.GAME.current_round.semicolon and G.C.SET.Code or G.C.FILTER)'''
 
 # Semicolon - polished UI
 [[patches]]
@@ -103,9 +103,9 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
-pattern = '''{n=G.UIT.T, config={text = localize('$')..config.dollars, scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
+pattern = '''{n=G.UIT.T, config={text = localize('$')..format_ui_value(config.dollars), scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
 position = "at"
-payload = '''{n=G.UIT.T, config={text = not G.GAME.current_round.semicolon and localize('$')..config.dollars or ';', scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
+payload = '''{n=G.UIT.T, config={text = not G.GAME.current_round.semicolon and localize('$')..format_ui_value(config.dollars) or ';', scale = 1.2*scale, colour = G.C.WHITE, shadow = true, juice = true}}'''
 match_indent = true
 
 # Semicolon - polished UI
@@ -328,19 +328,6 @@ end
 '''
 match_indent = true
 
-# Delete and Function - init tables to avoid headaches
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''ecto_minus = 1,'''
-position = "after"
-payload = '''
-cry_banished_keys = {},
-cry_last_used_consumeables = {},
-cry_function_stupid_workaround = {},
-'''
-match_indent = true
-
 # Run - don't clear shop
 [[patches]]
 [patches.pattern]
@@ -544,5 +531,254 @@ G.GAME.last_hand_played_cards = {}
 for i = 1, #G.play.cards do
 	G.GAME.last_hand_played_cards[i] = G.play.cards[i].sort_id
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)"
+position = "after"
+payload = '''
+local text,disp_text,poker_hands
+if self == G.hand then
+	local tbl = {}
+	for i, v in pairs(G.jokers.cards) do
+		if v.base.nominal and v.base.suit then
+			tbl[#tbl+1] = v
+		end
+	end
+	text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(Cryptid.table_merge(self.highlighted, tbl))
+else
+	text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(G.play.cards)"
+position = "after"
+payload = '''
+local tbl = {}
+for i, v in pairs(G.jokers.cards) do
+	if v.base.nominal and v.base.suit then
+		tbl[#tbl+1] = v
+	end
+end
+local text,disp_text,poker_hands,scoring_hand,non_loc_disp_text = G.FUNCS.get_poker_hand_info(Cryptid.table_merge(G.play.cards, tbl))
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "local text = {ref_table = args.ref_table, ref_value = args.ref_value, letters = {}, current_position = string.len(args.ref_table[args.ref_value])}"
+position = "at"
+payload = '''
+local text = {ref_table = args.ref_table, ref_value = args.ref_value, letters = {}, current_position = string.len(args.ref_table[args.ref_value] or "")}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+      UIBox_button({button = 'your_collection_enhancements', label = {localize('b_enhanced_cards')}, minw = 5}),
+      UIBox_button({button = 'your_collection_seals', label = {localize('b_seals')}, minw = 5, id = 'your_collection_seals'}),
+      UIBox_button({button = 'your_collection_editions', label = {localize('b_editions')}, count = G.DISCOVER_TALLIES.editions, minw = 5, id = 'your_collection_editions'}),
+'''
+position = "at"
+payload = '''
+      enhanced,
+      seals,
+      editions,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+      local t = create_UIBox_generic_options({ back_func = G.STAGE == G.STAGES.RUN and 'options' or 'exit_overlay_menu', contents = {
+'''
+position = "before"
+payload = '''
+	local use_pointer = G.GAME.USING_POINTER or G.GAME.POINTER_COLLECTION
+	local enhanced = (not use_pointer and UIBox_button({button = 'your_collection_enhancements', label = {localize('b_enhanced_cards')}, minw = 5}))
+		or UIBox_button({button = 'your_collection_create_card_rank', label = {localize('b_playing_cards')}, minw = 5, minh = 3.4, id = 'your_collection_create_card'})
+	local seals = (not use_pointer and  UIBox_button({button = 'your_collection_seals', label = {localize('b_seals')}, minw = 5, id = 'your_collection_seals'})) or nil
+	local editions = not use_pointer and UIBox_button({button = 'your_collection_editions', label = {localize('b_editions')}, count = G.DISCOVER_TALLIES.editions, minw = 5, id = 'your_collection_editions'}) or nil
+
+	local blinds = UIBox_button({button = 'your_collection_blinds', label = {localize('b_blinds')}, count = G.DISCOVER_TALLIES.blinds, minw = 5, minh = (use_pointer and 2.8 or 2.0), id = 'your_collection_blinds', focus_args = {snap_to = true}})
+	local other = not use_pointer and UIBox_button({button = 'your_collection_other_gameobjects', label = {localize('k_other')}, minw = 5, id = 'your_collection_other_gameobjects', focus_args = {snap_to = true}}) or nil
+
+	local decks = not use_pointer and UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minw = 5}) or nil
+	local vouchers = UIBox_button({button = 'your_collection_vouchers', label = {localize('b_vouchers')}, count = G.DISCOVER_TALLIES.vouchers, minw = 5, id = 'your_collection_vouchers', minh = use_pointer and 2.0})
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+UIBox_button({button = 'your_collection_blinds', label = {localize('b_blinds')}, count = G.DISCOVER_TALLIES.blinds, minw = 5, minh = 2.0, id = 'your_collection_blinds', focus_args = {snap_to = true}}),UIBox_button({button = 'your_collection_other_gameobjects', label = {localize('k_other')}, minw = 5, id = 'your_collection_other_gameobjects', focus_args = {snap_to = true}}),
+'''
+position = "at"
+payload = '''
+      blinds,
+	  other
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+      UIBox_button({button = 'your_collection_decks', label = {localize('b_decks')}, count = G.DISCOVER_TALLIES.backs, minw = 5}),
+      UIBox_button({button = 'your_collection_vouchers', label = {localize('b_vouchers')}, count = G.DISCOVER_TALLIES.vouchers, minw = 5, id = 'your_collection_vouchers'}),
+'''
+position = "at"
+payload = '''
+      decks,
+	  vouchers,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+		if v.discovered and not v.alerted then
+			blinds_to_be_alerted[#blinds_to_be_alerted + 1] = card
+		end
+'''
+position = "at"
+payload = '''
+    	if v.discovered and not v.alerted then
+			blinds_to_be_alerted[#blinds_to_be_alerted + 1] = card
+		end
+		card.click = function()
+			if G.GAME.USING_POINTER then
+				local self = v
+				local b = self
+				if not b.no_doe and not b.hidden and not b.no_pointer then
+					local bl = "Boss"
+					G.GAME.round_resets.blind_choices[bl] = b.key
+					if G.blind_select or G.GAME.blind_on_deck ~= "Boss" then        
+						if G.blind_select then
+							G.blind_select:remove()
+							G.blind_prompt_box:remove()
+							G.STATE_COMPLETE = false
+						end
+					else
+						G.GAME.blind:disable()
+						G.GAME.blind:set_blind(G.P_BLINDS[b.key])
+					end
+					G.FUNCS.exit_overlay_menu_code()
+					if G.GAME.CODE_DESTROY_CARD then
+						G.GAME.CODE_DESTROY_CARD:start_dissolve()
+						G.GAME.CODE_DESTROY_CARD = nil
+					end
+				end
+			end
+		end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+	for k, _hand in pairs(SMODS.PokerHands) do
+		results[k] = _hand.evaluate(parts, hand) or {}
+	end
+'''
+position = "after"
+payload = '''
+	local hands = {
+		G.GAME.hands.cry_Declare0,
+		G.GAME.hands.cry_Declare1,
+		G.GAME.hands.cry_Declare2,
+	}
+	for i, v in pairs(hands) do
+		if v.index then
+			local is_this_hand = true
+			local cards = {}
+			if v.declare_cards then
+				local satisfied = true
+				for i, v in pairs(v.declare_cards) do
+					local rank
+					local suit
+					for i2, v2 in pairs(hand) do
+						if not v2.canfit then
+							if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then 
+								if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then
+									v2.canfit = true
+								end
+							end
+						end
+						if not v2.marked and not (suit and rank) then
+							if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then rank = true end
+							if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then suit = true end
+							if not (suit and rank) then
+								suit = false
+								rank = false
+							end
+							if suit and rank then
+								cards[#cards+1] = v2
+								v2.marked = true
+							end
+						end
+					end
+					if not rank or not suit then satisfied = false end
+				end
+				for i2, v2 in pairs(hand) do
+					v2.marked = false
+					if v2.canfit then
+						cards[#cards+1] = v2
+						v2.canfit = nil
+					end
+				end
+				if not satisfied then is_this_hand = false end
+			end
+			if is_this_hand then
+				key = "cry_Declare"..tostring(v.index)
+				local tbl = {cards}
+				local skey = ({
+					[0] = "Flush",
+					[1] = "Straight",
+					[2] = "Full House"
+				})[v.index]
+				results[key] = tbl
+				results[skey] = tbl
+				if skey == "Full House" then
+					results["Three of a Kind"] = tbl
+					results["Two Pair"] = tbl
+					results["Pair"] = tbl
+				end
+				results.top = tbl
+			else
+				key = "cry_Declare"..tostring(v.index)			
+				results[key] = {}
+			end
+		end
+	end
+	if not results["cry_Declare0"] then results["cry_Declare0"] = {} end
+	if not results["cry_Declare1"] then results["cry_Declare1"] = {} end
+	if not results["cry_Declare2"] then results["cry_Declare2"] = {} end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+for k, v in pairs(SMODS.PokerHands[key]) do
+'''
+position = "at"
+payload = '''
+for k, v in pairs(SMODS.PokerHands[key] or {}) do
 '''
 match_indent = true

@@ -8,7 +8,7 @@ if not Cryptid then
 end
 local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod is loaded, but the local variable will retain Cryptid's path
 Cryptid.path = mod_path
-Cryptid_config = SMODS.current_mod.config
+Cryptid_config = SMODS.current_mod.config or {} --is this nil check needed? idk but i saw crash reports related to this
 
 -- Lovely Patch Target, toggles being able to change gameset config. Here for mod support
 Cryptid_config.gameset_toggle = true
@@ -187,6 +187,71 @@ function SMODS.injectItems(...)
 			end
 		end
 	end
+	G.P_CENTERS.j_stencil.immutable = true
+	G.P_CENTERS.j_four_fingers.immutable = true
+	G.P_CENTERS.j_mime.immutable = true
+	G.P_CENTERS.j_ceremonial.immutable = true
+	G.P_CENTERS.j_marble.immutable = true
+	G.P_CENTERS.j_dusk.immutable = true
+	G.P_CENTERS.j_raised_fist.immutable = true
+	G.P_CENTERS.j_chaos.immutable = true
+	G.P_CENTERS.j_hack.immutable = true
+	G.P_CENTERS.j_pareidolia.immutable = true
+	G.P_CENTERS.j_supernova.immutable = true
+	G.P_CENTERS.j_space.immutable = true
+	G.P_CENTERS.j_dna.immutable = true
+	G.P_CENTERS.j_splash.immutable = true
+	G.P_CENTERS.j_sixth_sense.immutable = true
+	G.P_CENTERS.j_superposition.immutable = true
+	G.P_CENTERS.j_seance.immutable = true
+	G.P_CENTERS.j_riff_raff.immutable = true
+	G.P_CENTERS.j_shortcut.immutable = true
+	G.P_CENTERS.j_midas_mask.immutable = true
+	G.P_CENTERS.j_luchador.immutable = true
+	G.P_CENTERS.j_fortune_teller.immutable = true
+	G.P_CENTERS.j_diet_cola.immutable = true
+	G.P_CENTERS.j_mr_bones.immutable = true
+	G.P_CENTERS.j_sock_and_buskin.immutable = true
+	G.P_CENTERS.j_swashbuckler.immutable = true
+	G.P_CENTERS.j_certificate.immutable = true
+	G.P_CENTERS.j_smeared.immutable = true
+	G.P_CENTERS.j_ring_master.immutable = true
+	G.P_CENTERS.j_blueprint.immutable = true
+	G.P_CENTERS.j_oops.immutable = true
+	G.P_CENTERS.j_invisible.immutable = true
+	G.P_CENTERS.j_brainstorm.immutable = true
+	G.P_CENTERS.j_shoot_the_moon.immutable = true
+	G.P_CENTERS.j_cartomancer.immutable = true
+	G.P_CENTERS.j_astronomer.immutable = true
+	G.P_CENTERS.j_burnt.immutable = true
+	G.P_CENTERS.j_chicot.immutable = true
+	G.P_CENTERS.j_perkeo.immutable = true
+	G.P_CENTERS.j_hanging_chad.misprintize_caps = { extra = 40 }
+	G.P_CENTERS.c_high_priestess.misprintize_caps = { planets = 100 }
+	G.P_CENTERS.c_emperor.misprintize_caps = { tarots = 100 }
+	G.P_CENTERS.c_familiar.misprintize_caps = { extra = 100 }
+	G.P_CENTERS.c_grim.misprintize_caps = { extra = 100 }
+	G.P_CENTERS.c_incantation.misprintize_caps = { extra = 100 }
+	G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
+	G.P_CENTERS.c_cryptid.misprintize_caps = { extra = 100, max_highlighted = 100 }
+	G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
+	Cryptid.inject_pointer_aliases()
+
+	--this has to be here because the colors dont exist earlier then this
+	Cryptid.circus_rarities["rare"] = { rarity = 3, base_mult = 2, order = 1, colour = G.C.RARITY.Rare }
+	Cryptid.circus_rarities["epic"] = { rarity = "cry_epic", base_mult = 3, order = 2, colour = G.C.RARITY.cry_epic }
+	Cryptid.circus_rarities["legendary"] = { rarity = 4, base_mult = 4, order = 3, colour = G.C.RARITY.Legendary }
+	Cryptid.circus_rarities["exotic"] =
+		{ rarity = "cry_exotic", base_mult = 20, order = 4, colour = G.C.RARITY.cry_exotic }
+
+	Cryptid.reload_localization()
+end
+
+local old_repitions = SMODS.calculate_repetitions
+SMODS.calculate_repetitions = function(card, context, reps)
+	local reps = old_repitions(card, context, reps)
+	reps = reps or { 1 }
+	return reps
 end
 
 local cryptidConfigTab = function()

@@ -124,7 +124,7 @@ for i = 1, #G.GAME.current_round.cry_bonusvouchers do
 		local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
 			G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]],{bypass_discovery_center = true, bypass_discovery_ui = true})
 		card.shop_cry_bonusvoucher = i
-		Cryptid.misprintize(card)
+		Cryptid.manipulate(card)
 		if G.GAME.events.ev_cry_choco2 then
 			card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
 			card:set_cost()

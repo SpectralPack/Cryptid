@@ -449,9 +449,12 @@ local choco5 = { --bloodsucker
 			if context.destroying_card:is_suit("Hearts") or context.destroying_card:is_suit("Diamonds") then
 				if pseudorandom(pseudoseed("cry_choco_blood")) < G.GAME.probabilities.normal / 3 then
 					context.destroying_card.will_shatter = true
+					local destroying_card = context.destroying_card
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							context.destroying_card:start_dissolve()
+							if destroying_card then
+								destroying_card:start_dissolve()
+							end
 							return true
 						end,
 					}))
@@ -969,7 +972,7 @@ local candy_basket = {
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
-				number_format(math.floor(center.ability.extra.candies)),
+				number_format(math.floor(math.min(center.ability.immutable.max_spawn, center.ability.extra.candies))),
 				number_format(center.ability.extra.candy_mod),
 				center.ability.immutable.wins_needed,
 				number_format(
@@ -992,7 +995,7 @@ local blacklist = {
 	cost = 0,
 	atlas = "atlasspooky",
 	order = 136,
-	config = { extra = { blacklist = {} } },
+	config = { extra = { blacklist = 14 } },
 	blueprint_compat = false,
 	eternal_compat = false,
 	perishable_compat = false,
@@ -1003,13 +1006,13 @@ local blacklist = {
 		if context.joker_main then
 			local blacklist = false
 			for i = 1, #G.play.cards do
-				if G.play.cards[i]:get_id() == card.ability.extra.blacklist.id then
+				if G.play.cards[i]:get_id() == card.ability.extra.blacklist then
 					blacklist = true
 					break
 				end
 			end
 			for i = 1, #G.hand.cards do
-				if G.hand.cards[i]:get_id() == card.ability.extra.blacklist.id then
+				if G.hand.cards[i]:get_id() == card.ability.extra.blacklist then
 					blacklist = true
 					break
 				end
@@ -1024,13 +1027,13 @@ local blacklist = {
 				}
 			else
 				for i = 1, #G.discard.cards do
-					if G.discard.cards[i]:get_id() == card.ability.extra.blacklist.id then
+					if G.discard.cards[i]:get_id() == card.ability.extra.blacklist then
 						blacklist = true
 						break
 					end
 				end
 				for i = 1, #G.deck.cards do
-					if G.deck.cards[i]:get_id() == card.ability.extra.blacklist.id then
+					if G.deck.cards[i]:get_id() == card.ability.extra.blacklist then
 						blacklist = true
 						break
 					end
@@ -1056,11 +1059,20 @@ local blacklist = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.blacklist =
-			pseudorandom_element(SMODS.Ranks, pseudoseed("cry_blacklist" .. G.GAME.round_resets.ante))
+			pseudorandom_element(SMODS.Ranks, pseudoseed("cry_blacklist" .. G.GAME.round_resets.ante)).id
 	end,
 	loc_vars = function(self, info_queue, center)
 		return {
-			vars = { localize(center.ability.extra.blacklist and center.ability.extra.blacklist.key or "Ace", "ranks") },
+			vars = {
+				localize(
+					center.ability.extra.blacklist == 14 and "Ace"
+						or center.ability.extra.blacklist == 13 and "King"
+						or center.ability.extra.blacklist == 12 and "Queen"
+						or center.ability.extra.blacklist == 11 and "Jack"
+						or number_format(center.ability.extra.blacklist),
+					"ranks"
+				),
+			},
 		}
 	end,
 }
@@ -1183,6 +1195,103 @@ local possessed = {
 	no_sticker_sheet = true,
 	badge_colour = HEX("aaaaaa"),
 }
+
+local rotten_egg = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+		},
+	},
+	key = "rotten_egg",
+	pos = { x = 3, y = 3 },
+	config = {
+		extra = {
+			starting_money = 1,
+			lose_money = 1,
+			needed_money = 10,
+			left_money = 10,
+		},
+	},
+	rarity = "cry_cursed",
+	cost = 0,
+	order = 136.1, --gross but cryptid doesnt partition orderings and im not shifting everything
+	atlas = "atlasspooky",
+	blueprint_compat = false,
+	eternal_compat = false,
+	perishable_compat = false,
+	demicoloncompat = true,
+	no_dbl = true,
+	add_to_deck = function(self, card, from_debuff)
+		G.GAME.cry_rotten_amount = card.ability.extra.starting_money
+		for i, v in pairs(G.jokers.cards) do
+			v:set_cost()
+		end
+	end,
+	remove_from_deck = function()
+		G.GAME.cry_rotten_amount = nil
+		for i, v in pairs(G.jokers.cards) do
+			v:set_cost()
+		end
+	end,
+	calculate = function(self, card, context)
+		if
+			context.end_of_round
+			and not context.blueprint
+			and not context.individual
+			and not context.repetition
+			and not context.retrigger_joker
+		then
+			for i, v in pairs(G.jokers.cards) do
+				v.sell_cost = v.sell_cost - 1
+			end
+			return {
+				message = localize("k_downgraded_ex"),
+			}
+		end
+		if
+			context.selling_card
+			and context.card.ability.set == "Joker"
+			and context.card
+			and context.card.sell_cost ~= 0
+		then
+			card.ability.extra.left_money = card.ability.extra.left_money - context.card.sell_cost
+			if to_big(card.ability.extra.left_money) <= to_big(0) then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						card:start_dissolve()
+						return true
+					end,
+				}))
+			else
+				return {
+					message = number_format(card.ability.extra.needed_money - card.ability.extra.left_money)
+						.. "/"
+						.. number_format(card.ability.extra.needed_money),
+				}
+			end
+		end
+		if context.forcetrigger then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					card:start_dissolve()
+					return true
+				end,
+			}))
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.starting_money),
+				number_format(card.ability.extra.lose_money),
+				number_format(card.ability.extra.needed_money),
+				number_format(card.ability.extra.left_money),
+			},
+		}
+	end,
+}
+
 local spookydeck = {
 	object_type = "Back",
 	dependencies = {
@@ -1521,7 +1630,10 @@ local candy_buttons = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
+		-- The find_joker check in calculate_reroll_cost doesn't work if this is the only copy when added to deck (Too early)
+		G.GAME.reroll_limit_buffer = 1
 		calculate_reroll_cost(true)
+		G.GAME.reroll_limit_buffer = nil
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)
@@ -1556,16 +1668,12 @@ local jawbreaker = {
 				if G.jokers.cards[i] == card then
 					if i > 1 then
 						if not Card.no(G.jokers.cards[i - 1], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i - 1], function(card)
-								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
-							end)
+							Cryptid.manipulate(G.jokers.cards[i - 1], { value = 2 })
 						end
 					end
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(card)
-								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
-							end)
+							Cryptid.manipulate(G.jokers.cards[i + 1], { value = 2 })
 						end
 					end
 				end
@@ -1601,16 +1709,12 @@ local jawbreaker = {
 				if G.jokers.cards[i] == card then
 					if i > 1 then
 						if not Card.no(G.jokers.cards[i - 1], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i - 1], function(card)
-								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
-							end)
+							Cryptid.manipulate(G.jokers.cards[i - 1], { value = 2 })
 						end
 					end
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
-							Cryptid.with_deck_effects(G.jokers.cards[i + 1], function(card)
-								Cryptid.misprintize(card, { min = 2, max = 2 }, nil, true)
-							end)
+							Cryptid.manipulate(G.jokers.cards[i + 1], { value = 2 })
 						end
 					end
 				end
@@ -1688,9 +1792,10 @@ local brittle = {
 			and context.before
 			and not context.blueprint_card
 			and not context.retrigger_joker
+			and context.scoring_hand
 		then
 			local _card = context.scoring_hand[#context.scoring_hand]
-			if not _card.brittled then
+			if _card and not _card.brittled then
 				card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
 				local enhancement = pseudorandom_element({ "m_stone", "m_gold", "m_steel" }, pseudoseed("cry_brittle"))
 				_card.brittled = true
@@ -1966,6 +2071,94 @@ local wonka_bar = {
 		},
 	},
 }
+
+-- Buttercup
+-- Store items in shop
+local buttercup = {
+	object_type = "Joker",
+	key = "buttercup",
+	name = "cry-Buttercup",
+	pos = { x = 2, y = 3 },
+	config = { extra = { slots = 1 } },
+	rarity = "cry_candy",
+	cost = 3,
+	atlas = "atlasspooky",
+	blueprint_compat = false,
+	eternal_compat = false,
+	demicoloncompat = true,
+	no_dbl = true,
+	order = 147,
+	cry_credits = {
+		idea = { "Squiddy" },
+		art = { "lolxddj" },
+		code = { "#Guigui" },
+	},
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = { center.ability.extra.slots },
+		}
+	end,
+	add_to_deck = function(self, card, from_debuff)
+		if card.cry_storage == nil then
+			local storage_area_config = {
+				type = "play",
+				card_w = G.CARD_W,
+			}
+			card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
+		end
+		if G.GAME.next_shop_cards == nil then
+			G.GAME.next_shop_cards = {}
+		end
+	end,
+	calculate = function(self, card, context)
+		if card.cry_storage == nil then
+			local storage_area_config = {
+				type = "play",
+				card_w = G.CARD_W,
+			}
+			card.cry_storage = CardArea(card.T.x, 2, 1, 1, storage_area_config)
+		end
+		if context.selling_self and not context.blueprint and not context.forcetrigger then
+			if #card.cry_storage.cards > 0 then
+				for i, jok in ipairs(card.cry_storage.cards) do
+					jok.T.w = jok.T.orig.w
+					jok.T.h = jok.T.orig.h
+					G.GAME.next_shop_cards[#G.GAME.next_shop_cards + 1] = jok:save()
+					jok:remove()
+				end
+			end
+			card.cry_storage:remove()
+		end
+		if context.forcetrigger and #card.cry_storage.cards > 0 then
+			for i, jok in ipairs(card.cry_storage.cards) do
+				-- jok.T.w = jok.T.orig.w
+				-- jok.T.h = jok.T.orig.h
+				G.GAME.next_shop_cards[#G.GAME.next_shop_cards + 1] = jok:save()
+			end
+		end
+	end,
+	init = function()
+		local start_dissolveref = Card.start_dissolve
+		function Card:start_dissolve(...)
+			start_dissolveref(self, card)
+			if self.config.center.key == "j_cry_buttercup" then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for i, v in pairs((self.cry_storage or {}).cards or {}) do
+							v.states.visible = false
+							v:start_dissolve()
+						end
+						if self.cry_storage then
+							self.cry_storage:remove()
+						end
+						return true
+					end,
+				}))
+			end
+		end
+	end,
+}
+
 items = {
 	cotton_candy,
 	wrapped,
@@ -1987,6 +2180,7 @@ items = {
 	trick_or_treat,
 	candy_basket,
 	blacklist,
+	rotten_egg,
 	--ghost,
 	--possessed,
 	spookydeck,
@@ -1999,6 +2193,7 @@ items = {
 	monopoly_money,
 	candy_sticks,
 	wonka_bar,
+	buttercup,
 }
 return {
 	name = "Spooky",

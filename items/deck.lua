@@ -533,9 +533,7 @@ local glowing = {
 		if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
 			for i = 1, #G.jokers.cards do
 				if not Card.no(G.jokers.cards[i], "immutable", true) then
-					Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-						Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
-					end)
+					Cryptid.manipulate(G.jokers.cards[i], { value = 1.25 })
 				end
 			end
 		end
@@ -1080,9 +1078,7 @@ local antimatter = {
 					or skip
 				then
 					for i = 1, #G.jokers.cards do
-						Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-							Cryptid.misprintize(card, { min = 1.25, max = 1.25 }, nil, true)
-						end)
+						Cryptid.manipulate(G.jokers.cards[i], { value = 1.25 })
 					end
 				end
 				--Legendary Deck
@@ -1224,7 +1220,7 @@ local antimatter = {
 	unlocked = false,
 	check_for_unlock = function(self, args)
 		if args.type == "win_deck" then
-			if get_deck_win_stake("b_cry_blank") > 0 and get_deck_win_stake() >= 8 then
+			if get_deck_win_stake("b_cry_blank") >= 8 then
 				unlock_card(self)
 			end
 		end

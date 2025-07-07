@@ -765,7 +765,6 @@ local loopy = {
 	immutable = true,
 	rarity = 1,
 	cost = 4,
-	joker_gate = "Jolly Joker",
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
@@ -1468,7 +1467,7 @@ local biggestm = {
 			"Kailen",
 		},
 		art = {
-			"Kailen",
+			"Ein13",
 		},
 		code = {
 			"Kailen",

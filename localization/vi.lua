@@ -639,7 +639,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Tay Poker",
 				text = {
-					"Thêm 4 {C:attention}tay poker mới",
+					"Thêm 5 {C:attention}tay poker mới",
 					"và cho phép {C:attention}tay Thăng Thiên",
 				},
 			},
@@ -2912,6 +2912,14 @@ return {
 					"trên tay",
 				},
 			},
+			c_cry_meld = {
+				name = "Pha Trộn",
+				text = {
+					"Chọn một lá {C:attention}Joker{} hoặc",
+					"{C:attention}Lá bài thường{} để",
+					"trở thành {C:dark_edition}Hai Mặt",
+				},
+			},
 			c_cry_vacuum = {
 				name = "Chân Không",
 				text = {
@@ -3350,14 +3358,6 @@ return {
 				text = {
 					"Cường hoá {C:attention}#1#{} lá bài được chọn",
 					"thành một {C:attention}Lá Vang Vọng",
-				},
-			},
-			c_cry_meld = {
-				name = "Pha Trộn",
-				text = {
-					"Chọn một lá {C:attention}Joker{} hoặc",
-					"{C:attention}Lá bài thường{} để",
-					"trở thành {C:dark_edition}Hai Mặt",
 				},
 			},
 			c_cry_theblessing = {

@@ -42,15 +42,6 @@ end
 '''
 match_indent = true
 
-# Patch related crash
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if not initial then G.GAME.blind:debuff_card(self) end"
-position = "at"
-payload = "if not initial and G.GAME and G.GAME.blind then G.GAME.blind:debuff_card(self) end"
-match_indent = true
-
 # Draw midground layer
 [[patches]]
 [patches.pattern]
@@ -143,6 +134,12 @@ Cryptid.aliases = {}
 Cryptid.pointerblist = {}
 Cryptid.pointerblistrarity = {}
 Cryptid.mod_gameset_whitelist = {}
+
+Cryptid.pin_debuff = {}
+Cryptid.circus_rarities = {
+	--format {base_mult = ..., loc_key = ..., rarity=..., order=...}
+}
+
 function cry_format(...)
 	return ...
 end

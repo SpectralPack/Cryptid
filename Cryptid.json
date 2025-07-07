@@ -9,14 +9,17 @@
 	"priority": 114,
 	"badge_colour": "708b91",
 	"badge_text_colour": "FFFFFF",
-	"version": "0.5.7",
+	"version": "0.5.10~dev3",
 	"dependencies": [
 		"Talisman (>=2.2.0a)",
-		"Steamodded (>=1.0.0~BETA-0525b)"
+		"Steamodded (>=1.0.0~BETA-0614a)"
 	],
 	"conflicts": [
 		"Saturn",
 		"AntePreview (>= 2.0.0~0c16a) (<<3.0.0)",
 		"Cartomancer (<= 4.11)"
+	],
+	"provides": [
+		"Cryptlib"
 	]
 }

@@ -30,7 +30,7 @@ target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 '''
 match_indent = true
 
@@ -46,7 +46,7 @@ payload = '''
 G.GAME.pack_choices = ((self.ability.choose and self.ability.extra) and math.min(math.floor(self.ability.extra), self.ability.choose)) or 1
 if G.GAME.modifiers.cry_misprint_min then
     G.GAME.pack_size = self.ability.extra
-    if G.GAME.pack_size < 1 then G.GAME.pack_size = 1 end
+    if to_big(G.GAME.pack_size) < to_big(1) then G.GAME.pack_size = 1 end
     self.ability.extra = G.GAME.pack_size
     G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size), self.ability.choose)
     --G.GAME.pack_choices = math.min(math.floor(G.GAME.pack_size),cry_format(G.GAME.pack_choices * Cryptid.log_random(pseudoseed('cry_misprint_p'..G.GAME.round_resets.ante),G.GAME.modifiers.cry_misprint_min,G.GAME.modifiers.cry_misprint_max),"%.2f"))
@@ -56,7 +56,7 @@ if G.GAME.cry_oboe then
     G.GAME.pack_choices = G.GAME.pack_choices + G.GAME.cry_oboe
     G.GAME.cry_oboe = nil
 end
-if G.GAME.boostertag and G.GAME.boostertag > 0 then
+if G.GAME.boostertag and to_big(G.GAME.boostertag) > to_big(0) then
     self.ability.extra = self.ability.extra * 2
     G.GAME.pack_choices = G.GAME.pack_choices * 2
     G.GAME.boostertag = math.max(0, G.GAME.boostertag - 1)
@@ -82,6 +82,8 @@ G.GAME.pack_size = self.ability.extra
 '''
 match_indent = true
 
+#idk wtf is going on my head hurts
+#but this should fix it
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -91,7 +93,8 @@ if booster_obj and SMODS.Centers[booster_obj.key] then
 '''
 position = "before"
 payload = '''
-if self.ability.extra < 1 then self.ability.extra = 1 end
+self.ability.extra = to_number(self.ability.extra)
+if to_big(self.ability.extra) < to_big(1) then self.ability.extra = 1 end
 '''
 match_indent = true
 
@@ -102,7 +105,7 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -116,7 +119,7 @@ target = "tag.lua"
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "before"
 payload = '''
-Cryptid.misprintize(card)
+Cryptid.manipulate(card)
 if G.GAME.events.ev_cry_choco2 then
     card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
     card:set_cost()
@@ -301,9 +304,9 @@ position = "after"
 payload = '''
 if (self and self.ability and self.ability.extra_disp) then	-- redeeming through centers isn't misprinted
 	local self_disp = self.ability.extra_disp
-	local orig_disp = self.config.center.config.extra_disp
+	local orig_disp = self.config.center.config.extra_disp or 1
 	local self_extra = self.ability.extra
-	local orig_extra = self.config.center.config.extra
+	local orig_extra = self.config.center.config.extra or 1
 
 	local new_fac = self_disp / orig_disp
 	self.ability.extra = new_fac*orig_extra
@@ -519,6 +522,8 @@ target = "functions/common_events.lua"
 pattern = "if not strip_edition then "
 position = "before"
 payload = '''
+--misprintize table has to stay around
+--cause i literally cant fix this without it
 Cryptid.misprintize_tbl(
 				new_card.config.center_key,
 				new_card,

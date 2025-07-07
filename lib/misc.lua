@@ -187,6 +187,9 @@ function Cryptid.pluralize(str, vars)
 		if type(num) == "string" then
 			num = (Big and to_number(to_big(num))) or num
 		end
+		if not num then
+			num = 1
+		end
 		local plural = _table[1] -- default
 		local checks = { [1] = "=" } -- checks 1 by default
 		local checks1mod = false -- tracks if 1 was modified
@@ -217,6 +220,9 @@ function Cryptid.pluralize(str, vars)
 		table.sort(keys, function(a, b)
 			return a < b
 		end)
+		if not (tonumber(num) or is_number(num)) then
+			num = 1
+		end
 		for _, k in ipairs(keys) do
 			if fch(checks[k], "=") then
 				if to_big(math.abs(num - k)) < to_big(0.001) then
@@ -293,9 +299,11 @@ function Cryptid.with_deck_effects(card, func)
 	if not card.added_to_deck then
 		return func(card)
 	else
+		card.from_quantum = true
 		card:remove_from_deck(true)
 		local ret = func(card)
 		card:add_to_deck(true)
+		card.from_quantum = nil
 		return ret
 	end
 end
@@ -468,7 +476,7 @@ function Cryptid.bonus_voucher_mod(mod)
 					{ bypass_discovery_center = true, bypass_discovery_ui = true }
 				)
 				card.shop_cry_bonusvoucher = #curr_bonus
-				Cryptid.misprintize(card)
+				Cryptid.manipulate(card)
 				if G.GAME.events.ev_cry_choco2 then
 					card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
 					card:set_cost()
@@ -518,9 +526,32 @@ end
 Cryptid.big_num_blacklist = {
 	["j_cry_fractal"] = true,
 	["j_cry_wonka_bar"] = true,
+	["j_cry_oldcandy"] = true,
+	["j_cry_negative"] = true,
+
+	["c_magician"] = true,
+	["c_empress"] = true,
+	["c_heirophant"] = true,
+	["c_lovers"] = true,
+	["c_chariot"] = true,
+	["c_justice"] = true,
+	["c_strength"] = true,
+	["c_hanged_man"] = true,
+	["c_death"] = true,
+	["c_devil"] = true,
+	["c_tower"] = true,
+	["c_star"] = true,
+	["c_moon"] = true,
+	["c_sun"] = true,
+	["c_world"] = true,
+	["c_cry_eclipse"] = true,
+	["c_cry_seraph"] = true,
+	["c_cry_instability"] = true,
+
 	["v_cry_stickyhand"] = true,
 	["v_cry_grapplinghook"] = true,
 	["v_cry_hyperspacetether"] = true,
+
 	-- Add your Jokers here if you *don't* want to have it's numbers go into BigNum
 	-- FORMAT: <Joker Key ("j_cry_oil_lamp")> = true,
 	-- TARGET: BigNum Black List
@@ -568,6 +599,7 @@ function Cryptid.safe_get(t, ...)
 	end
 	return current
 end
+
 --Functions used by boss blinds
 function Blind:cry_ante_base_mod(dt)
 	if not self.disabled then
@@ -578,6 +610,7 @@ function Blind:cry_ante_base_mod(dt)
 	end
 	return 0
 end
+
 function Blind:cry_round_base_mod(dt)
 	if not self.disabled then
 		local obj = self.config.blind
@@ -587,15 +620,20 @@ function Blind:cry_round_base_mod(dt)
 	end
 	return 1
 end
+
 function Blind:cry_cap_score(score)
 	if not self.disabled then
 		local obj = self.config.blind
+		if obj.cry_modify_score and type(obj.cry_modify_score) == "function" then
+			score = obj:cry_modify_score(score)
+		end
 		if obj.cry_cap_score and type(obj.cry_cap_score) == "function" then
 			return obj:cry_cap_score(score)
 		end
 	end
 	return score
 end
+
 function Blind:cry_after_play()
 	if not self.disabled then
 		local obj = self.config.blind
@@ -604,6 +642,7 @@ function Blind:cry_after_play()
 		end
 	end
 end
+
 function Blind:cry_before_play()
 	if not self.disabled then
 		local obj = self.config.blind
@@ -612,6 +651,7 @@ function Blind:cry_before_play()
 		end
 	end
 end
+
 --The decision's ability to show a booster pack
 function Blind:cry_before_cash()
 	if not self.disabled then
@@ -621,6 +661,7 @@ function Blind:cry_before_cash()
 		end
 	end
 end
+
 function Blind:cry_calc_ante_gain()
 	if G.GAME.modifiers.cry_spooky then --here is the best place to check when spooky should apply
 		local card
@@ -641,6 +682,7 @@ function Blind:cry_calc_ante_gain()
 	end
 	return 1
 end
+
 function Cryptid.enhanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
@@ -671,6 +713,7 @@ function Cryptid.enhanced_deck_info(deck)
 	end
 	return ret.edition, ret.enhancement, ret.sticker, ret.suit, ret.seal
 end
+
 function Cryptid.post_process(center)
 	if center.pools and center.pools.M then
 		local vc = center.calculate
@@ -695,8 +738,11 @@ end
 -- For resetting localization on the fly for family friendly toggle
 function Cryptid.reload_localization()
 	SMODS.handle_loc_file(Cryptid.path)
+	Cryptid.handle_other_localizations()
 	return init_localization()
 end
+-- Purely for crossmod purposes
+function Cryptid.handle_other_localizations() end
 
 -- Checks if all jokers in shop will have editions (via Curate, Edition Decks, etc.)
 -- Will cause edition tags to Nope!
@@ -762,6 +808,7 @@ function Cryptid.cry_enhancement_has_specific_suit(card)
 	end
 	return false
 end
+
 function Cryptid.cry_enhancement_get_specific_suit(card)
 	for k, _ in pairs(SMODS.get_enhancements(card)) do
 		if G.P_CENTERS[k].specific_suit then
@@ -779,6 +826,7 @@ function Cryptid.cry_enhancement_has_specific_rank(card)
 	end
 	return false
 end
+
 function Cryptid.cry_enhancement_get_specific_rank(card)
 	for k, _ in pairs(SMODS.get_enhancements(card)) do
 		if G.P_CENTERS[k].specific_rank then
@@ -787,6 +835,7 @@ function Cryptid.cry_enhancement_get_specific_rank(card)
 	end
 	return nil
 end
+
 --For better durability (at the expense of performance), this finds the rank ID of a custom rank (such as abstract).
 function Cryptid.cry_rankname_to_id(rankname)
 	for i, v in pairs(SMODS.Rank.obj_buffer) do
@@ -796,7 +845,82 @@ function Cryptid.cry_rankname_to_id(rankname)
 	end
 	return nil
 end
+-- for buttercup
+function G.FUNCS.can_store_card(e)
+	-- get shop highlighted
+	-- only from the jokers spot
+	local highlighted_shop_cards = {}
+	local areas_to_check = {
+		shop_jokers = G.shop_jokers,
+		shop_vouchers = G.shop_vouchers,
+		shop_booster = G.shop_booster,
+	}
+	local jok = e.config.ref_table
 
+	for key, value in pairs(areas_to_check) do
+		if value == nil then
+			e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+			e.config.button = nil
+			return
+		elseif #value.highlighted == 1 and #highlighted_shop_cards == 0 then
+			highlighted_shop_cards[1] = value.highlighted[1]
+		end
+	end
+	if #highlighted_shop_cards == 1 and jok:can_use_storage() then
+		e.config.colour = G.C.BLUE
+		e.config.button = "store_card"
+	else
+		e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+		e.config.button = nil
+	end
+end
+
+function G.FUNCS.store_card(e)
+	G.E_MANAGER:add_event(Event({
+		trigger = "after",
+		delay = 0.1,
+		func = function()
+			local areas_to_check = {
+				shop_jokers = G.shop_jokers,
+				shop_vouchers = G.shop_vouchers,
+				shop_booster = G.shop_booster,
+			}
+			local this_card = e.config.ref_table
+			-- This doesn't take into account the possibility that multiple cards might be selected in different areas
+			-- but can_store_card already does that for us, so who cares tbh
+			for shop_name, shop_area in pairs(areas_to_check) do
+				if #shop_area.highlighted == 1 then
+					local new_card = shop_area.highlighted[1]
+					new_card.T.orig = { w = new_card.T.w, h = new_card.T.h }
+					new_card.T.w = new_card.T.w * 0.5
+					new_card.T.h = new_card.T.h * 0.5
+					new_card.cry_from_shop = shop_name
+					if new_card.children.price then
+						new_card.children.price:remove()
+					end
+					new_card.children.price = nil
+					if new_card.children.buy_button then
+						new_card.children.buy_button:remove()
+					end
+					new_card.children.buy_button = nil
+					shop_area:remove_card(new_card)
+					this_card.cry_storage:emplace(new_card)
+				end
+			end
+			return true
+		end,
+	}))
+end
+
+function Card:can_use_storage()
+	if self.cry_storage ~= nil then
+		return #self.cry_storage.cards < self.ability.extra.slots
+	elseif self.config.center.key == "j_cry_buttercup" then -- "where did my fucking storage go"
+		sendInfoMessage("creating missing card area")
+		self.cry_storage = CardArea(0.5, 0.5, 1, 1, storage_area_config)
+	end
+	return false
+end
 function Cryptid.reset_to_none()
 	update_hand_text({ delay = 0 }, {
 		mult = Cryptid.ascend(G.GAME.hands["cry_None"].mult),
@@ -804,4 +928,511 @@ function Cryptid.reset_to_none()
 		level = G.GAME.hands["cry_None"].level,
 		handname = localize("cry_None", "poker_hands"),
 	})
+end
+
+function Card:is_food()
+	--you cant really check if vanilla jokers are in a pool because its hardcoded
+	--so i have to hardcode it here too for the starfruit unlock
+	local food = {
+		j_gros_michel = true,
+		j_egg = true,
+		j_ice_cream = true,
+		j_cavendish = true,
+		j_turtle_bean = true,
+		j_diet_cola = true,
+		j_popcorn = true,
+		j_ramen = true,
+		j_selzer = true,
+	}
+	if food[self.config.center.key] or Cryptid.safe_get(self.config.center, "pools", "Food") then
+		return true
+	end
+end
+
+function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)
+	ignore.checked = true
+	blacklist = blacklist or function()
+		return true
+	end
+	local cards = {}
+	for i, area in pairs(areas) do
+		if area.cards then
+			for i2, card in pairs(area.cards) do
+				if
+					card ~= ignore
+					and blacklist(card)
+					and (card.highlighted or G.cry_force_use)
+					and not card.checked
+				then
+					cards[#cards + 1] = card
+					card.checked = true
+				end
+			end
+		end
+	end
+	for i, v in ipairs(cards) do
+		v.checked = nil
+	end
+	if (#cards >= min and #cards <= max) or not G.cry_force_use then
+		ignore.checked = nil
+		return cards
+	else
+		for i, v in pairs(cards) do
+			v.f_use_order = i
+		end
+		pseudoshuffle(cards, pseudoseed("forcehighlight" or seed))
+		local actual = {}
+		for i = 1, max do
+			if cards[i] and not cards[i].checked and actual ~= ignore then
+				actual[#actual + 1] = cards[i]
+			end
+		end
+		table.sort(actual, function(a, b)
+			return a.f_use_order < b.f_use_order
+		end)
+		for i, v in pairs(cards) do
+			v.f_use_order = nil
+		end
+		ignore.checked = nil
+		return actual
+	end
+	return {}
+end
+
+function Cryptid.table_merge(t1, t2)
+	local tbl = {}
+	for i, v in pairs(t1) do
+		tbl[#tbl + 1] = v
+	end
+	for i, v in pairs(t2) do
+		tbl[#tbl + 1] = v
+	end
+	return tbl
+end
+
+function Cryptid.get_circus_description()
+	local desc = {}
+	local ind = 1
+	local extra_rarities = {}
+	for i, v in pairs(Cryptid.circus_rarities) do
+		if not v.hidden then
+			extra_rarities[#extra_rarities + 1] = v
+		end
+	end
+	table.sort(extra_rarities, function(a, b)
+		return a.order < b.order
+	end)
+	for i, v in pairs(extra_rarities) do
+		local rarity = v.rarity
+		rarity = localize(({
+			[1] = "k_common",
+			[2] = "k_uncommon",
+			[3] = "k_rare",
+			[4] = "k_legendary",
+		})[rarity] or "k_" .. rarity)
+		local orig = localize("cry_circus_generic")
+		orig = string.gsub(orig, "#1#", ind)
+		orig = string.gsub(orig, "#2#", rarity)
+		orig = string.gsub(orig, "#3#", "#" .. tostring(ind) .. "#")
+		desc[#desc + 1] = orig
+		ind = ind + 1
+	end
+	return desc
+end
+
+function Cryptid.add_circus_rarity(rarity, dontreload)
+	Cryptid.circus_rarities[rarity.rarity] = rarity
+	if not dontreload then
+		Cryptid.reload_localization()
+	end
+end
+
+function Cryptid.get_paved_joker()
+	if G.hand then
+		local total = 0
+		for i, v in pairs(SMODS.find_card("j_cry_paved_joker")) do
+			total = total + v.ability.extra
+		end
+		local stones = 0
+		for i, v in pairs(G.hand.highlighted) do
+			if v.config.center.key == "m_stone" then
+				stones = stones + 1
+			end
+		end
+		for i, v in pairs(G.play.cards) do
+			if v.config.center.key == "m_stone" then
+				stones = stones + 1
+			end
+		end
+		total = math.min(stones, total)
+		return total
+	end
+	return 0
+end
+
+function Card:has_stickers()
+	for i, v in pairs(SMODS.Sticker.obj_table) do
+		if self.ability[i] then
+			return true
+		end
+	end
+end
+function Card:remove_random_sticker(seed)
+	local s = {}
+	for i, v in pairs(SMODS.Sticker.obj_table) do
+		if not v.hidden and i ~= "cry_absolute" and self.ability[i] then
+			s[#s + 1] = i
+		end
+	end
+	if #s > 0 then
+		local sticker = pseudorandom_element(s, pseudoseed(seed))
+		self.ability[sticker] = nil
+		if sticker == "perishable" then
+			self.ability.perish_tally = nil
+		end
+	end
+end
+
+function create_UIBox_class()
+	return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Enhanced, { 4, 4 }, {
+		no_materialize = true,
+		snap_back = true,
+		h_mod = 1.03,
+		--infotip = localize('ml_edition_seal_enhancement_explanation'),
+		hide_single_page = true,
+		back_func = "exit_overlay_menu_code",
+	})
+end
+
+function create_UIBox_variable_code()
+	local cards = {}
+	local ranks = {}
+	for i, v in pairs(SMODS.Ranks) do
+		cards[#cards + 1] = G.P_CENTERS.c_base
+		ranks[#ranks + 1] = i
+	end
+	table.sort(ranks, function(a, b)
+		return SMODS.Ranks[a].id < SMODS.Ranks[b].id
+	end)
+	return SMODS.card_collection_UIBox(cards, { 5, 5, 5 }, {
+		no_materialize = true,
+		snap_back = true,
+		h_mod = 1.03,
+		--infotip = localize('ml_edition_seal_enhancement_explanation'),
+		hide_single_page = true,
+		back_func = "exit_overlay_menu_code",
+		modify_card = function(card, center, i, j)
+			SMODS.change_base(card, "Spades", ranks[(j - 1) * 5 + i])
+		end,
+	})
+end
+
+function create_UIBox_exploit()
+	local cards = {}
+	local ranks = {}
+	for i, v in pairs(G.P_CENTER_POOLS.Planet) do
+		if v.config.handname then
+			cards[#cards + 1] = v
+		end
+	end
+	table.sort(ranks, function(a, b)
+		return G.GAME.hands[a.config.handname].order < G.GAME.hands[b.config.handname]
+	end)
+	return SMODS.card_collection_UIBox(cards, { 5, 5, 5 }, {
+		no_materialize = true,
+		snap_back = true,
+		h_mod = 1.03,
+		--infotip = localize('ml_edition_seal_enhancement_explanation'),
+		hide_single_page = true,
+		back_func = "exit_overlay_menu_code",
+	})
+end
+
+G.FUNCS.exit_overlay_menu_code = function(e)
+	G.FUNCS.exit_overlay_menu(e)
+	G.GAME.USING_CLASS = nil
+	G.GAME.USING_CODE = nil
+	G.GAME.USING_VARIABLE = nil
+	G.GAME.USING_EXPLOIT_HAND = nil
+	G.GAME.USING_EXPLOIT = nil
+	G.GAME.USING_POINTER = nil
+	G.GAME.POINTER_SUBMENU = nil
+	G.GAME.POINTER_PLAYING = nil
+	G.GAME.POINTER_COLLECTION = nil
+	if
+		G.GAME.CODE_DESTROY_CARD
+		and G.GAME.CODE_DESTROY_CARD.ability
+		and G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse
+	then
+		G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse - 1
+		G.GAME.CODE_DESTROY_CARD = nil
+	end
+end
+
+function G.UIDEF.exploit_menu()
+	return create_UIBox_generic_options({
+		contents = {
+			create_tabs({
+				tabs = {
+					{
+						label = localize("b_poker_hands"),
+						chosen = true,
+						tab_definition_function = create_UIBox_current_hands_exploit,
+					},
+				},
+				tab_h = 8,
+				snap_to_nav = true,
+			}),
+		},
+	})
+end
+
+function create_UIBox_current_hands_exploit(simple)
+	local ref = create_UIBox_current_hand_row
+	local ret = create_UIBox_current_hands(simple)
+	create_UIBox_current_hand_row = ref
+	return ret
+end
+
+local htref = create_UIBox_hand_tip
+function create_UIBox_hand_tip(handname)
+	if G.GAME.USING_EXPLOIT then
+		G.GAME.USING_EXPLOIT_HAND = handname
+	end
+	return htref(handname)
+end
+
+local lcpref = Controller.L_cursor_press
+function Controller:L_cursor_press(x, y)
+	lcpref(self, x, y)
+	if G and G.GAME and G.GAME.hands and G.GAME.USING_EXPLOIT_HAND then
+		if
+			G.CONTROLLER.cursor_hover
+			and G.CONTROLLER.cursor_hover.target
+			and G.CONTROLLER.cursor_hover.target.config
+			and G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip
+			and G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler
+			and G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler.args
+			and G.GAME.hands[G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler.args]
+		then
+			if G.GAME.CODE_DESTROY_CARD then
+				G.GAME.CODE_DESTROY_CARD:start_dissolve()
+				G.GAME.CODE_DESTROY_CARD = nil
+			end
+			G.GAME.cry_exploit_override = G.GAME.USING_EXPLOIT_HAND
+			G.FUNCS.exit_overlay_menu_code()
+		end
+	end
+end
+
+function create_UIBox_pointer_rank()
+	G.GAME.POINTER_SUBMENU = "Rank"
+	G.GAME.POINTER_PLAYING = {}
+	local cards = {}
+	local ranks = {}
+	for i, v in pairs(SMODS.Ranks) do
+		cards[#cards + 1] = G.P_CENTERS.c_base
+		ranks[#ranks + 1] = i
+	end
+	table.sort(ranks, function(a, b)
+		return SMODS.Ranks[a].id < SMODS.Ranks[b].id
+	end)
+	return SMODS.card_collection_UIBox(cards, { 5, 5, 5 }, {
+		no_materialize = true,
+		snap_back = true,
+		h_mod = 1.03,
+		--infotip = localize('ml_edition_seal_enhancement_explanation'),
+		hide_single_page = true,
+		back_func = "your_collection",
+		modify_card = function(card, center, i, j)
+			SMODS.change_base(card, "Spades", ranks[(j - 1) * 5 + i])
+			if
+				center.hidden
+				or center.no_noe
+				or center.no_pointer
+				or center.no_code
+				or center.no_variable
+				or center.no_class
+			then
+				card.deuff = true
+			end
+		end,
+	})
+end
+
+function create_UIBox_pointer_suit()
+	G.GAME.POINTER_SUBMENU = "Suit"
+	local cards = {}
+	local suits = {}
+	for i, v in pairs(SMODS.Suits) do
+		cards[#cards + 1] = G.P_CENTERS.c_base
+		suits[#suits + 1] = i
+	end
+	table.sort(suits, function(a, b)
+		return SMODS.Suits[a].suit_nominal < SMODS.Suits[b].suit_nominal
+	end)
+	return SMODS.card_collection_UIBox(cards, { 4, 4, 4 }, {
+		no_materialize = true,
+		snap_back = true,
+		h_mod = 1.03,
+		--infotip = localize('ml_edition_seal_enhancement_explanation'),
+		hide_single_page = true,
+		back_func = "your_collection",
+		modify_card = function(card, center, i, j)
+			SMODS.change_base(card, suits[(j - 1) * 4 + i], G.GAME.POINTER_PLAYING.rank)
+			if
+				center.hidden
+				or center.no_noe
+				or center.no_pointer
+				or center.no_code
+				or center.no_variable
+				or center.no_class
+			then
+				card.deuff = true
+			end
+		end,
+	})
+end
+
+function create_UIBox_pointer_enhancement()
+	G.GAME.POINTER_SUBMENU = "Enhancement"
+	return create_UIBox_your_collection_enhancements_pointer()
+end
+
+function create_UIBox_pointer_edition()
+	G.GAME.POINTER_SUBMENU = "Edition"
+	return create_UIBox_your_collection_editions_pointer()
+end
+
+function create_UIBox_pointer_seal()
+	G.GAME.POINTER_SUBMENU = "Seal"
+	return create_UIBox_your_collection_seals_pointer()
+end
+
+G.FUNCS.your_collection_create_card_rank = function(e)
+	G.SETTINGS.paused = true
+	G.FUNCS.overlay_menu({
+		definition = create_UIBox_pointer_rank(),
+	})
+end
+
+create_UIBox_your_collection_enhancements_pointer = function()
+	local cards = {
+		G.P_CENTERS.c_base,
+	}
+	for i, v in pairs(G.P_CENTER_POOLS.Enhanced) do
+		cards[#cards + 1] = v
+	end
+	return SMODS.card_collection_UIBox(cards, { 4, 4 }, {
+		no_materialize = true,
+		snap_back = true,
+		h_mod = 1.03,
+		hide_single_page = true,
+		modify_card = function(card, center)
+			SMODS.change_base(card, G.GAME.POINTER_PLAYING.suit, G.GAME.POINTER_PLAYING.rank)
+			if
+				center.hidden
+				or center.no_noe
+				or center.no_pointer
+				or center.no_code
+				or center.no_variable
+				or center.no_class
+			then
+				card.deuff = true
+			end
+		end,
+	})
+end
+
+create_UIBox_your_collection_editions_pointer = function()
+	return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Edition, { 5, 5 }, {
+		snap_back = true,
+		h_mod = 1.03,
+		hide_single_page = true,
+		collapse_single_page = true,
+		modify_card = function(card, center)
+			if center.discovered then
+				card:set_edition(center.key, true, true)
+				SMODS.change_base(card, G.GAME.POINTER_PLAYING.suit, G.GAME.POINTER_PLAYING.rank)
+				card:set_ability(G.P_CENTERS[G.GAME.POINTER_PLAYING.center])
+				if
+					center.hidden
+					or center.no_noe
+					or center.no_pointer
+					or center.no_code
+					or center.no_variable
+					or center.no_class
+				then
+					card.deuff = true
+				end
+			end
+		end,
+	})
+end
+
+create_UIBox_your_collection_seals_pointer = function()
+	local cards = {
+		{ key = nil },
+	}
+	for i, v in pairs(G.P_CENTER_POOLS.Seal) do
+		cards[#cards + 1] = v
+	end
+	return SMODS.card_collection_UIBox(cards, { 5, 5 }, {
+		snap_back = true,
+		hide_single_page = true,
+		collapse_single_page = true,
+		center = "c_base",
+		h_mod = 1.03,
+		modify_card = function(card, center)
+			card:set_seal(center.key, true)
+			SMODS.change_base(card, G.GAME.POINTER_PLAYING.suit, G.GAME.POINTER_PLAYING.rank)
+			card:set_ability(G.P_CENTERS[G.GAME.POINTER_PLAYING.center])
+			card:set_edition(G.GAME.POINTER_PLAYING.edition, true, true)
+			if
+				center.hidden
+				or center.no_noe
+				or center.no_pointer
+				or center.no_code
+				or center.no_variable
+				or center.no_class
+			then
+				card.deuff = true
+			end
+		end,
+	})
+end
+
+function Cryptid.declare_hand_ascended_counter(hand, declarehand)
+	local total = 0
+	for i, v in pairs(declarehand.declare_cards or {}) do
+		local how_many_fit = 0
+		local suit
+		local rank
+		for i2, v2 in pairs(hand) do
+			if not v2.marked then
+				if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then
+					rank = true
+				end
+				if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then
+					suit = true
+				end
+				if not (suit and rank) then
+					suit = false
+					rank = false
+				end
+				if suit and rank then
+					how_many_fit = how_many_fit + 1
+					v2.marked = true
+				end
+			end
+		end
+		if not rank or not suit then
+			how_many_fit = 0
+		end
+		total = total + how_many_fit
+	end
+	for i2, v2 in pairs(hand) do
+		v2.marked = nil
+	end
+	return total
 end

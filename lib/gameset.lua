@@ -562,7 +562,9 @@ function Cryptid.gameset(card, center)
 		if center.tag and center.tag.key then --dumb fix for tags
 			center = center.tag
 		else
-			print("Could not find key for center: " .. tprint(center))
+			if false then
+				print("Could not find key for center: " .. tprint(center))
+			end
 			return G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline"
 		end
 	end
@@ -1122,10 +1124,24 @@ function Cryptid.update_obj_registry(m, force_enable)
 				if en == true then
 					if v.cry_disabled then
 						v:enable()
+						if v.key == "set_cry_poker_hand_stuff" then
+							G.PROFILES[G.SETTINGS.profile].cry_none = Cryptid.safe_get(
+								G.PROFILES,
+								G.SETTINGS.profile,
+								"cry_none2"
+							) or nil
+							G.PROFILES[G.SETTINGS.profile].cry_none2 = nil
+						end
 					end
 				else
 					if not v.cry_disabled then
 						v:_disable(en)
+						if v.key == "set_cry_poker_hand_stuff" and G.PROFILES[G.SETTINGS.profile].cry_none then
+							--Remove the none flag if poker hands are disabled because leaving it on can leave to softlocks
+							G.PROFILES[G.SETTINGS.profile].cry_none2 =
+								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_none")
+							G.PROFILES[G.SETTINGS.profile].cry_none = nil
+						end
 					end
 				end
 			end

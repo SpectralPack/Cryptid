@@ -3,23 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = -1
 
-# hi it's me toneblock and i'm being stupid again! (Game:update inject)
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''if G.FILE_HANDLER and G.FILE_HANDLER and G.FILE_HANDLER.update_queued and ('''
-position = "before"
-payload = '''
-if not Cryptid.member_count_delay then Cryptid.member_count_delay = 0 end
-if (Cryptid.member_count_delay > 5) or not Cryptid.member_count then	-- it doesn't need to update this frequently? but it also doesn't need to be higher tbh...
-	if Cryptid.update_member_count then Cryptid.update_member_count() end	-- i honestly hate nil checks like this, wish there was a shorthand
-	Cryptid.member_count_delay = 0
-else
-	Cryptid.member_count_delay = Cryptid.member_count_delay + dt
-end
-'''
-match_indent = true
-
 # call Cryptid.update_member_count() whenever the collection is opened to ensure it updates properly on title collection if it can (better than running it on loc_vars)
 # it's not computationally intense at all, so whatever
 [[patches]]
