@@ -416,6 +416,22 @@ return {
 					"Joker werden nicht ausgelöst",
 				},
 			},
+			bl_cry_chromatic = {
+				name = "Die Chromatik",
+				text = {
+					"Punktzahl wird",
+					"subtrahiert bei",
+					"ungerader Anzahl von Händen"
+				},
+			},
+			bl_cry_landlord = {
+				name = "Der Vermieter",
+				text = {
+					"Fuegt Gemietet einem",
+					"zufälligen Joker hinzu",
+					"wenn Hand gespielt wird"
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pinke Schleife",
 				text = {
@@ -743,6 +759,15 @@ return {
 				text = {
 					"Ende momentanen Nicht-Boss {C:cry_code}Blind{}",
 					"{C:cry_code}ohne{} Preisgeld zu bekommen",
+				},
+			},
+			c_cry_declare = {
+				name = "://DECLARE",
+				text = {
+					"Die {C:attention}aktuell{} gewählten Spielkarten",
+					"werden zu einer {C:cry_code}neuen{} Pokerhand, welche",
+					"gewertet wird, als würde sie ein {C:attention}#1#{} enthalten",
+					"Es können bis zu {C:attention}3{} {C:inactive}[#2#]{} Hände erzeugt werden"
 				},
 			},
 		},
@@ -1114,6 +1139,16 @@ return {
 					"setze {C:chips}Chips{} und {C:mult}Mult{} zu 0",
 					"{C:red,E:2}zerstört sich selbst{} wenn kein {C:attention}#1#{} im Deck ist",
 					"{C:inactive,s:0.8}Rang ändert sich nicht",
+				},
+			},
+			j_cry_rotten_egg = {
+				name = "Faules Ei",
+				text = {
+					"Setzt bei Erhalt den Verkaufswert",
+					"aller aktueller und zukünfitger Joker auf {C:attention}$#1#{}",
+					"Reduziert den Verkaufswert aller {C:attention}Joker{} um {C:attention}$#2#{}",
+					"am Ende der Runde, nach Erhalt von {C:attention}$#3#{} {C:inactive}[#4#]{}",
+					"durch den Verkauf von {C:attention}Jokern{}, {C:red}Zerstört sich selbst{}"
 				},
 			},
 			j_cry_blender = {
@@ -3235,6 +3270,16 @@ return {
 					"und {C:attention}#3#{}",
 				},
 			},
+			c_cry_voxel = {
+				name = "Voxel",
+				text = {
+					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+					"Aufwertung für",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"und {C:attention}#3#{}",
+				},
+			},
 		},
 		Sleeve = {
 			sleeve_cry_beige_sleeve = {
@@ -3944,6 +3989,30 @@ return {
 					"Gibt {C:attention}#1#{} Kopien des",
 					"als nächstes erhaltenen {C:attention}Tags",
 					"{s:0.8,C:inactive}Kopierende Tags ausgenommen",
+				},
+			},
+			tag_cry_clone = {
+				name = "Klon-Tag",
+				text = {
+					"Gegenstände im Shop kosten {C:attention}X#1#{}",
+					"so viel, Erhalte eine {C:attention}Kopie{}",
+					"der als nächstes gekauften Karte"
+				},
+			},
+			tag_cry_lens = {
+				name = "Linsen-Tag",
+				text = {
+					"Füge {C:dark_edition}Negativ{}",
+					"zu {C:attention}#1#{} zufälligen",
+					"Verbrauchsgegen#<ständen,stand>1# hinzu"
+				},
+			},
+			tag_cry_palette_cleanser = { --beautiful phrase that unfortunately doesnt have a german equivalent :(
+				name = "Reinigungs-Tag",
+				text = {
+					"Entfernt einen {C:attention}zufälligen{}",
+					"Sticker von einem {C:attention}zufälligen{}",
+					"Joker oder Spielkarte"
 				},
 			},
 		},
@@ -4795,6 +4864,14 @@ return {
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "Das Ganze Deck" or "Das Ganze Verfickte Deck",
 			["cry-Cluster Bulwark"] = "Clusterwark",
 			["cry_None"] = "Nichts",
+
+			["cry_Declare0"] = { "Wird immer als Straight gewertet" },
+			["cry_Declare1"] = { "Wird immer als Flush gewertet" },
+			["cry_Declare2"] = { "Wird immer als Full House gewertet" },
+
+			["cry_Declare0_suitless"] = { "Wird immer als Straight gewertet","Hand benötigt keine bestimmten Farben" },
+			["cry_Declare1_suitless"] = { "Wird immer als Flush gewertet","Hand benötigt keine bestimmten Farben" },
+			["cry_Declare2_suitless"] = { "Wird immer als Full House gewertet","Hand benötigt keine bestimmten Farben" },
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -4960,6 +5037,7 @@ return {
 			b_code_cards = "Code Karten",
 			b_unique_cards = "Einzigartige Karten",
 			b_pull = "PULL",
+			b_playing_cards = "Spielkarten",
 			cry_hooked_ex = "Verhackt!",
 			k_end_blind = "Beende Blind",
 			k_cry_shiny = "Shiny",
@@ -4976,6 +5054,11 @@ return {
 			cry_code_create_previous = "VORHERIGES ERSTELLEN",
 			cry_code_execute = "AUSFÜHREN",
 			cry_code_cancel = "ABBRECHEN",
+			cry_code_enter_hand = "NAME DER POKERHAND EINGEBEN",
+			cry_code_with_suits = "INKLUSIVE FARBE",
+			cry_code_without_suits = "IGNORIERE FARBE",
+			cry_code_suitless = "Hand benötigt keine bestimmte Farbe",
+			cry_code_empty = "[Declare Hand]", --TODO context?
 			cry_code_exit = "SCHLIESSEN",
 			cry_code_antevoucher = "Nächster Boss Blind and Gutschein",
 			cry_code_nextjokers = "Nächste Joker im Shop",
@@ -5022,6 +5105,8 @@ return {
 			cry_exotic = "Exotisch",
 			cry_candy = "Süßigkeit",
 			cry_cursed = "Verflucht",
+
+			k_downgraded_ex = "Downgraded!",
 
 			k_planet_disc = "Kreisstellare Scheibe",
 			k_planet_satellite = "Natürliche Satelliten",
