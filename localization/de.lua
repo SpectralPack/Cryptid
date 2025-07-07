@@ -408,6 +408,14 @@ return {
 					"pro $#1# wenn ausgewählt",
 				},
 			},
+			bl_cry_repulsor = {
+				name = "Der Abstoßer",
+				text = {
+					"Löse den Joker ganz rechts und",
+					"ganz links erneut aus, alle anderen",
+					"Joker werden nicht ausgelöst",
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pinke Schleife",
 				text = {
@@ -678,9 +686,10 @@ return {
 			},
 			c_cry_quantify = {
 				name = "://QUANTIFY",
-				text = { -- "{C:cry_code}J{C:cry_exotic}o{C:legendary}k{C:cry_epic}e{C:cry_candy}r{C:rare}i{C:uncommon}z{C:common}e{C:dark_edition}!{} an object", --o.o
-					"Kommt in einem",
-					"zukünftigen {C:cry_code}Update{}",
+				text = {
+					"Verschiebe {C:attention}#1#{} gewählte",
+					"{C:attention}Karte#<n>1#{}, oder {C:attention}Booster{}",
+					"in die {C:attention}Joker{}-Ablage",
 				},
 			},
 			c_cry_divide = {
@@ -1323,12 +1332,7 @@ return {
 			},
 			j_cry_circus = {
 				name = "Zirkus",
-				text = {
-					"{C:red}Seltene{} Joker geben {X:mult,C:white} X#1# {} Mult",
-					"{C:cry_epic}Epische{} Joker geben {X:mult,C:white} X#2# {} Mult",
-					"{C:legendary}Legendäre{} Joker geben {X:mult,C:white} X#3# {} Mult",
-					"{C:cry_exotic}Exotische{} Joker geben {X:mult,C:white} X#4# {} Mult",
-				},
+				text = Cryptid.get_circus_description(), --for translaters: this is automatically localized you can copy it over as long as cry_circus_generic is translated too
 				unlock = {
 					"Erhalten einen {C:red}Seltenen{},",
 					"{C:cry_epic}Epischen{} und {C:legendary}Legendären{}",
@@ -2705,8 +2709,34 @@ return {
 				name = "Pizzastück",
 				text = {
 					"Dieser Joker erhält {X:mult,C:white}X#1#{} Mult",
-					"wenn ein {C:attention}Pizza Slice{} verkauft wird",
+					"wenn ein {C:attention}Pizzastück{} verkauft wird",
 					"{C:inactive}(Aktuell{} {X:mult,C:white}X#2#{}{C:inactive} Mult){}",
+				},
+			},
+			j_cry_paved_joker = {
+				name = "Gepflasteter Joker",
+				text = {
+					"Steinkarten könen Lücken", --TODO: Steinkarten oder Stein-Karten?
+					"von {C:attention}#1#{} in",
+					"{C:attention}Straights{} and {C:attention}Flushes{} auffüllen"
+				},
+			},
+			j_cry_fading_joker = {
+				name = "Verschwindender Joker",
+				text = {
+					"Diese Joker erhält",
+					"{X:mult,C:white}X#1#{} Mult wenn",
+					"eine {C:attention}Verderbliche{} Karte geschwächt wird",
+					"{C:inactive}(Aktuell{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}"
+				},
+			},
+			j_cry_poor_joker = {
+				name = "Armer Joker",
+				text = {
+					"Diese Joker erhält",
+					"{C:mult}+#1#{} Mult wenn",
+					"eine {C:attention}Gemietete{} Karte Geld nimmt",
+					"{C:inactive}(Aktuell{} {C:mult}+#2#{} {C:inactive}Mult){}"
 				},
 			},
 			j_cry_spaceglobe = {
@@ -5027,6 +5057,8 @@ return {
 			b_reset_gameset_modest = "Setzt Gameset Konfiguration zurück (Modest)",
 			b_reset_gameset_mainline = "Setzt Gameset Konfiguration zurück (Mainline)",
 			b_reset_gameset_madness = "Setzt Gameset Konfiguration zurück (Madness)",
+
+			cry_circus_generic = "{V:#1#}#2#{} Joker geben je {X:mult,C:white} X#3# {} Mult"
 		},
 		labels = {
 			food_jokers = "Essen-Joker",
