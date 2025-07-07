@@ -228,6 +228,21 @@ SMODS.DrawStep({
 })
 SMODS.draw_ignore_keys.floating_sprite2 = true
 
+-- CCD Drawstep
+local interceptorSprite = nil
+SMODS.DrawStep({
+	key = "ccd_interceptor",
+	order = -5,
+	func = function(self)
+		local card_type = self.ability.set or "None"
+		if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card then
+			interceptorSprite = interceptorSprite or Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_clarifier"], { x = 0, y = 0 })
+			interceptorSprite.role.draw_major = self
+			interceptorSprite:draw_shader('dissolve', nil, nil, nil, self.children.center)
+		end
+	end
+})
+
 -- Make hover UI collidable - so we can detect collision and display tooltips
 local m = Card.move
 function Card:move(dt)
