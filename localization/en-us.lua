@@ -3383,7 +3383,7 @@ return {
 				text = {
 					"{C:red}All{} of your {C:attention}Jokers{} become {C:dark_edition}Negative{},",
 					"{C:red}all{} {C:attention}Jokers{} in the shop cost",
-					"{C:red}double{} for the rest of the run",
+					"{X:red,C:white}X#1#{} for the rest of the run",
 				},
 			},
 			c_cry_analog = {
@@ -3434,7 +3434,7 @@ return {
 				name = "Lock",
 				text = {
 					"Remove {C:red}all{} stickers",
-					"from {C:red}all{} Jokers,",
+					"from {C:attention}#1#{} selected Joker#<s>1#",
 					"then apply {C:purple,E:1}Eternal{}",
 					"to a random {C:attention}Joker{}",
 				},

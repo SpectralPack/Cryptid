@@ -20,18 +20,25 @@ local lock = {
 	name = "cry-Lock",
 	key = "lock",
 	pos = { x = 0, y = 1 },
-	config = {},
+	config = { extra = 1 },
 	cost = 4,
 	order = 451,
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "eternal", set = "Other" }
+		return {
+			vars = {
+				card.ability.extra
+			}
+		}
 	end,
 	can_use = function(self, card)
-		return #G.jokers.cards > 0
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, card.ability.extra)
+		return #cards > 0 and #cards <= card.ability.extra
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, card.ability.extra)
 		check_for_unlock({ cry_used_consumable = "c_cry_lock" })
 		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
 		G.E_MANAGER:add_event(Event({
@@ -43,23 +50,23 @@ local lock = {
 				return true
 			end,
 		}))
-		for i = 1, #G.jokers.cards do
-			local percent = 1.15 - (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
+		for i = 1, #cards do
+			local percent = 1.15 - (i - 0.999) / (#cards - 0.998) * 0.3
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
 				delay = 0.15,
 				func = function()
-					G.jokers.cards[i]:flip()
+					cards[i]:flip()
 					play_sound("card1", percent)
-					G.jokers.cards[i]:juice_up(0.3, 0.3)
+					cards[i]:juice_up(0.3, 0.3)
 					return true
 				end,
 			}))
 		end
 		delay(0.2)
-		for i = 1, #G.jokers.cards do
-			local CARD = G.jokers.cards[i]
-			local percent = 0.85 + (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
+		for i = 1, #cards do
+			local CARD = cards[i]
+			local percent = 0.85 + (i - 0.999) / (#cards - 0.998) * 0.3
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
 				delay = 0.15,
@@ -719,6 +726,11 @@ local adversary = {
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
+		return {
+			vars = {
+				G.jokers and number_format(1 + #G.jokers.cards) or "1"
+			}
+		}
 	end,
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
@@ -778,7 +790,7 @@ local adversary = {
 		}))
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.cry_shop_joker_price_modifier = G.GAME.cry_shop_joker_price_modifier * 2
+				G.GAME.cry_shop_joker_price_modifier = G.GAME.cry_shop_joker_price_modifier * number_format(1 + #G.jokers.cards)
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()
