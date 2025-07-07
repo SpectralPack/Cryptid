@@ -2675,7 +2675,7 @@ local oil_lamp = { --You want it? It's yours my friend
 	key = "oil_lamp",
 	pos = { x = 4, y = 5 },
 	config = { extra = { increase = 1.2 } },
-	rarity = "cry_epic",
+	rarity = 3,
 	cost = 15,
 	order = 300.5,
 	atlas = "atlastwo",
@@ -2743,9 +2743,11 @@ local oil_lamp = { --You want it? It's yours my friend
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
 							check = true
+							if G.jokers.cards[i + 1].ability.value_manip then
+								Cryptid.manipulate(G.jokers.cards[i + 1])
+							end
 							Cryptid.manipulate(G.jokers.cards[i + 1], { value = card.ability.extra.increase })
-							G.jokers.cards[i + 1].config.cry_oil_lamp = (G.jokers.cards[i + 1].config.cry_oil_lamp or 1)
-								* card.ability.extra.increase
+							G.jokers.cards[i + 1].ability.value_manip = true
 						end
 					end
 				end

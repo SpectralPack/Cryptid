@@ -1824,6 +1824,7 @@ return {
 					"{C:attention}Double{} all values",
 					"of leftmost {C:attention}Joker",
 					"at end of round",
+					"{C:inactive}(Value Modifer stacks){}"
 				},
 			},
 			j_cry_ghost = {
@@ -1927,6 +1928,7 @@ return {
 					"When {C:attention}Boss Blind{} defeated,",
 					"Temporarily {C:attention}Double{} values of adjacent Jokers",
 					"{E:2,C:red}self destructs{}",
+					"{C:inactive}(Value Modifer does not stack){}"
 				},
 			},
 			j_cry_jimball = {
@@ -2348,9 +2350,9 @@ return {
 			j_cry_oil_lamp = {
 				name = "Oil Lamp",
 				text = {
-					"Temporarily Increase values of {C:attention}Joker{}",
+					"Increase values of {C:attention}Joker{}",
 					"to the right by {C:attention}Twenty{} Percent",
-					"for the remainder of this ante",
+					"{C:inactive}(Value Modifer does not stack){}"
 				},
 			},
 			j_cry_oldblueprint = {
@@ -2931,6 +2933,7 @@ return {
 					"Temporarily Increase values of  all",
 					"{C:attention}Jokers{} by {C:attention}Fifty{} Percent",
 					"for the remainder of this ante",
+					"{C:inactive}(Value Modifer does not stack){}"
 				},
 			},
 			j_cry_unity = {

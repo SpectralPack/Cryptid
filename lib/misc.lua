@@ -1566,10 +1566,10 @@ function end_round()
 	er()
 	if G.GAME.round_resets.blind_states.Big == "Defeated" then
 		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].config.cry_oil_lamp then
-				m = G.jokers.cards[i].config.cry_oil_lamp
+			if G.jokers.cards[i].ability.value_manip then
+				m = G.jokers.cards[i].ability.value_manip
 				Cryptid.manipulate(G.jokers.cards[i], { value = 1 / m })
-				G.jokers.cards[i].config.cry_oil_lamp = nil
+				G.jokers.cards[i].ability.value_manip = nil
 			end
 		end
 	end
