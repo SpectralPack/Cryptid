@@ -1526,8 +1526,9 @@ return {
 				text = {
 					"When a {C:attention}Booster Pack{} is opened,",
 					"{C:green}#1# in #2#{} chance to create",
-					"a random {C:dark_edition}Negative{} card",
-					"corresponding to its {C:attention}type{}",
+					"a random card corresponding",
+					"to its {C:attention}type{}",
+					"{C:inactive}(Must have room){}"
 				},
 			},
 			j_cry_discreet = {
@@ -3422,6 +3423,8 @@ return {
 					"Apply random {C:attention}consumables{}",
 					"as if they were {C:dark_edition}Enhancements{}",
 					"to cards held in hand",
+					"Consumables cost {C:attention}$#1#{} more",
+					"{C:inactive}(Currently {C:attention}$#2#{C:inactive}){}"
 				},
 			},
 			c_cry_lock = {
@@ -3448,6 +3451,7 @@ return {
 					"held in hand",
 					"to a {C:attention}random{}",
 					"card held in hand",
+					"{C:red}-#1#{} hand size"
 				},
 			},
 			c_cry_ritual = {

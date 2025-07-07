@@ -241,14 +241,23 @@ local hammerspace = {
 	name = "cry-Hammerspace",
 	key = "hammerspace",
 	pos = { x = 4, y = 3 },
-	config = {},
+	config = { extra = 2 },
 	cost = 4,
 	order = 453,
 	atlas = "atlasnotjokers",
+	loc_vars = function(self, _, card)
+		return {
+			vars = {
+				number_format(card.ability.extra),
+				number_format(G.GAME.hammerspace_mod_price)
+			}
+		}
+	end
 	can_use = function(self, card)
 		return #G.hand.cards > 0
 	end,
 	use = function(self, card, area, copier)
+		G.GAME.hammerspace_mod_price = (G.GAME.hammerspace_mod_price or 0) + card.ability.extra
 		local used_consumable = copier or card
 		check_for_unlock({ cry_used_consumable = "c_cry_hammerspace" })
 		G.E_MANAGER:add_event(Event({
@@ -458,10 +467,17 @@ local replica = {
 	name = "cry-Replica",
 	key = "replica",
 	pos = { x = 1, y = 1 },
-	config = {},
+	config = { extra = 1 },
 	cost = 4,
 	order = 455,
 	atlas = "atlasnotjokers",
+	loc_vars = function(self, _, card)
+		return {
+			vars = {
+				number_format(card.ability.extra)
+			}
+		}
+	end,
 	can_use = function(self, card)
 		return #G.hand.cards > 0
 	end,
@@ -469,6 +485,7 @@ local replica = {
 		local used_consumable = copier or card
 		check_for_unlock({ cry_used_consumable = "c_cry_replica" })
 		local chosen_card = pseudorandom_element(G.hand.cards, pseudoseed("cry_replica_choice"))
+		G.hand.config.card_limit = G.hand.config.card_limit - card.ability.extra
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,

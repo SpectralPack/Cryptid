@@ -495,7 +495,9 @@ function Card:set_cost()
 	if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then
 		self.cost = 0
 	end
-
+	if self.ability.consumeable and G.GAME.hammerspace_mod_price then
+		self.cost = self.cost + G.GAME.hammerspace_mod_price
+	end
 	--Makes Cursed Jokers always sell for $0
 	if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
 		self.sell_cost = 0

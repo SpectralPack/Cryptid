@@ -428,7 +428,7 @@ function Cryptid.manipulate(card, args)
 								end
 							end
 						elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
-							if to_big(card.ability[i]) > to_big(v) then
+							if to_big(card.ability[i] or 0) > to_big(v or 0) then
 								card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
 							end
 						end

@@ -4017,7 +4017,7 @@ local rnjoker = {
 									cards = { context.other_card }
 								end
 								for i2, j2 in ipairs(cards) do
-									if j2:is_face() then
+									if type(j2) == "table" and j2:is_face() then
 										cond_passed = true
 										times_passed = times_passed + 1
 									end

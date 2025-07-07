@@ -1827,8 +1827,8 @@ local glass_edition = {
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged),
+				card.ability.odds,
 				card and card.edition and card.edition.x_mult or self.config.x_mult,
 			},
 		}
@@ -1846,7 +1846,7 @@ local glass_edition = {
 			if
 				not card.ability.eternal
 				and pseudorandom("cry_fragile_destroy")
-					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+					< cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged) / card.ability.odds
 			then
 				-- this event call might need to be pushed later to make more sense
 				G.E_MANAGER:add_event(Event({
