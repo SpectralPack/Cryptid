@@ -249,8 +249,8 @@ local hammerspace = {
 		return {
 			vars = {
 				number_format(card.ability.extra),
-				number_format(G.GAME.hammerspace_mod_price or 0)
-			}
+				number_format(G.GAME.hammerspace_mod_price or 0),
+			},
 		}
 	end,
 	can_use = function(self, card)
@@ -474,8 +474,8 @@ local replica = {
 	loc_vars = function(self, _, card)
 		return {
 			vars = {
-				number_format(card.ability.extra)
-			}
+				number_format(card.ability.extra),
+			},
 		}
 	end,
 	can_use = function(self, card)
