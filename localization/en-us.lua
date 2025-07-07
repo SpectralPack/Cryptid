@@ -3424,7 +3424,7 @@ return {
 					"as if they were {C:dark_edition}Enhancements{}",
 					"to cards held in hand",
 					"Consumables cost {C:attention}$#1#{} more",
-					"{C:inactive}(Currently {C:attention}$#2#{C:inactive}){}"
+					"{C:inactive}(Currently {C:attention}$#2#{C:inactive} more){}"
 				},
 			},
 			c_cry_lock = {

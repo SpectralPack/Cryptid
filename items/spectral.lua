@@ -249,10 +249,10 @@ local hammerspace = {
 		return {
 			vars = {
 				number_format(card.ability.extra),
-				number_format(G.GAME.hammerspace_mod_price)
+				number_format(G.GAME.hammerspace_mod_price or 0)
 			}
 		}
-	end
+	end,
 	can_use = function(self, card)
 		return #G.hand.cards > 0
 	end,
