@@ -1441,7 +1441,7 @@ return {
 				name = "Cotton Candy",
 				text = {
 					"When sold, apply {C:dark_edition}Negative{}",
-					"to a {C:attention}random{} Joker",
+					"to two {C:attention}random{} Jokers",
 				},
 			},
 			j_cry_crustulum = {
@@ -2644,7 +2644,7 @@ return {
 					"{C:red}X#1#{} {C:attention}Boss Blind{} size",
 					"When {C:attention}Boss Blind{} is defeated,",
 					"{C:red}self destructs{}, and creates",
-					"a {C:dark_edition}Negative{} {C:spectral}Soul{} card",
+					"a {C:dark_edition}Negative{} {C:spectral}Gateway{} card",
 					'{C:inactive,s:0.8}"This prison... to hold... me?"',
 				},
 			},

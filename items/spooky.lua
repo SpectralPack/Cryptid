@@ -28,7 +28,13 @@ local cotton_candy = {
 					end
 				end
 			end
-			pseudorandom_element(jokers, pseudoseed("cry_cotton_candy")):set_edition({ negative = true })
+			pseudoshuffle(jokers, pseudoseed("cry_cotton_candy"))
+			if jokers[1] then
+				jokers[1]:set_edition({ negative = true })
+				if jokers[2] then
+					jokers[2]:set_edition({ negative = true })
+				end
+			end
 		end
 	end,
 }

@@ -571,7 +571,7 @@ local whip = {
 	pos = { x = 5, y = 3 },
 	config = {
 		extra = {
-			Xmult_mod = 0.2,
+			Xmult_mod = 0.25,
 			x_mult = 1,
 		},
 	},
@@ -1912,7 +1912,7 @@ local waluigi = {
 	key = "waluigi",
 	pos = { x = 0, y = 3 },
 	soul_pos = { x = 1, y = 3 },
-	config = { extra = { Xmult = 1.4 } },
+	config = { extra = { Xmult = 1.5 } },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { number_format(center.ability.extra.Xmult) } }
 	end,
@@ -3151,7 +3151,7 @@ local mondrian = {
 	pos = { x = 5, y = 3 },
 	config = {
 		extra = {
-			extra = 0.15,
+			extra = 0.25,
 			x_mult = 1,
 		},
 	},
@@ -7459,7 +7459,7 @@ local coin = {
 	pos = { x = 0, y = 2 },
 	config = {
 		extra = { money = 1 },
-		immutable = { money_mod = 5 },
+		immutable = { money_mod = 10 },
 	},
 	rarity = 1,
 	order = 53,
@@ -8610,7 +8610,7 @@ local kidnap = {
 	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 2 },
+		extra = { money = 3 },
 	},
 	gameset_config = {
 		modest = {

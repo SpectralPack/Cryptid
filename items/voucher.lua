@@ -774,7 +774,7 @@ local moneybean = { -- Seed Money T3; Raise the cap on interest earned in each r
 		},
 	},
 	key = "moneybean",
-	config = { extra = 75 },
+	config = { extra = 100 },
 	atlas = "atlasvoucher",
 	order = 32668,
 	pos = { x = 5, y = 1 },

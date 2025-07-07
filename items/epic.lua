@@ -1940,7 +1940,7 @@ local fleshpanopticon = {
 	name = "cry-fleshpanopticon",
 	key = "fleshpanopticon",
 	pos = { x = 0, y = 5 },
-	config = { extra = { boss_size = 10 } },
+	config = { extra = { boss_size = 20 } },
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1952,7 +1952,7 @@ local fleshpanopticon = {
 	order = 146,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_soul" }
+		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_gateway" }
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
@@ -1994,7 +1994,7 @@ local fleshpanopticon = {
 				trigger = "before",
 				delay = 0.0,
 				func = function()
-					local card = create_card(nil, G.consumeables, nil, nil, nil, nil, "c_soul", "sup")
+					local card = create_card(nil, G.consumeables, nil, nil, nil, nil, Cryptid.enabled("c_cry_gateway") and "c_cry_gateway" or "c_soul", "sup")
 					card:set_edition({ negative = true }, true)
 					card:add_to_deck()
 					G.consumeables:emplace(card)
