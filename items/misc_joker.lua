@@ -9259,7 +9259,6 @@ local oil_lamp = { --You want it? It's yours my friend
 	},
 }
 
-
 local tax_fraud = {
 	object_type = "Joker",
 	dependencies = {
@@ -10748,7 +10747,7 @@ local miscitems = {
 	paved_joker,
 	fading_joker,
 	poor_joker,
-	oil_lamp
+	oil_lamp,
 }
 
 return {
