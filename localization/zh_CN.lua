@@ -3263,7 +3263,7 @@ return {
 			},
 		},
 		Other = {
-	
+
 			banana = {
 				name = "香蕉",
 				text = {
@@ -4063,7 +4063,7 @@ return {
 				name = "源码",
 				text = {
 					"向你手中的{C:attention}#1#{}张选定的牌",
-					"添加{C:cry_code}绿色蜡封{}"
+					"添加{C:cry_code}绿色蜡封{}",
 				},
 			},
 			c_cry_summoning = {
@@ -4085,7 +4085,7 @@ return {
 				name = "台风",
 				text = {
 					"向你手中的{C:attention}#1#{}张选定的牌",
-					"添加{C:cry_azure}蔚蓝蜡封{}"
+					"添加{C:cry_azure}蔚蓝蜡封{}",
 				},
 			},
 			c_cry_meld = {
@@ -4983,7 +4983,7 @@ return {
 			["cry_feat_timer mechanics"] = "计时器机制",
 			cry_feat_vouchers = "优惠券",
 			cry_gameset_explanation = {
-				"选择游戏集配置选项以应用于此卡。"
+				"选择游戏集配置选项以应用于此卡。",
 			},
 			cry_gameset_disabled = "已禁用",
 			cry_gameset_exp = "实验性内容",
