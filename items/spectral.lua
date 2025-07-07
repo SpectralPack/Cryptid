@@ -28,8 +28,8 @@ local lock = {
 		info_queue[#info_queue + 1] = { key = "eternal", set = "Other" }
 		return {
 			vars = {
-				card.ability.extra
-			}
+				card.ability.extra,
+			},
 		}
 	end,
 	can_use = function(self, card)
@@ -728,8 +728,8 @@ local adversary = {
 		end
 		return {
 			vars = {
-				G.jokers and number_format(1 + #G.jokers.cards) or "1"
-			}
+				G.jokers and number_format(1 + #G.jokers.cards) or "1",
+			},
 		}
 	end,
 	can_use = function(self, card)
@@ -790,7 +790,8 @@ local adversary = {
 		}))
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.cry_shop_joker_price_modifier = G.GAME.cry_shop_joker_price_modifier * number_format(1 + #G.jokers.cards)
+				G.GAME.cry_shop_joker_price_modifier = G.GAME.cry_shop_joker_price_modifier
+					* number_format(1 + #G.jokers.cards)
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()
