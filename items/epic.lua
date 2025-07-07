@@ -2664,7 +2664,6 @@ local chad = {
 	},
 }
 
-
 return {
 	name = "Epic Jokers",
 	items = {
