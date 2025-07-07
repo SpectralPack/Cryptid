@@ -1994,7 +1994,16 @@ local fleshpanopticon = {
 				trigger = "before",
 				delay = 0.0,
 				func = function()
-					local card = create_card(nil, G.consumeables, nil, nil, nil, nil, Cryptid.enabled("c_cry_gateway") and "c_cry_gateway" or "c_soul", "sup")
+					local card = create_card(
+						nil,
+						G.consumeables,
+						nil,
+						nil,
+						nil,
+						nil,
+						Cryptid.enabled("c_cry_gateway") and "c_cry_gateway" or "c_soul",
+						"sup"
+					)
 					card:set_edition({ negative = true }, true)
 					card:add_to_deck()
 					G.consumeables:emplace(card)
