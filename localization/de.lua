@@ -669,8 +669,11 @@ return {
 			c_cry_log = {
 				name = "://LOG",
 				text = {
-					"Kommt in einem",
-					"zukünftigen {C:cry_code}Update{}",
+					"{C:cry_code}Anzeige{} von einer dieser Optionen: ",
+					"{C:attention}Boss-Blind{} der {C:attention}nächsten{} Ante und {C:attention}Gutscheine{},",
+					"die nächsten {C:attention}5{} {C:attention}Joker{} im Shop, oder",
+					"die nächsten {C:attention}10{} zu {C:attention}ziehenden{} Spielkarten",
+					"{C:inactive}(Falls in einem Blind){}"
 				},
 			},
 			c_cry_quantify = {
@@ -4943,6 +4946,10 @@ return {
 			cry_code_create_previous = "VORHERIGES ERSTELLEN",
 			cry_code_execute = "AUSFÜHREN",
 			cry_code_cancel = "ABBRECHEN",
+			cry_code_exit = "SCHLIESSEN",
+			cry_code_antevoucher = "Nächster Boss Blind and Gutschein",
+			cry_code_nextjokers = "Nächste Joker im Shop",
+			cry_code_nextcards = "Nächste Spielkarten",
 
 			b_flip = "UMDREHEN",
 			b_merge = "KOMBINIEREN",
