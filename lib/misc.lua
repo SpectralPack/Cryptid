@@ -1560,17 +1560,3 @@ function Cryptid.upgrade_rarity(card, seed)
 		card:juice_up()
 	end
 end
-
-local er = end_round
-function end_round()
-	er()
-	if G.GAME.round_resets.blind_states.Big == "Defeated" then
-		for i = 1, #G.jokers.cards do
-			if G.jokers.cards[i].ability.value_manip then
-				m = G.jokers.cards[i].ability.value_manip
-				Cryptid.manipulate(G.jokers.cards[i], { value = 1 / m })
-				G.jokers.cards[i].ability.value_manip = nil
-			end
-		end
-	end
-end
