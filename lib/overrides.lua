@@ -1854,6 +1854,11 @@ end
 
 local discard_ref = G.FUNCS.discard_cards_from_highlighted
 G.FUNCS.discard_cards_from_highlighted = function(e, hook)
+	--Labyrinth: set current_round_discards_used to 0 for effects
+	G.GAME.current_round.discards_used2 = G.GAME.current_round.discards_used
+	if next(find_joker("cry-maze")) then
+		G.GAME.current_round.discards_used = 0
+	end
 	discard_ref(e, hook)
 	local highlighted_count = math.min(#G.hand.highlighted, G.discard.config.card_limit - #G.play.cards)
 	if highlighted_count <= 0 then
@@ -1889,9 +1894,22 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 			end,
 		}))
 	end
+	--Labyrinth: return current_round_discards_used back to the amount it is supposed to be after
+	G.GAME.current_round.discards_used = G.GAME.current_round.discards_used2 + 1
 end
 local play_ref = G.FUNCS.play_cards_from_highlighted
 G.FUNCS.play_cards_from_highlighted = function(e)
+	--Labyrinth: set current_round_hands played to 0 for effects
+	G.E_MANAGER:add_event(Event({
+		trigger = "immediate",
+		func = function()
+			G.GAME.current_round.hands_played2 = G.GAME.current_round.hands_played
+			if next(find_joker("cry-maze")) then
+				G.GAME.current_round.hands_played = 0
+			end
+			return true
+		end,
+	}))
 	G.GAME.before_play_buffer = true
 	-- None Stuff
 	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 1 then
@@ -1905,6 +1923,21 @@ G.FUNCS.play_cards_from_highlighted = function(e)
 	--Add blind context for Just before cards are played
 	G.GAME.blind:cry_before_play()
 	play_ref(e)
+	--Labyrinth: return current_round_hands played to the amount it is supposed to be at after
+	G.E_MANAGER:add_event(Event({
+		trigger = "immediate",
+		func = function()
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.1,
+				func = function()
+					G.GAME.current_round.hands_played = G.GAME.current_round.hands_played2 + 1
+					return true
+				end,
+			}))
+			return true
+		end,
+	}))
 	G.GAME.before_play_buffer = nil
 end
 

@@ -2728,24 +2728,6 @@ local maze = {
 	order = 61,
 	immutable = true,
 	atlas = "atlastwo",
-	update = function(self, card, dt)
-		if G.STAGE == G.STAGES.RUN then
-			if G.GAME.current_round.hands_played > 0 then
-				G.GAME.current_round.hands_played = 0
-			end
-			if G.GAME.current_round.discards_used > 0 then
-				G.GAME.current_round.discards_used = 0
-			end
-		end
-	end,
-	add_to_deck = function(self, card, from_debuff)
-		if G.GAME.current_round.hands_played > 0 then
-			G.GAME.current_round.hands_played = 0
-		end
-		if G.GAME.current_round.discards_used > 0 then
-			G.GAME.current_round.discards_used = 0
-		end
-	end,
 	cry_credits = {
 		idea = {
 			"zy-b-org",
