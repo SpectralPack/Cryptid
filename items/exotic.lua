@@ -294,7 +294,7 @@ local exponentia = {
 	object_type = "Joker",
 	name = "cry-Exponentia",
 	key = "exponentia",
-	config = { extra = { Emult = 1, e_mult =  0.03 } },
+	config = { extra = { Emult = 1, e_mult = 0.03 } },
 	pos = { x = 0, y = 0 },
 	rarity = "cry_exotic",
 	cost = 50,
@@ -307,13 +307,13 @@ local exponentia = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
 			return {
-				e_mult =  lenient_bignum(card.ability.extra.Emult),
+				e_mult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 		if context.forcetrigger then
 			card.ability.extra.Emult = card.ability.extra.Emult + card.ability.extra.Emult_mod
 			return {
-				e_mult =  lenient_bignum(card.ability.extra.Emult),
+				e_mult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
@@ -740,7 +740,7 @@ local primus = {
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
 			card.children.floating_sprite:set_sprite_pos({ x = 8, y = 6 })
 			return {
-				e_mult =  lenient_bignum(card.ability.extra.Emult),
+				e_mult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 		if context.end_of_round then
@@ -749,7 +749,7 @@ local primus = {
 		if context.forcetrigger then
 			card.ability.extra.Emult = lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
 			return {
-				e_mult =  lenient_bignum(card.ability.extra.Emult),
+				e_mult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
@@ -916,7 +916,7 @@ local stella_mortis = {
 		end
 		if (context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1))) or context.forcetrigger then
 			return {
-				e_mult =  lenient_bignum(card.ability.extra.Emult),
+				e_mult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
@@ -983,13 +983,13 @@ local circulus_pistoris = {
 				pi = 2 * pi
 			end
 			return {
-				e_chips =  pi,
-				e_mult =  pi,
+				e_chips = pi,
+				e_mult = pi,
 				message = localize({
 					type = "variable",
 					key = "a_powmultchips",
 					vars = { (Cryptid.safe_get(card, "edition", "cry_oversat") and "tau" or "pi") },
-					sound = "cry_echips"
+					sound = "cry_echips",
 				}),
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
@@ -1106,7 +1106,7 @@ local facile = {
 			if to_big(card.ability.immutable.check2) <= to_big(card.ability.extra.check) then
 				card.ability.immutable.check2 = 0
 				return {
-					e_mult =  lenient_bignum(card.ability.extra.Emult),
+					e_mult = lenient_bignum(card.ability.extra.Emult),
 				}
 			else
 				card.ability.immutable.check2 = 0
@@ -1114,7 +1114,7 @@ local facile = {
 		end
 		if context.forcetrigger then
 			return {
-				e_mult =  lenient_bignum(card.ability.extra.Emult),
+				e_mult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
@@ -1577,7 +1577,7 @@ local formidiulosus = {
 		end
 		if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and context.joker_main then
 			return {
-				e_mult =  lenient_bignum(card.ability.extra.Emult),
+				e_mult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 		if context.forcetrigger then
@@ -1588,7 +1588,7 @@ local formidiulosus = {
 				G.jokers:emplace(card)
 			end
 			return {
-				e_mult =  lenient_bignum(card.ability.extra.Emult),
+				e_mult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,

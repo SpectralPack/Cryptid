@@ -2029,7 +2029,6 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 	end
 	local scie = SMODS.calculate_individual_effect
 	function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
-
 		if (key == "e_chips" or key == "echips" or key == "Echip_mod") and amount ~= 1 then
 			if effect.card then
 				juice_card(effect.card)
@@ -2049,7 +2048,9 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 				elseif key ~= "Echip_mod" then
 					if effect.echip_message or effect.message then
 						local msg = effect.echip_message or effect.message
-						if not msg.sound then msg.sound = "cry_echips" end
+						if not msg.sound then
+							msg.sound = "cry_echips"
+						end
 						card_eval_status_text(
 							scored_card or effect.card or effect.focus,
 							"e_chips",
@@ -2059,7 +2060,14 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 							msg
 						)
 					else
-						card_eval_status_text(scored_card or effect.card or effect.focus, "e_chips", amount, percent, nil, {colour = G.C.DARK_EDITION})
+						card_eval_status_text(
+							scored_card or effect.card or effect.focus,
+							"e_chips",
+							amount,
+							percent,
+							nil,
+							{ colour = G.C.DARK_EDITION }
+						)
 					end
 				end
 			end
@@ -2079,12 +2087,19 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 						nil,
 						percent,
 						nil,
-						{ message = "^" .. amount .. " " .. localize("k_mult"), colour = G.C.EDITION, edition = true, sound = "cry_emult" }
+						{
+							message = "^" .. amount .. " " .. localize("k_mult"),
+							colour = G.C.EDITION,
+							edition = true,
+							sound = "cry_emult",
+						}
 					)
 				elseif key ~= "Emult_mod" then
 					if effect.emult_message or effect.message then
 						local msg = effect.echip_message or effect.message
-						if not msg.sound then msg.sound = "cry_emult" end
+						if not msg.sound then
+							msg.sound = "cry_emult"
+						end
 						card_eval_status_text(
 							scored_card or effect.card or effect.focus,
 							"e_mult",
@@ -2094,7 +2109,14 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 							msg
 						)
 					else
-						card_eval_status_text(scored_card or effect.card or effect.focus, "e_mult", amount, percent, nil, {colour = G.C.DARK_EDITION})
+						card_eval_status_text(
+							scored_card or effect.card or effect.focus,
+							"e_mult",
+							amount,
+							percent,
+							nil,
+							{ colour = G.C.DARK_EDITION }
+						)
 					end
 				end
 			end
