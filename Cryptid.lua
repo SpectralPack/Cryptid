@@ -250,7 +250,7 @@ function SMODS.injectItems(...)
 	local a_keys = {}
 	for i, v in pairs(SMODS.calculation_keys) do
 		if not keys[v] then
-			a_keys[#a_keys+1] = v
+			a_keys[#a_keys + 1] = v
 		end
 		keys[v] = true
 	end

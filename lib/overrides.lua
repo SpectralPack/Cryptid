@@ -2028,12 +2028,12 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 		end
 	end
 	local calculation_keys = {
-		e_mult=true,
-		emult=true,
-		Emult_mod=true,
-		e_chips=true,
-		echips=true,
-		Echip_mod=true
+		e_mult = true,
+		emult = true,
+		Emult_mod = true,
+		e_chips = true,
+		echips = true,
+		Echip_mod = true,
 	}
 	for _, v in pairs(SMODS.calculation_keys) do
 		if calculation_keys[v] then
