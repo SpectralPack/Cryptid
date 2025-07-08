@@ -1709,8 +1709,8 @@ local goldjoker = {
 	key = "goldjoker",
 	config = {
 		extra = {
-			percent_mod = 2,
-			percent = 10,
+			percent_mod = 5,
+			percent = 20,
 		},
 	},
 	dependencies = {
@@ -1785,7 +1785,7 @@ local altgoogol = {
 	key = "altgoogol",
 	config = {
 		extra = {
-			Xmult = 12,
+			Xmult = 25,
 			odds = 8,
 		},
 	},
@@ -2523,15 +2523,7 @@ local starfruit = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.emult),
-					},
-				}),
-				Emult_mod = lenient_bignum(card.ability.emult),
-				colour = G.C.DARK_EDITION,
+				e_mult = lenient_bignum(card.ability.emult),
 			}
 		end
 		if context.reroll_shop or context.forcetrigger then

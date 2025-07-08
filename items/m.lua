@@ -1566,13 +1566,7 @@ local mprime = {
 					}))
 				end
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_powmult",
-						vars = { number_format(card.ability.extra.mult) },
-					}),
-					Emult_mod = lenient_bignum(card.ability.extra.mult),
-					colour = G.C.DARK_EDITION,
+					e_mult = lenient_bignum(card.ability.extra.mult),
 					card = card,
 				}
 			end
@@ -1594,13 +1588,7 @@ local mprime = {
 				end,
 			}))
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.DARK_EDITION,
+				e_mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,

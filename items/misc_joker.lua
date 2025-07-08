@@ -188,25 +188,13 @@ local happyhouse = {
 			and to_big(card.ability.immutable.check) > to_big(card.ability.immutable.trigger)
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.immutable.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.immutable.mult),
-				colour = G.C.DARK_EDITION,
+				e_mult = lenient_bignum(card.ability.immutable.mult),
 				card = card,
 			}
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.immutable.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.immutable.mult),
-				colour = G.C.DARK_EDITION,
+				e_mult = lenient_bignum(card.ability.immutable.mult),
 				card = card,
 			}
 		end
@@ -1249,7 +1237,7 @@ local compound_interest = {
 	key = "compound_interest",
 	config = {
 		extra = {
-			percent_mod = 3,
+			percent_mod = 5,
 			percent = 20,
 		},
 	},
@@ -7736,13 +7724,7 @@ local night = {
 		if context.joker_main and G.GAME.current_round.hands_left == 0 then
 			if to_big(card.ability.extra.mult) > to_big(1) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_powmult",
-						vars = { number_format(card.ability.extra.mult) },
-					}),
-					Emult_mod = lenient_bignum(card.ability.extra.mult),
-					colour = G.C.DARK_EDITION,
+					e_mult = lenient_bignum(card.ability.extra.mult),
 				}
 			end
 		elseif
@@ -7814,13 +7796,7 @@ local night = {
 				end,
 			}))
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.DARK_EDITION,
+				e_mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,
@@ -8453,12 +8429,7 @@ local universe = {
 				}))
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.emult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.emult),
+				e_mult = lenient_bignum(card.ability.extra.emult),
 				colour = G.C.DARK_EDITION,
 			}
 		end

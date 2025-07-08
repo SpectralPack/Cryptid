@@ -2029,10 +2029,7 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 	end
 	local scie = SMODS.calculate_individual_effect
 	function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
-		local ret = scie(effect, scored_card, key, amount, from_edition)
-		if ret then
-			return ret
-		end
+
 		if (key == "e_chips" or key == "echips" or key == "Echip_mod") and amount ~= 1 then
 			if effect.card then
 				juice_card(effect.card)
@@ -2047,20 +2044,22 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 						nil,
 						percent,
 						nil,
-						{ message = "^" .. amount, colour = G.C.EDITION, edition = true }
+						{ message = "^" .. amount, colour = G.C.EDITION, edition = true, sound = "cry_chips" }
 					)
 				elseif key ~= "Echip_mod" then
-					if effect.echip_message then
+					if effect.echip_message or effect.message then
+						local msg = effect.echip_message or effect.message
+						if not msg.sound then msg.sound = "cry_echips" end
 						card_eval_status_text(
 							scored_card or effect.card or effect.focus,
-							"extra",
-							nil,
+							"e_chips",
+							amount,
 							percent,
 							nil,
-							effect.echip_message
+							msg
 						)
 					else
-						card_eval_status_text(scored_card or effect.card or effect.focus, "e_chips", amount, percent)
+						card_eval_status_text(scored_card or effect.card or effect.focus, "e_chips", amount, percent, nil, {colour = G.C.DARK_EDITION})
 					end
 				end
 			end
@@ -2080,24 +2079,30 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 						nil,
 						percent,
 						nil,
-						{ message = "^" .. amount .. " " .. localize("k_mult"), colour = G.C.EDITION, edition = true }
+						{ message = "^" .. amount .. " " .. localize("k_mult"), colour = G.C.EDITION, edition = true, sound = "cry_emult" }
 					)
 				elseif key ~= "Emult_mod" then
-					if effect.emult_message then
+					if effect.emult_message or effect.message then
+						local msg = effect.echip_message or effect.message
+						if not msg.sound then msg.sound = "cry_emult" end
 						card_eval_status_text(
 							scored_card or effect.card or effect.focus,
-							"extra",
-							nil,
+							"e_mult",
+							amount,
 							percent,
 							nil,
-							effect.emult_message
+							msg
 						)
 					else
-						card_eval_status_text(scored_card or effect.card or effect.focus, "e_mult", amount, percent)
+						card_eval_status_text(scored_card or effect.card or effect.focus, "e_mult", amount, percent, nil, {colour = G.C.DARK_EDITION})
 					end
 				end
 			end
 			return true
+		end
+		local ret = scie(effect, scored_card, key, amount, from_edition)
+		if ret then
+			return ret
 		end
 	end
 	for _, v in ipairs({

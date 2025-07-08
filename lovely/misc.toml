@@ -699,7 +699,7 @@ elseif eval_type == 'x_chips' then
 	config.type = 'fade'
 	config.scale = 0.7
 elseif eval_type == 'e_chips' then 
-	sound = 'cry_echip'
+	sound = 'cry_echips'
 	amt = amt
 	text = '^' .. amt
 	colour = G.C.CHIPS
