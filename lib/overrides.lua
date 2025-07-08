@@ -2035,12 +2035,6 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 		echips = true,
 		Echip_mod = true,
 	}
-	for _, v in pairs(SMODS.calculation_keys) do
-		if calculation_keys[v] then
-			calculation_keys[v] = nil
-			break
-		end
-	end
 	local scie = SMODS.calculate_individual_effect
 	function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
 		if (key == "e_chips" or key == "echips" or key == "Echip_mod") and amount ~= 1 then
@@ -2134,8 +2128,6 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 			return ret
 		end
 	end
-	Cryptid.calc_keys = calculation_keys
-	print(calculation_keys)
 	for i, v in pairs(calculation_keys) do
 		table.insert(SMODS.calculation_keys, i)
 	end
