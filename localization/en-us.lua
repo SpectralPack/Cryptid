@@ -3775,7 +3775,7 @@ return {
 				text = {
 					"Shop has a copy",
 					"of {C:attention}One{} of",
-					"your owned Jokers"
+					"your owned Jokers",
 				},
 			},
 			tag_cry_scope = {
