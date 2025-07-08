@@ -7,7 +7,7 @@ local ruby = {
 	applied_stakes = { "gold" },
 	prefix_config = { applied_stakes = { mod = false } },
 	modifiers = function()
-		G.GAME.win_ante = 12
+		G.GAME.win_ante = 10
 	end,
 	shiny = true,
 	order = 2,
@@ -81,7 +81,7 @@ local horizon = {
 	atlas = "stake",
 	applied_stakes = { "cry_ember" },
 	modifiers = function()
-		G.GAME.modifiers.cry_big_showdown = 6
+		G.GAME.modifiers.cry_big_showdown = 5
 	end,
 	shiny = true,
 	order = 6,

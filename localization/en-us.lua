@@ -3527,7 +3527,7 @@ return {
 				name = "Ruby Stake",
 				colour = "Ruby", --this is used for auto-generated sticker localization
 				text = {
-					"Win Ante is {C:attention}12{}",
+					"Win Ante is {C:attention}10{}",
 					"{s:0.8}Applies all previous Stakes",
 				},
 			},
@@ -3573,7 +3573,7 @@ return {
 				colour = "Horizon",
 				text = {
 					"Showdown blinds now",
-					"appear every {C:attention}6{} antes",
+					"appear every {C:attention}5{} antes",
 					"{s:0.8}Applies all previous Stakes",
 				},
 			},
