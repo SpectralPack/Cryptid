@@ -2081,19 +2081,12 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
 			if not effect.remove_default_message then
 				if from_edition then
-					card_eval_status_text(
-						scored_card,
-						"jokers",
-						nil,
-						percent,
-						nil,
-						{
-							message = "^" .. amount .. " " .. localize("k_mult"),
-							colour = G.C.EDITION,
-							edition = true,
-							sound = "cry_emult",
-						}
-					)
+					card_eval_status_text(scored_card, "jokers", nil, percent, nil, {
+						message = "^" .. amount .. " " .. localize("k_mult"),
+						colour = G.C.EDITION,
+						edition = true,
+						sound = "cry_emult",
+					})
 				elseif key ~= "Emult_mod" then
 					if effect.emult_message or effect.message then
 						local msg = effect.echip_message or effect.message
