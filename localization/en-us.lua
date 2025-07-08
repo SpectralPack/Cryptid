@@ -3460,8 +3460,8 @@ return {
 			c_cry_ritual = {
 				name = "Ritual",
 				text = {
-					"Apply {C:dark_edition}Negative{}, {C:dark_edition}Mosaic{},",
-					"or {C:dark_edition}Astral{} to {C:attention}#1#{}",
+					"Apply {C:dark_edition}Mosaic{}, {C:dark_edition}Oversaturated{},",
+					"or {C:dark_edition}Golden{} to {C:attention}#1#{}",
 					"selected card#<s>1# in hand",
 				},
 			},
@@ -3773,8 +3773,9 @@ return {
 			tag_cry_schematic = {
 				name = "Schematic Tag",
 				text = {
-					"Shop has a",
-					"{C:attention}Brainstorm",
+					"Shop has a copy",
+					"of {C:attention}One{} of",
+					"your owned Jokers"
 				},
 			},
 			tag_cry_scope = {

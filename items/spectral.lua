@@ -632,11 +632,11 @@ local ritual = {
 		if not center.edition or (center.edition and not center.edition.cry_mosaic) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_mosaic
 		end
-		if not center.edition or (center.edition and not center.edition.negative) then
-			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		if not center.edition or (center.edition and not center.edition.cry_oversat) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_oversat
 		end
-		if not center.edition or (center.edition and not center.edition.cry_astral) then
-			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
+		if not center.edition or (center.edition and not center.edition.cry_gold) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_gold
 		end
 		return { vars = { center.ability.max_highlighted } }
 	end,
@@ -672,12 +672,12 @@ local ritual = {
 						if highlighted then
 							local random_result = pseudorandom(pseudoseed("cry-Ritual"))
 							if random_result >= 5 / 6 then
-								highlighted:set_edition({ cry_astral = true })
+								highlighted:set_edition({ cry_gold = true })
 							else
 								if random_result >= 1 / 2 then
 									highlighted:set_edition({ cry_mosaic = true })
 								else
-									highlighted:set_edition({ negative = true })
+									highlighted:set_edition({ cry_oversat = true })
 								end
 							end
 							highlighted.will_be_editioned = nil

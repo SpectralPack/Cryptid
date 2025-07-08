@@ -1016,7 +1016,7 @@ local number_blocks = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.after and not context.blueprint and not context.before and not context.after then
+		if context.after and not context.blueprint and not context.before and not context.repetition then
 			for i, v in pairs(G.hand.cards) do
 				if v:get_id() == G.GAME.current_round.cry_nb_card.id and not v.debuff then
 					card.ability.extra.money =
