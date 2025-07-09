@@ -526,7 +526,6 @@ function Cryptid.forcetrigger(card, context)
 			end
 		end
 		if card.ability.name == "Rocket" then
-			card.ability.extra.dollars = card.ability.extra.dollars + card.ability.extra.increase
 			ease_dollars(card.ability.extra.dollars)
 		end
 		if card.ability.name == "Obelisk" then -- Sobelisk
