@@ -1309,7 +1309,7 @@ local big_cube = {
 					key = "a_xchips",
 					vars = { number_format(card.ability.extra.x_chips) },
 				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
@@ -2315,7 +2315,7 @@ local antennastoheaven = {
 					key = "a_xchips",
 					vars = { number_format(card.ability.extra.x_chips) },
 				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
@@ -2339,7 +2339,7 @@ local antennastoheaven = {
 					key = "a_xchips",
 					vars = { number_format(card.ability.extra.x_chips) },
 				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
@@ -3037,7 +3037,7 @@ local pirate_dagger = {
 					key = "a_xchips",
 					vars = { number_format(card.ability.extra.x_chips) },
 				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 		local my_pos = nil
@@ -3111,7 +3111,7 @@ local pirate_dagger = {
 					key = "a_xchips",
 					vars = { number_format(card.ability.extra.x_chips) },
 				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 	end,
@@ -3396,7 +3396,7 @@ local spaceglobe = {
 					key = "a_xchips",
 					vars = { number_format(card.ability.extra.x_chips) },
 				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
@@ -3409,7 +3409,7 @@ local spaceglobe = {
 					key = "a_xchips",
 					vars = { number_format(card.ability.extra.x_chips) },
 				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
