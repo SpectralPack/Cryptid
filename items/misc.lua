@@ -1817,10 +1817,19 @@ local glass_edition = {
 	extra_cost = 2,
 	config = { x_mult = 3, odds = 8, trigger = nil },
 	loc_vars = function(self, info_queue, card)
+		local odds = 8
+		local prob = 1
+		--Fix to ensure rotated wheel of fortune from moreFluff does not crash
+		if card.ability.cry_prob and card.edition.odds then
+			prob = cry_prob(card.ability.cry_prob, card.edition.odds, card.ability.cry_rigged)
+		end
+		if card.ability.odds then
+			odds = card.ability.odds
+		end
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.edition.odds, card.ability.cry_rigged),
-				card.ability.odds,
+				prob,
+				odds,
 				card and card.edition and card.edition.x_mult or self.config.x_mult,
 			},
 		}
