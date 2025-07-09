@@ -421,7 +421,7 @@ return {
 				text = {
 					"Punktzahl wird",
 					"subtrahiert bei",
-					"ungerader Anzahl von Händen"
+					"ungerader Anzahl von Händen",
 				},
 			},
 			bl_cry_landlord = {
@@ -429,7 +429,7 @@ return {
 				text = {
 					"Fuegt Gemietet einem",
 					"zufälligen Joker hinzu",
-					"wenn Hand gespielt wird"
+					"wenn Hand gespielt wird",
 				},
 			},
 			bl_cry_pinkbow = {
@@ -697,7 +697,7 @@ return {
 					"{C:attention}Boss-Blind{} der {C:attention}nächsten{} Ante und {C:attention}Gutscheine{},",
 					"die nächsten {C:attention}5{} {C:attention}Joker{} im Shop, oder",
 					"die nächsten {C:attention}10{} zu {C:attention}ziehenden{} Spielkarten",
-					"{C:inactive}(Falls in einem Blind){}"
+					"{C:inactive}(Falls in einem Blind){}",
 				},
 			},
 			c_cry_quantify = {
@@ -767,7 +767,7 @@ return {
 					"Die {C:attention}aktuell{} gewählten Spielkarten",
 					"werden zu einer {C:cry_code}neuen{} Pokerhand, welche",
 					"gewertet wird, als würde sie ein {C:attention}#1#{} enthalten",
-					"Es können bis zu {C:attention}3{} {C:inactive}[#2#]{} Hände erzeugt werden"
+					"Es können bis zu {C:attention}3{} {C:inactive}[#2#]{} Hände erzeugt werden",
 				},
 			},
 		},
@@ -1148,7 +1148,7 @@ return {
 					"aller aktueller und zukünfitger Joker auf {C:attention}$#1#{}",
 					"Reduziert den Verkaufswert aller {C:attention}Joker{} um {C:attention}$#2#{}",
 					"am Ende der Runde, nach Erhalt von {C:attention}$#3#{} {C:inactive}[#4#]{}",
-					"durch den Verkauf von {C:attention}Jokern{}, {C:red}Zerstört sich selbst{}"
+					"durch den Verkauf von {C:attention}Jokern{}, {C:red}Zerstört sich selbst{}",
 				},
 			},
 			j_cry_blender = {
@@ -2753,7 +2753,7 @@ return {
 				text = {
 					"Steinkarten könen Lücken", --TODO: Steinkarten oder Stein-Karten?
 					"von {C:attention}#1#{} in",
-					"{C:attention}Straights{} and {C:attention}Flushes{} auffüllen"
+					"{C:attention}Straights{} and {C:attention}Flushes{} auffüllen",
 				},
 			},
 			j_cry_fading_joker = {
@@ -2762,7 +2762,7 @@ return {
 					"Diese Joker erhält",
 					"{X:mult,C:white}X#1#{} Mult wenn",
 					"eine {C:attention}Verderbliche{} Karte geschwächt wird",
-					"{C:inactive}(Aktuell{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}"
+					"{C:inactive}(Aktuell{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_poor_joker = {
@@ -2771,7 +2771,7 @@ return {
 					"Diese Joker erhält",
 					"{C:mult}+#1#{} Mult wenn",
 					"eine {C:attention}Gemietete{} Karte Geld nimmt",
-					"{C:inactive}(Aktuell{} {C:mult}+#2#{} {C:inactive}Mult){}"
+					"{C:inactive}(Aktuell{} {C:mult}+#2#{} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_spaceglobe = {
@@ -3996,7 +3996,7 @@ return {
 				text = {
 					"Gegenstände im Shop kosten {C:attention}X#1#{}",
 					"so viel, Erhalte eine {C:attention}Kopie{}",
-					"der als nächstes gekauften Karte"
+					"der als nächstes gekauften Karte",
 				},
 			},
 			tag_cry_lens = {
@@ -4004,7 +4004,7 @@ return {
 				text = {
 					"Füge {C:dark_edition}Negativ{}",
 					"zu {C:attention}#1#{} zufälligen",
-					"Verbrauchsgegen#<ständen,stand>1# hinzu"
+					"Verbrauchsgegen#<ständen,stand>1# hinzu",
 				},
 			},
 			tag_cry_palette_cleanser = { --beautiful phrase that unfortunately doesnt have a german equivalent :(
@@ -4012,7 +4012,7 @@ return {
 				text = {
 					"Entfernt einen {C:attention}zufälligen{}",
 					"Sticker von einem {C:attention}zufälligen{}",
-					"Joker oder Spielkarte"
+					"Joker oder Spielkarte",
 				},
 			},
 		},
@@ -4869,9 +4869,12 @@ return {
 			["cry_Declare1"] = { "Wird immer als Flush gewertet" },
 			["cry_Declare2"] = { "Wird immer als Full House gewertet" },
 
-			["cry_Declare0_suitless"] = { "Wird immer als Straight gewertet","Hand benötigt keine bestimmten Farben" },
-			["cry_Declare1_suitless"] = { "Wird immer als Flush gewertet","Hand benötigt keine bestimmten Farben" },
-			["cry_Declare2_suitless"] = { "Wird immer als Full House gewertet","Hand benötigt keine bestimmten Farben" },
+			["cry_Declare0_suitless"] = { "Wird immer als Straight gewertet", "Hand benötigt keine bestimmten Farben" },
+			["cry_Declare1_suitless"] = { "Wird immer als Flush gewertet", "Hand benötigt keine bestimmten Farben" },
+			["cry_Declare2_suitless"] = {
+				"Wird immer als Full House gewertet",
+				"Hand benötigt keine bestimmten Farben",
+			},
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -5143,7 +5146,7 @@ return {
 			b_reset_gameset_mainline = "Setzt Gameset Konfiguration zurück (Mainline)",
 			b_reset_gameset_madness = "Setzt Gameset Konfiguration zurück (Madness)",
 
-			cry_circus_generic = "{V:#1#}#2#{} Joker geben je {X:mult,C:white} X#3# {} Mult"
+			cry_circus_generic = "{V:#1#}#2#{} Joker geben je {X:mult,C:white} X#3# {} Mult",
 		},
 		labels = {
 			food_jokers = "Essen-Joker",
