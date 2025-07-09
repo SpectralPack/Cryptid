@@ -701,7 +701,7 @@ elseif eval_type == 'x_chips' then
 elseif eval_type == 'e_chips' then 
 	sound = 'cry_echips'
 	amt = amt
-	text = '^' .. amt ' ' .. localize('k_chips')
+	text = '^' .. amt .. ' ' .. localize('k_chips')
 	colour = G.C.DARK_EDITION
 	config.type = 'fade'
 	config.scale = 0.7
