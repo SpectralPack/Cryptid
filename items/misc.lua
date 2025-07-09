@@ -1820,10 +1820,10 @@ local glass_edition = {
 		local odds = 8
 		local prob = 1
 		--Fix to ensure rotated wheel of fortune from moreFluff does not crash
-		if card.ability.cry_prob and card.edition.odds then
+		if card and card.ability and card.ability.cry_prob and card.edition.odds then
 			prob = cry_prob(card.ability.cry_prob, card.edition.odds, card.ability.cry_rigged)
 		end
-		if card.ability.odds then
+		if card and card.ability and card.ability.odds then
 			odds = card.ability.odds
 		end
 		return {
