@@ -57,13 +57,13 @@ local supercell = {
 						message = localize("cry_gaming_ex"),
 						chip_mod = lenient_bignum(card.ability.extra.stat1),
 						mult_mod = lenient_bignum(card.ability.extra.stat1),
-						Xchip_mod = lenient_bignum(card.ability.extra.stat2),
+						x_chips = lenient_bignum(card.ability.extra.stat2),
 						Xmult_mod = lenient_bignum(card.ability.extra.stat2),
 					}
 				else
 					return {
 						message = localize("cry_gaming_ex"),
-						Xchip_mod = lenient_bignum(card.ability.extra.stat2),
+						x_chips = lenient_bignum(card.ability.extra.stat2),
 						Xmult_mod = lenient_bignum(card.ability.extra.stat2),
 					}
 				end
@@ -75,7 +75,7 @@ local supercell = {
 				message = localize("cry_gaming_ex"),
 				chip_mod = lenient_bignum(card.ability.extra.stat1),
 				mult_mod = lenient_bignum(card.ability.extra.stat1),
-				Xchip_mod = lenient_bignum(card.ability.extra.stat2),
+				x_chips = lenient_bignum(card.ability.extra.stat2),
 				Xmult_mod = lenient_bignum(card.ability.extra.stat2),
 			}
 		end

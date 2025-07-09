@@ -1304,12 +1304,7 @@ local big_cube = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
@@ -2310,12 +2305,7 @@ local antennastoheaven = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_chips) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
@@ -2334,12 +2324,7 @@ local antennastoheaven = {
 		if context.forcetrigger then
 			card.ability.extra.x_chips = lenient_bignum(to_big(card.ability.extra.x_chips) + card.ability.extra.bonus)
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
@@ -3014,12 +2999,7 @@ local pirate_dagger = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_chips) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 		local my_pos = nil
@@ -3088,12 +3068,7 @@ local pirate_dagger = {
 				end,
 			}))
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 	end,
@@ -3373,12 +3348,7 @@ local spaceglobe = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.x_chips) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end
@@ -3386,12 +3356,7 @@ local spaceglobe = {
 			card.ability.extra.x_chips =
 				lenient_bignum(to_big(card.ability.extra.x_chips) + card.ability.extra.Xchipmod)
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				x_chips = lenient_bignum(card.ability.extra.x_chips),
 				colour = G.C.CHIPS,
 			}
 		end

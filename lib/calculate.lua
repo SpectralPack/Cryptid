@@ -646,7 +646,7 @@ function Card:calculate_joker(context)
 			ret.chip_mod = ret.chip_mod * -1
 		end
 		if ret.Xchip_mod then
-			ret.Xchip_mod = ret.Xchip_mod ^ -1
+			ret.x_chips = ret.Xchip_mod ^ -1
 		end
 		if ret.chips then
 			ret.chips = ret.chips * -1
