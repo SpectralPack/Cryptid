@@ -789,6 +789,14 @@ SMODS.Atlas({
 	px = 73,
 	py = 95,
 })
+
+-- CCD Clarifier Sprite
+SMODS.Atlas({
+	key = "cry_clarifier",
+	path = "intercept_sprite.png",
+	px = 71,
+	py = 95,
+})
 SMODS.Atlas({
 	key = "glowingSleeve",
 	path = "sleeve_cry_glowing.png",
