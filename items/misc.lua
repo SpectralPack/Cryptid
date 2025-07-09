@@ -1817,10 +1817,20 @@ local glass_edition = {
 	extra_cost = 2,
 	config = { x_mult = 3, odds = 8, trigger = nil },
 	loc_vars = function(self, info_queue, card)
+		local prob = 1
+		local odds = 8
+		if card and card.ability then
+			if card.ability.cry_prob then
+				prob = cry_prob(card.ability.cry_prob, card.edition.odds, card.ability.cry_rigged)
+			end
+			if card.ability.odds then
+				odds = card.ability.odds
+			end
+		end
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.edition.odds, card.ability.cry_rigged),
-				card.ability.odds,
+				prob,
+				odds,
 				card and card.edition and card.edition.x_mult or self.config.x_mult,
 			},
 		}
