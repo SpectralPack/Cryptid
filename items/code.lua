@@ -3528,7 +3528,8 @@ local log = {
 			local pseudorandom = copy_table(G.GAME.pseudorandom)
 			local j = {}
 			for i = 1, 5 do
-				j[#j + 1] = G.localization.descriptions["Joker"][Cryptid.predict_joker("sho")].name
+				local next_joker = G.localization.descriptions["Joker"][Cryptid.predict_joker("sho")]
+				j[#j + 1] = next_joker and next_joker.name or "[NOT A JOKER]"
 			end
 			G.GAME.pseudorandom = copy_table(pseudorandom)
 			G.GAME.USING_CODE = true
