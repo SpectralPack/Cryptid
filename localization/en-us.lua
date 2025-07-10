@@ -1048,7 +1048,7 @@ return {
 				text = {
 					"{C:green}#1# in #2#{} chance for",
 					"{X:red,C:white} X#4# {} Mult",
-					"Otherwise {X:red,C:white}X#3#{} Mult"
+					"Otherwise {X:red,C:white}X#3#{} Mult",
 				},
 			},
 			j_cry_antennastoheaven = {
@@ -2756,7 +2756,7 @@ return {
 					"{C:red}destroy{} pack cards based on how many",
 					"{C:attention}choices{} are left. Gain {X:dark_edition,C:white}^#1#{} Mult",
 					"for each card {C:red}destroyed{}",
-					"{C:inactive}(Currently, {X:dark_edition,C:white}^#2#{} {C:inactive}Mult)"
+					"{C:inactive}(Currently, {X:dark_edition,C:white}^#2#{} {C:inactive}Mult)",
 				},
 			},
 			j_cry_stronghold = {

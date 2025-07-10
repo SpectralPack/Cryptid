@@ -215,7 +215,7 @@ local googol_play = {
 				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
 				card.ability.extra.odds,
 				number_format(card.ability.extra.Xmult),
-				number_format(card.ability.extra.Xmult_payout)
+				number_format(card.ability.extra.Xmult_payout),
 			},
 		}
 	end,
@@ -223,7 +223,8 @@ local googol_play = {
 		if context.joker_main then
 			if
 				pseudorandom("cry_googol_play")
-					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+					/ card.ability.extra.odds
 			then
 				return {
 					message = localize({
@@ -1780,7 +1781,13 @@ local altgoogol = {
 	end,
 	calculate = function(self, card, context)
 		local gameset = Card.get_gameset(card)
-		if context.end_of_round and not context.retrigger_joker and not context.blueprint and not context.individual and not context.repetition then
+		if
+			context.end_of_round
+			and not context.retrigger_joker
+			and not context.blueprint
+			and not context.individual
+			and not context.repetition
+		then
 			card.ability.rounds_left = card.ability.rounds_left - 1
 			if to_big(card.ability.rounds_left) <= to_big(0) then
 				local eval = function(card)
@@ -2151,10 +2158,9 @@ local jtron = {
 		}
 	end,
 	calculate = function(self, card, context)
-
 		if context.cardarea == G.jokers and context.joker_main then
 			card.ability.immutable.current =
-			lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
+				lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
 			if to_big(card.ability.immutable.current) > to_big(0) then
 				return {
 					message = localize({
@@ -2169,7 +2175,13 @@ local jtron = {
 				}
 			end
 		end
-		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition and not context.retrigger_joker then
+		if
+			context.end_of_round
+			and not context.blueprint
+			and not context.individual
+			and not context.repetition
+			and not context.retrigger_joker
+		then
 			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
 				G.E_MANAGER:add_event(Event({
 					func = function()

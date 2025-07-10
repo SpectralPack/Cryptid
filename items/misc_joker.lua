@@ -9930,9 +9930,7 @@ local familiar_currency = {
 			and not context.repetition
 			and not (context.blueprint_card or card).getting_sliced
 		then
-			if
-				to_big(G.GAME.dollars - G.GAME.bankrupt_at) >= to_big(card.ability.extra)
-			then
+			if to_big(G.GAME.dollars - G.GAME.bankrupt_at) >= to_big(card.ability.extra) then
 				ease_dollars(-card.ability.extra)
 				card.ability.taken_so_far = card.ability.taken_so_far + 1
 				card_eval_status_text(

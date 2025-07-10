@@ -2159,7 +2159,13 @@ local hooked = {
 			end
 			var = var or ("[no joker found - " .. (card.ability.cry_hook_id or "nil") .. "]")
 		end
-		return { vars = { var or "hooked Joker", card.ability.cry_hook_triggers or 8, card.ability.cry_hook_triggers_left or 8 } }
+		return {
+			vars = {
+				var or "hooked Joker",
+				card.ability.cry_hook_triggers or 8,
+				card.ability.cry_hook_triggers_left or 8,
+			},
+		}
 	end,
 	key = "cry_hooked",
 	no_sticker_sheet = true,
@@ -2176,7 +2182,10 @@ local hooked = {
 			and not context.forcetrigger
 			and not context.other_context.forcetrigger
 		then
-			if not card.ability.cry_hook_triggers_left then card.ability.cry_hook_triggers_left = 8; card.ability.cry_hook_triggers = 8 end
+			if not card.ability.cry_hook_triggers_left then
+				card.ability.cry_hook_triggers_left = 8
+				card.ability.cry_hook_triggers = 8
+			end
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].sort_id == card.ability.cry_hook_id then
 					local results = Cryptid.forcetrigger(G.jokers.cards[i], context)
@@ -2192,7 +2201,7 @@ local hooked = {
 									G.jokers.cards[i].ability.cry_hook_triggers_left = 8
 									card.ability.cry_hook_triggers_left = 8
 									return true
-								end
+								end,
 							}))
 						end
 						return results.jokers
