@@ -567,7 +567,7 @@ local effarcire = {
 	name = "cry-Effarcire",
 	key = "effarcire",
 	config = {
-		extra = 5
+		extra = 5,
 	},
 	immutable = true,
 	pos = { x = 0, y = 0 },
@@ -602,8 +602,8 @@ local effarcire = {
 	loc_vars = function(self, queue, card)
 		return {
 			vars = {
-				card.ability.extra
-			}
+				card.ability.extra,
+			},
 		}
 	end,
 	cry_credits = {
@@ -632,7 +632,7 @@ local crustulum = {
 	config = {
 		extra = {
 			rerolls_stored = 0,
-			rerolls_per = 8
+			rerolls_per = 8,
 		},
 	},
 	pos = { x = 0, y = 2 },
@@ -662,36 +662,43 @@ local crustulum = {
 				calculate_reroll_cost(true)
 				return {
 					message = "-1",
-					colour = G.C.DARK_EDITION
+					colour = G.C.DARK_EDITION,
 				}
 			end
 		end
-		if context.end_of_round and not context.blueprint and not context.repetition and not context.retrigger_joker and not context.individual then
+		if
+			context.end_of_round
+			and not context.blueprint
+			and not context.repetition
+			and not context.retrigger_joker
+			and not context.individual
+		then
 			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
-				SMODS.add_card{
-					set="Food",
-					area=G.jokers
-				}
+				SMODS.add_card({
+					set = "Food",
+					area = G.jokers,
+				})
 			end
 		end
 		if context.food_joker_expired then
 			center.ability.extra.rerolls_stored = center.ability.extra.rerolls_stored + center.ability.extra.rerolls_per
 			return {
 				message = localize("k_upgrade_ex"),
-				colour = G.C.DARK_EDITION
+				colour = G.C.DARK_EDITION,
 			}
 		end
 		if context.forcetrigger then
-			center.ability.extra.rerolls_stored = center.ability.extra.rerolls_stored + center.abilities.extra.rerolls_per
+			center.ability.extra.rerolls_stored = center.ability.extra.rerolls_stored
+				+ center.abilities.extra.rerolls_per
 			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
-				SMODS.add_card{
-					set="Food",
-					area=G.jokers
-				}
+				SMODS.add_card({
+					set = "Food",
+					area = G.jokers,
+				})
 			end
 			return {
 				message = localize("k_upgrade_ex"),
-				colour = G.C.DARK_EDITION
+				colour = G.C.DARK_EDITION,
 			}
 		end
 	end,
@@ -714,12 +721,12 @@ local crustulum = {
 			local c = remove_ref(self, card, ...)
 			if card and card:is_food() and self == G.jokers and not G.SETTINGS.paused then
 				if card.states.drag.is == true and card.children.center.pinch.x == true then
-					SMODS.calculate_context({food_joker_expired = true, card = self})
+					SMODS.calculate_context({ food_joker_expired = true, card = self })
 				end
 			end
 			return c
 		end
-	end
+	end,
 }
 --todo: make the Emult always prime
 local primus = {
