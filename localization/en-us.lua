@@ -1186,7 +1186,7 @@ return {
 				name = "Brittle Candy",
 				text = {
 					"For the next {C:attention}#1#{} hand#<s>1#,",
-					"add {C:attention}Stone{}, {C:attention}Gold{}, or {C:attention}Steel{} to",
+					"add {C:attention}Glass{} to",
 					"the rightmost scoring card",
 				},
 			},
@@ -2686,7 +2686,7 @@ return {
 			j_cry_paved_joker = {
 				name = "Paved Joker",
 				text = {
-					"Stone Cards may fill",
+					"Rankless Cards may fill",
 					"gaps of {C:attention}#1#{} in",
 					"{C:attention}Straights{} and {C:attention}Flushes{}",
 				},
