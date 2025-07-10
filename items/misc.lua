@@ -1701,7 +1701,7 @@ local jollyedition = {
 				and context.cardarea == G.play
 			)
 		then
-			return { card and card.edition and card.edition.mult or self.config.mult } -- updated value
+			return { mult = card and card.edition and card.edition.mult or self.config.mult } -- updated value
 		end
 		if context.joker_main then
 			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
