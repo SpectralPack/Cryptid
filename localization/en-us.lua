@@ -1920,7 +1920,7 @@ return {
 				name = "Jawbreaker",
 				text = {
 					"When {C:attention}Boss Blind{} defeated,",
-					"Temporarily {C:attention}Double{} values of adjacent Jokers",
+					"{C:attention}Double{} values of adjacent Jokers",
 					"{E:2,C:red}self destructs{}",
 					"{C:inactive}(Value Modifer does not stack){}",
 				},
@@ -2923,7 +2923,7 @@ return {
 				name = "Tropical Smoothie",
 				text = {
 					"Sell this card to",
-					"Temporarily Increase values of  all",
+					"Increase values of  all",
 					"{C:attention}Jokers{} by {C:attention}Fifty{} Percent",
 					"for the remainder of this ante",
 					"{C:inactive}(Value Modifer does not stack){}",
