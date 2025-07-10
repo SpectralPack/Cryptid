@@ -1950,7 +1950,7 @@ local gold_edition = {
 	weight = 7,
 	extra_cost = 4,
 	in_shop = true,
-	config = { dollars = 1, active = true },
+	config = { dollars = 2, active = true },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card and card.edition and card.edition.dollars or self.config.dollars } }
 	end,

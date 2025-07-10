@@ -3085,8 +3085,6 @@ local class = {
 		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
 			G.GAME.CODE_DESTROY_CARD = copy_card(card)
 			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-		else
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
 		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_CLASS = card.ability.max_highlighted
@@ -3311,8 +3309,6 @@ local variable = {
 		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
 			G.GAME.CODE_DESTROY_CARD = copy_card(card)
 			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-		else
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
 		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_VARIABLE = card.ability.max_highlighted

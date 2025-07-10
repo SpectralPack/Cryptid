@@ -581,7 +581,7 @@ SMODS.Sound({
 		if
 			Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.big_music
-			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
+			and to_big(G.GAME.round_scores["hand"].amt or 0) > to_big(10) ^ 1000000
 		then
 			G.GAME.cry_music_big = true
 			return true

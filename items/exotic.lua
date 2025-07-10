@@ -719,7 +719,7 @@ local crustulum = {
 		local remove_ref = CardArea.remove_card
 		function CardArea:remove_card(card, ...)
 			local c = remove_ref(self, card, ...)
-			if card and card:is_food() and self == G.jokers and not G.SETTINGS.paused then
+			if card and card.is_food and card:is_food() and self == G.jokers and not G.SETTINGS.paused then
 				if card.states.drag.is == true and card.children.center.pinch.x == true then
 					SMODS.calculate_context({ food_joker_expired = true, card = self })
 				end

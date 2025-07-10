@@ -1237,7 +1237,7 @@ local compound_interest = {
 	key = "compound_interest",
 	config = {
 		extra = {
-			percent_mod = 5,
+			percent_mod = 10,
 			percent = 20,
 		},
 	},
@@ -10480,7 +10480,7 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 			"set_cry_misc_joker",
 		},
 	},
-	name = "cry-paved_joker",
+	name = "cry-fading_joker",
 	key = "fading_joker",
 	atlas = "atlasone",
 	pos = { x = 2, y = 6 },
