@@ -1795,9 +1795,7 @@ local brittle = {
 	config = { extra = { rounds = 9 } },
 	pools = { ["Food"] = true },
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
 		return { vars = { number_format(center.ability.extra.rounds) } }
 	end,
 	blueprint_compat = true,
@@ -1812,7 +1810,7 @@ local brittle = {
 			local _card = context.scoring_hand[#context.scoring_hand]
 			if _card and not _card.brittled then
 				card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
-				local enhancement = pseudorandom_element({ "m_stone", "m_gold", "m_steel" }, pseudoseed("cry_brittle"))
+				local enhancement = "m_glass"
 				_card.brittled = true
 				_card:set_ability(G.P_CENTERS[enhancement], nil, true)
 				G.E_MANAGER:add_event(Event({
