@@ -202,116 +202,82 @@ local googol_play = {
 	atlas = "atlasepic",
 	pos = { x = 3, y = 0 },
 	soul_pos = { x = 10, y = 0, extra = { x = 4, y = 0 } },
-	config = { copies = 2, rounds = 3, rounds_left = 3 },
-	gameset_config = {
-		modest = {
-			cost = 15,
-			copies = 1,
-			rounds = 3,
-			rounds_left = 3,
+	config = {
+		extra = {
+			Xmult = 10,
+			Xmult_payout = 100,
+			odds = 10,
 		},
-		mainline = { copies = 2, rounds = 3, rounds_left = 3 },
 	},
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		return {
-			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
-			vars = { center.ability.copies, center.ability.rounds, center.ability.rounds_left },
+			vars = {
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+				number_format(card.ability.extra.Xmult),
+				number_format(card.ability.extra.Xmult_payout)
+			},
 		}
 	end,
 	calculate = function(self, card, context)
-		local gameset = Card.get_gameset(card)
-		if context.after and not context.retrigger_joker and not context.blueprint then
-			card.ability.rounds_left = card.ability.rounds_left - 1
-			if to_big(card.ability.rounds_left) <= to_big(0) then
-				local eval = function(card)
-					return not card.REMOVED
-				end
-				juice_card_until(self, eval, true)
-			end
-			return {
-				message = to_big(card.ability.rounds_left) > to_big(0)
-						and ((card.ability.rounds - card.ability.rounds_left) .. "/" .. card.ability.rounds)
-					or localize("k_active_ex"),
-				colour = G.C.FILTER,
-			}
-		end
-		if
-			(
-				context.selling_self
-				and not context.retrigger_joker
-				and not context.blueprint
-				and to_big(card.ability.rounds_left) <= to_big(0)
-			) or context.forcetrigger
-		then
-			local jokers = {}
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] ~= card then
-					jokers[#jokers + 1] = G.jokers.cards[i]
-				end
-			end
-			if #jokers > 0 then
-				if not gameset == "modest" or #G.jokers.cards <= G.jokers.config.card_limit then
-					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								for i = 1, card.ability.copies do
-									local chosen_joker = G.jokers.cards[1]
-									local card = copy_card(
-										chosen_joker,
-										nil,
-										nil,
-										nil,
-										(
-											gameset == "modest"
-												and (Cryptid.safe_get(chosen_joker, "edition", "negative"))
-											or nil
-										)
-									)
-									card:add_to_deck()
-									G.jokers:emplace(card)
-								end
-								return true
-							end,
-						}))
-						card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-							message = localize("k_duplicated_ex"),
-							colour = G.C.RARITY.cry_epic,
-						})
-						return nil, true
-					else
-						card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-							message = localize("k_nope_ex"),
-							colour = G.C.RARITY.cry_epic,
-						})
-						return nil, true
-					end
-				else
-					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-						message = localize("k_no_room_ex"),
-						colour = G.C.RARITY.cry_epic,
-					})
-					return nil, true
-				end
+		if context.joker_main then
+			if
+				pseudorandom("cry_googol_play")
+					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+			then
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.Xmult_payout) },
+					}),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult_payout),
+				}
 			else
-				card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-					message = localize("k_no_other_jokers"),
-					colour = G.C.RARITY.cry_epic,
-				})
-				return nil, true
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.Xmult) },
+					}),
+					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				}
 			end
+		end
+		if context.forcetrigger then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.Xmult_payout) },
+				}),
+				Xmult_mod = lenient_bignum(card.ability.extra.Xmult_payout),
+			}
 		end
 	end,
 	cry_credits = {
 		idea = {
-			"Jevonn",
+			".asdom",
 		},
 		art = {
-			"Jevonn",
+			"Linus Goof Balls",
 		},
 		code = {
-			"Jevonn",
+			"Math",
 		},
 	},
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "chip_score" and to_big(args.chips) >= to_big(1e100) then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 
 -- Sync Catalyst
@@ -1783,86 +1749,129 @@ local altgoogol = {
 	object_type = "Joker",
 	name = "cry-altgoogol",
 	key = "altgoogol",
-	config = {
-		extra = {
-			Xmult = 25,
-			odds = 8,
-		},
-	},
 	dependencies = {
 		items = {
 			"set_cry_epic",
 		},
 	},
-	gameset_config = {
-		modest = { extra = { Xmult = 9, odds = 8 } },
-	},
-	pos = { x = 4, y = 3 },
 	rarity = "cry_epic",
 	cost = 10,
 	order = 14,
 	blueprint_compat = true,
 	demicoloncompat = true,
 	atlas = "atlasepic",
+	pos = { x = 4, y = 3 },
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
-	loc_vars = function(self, info_queue, card)
+	config = { copies = 2, rounds = 3, rounds_left = 3 },
+	gameset_config = {
+		modest = {
+			cost = 15,
+			copies = 1,
+			rounds = 3,
+			rounds_left = 3,
+		},
+		mainline = { copies = 2, rounds = 3, rounds_left = 3 },
+	},
+	loc_vars = function(self, info_queue, center)
 		return {
-			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
-				number_format(card.ability.extra.Xmult),
-			},
+			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
+			vars = { center.ability.copies, center.ability.rounds, center.ability.rounds_left },
 		}
 	end,
 	calculate = function(self, card, context)
-		if
-			context.joker_main
-			and pseudorandom("cry_googol_play")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
-		then
+		local gameset = Card.get_gameset(card)
+		if context.end_of_round and not context.retrigger_joker and not context.blueprint and not context.individual and not context.repetition then
+			card.ability.rounds_left = card.ability.rounds_left - 1
+			if to_big(card.ability.rounds_left) <= to_big(0) then
+				local eval = function(card)
+					return not card.REMOVED
+				end
+				juice_card_until(card, eval, true)
+			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				message = to_big(card.ability.rounds_left) > to_big(0)
+						and ((card.ability.rounds - card.ability.rounds_left) .. "/" .. card.ability.rounds)
+					or localize("k_active_ex"),
+				colour = G.C.FILTER,
 			}
 		end
-		if context.forcetrigger then
-			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
-			}
+		if
+			(
+				context.selling_self
+				and not context.retrigger_joker
+				and not context.blueprint
+				and to_big(card.ability.rounds_left) <= to_big(0)
+			) or context.forcetrigger
+		then
+			local jokers = {}
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] ~= card then
+					jokers[#jokers + 1] = G.jokers.cards[i]
+				end
+			end
+			if #jokers > 0 then
+				if not gameset == "modest" or #G.jokers.cards <= G.jokers.config.card_limit then
+					if G.jokers.cards[1].ability.name ~= "cry-altgoogol" then
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								for i = 1, card.ability.copies do
+									local chosen_joker = G.jokers.cards[1]
+									local card = copy_card(
+										chosen_joker,
+										nil,
+										nil,
+										nil,
+										(
+											gameset == "modest"
+												and (Cryptid.safe_get(chosen_joker, "edition", "negative"))
+											or nil
+										)
+									)
+									card:add_to_deck()
+									G.jokers:emplace(card)
+								end
+								return true
+							end,
+						}))
+						card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
+							message = localize("k_duplicated_ex"),
+							colour = G.C.RARITY.cry_epic,
+						})
+						return nil, true
+					else
+						card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
+							message = localize("k_nope_ex"),
+							colour = G.C.RARITY.cry_epic,
+						})
+						return nil, true
+					end
+				else
+					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
+						message = localize("k_no_room_ex"),
+						colour = G.C.RARITY.cry_epic,
+					})
+					return nil, true
+				end
+			else
+				card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
+					message = localize("k_no_other_jokers"),
+					colour = G.C.RARITY.cry_epic,
+				})
+				return nil, true
+			end
 		end
 	end,
 	cry_credits = {
 		idea = {
-			".asdom",
+			"Jevonn",
 		},
 		art = {
-			"Linus Goof Balls",
+			"Jevonn",
 		},
 		code = {
-			"Math",
+			"Jevonn",
 		},
 	},
-	unlocked = false,
-	check_for_unlock = function(self, args)
-		if args.type == "chip_score" and to_big(args.chips) >= to_big(1e100) then
-			unlock_card(self)
-		end
-		if args.type == "cry_lock_all" then
-			lock_card(self)
-		end
-		if args.type == "cry_unlock_all" then
-			unlock_card(self)
-		end
-	end,
 }
 
 -- One For All
@@ -2120,7 +2129,7 @@ local jtron = {
 	name = "cry-jtron",
 	key = "jtron",
 	config = {
-		extra = { bonus = 1 },
+		extra = { bonus = 2 },
 		immutable = { current = 0 },
 	},
 	rarity = "cry_epic",
@@ -2142,22 +2151,25 @@ local jtron = {
 		}
 	end,
 	calculate = function(self, card, context)
-		card.ability.immutable.current =
-			lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
+
 		if context.cardarea == G.jokers and context.joker_main then
-			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = {
-						number_format(card.ability.immutable.current),
-					},
-				}),
-				Xmult_mod = lenient_bignum(card.ability.immutable.current),
-				colour = G.C.MULT,
-			}
+			card.ability.immutable.current =
+			lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
+			if to_big(card.ability.immutable.current) > to_big(0) then
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = {
+							number_format(card.ability.immutable.current),
+						},
+					}),
+					Xmult_mod = lenient_bignum(card.ability.immutable.current),
+					colour = G.C.MULT,
+				}
+			end
 		end
-		if context.end_of_round then
+		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition and not context.retrigger_joker then
 			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
 				G.E_MANAGER:add_event(Event({
 					func = function()

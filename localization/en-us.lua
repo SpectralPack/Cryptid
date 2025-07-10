@@ -1046,20 +1046,9 @@ return {
 			j_cry_googol_play = {
 				name = "Googol Play Card",
 				text = {
-					"After {C:attention}#2#{} {C:inactive}[#3#]{} rounds Sell this card to create",
-					"{C:attention}#1#{} cop#<ies,y>1# of the leftmost {C:attention}Joker{}",
-					"{C:inactive,s:0.8}Does not copy Googol Play Cards{}",
-					"{C:inactive}(Must have room){}",
-				},
-			},
-			j_cry_googol_play_balanced = {
-				name = "Googol Play Card",
-				text = {
-					"After {C:attention}#2#{}{C:inactive}[#3#] rounds Sell this card to create",
-					"{C:attention}#1#{} cop#<ies,y>1# of the leftmost {C:attention}Joker{}",
-					"{C:inactive,s:0.8}Does not copy Googol Play Cards{}",
-					"{C:inactive}(Must have room){}",
-					--todo: add "removes negative from copy" like Ankh/Invis Joker
+					"{C:green}#1# in #2#{} chance for",
+					"{X:red,C:white} X#4# {} Mult",
+					"Otherwise {X:red,C:white}X#3#{} Mult"
 				},
 			},
 			j_cry_antennastoheaven = {
@@ -1447,10 +1436,10 @@ return {
 			j_cry_crustulum = {
 				name = "Crustulum",
 				text = {
-					"This Joker gains {C:chips}+#2#{} Chip#<s>2#",
-					"per {C:attention}reroll{} in the shop",
-					"{C:green}All rerolls are free{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chip#<s>1#)",
+					"This Joker gains {C:attention}+#2#{} Reroll#<s>2#",
+					"when a {C:attention}Food{} Joker {C:red}Expires{}",
+					"Create a {C:attention}Food{} Joker at end of round",
+					"{C:inactive}(Currently {C:attention}+#1#{C:inactive} Reroll#<s>1#)",
 				},
 			},
 			j_cry_cryptidmoment = {
@@ -1614,7 +1603,8 @@ return {
 				text = {
 					"Draw {C:green}full deck{} to hand",
 					"when {C:attention}Blind{} is selected",
-					"{C:inactive,s:0.8}\"If you can't handle me at my 1x,",
+					"{C:attention}+#1#{} Card Selection Limit",
+					"{C:inactive,s:0.8}\"If you can't handle me at my 1x",
 					"{C:inactive,s:0.8}you don't deserve me at my 2x\"",
 				},
 			},
@@ -1712,9 +1702,11 @@ return {
 			j_cry_familiar_currency = {
 				name = "Familiar Currency",
 				text = {
-					"Create a {C:attention}Meme Joker{}",
-					"at the end of round",
-					"for {C:money}$#1#{} {C:inactive}(if possible)",
+					"Take {C:money}$#1#{}",
+					"at the end of round {C:inactive}(if possible)",
+					"When sold create {C:attention}One{} meme Joker",
+					"for every {C:money}$#1#{} Taken so Far",
+					"{C:inactive}(Currently {C:attention}#2#{C:inactive})",
 					"{C:inactive}(Must have room)",
 				},
 			},
@@ -1858,8 +1850,10 @@ return {
 			j_cry_altgoogol = {
 				name = "Nostalgic Googol Play Card",
 				text = {
-					"{C:green}#1# in #2#{} chance for",
-					"{X:red,C:white} X#3# {} Mult",
+					"After {C:attention}#2#{} {C:inactive}[#3#]{} rounds Sell this card to create",
+					"{C:attention}#1#{} cop#<ies,y>1# of the leftmost {C:attention}Joker{}",
+					"{C:inactive,s:0.8}Does not copy Googol Play Cards{}",
+					"{C:inactive}(Must have room){}",
 				},
 				unlock = {
 					"Score {C:attention}1.0e100{} Chips",
@@ -2580,11 +2574,10 @@ return {
 				name = "Scalae",
 				text = {
 					"Scaling {C:attention}Jokers{} scale",
-					"as a degree-{C:attention}#1#{} polynomial",
-					"raise degree by {C:attention}#2#{}",
+					"{X:dark_edition,C:white}X#1#{} as fast",
+					"increase multiplier by {C:attention}#2#{}",
 					"at end of round",
 					"{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} excluded)",
-					"{C:inactive,s:0.8}(ex. +1, +#3#, +#4#, +#5#)",
 				},
 			},
 			j_cry_scrabble = {
@@ -2759,11 +2752,11 @@ return {
 			j_cry_stella_mortis = {
 				name = "Stella Mortis",
 				text = {
-					"This Joker destroys a",
-					"random {C:planet}Planet{} card",
-					"to gain {X:dark_edition,C:white} ^#1# {} Mult",
-					"at the end of the {C:attention}shop{}",
-					"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+					"When skipping a {C:attention}Celestial{} Pack",
+					"{C:red}destroy{} pack cards based on how many",
+					"{C:attention}choices{} are left. Gain {X:dark_edition,C:white}^#1#{} Mult",
+					"for each card {C:red}destroyed{}",
+					"{C:inactive}(Currently, {X:dark_edition,C:white}^#2#{} {C:inactive}Mult)"
 				},
 			},
 			j_cry_stronghold = {
@@ -4200,6 +4193,7 @@ return {
 				text = {
 					"When this Joker is {C:cry_code}triggered{},",
 					"trigger {C:cry_code}#1#",
+					"Removed after {C:attention}#2#{} {C:inactive}[#3#]{} triggers",
 					"{C:inactive}Not all cards can be triggered this way{}",
 					"{C:inactive}but all Jokers can trigger the other{}",
 				},

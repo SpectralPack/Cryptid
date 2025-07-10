@@ -1830,6 +1830,9 @@ local seed = {
 	end,
 	use = function(self, card, area, copier)
 		local cards = Cryptid.get_highlighted_cards({ G.jokers, G.hand, G.consumeables, G.pack_cards }, card, 1, 1)
+		if cards[1] then
+			cards[1].ability.cry_rigged = true
+		end
 		if cards[1].area == G.hand then
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
@@ -2074,7 +2077,6 @@ local hook = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
-		info_queue[#info_queue + 1] = { key = "cry_flickering", set = "Other", vars = { 8, 8 } }
 	end,
 	use = function(self, card, area, copier)
 		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 2, 2)
@@ -2085,6 +2087,8 @@ local hook = {
 				for _, v in ipairs(G.jokers.cards) do
 					if v.sort_id == card1.ability.cry_hook_id then
 						v.ability.cry_hooked = false
+						v.ability.cry_hook_triggers = 8
+						v.ability.cry_hook_triggers_left = 8
 					end
 				end
 			end
@@ -2092,6 +2096,8 @@ local hook = {
 				for _, v in ipairs(G.jokers.cards) do
 					if v.sort_id == card2.ability.cry_hook_id then
 						v.ability.cry_hooked = false
+						v.ability.cry_hook_triggers = 8
+						v.ability.cry_hook_triggers_left = 8
 					end
 				end
 			end
@@ -2099,6 +2105,10 @@ local hook = {
 			card2.ability.cry_hooked = true
 			card1.ability.cry_hook_id = card2.sort_id
 			card2.ability.cry_hook_id = card1.sort_id
+			card1.ability.cry_hook_triggers = 8
+			card1.ability.cry_hook_triggers_left = 8
+			card2.ability.cry_hook_triggers = 8
+			card2.ability.cry_hook_triggers_left = 8
 		end
 	end,
 	init = function(self)
@@ -2149,7 +2159,7 @@ local hooked = {
 			end
 			var = var or ("[no joker found - " .. (card.ability.cry_hook_id or "nil") .. "]")
 		end
-		return { vars = { var or "hooked Joker" } }
+		return { vars = { var or "hooked Joker", card.ability.cry_hook_triggers or 8, card.ability.cry_hook_triggers_left or 8 } }
 	end,
 	key = "cry_hooked",
 	no_sticker_sheet = true,
@@ -2166,10 +2176,25 @@ local hooked = {
 			and not context.forcetrigger
 			and not context.other_context.forcetrigger
 		then
+			if not card.ability.cry_hook_triggers_left then card.ability.cry_hook_triggers_left = 8; card.ability.cry_hook_triggers = 8 end
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].sort_id == card.ability.cry_hook_id then
 					local results = Cryptid.forcetrigger(G.jokers.cards[i], context)
 					if results and results.jokers then
+						card.ability.cry_hook_triggers_left = card.ability.cry_hook_triggers_left - 1
+						if to_big(card.ability.cry_hook_triggers_left) <= 0 then
+							G.E_MANAGER:add_event(Event({
+								func = function()
+									card.ability.cry_hook_id = nil
+									card.ability.cry_hooked = nil
+									G.jokers.cards[i].ability.cry_hook_id = nil
+									G.jokers.cards[i].ability.cry_hooked = nil
+									G.jokers.cards[i].ability.cry_hook_triggers_left = 8
+									card.ability.cry_hook_triggers_left = 8
+									return true
+								end
+							}))
+						end
 						return results.jokers
 					end
 				end

@@ -725,7 +725,11 @@ function calculate_reroll_cost(skip_increment)
 	if not G.GAME.current_round.free_rerolls or G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
-	if next(find_joker("cry-crustulum")) or G.GAME.current_round.free_rerolls > 0 then
+	local crustulum_rolls = 0
+	for i, v in pairs(find_joker("cry-crustulum") or {}) do
+		crustulum_rolls = crustulum_rolls + v.ability.extra.rerolls_stored
+	end
+	if to_big(crustulum_rolls) > to_big(0) or G.GAME.current_round.free_rerolls > 0 then
 		G.GAME.current_round.reroll_cost = 0
 		return
 	end

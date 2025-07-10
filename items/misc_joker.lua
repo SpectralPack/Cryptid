@@ -9913,7 +9913,7 @@ local familiar_currency = {
 	name = "cry-Familiar Currency",
 	key = "familiar_currency",
 	pos = { x = 0, y = 6 },
-	config = { extra = 19 },
+	config = { extra = 19, taken_so_far = 0 },
 	order = 137,
 	rarity = 3,
 	cost = 0,
@@ -9921,7 +9921,7 @@ local familiar_currency = {
 	demicoloncompat = true,
 	atlas = "atlasone",
 	loc_vars = function(self, info_queue, center)
-		return { vars = { center.ability.extra } }
+		return { vars = { center.ability.extra, center.ability.taken_so_far } }
 	end,
 	calculate = function(self, card, context)
 		if
@@ -9932,25 +9932,39 @@ local familiar_currency = {
 		then
 			if
 				to_big(G.GAME.dollars - G.GAME.bankrupt_at) >= to_big(card.ability.extra)
-				and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 			then
-				G.GAME.joker_buffer = G.GAME.joker_buffer + 1
 				ease_dollars(-card.ability.extra)
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						SMODS.add_card({ set = "Meme", key_append = "fcc" })
-						G.GAME.joker_buffer = 0
-						return true
-					end,
-				}))
+				card.ability.taken_so_far = card.ability.taken_so_far + 1
 				card_eval_status_text(
 					context.blueprint_card or card,
 					"extra",
 					nil,
 					nil,
 					nil,
-					{ message = localize("k_plus_joker"), colour = G.C.BLUE }
+					{ message = localize("k_upgrade_ex"), colour = G.C.BLUE }
 				)
+			end
+		end
+		if context.selling_self or context.forcetrigger then
+			for i = 1, card.ability.taken_so_far do
+				if #G.jokers.cards + G.GAME.joker_buffer + 1 < G.jokers.config.card_limit then
+					G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							SMODS.add_card({ set = "Meme", key_append = "fcc" })
+							G.GAME.joker_buffer = 0
+							return true
+						end,
+					}))
+					card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_joker_plus"), colour = G.C.BLUE }
+					)
+				end
 			end
 		end
 		if context.forcetrigger then
