@@ -1186,7 +1186,7 @@ return {
 				name = "Brittle Candy",
 				text = {
 					"For the next {C:attention}#1#{} hand#<s>1#,",
-					"add {C:attention}Stone{}, {C:attention}Gold{}, or {C:attention}Steel{} to",
+					"add {C:attention}Glass{} to",
 					"the rightmost scoring card",
 				},
 			},
