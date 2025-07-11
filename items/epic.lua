@@ -596,7 +596,7 @@ local error_joker = {
 			"Fetch",
 		},
 		art = {
-			"Mystic Misclick",
+			"mold spores",
 		},
 		code = {
 			"Math",

@@ -3587,8 +3587,136 @@ local variable = {
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
 		G.CHOOSE_RANK:align_to_major()
 	end,
-	init = function(self)
-		function create_UIBox_variable(card)
+	init = function()
+		local get_voucherref = SMODS.get_next_vouchers
+		function SMODS.get_next_vouchers(vouchers)
+			if G.GAME.LOG_VOUCHER then
+				local v = copy_table(G.GAME.LOG_VOUCHER)
+				if not G.GAME.USING_LOG then
+					G.GAME.LOG_VOUCHER = nil
+				end
+				return v
+			else
+				return get_voucherref(vouchers)
+			end
+		end
+		local get_bossref = get_new_boss
+		function get_new_boss(...)
+			if G.GAME.LOG_BOSS then
+				local v = "" .. G.GAME.LOG_BOSS
+				if not G.GAME.USING_LOG then
+					G.GAME.LOG_BOSS = nil
+				end
+				return v
+			end
+			return get_bossref(...)
+		end
+		function Cryptid.predict_joker(seed)
+			local _pool, _pool_key = get_current_pool("Joker", nil, nil, seed)
+			center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+			local it = 1
+			while center == "UNAVAILABLE" do
+				it = it + 1
+				center = pseudorandom_element(_pool, pseudoseed(_pool_key .. ("_resample" .. it)))
+			end
+
+			return center
+		end
+		function G.FUNCS.log_antevoucher()
+			G.FUNCS.log_cancel()
+			local pseudorandom = copy_table(G.GAME.pseudorandom)
+			local bl = get_new_boss()
+			G.GAME.LOG_BOSS = bl
+			local voucher = SMODS.get_next_vouchers()
+			G.GAME.LOG_VOUCHER = voucher
+			G.GAME.pseudorandom = copy_table(pseudorandom)
+			if bl then
+				G.GAME.bosses_used[bl] = (G.GAME.bosses_used[bl] or 1) - 1
+			end
+			G.GAME.USING_CODE = true
+			G.CHOOSE_CARD = UIBox({
+				definition = create_UIBox_log({
+					bl and G.localization.descriptions.Blind[bl].name or "None",
+					voucher
+							and G.P_CENTERS[voucher[1]]
+							and localize({ type = "name_text", set = G.P_CENTERS[voucher[1]].set, key = voucher[1] })
+						or "None",
+				}, localize("cry_code_antevoucher")),
+				config = {
+					align = "cm",
+					offset = { x = 0, y = 10 },
+					major = G.ROOM_ATTACH,
+					bond = "Weak",
+					instance_type = "POPUP",
+				},
+			})
+			G.CHOOSE_CARD.alignment.offset.y = 0
+			G.ROOM.jiggle = G.ROOM.jiggle + 1
+			G.CHOOSE_CARD:align_to_major()
+			G.GAME.USING_LOG = nil
+		end
+		function G.FUNCS.log_nextjokers()
+			G.FUNCS.log_cancel()
+			local pseudorandom = copy_table(G.GAME.pseudorandom)
+			local j = {}
+			for i = 1, 5 do
+				local key = Cryptid.predict_joker("sho")
+				local next_joker = G.P_CENTERS[key]
+						and localize({ type = "name_text", set = G.P_CENTERS[key].set, key = key })
+					or "ERROR"
+				if next_joker == "ERROR" then
+					local try = (G.localization.descriptions[G.P_CENTERS[key].set] or {})[key]
+					try = try and try.name or "[ERROR]"
+					if type(try or "a") == "table" then
+						try = try[1]
+					end
+					next_joker = try
+				end
+				j[#j + 1] = next_joker
+			end
+			G.GAME.pseudorandom = copy_table(pseudorandom)
+			G.GAME.USING_CODE = true
+			G.CHOOSE_CARD = UIBox({
+				definition = create_UIBox_log(j, localize("cry_code_nextjokers")),
+				config = {
+					align = "cm",
+					offset = { x = 0, y = 10 },
+					major = G.ROOM_ATTACH,
+					bond = "Weak",
+					instance_type = "POPUP",
+				},
+			})
+			G.CHOOSE_CARD.alignment.offset.y = 0
+			G.ROOM.jiggle = G.ROOM.jiggle + 1
+			G.CHOOSE_CARD:align_to_major()
+			G.GAME.USING_LOG = nil
+		end
+		function G.FUNCS.log_nextcards()
+			G.FUNCS.log_cancel()
+			local j = {}
+			for i = 1, 10 do
+				local card = G.deck.cards[#G.deck.cards + 1 - i]
+				if card then
+					j[#j + 1] = localize(card.base.value, "ranks") .. " of " .. localize(card.base.suit, "suits_plural")
+				end
+			end
+			G.GAME.USING_CODE = true
+			G.CHOOSE_CARD = UIBox({
+				definition = create_UIBox_log(j, localize("cry_code_nextcards")),
+				config = {
+					align = "cm",
+					offset = { x = 0, y = 10 },
+					major = G.ROOM_ATTACH,
+					bond = "Weak",
+					instance_type = "POPUP",
+				},
+			})
+			G.CHOOSE_CARD.alignment.offset.y = 0
+			G.ROOM.jiggle = G.ROOM.jiggle + 1
+			G.CHOOSE_CARD:align_to_major()
+			G.GAME.USING_LOG = nil
+		end
+		function create_UIBox_log_opts()
 			G.E_MANAGER:add_event(Event({
 				blockable = false,
 				func = function()
@@ -3630,7 +3758,7 @@ local variable = {
 							}),
 						},
 					},
-					{
+					G.GAME.blind and G.GAME.blind.in_blind and G.deck and #(G.deck.cards or {}) > 0 and {
 						n = G.UIT.R,
 						nodes = {
 							UIBox_button({
