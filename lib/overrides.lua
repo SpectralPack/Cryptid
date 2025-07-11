@@ -478,7 +478,6 @@ function Game:update(dt)
 		and not G.deck.cards[1]
 	then
 		--im having to manually recreate some of this idk why
-		
 	end
 end
 
