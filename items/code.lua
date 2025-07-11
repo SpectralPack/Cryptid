@@ -1033,15 +1033,19 @@ local exploit = {
 		return true
 	end,
 	use = function(self, card, area, copier)
+		-- Un-use the card (re-use code is in lib/misc.lua)
 		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
 			G.GAME.CODE_DESTROY_CARD = copy_card(card)
 			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-		else
-			G.GAME.CODE_DESTROY_CARD = card
+			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
+		end
+		if card.ability.cry_multiuse then
 			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
 		end
+
 		G.GAME.USING_CODE = true
 		G.GAME.USING_EXPLOIT = true
+		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
 		G.FUNCS.overlay_menu({ definition = G.UIDEF.exploit_menu() })
 	end,
 }
@@ -3082,12 +3086,18 @@ local class = {
 		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
+		-- Un-use the card
 		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
 			G.GAME.CODE_DESTROY_CARD = copy_card(card)
 			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
+			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
+		end
+		if card.ability.cry_multiuse then
+			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
 		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_CLASS = card.ability.max_highlighted
+		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
 		G.FUNCS.overlay_menu({ definition = create_UIBox_class() })
 	end,
 	init = function(self)
@@ -3111,10 +3121,19 @@ local class = {
 					end
 					G.hand:unhighlight_all()
 					ccl(self)
-					if G.GAME.CODE_DESTROY_CARD then
-						G.GAME.CODE_DESTROY_CARD:start_dissolve()
-						G.GAME.CODE_DESTROY_CARD = nil
+					-- Re-use the card
+					if G.GAME.ACTIVE_CODE_CARD then
+						if
+							not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse
+							or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1)
+						then
+							G.GAME.ACTIVE_CODE_CARD:start_dissolve()
+						else
+							G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse =
+								lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
+						end
 					end
+					G.GAME.ACTIVE_CODE_CARD = nil
 				end
 			else
 				ccl(self)
@@ -3306,12 +3325,18 @@ local variable = {
 		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
+		-- Un-use the card
 		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
 			G.GAME.CODE_DESTROY_CARD = copy_card(card)
 			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
+			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
+		end
+		if card.ability.cry_multiuse then
+			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
 		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_VARIABLE = card.ability.max_highlighted
+		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
 		G.FUNCS.overlay_menu({ definition = create_UIBox_variable_code() })
 	end,
 	init = function(self)
@@ -3335,10 +3360,19 @@ local variable = {
 					end
 					G.hand:unhighlight_all()
 					ccl(self)
-					if G.GAME.CODE_DESTROY_CARD then
-						G.GAME.CODE_DESTROY_CARD:start_dissolve()
-						G.GAME.CODE_DESTROY_CARD = nil
+					-- Re-use the card
+					if G.GAME.ACTIVE_CODE_CARD then
+						if
+							not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse
+							or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1)
+						then
+							G.GAME.ACTIVE_CODE_CARD:start_dissolve()
+						else
+							G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse =
+								lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
+						end
 					end
+					G.GAME.ACTIVE_CODE_CARD = nil
 				end
 			else
 				ccl(self)
@@ -3485,7 +3519,8 @@ local log = {
 			local pseudorandom = copy_table(G.GAME.pseudorandom)
 			local j = {}
 			for i = 1, 5 do
-				j[#j + 1] = G.localization.descriptions["Joker"][Cryptid.predict_joker("sho")].name
+				local next_joker = G.localization.descriptions["Joker"][Cryptid.predict_joker("sho")]
+				j[#j + 1] = next_joker and next_joker.name or "[NOT A JOKER]"
 			end
 			G.GAME.pseudorandom = copy_table(pseudorandom)
 			G.GAME.USING_CODE = true
