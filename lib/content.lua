@@ -286,6 +286,49 @@ SMODS.PokerHand({
 	end,
 })
 
+SMODS.PokerHand({
+	key = "Declare0",
+	visible = false,
+	chips = 0,
+	mult = 0,
+	l_chips = 0,
+	l_mult = 0,
+	example = {},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 0 },
+	above_hand = "cry_UltPair",
+	order_offset = 1000,
+	evaluate = function(parts, hand) end,
+})
+SMODS.PokerHand({
+	key = "Declare1",
+	visible = false,
+	chips = 0,
+	mult = 0,
+	l_chips = 0,
+	l_mult = 0,
+	example = {},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 0 },
+	above_hand = "cry_UltPair",
+	order_offset = 1001,
+	evaluate = function(parts, hand) end,
+})
+SMODS.PokerHand({
+	key = "Declare2",
+	visible = false,
+	chips = 0,
+	mult = 0,
+	l_chips = 0,
+	l_mult = 0,
+	example = {},
+	atlas = "poker_hands",
+	pos = { x = 0, y = 0 },
+	above_hand = "cry_UltPair",
+	order_offset = 1002,
+	evaluate = function(parts, hand) end,
+})
+
 SMODS.Rarity({
 	key = "exotic",
 	loc_txt = {},
@@ -697,7 +740,7 @@ SMODS.UndiscoveredSprite({
 	key = "Code",
 	atlas = "atlasnotjokers",
 	path = "atlasnotjokers.png",
-	pos = { x = 9, y = 5 },
+	pos = { x = 12, y = 6 },
 	px = 71,
 	py = 95,
 })
@@ -713,6 +756,15 @@ SMODS.Atlas({
 	key = "blinds",
 	atlas_table = "ANIMATION_ATLAS",
 	path = "bl_cry.png",
+	px = 34,
+	py = 34,
+	frames = 21,
+})
+--splitting these up because like more than 20 on one atlas is a crime
+SMODS.Atlas({
+	key = "blinds_two",
+	atlas_table = "ANIMATION_ATLAS",
+	path = "bl_cry_two.png",
 	px = 34,
 	py = 34,
 	frames = 21,
@@ -736,6 +788,14 @@ SMODS.Atlas({
 	key = "atlasSleeves",
 	path = "atlasSleeves.png",
 	px = 73,
+	py = 95,
+})
+
+-- CCD Clarifier Sprite
+SMODS.Atlas({
+	key = "cry_clarifier",
+	path = "intercept_sprite.png",
+	px = 71,
 	py = 95,
 })
 SMODS.Atlas({

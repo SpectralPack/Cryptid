@@ -211,12 +211,10 @@ local googol_play = {
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 4, y = 0 } },
 	loc_vars = function(self, info_queue, card)
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
 				number_format(card.ability.extra.Xmult),
 			},
 		}
@@ -224,12 +222,8 @@ local googol_play = {
 	calculate = function(self, card, context)
 		if
 			context.joker_main
-			and SMODS.pseudorandom_element(
-				card,
-				"cry_googol_play",
-				1,
-				card and card.ability.extra.odds or self.config.extra.odds
-			)
+			and pseudorandom("cry_googol_play")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 		then
 			return {
 				message = localize({
@@ -883,12 +877,10 @@ local boredom = {
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
 			},
 		}
 	end,
@@ -900,12 +892,9 @@ local boredom = {
 			and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
 		then
 			if
-				SMODS.pseudorandom_element(
-					card,
-					"cry_boredom_joker",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
+				pseudorandom("cry_boredom_joker")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+					/ card.ability.extra.odds
 			then
 				return {
 					message = localize("k_again_ex"),
@@ -919,12 +908,8 @@ local boredom = {
 		if
 			context.repetition
 			and context.cardarea == G.play
-			and SMODS.pseudorandom_element(
-				card,
-				"cry_boredom_card",
-				1,
-				card and card.ability.extra.odds or self.config.extra.odds
-			)
+			and pseudorandom("cry_boredom_card")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 		then
 			return {
 				message = localize("k_again_ex"),
@@ -1136,22 +1121,7 @@ local circus = {
 	name = "cry-circus",
 	key = "circus",
 	pos = { x = 4, y = 4 },
-	config = {
-		extra = {
-			rare_mult_mod = 2,
-			epic_mult_mod = 3,
-			legend_mult_mod = 4,
-			exotic_mult_mod = 20,
-		},
-		immutable = {
-			rarity_map = {
-				[3] = "rare_mult_mod",
-				[4] = "legend_mult_mod",
-				["cry_epic"] = "epic_mult_mod",
-				["cry_exotic"] = "exotic_mult_mod",
-			},
-		},
-	},
+	config = {},
 	dependencies = {
 		items = {
 			"set_cry_epic",
@@ -1159,56 +1129,89 @@ local circus = {
 	},
 	atlas = "atlasepic",
 	order = 33,
+
 	loc_vars = function(self, info_queue, center)
+		local extra_rarities = {}
+		local mults = {}
+		Cryptid.circus_rarities["exotic"].colour = G.C.CRY_EXOTIC
+		for i, v in pairs(Cryptid.circus_rarities) do
+			extra_rarities[#extra_rarities + 1] = v
+		end
+		table.sort(extra_rarities, function(a, b)
+			return a.order < b.order
+		end)
+		mults.colours = {}
+		for i, v in pairs(extra_rarities) do
+			if not v.hidden then
+				mults[#mults + 1] = number_format(center.ability.extra[tostring(v.rarity) .. "_mult_mod"])
+				mults.colours[#mults.colours + 1] = v.colour
+			end
+		end
 		return {
-			vars = {
-				number_format(center.ability.extra.rare_mult_mod),
-				number_format(center.ability.extra.epic_mult_mod),
-				number_format(center.ability.extra.legend_mult_mod),
-				number_format(center.ability.extra.exotic_mult_mod),
-			},
+			vars = mults,
 		}
+	end,
+	set_ability = function(self, center)
+		local extra_rarities = {}
+		local mults = {}
+		local mult_numbers = {}
+		for i, v in pairs(Cryptid.circus_rarities) do
+			extra_rarities[#extra_rarities + 1] = v
+		end
+		table.sort(extra_rarities, function(a, b)
+			return a.order < b.order
+		end)
+		for i, v in pairs(extra_rarities) do
+			mult_numbers[tostring(v.rarity) .. "_mult_mod"] = v.base_mult
+			mults[v.rarity] = tostring(v.rarity) .. "_mult_mod"
+		end
+		if not self.config.extra then
+			self.config.extra = mult_numbers
+			center.ability.extra = mult_numbers
+			self.config.immutable = {
+				rarity_map = mults,
+			}
+			center.ability.immutable = {
+				rarity_map = mults,
+			}
+		end
 	end,
 	rarity = "cry_epic",
 	cost = 16,
 	blueprint_compat = true,
 	demicoloncompat = true,
 	calculate = function(self, card, context)
-		local function calculate_xmult(mult_mod)
-			if not Talisman.config_file.disable_anims then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						context.other_joker:juice_up(0.5, 0.5)
-						return true
-					end,
-				}))
-			end
-
-			local xmult = lenient_bignum(math.max(1, to_big(card.ability.extra.Xmult)) * to_big(mult_mod))
-			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(xmult) },
-				}),
-				Xmult_mod = xmult,
-			}
-		end
-
 		if context.other_joker and card ~= context.other_joker then
 			local mod_key = card.ability.immutable.rarity_map[context.other_joker.config.center.rarity]
-			if mod_key then
-				return calculate_xmult(card.ability.extra[mod_key])
+			if mod_key and card.ability.extra[mod_key] and to_big(card.ability.extra[mod_key]) > to_big(1) then
+				if not Talisman.config_file.disable_anims then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							context.other_joker:juice_up(0.5, 0.5)
+							return true
+						end,
+					}))
+				end
+				local xmult = card.ability.extra[mod_key]
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(xmult) },
+					}),
+					Xmult_mod = xmult,
+				}
 			end
 		end
 		if context.forcetrigger then
+			local total = 1
+			for i, v in pairs(card.ability.extra) do
+				if type(v) == "number" or (type(v) == "table" and v.tetrate) then
+					total = total * v
+				end
+			end
 			return {
-				Xmult_mod = (
-					card.ability.extra.rare_mult_mod
-					* card.ability.extra.epic_mult_mod
-					* card.ability.extra.legend_mult_mod
-					* card.ability.extra.exotic_mult_mod
-				),
+				Xmult_mod = total,
 			}
 		end
 	end,
@@ -1469,7 +1472,7 @@ local bonusjoker = {
 			odds = 8,
 			add = 1,
 		},
-		immutable = { check = 0 },
+		immutable = { check = 0, max = 100 },
 	},
 	dependencies = {
 		items = {
@@ -1485,13 +1488,11 @@ local bonusjoker = {
 	enhancement_gate = "m_bonus",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
-				number_format(card.ability.extra.add),
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+				number_format(math.min(card.ability.extra.add, card.ability.immutable.max)),
 			},
 		}
 	end,
@@ -1500,12 +1501,8 @@ local bonusjoker = {
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_bonus") then
 				if
-					SMODS.pseudorandom_probability(
-						card,
-						"bonusjoker",
-						1,
-						card and card.ability.extra.odds or self.config.extra.odds
-					)
+					pseudorandom("bonusjoker")
+						< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 					and card.ability.immutable.check < 2
 					and not context.retrigger_joker
 				then
@@ -1514,13 +1511,17 @@ local bonusjoker = {
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.add)
+						G.jokers.config.card_limit = lenient_bignum(
+							G.jokers.config.card_limit + math.min(card.ability.extra.add, card.ability.immutable.max)
+						)
 					else
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.consumeables.config.card_limit =
-							lenient_bignum(G.consumeables.config.card_limit + to_big(card.ability.extra.add))
+						G.consumeables.config.card_limit = lenient_bignum(
+							G.consumeables.config.card_limit
+								+ to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
+						)
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1550,13 +1551,17 @@ local bonusjoker = {
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + card.ability.extra.add)
+				G.jokers.config.card_limit = lenient_bignum(
+					G.jokers.config.card_limit + cmath.min(card.ability.extra.add, card.ability.immutable.max)
+				)
 			else
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.consumeables.config.card_limit =
-					lenient_bignum(G.consumeables.config.card_limit + to_big(card.ability.extra.add))
+				G.consumeables.config.card_limit = lenient_bignum(
+					G.consumeables.config.card_limit
+						+ to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
+				)
 			end
 			return {
 				extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1600,12 +1605,10 @@ local multjoker = {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_mult
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_cryptid
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
 			},
 		}
 	end,
@@ -1617,12 +1620,9 @@ local multjoker = {
 				and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 			then
 				if
-					SMODS.pseudorandom_probability(
-						card,
-						"multjoker",
-						1,
-						card and card.ability.extra.odds or self.config.extra.odds
-					)
+					pseudorandom("multjoker")
+					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+						/ card.ability.extra.odds
 				then
 					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 					G.E_MANAGER:add_event(Event({
@@ -2385,7 +2385,7 @@ local demicolon = {
 	cost = 14,
 	order = 299,
 	blueprint_compat = false,
-	demicoloncompat = false,
+	demicoloncompat = true,
 	atlas = "atlasepic",
 	pos = { x = 3, y = 5 },
 	config = { check = nil },
@@ -2455,7 +2455,7 @@ local demicolon = {
 		end
 	end,
 	calculate = function(self, card, context)
-		if context.joker_main and not context.blueprint and not context.forcetrigger then
+		if context.joker_main and not context.blueprint then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if Cryptid.demicolonGetTriggerable(G.jokers.cards[i + 1])[1] then
@@ -2495,14 +2495,14 @@ local starfruit = {
 	rarity = "cry_epic",
 	cost = 14,
 	order = 300,
-	blueprint_compat = false,
-	demicoloncompat = false,
+	blueprint_compat = true,
+	demicoloncompat = true,
 	atlas = "atlasepic",
 	pos = { x = 4, y = 5 },
 	config = { emult = 2, emult_mod = 0.2 },
 	pools = { ["Food"] = true },
 	calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
 			return {
 				message = localize({
 					type = "variable",
@@ -2515,7 +2515,7 @@ local starfruit = {
 				colour = G.C.DARK_EDITION,
 			}
 		end
-		if context.reroll_shop then
+		if context.reroll_shop or context.forcetrigger then
 			card.ability.emult = card.ability.emult - card.ability.emult_mod
 			--floating point precision can kiss my ass istg
 			if to_number(card.ability.emult) <= 1.00000001 then

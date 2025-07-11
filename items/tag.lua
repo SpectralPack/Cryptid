@@ -1416,6 +1416,257 @@ local booster = {
 		end
 	end,
 }
+
+local clone = {
+	cry_credits = {
+		idea = {
+			"Squiddy",
+		},
+		art = {
+			"lord.ruby",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		},
+	},
+	name = "cry-Clone Tag",
+	order = 29,
+	atlas = "tag_cry",
+	pos = { x = 6, y = 3 },
+	config = { type = "item_bought", cost_fac = 1.5 },
+	key = "clone",
+	loc_vars = function(self, info_queue)
+		return { vars = { self.config.cost_fac } }
+	end,
+	min_ante = 4,
+	apply = function(self, tag, context)
+		if context.type == "item_bought" then
+			local lock = tag.ID
+			G.CONTROLLER.locks[lock] = true
+			tag:yep("+", G.C.BLUE, function()
+				local copy = copy_card(context.card)
+				if context.card.area then
+					context.card.area:emplace(copy)
+				else
+					G.consumeables:emplace(copy)
+				end
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for i, v in pairs(G.I.CARD) do
+							if v.set_cost then
+								v:set_cost()
+							end
+						end
+						return true
+					end,
+				}))
+				G.CONTROLLER.locks[lock] = nil
+				return true
+			end)
+			tag.triggered = true
+			return true
+		end
+	end,
+	init = function()
+		local buy_ref = G.FUNCS.buy_from_shop
+		G.FUNCS.buy_from_shop = function(e)
+			local r = buy_ref(e)
+			if r ~= false then
+				for i = 1, #G.GAME.tags do
+					G.GAME.tags[i]:apply_to_run({ type = "item_bought", card = e.config.ref_table })
+				end
+			end
+			return r
+		end
+		local set_costref = Card.set_cost
+		function Card:set_cost(...)
+			local c = set_costref(self, ...)
+			local has
+			for i = 1, #G.GAME.tags do
+				if G.GAME.tags[i].key == "tag_cry_clone" then
+					has = true
+					break
+				end
+			end
+			if has then
+				self.cost = self.cost * 1.5
+			end
+		end
+	end,
+}
+
+local lens = {
+	cry_credits = {
+		idea = {
+			"Squiddy",
+		},
+		art = {
+			"lord.ruby",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		},
+	},
+	name = "cry-Lens Tag",
+	order = 30,
+	atlas = "tag_cry",
+	pos = { x = 7, y = 3 },
+	config = { type = "immediate", negatives = 2 },
+	key = "lens",
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		return { vars = { self.config.negatives } }
+	end,
+	min_ante = 4,
+	apply = function(self, tag, context)
+		if context.type == "immediate" then
+			local c = {}
+			for i, v in pairs(G.consumeables.cards) do
+				if not v.edition or not v.edition.negative then
+					if not v.will_be_editioned then
+						c[#c + 1] = v
+					end
+				end
+			end
+			if #c > 0 then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				local card = pseudorandom_element(c, pseudoseed("cry_lens_tag"))
+				card.will_be_editioned = true
+				local card2 = pseudorandom_element(c, pseudoseed("cry_lens_tag"))
+				if card2 then
+					card2.will_be_editioned = true
+				end
+				tag:yep("+", G.C.BLUE, function()
+					card:set_edition("e_negative")
+					G.CONTROLLER.locks[lock] = nil
+					card.will_be_editioned = nil
+					if card2 then
+						card2:set_edition("e_negative")
+						card2.will_be_editioned = nil
+					end
+					return true
+				end)
+			else
+				tag:nope()
+			end
+			tag.triggered = true
+			return true
+		end
+	end,
+}
+
+local palette_cleanser = {
+	cry_credits = {
+		idea = {
+			"Squiddy",
+		},
+		art = {
+			"lord.ruby",
+		},
+		code = {
+			"lord.ruby",
+		},
+	},
+	object_type = "Tag",
+	dependencies = {
+		items = {
+			"set_cry_tag",
+		},
+	},
+	name = "cry-Palette Cleanser Tag",
+	order = 30,
+	atlas = "tag_cry",
+	pos = { x = 0, y = 4 },
+	config = { type = "immediate" },
+	key = "palette_cleanser",
+	loc_vars = function(self, info_queue)
+		return { vars = {} }
+	end,
+	min_ante = 4,
+	apply = function(self, tag, context)
+		if context.type == "immediate" then
+			local c = {}
+			for i, v in pairs(G.jokers.cards) do
+				if v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
+				end
+			end
+			for i, v in pairs(G.deck.cards) do
+				if v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
+				end
+			end
+			for i, v in pairs(G.hand.cards) do
+				if v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
+				end
+			end
+			if #c > 0 then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				local card = pseudorandom_element(c, pseudoseed("cry_palette_cleanser_tag"))
+				card.will_be_cleansed = true
+				tag:yep("+", G.C.BLUE, function()
+					card:remove_random_sticker("cry_palette_cleanser_sticker")
+					G.CONTROLLER.locks[lock] = nil
+					card.will_be_cleansed = nil
+					return true
+				end)
+			else
+				tag:nope()
+			end
+			tag.triggered = true
+			return true
+		end
+	end,
+	in_pool = function()
+		local c = {}
+		if G.jokers then
+			for i, v in pairs(G.jokers.cards) do
+				if not v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
+				end
+			end
+			for i, v in pairs(G.deck.cards) do
+				if not v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
+				end
+			end
+			for i, v in pairs(G.hand.cards) do
+				if not v:has_stickers() then
+					if not v.will_be_cleansed then
+						c[#c + 1] = v
+					end
+				end
+			end
+		end
+		return #c > 0
+	end,
+}
+
 local tagitems = {
 	cat,
 	empoweredPack,
@@ -1439,6 +1690,9 @@ local tagitems = {
 	blur_tag,
 	astral_tag,
 	loss,
+	clone,
+	lens,
+	palette_cleanser,
 	m_tag,
 	double_m_tag,
 }

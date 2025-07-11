@@ -538,12 +538,10 @@ local notebook = {
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
 				number_format(card.ability.immutable.slots),
 				number_format(card.ability.extra.active),
 				number_format(card.ability.extra.jollies),
@@ -567,12 +565,8 @@ local notebook = {
 			end
 			if
 				to_number(jollycount) >= to_number(card.ability.extra.jollies) --if there are 5 or more jolly jokers
-				or SMODS.pseudorandom_element(
-					card,
-					"cry_notebook",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
+				or pseudorandom("cry_notebook")
+					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
 				card.ability.immutable.slots = to_number(
 					math.min(
@@ -837,12 +831,10 @@ local scrabble = {
 		if Cryptid.enabled("e_cry_m") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		end
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
 			},
 		}
 	end,
@@ -850,12 +842,9 @@ local scrabble = {
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
 			if
-				SMODS.pseudorandom_element(
-					card,
-					"scrabbleother",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
+				pseudorandom("scrabbleother")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+					/ card.ability.extra.odds
 			then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")

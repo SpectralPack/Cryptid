@@ -24,19 +24,19 @@ local echo = {
 	pos = { x = 2, y = 0 },
 	config = { retriggers = 2, extra = 2 },
 	loc_vars = function(self, info_queue, card)
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra or self.config.extra)
 		return {
 			vars = {
 				card and card.ability.retriggers or self.config.retriggers,
-				num,
-				denom,
+				card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1,
+				card and card.ability.extra or self.config.extra,
 			},
-		}
+		} -- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
 	end,
 	calculate = function(self, card, context)
 		if
 			context.repetition
-			and SMODS.pseudorandom_element(card, "cry_echo", 1, card and card.ability.extra or self.config.extra)
+			and pseudorandom("echo")
+				< cry_prob(card.ability.cry_prob or 1, card.ability.extra or 2, card.ability.cry_rigged) / (card.ability.extra or 2)
 		then
 			return {
 				message = localize("k_again_ex"),
@@ -210,23 +210,13 @@ local abstract = {
 	config = { extra = { Emult = 1.15, odds_after_play = 2, odds_after_round = 4, marked = false, survive = false } },
 	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
 	loc_vars = function(self, info_queue, card)
-		local num1, denom1 = SMODS.get_probability_vars(
-			card,
-			1,
-			card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play
-		)
-		local num2, denom2 = SMODS.get_probability_vars(
-			card,
-			1,
-			card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round
-		)
 		return {
 			vars = {
 				card.ability.extra.Emult,
-				num1,
-				denom1,
-				num2,
-				denom2,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_play, card.ability.cry_rigged),
+				card.ability.extra.odds_after_play,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_round, card.ability.cry_rigged),
+				card.ability.extra.odds_after_round,
 			},
 		}
 	end,
@@ -238,12 +228,8 @@ local abstract = {
 			and not card.ability.extra.marked
 			and not card.ability.eternal
 			and not card.ability.extra.survive --this presvents repitition of shatter chance by shutting it out once it confirms to "survive"
-			and SMODS.pseudorandom_probability(
-				card,
-				"cry_abstract_destroy",
-				1,
-				card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play
-			)
+			and pseudorandom("cry_abstract_destroy")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_play, card.ability.cry_rigged) / card.ability.extra.odds_after_play
 		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
 			card.ability.extra.marked = true
 		elseif context.cardarea == G.play and not card.ability.extra.marked then
@@ -1161,6 +1147,10 @@ local astral = {
 		code = {
 			"Math",
 		},
+		art = {
+			"lord.ruby",
+			"Oiiman",
+		},
 	},
 	object_type = "Edition",
 	dependencies = {
@@ -1711,7 +1701,7 @@ local jollyedition = {
 				and context.cardarea == G.play
 			)
 		then
-			return { card and card.edition and card.edition.mult or self.config.mult } -- updated value
+			return { mult = card and card.edition and card.edition.mult or self.config.mult } -- updated value
 		end
 		if context.joker_main then
 			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
@@ -2552,12 +2542,9 @@ return {
 		function Card:calculate_abstract_break()
 			if self.config.center_key == "m_cry_abstract" and not self.ability.extra.marked then
 				if
-					SMODS.pseudorandom_probability(
-						card,
-						"cry_abstract_destroy2",
-						1,
-						card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round
-					)
+					pseudorandom("cry_abstract_destroy2")
+					< cry_prob(self.ability.cry_prob, self.ability.extra.odds_after_round, self.ability.cry_rigged)
+						/ self.ability.extra.odds_after_round
 				then
 					self.ability.extra.marked = true
 					--KUFMO HAS abstract!!!!111!!!

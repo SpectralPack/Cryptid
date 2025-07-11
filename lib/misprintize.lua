@@ -109,17 +109,10 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 					if not Cryptid.base_values[name] then
 						Cryptid.base_values[name] = {}
 					end
-					if not Cryptid.base_values[name][k] then
-						if G.P_CENTERS[name] and G.P_CENTERS[name].config[k] then
-							Cryptid.base_values[name][k] = G.P_CENTERS[name].config[k]
-						elseif k == "cry_prob" then
-							Cryptid.base_values[name][k] = 1
-						else
-							Cryptid.base_values[name][k] = tbl[k]
-						end
+					if not Cryptid.base_values[name][k .. ref_value] then
+						Cryptid.base_values[name][k .. ref_value] = tbl[k]
 					end
-
-					local initial = (stack and tbl[k] or Cryptid.base_values[name][k])
+					local initial = (stack and tbl[k] or Cryptid.base_values[name][k .. ref_value])
 					local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 					local max = override and override.max or G.GAME.modifiers.cry_misprint_max
 
@@ -137,13 +130,13 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 							)
 						) and num_too_big(initial, min, max, prob_max)
 					then
-						initial = Cryptid.base_values[name][k] * prob_max
+						initial = Cryptid.base_values[name][k .. ref_value] * prob_max
 						min = 1
 						max = 1
 					end
 
 					tbl[k] = Cryptid.sanity_check(
-						clear and Cryptid.base_values[name][k]
+						clear and Cryptid.base_values[name][k .. ref_value]
 							or cry_format(Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level), "%.2g"),
 						big
 					)
@@ -154,27 +147,24 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
 						end
-						if not Cryptid.base_values[name][k] then
-							Cryptid.base_values[name][k] = {}
-						end
-						if not Cryptid.base_values[name][k][_k] then
+						if not Cryptid.base_values[name][_k .. k] then
 							if
 								G.P_CENTERS[name]
 								and type(G.P_CENTERS[name].config[k]) == "table"
 								and G.P_CENTERS[name].config[k][_k]
 							then
-								Cryptid.base_values[name][k][_k] = G.P_CENTERS[name].config[k][_k]
+								Cryptid.base_values[name][_k .. k] = G.P_CENTERS[name].config[k][_k]
 							else
-								Cryptid.base_values[name][k][_k] = tbl[k][_k]
+								Cryptid.base_values[name][_k .. k] = tbl[k][_k]
 							end
 						end
 
-						local initial = (stack and tbl[k][_k] or Cryptid.base_values[name][k][_k])
+						local initial = (stack and tbl[k][_k] or Cryptid.base_values[name][_k .. k])
 						local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 						local max = override and override.max or G.GAME.modifiers.cry_misprint_max
 
 						if (_k == "odds") and num_too_big(initial, min, max, prob_max) then
-							initial = Cryptid.base_values[name][k][_k] * prob_max
+							initial = Cryptid.base_values[name][_k .. k] * prob_max
 							min = 1
 							max = 1
 						end
@@ -198,7 +188,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						end
 
 						tbl[k][_k] = Cryptid.sanity_check(
-							clear and Cryptid.base_values[name][k][_k]
+							clear and Cryptid.base_values[name][_k .. k]
 								or cry_format(
 									Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level),
 									"%.2g"
@@ -401,8 +391,8 @@ function Cryptid.manipulate(card, args)
 	if not Card.no(card, "immutable", true) or (args and args.bypass_checks) then
 		if not args then
 			return Cryptid.manipulate(card, {
-				min = G.GAME.modifiers.cry_misprint_min,
-				max = G.GAME.modifiers.cry_misprint_max,
+				min = (G.GAME.modifiers.cry_misprint_min or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
+				max = (G.GAME.modifiers.cry_misprint_max or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
 				type = "X",
 				dont_stack = true,
 				no_deck_effects = true,
@@ -455,18 +445,6 @@ function Cryptid.manipulate(card, args)
 				end
 			end
 			local config = copy_table(card.config.center.config)
-			if not args.bypass_checks and not args.no_deck_effects then
-				Cryptid.with_deck_effects(card, func)
-			else
-				func(card)
-			end
-			if card.ability.consumeable then
-				for k, v in pairs(card.ability.consumeable) do
-					card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
-				end
-			end
-			--ew ew ew ew
-			G.P_CENTERS[card.config.center.key].config = config
 			if not Cryptid.base_values[card.config.center.key] then
 				Cryptid.base_values[card.config.center.key] = {}
 				for i, v in pairs(config) do
@@ -479,6 +457,18 @@ function Cryptid.manipulate(card, args)
 					end
 				end
 			end
+			if not args.bypass_checks and not args.no_deck_effects then
+				Cryptid.with_deck_effects(card, func)
+			else
+				func(card)
+			end
+			if card.ability.consumeable then
+				for k, v in pairs(card.ability.consumeable) do
+					card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
+				end
+			end
+			--ew ew ew ew
+			G.P_CENTERS[card.config.center.key].config = config
 		end
 		return true
 	end
@@ -532,14 +522,16 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 			)
 			if args.type == "+" then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
-					num = to_big(num) + to_big(new_value)
+					num = num + new_value
 				end
 			elseif args.type == "X" then
 				if
 					to_big(num) ~= to_big(0) and (to_big(num) ~= to_big(1) or (name ~= "x_chips" and name ~= "x_mult"))
 				then
-					num = to_big(num) * to_big(new_value)
+					num = num * new_value
 				end
+			elseif args.type == "^" then
+				num = to_big(num) ^ new_value
 			elseif args.type == "hyper" then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
 					num = to_big(num):arrow(args.value.arrows, to_big(new_value))
@@ -547,13 +539,17 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 			end
 		elseif args.value then
 			if args.type == "+" then
-				num = to_big(num) + to_big(args.value)
+				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
+					num = num + to_big(args.value)
+				end
 			elseif args.type == "X" then
 				if
 					to_big(num) ~= to_big(0) and (to_big(num) ~= to_big(1) or (name ~= "x_chips" and name ~= "x_mult"))
 				then
-					num = to_big(num) * to_big(args.value)
+					num = num * args.value
 				end
+			elseif args.type == "^" then
+				num = to_big(num) ^ args.value
 			elseif args.type == "hyper" then
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end

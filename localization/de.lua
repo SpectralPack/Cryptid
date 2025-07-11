@@ -408,6 +408,30 @@ return {
 					"pro $#1# wenn ausgewählt",
 				},
 			},
+			bl_cry_repulsor = {
+				name = "Der Abstoßer",
+				text = {
+					"Löse den Joker ganz rechts und",
+					"ganz links erneut aus, alle anderen",
+					"Joker werden nicht ausgelöst",
+				},
+			},
+			bl_cry_chromatic = {
+				name = "Die Chromatik",
+				text = {
+					"Punktzahl wird",
+					"subtrahiert bei",
+					"ungerader Anzahl von Händen",
+				},
+			},
+			bl_cry_landlord = {
+				name = "Der Vermieter",
+				text = {
+					"Fuegt Gemietet einem",
+					"zufälligen Joker hinzu",
+					"wenn Hand gespielt wird",
+				},
+			},
 			bl_cry_pinkbow = {
 				name = "Pinke Schleife",
 				text = {
@@ -666,18 +690,22 @@ return {
 					"zu einem {C:cry_code}gewählten{} Rang",
 				},
 			},
-			c_cry_crylog = {
+			c_cry_log = {
 				name = "://LOG",
 				text = {
-					"Kommt in einem",
-					"zukünftigen {C:cry_code}Update{}",
+					"{C:cry_code}Anzeige{} von einer dieser Optionen: ",
+					"{C:attention}Boss-Blind{} der {C:attention}nächsten{} Ante und {C:attention}Gutscheine{},",
+					"die nächsten {C:attention}5{} {C:attention}Joker{} im Shop, oder",
+					"die nächsten {C:attention}10{} zu {C:attention}ziehenden{} Spielkarten",
+					"{C:inactive}(Falls in einem Blind){}",
 				},
 			},
 			c_cry_quantify = {
 				name = "://QUANTIFY",
-				text = { -- "{C:cry_code}J{C:cry_exotic}o{C:legendary}k{C:cry_epic}e{C:cry_candy}r{C:rare}i{C:uncommon}z{C:common}e{C:dark_edition}!{} an object", --o.o
-					"Kommt in einem",
-					"zukünftigen {C:cry_code}Update{}",
+				text = {
+					"Verschiebe {C:attention}#1#{} gewählte",
+					"{C:attention}Karte#<n>1#{}, oder {C:attention}Booster{}",
+					"in die {C:attention}Joker{}-Ablage",
 				},
 			},
 			c_cry_divide = {
@@ -731,6 +759,15 @@ return {
 				text = {
 					"Ende momentanen Nicht-Boss {C:cry_code}Blind{}",
 					"{C:cry_code}ohne{} Preisgeld zu bekommen",
+				},
+			},
+			c_cry_declare = {
+				name = "://DECLARE",
+				text = {
+					"Die {C:attention}aktuell{} gewählten Spielkarten",
+					"werden zu einer {C:cry_code}neuen{} Pokerhand, welche",
+					"gewertet wird, als würde sie ein {C:attention}#1#{} enthalten",
+					"Es können bis zu {C:attention}3{} {C:inactive}[#2#]{} Hände erzeugt werden",
 				},
 			},
 		},
@@ -1104,6 +1141,16 @@ return {
 					"{C:inactive,s:0.8}Rang ändert sich nicht",
 				},
 			},
+			j_cry_rotten_egg = {
+				name = "Faules Ei",
+				text = {
+					"Setzt bei Erhalt den Verkaufswert",
+					"aller aktueller und zukünfitger Joker auf {C:attention}$#1#{}",
+					"Reduziert den Verkaufswert aller {C:attention}Joker{} um {C:attention}$#2#{}",
+					"am Ende der Runde, nach Erhalt von {C:attention}$#3#{} {C:inactive}[#4#]{}",
+					"durch den Verkauf von {C:attention}Jokern{}, {C:red}Zerstört sich selbst{}",
+				},
+			},
 			j_cry_blender = {
 				name = "Blender",
 				text = {
@@ -1320,12 +1367,7 @@ return {
 			},
 			j_cry_circus = {
 				name = "Zirkus",
-				text = {
-					"{C:red}Seltene{} Joker geben {X:mult,C:white} X#1# {} Mult",
-					"{C:cry_epic}Epische{} Joker geben {X:mult,C:white} X#2# {} Mult",
-					"{C:legendary}Legendäre{} Joker geben {X:mult,C:white} X#3# {} Mult",
-					"{C:cry_exotic}Exotische{} Joker geben {X:mult,C:white} X#4# {} Mult",
-				},
+				text = Cryptid.get_circus_description(), --for translaters: this is automatically localized you can copy it over as long as cry_circus_generic is translated too
 				unlock = {
 					"Erhalten einen {C:red}Seltenen{},",
 					"{C:cry_epic}Epischen{} und {C:legendary}Legendären{}",
@@ -1787,7 +1829,7 @@ return {
 				name = "Formidiulosus",
 				text = {
 					"Wenn ein {X:cry_cursed,C:white}Verfluchter{} Joker erhalten wird, zerstöre ihn,",
-					"eErstelle {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Süßigkeit#<en>1#{} am Ende des Shops,",
+					"Erstelle {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Süßigkeit#<en>1#{} am Ende des Shops,",
 					"{X:dark_edition,C:white}+^#2#{} Mult für jeden {C:cry_candy}Süßigkeiten-Joker{} den du besitzt",
 					"{C:inactive}(Aktuell {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
 				},
@@ -2702,8 +2744,34 @@ return {
 				name = "Pizzastück",
 				text = {
 					"Dieser Joker erhält {X:mult,C:white}X#1#{} Mult",
-					"wenn ein {C:attention}Pizza Slice{} verkauft wird",
+					"wenn ein {C:attention}Pizzastück{} verkauft wird",
 					"{C:inactive}(Aktuell{} {X:mult,C:white}X#2#{}{C:inactive} Mult){}",
+				},
+			},
+			j_cry_paved_joker = {
+				name = "Gepflasteter Joker",
+				text = {
+					"Steinkarten könen Lücken", --TODO: Steinkarten oder Stein-Karten?
+					"von {C:attention}#1#{} in",
+					"{C:attention}Straights{} and {C:attention}Flushes{} auffüllen",
+				},
+			},
+			j_cry_fading_joker = {
+				name = "Verschwindender Joker",
+				text = {
+					"Diese Joker erhält",
+					"{X:mult,C:white}X#1#{} Mult wenn",
+					"eine {C:attention}Verderbliche{} Karte geschwächt wird",
+					"{C:inactive}(Aktuell{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}",
+				},
+			},
+			j_cry_poor_joker = {
+				name = "Armer Joker",
+				text = {
+					"Diese Joker erhält",
+					"{C:mult}+#1#{} Mult wenn",
+					"eine {C:attention}Gemietete{} Karte Geld nimmt",
+					"{C:inactive}(Aktuell{} {C:mult}+#2#{} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_spaceglobe = {
@@ -3202,6 +3270,16 @@ return {
 					"und {C:attention}#3#{}",
 				},
 			},
+			c_cry_voxel = {
+				name = "Voxel",
+				text = {
+					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+					"Aufwertung für",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"und {C:attention}#3#{}",
+				},
+			},
 		},
 		Sleeve = {
 			sleeve_cry_beige_sleeve = {
@@ -3513,6 +3591,7 @@ return {
 			},
 		},
 		Stake = {
+			-- TODO translate colours...
 			stake_cry_pink = {
 				name = "Pinker Einsatz",
 				colour = "Pink", --this is used for auto-generated sticker localization
@@ -3523,7 +3602,7 @@ return {
 			},
 			stake_cry_brown = {
 				name = "Brauner Einsatz",
-				colour = "Brown",
+				colour = "Braun",
 				text = {
 					"Alle {C:attention}Sticker{} sind",
 					"gegenseitig Kompatibel",
@@ -3531,7 +3610,7 @@ return {
 			},
 			stake_cry_yellow = {
 				name = "Gelber Einsatz",
-				colour = "Yellow",
+				colour = "Gelb",
 				text = {
 					"{C:attention}Sticker{} können auf",
 					"allen kaufbaren Gegenständen erscheinen",
@@ -3554,28 +3633,28 @@ return {
 			},
 			stake_cry_gray = {
 				name = "Grauer Einsatz",
-				colour = "Gray",
+				colour = "Grau",
 				text = {
 					"Aktualisierungen erhöhen sich um {C:attention}$2{}",
 				},
 			},
 			stake_cry_crimson = {
 				name = "Karmesin Einsatz",
-				colour = "Crimson",
+				colour = "Karmesin",
 				text = {
 					"Gutscheine füllen sich auf allen {C:attention}geraden{} Antes auf",
 				},
 			},
 			stake_cry_diamond = {
 				name = "Diamant Einsatz",
-				colour = "Diamond",
+				colour = "Diamant",
 				text = {
 					"Zum Gewinnen must du Ante {C:attention}10{} besiegen",
 				},
 			},
 			stake_cry_amber = {
 				name = "Bernstein Einsatz",
-				colour = "Amber",
+				colour = "Bernstein",
 				text = {
 					"{C:attention}-1{} Booster Paket Slots",
 				},
@@ -3597,7 +3676,7 @@ return {
 			},
 			stake_cry_ruby = {
 				name = "Rubin Einsatz",
-				colour = "Ruby",
+				colour = "Rubin",
 				text = {
 					"{C:attention}Big{} Blinds können",
 					"{C:attention}Boss{} Blinds werden",
@@ -3612,7 +3691,7 @@ return {
 			},
 			stake_cry_sapphire = {
 				name = "Saphir Einsatz",
-				colour = "Sapphire",
+				colour = "Saphir",
 				text = {
 					"Verliere {C:attention}25%{} deines momentanen Geldes",
 					"am Ende der Ante",
@@ -3621,7 +3700,7 @@ return {
 			},
 			stake_cry_emerald = {
 				name = "Smaragd Einsatz",
-				colour = "Emerald",
+				colour = "Smaragd",
 				text = {
 					"Karten, Pakete und Gutscheine",
 					"können mit {C:attention}Gesicht nach unten{} sein",
@@ -3630,14 +3709,14 @@ return {
 			},
 			stake_cry_platinum = {
 				name = "Platin Einsatz",
-				colour = "Platinum",
+				colour = "Platin",
 				text = {
 					"Small Blinds sind {C:attention}entfernt{}",
 				},
 			},
 			stake_cry_twilight = {
 				name = "Zwielichtiger Einsatz",
-				colour = "Twilight",
+				colour = "Zwielichtig",
 				text = {
 					"Karten können {C:attention}Banane{} sein",
 					"{s:0.8,C:inactive}(Chance von 1 zu 10, dass die Karte am Ende der Runde zerstört wird){}",
@@ -3645,7 +3724,7 @@ return {
 			},
 			stake_cry_verdant = {
 				name = "Grasgrüner Einsatz",
-				colour = "Verdant",
+				colour = "Grasgrüner",
 				text = {
 					"Benötigte Punktzahl skaliert",
 					"schneller für jede {C:attention}Ante",
@@ -3653,14 +3732,14 @@ return {
 			},
 			stake_cry_ember = {
 				name = "Glühender Einsatz",
-				colour = "Ember",
+				colour = "Glühend",
 				text = {
 					"Alle Gegenstände geben beim Verkaufen kein Geld",
 				},
 			},
 			stake_cry_dawn = {
 				name = "Dämmernder Einsatz",
-				colour = "Dawn",
+				colour = "Dämmernd",
 				text = {
 					"Tarot- und Geister-Karten beeinflussen",
 					"{C:attention}1{} Karte weniger",
@@ -3669,7 +3748,7 @@ return {
 			},
 			stake_cry_horizon = {
 				name = "Horizont Einsatz",
-				colour = "Horizon",
+				colour = "Horizont",
 				text = {
 					"Wenn Blind ausgewählt ist, füge eine",
 					"{C:attention}zufällige Karte{} zum Deck hinzu",
@@ -3677,7 +3756,7 @@ return {
 			},
 			stake_cry_blossom = {
 				name = "Blühender Einsatz",
-				colour = "Blossom",
+				colour = "Blühend",
 				text = {
 					"{C:attention}Letzte{} Boss Blinds können nun",
 					"in {C:attention}allen{} Antes auftauchen",
@@ -3685,7 +3764,7 @@ return {
 			},
 			stake_cry_azure = {
 				name = "Azurblauer Einsatz",
-				colour = "Azure",
+				colour = "Azurblauer",
 				text = {
 					"Werte auf Jokern sind",
 					"um {C:attention}20%{} reduziert",
@@ -3693,7 +3772,7 @@ return {
 			},
 			stake_cry_ascendant = {
 				name = "Aufgestiegener Einsatz",
-				colour = "Ascendant",
+				colour = "Aufgestiegen",
 				text = {
 					"{C:attention}-1{} Shop Slots",
 				},
@@ -3910,6 +3989,30 @@ return {
 					"Gibt {C:attention}#1#{} Kopien des",
 					"als nächstes erhaltenen {C:attention}Tags",
 					"{s:0.8,C:inactive}Kopierende Tags ausgenommen",
+				},
+			},
+			tag_cry_clone = {
+				name = "Klon-Tag",
+				text = {
+					"Gegenstände im Shop kosten {C:attention}X#1#{}",
+					"so viel, Erhalte eine {C:attention}Kopie{}",
+					"der als nächstes gekauften Karte",
+				},
+			},
+			tag_cry_lens = {
+				name = "Linsen-Tag",
+				text = {
+					"Füge {C:dark_edition}Negativ{}",
+					"zu {C:attention}#1#{} zufälligen",
+					"Verbrauchsgegen#<ständen,stand>1# hinzu",
+				},
+			},
+			tag_cry_palette_cleanser = { --beautiful phrase that unfortunately doesnt have a german equivalent :(
+				name = "Reinigungs-Tag",
+				text = {
+					"Entfernt einen {C:attention}zufälligen{}",
+					"Sticker von einem {C:attention}zufälligen{}",
+					"Joker oder Spielkarte",
 				},
 			},
 		},
@@ -4761,6 +4864,17 @@ return {
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "Das Ganze Deck" or "Das Ganze Verfickte Deck",
 			["cry-Cluster Bulwark"] = "Clusterwark",
 			["cry_None"] = "Nichts",
+
+			["cry_Declare0"] = { "Wird immer als Straight gewertet" },
+			["cry_Declare1"] = { "Wird immer als Flush gewertet" },
+			["cry_Declare2"] = { "Wird immer als Full House gewertet" },
+
+			["cry_Declare0_suitless"] = { "Wird immer als Straight gewertet", "Hand benötigt keine bestimmten Farben" },
+			["cry_Declare1_suitless"] = { "Wird immer als Flush gewertet", "Hand benötigt keine bestimmten Farben" },
+			["cry_Declare2_suitless"] = {
+				"Wird immer als Full House gewertet",
+				"Hand benötigt keine bestimmten Farben",
+			},
 		},
 		poker_hand_descriptions = {
 			["cry_Bulwark"] = {
@@ -4926,6 +5040,7 @@ return {
 			b_code_cards = "Code Karten",
 			b_unique_cards = "Einzigartige Karten",
 			b_pull = "PULL",
+			b_playing_cards = "Spielkarten",
 			cry_hooked_ex = "Verhackt!",
 			k_end_blind = "Beende Blind",
 			k_cry_shiny = "Shiny",
@@ -4942,6 +5057,15 @@ return {
 			cry_code_create_previous = "VORHERIGES ERSTELLEN",
 			cry_code_execute = "AUSFÜHREN",
 			cry_code_cancel = "ABBRECHEN",
+			cry_code_enter_hand = "NAME DER POKERHAND EINGEBEN",
+			cry_code_with_suits = "INKLUSIVE FARBE",
+			cry_code_without_suits = "IGNORIERE FARBE",
+			cry_code_suitless = "Hand benötigt keine bestimmte Farbe",
+			cry_code_empty = "[Declare Hand]", --TODO context?
+			cry_code_exit = "SCHLIESSEN",
+			cry_code_antevoucher = "Nächster Boss Blind and Gutschein",
+			cry_code_nextjokers = "Nächste Joker im Shop",
+			cry_code_nextcards = "Nächste Spielkarten",
 
 			b_flip = "UMDREHEN",
 			b_merge = "KOMBINIEREN",
@@ -4985,6 +5109,8 @@ return {
 			cry_candy = "Süßigkeit",
 			cry_cursed = "Verflucht",
 
+			k_downgraded_ex = "Downgraded!",
+
 			k_planet_disc = "Kreisstellare Scheibe",
 			k_planet_satellite = "Natürliche Satelliten",
 			k_planet_universe = Cryptid_config.family_mode and "Universum" or "Das Tatsächliche Verfickte Universum",
@@ -5019,6 +5145,8 @@ return {
 			b_reset_gameset_modest = "Setzt Gameset Konfiguration zurück (Modest)",
 			b_reset_gameset_mainline = "Setzt Gameset Konfiguration zurück (Mainline)",
 			b_reset_gameset_madness = "Setzt Gameset Konfiguration zurück (Madness)",
+
+			cry_circus_generic = "{V:#1#}#2#{} Joker geben je {X:mult,C:white} X#3# {} Mult",
 		},
 		labels = {
 			food_jokers = "Essen-Joker",

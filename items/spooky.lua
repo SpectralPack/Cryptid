@@ -854,12 +854,13 @@ local trick_or_treat = {
 	calculate = function(self, card, context)
 		if context.selling_self then
 			if
-				SMODS.pseudorandom_probability(
-					card,
-					"cry_trick_or_treat",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
+				pseudorandom(pseudoseed("cry_trick_or_treat"))
+				< cry_prob(
+						card.ability.cry_prob * card.ability.immutable.prob_mod,
+						card.ability.extra.odds,
+						card.ability.cry_rigged
+					)
+					/ card.ability.extra.odds
 			then
 				local spawn_num =
 					to_number(math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies))
@@ -886,12 +887,14 @@ local trick_or_treat = {
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
+				cry_prob(
+					center.ability.cry_prob * center.ability.immutable.prob_mod,
+					center.ability.extra.odds,
+					center.ability.cry_rigged
+				),
+				center.ability.extra.odds,
 				number_format(center.ability.extra.num_candies),
 			},
 		}
@@ -1106,12 +1109,13 @@ local ghost = {
 			and not context.retrigger_joker
 		then
 			if
-				SMODS.pseudorandom_probability(
-					card,
-					"cry_ghost_destroy",
-					1,
-					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
-				)
+				pseudorandom(pseudoseed("cry_ghost_destroy"))
+				< cry_prob(
+						card.ability.cry_prob,
+						card.ability.extra.odds * card.ability.extra.destroy_rate,
+						card.ability.cry_rigged
+					)
+					/ (card.ability.extra.odds * card.ability.extra.destroy_rate)
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1132,12 +1136,13 @@ local ghost = {
 			end
 			--todo: let multiple ghosts possess multiple jokers
 			if
-				SMODS.pseudorandom_probability(
-					card,
-					"planetlua",
-					1,
-					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
-				)
+				pseudorandom(pseudoseed("cry_ghost_possess"))
+				< cry_prob(
+						card.ability.cry_prob,
+						card.ability.extra.odds * card.ability.extra.possess_rate,
+						card.ability.cry_rigged
+					)
+					/ (card.ability.extra.odds * card.ability.extra.possess_rate)
 			then
 				for i = 1, #G.jokers.cards do
 					G.jokers.cards[i].ability.cry_possessed = nil
@@ -1158,22 +1163,20 @@ local ghost = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_possessed" }
-		local num, denom = SMODS.get_probability_vars(
-			card,
-			1,
-			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
-		)
-		local num2, denom2 = SMODS.get_probability_vars(
-			card,
-			1,
-			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
-		)
 		return {
 			vars = {
-				num2,
-				num1,
-				denom2,
-				denom1,
+				cry_prob(
+					card.ability.cry_prob,
+					card.ability.extra.odds * card.ability.extra.possess_rate,
+					card.ability.cry_rigged
+				),
+				cry_prob(
+					card.ability.cry_prob,
+					card.ability.extra.odds * card.ability.extra.destroy_rate,
+					card.ability.cry_rigged
+				),
+				card.ability.extra.odds * card.ability.extra.possess_rate,
+				card.ability.extra.odds * card.ability.extra.destroy_rate,
 			},
 		}
 	end,
@@ -1192,6 +1195,103 @@ local possessed = {
 	no_sticker_sheet = true,
 	badge_colour = HEX("aaaaaa"),
 }
+
+local rotten_egg = {
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_cursed",
+		},
+	},
+	key = "rotten_egg",
+	pos = { x = 3, y = 3 },
+	config = {
+		extra = {
+			starting_money = 1,
+			lose_money = 1,
+			needed_money = 10,
+			left_money = 10,
+		},
+	},
+	rarity = "cry_cursed",
+	cost = 0,
+	order = 136.1, --gross but cryptid doesnt partition orderings and im not shifting everything
+	atlas = "atlasspooky",
+	blueprint_compat = false,
+	eternal_compat = false,
+	perishable_compat = false,
+	demicoloncompat = true,
+	no_dbl = true,
+	add_to_deck = function(self, card, from_debuff)
+		G.GAME.cry_rotten_amount = card.ability.extra.starting_money
+		for i, v in pairs(G.jokers.cards) do
+			v:set_cost()
+		end
+	end,
+	remove_from_deck = function()
+		G.GAME.cry_rotten_amount = nil
+		for i, v in pairs(G.jokers.cards) do
+			v:set_cost()
+		end
+	end,
+	calculate = function(self, card, context)
+		if
+			context.end_of_round
+			and not context.blueprint
+			and not context.individual
+			and not context.repetition
+			and not context.retrigger_joker
+		then
+			for i, v in pairs(G.jokers.cards) do
+				v.sell_cost = v.sell_cost - 1
+			end
+			return {
+				message = localize("k_downgraded_ex"),
+			}
+		end
+		if
+			context.selling_card
+			and context.card.ability.set == "Joker"
+			and context.card
+			and context.card.sell_cost ~= 0
+		then
+			card.ability.extra.left_money = card.ability.extra.left_money - context.card.sell_cost
+			if to_big(card.ability.extra.left_money) <= to_big(0) then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						card:start_dissolve()
+						return true
+					end,
+				}))
+			else
+				return {
+					message = number_format(card.ability.extra.needed_money - card.ability.extra.left_money)
+						.. "/"
+						.. number_format(card.ability.extra.needed_money),
+				}
+			end
+		end
+		if context.forcetrigger then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					card:start_dissolve()
+					return true
+				end,
+			}))
+		end
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.extra.starting_money),
+				number_format(card.ability.extra.lose_money),
+				number_format(card.ability.extra.needed_money),
+				number_format(card.ability.extra.left_money),
+			},
+		}
+	end,
+}
+
 local spookydeck = {
 	object_type = "Back",
 	dependencies = {
@@ -1768,12 +1868,9 @@ local monopoly_money = {
 			and not (context.card == card)
 		then
 			if
-				SMODS.pseudorandom_probability(
-					card,
-					"cry_monopoly",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
+				pseudorandom(pseudoseed("cry_monopoly"))
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+					/ card.ability.extra.odds
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1807,12 +1904,10 @@ local monopoly_money = {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
 			},
 		}
 	end,
@@ -2085,6 +2180,7 @@ items = {
 	trick_or_treat,
 	candy_basket,
 	blacklist,
+	rotten_egg,
 	--ghost,
 	--possessed,
 	spookydeck,

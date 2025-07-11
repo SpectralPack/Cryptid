@@ -22,6 +22,17 @@ pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Nod
 position = "after"
 payload = '''
 tag_sprite.click = function(_self)
+		if G.GAME.USING_POINTER then
+			local t = G.P_TAGS[self.key]
+			if not t.no_doe and not t.hidden and not t.no_pointer then
+				add_tag(self)
+				G.FUNCS.exit_overlay_menu_code()
+				if G.GAME.CODE_DESTROY_CARD then
+					G.GAME.CODE_DESTROY_CARD:start_dissolve()
+					G.GAME.CODE_DESTROY_CARD = nil
+				end
+			end
+		end
         if self.key == 'tag_cry_cat' and self.HUD_tag then
 		for i = 1, #G.GAME.tags do
 			local other_cat = G.GAME.tags[i]
@@ -194,7 +205,9 @@ position = "at"
 payload = '''
 local tagatlas = G.ASSET_ATLAS[(not self.hide_ability) and G.P_TAGS[self.key].atlas or "tags"]
 if self.ability.shiny and not self.hide_ability then
-	if not G.P_TAGS[self.key].atlas then
+	if G.P_TAGS[self.key].shiny_atlas then
+		tagatlas = G.ASSET_ATLAS[G.P_TAGS[self.key].shiny_atlas]
+	elseif not G.P_TAGS[self.key].atlas then
 		tagatlas = G.ASSET_ATLAS['cry_shinyv']
 	elseif G.P_TAGS[self.key].atlas == 'cry_tag_cry' then
 		tagatlas = G.ASSET_ATLAS['cry_shinyc']
