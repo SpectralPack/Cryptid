@@ -1217,10 +1217,14 @@ function Controller:L_cursor_press(x, y)
 		then
 			-- Re-use the Exploit card
 			if G.GAME.ACTIVE_CODE_CARD then
-				if not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1) then
+				if
+					not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse
+					or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1)
+				then
 					G.GAME.ACTIVE_CODE_CARD:start_dissolve()
 				else
-					G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse = lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
+					G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse =
+						lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
 				end
 			end
 			G.GAME.ACTIVE_CODE_CARD = nil
