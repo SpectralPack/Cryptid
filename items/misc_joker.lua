@@ -2025,6 +2025,7 @@ local waluigi = {
 			"HexaCryonic",
 		},
 		art = {
+			"MarioFan597",
 			"HexaCryonic",
 		},
 		code = {
@@ -8934,6 +8935,11 @@ local tropical_smoothie = {
 			end
 		end
 	end,
+	cry_credits = {
+		art = {
+			"Ori",
+		},
+	},
 }
 local pumpkin = {
 	object_type = "Joker",
