@@ -134,12 +134,6 @@ Cryptid.aliases = {}
 Cryptid.pointerblist = {}
 Cryptid.pointerblistrarity = {}
 Cryptid.mod_gameset_whitelist = {}
-
-Cryptid.pin_debuff = {}
-Cryptid.circus_rarities = {
-	--format {base_mult = ..., loc_key = ..., rarity=..., order=...}
-}
-
 function cry_format(...)
 	return ...
 end

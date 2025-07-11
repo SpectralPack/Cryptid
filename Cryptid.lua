@@ -226,25 +226,7 @@ function SMODS.injectItems(...)
 	G.P_CENTERS.j_burnt.immutable = true
 	G.P_CENTERS.j_chicot.immutable = true
 	G.P_CENTERS.j_perkeo.immutable = true
-	G.P_CENTERS.j_hanging_chad.misprintize_caps = { extra = 40 }
-	G.P_CENTERS.c_high_priestess.misprintize_caps = { planets = 100 }
-	G.P_CENTERS.c_emperor.misprintize_caps = { tarots = 100 }
-	G.P_CENTERS.c_familiar.misprintize_caps = { extra = 100 }
-	G.P_CENTERS.c_grim.misprintize_caps = { extra = 100 }
-	G.P_CENTERS.c_incantation.misprintize_caps = { extra = 100 }
-	G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
-	G.P_CENTERS.c_cryptid.misprintize_caps = { extra = 100, max_highlighted = 100 }
-	G.P_CENTERS.c_immolate.misprintize_caps = { destroy = 1e300 }
 	Cryptid.inject_pointer_aliases()
-
-	--this has to be here because the colors dont exist earlier then this
-	Cryptid.circus_rarities["rare"] = { rarity = 3, base_mult = 2, order = 1, colour = G.C.RARITY.Rare }
-	Cryptid.circus_rarities["epic"] = { rarity = "cry_epic", base_mult = 3, order = 2, colour = G.C.RARITY.cry_epic }
-	Cryptid.circus_rarities["legendary"] = { rarity = 4, base_mult = 4, order = 3, colour = G.C.RARITY.Legendary }
-	Cryptid.circus_rarities["exotic"] =
-		{ rarity = "cry_exotic", base_mult = 20, order = 4, colour = G.C.RARITY.cry_exotic }
-
-	Cryptid.reload_localization()
 end
 
 local old_repitions = SMODS.calculate_repetitions

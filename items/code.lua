@@ -1036,20 +1036,277 @@ local exploit = {
 		return true
 	end,
 	use = function(self, card, area, copier)
-		-- Un-use the card (re-use code is in lib/misc.lua)
-		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
-			G.GAME.CODE_DESTROY_CARD = copy_card(card)
-			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
-		end
-		if card.ability.cry_multiuse then
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
-		end
-
 		G.GAME.USING_CODE = true
-		G.GAME.USING_EXPLOIT = true
-		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
-		G.FUNCS.overlay_menu({ definition = G.UIDEF.exploit_menu() })
+		G.ENTERED_HAND = ""
+		G.CHOOSE_HAND = UIBox({
+			definition = create_UIBox_exploit(card),
+			config = {
+				align = "cm",
+				offset = { x = 0, y = 10 },
+				major = G.ROOM_ATTACH,
+				bond = "Weak",
+				instance_type = "POPUP",
+			},
+		})
+		G.CHOOSE_HAND.alignment.offset.y = 0
+		G.ROOM.jiggle = G.ROOM.jiggle + 1
+		G.CHOOSE_HAND:align_to_major()
+	end,
+	init = function(self)
+		function create_UIBox_exploit(card)
+			G.E_MANAGER:add_event(Event({
+				blockable = false,
+				func = function()
+					G.REFRESH_ALERTS = true
+					return true
+				end,
+			}))
+			local t = create_UIBox_generic_options({
+				no_back = true,
+				colour = HEX("04200c"),
+				outline_colour = G.C.SECONDARY_SET.Code,
+				contents = {
+					{
+						n = G.UIT.R,
+						nodes = {
+							create_text_input({
+								colour = G.C.SET.Code,
+								hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
+								w = 4.5,
+								h = 1,
+								max_length = 24,
+								extended_corpus = true,
+								prompt_text = localize("cry_code_hand"),
+								ref_table = G,
+								ref_value = "ENTERED_HAND",
+								keyboard_offset = 1,
+							}),
+						},
+					},
+					{
+						n = G.UIT.R,
+						nodes = {
+							UIBox_button({
+								colour = G.C.SET.Code,
+								button = "exploit_apply",
+								label = { localize("cry_code_exploit") },
+								minw = 4.5,
+								focus_args = { snap_to = true },
+							}),
+						},
+					},
+					{
+						n = G.UIT.R,
+						nodes = {
+							UIBox_button({
+								colour = G.C.RED,
+								button = "exploit_apply_previous",
+								label = { localize("cry_code_exploit_previous") },
+								minw = 4.5,
+								focus_args = { snap_to = true },
+							}),
+						},
+					},
+					{
+						n = G.UIT.R,
+						nodes = {
+							UIBox_button({
+								colour = G.C.RED,
+								button = "exploit_cancel",
+								label = { localize("cry_code_cancel") },
+								minw = 4.5,
+								focus_args = { snap_to = true },
+							}),
+						},
+					},
+				},
+			})
+			return t
+		end
+		G.FUNCS.exploit_apply_previous = function()
+			if G.PREVIOUS_ENTERED_HAND then
+				G.ENTERED_HAND = G.PREVIOUS_ENTERED_HAND or ""
+			end
+			G.FUNCS.exploit_apply()
+		end
+		G.FUNCS.exploit_apply = function()
+			local hand_table = {
+				["High Card"] = {
+					"high card",
+					"high",
+					"1oak",
+					"1 of a kind",
+					"haha one",
+				},
+				["Pair"] = {
+					"pair",
+					"2oak",
+					"2 of a kind",
+					"m",
+					"window",
+				},
+				["Two Pair"] = {
+					"two pair",
+					"2 pair",
+					"mm",
+					"pairpair",
+					"pair of a kind",
+				},
+				["Three of a Kind"] = {
+					"three of a kind",
+					"3 of a kind",
+					"3oak",
+					"trips",
+					"triangle",
+				},
+				["Straight"] = {
+					"straight",
+					"lesbian",
+					"gay",
+					"bisexual",
+					"asexual",
+					"staircase",
+				},
+				["Flush"] = {
+					"flush",
+					"skibidi",
+					"toilet",
+					"floosh",
+					"monotone",
+				},
+				["Full House"] = {
+					"full house",
+					"full",
+					"that 70s show",
+					"modern family",
+					"family matters",
+					"the middle",
+				},
+				["Four of a Kind"] = {
+					"four of a kind",
+					"4 of a kind",
+					"4oak",
+					"22oakoak",
+					"quads",
+					"four to the floor",
+				},
+				["Straight Flush"] = {
+					"straight flush",
+					"strush",
+					"slush",
+					"slushie",
+					"slushy",
+					"monotone staircase",
+				},
+				["Five of a Kind"] = {
+					"five of a kind",
+					"5 of a kind",
+					"5oak",
+					"quints",
+				},
+				["Flush House"] = {
+					"flush house",
+					"flouse",
+					"outhouse",
+					"monotone house",
+					"the grey house",
+				},
+				["Flush Five"] = {
+					"flush five",
+					"fish",
+					"you know what that means",
+					"five of a flush",
+					"monotone fish",
+				},
+				["cry_Bulwark"] = {
+					"bulwark",
+					"flush rock",
+					"stoned",
+					"stone flush",
+					"flush stone",
+					"rock and stone",
+				},
+				["cry_Clusterfuck"] = {
+					"clusterfuck",
+					"fuck",
+					"wtf",
+					"cluster",
+					"what",
+				},
+				["cry_UltPair"] = {
+					"ultimate pair",
+					"ultpair",
+					"ult pair",
+					"pairpairpair",
+					"flush pair of a kind of a kind",
+					"2f2oakoak",
+					"two flush two of a kind of a kind",
+				},
+				["cry_WholeDeck"] = {
+					"the entire fucking deck",
+					"deck",
+					"tefd",
+					"fifty-two",
+					"you are fuck deck",
+					"deck of a kind",
+					"the entire deck",
+					"everything of a kind",
+					"everything",
+					"wholedeck",
+				},
+			}
+			local current_hand = nil
+			for k, v in pairs(SMODS.PokerHands) do
+				local index = v.key
+				local current_name = G.localization.misc.poker_hands[index]
+				if not hand_table[v.key] then
+					hand_table[v.key] = { current_name }
+				end
+			end
+			for i, v in pairs(hand_table) do
+				for j, k in pairs(v) do
+					if string.lower(G.ENTERED_HAND) == string.lower(k) then
+						current_hand = i
+					end
+				end
+			end
+			if current_hand and G.GAME.hands[current_hand].visible then
+				G.PREVIOUS_ENTERED_HAND = G.ENTERED_HAND
+				G.GAME.cry_exploit_override = current_hand
+				G.FUNCS.exploit_cancel()
+				return
+			end
+		end
+		G.FUNCS.exploit_cancel = function()
+			G.CHOOSE_HAND:remove()
+			G.GAME.USING_CODE = false
+		end
+		-- mess with poker hand evaluation
+		local evaluate_poker_hand_ref = evaluate_poker_hand
+		function evaluate_poker_hand(hand)
+			local results = evaluate_poker_hand_ref(hand)
+			if G.GAME.cry_exploit_override then
+				if not results[G.GAME.cry_exploit_override][1] then
+					for _, v in ipairs(G.handlist) do
+						if results[v][1] then
+							results[G.GAME.cry_exploit_override] = results[v]
+							break
+						end
+					end
+				end
+			end
+			return results
+		end
+		local htuis = G.FUNCS.hand_text_UI_set
+		G.FUNCS.hand_text_UI_set = function(e)
+			htuis(e)
+			if G.GAME.cry_exploit_override then
+				e.config.object.colours = { G.C.SECONDARY_SET.Code }
+			else
+				e.config.object.colours = { G.C.UI.TEXT_LIGHT }
+			end
+			e.config.object:update_text()
+		end
 	end,
 }
 -- ://Malware
@@ -1800,6 +2057,7 @@ local machinecode = {
 				config = {
 					object = DynaText({
 						string = arr,
+						colours = { G.C.BLACK },
 						pop_in_rate = 9999999,
 						silent = true,
 						random_element = true,
@@ -2823,257 +3081,6 @@ local run = {
 		self:use(card, area)
 	end,
 }
-
--- ://Declare
--- Create a new Poker hand from selected cards
-local declare = {
-	cry_credits = {
-		idea = {
-			"Ronnec",
-			"cassknows",
-		},
-		art = {
-			"lord.ruby",
-		},
-		code = {
-			"lord.ruby",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_code",
-		},
-	},
-	object_type = "Consumable",
-	set = "Code",
-	name = "cry-Declare",
-	key = "declare",
-	pos = { x = 6, y = 4 },
-	cost = 4,
-	atlas = "atlasnotjokers",
-	order = 420.5,
-	loc_vars = function(self, q, card)
-		return {
-			vars = {
-				localize(
-					({
-						"Straight",
-						"Flush",
-						"Full House",
-						"Full House",
-					})[(G.GAME.DECLARE_USED or 0) + 1],
-					"poker_hands"
-				),
-				number_format(3 - (G.GAME.DECLARE_USED or 0)),
-			},
-		}
-	end,
-	can_use = function(self, card)
-		G.GAME.DECLARE_USED = G.GAME.DECLARE_USED or 0
-		return (G.GAME.DECLARE_USED or 0) < 3
-	end,
-	use = function(self, card, area, copier)
-		G.GAME.USING_CODE = true
-		G.GAME.USING_DECLARE = true
-		G.ENTERED_CARD = ""
-		G.CHOOSE_CARD = UIBox({
-			definition = create_UIBox_declare(card),
-			config = {
-				align = "cm",
-				offset = { x = 0, y = 10 },
-				major = G.ROOM_ATTACH,
-				bond = "Weak",
-				instance_type = "POPUP",
-			},
-		})
-		G.CHOOSE_CARD.alignment.offset.y = 0
-		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_CARD:align_to_major()
-	end,
-	init = function()
-		function create_UIBox_declare(card)
-			G.E_MANAGER:add_event(Event({
-				blockable = false,
-				func = function()
-					G.REFRESH_ALERTS = true
-					return true
-				end,
-			}))
-			local t = create_UIBox_generic_options({
-				no_back = true,
-				colour = HEX("04200c"),
-				outline_colour = G.C.SECONDARY_SET.Code,
-				contents = {
-					{
-						n = G.UIT.R,
-						nodes = {
-							create_text_input({
-								colour = G.C.SET.Code,
-								hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
-								w = 4.5,
-								h = 1,
-								max_length = 100,
-								extended_corpus = true,
-								prompt_text = localize("cry_code_enter_hand"),
-								ref_table = G,
-								ref_value = "ENTERED_CARD",
-								keyboard_offset = 1,
-							}),
-						},
-					},
-					{
-						n = G.UIT.R,
-						config = { align = "cm" },
-						nodes = {
-							UIBox_button({
-								colour = G.C.SET.Code,
-								button = "declare_apply",
-								label = { localize("cry_code_with_suits") },
-								minw = 4.5,
-								focus_args = { snap_to = true },
-							}),
-						},
-					},
-					{
-						n = G.UIT.R,
-						config = { align = "cm" },
-						nodes = {
-							UIBox_button({
-								colour = G.C.SET.Code,
-								button = "declare_apply_suitless",
-								label = { localize("cry_code_without_suits") },
-								minw = 4.5,
-								focus_args = { snap_to = true },
-							}),
-						},
-					},
-					{
-						n = G.UIT.R,
-						config = { align = "cm" },
-						nodes = {
-							UIBox_button({
-								colour = G.C.RED,
-								button = "declare_cancel",
-								label = { localize("cry_code_cancel") },
-								minw = 4.5,
-								focus_args = { snap_to = true },
-							}),
-						},
-					},
-				},
-			})
-			return t
-		end
-		G.FUNCS.declare_cancel = function()
-			if G.CHOOSE_CARD then
-				G.CHOOSE_CARD:remove()
-			end
-			G.GAME.USING_CODE = false
-			G.GAME.USING_DECLARE = false
-		end
-		G.FUNCS.declare_apply = function()
-			G.GAME.hands["cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)] =
-				Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD)
-			G.GAME.DECLARE_USED = (G.GAME.DECLARE_USED or 0) + 1
-			G.FUNCS.declare_cancel()
-		end
-		G.FUNCS.declare_apply_suitless = function()
-			G.GAME.hands["cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)] =
-				Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD, true)
-			G.GAME.DECLARE_USED = (G.GAME.DECLARE_USED or 0) + 1
-			G.FUNCS.declare_cancel()
-		end
-		Cryptid.create_declare_hand = function(cards, name, suitless)
-			if G.ENTERED_CARD == "" then
-				G.ENTERED_CARD = "cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)
-			end
-			local complexity = #cards
-			local ranks = {}
-			local suits = {}
-			for i, v in pairs(cards) do
-				if not ranks[v.base.value] then
-					ranks[v.base.value] = true
-				end
-			end
-			for i, v in pairs(cards) do
-				if not suits[v.base.suit] and not suitless then
-					suits[v.base.suit] = true
-				end
-			end
-			local s = #suits - 1
-			local r = #ranks - 1
-			local mult = math.floor((complexity / 1.41428) ^ 2.25 + s + r)
-			if mult < 1 then
-				mult = 1
-			end
-			local chips = math.floor(mult * 9.55)
-			local l_chips = chips * 0.25
-			local l_mult = mult * 0.25
-			local declare_cards = {}
-			for i, v in pairs(cards) do
-				local card = {
-					rank = v:get_id() > 0 and v:get_id() or "rankless",
-					suit = not suitless and (SMODS.has_no_suit(v) and "suitless" or v.base.suit),
-				}
-				declare_cards[#declare_cards + 1] = card
-			end
-			for i, v in pairs(G.GAME.hands) do
-				v.order = (v.order or 0) + 1
-			end
-			return {
-				order = 1,
-				l_mult = l_mult,
-				l_chips = l_chips,
-				mult = mult,
-				chips = chips,
-				example = Cryptid.create_declare_example(cards, suitless),
-				visible = true,
-				played = 0,
-				_saved_d_v = true,
-				played_this_round = 0,
-				s_mult = mult,
-				s_chips = chips,
-				from_declare = true,
-				declare_cards = declare_cards,
-				declare_name = G.ENTERED_CARD,
-				level = 1,
-				index = G.GAME.DECLARE_USED or 0,
-				suitless = suitless,
-			}
-		end
-		local localize_ref = localize
-		function localize(first, second, ...)
-			if second == "poker_hands" then
-				if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].declare_name then
-					return G.GAME.hands[first].declare_name
-				end
-			end
-			if second == "poker_hand_descriptions" then
-				if G and G.GAME and G.GAME.hands[first] and G.GAME.hands[first].suitless then
-					return localize_ref(first .. "_suitless", second, ...)
-				end
-			end
-			return localize_ref(first, second, ...)
-		end
-		local is_visibleref = SMODS.is_poker_hand_visible
-		function SMODS.is_poker_hand_visible(handname)
-			if not SMODS.PokerHands[handname] then
-				return G.GAME.hands[handname] and G.GAME.hands[handname].visible
-			end
-			return is_visibleref(handname)
-		end
-		function Cryptid.create_declare_example(cards, suitless)
-			local c = {}
-			for i, v in pairs(cards) do
-				local key = SMODS.Suits[v.base.suit].card_key .. "_" .. SMODS.Ranks[v.base.value].card_key
-				local enhancement = (SMODS.has_no_suit(v) and "m_stone") or (suitless and "m_wild") or nil
-				c[#c + 1] = { key, true, enhancement = enhancement }
-			end
-			return c
-		end
-	end,
-}
-
 -- ://Class
 -- Change a selected card's enhancement to one of your choosing (or nil)
 
@@ -3125,69 +3132,268 @@ local class = {
 		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
-		-- Un-use the card
-		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
-			G.GAME.CODE_DESTROY_CARD = copy_card(card)
-			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
-		end
-		if card.ability.cry_multiuse then
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
-		end
 		G.GAME.USING_CODE = true
-		G.GAME.USING_CLASS = card.ability.max_highlighted
-		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
-		G.FUNCS.overlay_menu({ definition = create_UIBox_class() })
+		G.ENTERED_ENH = ""
+		G.CHOOSE_ENH = UIBox({
+			definition = create_UIBox_class(card),
+			config = {
+				align = "cm",
+				offset = { x = 0, y = 10 },
+				major = G.ROOM_ATTACH,
+				bond = "Weak",
+				instance_type = "POPUP",
+			},
+		})
+		G.CODE_MAX_HIGHLIGHT = card.ability.max_highlighted
+		G.CHOOSE_ENH.alignment.offset.y = 0
+		G.ROOM.jiggle = G.ROOM.jiggle + 1
+		G.CHOOSE_ENH:align_to_major()
 	end,
 	init = function(self)
-		local ccl = Card.click
-		function Card:click()
-			if G.GAME.USING_CLASS then
-				if not self.debuff then
-					G.FUNCS.exit_overlay_menu_code()
-					delay(3)
-					local cards = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, G.GAME.USING_CLASS or 1)
-					for i, v in pairs(cards) do
-						v:flip()
+		function create_UIBox_class(card)
+			G.E_MANAGER:add_event(Event({
+				blockable = false,
+				func = function()
+					G.REFRESH_ALERTS = true
+					return true
+				end,
+			}))
+			local t = create_UIBox_generic_options({
+				no_back = true,
+				colour = HEX("04200c"),
+				outline_colour = G.C.SECONDARY_SET.Code,
+				contents = {
+					{
+						n = G.UIT.R,
+						nodes = {
+							create_text_input({
+								colour = G.C.SET.Code,
+								hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
+								w = 4.5,
+								h = 1,
+								max_length = 16,
+								prompt_text = localize("cry_code_enh"),
+								ref_table = G,
+								ref_value = "ENTERED_ENH",
+								keyboard_offset = 1,
+							}),
+						},
+					},
+					{
+						n = G.UIT.R,
+						nodes = {
+							UIBox_button({
+								colour = G.C.SET.Code,
+								button = "class_apply",
+								label = { localize("cry_code_apply") },
+								minw = 4.5,
+								focus_args = { snap_to = true },
+							}),
+						},
+					},
+					{
+						n = G.UIT.R,
+						nodes = {
+							UIBox_button({
+								colour = G.C.RED,
+								button = "class_apply_previous",
+								label = { localize("cry_code_apply_previous") },
+								minw = 4.5,
+								focus_args = { snap_to = true },
+							}),
+						},
+					},
+					{
+						n = G.UIT.R,
+						nodes = {
+							UIBox_button({
+								colour = G.C.RED,
+								button = "class_cancel",
+								label = { localize("cry_code_cancel") },
+								minw = 4.5,
+								focus_args = { snap_to = true },
+							}),
+						},
+					},
+				},
+			})
+			return t
+		end
+
+		G.FUNCS.class_apply_previous = function()
+			if G.PREVIOUS_ENTERED_ENH then
+				G.ENTERED_ENH = G.PREVIOUS_ENTERED_ENH or ""
+			end
+			G.FUNCS.class_apply()
+		end
+		--todo: mod support
+		G.FUNCS.class_apply = function()
+			-- local enh_table = {
+			-- 	m_bonus = { "bonus" },
+			-- 	m_mult = { "mult", "red" },
+			-- 	m_wild = { "wild", "suit" },
+			-- 	m_glass = { "glass", "xmult" },
+			-- 	m_steel = { "steel", "metal", "grey" },
+			-- 	m_stone = { "stone", "chip", "chips" },
+			-- 	m_gold = { "gold", "money", "yellow" },
+			-- 	m_lucky = { "lucky", "rng" },
+			-- 	m_cry_echo = { "echo", "retrigger", "retriggers" },
+			-- 	m_cry_abstract = { "abstract", "abstracted", "tadc", "theamazingdigitalcircus", "kaufumo" }, --why him? he was the first person we see get abstracted
+			-- 	m_cry_light = { "light" },
+			-- 	ccd = { "ccd" },
+			-- 	null = { "nil" },
+			-- }
+			local enh_table = Cryptid.enhancement_alias_list
+
+			local enh_suffix = nil
+
+			for i, v in pairs(enh_table) do
+				for j, k in pairs(v) do
+					if string.lower(G.ENTERED_ENH) == string.lower(k) then
+						enh_suffix = i
 					end
-					delay(1)
-					for i, v in pairs(cards) do
-						v:set_ability(G.P_CENTERS[self.config.center.key])
+				end
+			end
+
+			if enh_suffix then
+				local TempCard = {}
+				local cards = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, G.CODE_MAX_HIGHLIGHT)
+				for i = 1, #cards do
+					TempCard[i] = cards[i]
+				end
+				G.PREVIOUS_ENTERED_ENH = G.ENTERED_ENH
+				G.GAME.USING_CODE = false
+				if enh_suffix == "ccd" then
+					check_for_unlock({ type = "cheat_used" })
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.4,
+						func = function()
+							play_sound("tarot1")
+							return true
+						end,
+					}))
+					for i = 1, #TempCard do
+						local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.15,
+							func = function()
+								TempCard[i]:flip()
+								play_sound("card1", percent)
+								TempCard[i]:juice_up(0.3, 0.3)
+								return true
+							end,
+						}))
+						delay(0.2)
 					end
-					delay(1)
-					for i, v in pairs(cards) do
-						v:flip()
+					for i = 1, #TempCard do
+						local CARD = TempCard[i]
+						local percent = 0.85 + (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.15,
+							func = function()
+								CARD:flip()
+								CARD:set_ability(Cryptid.random_consumable("cry_class"), true, nil)
+								play_sound("tarot2", percent)
+								CARD:juice_up(0.3, 0.3)
+								return true
+							end,
+						}))
 					end
-					G.hand:unhighlight_all()
-					ccl(self)
-					-- Re-use the card
-					if G.GAME.ACTIVE_CODE_CARD then
-						if
-							not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse
-							or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1)
-						then
-							G.GAME.ACTIVE_CODE_CARD:start_dissolve()
-						else
-							G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse =
-								lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
+				elseif enh_suffix == "null" then
+					local destroyed_cards = {}
+					check_for_unlock({ type = "cheat_used" })
+					for i = #TempCard, 1, -1 do
+						local card = TempCard[i]
+						if not card.ability.eternal then
+							destroyed_cards[#destroyed_cards + 1] = TempCard[i]
+							if card.ability.name == "Glass Card" then
+								card:shatter()
+							else
+								card:start_dissolve(nil, i == #TempCard)
+							end
 						end
 					end
-					G.GAME.ACTIVE_CODE_CARD = nil
+					if destroyed_cards[1] then
+						for j = 1, #G.jokers.cards do
+							eval_card(
+								G.jokers.cards[j],
+								{ cardarea = G.jokers, remove_playing_cards = true, removed = destroyed_cards }
+							)
+						end
+					end
+					G.CHOOSE_ENH:remove()
+					return
+				else
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.4,
+						func = function()
+							play_sound("tarot1")
+							return true
+						end,
+					}))
+					for i = 1, #TempCard do
+						local percent = 1.15 - (i - 0.999) / (#TempCard - 0.998) * 0.3
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.15,
+							func = function()
+								TempCard[i]:flip()
+								play_sound("card1", percent)
+								TempCard[i]:juice_up(0.3, 0.3)
+								return true
+							end,
+						}))
+					end
+					delay(0.2)
+					for i = 1, #TempCard do
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.1,
+							func = function()
+								TempCard[i]:set_ability(G.P_CENTERS[enh_suffix])
+								return true
+							end,
+						}))
+					end
+					for i = 1, #TempCard do
+						local percent = 0.85 + (i - 0.999) / (#TempCard - 0.998) * 0.3
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.15,
+							func = function()
+								TempCard[i]:flip()
+								play_sound("tarot2", percent, 0.6)
+								TempCard[i]:juice_up(0.3, 0.3)
+								return true
+							end,
+						}))
+					end
 				end
-			else
-				ccl(self)
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						G.hand:unhighlight_all()
+						return true
+					end,
+				}))
+				delay(0.5)
+				if G.CHOOSE_ENH then
+					G.CHOOSE_ENH:remove()
+				end
+				G.CODE_MAX_HIGHLIGHT = nil
 			end
 		end
-		local emplace_ref = CardArea.emplace
-		function CardArea:emplace(card, ...)
-			if G.GAME.USING_CLASS or G.GAME.POINTER_SUBMENU == "Enhancement" then
-				local c = card.config.center
-				--no class is exclusive to class and no code is just a generic code cards cant create this thing
-				if c.hidden or c.noe_doe or c.no_collection or c.no_class or c.no_code then
-					card.debuff = true
-				end
+
+		G.FUNCS.class_cancel = function()
+			G.GAME.USING_CODE = false
+			if G.CHOOSE_ENH then
+				G.CHOOSE_ENH:remove()
 			end
-			return emplace_ref(self, card, ...)
 		end
 	end,
 	demicoloncompat = true,
@@ -3206,9 +3412,9 @@ local class = {
 			"light",
 			"abstract",
 		}
-		for i, v in pairs(Cryptid.get_highlighted_cards({ G.hand }, {}, 1, card.ability.max_highlighted or 1)) do
-			v:set_ability(pseudorandom_element(choices, pseudoseed("forceclass")))
-		end
+		G.ENTERED_ENH = pseudorandom_element(choices, pseudoseed("forceclass"))
+		G.FUNCS.class_cancel()
+		G.FUNCS.class_apply()
 	end,
 }
 -- ://Global
@@ -3364,118 +3570,10 @@ local variable = {
 		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
-		-- Un-use the card
-		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
-			G.GAME.CODE_DESTROY_CARD = copy_card(card)
-			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
-		end
-		if card.ability.cry_multiuse then
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
-		end
 		G.GAME.USING_CODE = true
-		G.GAME.USING_VARIABLE = card.ability.max_highlighted
-		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
-		G.FUNCS.overlay_menu({ definition = create_UIBox_variable_code() })
-	end,
-	init = function(self)
-		local ccl = Card.click
-		function Card:click()
-			if G.GAME.USING_VARIABLE then
-				if not self.debuff then
-					G.FUNCS.exit_overlay_menu_code()
-					delay(3)
-					local cards = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, G.GAME.USING_VARIABLE or 1)
-					for i, v in pairs(cards) do
-						v:flip()
-					end
-					delay(1)
-					for i, v in pairs(cards) do
-						SMODS.change_base(v, v.base.suit, self.base.value)
-					end
-					delay(1)
-					for i, v in pairs(cards) do
-						v:flip()
-					end
-					G.hand:unhighlight_all()
-					ccl(self)
-					-- Re-use the card
-					if G.GAME.ACTIVE_CODE_CARD then
-						if
-							not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse
-							or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1)
-						then
-							G.GAME.ACTIVE_CODE_CARD:start_dissolve()
-						else
-							G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse =
-								lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
-						end
-					end
-					G.GAME.ACTIVE_CODE_CARD = nil
-				end
-			else
-				ccl(self)
-			end
-		end
-		local emplace_ref = CardArea.emplace
-		function CardArea:emplace(card, ...)
-			if G.GAME.USING_VARIABLE or G.GAME.POINTER_SUBMENU == "Rank" then
-				local c = SMODS.Ranks[card.base.value] or {}
-				if c.hidden or c.noe_doe or c.no_collection or c.no_variable or c.no_code then
-					card.debuff = true
-				end
-			end
-			return emplace_ref(self, card, ...)
-		end
-	end,
-	demicoloncompat = true,
-	force_use = function(self, card, area)
-		local choices = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" }
-		for i, v in pairs(Cryptid.get_highlighted_cards({ G.hand }, {}, 1, card.ability.max_highlighted or 2)) do
-			SMODS.change_base(v, v.base.suit, pseudorandom_element(choices, pseudoseed("forcevariable")))
-		end
-	end,
-}
--- ://Log
--- View one of:
--- Next ante's blinds/vouchers,
--- next 5 cards/packs in shop,
--- draw order for current blind (if in blind),
--- Multi-use 2
-local log = {
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"lord.ruby",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_code",
-		},
-	},
-	object_type = "Consumable",
-	set = "Code",
-	name = "cry-Log",
-	key = "log",
-	pos = { x = 12, y = 4 },
-	cost = 4,
-	atlas = "atlasnotjokers",
-	order = 424,
-	can_use = function(self, card)
-		return true
-	end,
-	use = function(self, card, area, copier)
-		G.GAME.USING_LOG = true
-
-		G.GAME.USING_CODE = true
-		G.CHOOSE_CARD = UIBox({
-			definition = create_UIBox_log_opts(),
+		G.ENTERED_RANK = ""
+		G.CHOOSE_RANK = UIBox({
+			definition = create_UIBox_variable(card),
 			config = {
 				align = "cm",
 				offset = { x = 0, y = 10 },
@@ -3484,9 +3582,10 @@ local log = {
 				instance_type = "POPUP",
 			},
 		})
-		G.CHOOSE_CARD.alignment.offset.y = 0
+		G.CODE_MAX_HIGHLIGHT = card.ability.max_highlighted
+		G.CHOOSE_RANK.alignment.offset.y = 0
 		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_CARD:align_to_major()
+		G.CHOOSE_RANK:align_to_major()
 	end,
 	init = function()
 		local get_voucherref = SMODS.get_next_vouchers
@@ -3632,25 +3731,28 @@ local log = {
 				contents = {
 					{
 						n = G.UIT.R,
-						config = { align = "cm" },
 						nodes = {
-							UIBox_button({
-								colour = G.C.SECONDARY_SET.Code,
-								button = "log_antevoucher",
-								label = { localize("cry_code_antevoucher") },
-								minw = 4.5,
-								focus_args = { snap_to = true },
+							create_text_input({
+								colour = G.C.SET.Code,
+								hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
+								w = 4.5,
+								h = 1,
+								max_length = 16,
+								extended_corpus = true,
+								prompt_text = localize("cry_code_rank"),
+								ref_table = G,
+								ref_value = "ENTERED_RANK",
+								keyboard_offset = 1,
 							}),
 						},
 					},
 					{
 						n = G.UIT.R,
-						config = { align = "cm" },
 						nodes = {
 							UIBox_button({
-								colour = G.C.SECONDARY_SET.Code,
-								button = "log_nextjokers",
-								label = { localize("cry_code_nextjokers") },
+								colour = G.C.SET.Code,
+								button = "variable_apply",
+								label = { localize("cry_code_apply") },
 								minw = 4.5,
 								focus_args = { snap_to = true },
 							}),
@@ -3658,25 +3760,23 @@ local log = {
 					},
 					G.GAME.blind and G.GAME.blind.in_blind and G.deck and #(G.deck.cards or {}) > 0 and {
 						n = G.UIT.R,
-						config = { align = "cm" },
-						nodes = {
-							UIBox_button({
-								colour = G.C.SECONDARY_SET.Code,
-								button = "log_nextcards",
-								label = { localize("cry_code_nextcards") },
-								minw = 4.5,
-								focus_args = { snap_to = true },
-							}),
-						},
-					} or nil,
-					{
-						n = G.UIT.R,
-						config = { align = "cm" },
 						nodes = {
 							UIBox_button({
 								colour = G.C.RED,
-								button = "log_cancel",
-								label = { localize("cry_code_exit") },
+								button = "variable_apply_previous",
+								label = { localize("cry_code_apply_previous") },
+								minw = 4.5,
+								focus_args = { snap_to = true },
+							}),
+						},
+					},
+					{
+						n = G.UIT.R,
+						nodes = {
+							UIBox_button({
+								colour = G.C.RED,
+								button = "variable_cancel",
+								label = { localize("cry_code_cancel") },
 								minw = 4.5,
 								focus_args = { snap_to = true },
 							}),
@@ -3686,81 +3786,244 @@ local log = {
 			})
 			return t
 		end
-		function create_UIBox_log(options, mtype)
-			G.E_MANAGER:add_event(Event({
-				blockable = false,
-				func = function()
-					G.REFRESH_ALERTS = true
-					return true
-				end,
-			}))
-			local contents = {}
-			contents[#contents + 1] = {
-				n = G.UIT.R,
-				config = { align = "cm" },
-				nodes = {
-					{
-						n = G.UIT.T,
-						config = {
-							text = mtype,
-							lang = G.LANGUAGES["en-us"],
-							scale = 0.45,
-							colour = G.C.WHITE,
-							shadow = true,
-						},
-					},
-				},
-			}
-			for i, v in pairs(options) do
-				contents[#contents + 1] = {
-					n = G.UIT.R,
-					config = { align = "cm" },
-					nodes = {
-						{
-							n = G.UIT.T,
-							config = {
-								text = v,
-								lang = G.LANGUAGES["en-us"],
-								scale = 0.45,
-								colour = G.C.WHITE,
-								shadow = true,
-							},
-						},
-					},
-				}
+
+		G.FUNCS.variable_apply_previous = function()
+			if G.PREVIOUS_ENTERED_RANK then
+				G.ENTERED_RANK = G.PREVIOUS_ENTERED_RANK or ""
 			end
-			contents[#contents + 1] = {
-				n = G.UIT.R,
-				config = { align = "cm" },
-				nodes = {
-					UIBox_button({
-						colour = G.C.RED,
-						button = "log_cancel",
-						label = { localize("cry_code_exit") },
-						minw = 4.5,
-						focus_args = { snap_to = true },
-					}),
-				},
-			}
-			local t = create_UIBox_generic_options({
-				no_back = true,
-				colour = HEX("04200c"),
-				outline_colour = G.C.SECONDARY_SET.Code,
-				contents = contents,
-			})
-			return t
+			G.FUNCS.variable_apply()
 		end
-		G.FUNCS.log_cancel = function()
-			if G.CHOOSE_CARD then
-				G.CHOOSE_CARD:remove()
+
+		G.FUNCS.variable_apply = function()
+			local rank_table = {
+				{},
+				{ "2", "Two", "II" },
+				{ "3", "Three", "III" },
+				{ "4", "Four", "IV" },
+				{ "5", "Five", "V" },
+				{ "6", "Six", "VI" },
+				{ "7", "Seven", "VII" },
+				{ "8", "Eight", "VIII" },
+				{ "9", "Nine", "IX" },
+				{ "10", "1O", "Ten", "X", "T" },
+				{ "J", "Jack" },
+				{ "Q", "Queen" },
+				{ "K", "King" },
+				{ "A", "Ace", "One", "1", "I" },
+				{ "M" },
+				{ "nil" },
+			}
+
+			local rank_suffix = nil
+
+			for i, v in pairs(rank_table) do
+				for j, k in pairs(v) do
+					if string.lower(G.ENTERED_RANK) == string.lower(k) then
+						rank_suffix = i
+					end
+				end
+			end
+
+			if rank_suffix then
+				local TempCard = {}
+				local cards = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, G.CODE_MAX_HIGHLIGHT)
+				for i = 1, #cards do
+					TempCard[i] = cards[i]
+				end
+				G.PREVIOUS_ENTERED_RANK = G.ENTERED_RANK
+				G.GAME.USING_CODE = false
+				if rank_suffix == 15 then
+					check_for_unlock({ type = "cheat_used" })
+					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
+					card:add_to_deck()
+					G.jokers:emplace(card)
+				elseif rank_suffix == 16 then
+					check_for_unlock({ type = "cheat_used" })
+					local card = create_card("Code", G.consumeables, nil, nil, nil, nil, "c_cry_crash")
+					card:add_to_deck()
+					G.consumeables:emplace(card)
+				elseif rank_suffix == 17 then
+					check_for_unlock({ type = "cheat_used" })
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.4,
+						func = function()
+							play_sound("tarot1")
+							return true
+						end,
+					}))
+					for i = 1, #TempCard do
+						local percent = 1.15 - (i - 0.999) / (#G.hand.highlighted - 0.998) * 0.3
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.15,
+							func = function()
+								TempCard[i]:flip()
+								play_sound("card1", percent)
+								TempCard[i]:juice_up(0.3, 0.3)
+								return true
+							end,
+						}))
+					end
+					delay(0.2)
+					for i = 1, #TempCard do
+						local CARD = TempCard[i]
+						local percent = 0.85 + (i - 0.999) / (#TempCard - 0.998) * 0.3
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.15,
+							func = function()
+								CARD:flip()
+								CARD:set_ability(
+									G.P_CENTERS[pseudorandom_element(
+										G.P_CENTER_POOLS.Consumeables,
+										pseudoseed("cry_variable")
+									).key],
+									true,
+									nil
+								)
+								play_sound("tarot2", percent)
+								CARD:juice_up(0.3, 0.3)
+								return true
+							end,
+						}))
+					end
+				else
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.4,
+						func = function()
+							play_sound("tarot1")
+							return true
+						end,
+					}))
+					for i = 1, #TempCard do
+						local percent = 1.15 - (i - 0.999) / (#TempCard - 0.998) * 0.3
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.15,
+							func = function()
+								TempCard[i]:flip()
+								play_sound("card1", percent)
+								TempCard[i]:juice_up(0.3, 0.3)
+								return true
+							end,
+						}))
+					end
+					delay(0.2)
+					for i = 1, #TempCard do
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.1,
+							func = function()
+								local card = TempCard[i]
+								local suit_prefix = string.sub(card.base.suit, 1, 1) .. "_"
+								local r2suffix = nil
+								if rank_suffix < 10 then
+									r2suffix = tostring(rank_suffix)
+								elseif rank_suffix == 10 then
+									r2suffix = "T"
+								elseif rank_suffix == 11 then
+									r2suffix = "J"
+								elseif rank_suffix == 12 then
+									r2suffix = "Q"
+								elseif rank_suffix == 13 then
+									r2suffix = "K"
+								elseif rank_suffix == 14 then
+									r2suffix = "A"
+								end
+								card:set_base(G.P_CARDS[suit_prefix .. r2suffix])
+								return true
+							end,
+						}))
+					end
+					for i = 1, #TempCard do
+						local percent = 0.85 + (i - 0.999) / (#TempCard - 0.998) * 0.3
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.15,
+							func = function()
+								TempCard[i]:flip()
+								play_sound("tarot2", percent, 0.6)
+								TempCard[i]:juice_up(0.3, 0.3)
+								return true
+							end,
+						}))
+					end
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.2,
+						func = function()
+							G.hand:unhighlight_all()
+							return true
+						end,
+					}))
+					delay(0.5)
+				end
+				if G.CHOOSE_RANK then
+					G.CHOOSE_RANK:remove()
+				end
+				G.CODE_MAX_HIGHLIGHT = nil
+			end
+		end
+
+		G.FUNCS.variable_cancel = function()
+			if G.CHOOSE_RANK then
+				G.CHOOSE_RANK:remove()
 			end
 			G.GAME.USING_CODE = false
 		end
 	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		G.CODE_MAX_HIGHLIGHT = card.ability.max_highlighted
+		local choices = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" }
+		G.ENTERED_RANK = pseudorandom_element(choices, pseudoseed("forceclass"))
+		G.FUNCS.variable_cancel()
+		G.FUNCS.variable_apply()
+	end,
+}
+-- ://Log
+-- View one of:
+-- Next ante's blinds/vouchers,
+-- next 5 cards/packs in shop,
+-- draw order for current blind (if in blind),
+-- Multi-use 2
+local crylog = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Nova",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
+	object_type = "Consumable",
+	set = "Code",
+	name = "cry-Log",
+	key = "crylog",
+	pos = { x = 12, y = 4 },
+	cost = 4,
+	atlas = "atlasnotjokers",
+	order = 424,
+	can_use = function(self, card)
+		return false
+	end,
+	-- use = function(self, card, area, copier)
+
+	-- end,
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
-}
+} -- UNIMPLEMENTED
 -- ://Quantify
 -- Jokerize! an object
 local quantify = {
@@ -4327,7 +4590,7 @@ local ctrl_v = {
 						return true
 					end,
 				}))
-			elseif cards[1].area == G.pack_cards then
+			elseif cards[1].area == G.pacl_cards then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						local card = copy_card(cards[1])
@@ -4562,7 +4825,6 @@ local automaton = {
 	key = "automaton",
 	pos = { x = 12, y = 1 },
 	config = { create = 1 },
-	misprintize_caps = { create = 100 },
 	order = 602,
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, card)
@@ -4889,14 +5151,11 @@ local copypaste = {
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or 2)
 		return {
 			vars = {
-				card and cry_prob(
-					math.min(card.ability.extra.odds / 2, card.ability.cry_prob or 1),
-					card.ability.extra.odds,
-					card.ability.cry_rigged
-				) or 1,
-				card and card.ability.extra.odds or 2,
+				num,
+				denom,
 			}, -- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
 			key = Cryptid.gameset_loc(self, { madness = "madness", exp_modest = "modest" }),
 		}
@@ -4936,13 +5195,12 @@ local copypaste = {
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
 				if
-					pseudorandom("cry_copypaste_joker")
-					< cry_prob(
-							math.min(card.ability.extra.odds / 2, card.ability.cry_prob),
-							card.ability.extra.odds,
-							card.ability.cry_rigged
-						)
-						/ card.ability.extra.odds
+					SMODS.pseudorandom_probability(
+						card,
+						"cry_copypaste_joker",
+						1,
+						card and card.ability.extra.odds or 2
+					)
 				then
 					G.E_MANAGER:add_event(Event({
 						func = function()
@@ -5273,6 +5531,7 @@ local code_cards = {
 	seed,
 	rigged,
 	patch,
+	-- cryupdate, -- WIP: no effect
 	hook,
 	hooked,
 	oboe,
@@ -5282,12 +5541,11 @@ local code_cards = {
 	cryfunction,
 	function_sticker,
 	run,
-	declare,
 	class,
 	global,
 	global_sticker,
 	variable,
-	log,
+	-- crylog, -- this will be implemented later on
 	quantify,
 	divide,
 	multiply,

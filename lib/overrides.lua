@@ -407,9 +407,22 @@ function Game:update(dt)
 			v.children.back:set_sprite_pos(G.P_CENTERS.b_cry_glowing.pos or G.P_CENTERS["b_red"].pos)
 		end
 	end
-	if not G.OVERLAY_MENU and G.GAME.CODE_DESTROY_CARD then
-		G.FUNCS.exit_overlay_menu_code()
+	if not G.OVERLAY_MENU and not G.CHOOSE_CARD and G.GAME.USING_POINTER then
+		G.CHOOSE_CARD = UIBox({
+			definition = create_UIBox_pointer(card),
+			config = {
+				align = "cm",
+				offset = { x = 0, y = 10 },
+				major = G.ROOM_ATTACH,
+				bond = "Weak",
+				instance_type = "POPUP",
+			},
+		})
+		G.CHOOSE_CARD.alignment.offset.y = 0
+		G.ROOM.jiggle = G.ROOM.jiggle + 1
+		G.CHOOSE_CARD:align_to_major()
 	end
+
 	--Increase the blind size for The Clock and Lavender Loop
 	local choices = { "Small", "Big", "Boss" }
 	G.GAME.CRY_BLINDS = G.GAME.CRY_BLINDS or {}
@@ -522,6 +535,7 @@ end
 local sc = Card.set_cost
 function Card:set_cost()
 	-- Makes the edition cost increase usually present not apply if this variable is true
+	-- Used for some of the Jen's almanac edition decks because having the price increase apply was "unfun"
 	if self.edition and G.GAME.modifiers.cry_no_edition_price then
 		local m = Cryptid.deep_copy(self.edition)
 		self.edition = nil
@@ -566,10 +580,6 @@ function Card:set_cost()
 	if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
 		self.sell_cost = 0
 		self.sell_cost_label = 0
-	--Rotten Egg
-	elseif G.GAME.cry_rotten_amount then
-		self.sell_cost = G.GAME.cry_rotten_amount
-		self.sell_cost_label = self.facing == "back" and "?" or number_format(self.sell_cost)
 	end
 end
 
@@ -815,7 +825,7 @@ function calculate_reroll_cost(skip_increment)
 		+ G.GAME.current_round.reroll_cost_increase
 end
 
-local create_card_ref = create_card
+-- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	local area = area or G.jokers
 	local pseudo = function(x)
@@ -828,6 +838,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		end
 		ps = Cryptid.predict_pseudoseed
 	end
+	local center = G.P_CENTERS.b_red
 	if (_type == "Joker" or _type == "Meme") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
@@ -852,18 +863,67 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			forced_key = G.P_CENTER_POOLS["Joker"][aeqactive].key
 		end
 	end
+	--should pool be skipped with a forced key
+	if not forced_key and soulable and not G.GAME.banned_keys["c_soul"] then
+		for _, v in ipairs(SMODS.Consumable.legendaries) do
+			if
+				(_type == v.type.key or _type == v.soul_set)
+				and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul)
+			then
+				if pseudo("soul_" .. v.key .. _type .. G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+					forced_key = v.key
+				end
+			end
+		end
+		if
+			(_type == "Tarot" or _type == "Spectral" or _type == "Tarot_Planet")
+			and not (G.GAME.used_jokers["c_soul"] and not next(find_joker("Showman")))
+		then
+			if pseudo("soul_" .. _type .. G.GAME.round_resets.ante) > 0.997 then
+				forced_key = "c_soul"
+			end
+		end
+		if
+			(_type == "Planet" or _type == "Spectral")
+			and not (G.GAME.used_jokers["c_black_hole"] and not next(find_joker("Showman")))
+		then
+			if pseudo("soul_" .. _type .. G.GAME.round_resets.ante) > 0.997 then
+				forced_key = "c_black_hole"
+			end
+		end
+	end
+
 	if _type == "Base" then
 		forced_key = "c_base"
 	end
 
-	if forced_key and not G.GAME.banned_keys[forced_key] then
-		_type = (G.P_CENTERS[forced_key].set ~= "Default" and G.P_CENTERS[forced_key].set or _type)
+	if forced_key then --vanilla behavior change, mainly for M Joker reasons
+		center = G.P_CENTERS[forced_key]
+		_type = (center.set ~= "Default" and center.set or _type)
+	else
+		gcparea = area
+		local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
+		gcparea = nil
+		center = pseudorandom_element(_pool, ps(_pool_key))
+		local it = 1
+		while center == "UNAVAILABLE" do
+			it = it + 1
+			center = pseudorandom_element(_pool, ps(_pool_key .. "_resample" .. it))
+		end
+
+		center = G.P_CENTERS[center]
 	end
 
-	local front = (SMODS.set_create_card_front and (_type == "Base" or _type == "Enhanced")) or nil
+	local front = (
+		(_type == "Base" or _type == "Enhanced")
+		and (
+			pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
+			or G.P_CARDS["S_T"]
+		)
+	) or nil
 
 	if area == "ERROR" then
-		local ret = (front or G.P_CENTERS[forced_key] or G.P_CENTERS.b_red)
+		local ret = (front or center)
 		if not ret.config then
 			ret.config = {}
 		end
@@ -879,8 +939,28 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		return ret --the config.center.key stuff prevents a crash with Jen's Almanac hook
 	end
 
-	local card = create_card_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
-	local center = card and card.config and card.config.center or {}
+	local card = Card(
+		area and (area.T.x + area.T.w / 2) or 0,
+		area and area.T.y or 0,
+		G.CARD_W * (center and center.set == "Booster" and 1.27 or 1),
+		G.CARD_H * (center and center.set == "Booster" and 1.27 or 1),
+		front,
+		center,
+		{
+			bypass_discovery_center = area == G.shop_jokers
+				or area == G.pack_cards
+				or area == G.shop_vouchers
+				or (G.shop_demo and area == G.shop_demo)
+				or area == G.jokers
+				or area == G.consumeables,
+			bypass_discovery_ui = area == G.shop_jokers
+				or area == G.pack_cards
+				or area == G.shop_vouchers
+				or (G.shop_demo and area == G.shop_demo),
+			discover = area == G.jokers or area == G.consumeables,
+			bypass_back = G.GAME.selected_back.pos,
+		}
+	)
 	if front and G.GAME.modifiers.cry_force_suit then
 		card:change_suit(G.GAME.modifiers.cry_force_suit)
 	end
@@ -889,10 +969,22 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	if front and G.GAME.modifiers.cry_force_edition then
 		card:set_edition({ [G.GAME.modifiers.cry_force_edition] = true }, true, true)
-		card:add_to_deck()
 	end
 	if front and G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
+	end
+	if card.ability.consumeable and not skip_materialize then
+		card:start_materialize()
+	end
+	for k, v in ipairs(SMODS.Sticker.obj_buffer) do
+		local sticker = SMODS.Stickers[v]
+		if
+			sticker.should_apply
+			and type(sticker.should_apply) == "function"
+			and sticker:should_apply(card, center, area)
+		then
+			sticker:apply(card, true)
+		end
 	end
 	if
 		G.GAME.modifiers.cry_force_sticker == "eternal"
@@ -1040,6 +1132,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			then
 				card.cry_flipped = true
 			end
+		end
+		if _type == "Joker" and not G.GAME.modifiers.cry_force_edition then
+			local edition = poll_edition("edi" .. (key_append or "") .. G.GAME.round_resets.ante)
+			card:set_edition(edition)
+			check_for_unlock({ type = "have_edition" })
 		end
 	end
 	if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing then
@@ -1797,12 +1894,8 @@ function end_round()
 		then
 			G.PROFILES[G.SETTINGS.profile].cry_none = true
 		end
-		if not Cryptid.enabled("set_cry_poker_hand_stuff") then
-			end_roundref()
-		end
-	else
-		end_roundref()
 	end
+	end_roundref()
 	G.E_MANAGER:add_event(Event({
 		trigger = "after",
 		func = function()
@@ -1871,11 +1964,6 @@ end
 
 local discard_ref = G.FUNCS.discard_cards_from_highlighted
 G.FUNCS.discard_cards_from_highlighted = function(e, hook)
-	--Labyrinth: set current_round_discards_used to 0 for effects
-	G.GAME.current_round.discards_used2 = G.GAME.current_round.discards_used
-	if next(find_joker("cry-maze")) then
-		G.GAME.current_round.discards_used = 0
-	end
 	discard_ref(e, hook)
 	local highlighted_count = math.min(#G.hand.highlighted, G.discard.config.card_limit - #G.play.cards)
 	if highlighted_count <= 0 then
@@ -1911,22 +1999,9 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 			end,
 		}))
 	end
-	--Labyrinth: return current_round_discards_used back to the amount it is supposed to be after
-	G.GAME.current_round.discards_used = G.GAME.current_round.discards_used2 + 1
 end
 local play_ref = G.FUNCS.play_cards_from_highlighted
 G.FUNCS.play_cards_from_highlighted = function(e)
-	--Labyrinth: set current_round_hands played to 0 for effects
-	G.E_MANAGER:add_event(Event({
-		trigger = "immediate",
-		func = function()
-			G.GAME.current_round.hands_played2 = G.GAME.current_round.hands_played
-			if next(find_joker("cry-maze")) then
-				G.GAME.current_round.hands_played = 0
-			end
-			return true
-		end,
-	}))
 	G.GAME.before_play_buffer = true
 	-- None Stuff
 	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 1 then
@@ -1940,21 +2015,6 @@ G.FUNCS.play_cards_from_highlighted = function(e)
 	--Add blind context for Just before cards are played
 	G.GAME.blind:cry_before_play()
 	play_ref(e)
-	--Labyrinth: return current_round_hands played to the amount it is supposed to be at after
-	G.E_MANAGER:add_event(Event({
-		trigger = "immediate",
-		func = function()
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.1,
-				func = function()
-					G.GAME.current_round.hands_played = G.GAME.current_round.hands_played2 + 1
-					return true
-				end,
-			}))
-			return true
-		end,
-	}))
 	G.GAME.before_play_buffer = nil
 end
 
@@ -1987,139 +2047,4 @@ function CardArea:shuffle(_seed)
 	o_ca_shuffle(self, _seed)
 
 	SMODS.calculate_context({ cry_shuffling_area = true, cardarea = self, cry_post_shuffle = true })
-end
-
-local smods_four_fingers = SMODS.four_fingers
-function SMODS.four_fingers()
-	return smods_four_fingers() - Cryptid.get_paved_joker()
-end
-
-function Cryptid.create_dummy_from_stone(rank)
-	local r = rank
-	rank = tonumber(rank) or ({
-		Ace = 14,
-		King = 13,
-		Queen = 12,
-		Jack = 11,
-	})[rank] or rank
-	return {
-		get_id = function()
-			return rank
-		end,
-		config = {
-			center = {},
-		},
-		base = {
-			id = rank,
-			value = rank >= 11 and "Queen" or "10",
-		},
-	}
-end
-function Cryptid.next_ranks(key, start, recurse)
-	key = ({
-		["14"] = "Ace",
-		["13"] = "King",
-		["12"] = "Queen",
-		["11"] = "Jack",
-	})[tostring(key)] or key
-	local rank = SMODS.Ranks[tostring(key)]
-	local ret = {}
-	if not rank or (not start and not wrap and rank.straight_edge) then
-		return ret
-	end
-	for _, v in ipairs(rank.next) do
-		ret[#ret + 1] = v
-		local curr = #ret
-		if recurse and recurse > 0 then
-			for i, v in pairs(Cryptid.next_ranks(ret[#ret], start, recurse - 1)) do
-				ret[#ret + 1] = v
-			end
-		end
-	end
-	return ret
-end
-
-local function append(t, new)
-	local clone = {}
-	for _, item in ipairs(t) do
-		clone[#clone + 1] = item
-	end
-	clone[#clone + 1] = new
-	return clone
-end
-
-function Cryptid.unique_combinations(tbl, sub, min)
-	sub = sub or {}
-	min = min or 1
-	local wrap, yield = coroutine.wrap, coroutine.yield
-	return wrap(function()
-		if #sub > 0 then
-			yield(sub) -- yield short combination.
-		end
-		if #sub < #tbl then
-			for i = min, #tbl do -- iterate over longer combinations.
-				for combo in Cryptid.unique_combinations(tbl, append(sub, tbl[i]), i + 1) do
-					yield(combo)
-				end
-			end
-		end
-	end)
-end
-get_straight_ref = get_straight
-function get_straight(hand, min_length, skip, wrap)
-	local permutations = {}
-	local ranks = {}
-	local cards = {}
-	local stones = Cryptid.get_paved_joker()
-	if stones > 0 then
-		for i, v in pairs(hand) do
-			if v.config.center.key ~= "m_stone" then
-				cards[#cards + 1] = v
-				for i, v in pairs(Cryptid.next_ranks(v:get_id(), nil, stones)) do --this means its inaccurate in some situations like K S S S S but its fine there isnt a better way
-					ranks[v] = true
-				end
-			end
-			if v:get_id() >= 11 then
-				new_ranks = {
-					"Ace",
-					"King",
-					"Queen",
-					"Jack",
-					10,
-				}
-				for i, v in pairs(new_ranks) do
-					ranks[v] = true
-				end
-			end
-		end
-		local rranks = {}
-		for i, v in pairs(ranks) do
-			rranks[#rranks + 1] = i
-		end
-		for i, v in Cryptid.unique_combinations(rranks) do
-			if #i == stones then
-				permutations[#permutations + 1] = i
-			end
-		end
-		for i, v in ipairs(permutations) do
-			local actual = {}
-			local ranks = {}
-			for i, v in pairs(cards) do
-				actual[#actual + 1] = v
-				ranks[v:get_id()] = true
-			end
-			for i, p in pairs(v) do
-				local d = Cryptid.create_dummy_from_stone(p)
-				if not ranks[d:get_id()] then
-					actual[#actual + 1] = d
-				end
-			end
-			local ret = get_straight_ref(actual, min_length + stones, skip, true)
-			if ret and #ret > 0 then
-				return ret
-			end
-		end
-	end
-
-	return get_straight_ref(hand, min_length + stones, skip, wrap)
 end
