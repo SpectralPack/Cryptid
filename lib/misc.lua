@@ -1165,8 +1165,8 @@ G.FUNCS.exit_overlay_menu_code = function(e)
 		and G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse
 	then
 		G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse - 1
-		G.GAME.CODE_DESTROY_CARD = nil
 	end
+	G.GAME.CODE_DESTROY_CARD = nil
 end
 
 function G.UIDEF.exploit_menu()
@@ -1215,10 +1215,15 @@ function Controller:L_cursor_press(x, y)
 			and G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler.args
 			and G.GAME.hands[G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler.args]
 		then
-			if G.GAME.CODE_DESTROY_CARD then
-				G.GAME.CODE_DESTROY_CARD:start_dissolve()
-				G.GAME.CODE_DESTROY_CARD = nil
+			-- Re-use the Exploit card
+			if G.GAME.ACTIVE_CODE_CARD then
+				if not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1) then
+					G.GAME.ACTIVE_CODE_CARD:start_dissolve()
+				else
+					G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse = lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
+				end
 			end
+			G.GAME.ACTIVE_CODE_CARD = nil
 			G.GAME.cry_exploit_override = G.GAME.USING_EXPLOIT_HAND
 			G.FUNCS.exit_overlay_menu_code()
 		end
