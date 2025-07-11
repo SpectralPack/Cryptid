@@ -257,7 +257,7 @@ return {
 					"{C:green}1 in 3{} chance to",
 					"create a {C:legendary}Legendary{C:legendary} Joker",
 					"when Boss Blind is defeated",
-					"{C:inactive}(must have room){}"
+					"{C:inactive}(must have room){}",
 				},
 				unlock = {
 					"Have {C:attention}2 Legendary Jokers",
@@ -3358,7 +3358,7 @@ return {
 					"{C:green}1 in 3{} chance to",
 					"create a {C:legendary}Legendary{C:legendary} Joker",
 					"when Boss Blind is defeated",
-					"{C:inactive}(must have room){}"
+					"{C:inactive}(must have room){}",
 				},
 			},
 			sleeve_cry_antimatter_sleeve = {
