@@ -313,10 +313,12 @@ local planetlua = {
 	atlas = "atlasnotjokers",
 	order = 101,
 	loc_vars = function(self, info_queue, card)
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				card and cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) or 1,
-				card and card.ability.extra.odds or self.config.extra.odds,
+				num,
+				denom,
 			},
 		}
 	end,
@@ -326,9 +328,12 @@ local planetlua = {
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		if
-			pseudorandom("planetlua")
-			< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-				/ card.ability.extra.odds
+			SMODS.pseudorandom_probability(
+				card,
+				"planetlua",
+				1,
+				card and card.ability.extra.odds or self.config.extra.odds
+			)
 		then --Code "borrowed" from black hole
 			update_hand_text(
 				{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
@@ -473,8 +478,12 @@ local planetlua = {
 			for i = 1, number do
 				quota = quota
 					+ (
-						pseudorandom("planetlua")
-								< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+						SMODS.pseudorandom_probability(
+								card,
+								"planetlua",
+								1,
+								card and card.ability.extra.odds or self.config.extra.odds
+							)
 							and 1
 						or 0
 					)
@@ -577,9 +586,12 @@ local planetlua = {
 			G.GAME.used_vouchers.v_observatory
 			and context.joker_main
 			and (
-				pseudorandom("nstar")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
+				SMODS.pseudorandom_probability(
+					card,
+					"nstar",
+					1,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			)
 		then
 			local value = G.P_CENTERS.v_observatory.config.extra
