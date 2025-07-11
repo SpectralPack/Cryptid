@@ -3535,10 +3535,11 @@ local log = {
 				G.GAME.bosses_used[bl] = (G.GAME.bosses_used[bl] or 1) - 1
 			end
 			G.GAME.USING_CODE = true
+			localize{}
 			G.CHOOSE_CARD = UIBox({
 				definition = create_UIBox_log({
 					bl and G.localization.descriptions.Blind[bl].name or "None",
-					voucher and G.localization.descriptions.Voucher[voucher[1]].name or "None",
+					voucher and G.P_CENTERS[voucher[1]] and localize { type = 'name_text', set = G.P_CENTERS[voucher[1]].set, key = voucher[1] } or "None",
 				}, localize("cry_code_antevoucher")),
 				config = {
 					align = "cm",
@@ -3558,8 +3559,18 @@ local log = {
 			local pseudorandom = copy_table(G.GAME.pseudorandom)
 			local j = {}
 			for i = 1, 5 do
-				local next_joker = G.localization.descriptions["Joker"][Cryptid.predict_joker("sho")]
-				j[#j + 1] = next_joker and next_joker.name or "[NOT A JOKER]"
+				local key = Cryptid.predict_joker("sho")
+				local next_joker = G.P_CENTERS[key] and localize { type = 'name_text', set = G.P_CENTERS[key].set, key = key } 
+				or "ERROR"
+				if next_joker == "ERROR" then
+					local try = (G.localization.descriptions[G.P_CENTERS[key].set] or {})[key]
+					try = try and try.name or "[ERROR]"
+					if type(try or "a") == "table" then
+						try = try[1]
+					end
+					next_joker = try
+				end
+				j[#j + 1] = next_joker
 			end
 			G.GAME.pseudorandom = copy_table(pseudorandom)
 			G.GAME.USING_CODE = true
@@ -3583,7 +3594,9 @@ local log = {
 			local j = {}
 			for i = 1, 10 do
 				local card = G.deck.cards[#G.deck.cards + 1 - i]
-				j[#j + 1] = localize(card.base.value, "ranks") .. " of " .. localize(card.base.suit, "suits_plural")
+				if card then
+					j[#j + 1] = localize(card.base.value, "ranks") .. " of " .. localize(card.base.suit, "suits_plural")
+				end
 			end
 			G.GAME.USING_CODE = true
 			G.CHOOSE_CARD = UIBox({
@@ -3640,7 +3653,7 @@ local log = {
 							}),
 						},
 					},
-					G.GAME.blind and G.GAME.blind.in_blind and {
+					G.GAME.blind and G.GAME.blind.in_blind and G.deck and #(G.deck.cards or {}) > 0 and {
 						n = G.UIT.R,
 						config = { align = "cm" },
 						nodes = {
