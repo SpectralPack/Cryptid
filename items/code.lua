@@ -3535,11 +3535,14 @@ local log = {
 				G.GAME.bosses_used[bl] = (G.GAME.bosses_used[bl] or 1) - 1
 			end
 			G.GAME.USING_CODE = true
-			localize{}
+			localize({})
 			G.CHOOSE_CARD = UIBox({
 				definition = create_UIBox_log({
 					bl and G.localization.descriptions.Blind[bl].name or "None",
-					voucher and G.P_CENTERS[voucher[1]] and localize { type = 'name_text', set = G.P_CENTERS[voucher[1]].set, key = voucher[1] } or "None",
+					voucher
+							and G.P_CENTERS[voucher[1]]
+							and localize({ type = "name_text", set = G.P_CENTERS[voucher[1]].set, key = voucher[1] })
+						or "None",
 				}, localize("cry_code_antevoucher")),
 				config = {
 					align = "cm",
@@ -3560,8 +3563,9 @@ local log = {
 			local j = {}
 			for i = 1, 5 do
 				local key = Cryptid.predict_joker("sho")
-				local next_joker = G.P_CENTERS[key] and localize { type = 'name_text', set = G.P_CENTERS[key].set, key = key } 
-				or "ERROR"
+				local next_joker = G.P_CENTERS[key]
+						and localize({ type = "name_text", set = G.P_CENTERS[key].set, key = key })
+					or "ERROR"
 				if next_joker == "ERROR" then
 					local try = (G.localization.descriptions[G.P_CENTERS[key].set] or {})[key]
 					try = try and try.name or "[ERROR]"
