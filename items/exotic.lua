@@ -343,7 +343,8 @@ local exponentia = {
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		art = { "Jevonn" },
+		art = { "Lil Mr. Slipstream" },
+		art = { "George the Rat" },
 		code = { "Math" },
 	},
 	init = function(self)
