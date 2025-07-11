@@ -512,7 +512,10 @@ function Game:update(dt)
 			for k, v in ipairs(G.playing_cards) do
 				v.ability.played_this_ante = nil
 			end
-			ease_ante(G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() or 1); Cryptid.apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
+			ease_ante(G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() or 1)
+			Cryptid.apply_ante_tax()
+			delay(0.4)
+			check_for_unlock({ type = "ante_up", ante = G.GAME.round_resets.ante + 1 })
 		end
 
 		if G.GAME.round_resets.temp_handsize then
@@ -526,14 +529,7 @@ function Game:update(dt)
 		for _, v in pairs(find_joker("cry-loopy")) do
 			if v.ability.extra.retrigger ~= 0 then
 				v.ability.extra.retrigger = 0
-				card_eval_status_text(
-					v,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_reset"), colour = G.C.GREEN }
-				)
+				card_eval_status_text(v, "extra", nil, nil, nil, { message = localize("k_reset"), colour = G.C.GREEN })
 			end
 		end
 		for _, v in pairs(G.deck.cards) do
