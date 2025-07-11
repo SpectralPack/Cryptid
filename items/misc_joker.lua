@@ -3923,7 +3923,7 @@ local rnjoker = {
 					or (card.ability.extra and card.ability.extra.value)
 					or 0,
 				card.ability.extra and card.ability.extra.cond_value or 0,
-				num
+				num,
 			},
 		}
 		if card.ability.extra and card.ability.extra.color then

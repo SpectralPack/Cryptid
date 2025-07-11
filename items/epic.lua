@@ -1489,7 +1489,7 @@ local bonusjoker = {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
 		local num, denom =
-		SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
 				num,
@@ -1616,7 +1616,7 @@ local multjoker = {
 		return {
 			vars = {
 				num,
-				denom
+				denom,
 			},
 		}
 	end,
