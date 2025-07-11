@@ -1039,9 +1039,6 @@ local aequilibrium = {
 	demicoloncompat = true,
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
-		if not center.edition or (center.edition and not center.edition.negative) then
-			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
-		end
 		local joker_generated = "???"
 		if G.GAME.aequilibriumkey and G.GAME.aequilibriumkey > 1 then
 			joker_generated = localize({
@@ -1057,11 +1054,14 @@ local aequilibrium = {
 			(context.cardarea == G.jokers and context.before and not context.retrigger_joker) or context.forcetrigger
 		then
 			for i = 1, math.floor(math.min(25, card.ability.extra.jokers)) do
-				local newcard = create_card("Joker", G.jokers, nil, nil, nil, nil, nil)
-				newcard:add_to_deck()
-				G.jokers:emplace(newcard)
-				newcard:set_edition({ negative = true }, true)
+				if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+					local newcard = create_card("Joker", G.jokers, nil, nil, nil, nil, nil)
+					newcard:add_to_deck()
+					G.jokers:emplace(newcard)
+					G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+				end
 			end
+			G.GAME.joker_buffer = nil
 			return nil, true
 		end
 	end,

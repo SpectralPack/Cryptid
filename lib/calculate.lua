@@ -14,6 +14,7 @@ function eval_card(card, context)
 	if card.will_shatter then
 		return {}, {}
 	end
+	-- Store old probability for later reference
 	local ret, post = ec(card, context)
 	return ret, post
 end
@@ -359,6 +360,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 						local obj = G.jokers.cards[i].config.center
 						-- found one!
 						if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
+
 							-- 'o' will be the new factor that the joker should scale by next time
 							local o = obj:cry_scale_mod(
 								G.jokers.cards[i],
@@ -434,6 +436,7 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 								if (type(rep) == "table") and rep.repetitions and (rep.repetitions > 0) then
 									for r = 1, rep.repetitions do
 										card_eval_status_text(rep.card, "jokers", nil, nil, nil, rep)
+										-- now, same thing as before, apply the scale-joker
 										local o = obj:cry_scale_mod(
 											G.jokers.cards[i],
 											self,
@@ -755,6 +758,7 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 								orig_scale_base,
 								new_scale_base
 							)
+
 							if o then
 								if #dbl_info.scaler[info_i] == 2 then
 									if

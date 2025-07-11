@@ -353,57 +353,15 @@ local legendary = {
 	},
 	name = "cry-Legendary",
 	key = "legendary",
-	config = { cry_legendary = true, cry_legendary_rate = 0.2 },
+	config = { cry_legendary = true, cry_legendary_rate = 0.33 },
 	pos = { x = 0, y = 6 },
 	atlas = "atlasdeck",
 	order = 15,
 	calculate = function(self, back, context)
 		if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
-			if G.jokers then
-				if #G.jokers.cards < G.jokers.config.card_limit then
-					local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
-					legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
-					if legendary_poll < self.config.cry_legendary_rate then
-						local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-						card:add_to_deck()
-						card:start_materialize()
-						G.jokers:emplace(card)
-						return true
-					else
-						card_eval_status_text(
-							G.jokers,
-							"jokers",
-							nil,
-							nil,
-							nil,
-							{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
-						)
-					end
-				else
-					card_eval_status_text(
-						G.jokers,
-						"jokers",
-						nil,
-						nil,
-						nil,
-						{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
-					)
-				end
-			end
+			SMODS.Events["ev_cry_choco10"]:finish()
+			SMODS.Events["ev_cry_choco10"]:start()
 		end
-	end,
-	apply = function(self)
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				if G.jokers then
-					local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-					card:add_to_deck()
-					card:start_materialize()
-					G.jokers:emplace(card)
-					return true
-				end
-			end,
-		}))
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -669,7 +627,7 @@ local antimatter = {
 	config = {
 		cry_antimatter = true,
 		cry_crit_rate = 0.25, --Critical Deck
-		cry_legendary_rate = 0.2, --Legendary Deck
+		cry_legendary_rate = 0.33, --Legendary Deck
 		-- Enhanced Decks
 		cry_force_enhancement = "random",
 		cry_force_edition = "random",
@@ -877,23 +835,6 @@ local antimatter = {
 			]]
 			--
 			--Legendary Deck
-			if
-				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_legendary", "wins", 8) or 0)
-					~= 0
-				or skip
-			then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							return true
-						end
-					end,
-				}))
-			end
 			--Encoded Deck
 			if
 				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_encoded", "wins", 8) or 0)

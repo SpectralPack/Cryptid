@@ -254,9 +254,10 @@ return {
 			b_cry_legendary = {
 				name = "Legendary Deck",
 				text = {
-					"Start with a {C:legendary}Legendary{C:legendary} Joker",
-					"{C:green}1 in 5{} chance to create another",
-					"when Boss Blind is defeated {C:inactive}(must have room){}",
+					"{C:green}1 in 3{} chance to",
+					"create a {C:legendary}Legendary{C:legendary} Joker",
+					"when Boss Blind is defeated",
+					"{C:inactive}(must have room){}"
 				},
 				unlock = {
 					"Have {C:attention}2 Legendary Jokers",
@@ -3354,9 +3355,10 @@ return {
 			sleeve_cry_legendary_sleeve = {
 				name = "Legendary Sleeve",
 				text = {
-					"Start with an {C:legendary}Legendary{C:legendary} Joker",
-					"{C:green}1 in 5{} chance to create another",
-					"when Boss Blind is defeated {C:inactive}(must have room){}",
+					"{C:green}1 in 3{} chance to",
+					"create a {C:legendary}Legendary{C:legendary} Joker",
+					"when Boss Blind is defeated",
+					"{C:inactive}(must have room){}"
 				},
 			},
 			sleeve_cry_antimatter_sleeve = {
@@ -3366,7 +3368,6 @@ return {
 					"and {C:attention}special effects{}",
 					"of {C:attention}every{} sleeve won",
 					"with {C:gold}Gold Stake{}",
-					"{C:red}WIP",
 				},
 			},
 		},

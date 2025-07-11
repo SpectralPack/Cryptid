@@ -365,7 +365,7 @@ if CardSleeves then
 		name = "Legendary Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 1, y = 1 },
-		config = { cry_legendary = true, cry_legendary_rate = 0.2 },
+		config = { cry_legendary = true, cry_legendary_rate = 0.33 },
 		unlocked = true,
 		unlock_condition = { deck = "Legendary Deck", stake = 1 },
 		loc_vars = function(self)
@@ -405,19 +405,6 @@ if CardSleeves then
 					end
 				end
 			end
-		end,
-		apply = function(self)
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					if G.jokers then
-						local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-						card:add_to_deck()
-						card:start_materialize()
-						G.jokers:emplace(card)
-						return true
-					end
-				end,
-			}))
 		end,
 	})
 	local spookysleeve = CardSleeves.Sleeve({
@@ -459,7 +446,7 @@ if CardSleeves then
 			voucher = {},
 			cry_antimatter = true,
 			cry_crit_rate = 0.25, -- Critical Sleeve, Effect Rate
-			cry_legendary_rate = 0.2, -- Legendary Sleeve, Effect Rate
+			cry_legendary_rate = 0.33, -- Legendary Sleeve, Effect Rate
 			cry_negative_rate = 20,
 			cry_highlight_limit = 1e20,
 		},
@@ -822,32 +809,6 @@ if CardSleeves then
 							* (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
 						G.GAME.bankrupt_at = G.GAME.bankrupt_at - self.config.added_bankrupt
 						return true
-					end,
-				}))
-			end
-
-			-- Legendary Sleeve, Start Joker
-			if
-				(
-					Cryptid.safe_get(
-						G.PROFILES,
-						G.SETTINGS.profile,
-						"sleeve_usage",
-						"sleeve_cry_legendary_sleeve",
-						"wins_by_key",
-						"stake_gold"
-					) or 0
-				) ~= 0
-			then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-							card:add_to_deck()
-							card:start_materialize()
-							G.jokers:emplace(card)
-							return true
-						end
 					end,
 				}))
 			end

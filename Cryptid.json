@@ -11,7 +11,7 @@
 	"badge_text_colour": "FFFFFF",
 	"version": "0.5.10",
 	"dependencies": [
-		"Steamodded (>=1.0.0~BETA-0623b)"
+		"Steamodded (>=1.0.0~BETA-0711a)"
 	],
 	"conflicts": [
 		"Saturn",

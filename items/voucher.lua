@@ -909,7 +909,7 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	requires = { "v_petroglyph" },
 	pools = { ["Tier3"] = true },
 	config = {
-		ante_mod = 1,
+		ante_mod = 2,
 	},
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.ante_mod } }
