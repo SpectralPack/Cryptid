@@ -624,6 +624,7 @@ local pin = {
 				card.config.center.rarity == 4
 				or card.config.center.rarity == "cry_epic"
 				or card.config.center.rarity == "cry_exotic"
+				or Cryptid.pin_debuff[card.config.center.rarity]
 			)
 		then
 			return true
@@ -765,7 +766,7 @@ local decision = {
 		max = 666666,
 	},
 	atlas = "blinds",
-	order = 22,
+	order = 23,
 	boss_colour = HEX("474931"),
 	get_loc_debuff_text = function(self)
 		return localize("cry_blind_baneful_pack")
@@ -831,6 +832,128 @@ local decision = {
 		G.GAME.cry_fastened = nil
 	end,
 }
+
+local repulsor = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	mult = 2,
+	object_type = "Blind",
+	name = "cry-repulsor",
+	key = "repulsor",
+	pos = { x = 0, y = 0 },
+	dollars = 5,
+	boss = {
+		min = 4,
+		max = 666666,
+	},
+	atlas = "blinds_two",
+	order = 24,
+	boss_colour = HEX("7c5798"),
+	calculate = function(self, blind, context)
+		if not G.GAME.blind.disabled then
+			if context.before then
+				for i, v in pairs(G.jokers.cards) do
+					if v ~= G.jokers.cards[1] and v ~= G.jokers.cards[#G.jokers.cards] then
+						if not v.debuff then
+							G.GAME.blind.triggered = true
+							v.debuff = true
+							v.debuff_from_repulsor = true
+						end
+					end
+				end
+			end
+			if context.retrigger_joker_check and not context.retrigger_joker then
+				if context.other_card == G.jokers.cards[1] or context.other_card == G.jokers.cards[#G.jokers.cards] then
+					return {
+						repetitions = 1,
+					}
+				end
+			end
+			if context.after then
+				for i, v in pairs(G.jokers.cards) do
+					if v.debuff_from_repulsor then
+						v.debuff = nil
+						v.debuff_from_repulsor = true
+					end
+				end
+			end
+		end
+	end,
+}
+
+local chromatic = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	mult = 2,
+	object_type = "Blind",
+	name = "cry-chromatic",
+	key = "chromatic",
+	pos = { x = 0, y = 1 },
+	dollars = 5,
+	boss = {
+		min = 1,
+		max = 666666,
+	},
+	atlas = "blinds_two",
+	order = 25,
+	boss_colour = HEX("a34f98"),
+	cry_modify_score = function(self, score)
+		if math.floor(G.GAME.current_round.hands_played + 1) % 2 == 1 then
+			return score * -1
+		else
+			return score
+		end
+	end,
+}
+
+local landlord = {
+	dependencies = {
+		items = {
+			"set_cry_blind",
+		},
+	},
+	mult = 2,
+	object_type = "Blind",
+	name = "cry-landlord",
+	key = "landlord",
+	pos = { x = 0, y = 2 },
+	dollars = 5,
+	boss = {
+		min = 1,
+		max = 666666,
+	},
+	atlas = "blinds_two",
+	order = 26,
+	boss_colour = HEX("c89f13"),
+	calculate = function(self, blind, context)
+		if context.after then
+			local jokers = {}
+			for i, v in pairs(G.jokers.cards) do
+				if not v.ability.rental then
+					jokers[#jokers + 1] = v
+				end
+			end
+			if #jokers > 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local joker = pseudorandom_element(jokers, pseudoseed("cry_landlord"))
+						joker.ability.rental = true
+						joker:juice_up()
+						return true
+					end,
+				}))
+			end
+			G.GAME.blind.triggered = true
+		end
+	end,
+}
+
 --It seems Showdown blind order is seperate from normal blind collection order? convenient for me at least
 --Nvm they changed it
 local lavender_loop = {
@@ -1608,6 +1731,7 @@ local items_togo = {
 	pin,
 	scorch,
 	greed,
+	repulsor,
 	vermillion_virus,
 	tornado,
 	sapphire_stamp,
@@ -1616,5 +1740,7 @@ local items_togo = {
 	lavender_loop,
 	trophy,
 	decision,
+	chromatic,
+	landlord,
 }
 return { name = "Blinds", items = items_togo }

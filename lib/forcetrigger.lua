@@ -4,7 +4,11 @@ function Cryptid.demicolonGetTriggerable(card)
 	if not card then
 		return n
 	end
-	if Card.no(card, "demicoloncompat", true) or Cryptid.forcetriggerVanillaCheck(card) then
+	if
+		Card.no(card, "demicoloncompat", true)
+		or Card.no(card, "demicolon_compat", true)
+		or Cryptid.forcetriggerVanillaCheck(card)
+	then
 		n[1] = true
 	else
 		n[1] = false
@@ -21,7 +25,7 @@ function Cryptid.forcetrigger(card, context)
 	end
 	local results = {}
 	local check = Cryptid.forcetriggerVanillaCheck(card)
-	if not Talisman.config_file.disable_anims then
+	if Talisman and not Talisman.config_file.disable_anims then
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
 			func = function()
@@ -522,7 +526,6 @@ function Cryptid.forcetrigger(card, context)
 			end
 		end
 		if card.ability.name == "Rocket" then
-			card.ability.extra.dollars = card.ability.extra.dollars + card.ability.extra.increase
 			ease_dollars(card.ability.extra.dollars)
 		end
 		if card.ability.name == "Obelisk" then -- Sobelisk

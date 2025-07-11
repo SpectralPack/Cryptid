@@ -52,19 +52,7 @@ local haxxor = {
 	end,
 }
 
-local googol_play_pass = {
-	object_type = "Achievement",
-	key = "googol_play_pass",
-	order = 4,
-	bypass_all_unlocked = true,
-	atlas = "cry_achievements",
-	--reset_on_startup = true,
-	unlock_condition = function(self, args)
-		if args.type == "googol_play_rigged" then
-			return true
-		end
-	end,
-}
+--order 4 was googol play pass
 
 local bullet_hell = {
 	object_type = "Achievement",
@@ -466,7 +454,6 @@ local technically_positive = {
 -- Break Infinity: Score more than 1.57e308 in one hand
 -- H4xx0r: Use a cheat code
 -- We Told You Not To: Use ://CRASH
--- Googol Play Pass: Rig a Googol Play Card
 -- Bullet Hell: Have 15 copies of AP Joker
 -- !niW uoY: Reach Ante -8
 -- Now the Fun Begins: Obtain Canvas
@@ -497,7 +484,6 @@ local achievement_objects = {
 	what_have_you_done,
 	used_crash,
 	haxxor,
-	googol_play_pass,
 	pull_request,
 	niw_uoy,
 	jokes_on_you,

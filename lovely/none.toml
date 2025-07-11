@@ -180,6 +180,7 @@ payload = '''
       }))
       delay(0.3)
 delay(0.3)
+evaluate_play_after(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
 return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 function evaluate_play_after(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
@@ -280,5 +281,23 @@ if not text or text == "NULL" then
     G.GAME.hands["cry_None"].visible = true
     text = "cry_None" 
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+            if (not G.hand.cards[1]) and G.deck.cards[1] then 
+                G.STATE = G.STATES.DRAW_TO_HAND
+                G.STATE_COMPLETE = false
+            else
+'''
+position = "at"
+payload = '''
+            if (not G.hand.cards[1]) and G.deck.cards[1] and G.hand.config.card_limit > 0 then 
+                G.STATE = G.STATES.DRAW_TO_HAND
+                G.STATE_COMPLETE = false
+            else
 '''
 match_indent = true

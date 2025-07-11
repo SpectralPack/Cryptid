@@ -16,22 +16,7 @@ function get_pack(_key, _type)
 	--Convert banned keys back to what it was originally
 	G.GAME.banned_keys = copy_table(temp_banned)
 	if G.GAME.modifiers.cry_equilibrium then
-		if not P_CRY_ITEMS then
-			P_CRY_ITEMS = {}
-			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
-			for _, id in ipairs(valid_pools) do
-				for k, v in pairs(G.P_CENTER_POOLS[id]) do
-					if not Cryptid.no(v, "doe", k) then
-						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-					end
-				end
-			end
-			for k, v in pairs(G.P_CARDS) do
-				if not Cryptid.no(v, "doe", k) then
-					P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-				end
-			end
-		end
+		P_CRY_ITEMS = P_CRY_ITEMS or Cryptid.get_equilibrium_pool()
 		return G.P_CENTERS[pseudorandom_element(
 			P_CRY_ITEMS,
 			pseudoseed("cry_equipackbrium" .. G.GAME.round_resets.ante)
@@ -46,19 +31,14 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 	if type == "Tag" then
 		for i = 1, #pool do
 			-- Copies: Turn Double tags into Triple Tags
-			if pool[i] == "tag_double" and G.GAME.used_vouchers.v_cry_copies then
+			if pool[i] == "tag_double" and G.GAME.used_vouchers.v_cry_tag_printers then
 				pool[i] = "tag_cry_triple"
 			end
 			-- Tag Printer: Turn Double tags and Triple Tags into Quadruple Tags
-			if (pool[i] == "tag_double" or pool[i] == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_tag_printer then
-				pool[i] = "tag_cry_quadruple"
-			end
-			-- Clone Machine: Turn Double tags and Triple Tags as well as Quadruple Tags into Quintuple Tags
 			if
-				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple" or pool[i] == "tag_cry_quadruple")
-				and G.GAME.used_vouchers.v_cry_clone_machine
+				(pool[i] == "tag_double" or pool[i] == "tag_cry_triple") and G.GAME.used_vouchers.v_cry_clone_machine
 			then
-				pool[i] = "tag_cry_quintuple"
+				pool[i] = "tag_cry_quadruple"
 			end
 		end
 		-- Deck of Equilibrium stuff
@@ -76,19 +56,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 			and _type ~= "Stake"
 		then
 			-- we're regenerating the pool every time because of banned keys but it's fine tbh
-			P_CRY_ITEMS = {}
-			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
-			for _, id in ipairs(valid_pools) do
-				for k, v in pairs(G.P_CENTER_POOLS[id]) do
-					if
-						v.unlocked == true
-						and not Cryptid.no(v, "doe", k)
-						and not (G.GAME.banned_keys[v.key] or G.GAME.cry_banished_keys[v.key])
-					then
-						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-					end
-				end
-			end
+			P_CRY_ITEMS = P_CRY_ITEMS or Cryptid.get_equilibrium_pool()
 			if #P_CRY_ITEMS <= 0 then
 				P_CRY_ITEMS[#P_CRY_ITEMS + 1] = "v_blank"
 			end
@@ -172,6 +140,9 @@ function Blind:defeat(s)
 		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"])
 	then
 		G.GAME.defeated_blinds[self.config.blind.key] = true
+	end
+	if obj.boss then
+		G.GAME.inflation = 0
 	end
 end
 
@@ -289,26 +260,18 @@ end
 local upd = Game.update
 
 --init colors so they have references
-G.C.CRY_TWILIGHT = { 0, 0, 0, 0 }
-G.C.CRY_VERDANT = { 0, 0, 0, 0 }
 G.C.CRY_EMBER = { 0, 0, 0, 0 }
-G.C.CRY_DAWN = { 0, 0, 0, 0 }
 G.C.CRY_HORIZON = { 0, 0, 0, 0 }
 G.C.CRY_BLOSSOM = { 0, 0, 0, 0 }
-G.C.CRY_AZURE = { 0, 0, 0, 0 }
 G.C.CRY_ASCENDANT = { 0, 0, 0, 0 }
 G.C.CRY_JOLLY = { 0, 0, 0, 0 }
 G.C.CRY_GREENGRADIENT = { 0, 0, 0, 0 }
 G.C.CRY_ALTGREENGRADIENT = { 0, 0, 0, 0 }
 Cryptid.C = {
 	EXOTIC = { HEX("708b91"), HEX("1e9eba") },
-	TWILIGHT = { HEX("0800ff"), HEX("aa00ff") },
-	VERDANT = { HEX("00ff22"), HEX("f4ff57") },
 	EMBER = { HEX("ff0000"), HEX("ffae00") },
-	DAWN = { HEX("00aaff"), HEX("ff00e3") },
 	HORIZON = { HEX("c8fd09"), HEX("1ee7d9") },
 	BLOSSOM = { HEX("ff09da"), HEX("ffd121") },
-	AZURE = { HEX("0409ff"), HEX("63dcff") },
 	ASCENDANT = { HEX("2e00f5"), HEX("e5001d") },
 	JOLLY = { HEX("6ec1f5"), HEX("456b84") },
 	SELECTED = { HEX("e38039"), HEX("ccdd1b") },
@@ -407,22 +370,9 @@ function Game:update(dt)
 			v.children.back:set_sprite_pos(G.P_CENTERS.b_cry_glowing.pos or G.P_CENTERS["b_red"].pos)
 		end
 	end
-	if not G.OVERLAY_MENU and not G.CHOOSE_CARD and G.GAME.USING_POINTER then
-		G.CHOOSE_CARD = UIBox({
-			definition = create_UIBox_pointer(card),
-			config = {
-				align = "cm",
-				offset = { x = 0, y = 10 },
-				major = G.ROOM_ATTACH,
-				bond = "Weak",
-				instance_type = "POPUP",
-			},
-		})
-		G.CHOOSE_CARD.alignment.offset.y = 0
-		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_CARD:align_to_major()
+	if not G.OVERLAY_MENU and G.GAME.CODE_DESTROY_CARD then
+		G.FUNCS.exit_overlay_menu_code()
 	end
-
 	--Increase the blind size for The Clock and Lavender Loop
 	local choices = { "Small", "Big", "Boss" }
 	G.GAME.CRY_BLINDS = G.GAME.CRY_BLINDS or {}
@@ -518,7 +468,6 @@ end
 local sc = Card.set_cost
 function Card:set_cost()
 	-- Makes the edition cost increase usually present not apply if this variable is true
-	-- Used for some of the Jen's almanac edition decks because having the price increase apply was "unfun"
 	if self.edition and G.GAME.modifiers.cry_no_edition_price then
 		local m = Cryptid.deep_copy(self.edition)
 		self.edition = nil
@@ -546,23 +495,17 @@ function Card:set_cost()
 	if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then
 		self.cost = 0
 	end
-
-	--Multiplies voucher cost by G.GAME.modifiers.cry_voucher_price_hike
-	--Used by bronze stake to make vouchers %50 more expensive
-	if self.ability.set == "Voucher" and G.GAME.modifiers.cry_voucher_price_hike then
-		self.cost = math.floor(self.cost * G.GAME.modifiers.cry_voucher_price_hike)
-		--Update related costs
-		self.sell_cost = math.max(1, math.floor(self.cost / 2)) + (self.ability.extra_value or 0)
-		if self.area and self.ability.couponed and (self.area == G.shop_jokers or self.area == G.shop_booster) then
-			self.cost = 0
-		end
-		self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
+	if self.ability.consumeable and G.GAME.hammerspace_mod_price then
+		self.cost = self.cost + G.GAME.hammerspace_mod_price
 	end
-
 	--Makes Cursed Jokers always sell for $0
 	if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
 		self.sell_cost = 0
 		self.sell_cost_label = 0
+	--Rotten Egg
+	elseif G.GAME.cry_rotten_amount then
+		self.sell_cost = G.GAME.cry_rotten_amount
+		self.sell_cost_label = self.facing == "back" and "?" or number_format(self.sell_cost)
 	end
 end
 
@@ -594,6 +537,9 @@ function Card:sell_card()
 				table.insert(G.GAME.jokers_sold, "j_jolly")
 			end
 		end
+	end
+	if G.GAME.modifiers.cry_sell_price then
+		ease_dollars(G.GAME.modifiers.cry_sell_price)
 	end
 	--G.P_CENTERS.j_jolly
 	sell_card_stuff(self)
@@ -763,10 +709,7 @@ function SMODS.create_mod_badges(obj, badges)
 		end
 		badges[#badges + 1] = create_badge(
 			card_type,
-			set == "modest" and G.C.GREEN
-				or set == "mainline" and G.C.RED
-				or set == "madness" and G.C.CRY_EXOTIC
-				or G.C.CRY_ASCENDANT
+			set == "modest" and G.C.GREEN or set == "mainline" and G.C.PURPLE or G.C.CRY_ASCENDANT
 		)
 	end
 end
@@ -777,14 +720,16 @@ function calculate_reroll_cost(skip_increment)
 	if not limit then
 		if next(find_joker("cry-candybuttons")) then
 			limit = 1
-		elseif G.GAME.used_vouchers.v_cry_rerollexchange then
-			limit = 2
 		end
 	end
 	if not G.GAME.current_round.free_rerolls or G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
-	if next(find_joker("cry-crustulum")) or G.GAME.current_round.free_rerolls > 0 then
+	local crustulum_rolls = 0
+	for i, v in pairs(find_joker("cry-crustulum") or {}) do
+		crustulum_rolls = crustulum_rolls + v.ability.extra.rerolls_stored
+	end
+	if to_big(crustulum_rolls) > to_big(0) or G.GAME.current_round.free_rerolls > 0 then
 		G.GAME.current_round.reroll_cost = 0
 		return
 	end
@@ -794,21 +739,20 @@ function calculate_reroll_cost(skip_increment)
 				+ G.GAME.current_round.reroll_cost_increase
 			>= limit
 	then
-		G.GAME.current_round.reroll_cost_increase = 0
+		--G.GAME.current_round.reroll_cost_increase = 0
 		G.GAME.current_round.reroll_cost = limit
 		return
 	end
 
 	G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase or 0
 	if not skip_increment then
-		G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase
-			+ (G.GAME.modifiers.cry_reroll_scaling or 1)
+		G.GAME.current_round.reroll_cost_increase = G.GAME.current_round.reroll_cost_increase + 1
 	end
 	G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost)
 		+ G.GAME.current_round.reroll_cost_increase
 end
 
--- We're modifying so much of this for Brown and Yellow Stake, Equilibrium Deck, etc. that it's fine to override...
+local create_card_ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	local area = area or G.jokers
 	local pseudo = function(x)
@@ -821,7 +765,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		end
 		ps = Cryptid.predict_pseudoseed
 	end
-	local center = G.P_CENTERS.b_red
 	if (_type == "Joker" or _type == "Meme") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
@@ -846,67 +789,18 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			forced_key = G.P_CENTER_POOLS["Joker"][aeqactive].key
 		end
 	end
-	--should pool be skipped with a forced key
-	if not forced_key and soulable and not G.GAME.banned_keys["c_soul"] then
-		for _, v in ipairs(SMODS.Consumable.legendaries) do
-			if
-				(_type == v.type.key or _type == v.soul_set)
-				and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul)
-			then
-				if pseudo("soul_" .. v.key .. _type .. G.GAME.round_resets.ante) > (1 - v.soul_rate) then
-					forced_key = v.key
-				end
-			end
-		end
-		if
-			(_type == "Tarot" or _type == "Spectral" or _type == "Tarot_Planet")
-			and not (G.GAME.used_jokers["c_soul"] and not next(find_joker("Showman")))
-		then
-			if pseudo("soul_" .. _type .. G.GAME.round_resets.ante) > 0.997 then
-				forced_key = "c_soul"
-			end
-		end
-		if
-			(_type == "Planet" or _type == "Spectral")
-			and not (G.GAME.used_jokers["c_black_hole"] and not next(find_joker("Showman")))
-		then
-			if pseudo("soul_" .. _type .. G.GAME.round_resets.ante) > 0.997 then
-				forced_key = "c_black_hole"
-			end
-		end
-	end
-
 	if _type == "Base" then
 		forced_key = "c_base"
 	end
 
-	if forced_key then --vanilla behavior change, mainly for M Joker reasons
-		center = G.P_CENTERS[forced_key]
-		_type = (center.set ~= "Default" and center.set or _type)
-	else
-		gcparea = area
-		local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
-		gcparea = nil
-		center = pseudorandom_element(_pool, ps(_pool_key))
-		local it = 1
-		while center == "UNAVAILABLE" do
-			it = it + 1
-			center = pseudorandom_element(_pool, ps(_pool_key .. "_resample" .. it))
-		end
-
-		center = G.P_CENTERS[center]
+	if forced_key and not G.GAME.banned_keys[forced_key] then
+		_type = (G.P_CENTERS[forced_key].set ~= "Default" and G.P_CENTERS[forced_key].set or _type)
 	end
 
-	local front = (
-		(_type == "Base" or _type == "Enhanced")
-		and (
-			pseudorandom_element(G.P_CARDS, ps("front" .. (key_append or "") .. G.GAME.round_resets.ante))
-			or G.P_CARDS["S_T"]
-		)
-	) or nil
+	local front = (SMODS.set_create_card_front and (_type == "Base" or _type == "Enhanced")) or nil
 
 	if area == "ERROR" then
-		local ret = (front or center)
+		local ret = (front or G.P_CENTERS[forced_key] or G.P_CENTERS.b_red)
 		if not ret.config then
 			ret.config = {}
 		end
@@ -922,28 +816,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		return ret --the config.center.key stuff prevents a crash with Jen's Almanac hook
 	end
 
-	local card = Card(
-		area and (area.T.x + area.T.w / 2) or 0,
-		area and area.T.y or 0,
-		G.CARD_W * (center and center.set == "Booster" and 1.27 or 1),
-		G.CARD_H * (center and center.set == "Booster" and 1.27 or 1),
-		front,
-		center,
-		{
-			bypass_discovery_center = area == G.shop_jokers
-				or area == G.pack_cards
-				or area == G.shop_vouchers
-				or (G.shop_demo and area == G.shop_demo)
-				or area == G.jokers
-				or area == G.consumeables,
-			bypass_discovery_ui = area == G.shop_jokers
-				or area == G.pack_cards
-				or area == G.shop_vouchers
-				or (G.shop_demo and area == G.shop_demo),
-			discover = area == G.jokers or area == G.consumeables,
-			bypass_back = G.GAME.selected_back.pos,
-		}
-	)
+	local card = create_card_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+	local center = card and card.config and card.config.center or {}
 	if front and G.GAME.modifiers.cry_force_suit then
 		card:change_suit(G.GAME.modifiers.cry_force_suit)
 	end
@@ -952,22 +826,10 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	if front and G.GAME.modifiers.cry_force_edition then
 		card:set_edition({ [G.GAME.modifiers.cry_force_edition] = true }, true, true)
+		card:add_to_deck()
 	end
 	if front and G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
-	end
-	if card.ability.consumeable and not skip_materialize then
-		card:start_materialize()
-	end
-	for k, v in ipairs(SMODS.Sticker.obj_buffer) do
-		local sticker = SMODS.Stickers[v]
-		if
-			sticker.should_apply
-			and type(sticker.should_apply) == "function"
-			and sticker:should_apply(card, center, area)
-		then
-			sticker:apply(card, true)
-		end
 	end
 	if
 		G.GAME.modifiers.cry_force_sticker == "eternal"
@@ -1039,7 +901,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if card.ability.name == "cry-Cube" then
 		card:set_eternal(true)
 	end
-	if _type == "Joker" or (G.GAME.modifiers.cry_any_stickers and not G.GAME.modifiers.cry_sticker_sheet) then
+	if _type == "Joker" then
 		if G.GAME.modifiers.all_eternal then
 			card:set_eternal(true)
 		end
@@ -1061,16 +923,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				card:set_eternal(true)
 			end
 			if G.GAME.modifiers.enable_perishables_in_shop then
-				if
-					not G.GAME.modifiers.cry_eternal_perishable_compat
-					and ((eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7))
-				then
-					card:set_perishable(true)
-				end
-				if
-					G.GAME.modifiers.cry_eternal_perishable_compat
-					and pseudorandom("cry_per" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
-				then
+				if (eternal_perishable_poll > 0.4) and (eternal_perishable_poll <= 0.7) then
 					card:set_perishable(true)
 				end
 			end
@@ -1087,17 +940,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				card.pinned = true
 			end
 			if
-				not G.GAME.modifiers.cry_eternal_perishable_compat
-				and G.GAME.modifiers.enable_banana
+				G.GAME.modifiers.enable_banana
 				and (pseudorandom("cry_banana" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7)
 				and (eternal_perishable_poll <= 0.7)
-			then
-				card.ability.banana = true
-			end
-			if
-				G.GAME.modifiers.cry_eternal_perishable_compat
-				and G.GAME.modifiers.enable_banana
-				and (pseudorandom("cry_banana" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7)
 			then
 				card.ability.banana = true
 			end
@@ -1109,17 +954,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				end
 			end
 			if
-				not card.ability.eternal
+				card.ability.eternal
 				and G.GAME.modifiers.cry_enable_flipped_in_shop
 				and pseudorandom("cry_flip" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
 			then
 				card.cry_flipped = true
 			end
-		end
-		if _type == "Joker" and not G.GAME.modifiers.cry_force_edition then
-			local edition = poll_edition("edi" .. (key_append or "") .. G.GAME.round_resets.ante)
-			card:set_edition(edition)
-			check_for_unlock({ type = "have_edition" })
 		end
 	end
 	if (card.ability.set == "Code") and G.GAME.used_vouchers.v_cry_quantum_computing then
@@ -1510,10 +1350,12 @@ function set_consumeable_usage(card)
 		end
 		G.GAME.cry_function_stupid_workaround[i] = G.GAME.cry_last_used_consumeables[i]
 	end
-	local nextindex = #G.GAME.cry_last_used_consumeables + 1
-	G.GAME.cry_last_used_consumeables[nextindex] = card.config.center_key
-	if nextindex > 3 then
-		table.remove(G.GAME.cry_last_used_consumeables, 1)
+	if not card.config.center.hidden then
+		local nextindex = #G.GAME.cry_last_used_consumeables + 1
+		G.GAME.cry_last_used_consumeables[nextindex] = card.config.center_key
+		if nextindex > 3 then
+			table.remove(G.GAME.cry_last_used_consumeables, 1)
+		end
 	end
 	scuref(card)
 end
@@ -1877,8 +1719,12 @@ function end_round()
 		then
 			G.PROFILES[G.SETTINGS.profile].cry_none = true
 		end
+		if not Cryptid.enabled("set_cry_poker_hand_stuff") then
+			end_roundref()
+		end
+	else
+		end_roundref()
 	end
-	end_roundref()
 	G.E_MANAGER:add_event(Event({
 		trigger = "after",
 		func = function()
@@ -1947,6 +1793,11 @@ end
 
 local discard_ref = G.FUNCS.discard_cards_from_highlighted
 G.FUNCS.discard_cards_from_highlighted = function(e, hook)
+	--Labyrinth: set current_round_discards_used to 0 for effects
+	G.GAME.current_round.discards_used2 = G.GAME.current_round.discards_used
+	if next(find_joker("cry-maze")) then
+		G.GAME.current_round.discards_used = 0
+	end
 	discard_ref(e, hook)
 	local highlighted_count = math.min(#G.hand.highlighted, G.discard.config.card_limit - #G.play.cards)
 	if highlighted_count <= 0 then
@@ -1982,9 +1833,22 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 			end,
 		}))
 	end
+	--Labyrinth: return current_round_discards_used back to the amount it is supposed to be after
+	G.GAME.current_round.discards_used = G.GAME.current_round.discards_used2 + 1
 end
 local play_ref = G.FUNCS.play_cards_from_highlighted
 G.FUNCS.play_cards_from_highlighted = function(e)
+	--Labyrinth: set current_round_hands played to 0 for effects
+	G.E_MANAGER:add_event(Event({
+		trigger = "immediate",
+		func = function()
+			G.GAME.current_round.hands_played2 = G.GAME.current_round.hands_played
+			if next(find_joker("cry-maze")) then
+				G.GAME.current_round.hands_played = 0
+			end
+			return true
+		end,
+	}))
 	G.GAME.before_play_buffer = true
 	-- None Stuff
 	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 1 then
@@ -1998,6 +1862,21 @@ G.FUNCS.play_cards_from_highlighted = function(e)
 	--Add blind context for Just before cards are played
 	G.GAME.blind:cry_before_play()
 	play_ref(e)
+	--Labyrinth: return current_round_hands played to the amount it is supposed to be at after
+	G.E_MANAGER:add_event(Event({
+		trigger = "immediate",
+		func = function()
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.1,
+				func = function()
+					G.GAME.current_round.hands_played = G.GAME.current_round.hands_played2 + 1
+					return true
+				end,
+			}))
+			return true
+		end,
+	}))
 	G.GAME.before_play_buffer = nil
 end
 
@@ -2030,4 +1909,280 @@ function CardArea:shuffle(_seed)
 	o_ca_shuffle(self, _seed)
 
 	SMODS.calculate_context({ cry_shuffling_area = true, cardarea = self, cry_post_shuffle = true })
+end
+
+local smods_four_fingers = SMODS.four_fingers
+function SMODS.four_fingers()
+	return smods_four_fingers() - Cryptid.get_paved_joker()
+end
+
+function Cryptid.create_dummy_from_stone(rank)
+	local r = rank
+	rank = tonumber(rank) or ({
+		Ace = 14,
+		King = 13,
+		Queen = 12,
+		Jack = 11,
+	})[rank] or rank
+	return {
+		get_id = function()
+			return rank
+		end,
+		config = {
+			center = {},
+		},
+		base = {
+			id = rank,
+			value = rank >= 11 and "Queen" or "10",
+		},
+	}
+end
+function Cryptid.next_ranks(key, start, recurse)
+	key = ({
+		["14"] = "Ace",
+		["13"] = "King",
+		["12"] = "Queen",
+		["11"] = "Jack",
+	})[tostring(key)] or key
+	local rank = SMODS.Ranks[tostring(key)]
+	local ret = {}
+	if not rank or (not start and not wrap and rank.straight_edge) then
+		return ret
+	end
+	for _, v in ipairs(rank.next) do
+		ret[#ret + 1] = v
+		local curr = #ret
+		if recurse and recurse > 0 then
+			for i, v in pairs(Cryptid.next_ranks(ret[#ret], start, recurse - 1)) do
+				ret[#ret + 1] = v
+			end
+		end
+	end
+	return ret
+end
+
+local function append(t, new)
+	local clone = {}
+	for _, item in ipairs(t) do
+		clone[#clone + 1] = item
+	end
+	clone[#clone + 1] = new
+	return clone
+end
+
+function Cryptid.unique_combinations(tbl, sub, min)
+	sub = sub or {}
+	min = min or 1
+	local wrap, yield = coroutine.wrap, coroutine.yield
+	return wrap(function()
+		if #sub > 0 then
+			yield(sub) -- yield short combination.
+		end
+		if #sub < #tbl then
+			for i = min, #tbl do -- iterate over longer combinations.
+				for combo in Cryptid.unique_combinations(tbl, append(sub, tbl[i]), i + 1) do
+					yield(combo)
+				end
+			end
+		end
+	end)
+end
+get_straight_ref = get_straight
+function get_straight(hand, min_length, skip, wrap)
+	local permutations = {}
+	local ranks = {}
+	local cards = {}
+	local stones = Cryptid.get_paved_joker()
+	if stones > 0 then
+		for i, v in pairs(hand) do
+			if v.config.center.key ~= "m_stone" then
+				cards[#cards + 1] = v
+				for i, v in pairs(Cryptid.next_ranks(v:get_id(), nil, stones)) do --this means its inaccurate in some situations like K S S S S but its fine there isnt a better way
+					ranks[v] = true
+				end
+			end
+			if v:get_id() >= 11 then
+				new_ranks = {
+					"Ace",
+					"King",
+					"Queen",
+					"Jack",
+					10,
+				}
+				for i, v in pairs(new_ranks) do
+					ranks[v] = true
+				end
+			end
+		end
+		local rranks = {}
+		for i, v in pairs(ranks) do
+			rranks[#rranks + 1] = i
+		end
+		for i, v in Cryptid.unique_combinations(rranks) do
+			if #i == stones then
+				permutations[#permutations + 1] = i
+			end
+		end
+		for i, v in ipairs(permutations) do
+			local actual = {}
+			local ranks = {}
+			for i, v in pairs(cards) do
+				actual[#actual + 1] = v
+				ranks[v:get_id()] = true
+			end
+			for i, p in pairs(v) do
+				local d = Cryptid.create_dummy_from_stone(p)
+				if not ranks[d:get_id()] then
+					actual[#actual + 1] = d
+				end
+			end
+			local ret = get_straight_ref(actual, min_length + stones, skip, true)
+			if ret and #ret > 0 then
+				return ret
+			end
+		end
+	end
+
+	return get_straight_ref(hand, min_length + stones, skip, wrap)
+end
+
+local poll_editionref = poll_edition
+function poll_edition(_key, _mod, _no_neg, _guaranteed)
+	if not _guaranteed and G.GAME.modifiers.cry_rarer_modifications then
+		if pseudorandom("cry_rarer_modifications") < G.GAME.modifiers.cry_rarer_modifications then
+			return nil
+		end
+	end
+	return poll_editionref(_key, _mod, _no_neg, _guaranteed)
+end
+
+if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.can_load) then
+	local smods_xchips = false
+	for _, v in pairs(SMODS.calculation_keys) do
+		if v == "x_chips" then
+			smods_xchips = true
+			break
+		end
+	end
+	local calculation_keys = {
+		e_mult = true,
+		emult = true,
+		Emult_mod = true,
+		e_chips = true,
+		echips = true,
+		Echip_mod = true,
+	}
+	local scie = SMODS.calculate_individual_effect
+	function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
+		if (key == "e_chips" or key == "echips" or key == "Echip_mod") and amount ~= 1 then
+			if effect.card then
+				juice_card(effect.card)
+			end
+			hand_chips = mod_chips(hand_chips ^ amount)
+			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+			if not effect.remove_default_message then
+				if from_edition then
+					card_eval_status_text(
+						scored_card,
+						"jokers",
+						nil,
+						percent,
+						nil,
+						{ message = "^" .. amount, colour = G.C.EDITION, edition = true, sound = "cry_chips" }
+					)
+				elseif key ~= "Echip_mod" then
+					if effect.echip_message or effect.message then
+						local msg = effect.echip_message or effect.message
+						if not msg.sound then
+							msg.sound = "cry_echips"
+						end
+						card_eval_status_text(
+							scored_card or effect.card or effect.focus,
+							"e_chips",
+							amount,
+							percent,
+							nil,
+							msg
+						)
+					else
+						card_eval_status_text(
+							scored_card or effect.card or effect.focus,
+							"e_chips",
+							amount,
+							percent,
+							nil,
+							{ colour = G.C.DARK_EDITION }
+						)
+					end
+				end
+			end
+			return true
+		end
+		if (key == "e_mult" or key == "emult" or key == "Emult_mod") and amount ~= 1 then
+			if effect.card then
+				juice_card(effect.card)
+			end
+			mult = mod_mult(mult ^ amount)
+			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+			if not effect.remove_default_message then
+				if from_edition then
+					card_eval_status_text(scored_card, "jokers", nil, percent, nil, {
+						message = "^" .. amount .. " " .. localize("k_mult"),
+						colour = G.C.EDITION,
+						edition = true,
+						sound = "cry_emult",
+					})
+				elseif key ~= "Emult_mod" then
+					if effect.emult_message or effect.message then
+						local msg = effect.echip_message or effect.message
+						if not msg.sound then
+							msg.sound = "cry_emult"
+						end
+						card_eval_status_text(
+							scored_card or effect.card or effect.focus,
+							"e_mult",
+							amount,
+							percent,
+							nil,
+							msg
+						)
+					else
+						card_eval_status_text(
+							scored_card or effect.card or effect.focus,
+							"e_mult",
+							amount,
+							percent,
+							nil,
+							{ colour = G.C.DARK_EDITION }
+						)
+					end
+				end
+			end
+			return true
+		end
+		local ret = scie(effect, scored_card, key, amount, from_edition)
+		if ret then
+			return ret
+		end
+	end
+	for i, v in pairs(calculation_keys) do
+		table.insert(SMODS.calculation_keys, i)
+	end
+	if not smods_xchips then
+		for _, v in ipairs({ "x_chips", "xchips", "Xchip_mod" }) do
+			table.insert(SMODS.calculation_keys, v)
+		end
+	end
+	function to_number(a)
+		return a
+	end
+	function to_big(a)
+		return a
+	end
+	function lenient_bignum(a)
+		return a
+	end
+	function is_number(x)
+		return type(x) == "number"
+	end
 end
