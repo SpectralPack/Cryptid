@@ -462,6 +462,10 @@ function Game:update(dt)
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		end
 	end
+	if G.STATE == G.STATES.DRAW_TO_HAND and not G.hand.cards[1] and not G.deck.cards[1] and G.PROFILES[G.SETTINGS.profile].cry_none then
+		G.STATE = G.STATES.SELECTING_HAND
+		G.STATE_COMPLETE = false
+	end
 end
 
 -- All the scattered set_cost hooks from all the pre refactor files moved into one hook
