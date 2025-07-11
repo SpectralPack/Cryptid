@@ -19,3 +19,4 @@ pattern = "ret.playing_card = {}"
 position = "at"
 payload = "ret.playing_card = ret.playing_card or {}"
 match_indent = true
+

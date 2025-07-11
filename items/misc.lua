@@ -251,7 +251,15 @@ local abstract = {
 		end
 		if context.cardarea == G.play and context.main_scoring then
 			return {
-				e_mult = card.ability.extra.Emult,
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
+				Emult_mod = card.ability.extra.Emult,
+				colour = G.C.DARK_EDITION,
 			}
 		end
 
@@ -399,7 +407,7 @@ local azure_seal = {
 	name = "cry-Azure-Seal",
 	key = "azure",
 	badge_colour = HEX("1d4fd7"),
-	config = { planets_amount = 2 },
+	config = { planets_amount = 3 },
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.planets_amount } }
 	end,
@@ -747,7 +755,7 @@ local mosaic = {
 	shader = "mosaic",
 	in_shop = true,
 	extra_cost = 5,
-	config = { x_chips = 2, trigger = nil },
+	config = { x_chips = 2.5, trigger = nil },
 	sound = {
 		sound = "cry_e_mosaic",
 		per = 1,
@@ -943,15 +951,15 @@ local glitched = {
 	on_apply = function(card)
 		if not card.ability.cry_glitched then
 			Cryptid.manipulate(card, {
-				min = 0.25,
-				max = 4,
+				min = 0.1,
+				max = 10,
 			})
 
 			if card.config.center.apply_glitched then
 				card.config.center:apply_glitched(card, function(val)
 					return Cryptid.manipulate_value(val, {
-						min = 0.25 * (G.GAME.modifiers.cry_misprint_min or 1),
-						max = 4 * (G.GAME.modifiers.cry_misprint_max or 1),
+						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
+						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
 						type = "X",
 					}, Cryptid.is_card_big(card))
 				end)
@@ -1153,10 +1161,6 @@ local astral = {
 		code = {
 			"Math",
 		},
-		art = {
-			"lord.ruby",
-			"Oiiman",
-		},
 	},
 	object_type = "Edition",
 	dependencies = {
@@ -1171,7 +1175,7 @@ local astral = {
 	in_shop = true,
 	extra_cost = 9,
 	sound = {
-		sound = "cry_emult",
+		sound = "talisman_emult",
 		per = 1,
 		vol = 0.5,
 	},
@@ -1286,8 +1290,8 @@ local noisy_stats = {
 		chips = 0,
 	},
 	max = {
-		mult = 8,
-		chips = 64,
+		mult = 30,
+		chips = 150,
 	},
 }
 local noisy = {
@@ -1707,7 +1711,7 @@ local jollyedition = {
 				and context.cardarea == G.play
 			)
 		then
-			return { mult = card and card.edition and card.edition.mult or self.config.mult } -- updated value
+			return { card and card.edition and card.edition.mult or self.config.mult } -- updated value
 		end
 		if context.joker_main then
 			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
@@ -1829,22 +1833,12 @@ local glass_edition = {
 	},
 	weight = 7,
 	extra_cost = 2,
-	config = { x_mult = 3, odds = 8, trigger = nil },
+	config = { x_mult = 3, shatter_chance = 8, trigger = nil },
 	loc_vars = function(self, info_queue, card)
-		local prob = 1
-		local odds = 8
-		if card and card.ability then
-			if card.ability.cry_prob then
-				prob = cry_prob(card.ability.cry_prob, card.edition.odds, card.ability.cry_rigged)
-			end
-			if card.ability.odds then
-				odds = card.ability.odds
-			end
-		end
 		return {
 			vars = {
-				prob,
-				odds,
+				((card and card.edition and card.edition.shatter_chance or self.config.shatter_chance) - 1),
+				(card and card.edition and card.edition.shatter_chance or self.config.shatter_chance),
 				card and card.edition and card.edition.x_mult or self.config.x_mult,
 			},
 		}
@@ -1861,8 +1855,10 @@ local glass_edition = {
 		then
 			if
 				not card.ability.eternal
-				and pseudorandom("cry_fragile_destroy")
-					< cry_prob(card.ability.cry_prob, card.aedition.odds, card.ability.cry_rigged) / card.edition.odds
+				and not (
+					pseudorandom(pseudoseed("cry_fragile"))
+					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
+				)
 			then
 				-- this event call might need to be pushed later to make more sense
 				G.E_MANAGER:add_event(Event({
@@ -1889,8 +1885,10 @@ local glass_edition = {
 		if context.main_scoring and context.cardarea == G.play then
 			if
 				not card.ability.eternal
-				and pseudorandom("cry_fragile_destroy")
-					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+				and (
+					pseudorandom(pseudoseed("cry_fragile"))
+					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
+				)
 			then
 				card.config.will_shatter = true
 			end
@@ -2004,6 +2002,12 @@ local double_sided = {
 			"set_cry_misc",
 		},
 	},
+	-- 	gameset_config = {
+	-- 		modest = { disabled = true },
+	-- 		mainline = { disabled = true },
+	-- 		madness = { disabled = true },
+	-- 		exp = {},
+	-- 	},
 	extra_gamesets = { "exp" },
 	key = "double_sided",
 	shader = false,

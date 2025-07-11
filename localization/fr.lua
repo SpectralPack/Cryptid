@@ -28,12 +28,19 @@ return {
 				text = {
 					"Applique les {C:legendary,E:1}effets{}",
 					"de {C:attention}tous{} les jeux",
-					"battus avec la {C:attention}Mise Or",
 				},
 				unlock = {
 					"Gagner une partie",
 					"avec le {C:attention}Jeu à Blanc",
 					"et la {C:attention}Mise Or",
+				},
+			},
+			b_cry_antimatter_balanced = {
+				name = "Jeu d'Antimatière",
+				text = {
+					"Applique les {C:legendary,E:1}effets{}",
+					"de {C:attention}tous{} les jeux",
+					"battus avec la {C:attention}Mise Or",
 				},
 			},
 			b_cry_beige = {
@@ -414,30 +421,6 @@ return {
 					"chaque $#1# lorsqu'elle est sélectionnée",
 				},
 			},
-			bl_cry_repulsor = {
-				name = "Le Répulseur",
-				text = {
-					"Redéclenche les jokers",
-					"aux extrêmités, tous les autres",
-					"Jokers ne déclenchent pas",
-				},
-			},
-			bl_cry_chromatic = {
-				name = "Le Chromatisme",
-				text = {
-					"Le score de la main",
-					"est soustrait sur les",
-					"mains impaires",
-				},
-			},
-			bl_cry_landlord = {
-				name = "Le Locateur",
-				text = {
-					"Applique Location à",
-					"un Joker aléatoire",
-					"après que la main soit jouée",
-				},
-			},
 			bl_cry_pinkbow = {
 				name = "Nœud Rose",
 				text = {
@@ -561,7 +544,7 @@ return {
 			c_cry_crash = {
 				name = "://CRASH",
 				text = {
-					"{C:cry_code,E:1}Ne le fais pas.",
+					"{C:cry_code,E:1}Ne le faites pas.",
 				},
 			},
 			c_cry_ctrl_v = {
@@ -636,7 +619,7 @@ return {
 					"de cette manière",
 				},
 			},
-			c_cry_log = {
+			c_cry_crylog = {
 				name = "://LOG",
 				text = {
 					"To Be {C:cry_code}Implemented{}",
@@ -700,11 +683,10 @@ return {
 				},
 			},
 			c_cry_quantify = {
-				name = "://QUANTIFIER",
-				text = {
-					"Transfère {C:attention}#1#{} {C:attention}Carte#<s>1#{}",
-					"ou {C:attention}Paquet#<s>1#{} sélectionné#<s>1#",
-					"dans les emplacements de {C:attention}Jokers{}",
+				name = "://QUANTIFY",
+				text = { -- "{C:cry_code}J{C:cry_exotic}o{C:legendary}k{C:cry_epic}e{C:cry_candy}r{C:rare}i{C:uncommon}z{C:common}e{C:dark_edition}!{} an object",
+					"Oh, tu sais,",
+					"{C:cry_code}:){}",
 				},
 			},
 			c_cry_reboot = {
@@ -770,15 +752,6 @@ return {
 				text = {
 					"Convertit {C:cry_code}#1#{} cartes sélectionnés",
 					"en un rang {C:cry_code}choisi{}",
-				},
-			},
-			c_cry_declare = {
-				name = "://DECLARER",
-				text = {
-					"Vos {C:attention}cartes sélectionnées{}",
-					"deviennent une {C:cry_code}nouvelle{} main de Poker",
-					"qui est considérée comme un {C:attention}#1#{}",
-					"Un maximum de {C:attention}3{} {C:inactive}[#2#]{} mains peuvent être créées",
 				},
 			},
 		},
@@ -1115,7 +1088,24 @@ return {
 					"Lorsque cette carte est vendue,",
 					"applique {C:dark_edition}Astral{}",
 					"et {C:attention}Périssable{} à",
+					"un {C:attention}Joker{} aléatoire",
+				},
+			},
+			j_cry_astral_bottle_mainline = {
+				name = "Astres en Bouteille",
+				text = {
+					"Lorsque cette carte est vendue,",
+					"applique {C:dark_edition}Astral{}",
+					"et {C:attention}Périssable{} à",
 					"des Jokers {C:attention}Jokers{} différents, aléatoirement",
+				},
+			},
+			j_cry_astral_bottle_madness = {
+				name = "Astres en Bouteille",
+				text = {
+					"Lorsque cette carte est vendue,",
+					"applique {C:dark_edition}Astral{}",
+					"à un {C:attention}Joker{} aléatoire",
 				},
 			},
 			j_cry_big_cube = {
@@ -1141,16 +1131,6 @@ return {
 					"fixe les {C:chips}Jetons{} et {C:mult}Multi{} à 0",
 					"{C:red,E:2}s'auto-détruit{} s'il n'y a pas de {C:attention}#1#{} dans le jeu",
 					"{C:inactive,s:0.8}Le rang ne change pas",
-				},
-			},
-			j_cry_rotten_egg = {
-				name = "Œuf pourri",
-				text = {
-					"Lorsque obtenu, définit la valeur de vente",
-					"de tous les Jokers actuels et futurs à {C:attention}$#1#{}",
-					"Réduit la valeur de vente des {C:attention}Jokers{} de {C:attention}$#2#{}",
-					"À la fin de la manche, après avoir gagné {C:attention}$#3#{} {C:inactive}[#4#]{}",
-					"en vendant des {C:attention}Jokers{}, {C:red}s'auto-détruit{}",
 				},
 			},
 			j_cry_blender = {
@@ -1566,14 +1546,6 @@ return {
 				text = {
 					"{C:attention}Force-déclenche{} le Joker",
 					"à droite de celui-ci",
-				},
-			},
-			j_cry_starfruit = {
-				name = "Starfruit",
-				text = {
-					"{X:dark_edition,C:white}^#1#{} Multi,",
-					"perd {X:dark_edition,C:white}^#2#{} Multi à chaque",
-					"{C:attention}réapprovisionnement{} de la boutique",
 				},
 			},
 			j_cry_digitalhallucinations = {
@@ -2741,48 +2713,6 @@ return {
 					"à toutes les {C:green}probabilités affichées",
 				},
 			},
-			j_cry_pizza = {
-				name = "Pizza",
-				text = {
-					"Après {C:attention}#1#{} {C:inactive}[#2#]{} manche#<s>1#",
-					"vendre ce Joker crée",
-					"{C:attention}#3#{} Parts de pizza",
-				},
-			},
-			j_cry_pizza_slice = {
-				name = "Part de pizza",
-				text = {
-					"Ce Joker gagne {X:mult,C:white}X#1#{} Multi",
-					"lorsqu'une {C:attention}Part de pizza{} est vendue",
-					"{C:inactive}(Actuellement{} {X:mult,C:white}X#2#{}{C:inactive} Multi){}",
-				},
-			},
-			j_cry_paved_joker = {
-				name = "Joker pavé",
-				text = {
-					"Les Cartes Pierre peuvent remplir",
-					"{C:attention}#1#{} trou#<s>1# dans les",
-					"{C:attention}Quintes{} et {C:attention}Couleurs{}",
-				},
-			},
-			j_cry_fading_joker = {
-				name = "Joker effacé",
-				text = {
-					"Ce Joker gagne",
-					"{X:mult,C:white}X#1#{} Multi lorsqu'une",
-					"carte {C:attention}Périssable{} est affaiblie",
-					"{C:inactive}(Actuellement{} {X:mult,C:white}X#2#{} {C:inactive}Multi){}",
-				},
-			},
-			j_cry_poor_joker = {
-				name = "Joker pauvre",
-				text = {
-					"Ce Joker gagne",
-					"{X:mult,C:white}X#1#{} Multi lorsqu'une",
-					"carte {C:attention}Location{} prend de l'argent",
-					"{C:inactive}(Actuellement{} {C:mult}+#2#{} {C:inactive}Multi){}",
-				},
-			},
 			j_cry_spaceglobe = {
 				name = "Globe Céleste",
 				text = {
@@ -3163,7 +3093,7 @@ return {
 		},
 		Planet = {
 			c_cry_Klubi = {
-				name = "Risti",
+				name = "Klubi",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
 					"Améliore",
@@ -3173,7 +3103,7 @@ return {
 				},
 			},
 			c_cry_Lapio = {
-				name = "Pata",
+				name = "Lapio",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
 					"Améliore",
@@ -3184,16 +3114,6 @@ return {
 			},
 			c_cry_Kaikki = {
 				name = "Kaikki",
-				text = {
-					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
-					"Améliore",
-					"{C:attention}#1#{},",
-					"{C:attention}#2#{},",
-					"et {C:attention}#3#{}",
-				},
-			},
-			c_cry_voxel = {
-				name = "Voxel",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
 					"Améliore",
@@ -3223,7 +3143,7 @@ return {
 				},
 			},
 			c_cry_Sydan = {
-				name = "Hertta",
+				name = "Sydan",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
 					"Améliore",
@@ -3233,7 +3153,7 @@ return {
 				},
 			},
 			c_cry_Timantti = {
-				name = "Ruutu",
+				name = "Timantti",
 				text = {
 					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
 					"Améliore",
@@ -4010,30 +3930,6 @@ return {
 					"Octroiera {C:attention}#1#{} copies du",
 					"prochain {C:attention}Badge{} sélectionné",
 					"{s:0.8,C:inactive}Badges de Copie exclus",
-				},
-			},
-			tag_cry_clone = {
-				name = "Badge Clone",
-				text = {
-					"Les objets de la boutique coûtent {C:attention}X#1#{}",
-					"plus cher, octroie une {C:attention}Copie{}",
-					"de la prochaîne carte achetée",
-				},
-			},
-			tag_cry_lens = {
-				name = "Badge Optique",
-				text = {
-					"Applique {C:dark_edition}Négatif{}",
-					"à {C:attention}#1#{} consommable#<s>1#",
-					"aléatoire#<s>1#",
-				},
-			},
-			tag_cry_palette_cleanser = {
-				name = "Badge Nettoyant Palette",
-				text = {
-					"Enlève un sticker {C:attention}aléatoire{}",
-					"d'un Joker ou carte à jouer",
-					"{C:attention}aléatoire{}",
 				},
 			},
 		},
@@ -4918,23 +4814,6 @@ return {
 				"Je sais pas quoi dire, mais tu es fou.",
 			},
 			["cry_None"] = { "Une main contenant 0 cartes" },
-
-			["cry_Declare0"] = { "Compte toujours comme une Quinte" },
-			["cry_Declare1"] = { "Compte toujours comme une Couleur" },
-			["cry_Declare2"] = { "Compte toujours comme un Full" },
-
-			["cry_Declare0_suitless"] = {
-				"Compte toujours comme une Quinte",
-				"La main n'a pas besoin de couleurs particulières",
-			},
-			["cry_Declare1_suitless"] = {
-				"Compte toujours comme une Couleur",
-				"La main n'a pas besoin de couleurs particulières",
-			},
-			["cry_Declare2_suitless"] = {
-				"Compte toujours comme un Full",
-				"La main n'a pas besoin de couleurs particulières",
-			},
 		},
 		achievement_names = {
 			ach_cry_ace_in_crash = "ACE de poche",

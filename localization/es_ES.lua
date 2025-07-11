@@ -5,6 +5,13 @@ return {
 				name = "Baraja de antimateria",
 				text = {
 					"Aplica las {C:legendary,E:1}ventajas{}",
+					"de {C:attention}todas{} las barajas",
+				},
+			},
+			b_cry_antimatter_balanced = {
+				name = "Baraja de antimateria",
+				text = {
+					"Aplica las {C:legendary,E:1}ventajas{}",
 					"de {C:attention}todas{} las barajas completadas",
 					"en la dificultad {C:gold}Pozo de oro{}",
 				},
@@ -399,7 +406,7 @@ return {
 				},
 			},
 			c_cry_crash = {
-				name = "://CRASH",
+				name = "://CHOQUE",
 				text = {
 					"{C:cry_code,E:1}No.",
 				},
@@ -793,16 +800,6 @@ return {
 					"{C:inactive}(Actual: {X:mult,C:white}X#2#{C:inactive} multi)",
 				},
 			},
-			m_cry_abstract = {
-				name = "Carta abstracta",
-				text = {
-					"{X:dark_edition,C:white}^#1#{} multi,",
-					"Cuenta como su {C:attention}propio{} rango y palo",
-					"Chance de {C:green}#4# en #5#{} de que",
-					"{C:red,E:2}se destruya{} la carta al tenerla en la mano al",
-					"{C:attention}final de la ronda{} o al {C:attention}jugar una mano{}",
-				},
-			},
 		},
 		Joker = {
 			j_cry_test_modest = {
@@ -885,7 +882,22 @@ return {
 				text = {
 					"Al venderse, aplica {C:dark_edition}Astral{}",
 					"y {C:attention}Perecedero{} a",
+					"un {C:attention}comodín{} aleatorio",
+				},
+			},
+			j_cry_astral_bottle_mainline = {
+				name = "Astral en una botella",
+				text = {
+					"Al venderse, aplica {C:dark_edition}Astral{}",
+					"y {C:attention}Perecedero{} a",
 					"diferentes {C:attention}comodines{} aleatorios",
+				},
+			},
+			j_cry_astral_bottle_madness = {
+				name = "Astral en una botella",
+				text = {
+					"Al venderse, aplica {C:dark_edition}Astral{}",
+					"a un {C:attention}comodín{} aleatorio",
 				},
 			},
 			j_cry_big_cube = {
@@ -911,15 +923,6 @@ return {
 					"establece {C:chips}fichas{} y {C:mult}multi{} a 0",
 					"{C:red,E:2}se autodestruye{} si no hay un {C:attention}#1#{} en la baraja",
 					"{C:inactive,s:0.8}La categoría no cambia",
-				},
-			},
-			j_cry_highfive = {
-				name = "Choca esos cinco",
-				text = {
-					"Si la carta {C:attention}puntuada más alta{}",
-					"es {C:attention}5{}, convierte {C:attention}todas{} las cartas que puntúan",
-					"en {C:attention}5{}s",
-					"{s:0.8,C:inactive}Se considera a los Aces como 1",
 				},
 			},
 			j_cry_blender = {
@@ -1146,18 +1149,6 @@ return {
 					"una {E:1,C:attention}Pareja suprema",
 				},
 			},
-			j_cry_the = {
-				name = "El",
-				text = {
-					"{X:mult,C:white} X#1# {} multi si la mano",
-					"jugada es {C:attention}#2#",
-				},
-				unlock = {
-					"Gana una partida con",
-					"tu última mano siendo",
-					"una {E:1,C:attention}None", --queda None por traducir, revisar el discord si alguien lo solucionó
-				},
-			},
 			j_cry_clicked_cookie = {
 				name = "Galleta clickeada",
 				text = {
@@ -1308,21 +1299,6 @@ return {
 					"{C:green}#1# en #2#{} probabilidades de crear",
 					"una carta {C:dark_edition}negativa{} al azar",
 					"de su respectivo {C:attention}tipo{}",
-				},
-			},
-			j_cry_starfruit = {
-				name = "Carambola",
-				text = {
-					"{X:dark_edition,C:white}^#1#{} multi,",
-					"pierde {X:dark_edition,C:white}^#2#{} multi por cada",
-					"{C:attention}renovación{} en la tienda",
-				},
-			},
-			j_cry_demicolon = {
-				name = "Demicolon",
-				text = {
-					"{C:attention}Activa por la fuerza{} al Comodín",
-					"a la derecha",
 				},
 			},
 			j_cry_discreet = {
@@ -1486,15 +1462,6 @@ return {
 					"{C:attention}#2#{} o menos veces",
 				},
 			},
-			j_cry_familiar_currency = {
-				name = "Moneda familiar",
-				text = {
-					"Crea un {C:attention}comodín meme{}",
-					"al final de la ronda",
-					"por {C:money}$#1#{} {C:inactive}(si es posible)",
-					"{C:inactive}(Debe haber espacio)",
-				},
-			},
 			j_cry_filler = {
 				name = "El relleno",
 				text = {
@@ -1545,13 +1512,6 @@ return {
 					"{C:red}+#1#{} multi",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
-			},
-			j_cry_undefined = {
-				name = "Comodín indefinido",
-				text = {
-					"{C:red}+#1#{} multi si la mano",
-					"jugada es {C:attention}#2#",
 				},
 			},
 			j_cry_formidiulosus = {
@@ -1658,7 +1618,7 @@ return {
 					"{X:dark_edition,C:white}^#1#{} multi sólo después de",
 					"jugar {C:attention}114{} manos{}",
 					"{C:inactive}(Actual: #2#/114){}",
-					"{C:inactive,s:0.8}¡No hay lugar como el hogar!{}",
+					"{C:inactive,s:0.8}¡No hay un lugar como el hugar!{}",
 				},
 			},
 			j_cry_home = {
@@ -1684,7 +1644,7 @@ return {
 			j_cry_huntingseason = {
 				name = "Época de caza",
 				text = {
-					"Si la mano jugada contiene exactamente {C:attention}3{} cartas,",
+					"Si la mano jugada contiene exactalemte {C:attention}3{} cartas,",
 					"{C:red}destruye{} la carta {C:attention}central{} después de puntuar",
 				},
 			},
@@ -1698,7 +1658,7 @@ return {
 				},
 			},
 			j_cry_jawbreaker = {
-				name = "Rompemuelas",
+				name = "Jawbreaker",
 				text = {
 					"Al derrotar la {C:attention}ciega jefe,",
 					"{C:attention}duplica{} los valores de los comodines adyacentes",
@@ -1746,14 +1706,6 @@ return {
 					"Aumenta el pago por {C:money}$#1#{}",
 					"cuando un comodín de {C:attention}tipo multi{}",
 					"o {C:attention}tipo fichas{} es vendido",
-				},
-			},
-			j_cry_kittyprinter = {
-				name = "Impresora de gatitos",
-				text = {
-					"{X:mult,C:white} X#1# {} multi",
-					"Todas las etiquetas {C:attention}salteadas{}",
-					"se vuelven {C:attention}etiquetas de gato{}",
 				},
 			},
 			j_cry_kooky = {
@@ -2350,7 +2302,7 @@ return {
 				},
 			},
 			j_cry_scrabble = {
-				name = "Ficha de Scrabble",
+				name = "Teja de Scrabble",
 				text = {
 					"{C:green}#1# en #2#{} probabilidades de crear",
 					"un comodín {C:green}inusual{} {C:dark_edition}contento",
@@ -2428,22 +2380,7 @@ return {
 					'{C:inactive,s:0.8}"Esta prisión... para mantenerme...?"',
 				},
 			},
-			j_cry_sock_and_sock = {
-				name = "Calcetín y calcetín",
-				text = {
-					"Reactiva todas las cartas",
-					"{C:attention}abstractas{} jugadas {C:attention}#1#{} vez#<ces>1#",
-				},
-			},
-			j_cry_brokenhome = {
-				name = "Hogar roto",
-				text = {
-					"{X:mult,C:white} X#1# {} multi",
-					"{C:green}#2# en #3#{} probabilidades",
-					"de que la carta se destruya",
-					"al final de la ronda",
-				},
-			},
+
 			j_cry_spaceglobe = {
 				name = "Esfera celestial",
 				text = {
@@ -2592,13 +2529,6 @@ return {
 					"{C:chips}+#1#{} ficha#<s>1#",
 					"si la mano contiene",
 					"un {C:attention}#2#",
-				},
-			},
-			j_cry_nebulous = {
-				name = "Comodín Nebuloso",
-				text = {
-					"{C:chips}+#1#{} Chip#<s>1# si la mano",
-					"jugada es {C:attention}#2#",
 				},
 			},
 			j_cry_trick_or_treat = {
@@ -4462,7 +4392,7 @@ return {
 			ach_cry_pull_request = "Haz que ://COMMIT haga aparecer el mismo comodín que destruyó",
 			ach_cry_traffic_jam = "Gana todos los desafíos Hora punta",
 			ach_cry_ult_full_skip = "Gana en 1 ronda",
-			ach_cry_used_crash = "Usa ://CRASH",
+			ach_cry_used_crash = "Usa ://CHOQUE",
 			ach_cry_what_have_you_done = "Elimina o sacrifica un comodín exótico",
 			ach_cry_pin = "Pierde una partida contra El Alfiler",
 		},

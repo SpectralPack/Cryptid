@@ -27,9 +27,6 @@ function Game:update(dt)
 	gu(self, dt)
 	if not G.PROFILES[G.SETTINGS.profile].cry_intro_complete then
 		G.FUNCS.cry_intro_controller()
-		if G.OVERLAY_TUTORIAL then
-			G.E_MANAGER:update(dt, true)
-		end
 	end
 end
 
@@ -179,6 +176,12 @@ G.FUNCS.cry_intro_part = function(_part)
 			{ shader = "dissolve", shadow_height = 0.05 },
 			{ shader = "dissolve" },
 		})
+		local madnessSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS["cry_gameset"], { x = 2, y = 0 })
+		madnessSprite:define_draw_steps({
+			{ shader = "dissolve", shadow_height = 0.05 },
+			{ shader = "dissolve" },
+		})
+		--TODO: localize
 		G.modestBtn = create_UIBox_character_button_with_sprite({
 			sprite = modestSprite,
 			button = localize("cry_gameset_modest"),
@@ -195,16 +198,34 @@ G.FUNCS.cry_intro_part = function(_part)
 			colour = G.C.RED,
 			maxw = 3,
 		})
+		G.madnessBtn = create_UIBox_character_button_with_sprite({
+			sprite = madnessSprite,
+			button = localize("cry_gameset_madness"),
+			id = "madness",
+			func = "cry_madness",
+			colour = G.C.CRY_EXOTIC,
+			maxw = 3,
+		})
 		local gamesetUI = create_UIBox_generic_options({
 			infotip = false,
 			contents = {
 				G.modestBtn,
 				G.mainlineBtn,
+				G.madnessBtn,
 			},
 			back_label = "Confirm",
 			back_colour = G.C.BLUE,
 			back_func = "cry_gameset_confirm",
 		})
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			blocking = false,
+			blockable = false,
+			func = function()
+				G.madnessBtn.config.colour = G.C.CRY_EXOTIC
+				return true
+			end,
+		}))
 		gamesetUI.nodes[2] = nil
 		gamesetUI.config.colour = G.C.CLEAR
 		G.gamesetUI = UIBox({
@@ -234,10 +255,11 @@ G.FUNCS.cry_intro_part = function(_part)
 			no_button = true,
 		})
 	end
-	if _part == "modest" or _part == "mainline" then
+	if _part == "modest" or _part == "mainline" or _part == "madness" then
 		local desc_length = { --number of times Jolly Joker speaks for each gameset
 			modest = 2,
 			mainline = 3,
+			madness = 3,
 		}
 		G.E_MANAGER:clear_queue("tutorial")
 		if G.OVERLAY_TUTORIAL.content then
@@ -272,14 +294,23 @@ end
 G.FUNCS.cry_modest = function(e)
 	G.modestBtn.config.colour = G.C.CRY_SELECTED
 	G.mainlineBtn.config.colour = G.C.RED
+	G.madnessBtn.config.colour = G.C.CRY_EXOTIC
 	G.FUNCS.cry_intro_part("modest")
 	G.selectedGameset = "modest"
 end
 G.FUNCS.cry_mainline = function(e)
 	G.modestBtn.config.colour = G.C.GREEN
 	G.mainlineBtn.config.colour = G.C.CRY_SELECTED
+	G.madnessBtn.config.colour = G.C.CRY_EXOTIC
 	G.FUNCS.cry_intro_part("mainline")
 	G.selectedGameset = "mainline"
+end
+G.FUNCS.cry_madness = function(e)
+	G.modestBtn.config.colour = G.C.GREEN
+	G.mainlineBtn.config.colour = G.C.RED
+	G.madnessBtn.config.colour = G.C.CRY_SELECTED
+	G.FUNCS.cry_intro_part("madness")
+	G.selectedGameset = "madness"
 end
 G.FUNCS.cry_gameset_confirm = function(e)
 	if G.selectedGameset then
@@ -296,6 +327,35 @@ G.FUNCS.cry_gameset_confirm = function(e)
 		end
 		G.OVERLAY_TUTORIAL:remove()
 		G.OVERLAY_TUTORIAL = nil
+		if G.selectedGameset == "madness" then
+			--Unlock All by default in madness
+			G.PROFILES[G.SETTINGS.profile].all_unlocked = true
+			for k, v in pairs(G.P_CENTERS) do
+				if not v.demo and not v.wip then
+					v.alerted = true
+					v.discovered = true
+					v.unlocked = true
+				end
+			end
+			for k, v in pairs(G.P_BLINDS) do
+				if not v.demo and not v.wip then
+					v.alerted = true
+					v.discovered = true
+					v.unlocked = true
+				end
+			end
+			for k, v in pairs(G.P_TAGS) do
+				if not v.demo and not v.wip then
+					v.alerted = true
+					v.discovered = true
+					v.unlocked = true
+				end
+			end
+			set_profile_progress()
+			set_discover_tallies()
+			G:save_progress()
+			G.FILE_HANDLER.force = true
+		end
 	end
 end
 
@@ -342,7 +402,6 @@ function Cryptid.intro_info(args)
 					args.highlight[#args.highlight + 1] = G.OVERLAY_TUTORIAL.Jimbo
 					if args.text_key then
 						G.OVERLAY_TUTORIAL.Jimbo:add_speech_bubble(args.text_key, align, args.loc_vars)
-						--G.OVERLAY_TUTORIAL.Jimbo.children.speech_bubble.states.visible = true
 					end
 					G.OVERLAY_TUTORIAL.Jimbo:set_alignment(attach)
 					if args.hard_set then
@@ -396,7 +455,6 @@ function Cryptid.intro_info(args)
 										end
 										return true
 									end
-									return true
 								end,
 							}),
 							"tutorial"
@@ -472,7 +530,7 @@ function Cryptid.gameset_sprite(scale, profile, force_gameset)
 		scale,
 		scale,
 		G.ASSET_ATLAS["cry_gameset"],
-		{ x = (gameset == "modified" and 3 or gameset == "modest" and 0 or 1), y = 0 }
+		{ x = (gameset == "modified" and 3 or gameset == "madness" and 2 or gameset == "modest" and 0 or 1), y = 0 }
 	)
 	sprite:define_draw_steps({
 		{ shader = "dissolve", shadow_height = 0.09 },
@@ -638,7 +696,7 @@ function Cryptid.gameset_config_UI(center)
 		},
 	}
 
-	local gamesets = { "disabled", "modest", "mainline" }
+	local gamesets = { "disabled", "modest", "mainline", "madness" }
 	if center.extra_gamesets then
 		for i = 1, #center.extra_gamesets do
 			gamesets[#gamesets + 1] = center.extra_gamesets[i]
@@ -765,7 +823,9 @@ function get_type_colour(center, card)
 		if center.force_gameset == "modest" then
 			color = G.C.GREEN
 		elseif center.force_gameset == "mainline" then
-			color = G.C.PURPLE
+			color = G.C.RED
+		elseif center.force_gameset == "madness" then
+			color = G.C.CRY_EXOTIC
 		elseif center.force_gameset ~= "disabled" then
 			color = G.C.CRY_ASCENDANT
 		end
