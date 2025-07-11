@@ -4342,7 +4342,7 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-								SMODS.pseudorandom_element(
+								pseudorandom_probability(
 									card,
 									1,
 									card and card.ability.extra.odds or self.config.extra.odds
@@ -7820,7 +7820,7 @@ local busdriver = {
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			local oddy = math.max(1, card.ability.extra.odds)
 			if
-				SMODS.pseudorandom_element(
+				pseudorandom_probability(
 					card,
 					"cry_busdriver",
 					3,
@@ -9395,7 +9395,7 @@ local digitalhallucinations = {
 
 		if
 			context.open_booster
-			and (SMODS.pseudorandom_element(card, "digi", 1, card and card.ability.odds or self.config.odds))
+			and (pseudorandom_probability(card, "digi", 1, card and card.ability.odds or self.config.odds))
 		then
 			local boosty = context.card
 			-- finally mod compat?

@@ -36,7 +36,7 @@ local echo = {
 	calculate = function(self, card, context)
 		if
 			context.repetition
-			and SMODS.pseudorandom_element(card, "cry_echo", 1, card and card.ability.extra or self.config.extra)
+			and SMODS.pseudorandom_probability(card, "cry_echo", 1, card and card.ability.extra or self.config.extra)
 		then
 			return {
 				message = localize("k_again_ex"),

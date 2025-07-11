@@ -567,7 +567,7 @@ local notebook = {
 			end
 			if
 				to_number(jollycount) >= to_number(card.ability.extra.jollies) --if there are 5 or more jolly jokers
-				or SMODS.pseudorandom_element(
+				or pseudorandom_probability(
 					card,
 					"cry_notebook",
 					1,
@@ -850,7 +850,7 @@ local scrabble = {
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
 			if
-				SMODS.pseudorandom_element(
+				pseudorandom_probability(
 					card,
 					"scrabbleother",
 					1,
