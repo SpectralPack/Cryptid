@@ -181,10 +181,11 @@ payload = '''
       delay(0.3)
 delay(0.3)
 if not (SMODS.Mods["Talisman"] or {}).can_load then
-pseudorandom_probability_after(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    evaluate_play_after(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+end
 return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
-function pseudorandom_probability_after(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+function evaluate_play_after(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
 '''
 match_indent = true
 
