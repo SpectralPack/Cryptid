@@ -3535,7 +3535,6 @@ local log = {
 				G.GAME.bosses_used[bl] = (G.GAME.bosses_used[bl] or 1) - 1
 			end
 			G.GAME.USING_CODE = true
-			localize({})
 			G.CHOOSE_CARD = UIBox({
 				definition = create_UIBox_log({
 					bl and G.localization.descriptions.Blind[bl].name or "None",
