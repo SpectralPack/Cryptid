@@ -471,7 +471,7 @@ function Game:update(dt)
 		G.STATE = G.STATES.SELECTING_HAND
 		G.STATE_COMPLETE = false
 	end
-	if 
+	if
 		G.STATE == G.STATES.HAND_PLAYED
 		and to_big(G.GAME.chips) > to_big(G.GAME.blind.chips)
 		and not G.hand.cards[1]
@@ -479,51 +479,65 @@ function Game:update(dt)
 	then
 		--im having to manually recreate some of this idk why
 		G.RESET_BLIND_STATES = true
-        G.RESET_JIGGLES = true
+		G.RESET_JIGGLES = true
 		G.GAME.blind.in_blind = false
 		G.E_MANAGER:add_event(Event({
-			trigger = 'after',
+			trigger = "after",
 			delay = 0.3,
 			func = function()
 				if G.GAME.blind.config.blind.cry_before_cash and not G.GAME.blind.disabled then
 					G.GAME.blind:cry_before_cash()
 				else
-				G.GAME.cry_make_a_decision = nil
-				
-				G.STATE = G.STATES.ROUND_EVAL
-				G.STATE_COMPLETE = false
+					G.GAME.cry_make_a_decision = nil
+
+					G.STATE = G.STATES.ROUND_EVAL
+					G.STATE_COMPLETE = false
 				end
 
-				if G.GAME.blind_on_deck == 'Small' then
-					G.GAME.round_resets.blind_states.Small = 'Defeated'
-				elseif G.GAME.blind_on_deck == 'Big' then
-					G.GAME.round_resets.blind_states.Big = 'Defeated'
+				if G.GAME.blind_on_deck == "Small" then
+					G.GAME.round_resets.blind_states.Small = "Defeated"
+				elseif G.GAME.blind_on_deck == "Big" then
+					G.GAME.round_resets.blind_states.Big = "Defeated"
 				else
 					if G.GAME.current_round.cry_voucher_stickers.pinned == false then
 						G.GAME.current_round.voucher = SMODS.get_next_vouchers()
 						G.GAME.current_round.cry_voucher_stickers = Cryptid.next_voucher_stickers()
 						G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition() or {}
 						G.GAME.current_round.cry_bonusvouchers = {}
-						G.GAME.cry_bonusvouchersused = {}	-- i'm not sure why i'm putting these in two separate tables but it doesn't matter much
+						G.GAME.cry_bonusvouchersused = {} -- i'm not sure why i'm putting these in two separate tables but it doesn't matter much
 						for i = 1, G.GAME.cry_bonusvouchercount do
 							G.GAME.current_round.cry_bonusvouchers[i] = SMODS.get_next_vouchers()
 						end
 						if G.GAME.modifiers.cry_no_vouchers then
-							very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
+							very_fair_quip =
+								pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
 						end
 					end
-					G.GAME.round_resets.blind_states.Boss = 'Defeated'
+					G.GAME.round_resets.blind_states.Boss = "Defeated"
 					for k, v in ipairs(G.playing_cards) do
 						v.ability.played_this_ante = nil
 					end
 				end
 
-				if G.GAME.round_resets.temp_handsize then G.hand:change_size(-G.GAME.round_resets.temp_handsize); G.GAME.round_resets.temp_handsize = nil end
-				if G.GAME.round_resets.temp_reroll_cost then G.GAME.round_resets.temp_reroll_cost = nil; calculate_reroll_cost(true) end
+				if G.GAME.round_resets.temp_handsize then
+					G.hand:change_size(-G.GAME.round_resets.temp_handsize)
+					G.GAME.round_resets.temp_handsize = nil
+				end
+				if G.GAME.round_resets.temp_reroll_cost then
+					G.GAME.round_resets.temp_reroll_cost = nil
+					calculate_reroll_cost(true)
+				end
 				for _, v in pairs(find_joker("cry-loopy")) do
 					if v.ability.extra.retrigger ~= 0 then
 						v.ability.extra.retrigger = 0
-						card_eval_status_text(v, 'extra', nil, nil, nil, {message = localize("k_reset"), colour = G.C.GREEN})
+						card_eval_status_text(
+							v,
+							"extra",
+							nil,
+							nil,
+							nil,
+							{ message = localize("k_reset"), colour = G.C.GREEN }
+						)
 					end
 				end
 				for _, v in pairs(G.deck.cards) do
@@ -537,9 +551,9 @@ function Game:update(dt)
 				reset_idol_card()
 				reset_mail_rank()
 				reset_ancient_card()
-				reset_castle_card()                        
+				reset_castle_card()
 				for _, mod in ipairs(SMODS.mod_list) do
-					if mod.reset_game_globals and type(mod.reset_game_globals) == 'function' then
+					if mod.reset_game_globals and type(mod.reset_game_globals) == "function" then
 						mod.reset_game_globals(false)
 					end
 				end
@@ -547,8 +561,8 @@ function Game:update(dt)
 					v.ability.discarded = nil
 					v.ability.forced_selection = nil
 				end
-			return true
-			end
+				return true
+			end,
 		}))
 	end
 end
