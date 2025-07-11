@@ -224,13 +224,13 @@ local googol_play = {
 	calculate = function(self, card, context)
 		if context.joker_main then
 			if
-				context.joker_main
-				and SMODS.pseudorandom_probability(
-					card,
-					"cry_googol_play",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
+			context.joker_main
+        and SMODS.pseudorandom_probability(
+          card,
+          "cry_googol_play",
+          1,
+          card and card.ability.extra.odds or self.config.extra.odds
+        )
 			then
 				return {
 					message = localize({
