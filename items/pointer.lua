@@ -416,13 +416,6 @@ local pointer = {
 					end
 					t.ability.orbital_hand = pseudorandom_element(_poker_hands, pseudoseed("cry_pointer_orbital"))
 				end
-				if current_card == "tag_cry_rework" then
-					--tbh this is the most unbalanced part of the card
-					t.ability.rework_edition =
-						pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_pointer_edition")).key
-					t.ability.rework_key =
-						pseudorandom_element(G.P_CENTER_POOLS.Joker, pseudoseed("cry_pointer_joker")).key
-				end
 				G.CHOOSE_CARD:remove()
 				G.GAME.USING_CODE = false
 				G.GAME.USING_POINTER = false
@@ -2000,7 +1993,7 @@ local aliases = {
 		"Rerollsurplus",
 		"Reroll Voucher",
 	},
-	v_reroll_glut = {
+	v__glut = {
 		"Reroll Glut",
 		"Rerollglut",
 		"Reroll Surplus+",
@@ -2563,10 +2556,10 @@ local aliases = {
 	},
 	tag_cry_epic = {
 		"Epic Tag",
-		"Half-price Epic Joker",
-		"Half price Epic Joker",
-		"Half price Epic",
-		"Half-price Epic",
+		"Full-price Epic Joker",
+		"Full price Epic Joker",
+		"Full price Epic",
+		"Full-price Epic",
 	},
 	tag_cry_gambler = {
 		"Gambler Tag",
@@ -2628,13 +2621,6 @@ local aliases = {
 	tag_cry_quadruple = {
 		"Quadruple",
 		"Quadruple Tag",
-	},
-	tag_cry_quintuple = {
-		"Quintuple",
-		"Quintuple Tag",
-	},
-	tag_cry_rework = {
-		"Rework Tag",
 	},
 	tag_cry_schematic = {
 		"Schematic",
@@ -2699,6 +2685,7 @@ return {
 			--print("[CRYPTID] Inserting Pointer Aliases")
 			local alify = Cryptid.pointeraliasify
 			Cryptid.pointerblistifytype("rarity", "cry_exotic", nil)
+			Cryptid.pointerblistifytype("misc", "hidden", nil)
 			for key, aliasesTable in pairs(aliases) do
 				for _, alias in pairs(aliasesTable) do
 					alify(key, alias, nil)

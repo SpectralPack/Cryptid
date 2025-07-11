@@ -20,14 +20,19 @@ local cotton_candy = {
 			(context.selling_self and not context.retrigger_joker and not context.blueprint_card)
 			or context.forcetrigger
 		then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] == card then
-					if i > 1 then
-						G.jokers.cards[i - 1]:set_edition({ negative = true })
+			local jokers = {}
+			for i, v in pairs(G.jokers.cards) do
+				if not v.edition or not v.edition.negative then
+					if v ~= card then
+						jokers[#jokers + 1] = v
 					end
-					if i < #G.jokers.cards then
-						G.jokers.cards[i + 1]:set_edition({ negative = true })
-					end
+				end
+			end
+			pseudoshuffle(jokers, pseudoseed("cry_cotton_candy"))
+			if jokers[1] then
+				jokers[1]:set_edition({ negative = true })
+				if jokers[2] then
+					jokers[2]:set_edition({ negative = true })
 				end
 			end
 		end
@@ -921,7 +926,7 @@ local candy_basket = {
 		extra = {
 			candies = 0,
 			candy_mod = 1,
-			candy_boss_mod = 2,
+			candy_boss_mod = 1,
 		},
 		immutable = {
 			current_win_count = 0,
@@ -1588,7 +1593,7 @@ local candy_buttons = {
 	pos = { x = 1, y = 2 },
 	order = 140,
 	rarity = "cry_candy",
-	config = { extra = { rerolls = 15 } },
+	config = { extra = { rerolls = 10 } },
 	cost = 10,
 	atlas = "atlasspooky",
 	blueprint_compat = true,
@@ -1668,12 +1673,22 @@ local jawbreaker = {
 				if G.jokers.cards[i] == card then
 					if i > 1 then
 						if not Card.no(G.jokers.cards[i - 1], "immutable", true) then
+							if G.jokers.cards[i - 1].ability.value_manip then
+								Cryptid.manipulate(G.jokers.cards[i - 1])
+							end
 							Cryptid.manipulate(G.jokers.cards[i - 1], { value = 2 })
+							local v = G.jokers.cards[i - 1]
+							v.ability.value_manip = true
 						end
 					end
 					if i < #G.jokers.cards then
 						if not Card.no(G.jokers.cards[i + 1], "immutable", true) then
+							if G.jokers.cards[i + 1].ability.value_manip then
+								Cryptid.manipulate(G.jokers.cards[i + 1])
+							end
 							Cryptid.manipulate(G.jokers.cards[i + 1], { value = 2 })
+							local v = G.jokers.cards[i + 1]
+							v.ability.value_manip = true
 						end
 					end
 				end
@@ -1780,9 +1795,7 @@ local brittle = {
 	config = { extra = { rounds = 9 } },
 	pools = { ["Food"] = true },
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_stone
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_steel
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_glass
 		return { vars = { number_format(center.ability.extra.rounds) } }
 	end,
 	blueprint_compat = true,
@@ -1797,7 +1810,7 @@ local brittle = {
 			local _card = context.scoring_hand[#context.scoring_hand]
 			if _card and not _card.brittled then
 				card.ability.extra.rounds = lenient_bignum(to_big(card.ability.extra.rounds) - 1)
-				local enhancement = pseudorandom_element({ "m_stone", "m_gold", "m_steel" }, pseudoseed("cry_brittle"))
+				local enhancement = "m_glass"
 				_card.brittled = true
 				_card:set_ability(G.P_CENTERS[enhancement], nil, true)
 				G.E_MANAGER:add_event(Event({

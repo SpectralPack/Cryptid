@@ -2,7 +2,9 @@
 # Cryptid
 An unbalanced Balatro mod.
 
-Note: Cryptid requires [Steamodded](https://github.com/Steamopollys/Steamodded/archive/refs/heads/main.zip) and [Talisman](https://github.com/SpectralPack/Talisman/archive/refs/heads/main.zip).
+Note: Cryptid requires [Steamodded](https://github.com/Steamopollys/Steamodded/archive/refs/heads/main.zip) 
+[Talisman](https://github.com/SpectralPack/Talisman/archive/refs/heads/main.zip) may be used to increase the score cap but isnt required.
+
 
 Cryptid currently adds:
 
@@ -17,13 +19,13 @@ Cryptid currently adds:
 
 ### Frequently asked questions
 * Credit to @jenwalter666 for creating this FAQ (forwarded from Cryptid Discord)
+* Edits to reflect some changed made by @lord.ruby
 
 ## General
 
 > *My game is crashing on startup/something doesn't appear to be loading!*
 
 Make sure everything is properly installed.
-For Talisman, the folder that contains Talisman should be named `Talisman`. If you've downloaded the source code from GitHub (by clicking on [Code] and then [Download ZIP]), the folder within the ZIP may be called `Talisman-main`, which will cause a problem. Simply rename the folder(s) so that the `-main` part of the name is removed, so that the folder is just called `Talisman`.
 Whenever you are manually updating Talisman or Cryptid, or any other mod for that matter, it's a good approach to instead delete the contents of the folder, then install the contents of the folder from the ZIP into the existing folder to avoid having to constantly rename the folder over and over.
 For automatic updates, try using the [automatic update script](https://discord.com/channels/1264429948970733782/1268911536638787625).
 It could also be that Steamodded is out of date, sometimes mods may use features of a new version that's absent in an older version, but don't change the version that they ask for.
@@ -43,7 +45,7 @@ If they show up red, that means there's a problem. Hover over the mod icon (whic
 You can disable some features of the mod by opening your Mods, clicking [Cryptid], going over to the Config tab, and clicking Thematic Sets. There, you can toggle various Cryptid additions on or off as you see fit.
 You can also enable/disable certain music tracks in the Music tab. If you're a streamer, consider disabling the Jimball music for your safety!
 
-> *I'm hitting infinity very often, is there any way to raise the limit of the scoring system?*
+> *I'm hitting "naneinf"/"Infinity" very often, is there any way to raise the limit of the scoring system?*
 
 Talisman may be configured to be on **BigNum** mode, which has a maximum limit of ee308. You can make the limit virtually disappear by changing it to **OmegaNum**, which can handle e10##1000. You can configure it by going into Mods, then clicking Talisman, and changing the Score Limit under Config. Be careful; if you have a saved run that was on a different number system, you won't be able to load it (unless if you switch back)!
 

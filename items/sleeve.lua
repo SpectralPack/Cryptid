@@ -68,7 +68,7 @@ if CardSleeves then
 
 		trigger_effect = function(self, args) end,
 		apply = function(self)
-			change_shop_size(2)
+			change_shop_size(1)
 			G.GAME.modifiers.cry_equilibrium = true
 		end,
 	})
@@ -78,7 +78,7 @@ if CardSleeves then
 		name = "Misprinted Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 3, y = 0 },
-		config = { cry_misprint_min = 0.1, cry_misprint_max = 10 },
+		config = { cry_misprint_min = 0.24, cry_misprint_max = 4 },
 		unlocked = true,
 		unlock_condition = { deck = "Misprint Deck", stake = 1 },
 		apply = function(self)
@@ -112,28 +112,27 @@ if CardSleeves then
 		name = "Wormhole Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 0, y = 0 },
-		config = { cry_wormhole = true, cry_negative_rate = 20, joker_slot = -2 },
 		unlocked = true,
 		unlock_condition = { deck = "Wormhole Deck", stake = 1 },
 		loc_vars = function(self)
 			return { vars = {} }
 		end,
-		apply = function(self)
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					if G.jokers then
-						local card =
-							create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormholesleeve")
-						card:add_to_deck()
-						card:start_materialize()
-						G.jokers:emplace(card)
-						return true
-					end
-				end,
-			}))
-			G.GAME.modifiers.cry_negative_rate = (G.GAME.modifiers.cry_negative_rate or 1)
-				* self.config.cry_negative_rate
-			G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + self.config.joker_slot
+		calculate = function(self, back, context)
+			if
+				context.end_of_round
+				and not context.individual
+				and not context.repetition
+				and not context.blueprint
+				and G.GAME.blind
+				and G.GAME.blind.config.blind
+				and G.GAME.blind.config.blind.boss
+			then
+				if G.jokers.cards[1] and G.jokers.cards[1].config.center.rarity ~= "cry_exotic" then
+					Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
+						Cryptid.upgrade_rarity(card, "cry_wormhole")
+					end)
+				end
+			end
 		end,
 	})
 
@@ -213,7 +212,7 @@ if CardSleeves then
 					update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
 					G.E_MANAGER:add_event(Event({
 						func = function()
-							play_sound("talisman_emult", 1)
+							play_sound("cry_emult", 1)
 							attention_text({
 								scale = 1.4,
 								text = localize("cry_critical_hit_ex"),
@@ -531,8 +530,6 @@ if CardSleeves then
 			then
 				self.config.cry_spooky = true
 			end
-
-			return { key = Cryptid.gameset_loc(self, { mainline = "balanced", modest = "balanced" }) }
 		end,
 		calculate = function(self, sleeve, context)
 			if context.create_card and context.card then
@@ -1328,7 +1325,7 @@ if CardSleeves then
 							update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
 							G.E_MANAGER:add_event(Event({
 								func = function()
-									play_sound("talisman_emult", 1)
+									play_sound("cry_emult", 1)
 									attention_text({
 										scale = 1.4,
 										text = localize("cry_critical_hit_ex"),

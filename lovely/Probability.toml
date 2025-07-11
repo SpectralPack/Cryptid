@@ -93,8 +93,7 @@ if (SMODS.has_enhancement(scoring_hand[i], 'm_glass')
       ) / (scoring_hand[i].ability.name == 'Glass Card'
            and scoring_hand[i].ability.extra
            or G.P_CENTERS.m_glass.config.extra)
-   or (G.GAME.modifiers.cry_shatter_rate
-       and pseudorandom('cry_shatter') < 1 / G.GAME.modifiers.cry_shatter_rate))
+   )
    and not scoring_hand[i].ability.eternal then'''
 match_indent = true
 
