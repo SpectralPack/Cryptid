@@ -3915,6 +3915,7 @@ local rnjoker = {
 	config = {},
 	order = 59,
 	loc_vars = function(self, info_queue, card)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.cond_value or 0)
 		local vars = {
 			vars = {
 				(card.ability.extra and card.ability.extra.value_mod and card.ability.extra.value) or 0,
@@ -3922,11 +3923,7 @@ local rnjoker = {
 					or (card.ability.extra and card.ability.extra.value)
 					or 0,
 				card.ability.extra and card.ability.extra.cond_value or 0,
-				cry_prob(
-					card.ability.cry_prob,
-					card.ability.extra and card.ability.extra.cond_value or 0,
-					card.ability.cry_rigged
-				),
+				num
 			},
 		}
 		if card.ability.extra and card.ability.extra.color then
@@ -4156,13 +4153,11 @@ local rnjoker = {
 								end
 							elseif j.cond == "odds" then
 								if
-									pseudorandom("rnj")
-									< (
-										cry_prob(
-											card.ability.cry_prob,
-											card.ability.extra.cond_value,
-											card.ability.cry_rigged
-										) / card.ability.extra.cond_value
+									SMODS.pseudorandom_probability(
+										card,
+										"rnj",
+										1,
+										card and card.ability.extra.cond_value or 0
 									)
 								then
 									cond_passed = true
@@ -4445,13 +4440,11 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-								pseudorandom("rnj")
-								< (
-									cry_prob(
-										card.ability.cry_prob,
-										card.ability.extra.cond_value,
-										card.ability.cry_rigged
-									) / card.ability.extra.cond_value
+								SMODS.pseudorandom_probability(
+									card,
+									"rnj",
+									1,
+									card and card.ability.extra.cond_value or 0
 								)
 							then
 								cond_passed = true
@@ -4535,13 +4528,11 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-								pseudorandom("rnj")
-								< (
-									cry_prob(
-										card.ability.cry_prob,
-										card.ability.extra.cond_value,
-										card.ability.cry_rigged
-									) / card.ability.extra.cond_value
+								SMODS.pseudorandom_probability(
+									card,
+									"rnj",
+									1,
+									card and card.ability.extra.cond_value or 0
 								)
 							then
 								cond_passed = true

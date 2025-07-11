@@ -854,13 +854,12 @@ local trick_or_treat = {
 	calculate = function(self, card, context)
 		if context.selling_self then
 			if
-				pseudorandom(pseudoseed("cry_trick_or_treat"))
-				< cry_prob(
-						card.ability.cry_prob * card.ability.immutable.prob_mod,
-						card.ability.extra.odds,
-						card.ability.cry_rigged
-					)
-					/ card.ability.extra.odds
+				SMODS.pseudorandom_probability(
+					card,
+					"cry_trick_or_treat",
+					1,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				local spawn_num =
 					to_number(math.min(card.ability.immutable.max_candies, card.ability.extra.num_candies))
@@ -887,14 +886,12 @@ local trick_or_treat = {
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(
-					center.ability.cry_prob * center.ability.immutable.prob_mod,
-					center.ability.extra.odds,
-					center.ability.cry_rigged
-				),
-				center.ability.extra.odds,
+				num,
+				denom,
 				number_format(center.ability.extra.num_candies),
 			},
 		}
@@ -1109,13 +1106,12 @@ local ghost = {
 			and not context.retrigger_joker
 		then
 			if
-				pseudorandom(pseudoseed("cry_ghost_destroy"))
-				< cry_prob(
-						card.ability.cry_prob,
-						card.ability.extra.odds * card.ability.extra.destroy_rate,
-						card.ability.cry_rigged
-					)
-					/ (card.ability.extra.odds * card.ability.extra.destroy_rate)
+				SMODS.pseudorandom_probability(
+					card,
+					"cry_ghost_destroy",
+					1,
+					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
+				)
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1136,13 +1132,12 @@ local ghost = {
 			end
 			--todo: let multiple ghosts possess multiple jokers
 			if
-				pseudorandom(pseudoseed("cry_ghost_possess"))
-				< cry_prob(
-						card.ability.cry_prob,
-						card.ability.extra.odds * card.ability.extra.possess_rate,
-						card.ability.cry_rigged
-					)
-					/ (card.ability.extra.odds * card.ability.extra.possess_rate)
+				SMODS.pseudorandom_probability(
+					card,
+					"ghostdestroy",
+					1,
+					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
+				)
 			then
 				for i = 1, #G.jokers.cards do
 					G.jokers.cards[i].ability.cry_possessed = nil
@@ -1163,20 +1158,22 @@ local ghost = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_possessed" }
+		local num, denom = SMODS.get_probability_vars(
+			card,
+			1,
+			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
+		)
+		local num2, denom2 = SMODS.get_probability_vars(
+			card,
+			1,
+			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
+		)
 		return {
 			vars = {
-				cry_prob(
-					card.ability.cry_prob,
-					card.ability.extra.odds * card.ability.extra.possess_rate,
-					card.ability.cry_rigged
-				),
-				cry_prob(
-					card.ability.cry_prob,
-					card.ability.extra.odds * card.ability.extra.destroy_rate,
-					card.ability.cry_rigged
-				),
-				card.ability.extra.odds * card.ability.extra.possess_rate,
-				card.ability.extra.odds * card.ability.extra.destroy_rate,
+				num2,
+				num1,
+				denom2,
+				denom1,
 			},
 		}
 	end,
@@ -1868,9 +1865,12 @@ local monopoly_money = {
 			and not (context.card == card)
 		then
 			if
-				pseudorandom(pseudoseed("cry_monopoly"))
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
+				SMODS.pseudorandom_probability(
+					card,
+					"cry_monopoly",
+					1,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1904,10 +1904,12 @@ local monopoly_money = {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				num,
+				denom,
 			},
 		}
 	end,

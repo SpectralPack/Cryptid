@@ -1488,10 +1488,12 @@ local bonusjoker = {
 	enhancement_gate = "m_bonus",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
+		local num, denom =
+		SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				num,
+				denom,
 				number_format(math.min(card.ability.extra.add, card.ability.immutable.max)),
 			},
 		}
@@ -1501,8 +1503,12 @@ local bonusjoker = {
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_bonus") then
 				if
-					pseudorandom("bonusjoker")
-						< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+					SMODS.pseudorandom_probability(
+						card,
+						"bonusjoker",
+						1,
+						card and card.ability.extra.odds or self.config.extra.odds
+					)
 					and card.ability.immutable.check < 2
 					and not context.retrigger_joker
 				then
@@ -1605,10 +1611,12 @@ local multjoker = {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_mult
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_cryptid
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				num,
+				denom
 			},
 		}
 	end,
@@ -1620,9 +1628,12 @@ local multjoker = {
 				and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 			then
 				if
-					pseudorandom("multjoker")
-					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-						/ card.ability.extra.odds
+					SMODS.pseudorandom_probability(
+						card,
+						"multjoker",
+						1,
+						card and card.ability.extra.odds or self.config.extra.odds
+					)
 				then
 					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 					G.E_MANAGER:add_event(Event({
