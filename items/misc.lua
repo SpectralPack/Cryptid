@@ -916,12 +916,15 @@ local glitched_shader2 = {
 	key = "ultrafoil",
 	path = "ultrafoil.fs",
 }
+local glitched_shaderb = {
+	object_type = "Shader",
+	key = "glitched_b",
+	path = "glitched_b.fs",
+}
 local glitched = {
 	cry_credits = {
 		art = {
-			"Samario",
-			-- Reduced Motion Shader
-			"Selicre",
+			"Cassknows",
 		},
 		code = {
 			"Math",
@@ -936,7 +939,8 @@ local glitched = {
 	key = "glitched",
 	order = 1,
 	weight = 15,
-	shader = G.SETTINGS.reduced_motion and "ultrafoil" or "glitched",
+	--shader = G.SETTINGS.reduced_motion and "ultrafoil" or "glitched",
+	shader = "glitched_b",
 	in_shop = true,
 	extra_cost = 0,
 	sound = {
@@ -2014,7 +2018,7 @@ local double_sided = {
 	-- 	},
 	extra_gamesets = { "exp" },
 	key = "double_sided",
-	shader = false,
+	shader = G.SETTINGS.reduced_motion and "ultrafoil" or "glitched",
 	order = 32,
 	weight = 10,
 	extra_cost = 0,
@@ -2026,6 +2030,11 @@ local double_sided = {
 		vol = 0.3,
 	},
 	cry_credits = {
+		art = {
+			"Samario",
+			-- Reduced Motion Shader
+			"Selicre",
+		},
 		code = {
 			"Math",
 			"lord-ruby",
@@ -2513,6 +2522,7 @@ local miscitems = {
 	oversat_shader,
 	glitched_shader,
 	glitched_shader2,
+	glitched_shaderb,
 	astral_shader,
 	blurred_shader,
 	glass_shader,
