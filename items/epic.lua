@@ -877,8 +877,9 @@ local boredom = {
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
-		
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+
 		return {
 			vars = {
 				num,
@@ -893,12 +894,13 @@ local boredom = {
 			and not context.retrigger_joker
 			and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
 		then
-			if SMODS.pseudorandom_probability(
-				card,
-				"cry_boredom_joker",
-				1,
-				card and card.ability.extra.odds or self.config.extra.odds
-			)
+			if
+				SMODS.pseudorandom_probability(
+					card,
+					"cry_boredom_joker",
+					1,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				return {
 					message = localize("k_again_ex"),
