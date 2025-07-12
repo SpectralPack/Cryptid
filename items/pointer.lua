@@ -57,10 +57,6 @@ local pointer = {
 						G.consumeables:emplace(copy)
 						G.FUNCS.exit_overlay_menu_code()
 						ccl(self)
-						if G.GAME.CODE_DESTROY_CARD then
-							G.GAME.CODE_DESTROY_CARD:start_dissolve()
-							G.GAME.CODE_DESTROY_CARD = nil
-						end
 					elseif self.config.center.set == "Booster" then
 						G.FUNCS.exit_overlay_menu_code()
 						local card = copy_card(self)
@@ -70,10 +66,6 @@ local pointer = {
 						card:start_materialize()
 						created = true
 						ccl(self)
-						if G.GAME.CODE_DESTROY_CARD then
-							G.GAME.CODE_DESTROY_CARD:start_dissolve()
-							G.GAME.CODE_DESTROY_CARD = nil
-						end
 					elseif
 						self.config.center.key == "c_base"
 						or self.config.center.set == "Enhanced"
@@ -125,10 +117,6 @@ local pointer = {
 							table.insert(G.playing_cards, card)
 							G.FUNCS.exit_overlay_menu_code()
 							G.GAME.POINTER_PLAYING = nil
-							if G.GAME.CODE_DESTROY_CARD then
-								G.GAME.CODE_DESTROY_CARD:start_dissolve()
-								G.GAME.CODE_DESTROY_CARD = nil
-							end
 						end
 					else
 						G.ENTERED_CARD = self.config.center.key
