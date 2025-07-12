@@ -410,6 +410,11 @@ function Game:update(dt)
 	if not G.OVERLAY_MENU and G.GAME.CODE_DESTROY_CARD then
 		G.FUNCS.exit_overlay_menu_code()
 	end
+
+	if not G.OVERLAY_MENU then
+		G.GAME.USING_POINTER = nil
+	end
+
 	--Increase the blind size for The Clock and Lavender Loop
 	local choices = { "Small", "Big", "Boss" }
 	G.GAME.CRY_BLINDS = G.GAME.CRY_BLINDS or {}
