@@ -2424,21 +2424,23 @@ function get_straight(hand, min_length, skip, wrap)
 end
 
 local get_prob_vars_ref = SMODS.get_probability_vars
-function SMODS.get_probability_vars(trigger_obj, base_numerator, base_denominator)
+function SMODS.get_probability_vars(trigger_obj, base_numerator, base_denominator, identifier, from_roll)
 	local mod = trigger_obj and trigger_obj.ability and trigger_obj.ability.cry_prob or 1
 	local numerator = base_numerator * mod
 	if trigger_obj and trigger_obj.ability and trigger_obj.ability.cry_rigged then
 		numerator = base_denominator
 	end
-	return get_prob_vars_ref(trigger_obj, numerator, base_denominator)
+	return get_prob_vars_ref(trigger_obj, numerator, base_denominator, identifier, from_roll)
 end
 
 local pseudorandom_probability_ref = SMODS.pseudorandom_probability
-function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_denominator)
+function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_denominator, identifier)
 	local mod = trigger_obj and trigger_obj.ability and trigger_obj.ability.cry_prob or 1
 	local numerator = base_numerator * mod
 	if trigger_obj and trigger_obj.ability and trigger_obj.ability.cry_rigged then
+		SMODS.post_prob = SMODS.post_prob or {}
+    		SMODS.post_prob[#SMODS.post_prob+1] = {pseudorandom_result = true, result = true, trigger_obj = trigger_obj, numerator = base_denominator, denominator = base_denominator, identifier = identifier or seed}
 		return true
 	end
-	return pseudorandom_probability_ref(trigger_obj, seed, numerator, base_denominator)
+	return pseudorandom_probability_ref(trigger_obj, seed, numerator, base_denominator, identifier)
 end
