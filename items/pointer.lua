@@ -43,7 +43,7 @@ local pointer = {
 				G.FUNCS.overlay_menu({ definition = create_UIBox_your_collection() })
 				return true
 			end,
-		}))		
+		}))
 		G.GAME.POINTER_SUBMENU = nil
 	end,
 	init = function(self)
