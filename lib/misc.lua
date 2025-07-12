@@ -1165,6 +1165,9 @@ G.FUNCS.exit_overlay_menu_code = function(e)
 		and G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse
 	then
 		G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse - 1
+	elseif G.GAME.CODE_DESTROY_CARD then
+		G.GAME.CODE_DESTROY_CARD:start_dissolve()
+		G.GAME.CODE_DESTROY_CARD = nil
 	end
 	G.GAME.CODE_DESTROY_CARD = nil
 end

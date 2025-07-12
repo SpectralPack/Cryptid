@@ -36,13 +36,14 @@ local pointer = {
 			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
 		end
 		G.GAME.USING_CODE = true
+		G.OVERLAY_MENU_POINTER = true
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.USING_POINTER = true
 				G.FUNCS.overlay_menu({ definition = create_UIBox_your_collection() })
 				return true
 			end,
-		}))
+		}))		
 		G.GAME.POINTER_SUBMENU = nil
 	end,
 	init = function(self)
@@ -136,10 +137,6 @@ local pointer = {
 						if ret then
 							G.FUNCS.exit_overlay_menu_code()
 							ccl(self)
-							if G.GAME.CODE_DESTROY_CARD then
-								G.GAME.CODE_DESTROY_CARD:start_dissolve()
-								G.GAME.CODE_DESTROY_CARD = nil
-							end
 						else
 							G.GAME.USING_CODE = true
 							G.GAME.USING_POINTER = true
@@ -508,6 +505,7 @@ local pointer = {
 					G.GAME.USING_CODE = false
 					G.GAME.USING_POINTER = false
 					G.DEBUG_POINTER = false
+					return true
 				end
 			end
 			if not current_card then -- if card isn't created yet, try playing cards
@@ -759,6 +757,7 @@ local pointer = {
 						end,
 					}))
 					draw_card(G.play, G.deck, 90, "up", nil)
+					return true
 				end
 			end
 		end
