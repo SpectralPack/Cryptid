@@ -40,7 +40,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		end
 	end
 	if G.SETTINGS.language == "en-us" then
-		if #scoring_hand > 5 and (text == "Flush Five" or text == "Five of a Kind") then
+		if #scoring_hand > 5 and (text == "Flush Five" or text == "Five of a Kind" or text == "bunc_Spectrum Five") then
 			local rank_array = {}
 			local county = 0
 			for i = 1, #scoring_hand do
@@ -110,7 +110,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 				return str_ret
 			end
 			-- text gets stupid small at 100+ anyway
-			loc_disp_text = (text == "Flush Five" and "Flush " or "")
+			loc_disp_text = (text == "Flush Five" and "Flush " or text == "bunc_Spectrum Five" and "Spectrum " or "")
 				.. (
 					(county < 1000 and create_num_chunk(county) or "Thousand")
 					.. (text == "Five of a Kind" and " of a Kind" or "")
@@ -143,6 +143,10 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_Declare2"] = G.GAME.hands.cry_Declare2
 			and G.GAME.hands.cry_Declare2.declare_cards
 			and #G.GAME.hands.cry_Declare2.declare_cards,
+		["bunc_Spectrum"] = 5,
+		["bunc_Straight Spectrum"] = 5,
+		["bunc_Spectrum House"] = 5,
+		["bunc_Spectrum Five"] = 5,
 	}
 	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
 	if hand_table[text] and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
