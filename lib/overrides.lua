@@ -2439,7 +2439,14 @@ function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_
 	local numerator = base_numerator * mod
 	if trigger_obj and trigger_obj.ability and trigger_obj.ability.cry_rigged then
 		SMODS.post_prob = SMODS.post_prob or {}
-    		SMODS.post_prob[#SMODS.post_prob+1] = {pseudorandom_result = true, result = true, trigger_obj = trigger_obj, numerator = base_denominator, denominator = base_denominator, identifier = identifier or seed}
+		SMODS.post_prob[#SMODS.post_prob + 1] = {
+			pseudorandom_result = true,
+			result = true,
+			trigger_obj = trigger_obj,
+			numerator = base_denominator,
+			denominator = base_denominator,
+			identifier = identifier or seed,
+		}
 		return true
 	end
 	return pseudorandom_probability_ref(trigger_obj, seed, numerator, base_denominator, identifier)
