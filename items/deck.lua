@@ -49,7 +49,7 @@ local equilibrium = {
 	name = "cry-Equilibrium",
 	key = "equilibrium",
 	order = 3,
-	config = { vouchers = { "v_overstock_norm", "v_overstock_plus" } },
+	config = { vouchers = { "v_overstock_norm" } },
 	pos = { x = 0, y = 1 },
 	atlas = "atlasdeck",
 	apply = function(self)
@@ -84,7 +84,7 @@ local misprint = {
 	name = "cry-Misprint",
 	key = "misprint",
 	order = 4,
-	config = { cry_misprint_min = 0.1, cry_misprint_max = 10 },
+	config = { cry_misprint_min = 0.25, cry_misprint_max = 4 },
 	pos = { x = 4, y = 2 },
 	atlas = "atlasdeck",
 	apply = function(self)
@@ -217,29 +217,24 @@ local wormhole = {
 	name = "cry-Wormhole",
 	key = "wormhole",
 	order = 6,
-	config = { cry_negative_rate = 20, joker_slot = -2 },
 	pos = { x = 3, y = 4 },
 	atlas = "atlasdeck",
-	apply = function(self)
-		G.GAME.modifiers.cry_negative_rate = self.config.cry_negative_rate
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				if G.jokers then
-					local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
-					card:add_to_deck()
-					card:start_materialize()
-					G.jokers:emplace(card)
-					return true
-				end
-			end,
-		}))
-	end,
-	init = function(self)
-		SMODS.Edition:take_ownership("negative", {
-			get_weight = function(self)
-				return self.weight * (G.GAME.modifiers.cry_negative_rate or 1)
-			end,
-		}, true)
+	calculate = function(self, back, context)
+		if
+			context.end_of_round
+			and not context.individual
+			and not context.repetition
+			and not context.blueprint
+			and G.GAME.blind
+			and G.GAME.blind.config.blind
+			and G.GAME.blind.config.blind.boss
+		then
+			if G.jokers.cards[1] and G.jokers.cards[1].config.center.rarity ~= "cry_exotic" then
+				Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
+					Cryptid.upgrade_rarity(card, "cry_wormhole")
+				end)
+			end
+		end
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -414,7 +409,7 @@ local critical = {
 				check = 2
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						play_sound("talisman_emult", 1)
+						play_sound("cry_emult", 1)
 						attention_text({
 							scale = 1.4,
 							text = localize("cry_critical_hit_ex"),
@@ -446,7 +441,7 @@ local critical = {
 			delay(0.6)
 			if check then
 				return {
-					Emult_mod = check,
+					e_mult = check,
 					colour = G.C.DARK_EDITION,
 				}
 			end
@@ -626,9 +621,6 @@ local antimatter = {
 			"set_cry_deck",
 		},
 	},
-	loc_vars = function(self, info_queue, center)
-		return { key = Cryptid.gameset_loc(self, { mainline = "balanced", modest = "balanced" }) }
-	end,
 	name = "cry-Antimatter",
 	order = 76,
 	key = "antimatter",
@@ -645,17 +637,13 @@ local antimatter = {
 	pos = { x = 2, y = 0 },
 	calculate = function(self, back, context)
 		if context.context ~= "final_scoring_step" then
-			Cryptid.antimatter_trigger(self, context, Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
+			Cryptid.antimatter_trigger(self, context, false)
 		else
-			return Cryptid.antimatter_trigger_final_scoring(
-				self,
-				context,
-				Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness"
-			)
+			return Cryptid.antimatter_trigger_final_scoring(self, context, false)
 		end
 	end,
 	apply = function(self)
-		Cryptid.antimatter_apply(Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness")
+		Cryptid.antimatter_apply(false)
 	end,
 	atlas = "atlasdeck",
 	init = function(self)
@@ -811,7 +799,7 @@ local antimatter = {
 				or skip
 			then
 				G.GAME.modifiers.cry_misprint_min = 1
-				G.GAME.modifiers.cry_misprint_max = 10
+				G.GAME.modifiers.cry_misprint_max = 4
 			end
 			-- Infinite Deck
 			if
@@ -830,29 +818,6 @@ local antimatter = {
 					end,
 				}))
 				G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + 1
-			end
-			-- Wormhole deck
-			if
-				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_wormhole", "wins", 8) or 0)
-					~= 0
-				or skip
-			then
-				G.GAME.modifiers.cry_negative_rate = 20
-
-				if Cryptid.enabled("set_cry_exotic") == true then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if G.jokers then
-								local card =
-									create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormhole")
-								card:add_to_deck()
-								card:start_materialize()
-								G.jokers:emplace(card)
-								return true
-							end
-						end,
-					}))
-				end
 			end
 			-- Redeemed deck
 			if
@@ -931,7 +896,7 @@ local antimatter = {
 						update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
 						G.E_MANAGER:add_event(Event({
 							func = function()
-								play_sound("talisman_emult", 1)
+								play_sound("cry_emult", 1)
 								attention_text({
 									scale = 1.4,
 									text = localize("cry_critical_hit_ex"),
@@ -1083,6 +1048,22 @@ local antimatter = {
 							return true
 						end,
 					}))
+				end
+				--Wormhole Deck
+				if
+					context.end_of_round
+					and not context.individual
+					and not context.repetition
+					and not context.blueprint
+					and G.GAME.blind
+					and G.GAME.blind.config.blind
+					and G.GAME.blind.config.blind.boss
+				then
+					if G.jokers.cards[1] and G.jokers.cards[1].config.center.rarity ~= "cry_exotic" then
+						Cryptid.with_deck_effects(G.jokers.cards[1], function(card)
+							Cryptid.upgrade_rarity(card, "cry_wormhole")
+						end)
+					end
 				end
 			end
 		end

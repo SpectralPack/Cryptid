@@ -260,20 +260,11 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 		end
 	end
 	if
-		(not force_reset or G.GAME.modifiers.cry_jkr_misprint_mod)
+		not force_reset
 			and (G.GAME.modifiers.cry_misprint_min or override or card.ability.set == "Joker")
 			and not stack
 		or not Card.no(card, "immutable", true)
 	then
-		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
-			if not override then
-				override = {}
-			end
-			override.min = override.min or G.GAME.modifiers.cry_misprint_min or 1
-			override.max = override.max or G.GAME.modifiers.cry_misprint_max or 1
-			override.min = override.min * G.GAME.modifiers.cry_jkr_misprint_mod
-			override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
-		end
 		if G.GAME.modifiers.cry_misprint_min or override and override.min then
 			Cryptid.misprintize_tbl(
 				card.config.center_key,
@@ -391,8 +382,8 @@ function Cryptid.manipulate(card, args)
 	if not Card.no(card, "immutable", true) or (args and args.bypass_checks) then
 		if not args then
 			return Cryptid.manipulate(card, {
-				min = (G.GAME.modifiers.cry_misprint_min or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
-				max = (G.GAME.modifiers.cry_misprint_max or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
+				min = (G.GAME.modifiers.cry_misprint_min or 1),
+				max = (G.GAME.modifiers.cry_misprint_max or 1),
 				type = "X",
 				dont_stack = true,
 				no_deck_effects = true,
@@ -437,7 +428,7 @@ function Cryptid.manipulate(card, args)
 								end
 							end
 						elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
-							if to_big(card.ability[i]) > to_big(v) then
+							if to_big(card.ability[i] or 0) > to_big(v or 0) then
 								card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
 							end
 						end
@@ -532,7 +523,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				end
 			elseif args.type == "^" then
 				num = to_big(num) ^ new_value
-			elseif args.type == "hyper" then
+			elseif args.type == "hyper" and SMODS.Mods.Talisman and SMODS.Mods.Talisman.can_load then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
 					num = to_big(num):arrow(args.value.arrows, to_big(new_value))
 				end
@@ -550,7 +541,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				end
 			elseif args.type == "^" then
 				num = to_big(num) ^ args.value
-			elseif args.type == "hyper" then
+			elseif args.type == "hyper" and SMODS.Mods.Talisman and SMODS.Mods.Talisman.can_load then
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end
 		end
