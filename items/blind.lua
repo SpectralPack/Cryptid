@@ -925,14 +925,14 @@ local landlord = {
 	pos = { x = 0, y = 2 },
 	dollars = 5,
 	boss = {
-		min = 1,
+		min = 4,
 		max = 666666,
 	},
 	atlas = "blinds_two",
 	order = 26,
 	boss_colour = HEX("c89f13"),
 	calculate = function(self, blind, context)
-		if context.after then
+		if context.after and not G.GAME.blind.disabled then
 			local jokers = {}
 			for i, v in pairs(G.jokers.cards) do
 				if not v.ability.rental then
