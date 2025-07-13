@@ -4342,7 +4342,7 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-							SMODS.pseudorandom_probability(
+								SMODS.pseudorandom_probability(
 									card,
 									1,
 									card and card.ability.extra.odds or self.config.extra.odds
@@ -7820,7 +7820,7 @@ local busdriver = {
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			local oddy = math.max(1, card.ability.extra.odds)
 			if
-			SMODS.pseudorandom_probability(
+				SMODS.pseudorandom_probability(
 					card,
 					"cry_busdriver",
 					3,
