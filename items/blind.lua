@@ -931,25 +931,22 @@ local landlord = {
 	atlas = "blinds_two",
 	order = 26,
 	boss_colour = HEX("c89f13"),
-	calculate = function(self, blind, context)
-		if context.after and not G.GAME.blind.disabled then
-			local jokers = {}
-			for i, v in pairs(G.jokers.cards) do
-				if not v.ability.rental then
-					jokers[#jokers + 1] = v
-				end
+	debuff_hand = function(self, cards, hand, handname, check)
+		G.GAME.blind.triggered = false
+		local jokers = {}
+		for i, v in pairs(G.jokers.cards) do
+			if not v.ability.rental then
+				jokers[#jokers + 1] = v
 			end
-			if #jokers > 0 then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local joker = pseudorandom_element(jokers, pseudoseed("cry_landlord"))
-						joker.ability.rental = true
-						joker:juice_up()
-						return true
-					end,
-				}))
-			end
+		end
+		if #jokers > 0 then
 			G.GAME.blind.triggered = true
+			if not check then
+				local joker = pseudorandom_element(jokers, pseudoseed("cry_landlord"))
+				joker:set_rental(true)
+				joker:juice_up()
+				G.GAME.blind:wiggle()
+			end
 		end
 	end,
 }
