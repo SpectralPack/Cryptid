@@ -3880,7 +3880,7 @@ local quantify = {
 									func = function()
 										G.jokers:emplace(card)
 										return true
-									end
+									end,
 								}))
 							end
 						end
