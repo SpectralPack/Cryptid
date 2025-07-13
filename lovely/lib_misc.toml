@@ -134,6 +134,7 @@ Cryptid.aliases = {}
 Cryptid.pointerblist = {}
 Cryptid.pointerblistrarity = {}
 Cryptid.mod_gameset_whitelist = {}
+Cryptid.ascension_numbers = {}
 
 Cryptid.pin_debuff = {}
 Cryptid.circus_rarities = {
