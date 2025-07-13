@@ -1451,3 +1451,9 @@ function Cryptid.declare_hand_ascended_counter(hand, declarehand)
 	end
 	return total
 end
+
+function Cryptid.get_next_tag(override)
+	if next(SMODS.find_card("j_cry_kittyprinter")) then
+		return "tag_cry_cat"
+	end
+end

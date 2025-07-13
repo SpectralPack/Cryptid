@@ -117,9 +117,11 @@ if (SMODS.Mods["AntePreview"] or {}).can_load then
 			big = get_new_boss()
 		end
 		local predictions = predict_hook()
-		if next(SMODS.find_card("j_cry_kittyprinter")) then
-			predictions.Small.tag = "tag_cry_cat"
-			predictions.Big.tag = "tag_cry_cat"
+		local s = Cryptid.get_next_tag("Small")
+		local b = Cryptid.get_next_tag("Big")
+		if s or b then
+			predictions.Small.tag = s or predictions.Small.tag
+			predictions.Big.tag = b or predictions.Big.tag
 		end
 		if G.GAME.modifiers.cry_no_tags then
 			for _, pred in pairs(predictions) do

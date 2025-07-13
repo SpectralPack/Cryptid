@@ -257,7 +257,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''add_tag(_tag.config.ref_table)'''
 position = "at"
 payload = '''
-add_tag( next(SMODS.find_card('j_cry_kittyprinter')) and Tag('tag_cry_cat') or _tag.config.ref_table, true)
+add_tag(Cryptid.get_next_tag or _tag.config.ref_table, true)
 '''
 match_indent = true
 
@@ -436,8 +436,9 @@ target = "functions/UI_definitions.lua"
 pattern = "local _tag = Tag(G.GAME.round_resets.blind_tags[blind_choice], nil, blind_choice)"
 position = "after"
 payload = '''
-if next(SMODS.find_card('j_cry_kittyprinter')) then
-	_tag = Tag('tag_cry_cat', nil, blind_choice)
+local tag = Cryptid.get_next_tag()
+if tag then
+	_tag = Tag(tag, nil, blind_choice)
 end
 '''
 match_indent = true

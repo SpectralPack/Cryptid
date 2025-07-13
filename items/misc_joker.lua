@@ -9399,6 +9399,12 @@ local pity_prize = {
 			repeat
 				tag_key = get_next_tag_key("cry_pity_prize")
 			until tag_key ~= "tag_boss" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
+
+			local tag = Cryptid.get_next_tag()
+			if tag then
+				tag_key = tag
+			end
+
 			-- this is my first time seeing repeat... wtf
 			local tag = Tag(tag_key)
 			tag.ability.shiny = Cryptid.is_shiny()
