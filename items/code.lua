@@ -4163,8 +4163,9 @@ local alttab = {
 				ret = "???"
 			end
 		end
-		if next(SMODS.find_card("j_cry_kittyprinter")) then
-			ret = localize({ type = "name_text", key = "tag_cry_cat", set = "Tag" })
+		local tag = Cryptid.get_next_tag()
+		if tag then
+			ret = localize({ type = "name_text", key = tag, set = "Tag" })
 		end
 		return { vars = { ret } }
 	end,
@@ -4181,8 +4182,9 @@ local alttab = {
 				play_sound("tarot1")
 				local tag = nil
 				local type = G.GAME.blind:get_type()
-				if next(SMODS.find_card("j_cry_kittyprinter")) then
-					tag = Tag("tag_cry_cat")
+				local tag_key = Cryptid.get_next_tag()
+				if tag_Key then
+					tag = Tag(tag_key)
 				elseif type == "Boss" then
 					tag = Tag(get_next_tag_key())
 				else
@@ -4206,8 +4208,9 @@ local alttab = {
 					play_sound("tarot1")
 					local tag = nil
 					local type = G.GAME.blind:get_type()
-					if next(SMODS.find_card("j_cry_kittyprinter")) then
-						tag = Tag("tag_cry_cat")
+					local tag_key = Cryptid.get_next_tag()
+					if tag_Key then
+						tag = Tag(tag_key)
 					elseif type == "Boss" then
 						tag = Tag(get_next_tag_key())
 					else
