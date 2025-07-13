@@ -431,7 +431,11 @@ local azure_seal = {
 								break
 							end
 						end
-						if G.GAME.last_hand_played == "cry_Declare0" or G.GAME.last_hand_played == "cry_Declare1" or G.GAME.last_hand_played == "cry_Declare2" then
+						if
+							G.GAME.last_hand_played == "cry_Declare0"
+							or G.GAME.last_hand_played == "cry_Declare1"
+							or G.GAME.last_hand_played == "cry_Declare2"
+						then
 							_planet = "c_cry_voxel"
 						end
 					end
