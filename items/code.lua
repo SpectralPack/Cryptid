@@ -3487,7 +3487,9 @@ local log = {
 		function G.FUNCS.log_antevoucher()
 			G.FUNCS.log_cancel()
 			local pseudorandom = copy_table(G.GAME.pseudorandom)
+			G.GAME.round_resets.ante = G.GAME.round_resets.ante + 1
 			local bl = get_new_boss()
+			G.GAME.round_resets.ante = G.GAME.round_resets.ante - 1
 			G.GAME.LOG_BOSS = bl
 			local voucher = SMODS.get_next_vouchers()
 			G.GAME.LOG_VOUCHER = voucher
