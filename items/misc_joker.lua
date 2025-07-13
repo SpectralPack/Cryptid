@@ -7928,9 +7928,12 @@ local busdriver = {
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			local oddy = math.max(1, card.ability.extra.odds)
 			if
-				pseudorandom("busdriver")
-				< 1
-					- (1 / (cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) * oddy))
+				SMODS.pseudorandom_probability(
+					card,
+					"cry_busdriver",
+					3,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				return {
 					message = localize({
@@ -9488,10 +9491,7 @@ local digitalhallucinations = {
 
 		if
 			context.open_booster
-			and (
-				pseudorandom("digi")
-				< cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged) / card.ability.odds
-			)
+			and (SMODS.pseudorandom_probability(card, "digi", 1, card and card.ability.odds or self.config.odds))
 		then
 			local boosty = context.card
 			-- finally mod compat?

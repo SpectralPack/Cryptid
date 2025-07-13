@@ -565,8 +565,12 @@ local notebook = {
 			end
 			if
 				to_number(jollycount) >= to_number(card.ability.extra.jollies) --if there are 5 or more jolly jokers
-				or pseudorandom("cry_notebook")
-					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
+				or SMODS.pseudorandom_probability(
+					card,
+					"cry_notebook",
+					1,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				card.ability.immutable.slots = to_number(
 					math.min(
@@ -842,9 +846,12 @@ local scrabble = {
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
 			if
-				pseudorandom("scrabbleother")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
+				SMODS.pseudorandom_probability(
+					card,
+					"scrabbleother",
+					1,
+					card and card.ability.extra.odds or self.config.extra.odds
+				)
 			then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")

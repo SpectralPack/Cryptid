@@ -15,10 +15,6 @@ function eval_card(card, context)
 		return {}, {}
 	end
 	-- Store old probability for later reference
-	local ggpn = G.GAME.probabilities.normal
-	if card.ability.cry_rigged then
-		G.GAME.probabilities.normal = 1e9
-	end
 	local ret, post = ec(card, context)
 	if card.ability.cry_rigged then
 		G.GAME.probabilities.normal = ggpn
@@ -461,10 +457,6 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 									for r = 1, rep.repetitions do
 										card_eval_status_text(rep.card, "jokers", nil, nil, nil, rep)
 										-- now, same thing as before, apply the scale-joker
-										local ggpn = G.GAME.probabilities.normal
-										if G.jokers.cards[i].ability.cry_rigged then
-											G.GAME.probabilities.normal = 1e9
-										end
 										local o = obj:cry_scale_mod(
 											G.jokers.cards[i],
 											self,
@@ -473,9 +465,6 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 											orig_scale_base,
 											new_scale_base
 										)
-										if G.jokers.cards[i].ability.cry_rigged then
-											G.GAME.probabilities.normal = ggpn
-										end
 
 										if o then
 											if #dbl_info.scaler[info_i] == 2 then
@@ -815,9 +804,6 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 								orig_scale_base,
 								new_scale_base
 							)
-							if G.jokers.cards[i].ability.cry_rigged then
-								G.GAME.probabilities.normal = ggpn
-							end
 
 							if o then
 								if #dbl_info.scaler[info_i] == 2 then

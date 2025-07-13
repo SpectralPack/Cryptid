@@ -516,11 +516,6 @@ function Game:update(dt)
 		G.STATE = G.STATES.SELECTING_HAND
 		G.STATE_COMPLETE = false
 	end
-	if G.STATE == G.STATES.NEW_ROUND or G.STATE == G.STATES.HAND_PLAYED then
-		none_eval = none_eval + dt
-	else
-		none_eval = 0
-	end
 end
 
 -- All the scattered set_cost hooks from all the pre refactor files moved into one hook

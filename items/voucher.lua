@@ -898,8 +898,11 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	pos = { x = 5, y = 2 },
 	requires = { "v_petroglyph" },
 	pools = { ["Tier3"] = true },
-	loc_vars = function(self, info_queue)
-		return { vars = { Cryptid.asteroglyph_ante() } }
+	config = {
+		ante_mod = 2,
+	},
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.ante_mod } }
 	end,
 	redeem = function(self)
 		local mod = -G.GAME.round_resets.ante + Cryptid.asteroglyph_ante()
