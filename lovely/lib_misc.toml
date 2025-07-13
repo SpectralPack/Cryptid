@@ -163,7 +163,9 @@ end
 '''
 position = "after"
 payload = '''
-SMODS.calculate_context{cry_creating_card = true, card = card}
+if G.deck then
+	SMODS.calculate_context{cry_creating_card = true, card = card}
+end
 '''
 match_indent = true
 

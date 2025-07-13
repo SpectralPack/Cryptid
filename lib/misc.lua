@@ -1014,6 +1014,7 @@ function Cryptid.get_circus_description()
 	local desc = {}
 	local ind = 1
 	local extra_rarities = {}
+	if not Cryptid.circus_rarities then Cryptid.circus_rarities = {} end
 	for i, v in pairs(Cryptid.circus_rarities) do
 		if not v.hidden then
 			extra_rarities[#extra_rarities + 1] = v
