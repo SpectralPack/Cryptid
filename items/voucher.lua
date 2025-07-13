@@ -914,7 +914,7 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.ante_mod } }
 	end,
-	redeem = function(self)
+	redeem = function(self, card)
 		local mod = -card.ability.ante_mod
 		ease_ante(mod)
 		G.E_MANAGER:add_event(Event({

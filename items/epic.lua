@@ -1401,7 +1401,7 @@ local curse_sob = {
 					or context.buying_card
 					or context.skip_blind
 					or context.using_consumeable
-					or context.selling_card
+					or (context.selling_card and context.card.config.center.key ~= "j_obelisk")
 					or context.setting_blind
 					or context.skipping_booster
 					or context.open_booster

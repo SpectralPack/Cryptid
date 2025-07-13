@@ -1073,18 +1073,18 @@ function Cryptid.add_circus_rarity(rarity, dontreload)
 end
 
 function Cryptid.get_paved_joker()
-	if G.hand then
+	if G.hand and G.play then
 		local total = 0
 		for i, v in pairs(SMODS.find_card("j_cry_paved_joker")) do
 			total = total + v.ability.extra
 		end
 		local stones = 0
-		for i, v in pairs(G.hand.highlighted) do
+		for i, v in pairs(G.hand.highlighted or {}) do
 			if SMODS.has_no_rank(v) then
 				stones = stones + 1
 			end
 		end
-		for i, v in pairs(G.play.cards) do
+		for i, v in pairs(G.play.cards or {}) do
 			if SMODS.has_no_rank(v) then
 				stones = stones + 1
 			end
