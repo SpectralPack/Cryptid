@@ -850,7 +850,7 @@ local scrabble = {
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
 			if
-			SMODS.pseudorandom_probability(
+				SMODS.pseudorandom_probability(
 					card,
 					"scrabbleother",
 					1,
