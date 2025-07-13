@@ -2570,7 +2570,7 @@ return {
 						card,
 						"cry_abstract_destroy2",
 						1,
-						card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round
+						card and card.ability and card.ability.extra and card.ability.extra.odds_after_round or self.config.extra.odds_after_round or 4
 					)
 				then
 					self.ability.extra.marked = true
