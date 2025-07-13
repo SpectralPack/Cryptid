@@ -237,7 +237,7 @@ SMODS.DrawStep({
 		local card_type = self.ability.set or "None"
 		if card_type ~= "Default" and card_type ~= "Enhanced" and self.playing_card and self.facing == "front" then
 			interceptorSprite = interceptorSprite
-				or Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_clarifier"], { x = 0, y = 0 })
+				or Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_misc"], { x = 3, y = 1 })
 			interceptorSprite.role.draw_major = self
 			interceptorSprite:draw_shader("dissolve", nil, nil, nil, self.children.center)
 		end
