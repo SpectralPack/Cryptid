@@ -2195,7 +2195,7 @@ local hooked = {
 					local results = Cryptid.forcetrigger(G.jokers.cards[i], context)
 					if results and results.jokers then
 						card.ability.cry_hook_triggers_left = card.ability.cry_hook_triggers_left - 1
-						if to_big(card.ability.cry_hook_triggers_left) <= 0 then
+						if to_big(card.ability.cry_hook_triggers_left) <= to_big(0) then
 							G.E_MANAGER:add_event(Event({
 								func = function()
 									card.ability.cry_hook_id = nil
