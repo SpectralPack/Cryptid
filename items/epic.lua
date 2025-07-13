@@ -2315,6 +2315,7 @@ local clockwork = { -- Steel Support: The Joker
 			and not context.blueprint_card
 			and not context.retrigger_joker
 			and card.ability.immutable.counters.c3 == 0
+			and context.full_hand[1]
 		then -- effect 3
 			context.full_hand[1]:set_ability(G.P_CENTERS["m_steel"], nil, true)
 		end
