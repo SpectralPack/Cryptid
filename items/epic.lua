@@ -920,7 +920,7 @@ local boredom = {
 			and card.cry_boredom_marked == context.other_card
 		then
 			if
-				pseudorandom_probability(
+				SMODS.pseudorandom_probability(
 					card,
 					"cry_boredom_joker",
 					1,
@@ -939,7 +939,7 @@ local boredom = {
 		if
 			context.repetition
 			and context.cardarea == G.play
-			and pseudorandom_probability(
+			and SMODS.pseudorandom_probability(
 				card,
 				"cry_boredom_card",
 				1,
