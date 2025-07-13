@@ -4342,7 +4342,7 @@ local rnjoker = {
 							end
 						elseif j.cond == "odds" then
 							if
-							SMODS.(
+							SMODS.pseudorandom_probability(
 									card,
 									1,
 									card and card.ability.extra.odds or self.config.extra.odds
@@ -9395,7 +9395,7 @@ local digitalhallucinations = {
 
 		if
 			context.open_booster
-			and (pseudorandom_probability(card, "digi", 1, card and card.ability.odds or self.config.odds))
+			and (SMODS.pseudorandom_probability(card, "digi", 1, card and card.ability.odds or self.config.odds))
 		then
 			local boosty = context.card
 			-- finally mod compat?
