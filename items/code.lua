@@ -3825,7 +3825,7 @@ local quantify = {
 									or {}
 								local card = create_card(
 									kind or tbl.set,
-									G.jokers,
+									nil,
 									tbl.legendary,
 									tbl.rarity,
 									tbl.skip_materialize,
@@ -3833,10 +3833,16 @@ local quantify = {
 									tbl.forced_key,
 									"cry_quantify_booster"
 								)
-								G.jokers:emplace(card)
 								if to_big(self.ability.choose) <= to_big(0) then
 									self:start_dissolve()
 								end
+								G.E_MANAGER:add_event(Event({
+									trigger = "before",
+									func = function()
+										G.jokers:emplace(card)
+										return true
+									end,
+								}))
 							end
 						end
 					end

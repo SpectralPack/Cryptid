@@ -424,7 +424,13 @@ local azure_seal = {
 							end
 						end
 					end
-
+					if
+						G.GAME.last_hand_played == "cry_Declare0"
+						or G.GAME.last_hand_played == "cry_Declare1"
+						or G.GAME.last_hand_played == "cry_Declare2"
+					then
+						_planet = "c_cry_voxel"
+					end
 					for i = 1, self.config.planets_amount do
 						local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
 
