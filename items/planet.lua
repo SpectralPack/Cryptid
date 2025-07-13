@@ -588,7 +588,7 @@ local planetlua = {
 			and (
 				SMODS.pseudorandom_probability(
 					card,
-					"nstar",
+					"nstar", --this is how it was before i didnt make it use the same seed
 					1,
 					card and card.ability.extra.odds or self.config.extra.odds
 				)

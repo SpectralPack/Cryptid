@@ -69,7 +69,7 @@ local epic_tag = {
 				card.states.visible = false
 				tag:yep("+", G.C.RARITY.cry_epic, function()
 					card:start_materialize()
-					card.misprint_cost_fac = 1
+					card.misprint_cost_fac = 0.5
 					card:set_cost()
 					return true
 				end)
@@ -107,24 +107,14 @@ local schematic = {
 	config = { type = "store_joker_create" },
 	key = "schematic",
 	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] = { set = "Joker", key = "j_brainstorm" }
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card
-			if #G.jokers.cards == 0 then
-				tag:nope()
-				tag.triggered = true
-				return
-			end
-			local chosen_key = pseudorandom_element(G.jokers.cards, pseudoseed("schematic_tag")).config.center.key
-			local tries = 0
-			while G.GAME.banned_keys[chosen_key] and tries <= 10 do
-				chosen_key = pseudorandom_element(G.jokers.cards, pseudoseed("schematic_tag")).config.center.key
-				tries = tries + 1
-			end
-			if not G.GAME.banned_keys[chosen_key] then
-				card = create_card("Joker", context.area, nil, nil, nil, nil, chosen_key)
+			if not G.GAME.banned_keys["j_brainstorm"] then
+				card = create_card("Joker", context.area, nil, nil, nil, nil, "j_brainstorm")
 				create_shop_card_ui(card, "Joker", context.area)
 				card.states.visible = false
 				tag:yep("+", G.C.RED, function()
@@ -512,6 +502,7 @@ local memory = {
 				and self.key ~= "tag_cry_memory"
 				and self.key ~= "tag_cry_triple"
 				and self.key ~= "tag_cry_quadruple"
+				and self.key ~= "tag_cry_quintuple"
 				and self.key ~= "tag_ortalab_rewind"
 			then
 				G.GAME.cry_last_tag_used = self.key

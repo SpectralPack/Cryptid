@@ -5,6 +5,13 @@ return {
 				name = "Baraja de antimateria",
 				text = {
 					"Aplica las {C:legendary,E:1}ventajas{}",
+					"de {C:attention}todas{} las barajas",
+				},
+			},
+			b_cry_antimatter_balanced = {
+				name = "Baraja de antimateria",
+				text = {
+					"Aplica las {C:legendary,E:1}ventajas{}",
 					"de {C:attention}todas{} las barajas completadas",
 					"en la dificultad {C:gold}Pozo de oro{}",
 				},
@@ -885,7 +892,22 @@ return {
 				text = {
 					"Al venderse, aplica {C:dark_edition}Astral{}",
 					"y {C:attention}Perecedero{} a",
+					"un {C:attention}comodín{} aleatorio",
+				},
+			},
+			j_cry_astral_bottle_mainline = {
+				name = "Astral en una botella",
+				text = {
+					"Al venderse, aplica {C:dark_edition}Astral{}",
+					"y {C:attention}Perecedero{} a",
 					"diferentes {C:attention}comodines{} aleatorios",
+				},
+			},
+			j_cry_astral_bottle_madness = {
+				name = "Astral en una botella",
+				text = {
+					"Al venderse, aplica {C:dark_edition}Astral{}",
+					"a un {C:attention}comodín{} aleatorio",
 				},
 			},
 			j_cry_big_cube = {

@@ -456,15 +456,29 @@ function Cryptid.next_voucher_stickers(booster)
 		v["force"] = G.GAME.modifiers.cry_sticker_sheet_plus
 			or (G.GAME.modifiers.cry_force_sticker and G.GAME.modifiers.cry_force_sticker == k)
 	end
-	if G.GAME.modifiers.cry_sticker_sheet_plus or G.GAME.modifiers.cry_force_sticker then
+	if
+		G.GAME.modifiers.cry_any_stickers
+		or G.GAME.modifiers.cry_sticker_sheet_plus
+		or G.GAME.modifiers.cry_force_sticker
+	then
 		if (G.GAME.modifiers.enable_eternals_in_shop and checks.eternal.poll > odds) or checks.eternal.force then
 			ret.eternal = true
 		end
 		if
 			(
-				G.GAME.modifiers.enable_perishables_in_shop
-				and checks.eternal.poll > odds - rate
-				and checks.eternal.poll <= odds
+				G.GAME.modifiers.cry_eternal_perishable_compat
+				and (G.GAME.modifiers.enable_perishables_in_shop and checks.perishable.poll > odds)
+			) or checks.perishable.force
+		then -- still ehh? but way more understandable
+			ret.perishable = true
+		elseif
+			(
+				not G.GAME.modifiers.cry_eternal_perishable_compat
+				and (
+					G.GAME.modifiers.enable_perishables_in_shop
+					and checks.eternal.poll > odds - rate
+					and checks.eternal.poll <= odds
+				)
 			) or checks.perishable.force
 		then
 			ret.perishable = true
@@ -543,6 +557,25 @@ function Card:cry_calculate_voucher_perishable()
 	end
 end
 
+function Card:set_perishable(_perishable)
+	self.ability.perishable = nil
+	if
+		(self.config.center.perishable_compat or G.GAME.modifiers.cry_any_stickers)
+		and (not self.ability.eternal or G.GAME.modifiers.cry_eternal_perishable_compat)
+	then
+		self.ability.perishable = true
+		self.ability.perish_tally = G.GAME.perishable_rounds or 5
+	end
+end
+function Card:set_eternal(_eternal)
+	self.ability.eternal = nil
+	if
+		(self.config.center.eternal_compat or G.GAME.modifiers.cry_any_stickers)
+		and (not self.ability.perishable or G.GAME.modifiers.cry_eternal_perishable_compat)
+	then
+		self.ability.eternal = _eternal
+	end
+end
 function Card:calculate_banana()
 	if not self.ability.extinct then
 		if self.ability.banana and (pseudorandom("banana") < G.GAME.probabilities.normal / 10) then

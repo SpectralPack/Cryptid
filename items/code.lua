@@ -991,7 +991,10 @@ local payload = {
 	end,
 	can_bulk_use = true,
 	use = function(self, card, area, copier)
-		G.GAME.cry_payload = 3
+		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(card.ability.interest_mult) ^ to_big(number)
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
@@ -1210,50 +1213,27 @@ local rework = {
 	order = 406,
 	pos = { x = 10, y = 3 },
 	cost = 4,
-	loc_vars = function(self, info_queue, card)
-		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
-			return card.ability.set == "Joker"
-		end)
-		local jkr = cards[1]
-		if not jkr then
-			return {
-				vars = {
-					"None",
-				},
-			}
-		end
-		local found_index = 1
-		if jkr.edition then
-			for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
-				if v.key == jkr.edition.key then
-					found_index = i
-					break
-				end
-			end
-		end
-		found_index = found_index + 1
-		if found_index > #G.P_CENTER_POOLS.Edition then
-			found_index = found_index - #G.P_CENTER_POOLS.Edition
-		end
-		local rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
-		return { vars = { (G.localization.descriptions.Edition[rework_edition] or {}).name or "ERROR" } }
+	loc_vars = function(self, info_queue)
+		info_queue[#info_queue + 1] =
+			{ set = "Tag", key = "tag_cry_rework", specific_vars = { "[edition]", "[joker]", "n" } }
+		return { vars = {} }
 	end,
 	can_use = function(self, card)
 		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
 			return card.ability.set == "Joker"
 		end)
 		return #cards == 1
+			and not cards[1].ability.eternal
 			and cards[1].ability.name
-				~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or "Diet Cola")
+				~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or ("Diet Cola" or Card.get_gameset(
+					card
+				) == "madness"))
 	end,
 	use = function(self, card, area, copier)
 		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
 			return card.ability.set == "Joker"
 		end)
 		local jkr = cards[1]
-		if not jkr then
-			return
-		end
 		local found_index = 1
 		if jkr.edition then
 			for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
@@ -1267,13 +1247,22 @@ local rework = {
 		if found_index > #G.P_CENTER_POOLS.Edition then
 			found_index = found_index - #G.P_CENTER_POOLS.Edition
 		end
-		local rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
+		local tag = Tag("tag_cry_rework")
+		if not tag.ability then
+			tag.ability = {}
+		end
+		if jkr.config.center.key == "c_base" then
+			jkr.config.center.key = "j_scholar"
+		end
+		tag.ability.rework_key = jkr.config.center.key
+		tag.ability.rework_edition = G.P_CENTER_POOLS.Edition[found_index].key
+		add_tag(tag)
 		--SMODS.Tags.tag_cry_rework.apply(tag, {type = "store_joker_create"})
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
 			delay = 0.75,
 			func = function()
-				jkr:set_edition(rework_edition)
+				jkr:start_dissolve()
 				return true
 			end,
 		}))
@@ -1281,6 +1270,84 @@ local rework = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
+	end,
+}
+-- Rework Tag
+-- Upgraded edition refers to the next edition along in the collection; base -> foil -> holo -> poly -> negative -> etc
+local rework_tag = {
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
+		},
+		art = {
+			"HexaCryonic",
+		},
+		code = {
+			"Math",
+		},
+	},
+	dependencies = {
+		items = {
+			"c_cry_rework",
+		},
+	},
+	object_type = "Tag",
+	atlas = "tag_cry",
+	name = "cry-Rework Tag",
+	order = 610,
+	pos = { x = 0, y = 3 },
+	config = { type = "store_joker_create" },
+	key = "rework",
+	ability = { rework_edition = nil, rework_key = nil },
+	loc_vars = function(self, info_queue, tag)
+		local function p(w)
+			r = ""
+			local vowels = { "a", "e", "i", "o", "u" }
+			for i, v in ipairs(vowels) do
+				if string.sub(string.lower(w), 1, 1) == v then
+					r = "n"
+					break
+				end
+			end
+			return r
+		end
+		local ed = Cryptid.safe_get(tag, "ability", "rework_edition")
+				and localize({ type = "name_text", set = "Edition", key = tag.ability.rework_edition })
+			or "[" .. string.lower(localize("k_edition")) .. "]"
+		return {
+			vars = {
+				ed,
+				Cryptid.safe_get(tag, "ability", "rework_key")
+						and localize({ type = "name_text", set = "Joker", key = tag.ability.rework_key })
+					or "[" .. string.lower(localize("k_joker")) .. "]",
+				string.sub(ed, 1, 1) ~= "[" and p(ed) or "n",
+			},
+		}
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_create" then
+			local card = create_card("Joker", context.area, nil, nil, nil, nil, (tag.ability.rework_key or "j_scholar"))
+			create_shop_card_ui(card, "Joker", context.area)
+			card:set_edition((tag.ability.rework_edition or "e_foil"), true, nil, true)
+			card.states.visible = false
+			tag:yep("+", G.C.FILTER, function()
+				card:start_materialize()
+				return true
+			end)
+			tag.triggered = true
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.5,
+				func = function()
+					save_run() --fixes savescum bugs hopefully?
+					return true
+				end,
+			}))
+			return card
+		end
+	end,
+	in_pool = function()
+		return false
 	end,
 }
 -- ://Merge
@@ -1836,6 +1903,9 @@ local seed = {
 		local cards = Cryptid.get_highlighted_cards({ G.jokers, G.hand, G.consumeables, G.pack_cards }, card, 1, 1)
 		if cards[1] then
 			cards[1].ability.cry_rigged = true
+			if cards[1].config.center.key == "j_cry_googol_play" then
+				check_for_unlock({ type = "googol_play_rigged" })
+			end
 		end
 		if cards[1].area == G.hand then
 			G.E_MANAGER:add_event(Event({
@@ -2059,6 +2129,7 @@ local hook = {
 	gameset_config = {
 		modest = { disabled = true },
 		mainline = { disabled = false },
+		madness = { disabled = false },
 		experimental = { disabled = false },
 	},
 	dependencies = {
@@ -2091,8 +2162,6 @@ local hook = {
 				for _, v in ipairs(G.jokers.cards) do
 					if v.sort_id == card1.ability.cry_hook_id then
 						v.ability.cry_hooked = false
-						v.ability.cry_hook_triggers = 8
-						v.ability.cry_hook_triggers_left = 8
 					end
 				end
 			end
@@ -2100,8 +2169,6 @@ local hook = {
 				for _, v in ipairs(G.jokers.cards) do
 					if v.sort_id == card2.ability.cry_hook_id then
 						v.ability.cry_hooked = false
-						v.ability.cry_hook_triggers = 8
-						v.ability.cry_hook_triggers_left = 8
 					end
 				end
 			end
@@ -2109,10 +2176,6 @@ local hook = {
 			card2.ability.cry_hooked = true
 			card1.ability.cry_hook_id = card2.sort_id
 			card2.ability.cry_hook_id = card1.sort_id
-			card1.ability.cry_hook_triggers = 8
-			card1.ability.cry_hook_triggers_left = 8
-			card2.ability.cry_hook_triggers = 8
-			card2.ability.cry_hook_triggers_left = 8
 		end
 	end,
 	init = function(self)
@@ -2163,13 +2226,7 @@ local hooked = {
 			end
 			var = var or ("[no joker found - " .. (card.ability.cry_hook_id or "nil") .. "]")
 		end
-		return {
-			vars = {
-				var or "hooked Joker",
-				card.ability.cry_hook_triggers or 8,
-				card.ability.cry_hook_triggers_left or 8,
-			},
-		}
+		return { vars = { var or "hooked Joker" } }
 	end,
 	key = "cry_hooked",
 	no_sticker_sheet = true,
@@ -2186,28 +2243,10 @@ local hooked = {
 			and not context.forcetrigger
 			and not context.other_context.forcetrigger
 		then
-			if not card.ability.cry_hook_triggers_left then
-				card.ability.cry_hook_triggers_left = 8
-				card.ability.cry_hook_triggers = 8
-			end
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].sort_id == card.ability.cry_hook_id then
 					local results = Cryptid.forcetrigger(G.jokers.cards[i], context)
 					if results and results.jokers then
-						card.ability.cry_hook_triggers_left = card.ability.cry_hook_triggers_left - 1
-						if to_big(card.ability.cry_hook_triggers_left) <= 0 then
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									card.ability.cry_hook_id = nil
-									card.ability.cry_hooked = nil
-									G.jokers.cards[i].ability.cry_hook_id = nil
-									G.jokers.cards[i].ability.cry_hooked = nil
-									G.jokers.cards[i].ability.cry_hook_triggers_left = 8
-									card.ability.cry_hook_triggers_left = 8
-									return true
-								end,
-							}))
-						end
 						return results.jokers
 					end
 				end
@@ -4253,8 +4292,7 @@ local ctrl_v = {
 	end,
 	can_use = function(self, card)
 		local cards = Cryptid.get_highlighted_cards({ G.hand, G.consumeables, G.pack_cards }, card, 1, 1, function(card)
-			return (card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced")
-				and not card.config.center.hidden
+			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
 		end)
 		return #cards == 1
 	end,
@@ -4741,7 +4779,7 @@ local encoded = {
 	end,
 }
 -- Code Joker
--- Creates a Code card when starting blind
+-- Creates a Negative Code card when starting blind
 local CodeJoker = {
 	dependencies = {
 		items = {
@@ -4753,27 +4791,39 @@ local CodeJoker = {
 	name = "cry-CodeJoker",
 	key = "CodeJoker",
 	pos = { x = 2, y = 4 },
+	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
+		return { key = Cryptid.gameset_loc(self, { exp_modest = "modest" }) }
+	end,
 	extra_gamesets = { "exp_modest" },
 	rarity = "cry_epic",
 	cost = 11,
-	order = 302,
+	order = 301,
 	blueprint_compat = true,
 	demicoloncompat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
-			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				play_sound("timpani")
-				local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
-				card:add_to_deck()
-				G.consumeables:emplace(card)
-				card:juice_up(0.3, 0.5)
-				return nil, true
-			end
+		if
+			context.setting_blind
+			and not (context.blueprint_card or self).getting_sliced
+			and (G.GAME.blind:get_type() == "Boss" or Cryptid.gameset(card) ~= "exp_modest")
+		then
+			play_sound("timpani")
+			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
+			card:set_edition({
+				negative = true,
+			})
+			card:add_to_deck()
+			G.consumeables:emplace(card)
+			card:juice_up(0.3, 0.5)
+			return nil, true
 		end
 		if context.forcetrigger then
 			play_sound("timpani")
 			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
+			card:set_edition({
+				negative = true,
+			})
 			card:add_to_deck()
 			G.consumeables:emplace(card)
 			card:juice_up(0.3, 0.5)
@@ -4828,9 +4878,10 @@ local copypaste = {
 	name = "cry-copypaste",
 	key = "copypaste",
 	pos = { x = 3, y = 4 },
-	order = 303,
+	order = 302,
 	config = {
 		extra = {
+			odds = 2,
 			ckt = nil,
 		},
 	}, -- what is a ckt
@@ -4838,11 +4889,13 @@ local copypaste = {
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or 2)
 		return {
 			vars = {
-				card.ability.extra.ckt and localize("cry_inactive") or localize("cry_active"),
-			},
-			key = Cryptid.gameset_loc(self, { exp_modest = "modest" }),
+				num,
+				denom,
+			}, -- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+			key = Cryptid.gameset_loc(self, { madness = "madness", exp_modest = "modest" }),
 		}
 	end,
 	atlas = "atlasepic",
@@ -4877,26 +4930,36 @@ local copypaste = {
 			and not context.consumeable.beginning_end
 			and not card.ability.extra.ckt
 			and Cryptid.gameset(card) ~= "exp_modest"
-			and not card.ability.used
 		then
 			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local cards = copy_card(context.consumeable)
-						cards:add_to_deck()
-						G.consumeables:emplace(cards)
-						return true
-					end,
-				}))
-				card_eval_status_text(
-					context.blueprint_cards or card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_copied_ex") }
-				)
-				card.ability.extra.ckt = true
+				if
+					SMODS.pseudorandom_probability(
+						card,
+						"cry_copypaste_joker",
+						1,
+						card and card.ability.extra.odds or 2
+					)
+				then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local cards = copy_card(context.consumeable)
+							cards:add_to_deck()
+							G.consumeables:emplace(cards)
+							return true
+						end,
+					}))
+					card_eval_status_text(
+						context.blueprint_cards or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_copied_ex") }
+					)
+					if Card.get_gameset(card) ~= "madness" then
+						card.ability.extra.ckt = true
+					end
+				end
 			end
 		elseif
 			context.end_of_round
@@ -4943,7 +5006,7 @@ local cut = {
 	pos = { x = 2, y = 2 },
 	rarity = 2,
 	cost = 7,
-	order = 304,
+	order = 303,
 	blueprint_compat = true,
 	perishable_compat = false,
 	demicoloncompat = true,
@@ -5052,7 +5115,7 @@ local blender = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	atlas = "atlasthree",
-	order = 305,
+	order = 304,
 	calculate = function(self, card, context)
 		if
 			context.using_consumeable
@@ -5107,7 +5170,7 @@ local python = {
 	perishable_compat = false,
 	demicoloncompat = true,
 	atlas = "atlasthree",
-	order = 306,
+	order = 305,
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
@@ -5198,6 +5261,7 @@ local code_cards = {
 	malware,
 	crynperror,
 	rework,
+	rework_tag,
 	merge,
 	commit,
 	machinecode,

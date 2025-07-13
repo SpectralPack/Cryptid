@@ -523,18 +523,6 @@ SMODS.Sound({
 	path = "e_golden.ogg",
 })
 SMODS.Sound({
-	key = "emult",
-	path = "ExponentialMult.wav",
-})
-SMODS.Sound({
-	key = "echips",
-	path = "ExponentialChips.wav",
-})
-SMODS.Sound({
-	key = "xchip",
-	path = "MultiplicativeChips.wav",
-})
-SMODS.Sound({
 	key = "studiofromhelsinki",
 	path = "studiofromhelsinki.ogg",
 })
@@ -581,7 +569,7 @@ SMODS.Sound({
 		if
 			Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.big_music
-			and to_big(G.GAME.round_scores["hand"].amt or 0) > to_big(10) ^ 1000000
+			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
 		then
 			G.GAME.cry_music_big = true
 			return true
@@ -604,24 +592,37 @@ SMODS.Sound({
 	volume = 0.7,
 	sync = {
 		cry_music_modest = true,
+		cry_music_madness = true,
 	},
 	pitch = 1,
 	select_music_track = function()
-		if G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" then
-			G.PROFILES[G.SETTINGS.profile].cry_gameset = "mainline"
-		end
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest")
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest" and G.selectedGameset ~= "madness")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })
-
+SMODS.Sound({
+	key = "music_madness",
+	path = "music_madness.ogg",
+	volume = 0.7,
+	sync = {
+		cry_music_modest = true,
+		cry_music_mainline = true,
+	},
+	pitch = 1,
+	select_music_track = function()
+		return G.STAGE == G.STAGES.MAIN_MENU
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
+			and Cryptid_config.Cryptid.alt_bg_music
+	end,
+})
 SMODS.Sound({
 	key = "music_modest",
 	path = "music_modest.ogg",
 	volume = 0.7,
 	sync = {
 		cry_music_mainline = true,
+		cry_music_madness = true,
 	},
 	pitch = 1,
 	select_music_track = function()

@@ -20,25 +20,18 @@ local lock = {
 	name = "cry-Lock",
 	key = "lock",
 	pos = { x = 0, y = 1 },
-	config = { extra = 1 },
+	config = {},
 	cost = 4,
 	order = 451,
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "eternal", set = "Other" }
-		return {
-			vars = {
-				card.ability.extra,
-			},
-		}
 	end,
 	can_use = function(self, card)
-		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, card.ability.extra)
-		return #cards > 0 and #cards <= card.ability.extra
+		return #G.jokers.cards > 0
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, card.ability.extra)
 		check_for_unlock({ cry_used_consumable = "c_cry_lock" })
 		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
 		G.E_MANAGER:add_event(Event({
@@ -50,23 +43,23 @@ local lock = {
 				return true
 			end,
 		}))
-		for i = 1, #cards do
-			local percent = 1.15 - (i - 0.999) / (#cards - 0.998) * 0.3
+		for i = 1, #G.jokers.cards do
+			local percent = 1.15 - (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
 				delay = 0.15,
 				func = function()
-					cards[i]:flip()
+					G.jokers.cards[i]:flip()
 					play_sound("card1", percent)
-					cards[i]:juice_up(0.3, 0.3)
+					G.jokers.cards[i]:juice_up(0.3, 0.3)
 					return true
 				end,
 			}))
 		end
 		delay(0.2)
-		for i = 1, #cards do
-			local CARD = cards[i]
-			local percent = 0.85 + (i - 0.999) / (#cards - 0.998) * 0.3
+		for i = 1, #G.jokers.cards do
+			local CARD = G.jokers.cards[i]
+			local percent = 0.85 + (i - 0.999) / (#G.jokers.cards - 0.998) * 0.3
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
 				delay = 0.15,
@@ -156,7 +149,7 @@ local vacuum = {
 	name = "cry-Vacuum",
 	key = "vacuum",
 	pos = { x = 3, y = 1 },
-	config = { extra = 3 },
+	config = { extra = 4 },
 	cost = 4,
 	order = 452,
 	atlas = "atlasnotjokers",
@@ -248,23 +241,14 @@ local hammerspace = {
 	name = "cry-Hammerspace",
 	key = "hammerspace",
 	pos = { x = 4, y = 3 },
-	config = { extra = 2 },
+	config = {},
 	cost = 4,
 	order = 453,
 	atlas = "atlasnotjokers",
-	loc_vars = function(self, _, card)
-		return {
-			vars = {
-				number_format(card.ability.extra),
-				number_format(G.GAME.hammerspace_mod_price or 0),
-			},
-		}
-	end,
 	can_use = function(self, card)
 		return #G.hand.cards > 0
 	end,
 	use = function(self, card, area, copier)
-		G.GAME.hammerspace_mod_price = (G.GAME.hammerspace_mod_price or 0) + card.ability.extra
 		local used_consumable = copier or card
 		check_for_unlock({ cry_used_consumable = "c_cry_hammerspace" })
 		G.E_MANAGER:add_event(Event({
@@ -474,17 +458,10 @@ local replica = {
 	name = "cry-Replica",
 	key = "replica",
 	pos = { x = 1, y = 1 },
-	config = { extra = 1 },
+	config = {},
 	cost = 4,
 	order = 455,
 	atlas = "atlasnotjokers",
-	loc_vars = function(self, _, card)
-		return {
-			vars = {
-				number_format(card.ability.extra),
-			},
-		}
-	end,
 	can_use = function(self, card)
 		return #G.hand.cards > 0
 	end,
@@ -492,7 +469,6 @@ local replica = {
 		local used_consumable = copier or card
 		check_for_unlock({ cry_used_consumable = "c_cry_replica" })
 		local chosen_card = pseudorandom_element(G.hand.cards, pseudoseed("cry_replica_choice"))
-		G.hand.config.card_limit = G.hand.config.card_limit - card.ability.extra
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
@@ -567,7 +543,7 @@ local analog = {
 	name = "cry-Analog",
 	key = "analog",
 	pos = { x = 3, y = 0 },
-	config = { copies = 1, ante = 1, immutable = { max_copies = 200, max_ante = 1e300 } },
+	config = { copies = 2, ante = 1, immutable = { max_copies = 200, max_ante = 1e300 } },
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
@@ -585,8 +561,27 @@ local analog = {
 	use = function(self, card, area, copier)
 		check_for_unlock({ cry_used_consumable = "c_cry_analog" })
 		local used_consumable = copier or card
+		local deletable_jokers = {}
+		for k, v in pairs(G.jokers.cards) do
+			if not v.ability.eternal then
+				deletable_jokers[#deletable_jokers + 1] = v
+			end
+		end
 		local chosen_joker = pseudorandom_element(G.jokers.cards, pseudoseed("cry_analog_choice"))
 		local _first_dissolve = nil
+		G.E_MANAGER:add_event(Event({
+			trigger = "before",
+			delay = 0.75,
+			func = function()
+				for k, v in pairs(deletable_jokers) do
+					if v ~= chosen_joker then
+						v:start_dissolve(nil, _first_dissolve)
+						_first_dissolve = true
+					end
+				end
+				return true
+			end,
+		}))
 		for i = 1, to_number(math.min(card.ability.copies, card.ability.immutable.max_copies)) do
 			G.E_MANAGER:add_event(Event({
 				trigger = "before",
@@ -632,11 +627,11 @@ local ritual = {
 		if not center.edition or (center.edition and not center.edition.cry_mosaic) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_mosaic
 		end
-		if not center.edition or (center.edition and not center.edition.cry_oversat) then
-			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_oversat
+		if not center.edition or (center.edition and not center.edition.negative) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
-		if not center.edition or (center.edition and not center.edition.cry_gold) then
-			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_gold
+		if not center.edition or (center.edition and not center.edition.cry_astral) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_astral
 		end
 		return { vars = { center.ability.max_highlighted } }
 	end,
@@ -672,12 +667,12 @@ local ritual = {
 						if highlighted then
 							local random_result = pseudorandom(pseudoseed("cry-Ritual"))
 							if random_result >= 5 / 6 then
-								highlighted:set_edition({ cry_gold = true })
+								highlighted:set_edition({ cry_astral = true })
 							else
 								if random_result >= 1 / 2 then
 									highlighted:set_edition({ cry_mosaic = true })
 								else
-									highlighted:set_edition({ cry_oversat = true })
+									highlighted:set_edition({ negative = true })
 								end
 							end
 							highlighted.will_be_editioned = nil
@@ -726,11 +721,6 @@ local adversary = {
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
 		end
-		return {
-			vars = {
-				G.jokers and number_format(1 + #G.jokers.cards) or "1",
-			},
-		}
 	end,
 	can_use = function(self, card)
 		return #G.jokers.cards > 0
@@ -790,8 +780,7 @@ local adversary = {
 		}))
 		G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.cry_shop_joker_price_modifier = G.GAME.cry_shop_joker_price_modifier
-					* number_format(1 + #G.jokers.cards)
+				G.GAME.cry_shop_joker_price_modifier = G.GAME.cry_shop_joker_price_modifier * 2
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()
@@ -822,7 +811,7 @@ local chambered = {
 	name = "cry-Chambered",
 	key = "chambered",
 	pos = { x = 5, y = 0 },
-	config = { extra = { num_copies = 1 } },
+	config = { extra = { num_copies = 3 } },
 	misprintize_caps = { extra = { num_copies = 100 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "e_negative_consumable", set = "Edition", config = { extra = 1 } }
@@ -852,19 +841,16 @@ local chambered = {
 			end
 		end
 		target = pseudorandom_element(filteredCons, pseudoseed("chambered"))
-		if Overflow then
+		for i = 1, card.ability.extra.num_copies do
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					local card_copy = copy_card(target, nil)
+					if Incantation then
+						card_copy:setQty(1)
+					end
 					card_copy:set_edition({ negative = true }, true)
 					card_copy:add_to_deck()
 					G.consumeables:emplace(card_copy)
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							Overflow.set_amount(card_copy, card.ability.extra.num_copies)
-							return true
-						end,
-					}))
 					return true
 				end,
 			}))
@@ -876,29 +862,6 @@ local chambered = {
 				nil,
 				{ message = localize("k_duplicated_ex"), colour = G.C.SECONDARY_SET.Spectral }
 			)
-		else
-			for i = 1, card.ability.extra.num_copies do
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local card_copy = copy_card(target, nil)
-						if Incantation then
-							card_copy:setQty(1)
-						end
-						card_copy:set_edition({ negative = true }, true)
-						card_copy:add_to_deck()
-						G.consumeables:emplace(card_copy)
-						return true
-					end,
-				}))
-				card_eval_status_text(
-					target,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_duplicated_ex"), colour = G.C.SECONDARY_SET.Spectral }
-				)
-			end
 		end
 	end,
 	demicoloncompat = true,
@@ -927,25 +890,32 @@ local conduit = {
 	order = 460,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		if #G.jokers.highlighted == 2 then
-			local both_match = true
-			if G.jokers.highlighted[1].edition and G.jokers.highlighted[1].edition.cry_double_sided then
-				both_match = G.jokers.highlighted[2].edition and G.jokers.highlighted[2].edition.cry_double_sided
+		local combinedTable = {}
+		dbl = false
+		no_dbl = false
+
+		for _, value in ipairs(G.hand.highlighted) do
+			if value ~= card then
+				if Card.no(value, "dbl") then
+					no_dbl = true
+				elseif value.edition and value.edition.cry_double_sided then
+					dbl = true
+				end
+				table.insert(combinedTable, value)
 			end
-			if G.jokers.highlighted[2].edition and G.jokers.highlighted[2].edition.cry_double_sided then
-				both_match = G.jokers.highlighted[1].edition and G.jokers.highlighted[1].edition.cry_double_sided
-			end
-			return both_match
-		elseif #G.hand.highlighted == 2 then
-			local both_match = true
-			if G.hand.highlighted[1].edition and G.hand.highlighted[1].edition.cry_double_sided then
-				both_match = G.hand.highlighted[2].edition and G.hand.highlighted[2].edition.cry_double_sided
-			end
-			if G.hand.highlighted[2].edition and G.hand.highlighted[2].edition.cry_double_sided then
-				both_match = G.hand.highlighted[1].edition and G.hand.highlighted[1].edition.cry_double_sided
-			end
-			return both_match
 		end
+
+		for _, value in ipairs(G.jokers.highlighted) do
+			if value ~= card then
+				if Card.no(value, "dbl") then
+					no_dbl = true
+				elseif value.edition and value.edition.cry_double_sided then
+					dbl = true
+				end
+				table.insert(combinedTable, value)
+			end
+		end
+		return (#combinedTable == 2 and not (dbl and no_dbl))
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
@@ -1070,11 +1040,15 @@ local white_hole = {
 	atlas = "atlasnotjokers",
 	hidden = true, --default soul_rate of 0.3% in spectral packs is used
 	soul_set = "Planet",
+	loc_vars = function(self, info_queue, card)
+		return { key = Card.get_gameset(card) == "modest" and "c_cry_white_hole" or "c_cry_white_hole2" }
+	end,
 	can_use = function(self, card)
 		return true
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		local modest = Card.get_gameset(used_consumable) == "modest"
 		--Get most played hand type (logic yoinked from Telescope)
 		local _hand, _tally = nil, -1
 		for k, v in ipairs(G.handlist) do
@@ -1093,7 +1067,7 @@ local white_hole = {
 					(v ~= "cry_Bulwark" and v ~= "cry_Clusterfuck" and v ~= "cry_UltPair" and v ~= "cry_WholeDeck")
 					or Cryptid.enabled("set_cry_poker_hand_stuff") == true
 				then
-					if v ~= _hand then
+					if v ~= _hand or not modest then
 						removed_levels = removed_levels + this_removed_levels
 						level_up_hand(used_consumable, v, true, -this_removed_levels)
 					end

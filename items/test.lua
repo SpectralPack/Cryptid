@@ -85,7 +85,7 @@ local test2 = {
 			end
 		elseif context.other_joker and card ~= context.other_joker then
 			if card.T.x + card.T.w / 2 < context.other_joker.T.x + context.other_joker.T.w / 2 then
-				if Talisman and not Talisman.config_file.disable_anims then
+				if not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							context.other_joker:juice_up(0.5, 0.5)

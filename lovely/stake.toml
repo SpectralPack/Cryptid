@@ -155,6 +155,32 @@ rental = self.ability and self.ability.rental,
 '''
 match_indent = true
 
+# Crimson Stake - Disable restocks on even antes
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''for _,_ in pairs(G.GAME.current_round.voucher.spawn) do vouchers_to_spawn = vouchers_to_spawn + 1 end
+if vouchers_to_spawn < G.GAME.starting_params.vouchers_in_shop + (G.GAME.modifiers.extra_vouchers or 0) then
+    SMODS.get_next_vouchers(G.GAME.current_round.voucher)
+end
+for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+    if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+        SMODS.add_voucher_to_shop(key)
+    end
+end'''
+position = "at"
+payload = '''if (G.GAME.modifiers.cry_voucher_restock_antes == nil or G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0) then
+    for _,_ in pairs(G.GAME.current_round.voucher.spawn) do vouchers_to_spawn = vouchers_to_spawn + 1 end
+    if vouchers_to_spawn < G.GAME.starting_params.vouchers_in_shop + (G.GAME.modifiers.extra_vouchers or 0) then
+        SMODS.get_next_vouchers(G.GAME.current_round.voucher)
+    end
+    for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+        if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+            SMODS.add_voucher_to_shop(key)
+        end
+    end
+end'''
+match_indent = true
 
 # Quartz Stake - pinned effect applies in every type of slot
 [[patches]]
@@ -181,6 +207,53 @@ end
 match_indent = true
 
 
+# Ruby Stake - big blind bosses
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.round_resets.blind_choices.Boss = get_new_boss()"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
+    self.GAME.round_resets.blind_choices.Big = get_new_boss()
+elseif G.GAME.modifiers.cry_rush_hour_ii then
+    self.GAME.round_resets.blind_choices.Small = get_new_boss()
+    self.GAME.round_resets.blind_choices.Big = get_new_boss()
+else
+    self.GAME.round_resets.blind_choices.Big = 'bl_big'
+end
+'''
+match_indent = true
+
+
+# Ruby Stake - big blind bosses
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.blind_choices.Boss = get_new_boss()"
+position = "before"
+payload = '''
+if G.GAME.modifiers.cry_big_boss_rate and pseudorandom('cry_big_boss') < G.GAME.modifiers.cry_big_boss_rate then
+    G.GAME.round_resets.blind_choices.Big = get_new_boss()
+elseif G.GAME.modifiers.cry_rush_hour_ii then
+    G.GAME.round_resets.blind_choices.Small = get_new_boss()
+    G.GAME.round_resets.blind_choices.Big = get_new_boss()
+else
+    G.GAME.round_resets.blind_choices.Big = 'bl_big'
+end
+'''
+match_indent = true
+
+
+# Ruby Stake - big blind doesn't increase ante
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.blind:get_type() == 'Boss' then"
+position = "at"
+payload = "if G.GAME.blind_on_deck == 'Boss' then"
+match_indent = true
+
 # Ruby Stake - smaller showdown blinds don't win
 # Win on any ante above win_ante
 [[patches]]
@@ -199,6 +272,15 @@ target = "functions/state_events.lua"
 pattern = "if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then"
 position = "at"
 payload = "if G.GAME.blind_on_deck == 'Small' then"
+match_indent = true
+
+# Ruby Stake - mark big blind as defeated
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then"
+position = "at"
+payload = "elseif G.GAME.blind_on_deck == 'Big' then"
 match_indent = true
 
 
@@ -251,24 +333,136 @@ end'''
 match_indent = true
 
 
+# Platinum Stake - start with big blind ready to be selected
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.blind_on_deck = 'Small'"
+position = "at"
+payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
+match_indent = true
+
+
+# Platinum Stake - start with big blind ready to be selected
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "G.GAME.blind_on_deck = 'Small'"
+position = "at"
+payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
+match_indent = true
+
+
+# Platinum Stake - hide Small Blind
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.blind_states.Small = 'Upcoming'"
+position = "at"
+payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
+match_indent = true
+
+# Ember Stake - give no money for selling
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''ease_dollars(self.sell_cost)'''
+position = "at"
+payload = '''if (not G.GAME.modifiers.cry_no_sell_value) and self.sell_cost ~= 0 then
+	ease_dollars(self.sell_cost)
+end'''
+match_indent = true
+
+# Ember Stake - don't play coin sound
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''play_sound('coin2')'''
+position = "at"
+payload = '''if (not G.GAME.modifiers.cry_no_sell_value) and self.sell_cost ~= 0 then
+	play_sound('coin2')
+end'''
+match_indent = true
+
+# Ember Stake - red dissolve for swag points
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self:start_dissolve({G.C.GOLD})'''
+position = "at"
+payload = '''if G.GAME.modifiers.cry_no_sell_value or self.sell_cost == 0 then
+	self:start_dissolve({G.C.RED})
+else
+	self:start_dissolve({G.C.GOLD})
+end'''
+match_indent = true
+
+# Ember Stake - remove sell price visually
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''self.sell_cost_label = self.facing == 'back' and '?' or self.sell_cost'''
+position = "at"
+payload = '''self.sell_cost_label = (self.facing == 'back' and '?') or (G.GAME.modifiers.cry_no_sell_value and 0) or self.sell_cost'''
+match_indent = true
+
+# Dawn Stake - change maximum allowed highlights (i have no idea what this code is meant to be doing?? whatever it is, it doesn't seem to be working -toneblock)
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''local cfg = (card and card.ability) or _c['config']'''
+position = "after"
+payload = '''if cfg and G.GAME.modifiers.cry_consumable_reduce and cfg.max_highlighted and (cfg.max_highlighted > 1) then
+    local new_table = {}
+    for i0, j0 in pairs(cfg) do
+        new_table[i0] = j0
+    end
+    new_table.max_highlighted = new_table.max_highlighted - 1
+    cfg = new_table
+end'''
+match_indent = true
+
+# Horizon Stake - create random card at start of blind
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''G.GAME.blind:set_blind(G.GAME.round_resets.blind)'''
+position = "after"
+payload = '''if G.GAME.modifiers.cry_card_each_round then
+    G.E_MANAGER:add_event(Event({
+        func = function()
+            local front = pseudorandom_element(G.P_CARDS, pseudoseed('cry_horizon'))
+            G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+            local edition = G.P_CENTERS.c_base
+            local card = Card(G.play.T.x + G.play.T.w/2, G.play.T.y, G.CARD_W, G.CARD_H, front, G.P_CENTERS.c_base, {playing_card = G.playing_card})
+            card:start_materialize()
+            if G.GAME.selected_back.effect.config.cry_force_edition and G.GAME.selected_back.effect.config.cry_force_edition ~= "random" then
+                local edition = {}
+                edition[G.GAME.selected_back.effect.config.cry_force_edition] = true
+                card:set_edition(edition, true, true);
+            end
+            G.play:emplace(card)
+            table.insert(G.playing_cards, card)
+            playing_card_joker_effects({true})
+            return true
+        end}))
+    G.E_MANAGER:add_event(Event({
+        func = function()
+            G.deck.config.card_limit = G.deck.config.card_limit + 1
+            return true
+        end}))
+    draw_card(G.play,G.deck, 90,'up', nil)
+end'''
+match_indent = true
+
 # Blossom Stake - showdown blinds before the winning ante
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
 pattern = '''elseif v.boss.showdown and (G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2 then'''
 position = "at"
-payload = '''elseif v.boss.showdown and ((G.GAME.round_resets.ante)%(G.GAME.modifiers.cry_big_showdown or G.GAME.win_ante) == 0 and G.GAME.round_resets.ante >= 2) then'''
+payload = '''elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then'''
 match_indent = true
-
-# Blossom Stake - showdown blinds before the winning ante
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = '''elseif not v.boss.showdown and (v.boss.min <= math.max(1, G.GAME.round_resets.ante) and ((math.max(1, G.GAME.round_resets.ante))%G.GAME.win_ante ~= 0 or G.GAME.round_resets.ante < 2)) and res then'''
-position = "at"
-payload = '''elseif not v.boss.showdown and (v.boss.min <= math.max(1, G.GAME.round_resets.ante) and ((math.max(1, G.GAME.round_resets.ante))%(G.GAME.modifiers.cry_big_showdown or G.GAME.win_ante) ~= 0 or G.GAME.round_resets.ante < 2)) and res then'''
-match_indent = true
-
 
 # inject into vanilla calculate_perishable to prevent nil index bug (i don't know where it fails so i'm just patching every part of it...)
 [[patches]]
@@ -286,13 +480,4 @@ target = "card.lua"
 pattern = '''if self.ability.perishable and self.ability.perish_tally <= 0 then'''
 position = "before"
 payload = '''if self.ability.perishable and not self.ability.perish_tally then self.ability.perish_tally = G.GAME.perishable_rounds end'''
-match_indent = true
-
-# interest rate display
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = '''table.insert(left_text,{n=G.UIT.O, config={object = DynaText({string = {" "..localize{type = 'variable', key = 'interest', vars = {G.GAME.interest_amount, 5, G.GAME.interest_amount*G.GAME.interest_cap/5}}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, pop_in = 0, scale = 0.4*scale, silent = true})}})'''
-position = "at"
-payload = '''table.insert(left_text,{n=G.UIT.O, config={object = DynaText({string = {" "..localize{type = 'variable', key = 'interest', vars = {G.GAME.interest_amount, Cryptid.interest_rate(), G.GAME.interest_amount*G.GAME.interest_cap/5}}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, pop_in = 0, scale = 0.4*scale, silent = true})}})'''
 match_indent = true
