@@ -782,3 +782,22 @@ payload = '''
 for k, v in pairs(SMODS.PokerHands[key] or {}) do
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''card.lua'''
+pattern = '''
+                    for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+                        if v.config.hand_type == G.GAME.last_hand_played then
+                            _planet = v.key
+                        end
+                    end
+'''
+position = "after"
+payload = '''
+if G.GAME.last_hand_played == "cry_Declare0" or G.GAME.last_hand_played == "cry_Declare1" or G.GAME.last_hand_played == "cry_Declare2" then
+	_planet = "c_cry_voxel"
+end
+'''
+match_indent = true
+
