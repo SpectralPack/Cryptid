@@ -663,11 +663,11 @@ local scorch = {
 			and (context.cardarea == G.play or context.cardarea == "unscored")
 			and not G.GAME.blind.disabled
 		then
-			return { remove = not context.destroy_card.ability.eternal }
+			return { remove = not SMODS.is_eternal(context.destroying_card) }
 		end
 		if context.discard and not G.GAME.blind.disabled then
 			for i, card in ipairs(G.hand.highlighted) do
-				return { remove = not card.ability.eternal }
+				return { remove = not SMODS.is_eternal(card) }
 			end
 		end
 	end,
@@ -1083,7 +1083,7 @@ local vermillion_virus = {
 		local idx
 		--Check for eligible cards (not eternal and not immune)
 		for i = 1, #G.jokers.cards do
-			if not G.jokers.cards[i].config.center.immune_to_vermillion and not G.jokers.cards[i].ability.eternal then
+			if not G.jokers.cards[i].config.center.immune_to_vermillion and not SMODS.is_eternal(G.jokers.cards[i]) then
 				eligible_cards[#eligible_cards + 1] = G.jokers.cards[i]
 			end
 		end

@@ -236,7 +236,7 @@ local abstract = {
 			context.cardarea == G.hand
 			and context.before
 			and not card.ability.extra.marked
-			and not card.ability.eternal
+			and not SMODS.is_eternal(card)
 			and not card.ability.extra.survive --this presvents repitition of shatter chance by shutting it out once it confirms to "survive"
 			and SMODS.pseudorandom_probability(
 				card,
@@ -268,7 +268,7 @@ local abstract = {
 			and context.cardarea == G.hand
 			and card.ability.extra.marked
 			and not context.repetition
-			and not card.ability.eternal
+			and not SMODS.is_eternal(card)
 			and not (card.will_shatter or card.destroyed or card.shattered)
 		then
 			G.E_MANAGER:add_event(Event({
@@ -689,7 +689,7 @@ local baneful1 = {
 		if G.jokers and G.jokers.cards then
 			for i = #G.jokers.cards, 1, -1 do
 				if
-					not (G.jokers.cards[i].ability.eternal or G.jokers.cards[i].config.center.rarity == "cry_cursed")
+					not (SMODS.is_eternal(G.jokers.cards[i]) or G.jokers.cards[i].config.center.rarity == "cry_cursed")
 				then
 					return false
 				end
@@ -1869,7 +1869,7 @@ local glass_edition = {
 			and context.other_card == card --animation-wise this looks weird sometimes
 		then
 			if
-				not card.ability.eternal
+				not SMODS.is_eternal(card)
 				and not (
 					pseudorandom(pseudoseed("cry_fragile"))
 					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
@@ -1899,7 +1899,7 @@ local glass_edition = {
 		end
 		if context.main_scoring and context.cardarea == G.play then
 			if
-				not card.ability.eternal
+				not SMODS.is_eternal(card)
 				and (
 					pseudorandom(pseudoseed("cry_fragile"))
 					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)

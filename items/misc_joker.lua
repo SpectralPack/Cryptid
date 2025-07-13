@@ -433,7 +433,7 @@ local queensgambit = {
 						return true
 					end,
 				}))
-				return { remove = not context.destroying_card.ability.eternal }
+				return { remove = not SMODS.is_eternal(context.destroying_card) }
 			end
 		end
 		if context.forcetrigger then
@@ -1823,7 +1823,7 @@ local sus = {
 				if is_impostor(v) then
 					table.insert(king_of_hearts_cards, v)
 				end
-				if not v.ability.eternal and not (v.sus and #king_of_hearts_cards == 0) and not is_impostor(v) then
+				if not SMODS.is_eternal(v) and not (v.sus and #king_of_hearts_cards == 0) and not is_impostor(v) then
 					table.insert(destroyed_cards, v)
 				end
 			end
@@ -2898,7 +2898,7 @@ local unjust_dagger = {
 			and not (context.blueprint_card or self).getting_sliced
 			and my_pos
 			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
+			and not SMODS.is_eternal(G.jokers.cards[my_pos-1])
 			and not G.jokers.cards[my_pos - 1].getting_sliced
 		then
 			local sliced_card = G.jokers.cards[my_pos - 1]
@@ -3015,7 +3015,7 @@ local monkey_dagger = {
 			and not (context.blueprint_card or self).getting_sliced
 			and my_pos
 			and G.jokers.cards[my_pos - 1]
-			and not G.jokers.cards[my_pos - 1].ability.eternal
+			and not SMODS.is_eternal(G.jokers.cards[my_pos-1])
 			and not G.jokers.cards[my_pos - 1].getting_sliced
 		then
 			local sliced_card = G.jokers.cards[my_pos - 1]
@@ -3132,7 +3132,7 @@ local pirate_dagger = {
 			and not (context.blueprint_card or self).getting_sliced
 			and my_pos
 			and G.jokers.cards[my_pos + 1]
-			and not G.jokers.cards[my_pos + 1].ability.eternal
+			and not SMODS.is_eternal(G.jokers.cards[my_pos - 1])
 			and not G.jokers.cards[my_pos + 1].getting_sliced
 		then
 			local sliced_card = G.jokers.cards[my_pos + 1]
@@ -9656,7 +9656,7 @@ local arsonist = {
 		if context.destroying_card then
 			local eval = evaluate_poker_hand(context.full_hand)
 			if next(eval["Full House"]) then
-				return not context.destroying_card.ability.eternal
+				return not SMODS.is_eternal(context.destroying_card)
 			end
 		end
 	end,
@@ -9875,7 +9875,7 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			return { remove = not context.destroy_card.ability.eternal }
+			return { remove = not SMODS.is_eternal(context.destroy_card) }
 		end
 	end,
 	cry_credits = {

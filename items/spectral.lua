@@ -324,7 +324,7 @@ local trade = {
 	can_use = function(self, card)
 		local usable_count = 0
 		for _, v in pairs(G.vouchers.cards) do
-			if not v.ability.eternal then
+			if not SMODS.is_eternal(v) then
 				usable_count = usable_count + 1
 			end
 		end
@@ -350,7 +350,7 @@ local trade = {
 					end
 				end
 			end
-			if v.ability.eternal then
+			if SMODS.is_eternal(v) then
 				can_use = false
 			end
 			if can_use then
@@ -492,7 +492,7 @@ local replica = {
 			}))
 		end
 		for i = 1, #G.hand.cards do
-			if not G.hand.cards[i].ability.eternal then
+			if not SMODS.is_eternal(G.hand.cards[i]) then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						copy_card(chosen_card, G.hand.cards[i])

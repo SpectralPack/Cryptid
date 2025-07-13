@@ -48,5 +48,5 @@ if (SMODS.has_enhancement(scoring_hand[i], 'm_glass')
    and SMODS.pseudorandom_probability(scoring_hand[i], 'glass', 1, scoring_hand[i].ability.extra or G.P_CENTERS.m_glass.config.extra)
    or (G.GAME.modifiers.cry_shatter_rate
        and pseudorandom('cry_shatter') < 1 / G.GAME.modifiers.cry_shatter_rate))
-   and not scoring_hand[i].ability.eternal then'''
+   and not SMODS.is_eternal(scoring_hand[i]) then'''
 match_indent = true

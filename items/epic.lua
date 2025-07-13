@@ -1455,7 +1455,7 @@ local curse_sob = {
 	check_for_unlock = function(self, args)
 		if Cryptid.safe_get(G, "jokers") then
 			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].config.center.key == "j_obelisk" and G.jokers.cards[i].ability.eternal then
+				if G.jokers.cards[i].config.center.key == "j_obelisk" and SMODS.is_eternal(G.jokers.cards[i]) then
 					unlock_card(self)
 				end
 			end
@@ -2034,7 +2034,7 @@ local fleshpanopticon = {
 					return true
 				end,
 			}))
-			if not card.ability.eternal then
+			if not SMODS.is_eternal(card) then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						play_sound("tarot1")

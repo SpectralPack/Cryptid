@@ -1039,7 +1039,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 				end
 			end
 			if
-				not card.ability.eternal
+				not SMODS.is_eternal(card)
 				and G.GAME.modifiers.cry_enable_flipped_in_shop
 				and pseudorandom("cry_flip" .. (key_append or "") .. G.GAME.round_resets.ante) > 0.7
 			then
@@ -1717,7 +1717,7 @@ G.FUNCS.skip_booster = function(e)
 				for i = #G.jokers.cards, 1, -1 do
 					if
 						not (
-							G.jokers.cards[i].ability.eternal
+							SMODS.is_eternal(G.jokers.cards[i])
 							or G.jokers.cards[i].config.center.rarity == "cry_cursed"
 						)
 					then

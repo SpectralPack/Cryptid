@@ -23,7 +23,7 @@ local gateway = {
 	use = function(self, card, area, copier)
 		local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
-			if not v.ability.eternal then
+			if not SMODS.is_eternal(v) then
 				deletable_jokers[#deletable_jokers + 1] = v
 			end
 		end
@@ -904,7 +904,7 @@ local stella_mortis = {
 				if
 					G.consumeables.cards[i].ability.set == "Planet"
 					and not G.consumeables.cards[i].getting_sliced
-					and not G.consumeables.cards[i].ability.eternal
+					and not SMODS.is_eternal(G.consumeables.cards[i])
 				then
 					destructable_planet[#destructable_planet + 1] = G.consumeables.cards[i]
 				end
