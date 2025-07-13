@@ -147,14 +147,33 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["bunc_Straight Spectrum"] = 5,
 		["bunc_Spectrum House"] = 5,
 		["bunc_Spectrum Five"] = 5,
-		["spa_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Straight_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Spectrum_House"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Spectrum_Five"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Flush_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Straight_Flush_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Flush_Spectrum_House"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Flush_Spectrum_Five"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5
+		["spa_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
+			SMODS.find_card("j_four_fingers")
+		) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["spa_Straight_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
+			SMODS.find_card("j_four_fingers")
+		) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["spa_Spectrum_House"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
+			SMODS.find_card("j_four_fingers")
+		) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["spa_Spectrum_Five"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
+			SMODS.find_card("j_four_fingers")
+		) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["spa_Flush_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
+			SMODS.find_card("j_four_fingers")
+		) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["spa_Straight_Flush_Spectrum"] = SpectrumAPI
+				and SpectrumAPI.configuration.misc.four_fingers_spectrums
+				and next(SMODS.find_card("j_four_fingers"))
+				and Cryptid.gameset() ~= "modest"
+				and 4
+			or 5,
+		["spa_Flush_Spectrum_House"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
+			SMODS.find_card("j_four_fingers")
+		) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["spa_Flush_Spectrum_Five"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
+			SMODS.find_card("j_four_fingers")
+		) and Cryptid.gameset() ~= "modest" and 4 or 5,
 	}
 	if not hand_table[text] and Cryptid.ascension_numbers[text] then
 		hand_table[text] = Cryptid.ascension_numbers[text]()
