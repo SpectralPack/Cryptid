@@ -1868,7 +1868,7 @@ local glass_edition = {
 			if
 				not card.ability.eternal
 				and pseudorandom("cry_fragile_destroy")
-					< cry_prob(card.ability.cry_prob, card.aedition.odds, card.ability.cry_rigged) / card.edition.odds
+					< cry_prob(card.ability.cry_prob, card.edition.odds, card.ability.cry_rigged) / card.edition.odds
 			then
 				-- this event call might need to be pushed later to make more sense
 				G.E_MANAGER:add_event(Event({
