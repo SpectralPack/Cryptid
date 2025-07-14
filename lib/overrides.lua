@@ -1729,7 +1729,10 @@ end
 
 local end_roundref = end_round
 function end_round()
-	if ((#G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1) or (#G.hand.cards < 1 and #G.deck.cards < 1)) and G.STATE ~= G.STATES.NEW_ROUND then
+	if
+		((#G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1) or (#G.hand.cards < 1 and #G.deck.cards < 1))
+		and G.STATE ~= G.STATES.NEW_ROUND
+	then
 		if
 			Cryptid.enabled("set_cry_poker_hand_stuff") == true
 			and not Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_none")
