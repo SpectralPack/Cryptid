@@ -164,9 +164,9 @@ vec4 HSVtoRGB(vec4 hsv) {
 
 float bitxor(float val1, float val2)
 {
-	float outp = 0;
-	for(int i = 1; i < 9; i++) outp += floor(mod(mod(floor(val1*pow(2,-i)),pow(2,i))+mod(floor(val2*pow(2,-i)),pow(2,i)),2))*pow(2,i);
-	return outp/256;
+	float outp = 0.;
+	for(float i = 1.; i < 9.; i++) outp += floor(mod(mod(floor(val1*pow(2.,-i)),pow(2.,i))+mod(floor(val2*pow(2.,-i)),pow(2.,i)),2.))*pow(2.,i);
+	return outp/256.;
 }
 
 float mod2(float val1, float mod1)
@@ -183,7 +183,7 @@ float rand(vec2 c){
 }
 
 float noise(vec2 p, float freq ){
-	float unit = 1/freq;
+	float unit = 1./freq;
 	vec2 ij = floor(p/unit);
 	vec2 xy = mod(p,unit)/unit;
 	//xy = 3.*xy*xy-2.*xy*xy*xy;
@@ -249,8 +249,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     vec4 pixel = Texel(texture, texture_coords);
 
-    float cx = uv_scaled_centered.x * 1;
-    float cy = uv_scaled_centered.y * 1;
+    float cx = uv_scaled_centered.x * 1.;
+    float cy = uv_scaled_centered.y * 1.;
 
 
 
@@ -263,8 +263,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     vec2 mouse_offset = (screen_coords.xy - mouse_screen_pos.xy)/screen_scale;
 
-    float scaled_uvy = (uv.y +mouse_offset.y -0.5)*5*1.338;
-    float scaled_uvx = (uv.x +mouse_offset.x -0.5)*5;
+    float scaled_uvy = (uv.y +mouse_offset.y -0.5)*5.*1.338;
+    float scaled_uvx = (uv.x +mouse_offset.x -0.5)*5.;
     float norm_uv = sqrt(scaled_uvx*scaled_uvx + scaled_uvy*scaled_uvy);
 
     pixel = vec4(pixel.rgb * 0.0 + tex.rgb * tex.a, pixel.a);
@@ -273,17 +273,17 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     vec4 textp = RGB(hsl);
     tex.rgb = textp.rgb;
 
-	float stars = ((pNoise(uv*10 + t/15.0, 10)*pNoise(uv*10 + t/15.0, 10)+1.5)/1+0.15 + ((pNoise(uv*12 + t/15.0, 10)+1.2)/1+0.3))/2.2+0.05 + 0.007*norm_uv * 1.1;
+	float stars = ((pNoise(uv*10. + t/15.0, 10)*pNoise(uv*10. + t/15.0, 10)+1.5)/1.+0.15 + ((pNoise(uv*12. + t/15.0, 10)+1.2)/1.+0.3))/2.2+0.05 + 0.007*norm_uv * 1.1;
 
 	float clusters = (pNoise(uv*10.0-t/15.0, 10)+1.5)/1.5-0.25 + 0.007*norm_uv;
 
-	float super_clusters = (pNoise(uv/15.0, 10)+0.1)/2+0.3 - 0.008*norm_uv;
+	float super_clusters = (pNoise(uv/15.0, 10)+0.1)/2.+0.3 - 0.008*norm_uv;
 
     clusters *= clusters * clusters * clusters * 0.4;
     stars *= stars * stars;
     super_clusters *= super_clusters * super_clusters;
 
-	colour.rgb = vec3(0.6, 0.45, 1) * (((clusters + stars + super_clusters)+0.1)) * 0.285;
+	colour.rgb = vec3(0.6, 0.45, 1.) * (((clusters + stars + super_clusters)+0.1)) * 0.285;
 
 	return dissolve_mask(tex*colour, texture_coords, uv);
 }
@@ -299,6 +299,6 @@ vec4 position( mat4 transform_projection, vec4 vertex_position )
     float scale = 0.2*(-0.03 - 0.3*max(0., 0.3-mid_dist))
                 *hovering*(length(mouse_offset)*length(mouse_offset))/(2. -mid_dist);
 
-    return transform_projection * vertex_position + vec4(0,0,0,scale);
+    return transform_projection * vertex_position + vec4(0.,0.,0.,scale);
 }
 #endif
