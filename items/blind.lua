@@ -11,6 +11,7 @@ local oldox = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 4,
@@ -36,6 +37,7 @@ local oldhouse = {
 	boss = {
 		min = 3,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 5,
@@ -64,6 +66,7 @@ local oldarm = {
 	boss = {
 		min = 3,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 6,
@@ -92,6 +95,7 @@ local oldfish = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 7,
@@ -117,6 +121,7 @@ local oldmanacle = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 8,
@@ -142,6 +147,7 @@ local oldserpent = {
 	boss = {
 		min = 5,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 9,
@@ -167,6 +173,7 @@ local oldpillar = {
 	boss = {
 		min = 3,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 10,
@@ -195,6 +202,7 @@ local oldflint = {
 	boss = {
 		min = 3,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 11,
@@ -223,6 +231,7 @@ local oldmark = {
 	boss = {
 		min = 4,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 12,
@@ -251,6 +260,7 @@ local tax = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 2,
@@ -303,6 +313,7 @@ local box = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 13,
@@ -329,6 +340,7 @@ local clock = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	config = {
 		tw_bl = {
@@ -368,6 +380,7 @@ local trick = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 14,
@@ -404,6 +417,7 @@ local joke = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 15,
@@ -451,6 +465,7 @@ local hammer = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 19,
@@ -487,6 +502,7 @@ local magic = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 20,
@@ -523,6 +539,7 @@ local windmill = {
 	boss = {
 		min = 4,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 16,
@@ -547,6 +564,7 @@ local striker = {
 	boss = {
 		min = 4,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 1,
@@ -571,6 +589,7 @@ local shackle = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 18,
@@ -605,6 +624,7 @@ local pin = {
 	boss = {
 		min = 4,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 17,
@@ -648,6 +668,7 @@ local scorch = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 21,
@@ -699,6 +720,7 @@ local greed = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 22,
@@ -764,6 +786,7 @@ local decision = {
 	boss = {
 		min = 4,
 		max = 666666,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 23,
@@ -848,6 +871,7 @@ local repulsor = {
 	boss = {
 		min = 4,
 		max = 666666,
+		yes_orb = true,
 	},
 	atlas = "blinds_two",
 	order = 24,
@@ -899,6 +923,7 @@ local chromatic = {
 	boss = {
 		min = 1,
 		max = 666666,
+		yes_orb = true,
 	},
 	atlas = "blinds_two",
 	order = 25,
@@ -927,6 +952,7 @@ local landlord = {
 	boss = {
 		min = 4,
 		max = 666666,
+		yes_orb = true,
 	},
 	atlas = "blinds_two",
 	order = 26,
@@ -970,6 +996,7 @@ local lavender_loop = {
 		min = 3,
 		max = 10,
 		showdown = true,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 91,
@@ -1071,6 +1098,7 @@ local vermillion_virus = {
 		min = 3,
 		max = 10,
 		showdown = true,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 90,
@@ -1122,6 +1150,7 @@ local sapphire_stamp = {
 		min = 3,
 		max = 10,
 		showdown = true,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 92,

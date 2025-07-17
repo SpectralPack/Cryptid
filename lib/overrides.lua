@@ -152,15 +152,45 @@ local dft = Blind.defeat
 function Blind:defeat(s)
 	dft(self, s)
 	local obj = self.config.blind
-	-- Ignore blinds with loc_vars because orb does not properly work with them yet
-	if obj.boss and (obj.boss.no_orb or obj.loc_vars) then
+	if
+		(obj.boss and obj.boss.yes_orb)
+		or (
+			obj.name == "The Hook"
+			or obj.name == "The Ox"
+			or obj.name == "The House"
+			or obj.name == "The Wall"
+			or obj.name == "The Wheel"
+			or obj.name == "The Arm"
+			or obj.name == "The Club"
+			or obj.name == "The Fish"
+			or obj.name == "The Psychic"
+			or obj.name == "The Goad"
+			or obj.name == "The Water"
+			or obj.name == "The Window"
+			or obj.name == "The Manacle"
+			or obj.name == "The Eye"
+			or obj.name == "The Mouth"
+			or obj.name == "The Plant"
+			or obj.name == "The Serpent"
+			or obj.name == "The Pillar"
+			or obj.name == "The Needle"
+			or obj.name == "The Head"
+			or obj.name == "The Tooth"
+			or obj.name == "The Flint"
+			or obj.name == "The Mark"
+			or obj.name == "Amber Acorn"
+			or obj.name == "Verdant Leaf"
+			or obj.name == "Violet Vessel"
+			or obj.name == "Crimsion Heart"
+			or obj.name == "Cerulean Bell"
+		)
+	then
+	else
 		return
 	end
 	if
-		self.name ~= "cry-Obsidian Orb"
 		--Stop impossible blind combinations from happening
-		and self.name ~= "The Sink"
-		and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"])
+		(self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"])
 		and (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
 		and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_cry_scorch"])
 		and (self.name ~= "cry-scorch" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
@@ -248,10 +278,7 @@ local rcc = reset_castle_card
 function reset_castle_card()
 	rcc()
 	G.GAME.current_round.cry_nb_card = { rank = "Ace" }
-	if not G.GAME.current_round.cry_dropshot_card then
-		G.GAME.current_round.cry_dropshot_card = {}
-	end
-	G.GAME.current_round.cry_dropshot_card.suit = "Spades"
+	G.GAME.current_round.cry_dropshot_card = { suit = "Spades" }
 	local valid_castle_cards = {}
 	for k, v in ipairs(G.playing_cards) do
 		if not SMODS.has_no_suit(v) and not SMODS.has_enhancement(v, "m_cry_abstract") then
@@ -261,16 +288,10 @@ function reset_castle_card()
 	if valid_castle_cards[1] then
 		--Dropshot
 		local castle_card = pseudorandom_element(valid_castle_cards, pseudoseed("cry_dro" .. G.GAME.round_resets.ante))
-		if not G.GAME.current_round.cry_dropshot_card then
-			G.GAME.current_round.cry_dropshot_card = {}
-		end
 		G.GAME.current_round.cry_dropshot_card.suit = castle_card.base.suit
 		--Number Blocks
 		local castle_card_two =
 			pseudorandom_element(valid_castle_cards, pseudoseed("cry_nb" .. G.GAME.round_resets.ante))
-		if not G.GAME.current_round.cry_nb_card then
-			G.GAME.current_round.cry_nb_card = {}
-		end
 		G.GAME.current_round.cry_nb_card.rank = castle_card_two.base.value
 		G.GAME.current_round.cry_nb_card.id = castle_card_two.base.id
 	end
