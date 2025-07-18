@@ -8179,8 +8179,13 @@ local kscope = {
 	immutable = true,
 	calculate = function(self, card, context)
 		if
-			(context.end_of_round and G.GAME.blind.boss and not context.individual and not context.repetition)
-			or context.forcetrigger
+			(
+				context.end_of_round
+				and G.GAME.blind.boss
+				and not context.individual
+				and not context.repetition
+				and not context.blueprint
+			) or context.forcetrigger
 		then
 			local eligiblejokers = {}
 			for k, v in pairs(G.jokers.cards) do
@@ -8195,6 +8200,9 @@ local kscope = {
 				local edition = { polychrome = true }
 				eligible_card:set_edition(edition, true)
 				check_for_unlock({ type = "have_edition" })
+				if not context.retrigger_joker then
+					card:juice_up(0.5, 0.5)
+				end
 			end
 		end
 	end,
@@ -8230,11 +8238,12 @@ local cryptidmoment = {
 	rarity = 1,
 	cost = 4,
 	order = 65,
+	blueprint_compat = true,
 	eternal_compat = false,
 	demicoloncompat = true,
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
-		if (context.selling_self and not context.blueprint) or context.forcetrigger then
+		if context.selling_self or context.forcetrigger then
 			for k, v in ipairs(G.jokers.cards) do
 				if v.set_cost then
 					v.ability.extra_value = (v.ability.extra_value or 0)
@@ -8242,7 +8251,14 @@ local cryptidmoment = {
 					v:set_cost()
 				end
 			end
-			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_val_up"), colour = G.C.MONEY })
+			card_eval_status_text(
+				context.blueprint_card or card,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize("k_val_up"), colour = G.C.MONEY }
+			)
 		end
 	end,
 	cry_credits = {
