@@ -96,6 +96,18 @@ return {
 					"Obtain a {C:attention}Rigged Joker",
 				},
 			},
+			b_cry_cyan = {
+				name = "Cyan Deck",
+				text = {
+					"All {C:red}Rare{} Jokers additionally",
+					"have the effect of {C:blue}Blueprint"
+				},
+				unlock = {
+					"Discover at least",
+					"{C:attention}300{} items from",
+					"your collection",
+				},
+			},
 			b_cry_e_deck = {
 				name = "Edition Deck",
 				text = {
@@ -144,6 +156,17 @@ return {
 					"Use {C:spectral}Vacuum",
 				},
 			},
+			b_cry_herculean = {
+				name = "Herculean Deck",
+				text = {
+					"When defeating a {C:attention}Boss Blind",
+					"{C:red} without using discards,",
+					"create {C:attention}2{} Epic Tags"
+				},
+				unlock = {
+					"Obtain an {C:cry_epic}Epic{C:attention} Joker",
+				},
+			},
 			b_cry_glowing = {
 				name = "Glowing Deck",
 				text = {
@@ -167,6 +190,20 @@ return {
 				unlock = {
 					"Play a hand containing",
 					"{C:attention}6{} or more cards",
+				},
+			},
+			b_cry_magenta = {
+				name = "Magenta Deck",
+				text = {
+					"When selling a Joker with",
+					"a sell value {C:attention}greater than {C:money}$0",
+					"create an {C:green}Uncommon{} Joker",
+					"with {C:money}$1{} less sell value",
+				},
+				unlock = {
+					"Discover at least",
+					"{C:attention}250{} items from",
+					"your collection",
 				},
 			},
 			b_cry_misprint = {
