@@ -1460,6 +1460,7 @@ local clone = {
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.BLUE, function()
 				local copy = copy_card(context.card)
+				copy:add_to_deck()
 				if context.card.area then
 					context.card.area:emplace(copy)
 				else

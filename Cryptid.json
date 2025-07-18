@@ -9,12 +9,11 @@
 	"priority": 114,
 	"badge_colour": "708b91",
 	"badge_text_colour": "FFFFFF",
-	"version": "0.5.10",
+	"version": "0.5.11",
 	"dependencies": [
 		"Steamodded (>=1.0.0~BETA-0711a)"
 	],
 	"conflicts": [
-		"Saturn",
 		"AntePreview (>= 2.0.0~0c16a) (<<3.0.0)",
 		"Cartomancer (<= 4.11)"
 	],

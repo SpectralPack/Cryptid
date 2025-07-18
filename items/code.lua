@@ -1243,6 +1243,7 @@ local rework = {
 			return card.ability.set == "Joker"
 		end)
 		return #cards == 1
+			and not SMODS.is_eternal(cards[1])
 			and cards[1].ability.name
 				~= ("cry-meteor" or "cry-exoplanet" or "cry-stardust" or "cry_cursed" or "Diet Cola")
 	end,
@@ -1318,7 +1319,7 @@ local merge = {
 		if
 			#hand ~= 1
 			or #consumeables ~= 1
-			or consumeables[1].ability.eternal
+			or SMODS.is_eternal(consumeables[1])
 			or consumeables[1].ability.set == "Unique"
 		then
 			return false
@@ -1421,7 +1422,7 @@ local commit = {
 			return card.ability.set == "Joker" and not card.getting_sliced
 		end)
 		return #jokers == 1
-			and not jokers[1].ability.eternal
+			and not SMODS.is_eternal(jokers[1])
 			and not (type(jokers[1].config.center.rarity) == "number" and jokers[1].config.center.rarity >= 5)
 	end,
 	use = function(self, card, area, copier)
@@ -2185,6 +2186,8 @@ local hooked = {
 			and context.post_trigger
 			and not context.forcetrigger
 			and not context.other_context.forcetrigger
+			and not context.other_context.mod_probability
+			and not context.other_context.fixed_probability
 		then
 			if not card.ability.cry_hook_triggers_left then
 				card.ability.cry_hook_triggers_left = 8
@@ -4209,7 +4212,7 @@ local alttab = {
 					local tag = nil
 					local type = G.GAME.blind:get_type()
 					local tag_key = Cryptid.get_next_tag()
-					if tag_Key then
+					if tag_key then
 						tag = Tag(tag_key)
 					elseif type == "Boss" then
 						tag = Tag(get_next_tag_key())
@@ -4966,7 +4969,7 @@ local cut = {
 				if
 					G.consumeables.cards[i].ability.set == "Code"
 					and not G.consumeables.cards[i].getting_sliced
-					and not G.consumeables.cards[i].ability.eternal
+					and not SMODS.is_eternal(G.consumeables.cards[i])
 				then
 					destructable_codecard[#destructable_codecard + 1] = G.consumeables.cards[i]
 				end

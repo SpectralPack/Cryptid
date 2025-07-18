@@ -23,7 +23,7 @@ local gateway = {
 	use = function(self, card, area, copier)
 		local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
-			if not v.ability.eternal then
+			if not SMODS.is_eternal(v) then
 				deletable_jokers[#deletable_jokers + 1] = v
 			end
 		end

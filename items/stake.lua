@@ -133,7 +133,7 @@ return {
 			local temp_hand = {}
 			local hasHand = false
 			for k, v in ipairs(G.hand.cards) do
-				if not v.ability.eternal then
+				if not SMODS.is_eternal(v) then
 					temp_hand[#temp_hand + 1] = v
 					hasHand = true
 				end

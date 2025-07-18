@@ -764,7 +764,7 @@ local flickering = {
 		return { vars = { 5, card.ability.flick_tally or 5 } }
 	end,
 	apply = function(self, card, val)
-		if not card.ability.eternal or G.GAME.modifiers.cry_sticker_sheet then
+		if not SMODS.is_eternal(card) or G.GAME.modifiers.cry_sticker_sheet then
 			card.ability[self.key] = val
 			if card.ability[self.key] then
 				card.ability.flick_tally = 5
@@ -1123,7 +1123,7 @@ local ghost = {
 						card:start_dissolve()
 						for i = 1, #G.jokers.cards do
 							if G.jokers.cards[i].ability.cry_possessed then
-								if G.jokers.cards[i].ability.eternal then
+								if SMODS.is_eternal(G.jokers.cards[i]) then
 									G.jokers.cards[i].ability.cry_possessed = nil
 								else
 									G.jokers.cards[i]:start_dissolve()
@@ -1394,7 +1394,7 @@ local candy_dagger = {
 			and not (context.blueprint_card or self).getting_sliced
 			and my_pos
 			and G.jokers.cards[my_pos + 1]
-			and not G.jokers.cards[my_pos + 1].ability.eternal
+			and not SMODS.is_eternal(G.jokers.cards[my_pos + 1])
 			and not G.jokers.cards[my_pos + 1].getting_sliced
 		then
 			local sliced_card = G.jokers.cards[my_pos + 1]

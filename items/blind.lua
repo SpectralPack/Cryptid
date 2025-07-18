@@ -11,6 +11,7 @@ local oldox = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 4,
@@ -36,6 +37,7 @@ local oldhouse = {
 	boss = {
 		min = 3,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 5,
@@ -64,6 +66,7 @@ local oldarm = {
 	boss = {
 		min = 3,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 6,
@@ -92,6 +95,7 @@ local oldfish = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 7,
@@ -117,6 +121,7 @@ local oldmanacle = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 8,
@@ -142,6 +147,7 @@ local oldserpent = {
 	boss = {
 		min = 5,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 9,
@@ -167,6 +173,7 @@ local oldpillar = {
 	boss = {
 		min = 3,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 10,
@@ -195,6 +202,7 @@ local oldflint = {
 	boss = {
 		min = 3,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 11,
@@ -223,6 +231,7 @@ local oldmark = {
 	boss = {
 		min = 4,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "nostalgia",
 	order = 12,
@@ -251,6 +260,7 @@ local tax = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 2,
@@ -303,6 +313,7 @@ local box = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 13,
@@ -329,6 +340,7 @@ local clock = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	config = {
 		tw_bl = {
@@ -368,6 +380,7 @@ local trick = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 14,
@@ -404,6 +417,7 @@ local joke = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 15,
@@ -451,6 +465,7 @@ local hammer = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 19,
@@ -487,6 +502,7 @@ local magic = {
 	boss = {
 		min = 2,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 20,
@@ -523,6 +539,7 @@ local windmill = {
 	boss = {
 		min = 4,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 16,
@@ -547,6 +564,7 @@ local striker = {
 	boss = {
 		min = 4,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 1,
@@ -571,6 +589,7 @@ local shackle = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 18,
@@ -605,6 +624,7 @@ local pin = {
 	boss = {
 		min = 4,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 17,
@@ -648,6 +668,7 @@ local scorch = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 21,
@@ -663,11 +684,11 @@ local scorch = {
 			and (context.cardarea == G.play or context.cardarea == "unscored")
 			and not G.GAME.blind.disabled
 		then
-			return { remove = not context.destroy_card.ability.eternal }
+			return { remove = not SMODS.is_eternal(context.destroying_card) }
 		end
 		if context.discard and not G.GAME.blind.disabled then
 			for i, card in ipairs(G.hand.highlighted) do
-				return { remove = not card.ability.eternal }
+				return { remove = not SMODS.is_eternal(card) }
 			end
 		end
 	end,
@@ -699,6 +720,7 @@ local greed = {
 	boss = {
 		min = 1,
 		max = 10,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 22,
@@ -764,6 +786,7 @@ local decision = {
 	boss = {
 		min = 4,
 		max = 666666,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 23,
@@ -848,6 +871,7 @@ local repulsor = {
 	boss = {
 		min = 4,
 		max = 666666,
+		yes_orb = true,
 	},
 	atlas = "blinds_two",
 	order = 24,
@@ -899,6 +923,7 @@ local chromatic = {
 	boss = {
 		min = 1,
 		max = 666666,
+		yes_orb = true,
 	},
 	atlas = "blinds_two",
 	order = 25,
@@ -925,31 +950,29 @@ local landlord = {
 	pos = { x = 0, y = 2 },
 	dollars = 5,
 	boss = {
-		min = 1,
+		min = 4,
 		max = 666666,
+		yes_orb = true,
 	},
 	atlas = "blinds_two",
 	order = 26,
 	boss_colour = HEX("c89f13"),
-	calculate = function(self, blind, context)
-		if context.after then
-			local jokers = {}
-			for i, v in pairs(G.jokers.cards) do
-				if not v.ability.rental then
-					jokers[#jokers + 1] = v
-				end
+	debuff_hand = function(self, cards, hand, handname, check)
+		G.GAME.blind.triggered = false
+		local jokers = {}
+		for i, v in pairs(G.jokers.cards) do
+			if not v.ability.rental then
+				jokers[#jokers + 1] = v
 			end
-			if #jokers > 0 then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local joker = pseudorandom_element(jokers, pseudoseed("cry_landlord"))
-						joker.ability.rental = true
-						joker:juice_up()
-						return true
-					end,
-				}))
-			end
+		end
+		if #jokers > 0 then
 			G.GAME.blind.triggered = true
+			if not check then
+				local joker = pseudorandom_element(jokers, pseudoseed("cry_landlord"))
+				joker:set_rental(true)
+				joker:juice_up()
+				G.GAME.blind:wiggle()
+			end
 		end
 	end,
 }
@@ -973,6 +996,7 @@ local lavender_loop = {
 		min = 3,
 		max = 10,
 		showdown = true,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 91,
@@ -1074,6 +1098,7 @@ local vermillion_virus = {
 		min = 3,
 		max = 10,
 		showdown = true,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 90,
@@ -1083,7 +1108,7 @@ local vermillion_virus = {
 		local idx
 		--Check for eligible cards (not eternal and not immune)
 		for i = 1, #G.jokers.cards do
-			if not G.jokers.cards[i].config.center.immune_to_vermillion and not G.jokers.cards[i].ability.eternal then
+			if not G.jokers.cards[i].config.center.immune_to_vermillion and not SMODS.is_eternal(G.jokers.cards[i]) then
 				eligible_cards[#eligible_cards + 1] = G.jokers.cards[i]
 			end
 		end
@@ -1125,6 +1150,7 @@ local sapphire_stamp = {
 		min = 3,
 		max = 10,
 		showdown = true,
+		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 92,

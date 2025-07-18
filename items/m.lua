@@ -1662,7 +1662,7 @@ local macabre = {
 							and not v:is_jolly()
 							and v.config.center.key ~= "j_cry_mprime"
 							and not (
-								v.ability.eternal
+								SMODS.is_eternal(v)
 								or v.getting_sliced
 								or Cryptid.safe_get(v.config.center, "pools", "M")
 							)

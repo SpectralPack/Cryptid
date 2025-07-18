@@ -110,7 +110,7 @@ function Cryptid.forcetrigger(card, context)
 				my_pos
 				and G.jokers.cards[my_pos + 1]
 				and not card.getting_sliced
-				and not G.jokers.cards[my_pos + 1].ability.eternal
+				and not SMODS.is_eternal(G.jokers.cards[my_pos + 1])
 				and not G.jokers.cards[my_pos + 1].getting_sliced
 			then
 				local sliced_card = G.jokers.cards[my_pos + 1]
@@ -417,7 +417,7 @@ function Cryptid.forcetrigger(card, context)
 			for i = 1, #G.jokers.cards do
 				if
 					G.jokers.cards[i] ~= card
-					and not G.jokers.cards[i].ability.eternal
+					and not SMODS.is_eternal(G.jokers.cards[i])
 					and not G.jokers.cards[i].getting_sliced
 				then
 					destructable_jokers[#destructable_jokers + 1] = G.jokers.cards[i]

@@ -83,13 +83,13 @@ position = "before"
 payload = '''
 if self.ability.name == "The Hanged Man" then
     for i = 1, #G.hand.highlighted do
-        if G.hand.highlighted[i].ability.eternal then return false end
+        if SMODS.is_eternal(G.hand.highlighted[i]) then return false end
     end
 end
 if self.ability.name == "Death" then
     local rightmost = G.hand.highlighted[1]
     for i=1, #G.hand.highlighted-1 do if G.hand.highlighted[i].T.x > rightmost.T.x then rightmost = G.hand.highlighted[i] end end
-    for i=1, #G.hand.highlighted do if G.hand.highlighted[i].ability.eternal and rightmost ~= G.hand.highlighted[i] then return false end end
+    for i=1, #G.hand.highlighted do if SMODS.is_eternal(G.hand.highlighted[i]) and rightmost ~= G.hand.highlighted[i] then return false end end
 end
 '''
 match_indent = true
@@ -103,7 +103,7 @@ pattern = "for k, v in ipairs(G.hand.cards) do temp_hand[#temp_hand+1] = v end"
 position = "at"
 payload = '''
 for k, v in ipairs(G.hand.cards) do
-    if not v.ability.eternal then
+    if not SMODS.is_eternal(v) then
         temp_hand[#temp_hand+1] = v
     end
 end
@@ -117,7 +117,7 @@ match_indent = true
 target = "card.lua"
 pattern = "if G.hand.highlighted[i] ~= rightmost then"
 position = "at"
-payload = "if G.hand.highlighted[i] ~= rightmost and not G.hand.highlighted[i].ability.eternal then"
+payload = "if G.hand.highlighted[i] ~= rightmost and not SMODS.is_eternal(G.hand.highlighted[i]) then"
 match_indent = true
 
 
@@ -127,7 +127,7 @@ match_indent = true
 target = "card.lua"
 pattern = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 then"
 position = "at"
-payload = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 and not context.other_card.ability.eternal then"
+payload = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 and not SMODS.is_eternal(context.other_card) then"
 match_indent = true
 
 
@@ -137,7 +137,7 @@ match_indent = true
 target = "card.lua"
 pattern = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and G.GAME.current_round.hands_played == 0 then"
 position = "at"
-payload = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and not context.full_hand[1].ability.eternal and G.GAME.current_round.hands_played == 0 then"
+payload = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and not SMODS.is_eternal(context.full_hand[1]) and G.GAME.current_round.hands_played == 0 then"
 match_indent = true
 
 
