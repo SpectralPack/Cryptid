@@ -91,7 +91,7 @@ local e_deck = {
 	},
 	name = "cry-Edition Deck",
 	key = "e_deck",
-	order = 17,
+	order = 20,
 	pos = { x = 5, y = 2 },
 	loc_vars = function(self, info_queue, center)
 		local aaa = Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {})
@@ -141,7 +141,7 @@ local et_deck = {
 	},
 	name = "cry-Enhancement Deck",
 	key = "et_deck",
-	order = 18,
+	order = 21,
 	pos = { x = 5, y = 2 },
 	edeck_type = "enhancement",
 	config = {},
@@ -184,7 +184,7 @@ local sk_deck = {
 	},
 	name = "cry-Sticker Deck",
 	key = "sk_deck",
-	order = 19,
+	order = 22,
 	pos = { x = 5, y = 2 },
 	edeck_type = "sticker",
 	config = {},
@@ -236,7 +236,7 @@ local st_deck = {
 	name = "cry-Suit Deck",
 	key = "st_deck",
 	config = {},
-	order = 20,
+	order = 23,
 	pos = { x = 5, y = 2 },
 	edeck_type = "suit",
 	loc_vars = function(self, info_queue, center)
@@ -286,7 +286,7 @@ local sl_deck = {
 	},
 	name = "cry-Seal Deck",
 	key = "sl_deck",
-	order = 21,
+	order = 24,
 	pos = { x = 5, y = 2 },
 	config = {},
 	edeck_type = "seal",
@@ -497,3 +497,4 @@ return {
 	end,
 	items = { e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasedition },
 }
+
