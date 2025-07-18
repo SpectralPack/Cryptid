@@ -1964,7 +1964,13 @@ local wario = {
 		return { vars = { number_format(center.ability.extra.money) } }
 	end,
 	calculate = function(self, card, context)
-		if (context.post_trigger and not context.other_context.fixed_probability and not context.other_context.mod_probability) or context.forcetrigger then
+		if
+			(
+				context.post_trigger
+				and not context.other_context.fixed_probability
+				and not context.other_context.mod_probability
+			) or context.forcetrigger
+		then
 			return {
 				dollars = lenient_bignum(card.ability.extra.money),
 				card = context.other_context and context.other_context.blueprint_card or context.other_card or nil,
