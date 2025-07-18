@@ -100,7 +100,7 @@ return {
 				name = "Cyan Deck",
 				text = {
 					"All {C:red}Rare{} Jokers additionally",
-					"have the effect of {C:blue}Blueprint"
+					"have the effect of {C:blue}Blueprint",
 				},
 				unlock = {
 					"Discover at least",
@@ -161,7 +161,7 @@ return {
 				text = {
 					"When defeating a {C:attention}Boss Blind",
 					"{C:red} without using discards,",
-					"create {C:attention}2{} Epic Tags"
+					"create {C:attention}2{} Epic Tags",
 				},
 				unlock = {
 					"Obtain an {C:cry_epic}Epic{C:attention} Joker",
