@@ -2924,9 +2924,8 @@ return {
 				name = "Tropical Smoothie",
 				text = {
 					"Sell this card to",
-					"Increase values of  all",
+					"Increase values of all",
 					"{C:attention}Jokers{} by {C:attention}Fifty{} Percent",
-					"for the remainder of this ante",
 					"{C:inactive}(Value Modifer does not stack){}",
 				},
 			},
