@@ -689,13 +689,20 @@ function Card:calculate_joker(context)
 	if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) then
 		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
 	end
-	if self.ability and self.ability.set == "Joker" and self.config.center.rarity == 3 and G.GAME.modifiers.cry_rare_blueprints then
-	   local other_joker = nil
-	   for i = 1, #G.jokers.cards do
-		  if G.jokers.cards[i] == self then other_joker = G.jokers.cards[i+1] end
-	   end
-	   local other_joker_ret = SMODS.blueprint_effect(self, other_joker, context)
-	   return SMODS.merge_effects({ret or {}, other_joker_ret or {}}), trig
+	if
+		self.ability
+		and self.ability.set == "Joker"
+		and self.config.center.rarity == 3
+		and G.GAME.modifiers.cry_rare_blueprints
+	then
+		local other_joker = nil
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i] == self then
+				other_joker = G.jokers.cards[i + 1]
+			end
+		end
+		local other_joker_ret = SMODS.blueprint_effect(self, other_joker, context)
+		return SMODS.merge_effects({ ret or {}, other_joker_ret or {} }), trig
 	end
 	return ret, trig
 end
