@@ -734,24 +734,30 @@ local herculean = {
 	order = 15,
 	atlas = "placeholders",
 	calculate = function(self, back, context)
-		if context.context == 'eval' and G.GAME.last_blind and G.GAME.last_blind.boss and G.GAME.current_round.discards_used == 0 and G.GAME.current_round.discards_left > 0 then
+		if
+			context.context == "eval"
+			and G.GAME.last_blind
+			and G.GAME.last_blind.boss
+			and G.GAME.current_round.discards_used == 0
+			and G.GAME.current_round.discards_left > 0
+		then
 			G.E_MANAGER:add_event(Event({
-				func = (function()
-					add_tag(Tag('tag_cry_epic'))
-					play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-					play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+				func = function()
+					add_tag(Tag("tag_cry_epic"))
+					play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+					play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
 					return true
-				end)
+				end,
 			}))
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
 				delay = 1,
-				func = (function()
-					add_tag(Tag('tag_cry_epic'))
-					play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-					play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+				func = function()
+					add_tag(Tag("tag_cry_epic"))
+					play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+					play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
 					return true
-				end)
+				end,
 			}))
 		end
 	end,
@@ -1285,28 +1291,37 @@ local antimatter = {
 				end
 				--Herculean Deck
 				if
-					(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_herculean", "wins", 8) or 0)
+					(
+							Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_herculean", "wins", 8)
+							or 0
+						)
 						~= 0
 					or skip
 				then
-					if context.context == 'eval' and G.GAME.last_blind and G.GAME.last_blind.boss and G.GAME.current_round.discards_used == 0 and G.GAME.current_round.discards_left > 0 then
+					if
+						context.context == "eval"
+						and G.GAME.last_blind
+						and G.GAME.last_blind.boss
+						and G.GAME.current_round.discards_used == 0
+						and G.GAME.current_round.discards_left > 0
+					then
 						G.E_MANAGER:add_event(Event({
-							func = (function()
-								add_tag(Tag('tag_cry_epic'))
-								play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-								play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+							func = function()
+								add_tag(Tag("tag_cry_epic"))
+								play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+								play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
 								return true
-							end)
+							end,
 						}))
 						G.E_MANAGER:add_event(Event({
 							trigger = "after",
 							delay = 1,
-							func = (function()
-								add_tag(Tag('tag_cry_epic'))
-								play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-								play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
+							func = function()
+								add_tag(Tag("tag_cry_epic"))
+								play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+								play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
 								return true
-							end)
+							end,
 						}))
 					end
 				end
@@ -1325,7 +1340,6 @@ local antimatter = {
 						end,
 					}))
 				end
-				
 			end
 		end
 		function Cryptid.get_antimatter_vouchers(voucher_table, skip)
@@ -1445,4 +1459,3 @@ return {
 		sl_deck,
 	},
 }
-
