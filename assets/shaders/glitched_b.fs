@@ -4,7 +4,7 @@
 	#define MY_HIGHP_OR_MEDIUMP mediump
 #endif
 
-extern MY_HIGHP_OR_MEDIUMP vec2 mosaic;
+extern MY_HIGHP_OR_MEDIUMP vec2 glitched_b;
 extern MY_HIGHP_OR_MEDIUMP number dissolve;
 extern MY_HIGHP_OR_MEDIUMP number time;
 extern MY_HIGHP_OR_MEDIUMP vec4 texture_details;
@@ -94,15 +94,107 @@ vec4 HSL(vec4 c)
 	return hsl;
 }
 
+vec4 RGBtoHSV(vec4 rgb)
+{
+    vec4 hsv;
+    float minVal = min(min(rgb.r, rgb.g), rgb.b);
+    float maxVal = max(max(rgb.r, rgb.g), rgb.b);
+    float delta = maxVal - minVal;
+
+    // Value
+    hsv.z = maxVal;
+
+    // Saturation
+    if (maxVal != 0.0)
+        hsv.y = delta / maxVal;
+    else {
+        // r = g = b = 0, s = 0, v is undefined
+        hsv.y = 0.0;
+        hsv.x = -1.0;
+        return hsv;
+    }
+
+    // Hue
+    if (rgb.r == maxVal)
+        hsv.x = (rgb.g - rgb.b) / delta;      // between yellow & magenta
+    else if (rgb.g == maxVal)
+        hsv.x = 2.0 + (rgb.b - rgb.r) / delta;  // between cyan & yellow
+    else
+        hsv.x = 4.0 + (rgb.r - rgb.g) / delta;  // between magenta & cyan
+
+    hsv.x = hsv.x * (1.0 / 6.0);
+    if (hsv.x < 0.0)
+        hsv.x += 1.0;
+
+    // Alpha
+    hsv.w = rgb.a;
+
+    return hsv;
+}
+
+vec4 HSVtoRGB(vec4 hsv) {
+    vec4 rgb;
+
+    float h = hsv.x * 6.0;
+    float c = hsv.z * hsv.y;
+    float x = c * (1.0 - abs(mod(h, 2.0) - 1.0));
+    float m = hsv.z - c;
+
+    if (h < 1.0) {
+        rgb = vec4(c, x, 0.0, hsv.a);
+    } else if (h < 2.0) {
+        rgb = vec4(x, c, 0.0, hsv.a);
+    } else if (h < 3.0) {
+        rgb = vec4(0.0, c, x, hsv.a);
+    } else if (h < 4.0) {
+        rgb = vec4(0.0, x, c, hsv.a);
+    } else if (h < 5.0) {
+        rgb = vec4(x, 0.0, c, hsv.a);
+    } else {
+        rgb = vec4(c, 0.0, x, hsv.a);
+    }
+
+    rgb.rgb += m;
+
+    return rgb;
+}
+
+float bitxor(float val1, float val2)
+{
+	float outp = 0.;
+	for(float i = 1.; i < 9.; i++) outp += floor(mod(mod(floor(val1*pow(2.,-i)),pow(2.,i))+mod(floor(val2*pow(2.,-i)),pow(2.,i)),2.))*pow(2.,i);
+	return outp/256.;
+}
+
+float mod2(float val1, float mod1)
+{
+    val1 /= mod1;
+    val1 -= floor(val1);
+    return(mod1 * val1);
+}
+
+
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
     vec4 tex = Texel(texture, texture_coords);
 	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
-    vec4 hsl = HSL(0.5*tex + 0.5*vec4(0.,0.,1.,tex.a));
 
-	float t = mosaic.y*7.221 + time;
+	// Dummy, doesn't do anything but at least it makes the shader useable
+    if (uv.x > uv.x * 2.){
+        uv = glitched_b;
+    }
+
+    float mod = glitched_b.r * 1.0;
+
+	number low = min(tex.r, min(tex.g, tex.b));
+    number high = max(tex.r, max(tex.g, tex.b));
+	number delta = high - low;
+
+	//vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
+
+	float t = glitched_b.y*2.221 + time;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/texture_details.ba;
-    vec2 uv_scaled_centered = (floored_uv - 0.5) * 250.;
+    vec2 uv_scaled_centered = (floored_uv - 0.5) * 50.;
 
 	vec2 field_part1 = uv_scaled_centered + 50.*vec2(sin(-t / 143.6340), cos(-t / 99.4324));
 	vec2 field_part2 = uv_scaled_centered + 50.*vec2(cos( t / 53.1532),  cos( t / 61.4532));
@@ -112,21 +204,61 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
         cos(length(field_part1) / 19.483) + sin(length(field_part2) / 33.155) * cos(field_part2.y / 15.73) +
         cos(length(field_part3) / 27.193) * sin(field_part3.x / 21.92) ))/2.;
 
-	float res = (.5 + .5* cos( (mosaic.x) * 2.612 + ( field + -.5 ) *3.14));
 
-	number low = min(tex.b, min(tex.g, tex.r));
-    number high = max(tex.b, max(tex.g, tex.r));
-	number delta = 0.2+0.3*(high- low) + 0.1*high;
+    vec4 pixel = Texel(texture, texture_coords);
 
-	number gridsize = 0.6;
-    number fac = max(max(0., 7.*abs(cos(uv.x*gridsize*20.))-6.), max(0., 7.*cos(uv.y*gridsize*45.)-6.));
+    float cx = uv_scaled_centered.x * 1.;
+    float cy = uv_scaled_centered.y * 1.;
 
-	hsl.x = hsl.x + res + fac;
-	hsl.y = hsl.y*1.3;
-	hsl.z = hsl.z*0.6+0.4;
+	float randnum = mod2(floor(4.*t), 256.)*mod2(floor(4.*t), 27.);
+	randnum = mod2(bitxor(pow(randnum, 3.) - randnum + 3., 7. + floor(randnum/11.)), 256.);
+	randnum = mod2(randnum*123.54,0.1)*10.;
 
-    tex =(1.-delta)*tex + delta*RGB(hsl)*vec4(0.6,0.5,1.4,tex.a);
 
+
+    vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
+
+    float xorscale = 10.;
+
+    // |y| = 50, |x| = 50
+
+    float mbx;
+    float mby;
+    float offx;
+    float offy;
+    float rmasksum = -1.;
+    float rectmask = 1.;
+    t = floor(t/4.);
+
+    for(float i = 0.; i < 5.; i++)
+    {     
+        randnum = bitxor(255.*randnum + mod2(t,81.), pow(randnum*(16.-i), 2.));
+        mbx = (cx - 25.*sin(100./randnum)) * (1. + 2.*(floor(cos(177./randnum + 1.))));
+        mby = (cy - 25.*cos(113./randnum + 1.)) * (1. + 2.*(floor(sin(221./randnum))));
+        offx = bitxor(255.*randnum, pow(255.*randnum,5.) - 255.*randnum);
+        offy = bitxor(255.*randnum, pow(255.*randnum,5.) + 255.*randnum);
+        offx /= 10.;
+        offy /= 10.;
+        rectmask = (-mbx + abs(abs(mbx) + offx) - offx) - (mby - abs(abs(mby) - offy) + offy);
+        rmasksum *= -1. * min(0., max(-1., 5. - pow(rectmask, 2.)));
+    }
+
+    float laddermask = pow(sin((23.-20.*randnum*randnum)*pow(sin(sin(cy*randnum) + pow(sin(cy*randnum),2.)),2.)),2.) * rmasksum;
+    
+
+	hsl.x += floor(randnum + 0.1) * rmasksum * 4. * randnum * (1. - laddermask);// * bitxor(cx * xorscale, cy * xorscale)/4;
+    hsl.y += laddermask * (1. + 2. * rmasksum); 
+    hsl.z += floor(randnum + 0.2) * (1. + rmasksum) * (1. - 1.5*hsl.z) * 0.1;
+
+    tex.rgb = RGB(hsl).rgb;
+
+    pixel = vec4(pixel.rgb * 0.0 + tex.rgb * tex.a, pixel.a);
+
+
+
+    float res = (.5 + .5* cos( (glitched_b.x) * 2.612 + ( field + -.5 ) *3.14));
+    vec4 textp = RGB(hsl);
+    tex.rgb = textp.rgb;
 	return dissolve_mask(tex*colour, texture_coords, uv);
 }
 
