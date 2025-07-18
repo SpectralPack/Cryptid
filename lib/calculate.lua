@@ -15,7 +15,14 @@ function eval_card(card, context)
 		return {}, {}
 	end
 	-- Store old probability for later reference
+	local ggpn = G.GAME.probabilities.normal
+	if card.ability.cry_rigged then
+		G.GAME.probabilities.normal = 1e9
+	end
 	local ret, post = ec(card, context)
+	if card.ability.cry_rigged then
+		G.GAME.probabilities.normal = ggpn
+	end
 	return ret, post
 end
 
@@ -361,6 +368,10 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 						-- found one!
 						if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
 							-- rig the probabilities in case that matters for the joker's scaling function
+							local ggpn = G.GAME.probabilities.normal
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = 1e9
+							end
 
 							-- 'o' will be the new factor that the joker should scale by next time
 							local o = obj:cry_scale_mod(
@@ -371,6 +382,11 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 								orig_scale_base,
 								new_scale_base
 							)
+
+							-- return probabilities to normal
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = ggpn
+							end
 
 							-- the function returned a value, do the scale setting with it
 							if o then
@@ -405,11 +421,18 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 							-- now, let's check for repetitions on the scale-affecting jokers
 							local reps = {}
 							for j = 1, #G.jokers.cards do
+								local ggpn = G.GAME.probabilities.normal
+								if G.jokers.cards[j].ability.cry_rigged then
+									G.GAME.probabilities.normal = 1e9
+								end
 								-- check if another joker is retriggering our scale-affecting joker
 								local check = cj(
 									G.jokers.cards[j],
 									{ retrigger_joker_check = true, other_card = G.jokers.cards[i] }
 								)
+								if G.jokers.cards[j].ability.cry_rigged then
+									G.GAME.probabilities.normal = ggpn
+								end
 								-- keep track of which joker retriggers the scale-joker
 								if type(check) == "table" then
 									reps[j] = check and check.repetitions and check or 0
@@ -438,6 +461,10 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 									for r = 1, rep.repetitions do
 										card_eval_status_text(rep.card, "jokers", nil, nil, nil, rep)
 										-- now, same thing as before, apply the scale-joker
+										local ggpn = G.GAME.probabilities.normal
+										if G.jokers.cards[i].ability.cry_rigged then
+											G.GAME.probabilities.normal = 1e9
+										end
 										local o = obj:cry_scale_mod(
 											G.jokers.cards[i],
 											self,
@@ -446,6 +473,9 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 											orig_scale_base,
 											new_scale_base
 										)
+										if G.jokers.cards[i].ability.cry_rigged then
+											G.GAME.probabilities.normal = ggpn
+										end
 
 										if o then
 											if #dbl_info.scaler[info_i] == 2 then
@@ -568,8 +598,12 @@ function Card:calculate_joker(context)
 	if not active_side or active_side.will_shatter then
 		return
 	end
+	local ggpn = G.GAME.probabilities.normal
 	if not G.GAME.cry_double_scale then
 		G.GAME.cry_double_scale = { double_scale = true } --doesn't really matter what's in here as long as there's something
+	end
+	if active_side.ability.cry_rigged then
+		G.GAME.probabilities.normal = 1e9
 	end
 	local orig_ability = copy_table(active_side.ability)
 	local in_context_scaling = false
@@ -587,6 +621,7 @@ function Card:calculate_joker(context)
 		context.callback = nil
 	end
 	local ret, trig = cj(active_side, context)
+	--Possesed
 	if active_side.ability.cry_possessed and ret then
 		if ret.mult_mod then
 			ret.mult_mod = ret.mult_mod * -1
@@ -648,8 +683,19 @@ function Card:calculate_joker(context)
 			in_context_scaling = true
 		end
 	end
+	if active_side.ability.cry_rigged then
+		G.GAME.probabilities.normal = ggpn
+	end
 	if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) then
 		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	end
+	if self.ability and self.ability.set == "Joker" and self.config.center.rarity == 3 and G.GAME.modifiers.cry_rare_blueprints then
+	   local other_joker = nil
+	   for i = 1, #G.jokers.cards do
+		  if G.jokers.cards[i] == self then other_joker = G.jokers.cards[i+1] end
+	   end
+	   local other_joker_ret = SMODS.blueprint_effect(self, other_joker, context)
+	   return SMODS.merge_effects({ret or {}, other_joker_ret or {}}), trig
 	end
 	return ret, trig
 end
@@ -691,6 +737,10 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 		for i = 1, #G.jokers.cards do
 			local obj = G.jokers.cards[i].config.center
 			if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
+				local ggpn = G.GAME.probabilities.normal
+				if G.jokers.cards[i].ability.cry_rigged then
+					G.GAME.probabilities.normal = 1e9
+				end
 				local o = obj:cry_scale_mod(
 					G.jokers.cards[i],
 					jkr,
@@ -699,6 +749,9 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 					orig_scale_base,
 					new_scale_base
 				)
+				if G.jokers.cards[i].ability.cry_rigged then
+					G.GAME.probabilities.normal = ggpn
+				end
 				if o then
 					if #dbl_info.scaler[info_i] == 2 then
 						if
@@ -728,8 +781,15 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 
 				local reps = {}
 				for j = 1, #G.jokers.cards do
+					local ggpn = G.GAME.probabilities.normal
+					if G.jokers.cards[j].ability.cry_rigged then
+						G.GAME.probabilities.normal = 1e9
+					end
 					local check =
 						cj(G.jokers.cards[j], { retrigger_joker_check = true, other_card = G.jokers.cards[i] })
+					if G.jokers.cards[j].ability.cry_rigged then
+						G.GAME.probabilities.normal = ggpn
+					end
 					if type(check) == "table" then
 						reps[j] = check and check.repetitions and check or 0
 					else
@@ -752,6 +812,10 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 					if (type(rep) == "table") and rep.repetitions and (rep.repetitions > 0) then
 						for r = 1, rep.repetitions do
 							card_eval_status_text(rep.card, "jokers", nil, nil, nil, rep)
+							local ggpn = G.GAME.probabilities.normal
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = 1e9
+							end
 							local o = obj:cry_scale_mod(
 								G.jokers.cards[i],
 								jkr,
@@ -760,6 +824,9 @@ function Cryptid.apply_scale_mod(jkr, orig_scale_scale, orig_scale_base, new_sca
 								orig_scale_base,
 								new_scale_base
 							)
+							if G.jokers.cards[i].ability.cry_rigged then
+								G.GAME.probabilities.normal = ggpn
+							end
 
 							if o then
 								if #dbl_info.scaler[info_i] == 2 then
