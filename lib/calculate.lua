@@ -360,8 +360,6 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 						local obj = G.jokers.cards[i].config.center
 						-- found one!
 						if obj.cry_scale_mod and type(obj.cry_scale_mod) == "function" then
-							-- rig the probabilities in case that matters for the joker's scaling function
-
 							-- 'o' will be the new factor that the joker should scale by next time
 							local o = obj:cry_scale_mod(
 								G.jokers.cards[i],
@@ -446,7 +444,6 @@ function Card:cry_double_scale_calc(orig_ability, in_context_scaling)
 											orig_scale_base,
 											new_scale_base
 										)
-
 										if o then
 											if #dbl_info.scaler[info_i] == 2 then
 												if

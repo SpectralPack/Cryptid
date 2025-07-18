@@ -110,9 +110,7 @@ if (SMODS.Mods["AntePreview"] or {}).can_load then
 	function predict_next_ante()
 		local small = "bl_small"
 		local big = "bl_big"
-		if G.GAME.modifiers.cry_big_boss_rate and pseudorandom("cry_big_boss") < G.GAME.modifiers.cry_big_boss_rate then
-			big = get_new_boss()
-		elseif G.GAME.modifiers.cry_rush_hour_ii then
+		if G.GAME.modifiers.cry_rush_hour_ii then
 			small = get_new_boss()
 			big = get_new_boss()
 		end
@@ -135,9 +133,6 @@ if (SMODS.Mods["AntePreview"] or {}).can_load then
 		end
 		if G.P_BLINDS[predictions.Big.blind].boss then
 			G.GAME.bosses_used[predictions.Big.blind] = G.GAME.bosses_used[predictions.Big.blind] - 1
-		end
-		if G.GAME.modifiers.cry_no_small_blind then
-			predictions.Small = nil
 		end
 		return predictions
 	end

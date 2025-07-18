@@ -235,7 +235,7 @@ SMODS.DrawStep({
 	order = -5,
 	func = function(self)
 		local card_type = self.ability.set or "None"
-		if card_type ~= "Default" and card_type ~= "Enhanced" and self.playing_card and self.facing == "front" then
+		if card_type ~= "Default" and card_type ~= "Enhanced" and self.playing_card then
 			interceptorSprite = interceptorSprite
 				or Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_misc"], { x = 3, y = 1 })
 			interceptorSprite.role.draw_major = self

@@ -31,7 +31,6 @@ if not Cryptid.shared_gamesets and G.ASSET_ATLAS["cry_gameset"] then
     Cryptid.shared_gamesets = {
         modest = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 0,y = 0}),
         mainline = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 1,y = 0}),
-        madness = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 2,y = 0}),
         custom = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_gameset"], {x = 3,y = 0}),
         selected = Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], {x = 0,y = 4}),
     }
@@ -39,7 +38,7 @@ end
 local gameset_key
 if self.config.center.force_gameset then
     gameset_key = self.config.center.force_gameset
-    if gameset_key ~= "disabled" and gameset_key ~= "modest" and gameset_key ~= "mainline" and gameset_key ~= "madness" then
+    if gameset_key ~= "disabled" and gameset_key ~= "modest" and gameset_key ~= "mainline" then
         gameset_key = "custom"
     end
 end
