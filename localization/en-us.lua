@@ -1000,11 +1000,12 @@ return {
 			m_cry_abstract = {
 				name = "Abstract Card",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult,",
+					"{X:dark_edition,C:white}^#1#{} Mult",
 					"Counts as its {C:attention}own{} rank and suit",
-					"{C:green}#4# in #5#{} chance to",
-					"{C:red,E:2}destroy{} card when held at",
-					"{C:attention}round end{} or {C:attention}hand played{}",
+					"{C:green}#2# in #3#{} chance to {C:red,E:2}destroy{} card",
+					"when held after {C:attention}hand played{}",
+					"{C:green}#4# in #5#{} chance to {C:red,E:2}destroy{} card",
+					"when held after {C:attention}round",
 				},
 			},
 		},
