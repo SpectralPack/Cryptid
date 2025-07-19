@@ -246,7 +246,7 @@ target = "functions/button_callbacks.lua"
 pattern = '''add_tag(_tag.config.ref_table)'''
 position = "at"
 payload = '''
-local tag = Cryptid.get_next_tag()
+local tag = Tag(Cryptid.get_next_tag())
 add_tag(tag or _tag.config.ref_table, true)
 '''
 match_indent = true
