@@ -27,17 +27,12 @@ local echo = {
 		return {
 			vars = {
 				card and card.ability.retriggers or self.config.retriggers,
-				card and cry_prob(card.ability.cry_prob or 1, card.ability.extra, card.ability.cry_rigged) or 1,
-				card and card.ability.extra or self.config.extra,
+				SMODS.get_probability_vars(card, 1, card.ability.extra, "Echo Card"),
 			},
 		} -- note that the check for (card.ability.cry_prob or 1) is probably unnecessary due to cards being initialised with ability.cry_prob
 	end,
 	calculate = function(self, card, context)
-		if
-			context.repetition
-			and pseudorandom("echo")
-				< cry_prob(card.ability.cry_prob or 1, card.ability.extra or 2, card.ability.cry_rigged) / (card.ability.extra or 2)
-		then
+		if context.repetition and SMODS.pseudorandom_probability(card, "echo", 1, card.ability.extra, "Echo Card") then
 			return {
 				message = localize("k_again_ex"),
 				repetitions = card.ability.retriggers,
@@ -210,28 +205,20 @@ local abstract = {
 	config = { extra = { Emult = 1.15, odds_after_play = 2, odds_after_round = 4, marked = false, survive = false } },
 	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
 	loc_vars = function(self, info_queue, card)
-		local num1, denom1 = SMODS.get_probability_vars(
-			card,
-			1,
-			card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play
-		)
-		local num2, denom2 = SMODS.get_probability_vars(
-			card,
-			1,
-			card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round
-		)
+		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_play, "Abstract Card")
+		local ccc, ddd = SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_round, "Abstract Card")
 		return {
 			vars = {
 				card.ability.extra.Emult,
-				num1,
-				denom1,
-				num2,
-				denom2,
+				aaa,
+				bbb,
+				ccc,
+				ddd,
 			},
 		}
 	end,
 	calculate = function(self, card, context)
-		--Druing scoring
+		--During scoring
 		if
 			context.cardarea == G.hand
 			and context.before
@@ -242,7 +229,8 @@ local abstract = {
 				card,
 				"cry_abstract_destroy",
 				1,
-				card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play
+				card.ability.extra.odds_after_play,
+				"Abstract Card"
 			)
 		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
 			card.ability.extra.marked = true
@@ -432,9 +420,11 @@ local azure_seal = {
 							end
 						end
 						if
-							G.GAME.last_hand_played == "cry_Declare0"
-							or G.GAME.last_hand_played == "cry_Declare1"
-							or G.GAME.last_hand_played == "cry_Declare2"
+							(
+								G.GAME.last_hand_played == "cry_Declare0"
+								or G.GAME.last_hand_played == "cry_Declare1"
+								or G.GAME.last_hand_played == "cry_Declare2"
+							) and Cryptid.enabled("c_cry_voxel") == true
 						then
 							_planet = "c_cry_voxel"
 						end
@@ -2577,9 +2567,8 @@ return {
 						card,
 						"cry_abstract_destroy2",
 						1,
-						card and card.ability and card.ability.extra and card.ability.extra.odds_after_round
-							or self.config.extra.odds_after_round
-							or 4
+						card and card.ability and card.ability.extra and card.ability.extra.odds_after_round or 4,
+						"Abstract Card"
 					)
 				then
 					self.ability.extra.marked = true
