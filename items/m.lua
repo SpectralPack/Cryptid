@@ -538,10 +538,11 @@ local notebook = {
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
+		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Notebook")
 		return {
 			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+				aaa,
+				bbb,
 				number_format(card.ability.immutable.slots),
 				number_format(card.ability.extra.active),
 				number_format(card.ability.extra.jollies),
@@ -563,11 +564,8 @@ local notebook = {
 					jollycount = jollycount + 1
 				end
 			end
-			if
-				to_number(jollycount) >= to_number(card.ability.extra.jollies) --if there are 5 or more jolly jokers
-				or pseudorandom("cry_notebook")
-					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
-			then
+			local aaa = to_number(jollycount) >= to_number(card.ability.extra.jollies) and 1e20 or 1
+			if SMODS.pseudorandom_probability(card, "cry_notebook", 1 * aaa, card.ability.extra.odds, "Notebook") then
 				card.ability.immutable.slots = to_number(
 					math.min(
 						card.ability.immutable.max_slots,
@@ -832,20 +830,13 @@ local scrabble = {
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		end
 		return {
-			vars = {
-				cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
-			},
+			vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Scrabble Tile") },
 		}
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
-			if
-				pseudorandom("scrabbleother")
-				< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-					/ card.ability.extra.odds
-			then
+			if SMODS.pseudorandom_probability(card, "scrabbleother", 1, card.ability.extra.odds, "Scrabble Tile") then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
 				if Cryptid.enabled("e_cry_m") == true then

@@ -1049,7 +1049,7 @@ local tornado = {
 	order = 94,
 	boss_colour = HEX("3dd9ca"),
 	loc_vars = function(self)
-		return { vars = { "" .. ((Cryptid.safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
+		return { vars = { SMODS.get_probability_vars(self, 2, 3, "Turquoise Tornado") } }
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
@@ -1060,12 +1060,12 @@ local tornado = {
 		return #Cryptid.advanced_find_joker("Oops! All 6s", nil, nil, { "eternal" }, nil) == 0
 	end,
 	collection_loc_vars = function(self)
-		return { vars = { "" .. ((Cryptid.safe_get(G.GAME, "probabilities", "normal") or 1) * 2), 3 } }
+		return { vars = { SMODS.get_probability_vars(self, 2, 3, "Turquoise Tornado") } }
 	end,
 	debuff_hand = function(self, cards, hand, handname, check)
 		if
 			not check
-			and (pseudorandom(pseudoseed("tornado")) < ((G.GAME.probabilities.normal * 2) / 3))
+			and SMODS.pseudorandom_probability(self, "tornado", 2, 3, "Turquoise Tornado")
 			and not G.GAME.blind.disabled
 		then
 			--check for guarantee
@@ -1546,7 +1546,7 @@ local obsidian_orb = {
 			if area == G.hand then
 				if
 					s.name == "The Wheel"
-					and pseudorandom(pseudoseed("ObsidianOrb")) < G.GAME.probabilities.normal / 7
+					and SMODS.pseudorandom_probability(self, "ObsidianOrb", 1, 7, "Obsidian Orb")
 				then
 					return true
 				end

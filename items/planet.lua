@@ -313,12 +313,9 @@ local planetlua = {
 	atlas = "atlasnotjokers",
 	order = 101,
 	loc_vars = function(self, info_queue, card)
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
-				num,
-				denom,
+				SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Planet.lua"),
 			},
 		}
 	end,
@@ -327,14 +324,7 @@ local planetlua = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		if
-			SMODS.pseudorandom_probability(
-				card,
-				"planetlua",
-				1,
-				card and card.ability.extra.odds or self.config.extra.odds
-			)
-		then --Code "borrowed" from black hole
+		if SMODS.pseudorandom_probability(card, "planetlua", 1, card.ability.extra.odds, "Planet.lua") then --Code "borrowed" from black hole
 			update_hand_text(
 				{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
 				{ handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
@@ -478,12 +468,7 @@ local planetlua = {
 			for i = 1, number do
 				quota = quota
 					+ (
-						SMODS.pseudorandom_probability(
-								card,
-								"planetlua",
-								1,
-								card and card.ability.extra.odds or self.config.extra.odds
-							)
+						SMODS.pseudorandom_probability(card, "planetlua", 1, card.ability.extra.odds, "Planet.lua")
 							and 1
 						or 0
 					)
@@ -588,9 +573,10 @@ local planetlua = {
 			and (
 				SMODS.pseudorandom_probability(
 					card,
-					"nstar", --this is how it was before i didnt make it use the same seed
+					"mstar", --this is how it was before i didnt make it use the same seed
 					1,
-					card and card.ability.extra.odds or self.config.extra.odds
+					card.ability.extra.odds,
+					"Planet.lua"
 				)
 			)
 		then

@@ -166,17 +166,21 @@ local choco1 = {
 	object_type = "Event",
 	key = "choco1",
 	loc_vars = function(self, info_queue, center)
+		local _, aaa = SMODS.get_probability_vars(self, 1, 6, "Chocolate Dice 1")
 		info_queue[#info_queue + 1] = { set = "Other", key = self.key } --todo specific_vars
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_flickering_desc", specific_vars = { 5 } }
-		info_queue[#info_queue + 1] =
-			{ set = "Joker", key = "j_cry_ghost", specific_vars = { G.GAME.probabilities.normal or 1, 2, 6 } }
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_cry_ghost",
+			specific_vars = { SMODS.get_probability_vars(self, 1, 2, "Chocolate Dice 1"), aaa },
+		}
 	end,
 	start = function(self)
 		G.GAME.events[self.key] = true
 		local areas = { "jokers", "deck", "hand", "play", "discard" }
 		for k, v in pairs(areas) do
 			for i = 1, #G[v].cards do
-				if pseudorandom(pseudoseed("cry_choco_possession")) < G.GAME.probabilities.normal / 3 then
+				if SMODS.pseudorandom_probability(self, "cry_choco_possession", 1, 3, "Chocolate Dice 1") then
 					SMODS.Stickers.cry_flickering:apply(G[v].cards[i], true)
 				end
 			end
@@ -383,7 +387,7 @@ local choco4 = { --lunar abyss
 			and not context.retrigger_joker
 		then
 			for i = 1, #G.play.cards do
-				if pseudorandom(pseudoseed("cry_choco_lunar")) < G.GAME.probabilities.normal / 4 then
+				if SMODS.pseudorandom_probability(self, "cry_choco_lunar", 1, 4, "Chocolate Dice 4") then
 					local faces = {}
 					for _, v in ipairs(SMODS.Rank.obj_buffer) do
 						local r = SMODS.Ranks[v]
@@ -447,7 +451,7 @@ local choco5 = { --bloodsucker
 			and not context.retrigger_joker
 		then
 			if context.destroying_card:is_suit("Hearts") or context.destroying_card:is_suit("Diamonds") then
-				if pseudorandom(pseudoseed("cry_choco_blood")) < G.GAME.probabilities.normal / 3 then
+				if SMODS.pseudorandom_probability(self, "cry_choco_blood", 1, 3, "Chocolate Dice 5") then
 					context.destroying_card.will_shatter = true
 					local destroying_card = context.destroying_card
 					G.E_MANAGER:add_event(Event({

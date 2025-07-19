@@ -65,7 +65,7 @@ end
 local gone = false
 if self.ability.banana then
     if not self.ability.extinct then
-        if (pseudorandom('oops_it_banana') < G.GAME.probabilities.normal/G.GAME.cry_consumeable_banana_odds) then
+        if SMODS.pseudorandom_probability(self, "oops_it_banana", 1, G.GAME.cry_consumeable_banana_odds, "Banana Sticker") then
 	    local gone = true
             self.ability.extinct = true
             G.E_MANAGER:add_event(Event({

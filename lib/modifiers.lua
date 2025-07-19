@@ -578,7 +578,7 @@ function Card:set_eternal(_eternal)
 end
 function Card:calculate_banana()
 	if not self.ability.extinct then
-		if self.ability.banana and (pseudorandom("banana") < G.GAME.probabilities.normal / 10) then
+		if self.ability.banana and SMODS.pseudorandom_probability(self, "banana", 1, 10, "Banana Sticker") then
 			self.ability.extinct = true
 			G.E_MANAGER:add_event(Event({
 				func = function()
@@ -723,13 +723,16 @@ SMODS.Sticker({
 	should_apply = false,
 	loc_vars = function(self, info_queue, card)
 		if card.ability.consumeable then
-			return { key = "cry_banana_consumeable", vars = { G.GAME.probabilities.normal or 1, 4 } }
+			return {
+				key = "cry_banana_consumeable",
+				vars = { SMODS.get_probability_vars(card, 1, 4, "Banana Sticker") },
+			}
 		elseif card.ability.set == "Voucher" then
-			return { key = "cry_banana_voucher", vars = { G.GAME.probabilities.normal or 1, 12 } }
+			return { key = "cry_banana_voucher", vars = { SMODS.get_probability_vars(card, 1, 12, "Banana Sticker") } }
 		elseif card.ability.set == "Booster" then
 			return { key = "cry_banana_booster" }
 		else
-			return { vars = { G.GAME.probabilities.normal or 1, 10 } }
+			return { vars = { SMODS.get_probability_vars(card, 1, 10, "Banana Sticker") } }
 		end
 	end,
 	calculate = function(self, card, context)
@@ -740,7 +743,15 @@ SMODS.Sticker({
 			and not context.individual
 		then
 			if card.ability.set == "Voucher" then
-				if pseudorandom("byebyevoucher") < G.GAME.probabilities.normal / G.GAME.cry_voucher_banana_odds then
+				if
+					SMODS.pseudorandom_probability(
+						card,
+						"byebyevoucher",
+						1,
+						G.GAME.cry_voucher_banana_odds,
+						"Banana Sticker"
+					)
+				then
 					local area
 					if G.STATE == G.STATES.HAND_PLAYED then
 						if not G.redeemed_vouchers_during_hand then

@@ -328,11 +328,11 @@ local gambler = {
 	key = "gambler",
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_empowered" }
-		return { vars = { G.GAME.probabilities.normal or 1, self.config.odds } }
+		return { vars = { SMODS.get_probability_vars(self, 1, self.config.odds, "Gambler Tag") } }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
-			if pseudorandom("cry_gambler_tag") < G.GAME.probabilities.normal / tag.config.odds then
+			if SMODS.pseudorandom_probability(card, "cry_gambler_tag", 1, tag.config.odds, "Gambler Tag") then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
 				tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
@@ -1039,22 +1039,14 @@ local banana = {
 				set = "Joker",
 				key = G.P_CENTER_POOLS["Joker"][61].key,
 			})
-			info_queue[#info_queue + 1] = {
-				set = "Joker",
-				key = "j_cavendish",
-				specific_vars = { 3, G.GAME.probabilities.normal or 1, 1000 },
-			}
+			info_queue[#info_queue + 1] = G.P_CENTERS.j_cavendish
 		else
 			banana = localize({
 				type = "name_text",
 				set = "Joker",
 				key = G.P_CENTER_POOLS["Joker"][38].key,
 			})
-			info_queue[#info_queue + 1] = {
-				set = "Joker",
-				key = "j_gros_michel",
-				specific_vars = { 15, G.GAME.probabilities.normal or 1, 6 },
-			}
+			info_queue[#info_queue + 1] = G.P_CENTERS.j_gros_michel
 		end
 		return { vars = { banana } }
 	end,
