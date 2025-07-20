@@ -2569,7 +2569,8 @@ return {
 						1,
 						self.ability and self.ability.extra and self.ability.extra.odds_after_round
 							or self.config.extra.odds_after_round
-							or 4
+							or 4,
+						"Abstract Card"
 					)
 				then
 					self.ability.extra.marked = true
