@@ -2564,11 +2564,12 @@ return {
 			if self.config.center_key == "m_cry_abstract" and not self.ability.extra.marked then
 				if
 					SMODS.pseudorandom_probability(
-						card,
+						self,
 						"cry_abstract_destroy2",
 						1,
-						card and card.ability and card.ability.extra and card.ability.extra.odds_after_round or 4,
-						"Abstract Card"
+						self.ability and self.ability.extra and self.ability.extra.odds_after_round
+							or self.config.extra.odds_after_round
+							or 4
 					)
 				then
 					self.ability.extra.marked = true
