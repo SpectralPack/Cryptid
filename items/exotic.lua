@@ -1466,8 +1466,7 @@ local duplicare = {
 					context.post_trigger
 					and context.other_joker ~= card
 					and Cryptid.isNonRollProbabilityContext(context.other_context)
-				)
-				or (context.individual and context.cardarea == G.play)
+				) or (context.individual and context.cardarea == G.play)
 			)
 		then
 			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
