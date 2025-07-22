@@ -2228,9 +2228,10 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 	end
 end
 
-
 local is_eternalref = SMODS.is_eternal
 function SMODS.is_eternal(card)
-	if not G.deck then return card.ability.eternal end
+	if not G.deck then
+		return card.ability.eternal
+	end
 	return is_eternalref(card)
 end
