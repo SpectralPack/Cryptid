@@ -2181,3 +2181,9 @@ function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_
 	end
 	return pseudorandom_probability_ref(trigger_obj, seed, numerator, base_denominator, identifier)
 end
+
+local is_eternalref = SMODS.is_eternal
+function SMODS.is_eternal(card)
+	if not G.deck then return card.ability.eternal end
+	return is_eternalref(card)
+end
