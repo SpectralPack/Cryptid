@@ -1457,3 +1457,18 @@ function Cryptid.get_next_tag(override)
 		return "tag_cry_cat"
 	end
 end
+
+-- for Cryptid.isNonRollProbabilityContext
+local probability_contexts = {
+	"mod_probability",
+	"fix_probability"
+}
+
+-- Checks if a context table is a probability context called outside of a roll
+function Cryptid.isNonRollProbabilityContext(context)
+	for _, ctx in ipairs(probability_contexts) do
+		if context[ctx] then return context.from_roll end
+	end
+
+	return true
+end
