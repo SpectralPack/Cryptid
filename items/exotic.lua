@@ -1462,7 +1462,11 @@ local duplicare = {
 		if
 			not context.blueprint
 			and (
-				(context.post_trigger and context.other_joker ~= card)
+				(
+					context.post_trigger
+					and context.other_joker ~= card
+					and Cryptid.isNonRollProbabilityContext(context.other_context)
+				)
 				or (context.individual and context.cardarea == G.play)
 			)
 		then
