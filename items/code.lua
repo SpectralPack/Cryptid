@@ -3425,6 +3425,15 @@ local variable = {
 				local c = SMODS.Ranks[card.base.value] or {}
 				if c.hidden or c.noe_doe or c.no_collection or c.no_variable or c.no_code then
 					card.debuff = true
+				else
+					G.E_MANAGER:add_event(Event{
+						trigger = "after",
+						blocking = false,
+						func = function()
+							card.debuff = false
+							return true
+						end
+					})
 				end
 			end
 			return emplace_ref(self, card, ...)
