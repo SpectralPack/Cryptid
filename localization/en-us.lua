@@ -1259,9 +1259,23 @@ return {
 			j_cry_canvas = {
 				name = "Canvas",
 				text = {
-					"{C:attention}Retrigger{} the leftmost {C:attention}Joker{}",
-					"once for {C:attention}every{} unique {C:attention}Joker Rarity{C:attention}",
-					"currently held",
+					"{C:attention}Retrigger{} all {C:attention}Jokers{} to the left",
+					"once for {C:attention}every{} non-{C:blue}Common{C:attention} Joker{}",
+					"to the right of this Joker",
+				},
+				unlock = {
+					"Retrigger a {C:attention}Joker",
+					"{C:attention}114{} times",
+					"in one hand",
+				},
+			},
+			j_cry_canvas_balanced = {
+				name = "Canvas",
+				text = {
+					"{C:attention}Retrigger{} all {C:attention}Jokers{} to the left",
+					"once for {C:attention}every{} non-{C:blue}Common{C:attention} Joker{}",
+					"to the right of this Joker",
+					"{C:inactive}(Up to 2 retriggers)",
 				},
 				unlock = {
 					"Retrigger a {C:attention}Joker",
@@ -2072,9 +2086,9 @@ return {
 			j_cry_M = {
 				name = "M",
 				text = {
-					"Create a {C:attention}Jolly Joker{} when",
+					"Create a {C:dark_edition}Negative{}",
+					"{C:attention}Jolly Joker{} when",
 					"{C:attention}Blind{} is selected",
-					"{C:inactive}(Must have room){}",
 				},
 			},
 			j_cry_macabre = {
@@ -3945,7 +3959,7 @@ return {
 				name = "Mass Production",
 				text = {
 					"All cards and packs",
-					"in shop are {C:attention}#1#%{} off",
+					"in shop cost {C:attention}$1{}",
 				},
 				unlock = {
 					"Redeem {C:attention}25",
@@ -4080,7 +4094,7 @@ return {
 			v_cry_asteroglyph = {
 				name = "Asteroglyph",
 				text = {
-					"{C:attention}-#1#{} Ante",
+					"Set Ante to {C:attention}#1#{}",
 				},
 				unlock = {
 					"Reach Ante {C:attention}36",

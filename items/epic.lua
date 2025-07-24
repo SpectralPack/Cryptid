@@ -405,26 +405,32 @@ local canvas = {
 	cost = 18,
 	blueprint_compat = true,
 	atlas = "atlasepic",
+	loc_vars = function(self, info_queue, center)
+		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }) }
+	end,
 	calculate = function(self, card, context)
-		if
-			context.retrigger_joker_check
-			and not context.retrigger_joker
-			and context.other_card == G.jokers.cards[1]
-		then
+		if context.retrigger_joker_check and not context.retrigger_joker then
 			local num_retriggers = 0
-			local rarities = {}
 			for i = 1, #G.jokers.cards do
-				local joker = G.jokers.cards[i]
-				if not rarities[joker.config.center.rarity] then
-					rarities[joker.config.center.rarity] = true
+				if
+					card.T.x + card.T.w / 2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w / 2
+					and G.jokers.cards[i].config.center.rarity ~= 1
+					and (G.jokers.cards[i].config.center.rarity ~= "cry_candy" or Card.get_gameset(card) ~= "modest")
+				then
 					num_retriggers = num_retriggers + 1
 				end
 			end
-			return {
-				message = localize("k_again_ex"),
-				repetitions = Card.get_gameset(card) ~= "modest" and num_retriggers or math.min(2, num_retriggers),
-				card = card,
-			}
+			if
+				card.T
+				and context.other_card.T
+				and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
+			then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = Card.get_gameset(card) ~= "modest" and num_retriggers or math.min(2, num_retriggers),
+					card = card,
+				}
+			end
 		end
 	end,
 	cry_credits = {
@@ -840,16 +846,18 @@ local M = {
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
+		if not center.edition or not center.edition.negative then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
+		end
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
 		if (context.setting_blind and not (context.blueprint_card or self).getting_sliced) or context.forcetrigger then
-			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
-				local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				return nil, true
-			end
+			local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
+			card:add_to_deck()
+			card:set_edition("e_negative")
+			G.jokers:emplace(card)
+			return nil, true
 		end
 	end,
 	pools = { ["M"] = true },
@@ -1932,6 +1940,7 @@ local soccer = {
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
 		local mod = card.ability.extra.holygrail
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit + mod
+		G.jokers.config.card_limit = G.jokers.config.card_limit + mod
 		G.hand:change_size(mod)
 		SMODS.change_booster_limit(mod)
 		SMODS.change_voucher_limit(mod)
@@ -1940,6 +1949,7 @@ local soccer = {
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
 		local mod = card.ability.extra.holygrail
 		G.consumeables.config.card_limit = G.consumeables.config.card_limit - mod
+		G.jokers.config.card_limit = G.jokers.config.card_limit - mod
 		G.hand:change_size(-mod)
 		SMODS.change_booster_limit(-mod)
 		SMODS.change_voucher_limit(-mod)

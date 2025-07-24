@@ -440,18 +440,11 @@ local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost
 	config = {
 		discount_percentage = 75,
 	},
-	loc_vars = function(self, q, card)
-		return {
-			vars = {
-				card.ability.discount_percentage,
-			},
-		}
-	end,
-	redeem = function(self, card)
+	redeem = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.backup_discount_percent = G.GAME.backup_discount_percent or G.GAME.discount_percent
-				G.GAME.discount_percent = card.ability.discount_percentage
+				G.GAME.discount_percent = 100
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()
@@ -823,7 +816,7 @@ local fabric = { -- Blank Voucher T3; +2 Joker slots
 		},
 	},
 	key = "fabric",
-	config = { extra = 1 },
+	config = { extra = 2 },
 	atlas = "atlasvoucher",
 	order = 32669,
 	pos = { x = 6, y = 0 },
@@ -908,15 +901,15 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	pos = { x = 5, y = 2 },
 	requires = { "v_petroglyph" },
 	pools = { ["Tier3"] = true },
-	config = {
-		ante_mod = 2,
-	},
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.ante_mod } }
+	loc_vars = function(self, info_queue)
+		return { vars = { Cryptid.asteroglyph_ante() } }
 	end,
-	redeem = function(self, card)
-		local mod = -card.ability.ante_mod
+	redeem = function(self)
+		local mod = -G.GAME.round_resets.ante + Cryptid.asteroglyph_ante()
 		ease_ante(mod)
+		G.GAME.modifiers.cry_astero_ante = (G.GAME.modifiers.cry_astero_ante or 0) > 0
+				and math.min(math.ceil(G.GAME.modifiers.cry_astero_ante ^ 1.13), 1e300)
+			or 1
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.round_resets.blind_ante = mod
@@ -934,6 +927,17 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 		end
 		if args.type == "cry_unlock_all" then
 			unlock_card(self)
+		end
+	end,
+	init = function(self)
+		function Cryptid.asteroglyph_ante()
+			if not (G.GAME or {}).modifiers then
+				return 0
+			end
+			if not G.GAME.modifiers.cry_astero_ante then
+				G.GAME.modifiers.cry_astero_ante = 0
+			end
+			return G.GAME.modifiers.cry_astero_ante
 		end
 	end,
 }
@@ -1122,7 +1126,7 @@ local hyperspacetether = { -- CSL T3; +2 card selection limit, all* selected car
 		},
 	},
 	key = "hyperspacetether",
-	config = { extra = 1 },
+	config = { extra = 2 },
 	atlas = "atlasvoucher",
 	pos = { x = 2, y = 5 },
 	order = 32767,

@@ -156,7 +156,7 @@ local vacuum = {
 	name = "cry-Vacuum",
 	key = "vacuum",
 	pos = { x = 3, y = 1 },
-	config = { extra = 3 },
+	config = { extra = 4 },
 	cost = 4,
 	order = 452,
 	atlas = "atlasnotjokers",

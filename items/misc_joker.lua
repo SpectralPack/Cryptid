@@ -470,7 +470,7 @@ local wee_fib = {
 	config = {
 		extra = {
 			mult = 0,
-			mult_mod = 2,
+			mult_mod = 3,
 		},
 	},
 	gameset_config = {
@@ -2710,6 +2710,7 @@ local magnet = {
 		extra = {
 			money = 2,
 			slots = 4,
+			multiplier = 5
 		},
 	},
 	gameset_config = {
@@ -2729,7 +2730,7 @@ local magnet = {
 		return {
 			vars = {
 				number_format(center.ability.extra.money),
-				4 - (Card.get_gameset(card) == "modest" and 1 or 0),
+				number_format(card.ability.extra.multiplier - (Card.get_gameset(card) == "modest" and 1 or 0)),
 				number_format(center.ability.extra.slots),
 			},
 		}
@@ -2738,14 +2739,14 @@ local magnet = {
 	calculate = function(self, card, context)
 		if context.forcetrigger then
 			ease_dollars(
-				lenient_bignum(to_big(card.ability.extra.money) * (4 - (Card.get_gameset(card) == "modest" and 1 or 0)))
+				lenient_bignum(to_big(card.ability.extra.money) * (card.ability.extra.multiplier - (Card.get_gameset(card) == "modest" and 1 or 0)))
 			)
 		end
 	end,
 	calc_dollar_bonus = function(self, card)
 		if to_big(#G.jokers.cards) <= to_big(card.ability.extra.slots) then
 			return lenient_bignum(
-				to_big(card.ability.extra.money) * (4 - (Card.get_gameset(card) == "modest" and 1 or 0))
+				to_big(card.ability.extra.money) * (card.ability.extra.multiplier - (Card.get_gameset(card) == "modest" and 1 or 0))
 			)
 		else
 			return lenient_bignum(card.ability.extra.money)
@@ -8582,7 +8583,7 @@ local kidnap = {
 	order = 23,
 	pos = { x = 1, y = 2 },
 	config = {
-		extra = { money = 3 },
+		extra = { money = 4 },
 	},
 	gameset_config = {
 		modest = {

@@ -857,15 +857,13 @@ local scrabble = {
 					card and card.ability.extra.odds or self.config.extra.odds
 				)
 			then
-				if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
-					check = true
-					local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
-					if Cryptid.enabled("e_cry_m") == true then
-						card:set_edition({ cry_m = true })
-					end
-					card:add_to_deck()
-					G.jokers:emplace(card)
+				check = true
+				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
+				if Cryptid.enabled("e_cry_m") == true then
+					card:set_edition({ cry_m = true })
 				end
+				card:add_to_deck()
+				G.jokers:emplace(card)
 			end
 			if check then
 				card_eval_status_text(
@@ -954,19 +952,15 @@ local sacrifice = {
 					card.ability.extra.unc = 1
 				end
 				for i = 1, math.min(card.ability.immutable.max_spawns, card.ability.extra.unc) do
-					if G.GAME.joker_buffer + #G.jokers.cards < G.jokers.config.card_limit then
-						local unc = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "sacrifice")
-						unc:add_to_deck()
-						G.jokers:emplace(unc)
-						unc:start_materialize()
-					end
+					local unc = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "sacrifice")
+					unc:add_to_deck()
+					G.jokers:emplace(unc)
+					unc:start_materialize()
 				end
 				for i = 1, math.min(card.ability.immutable.max_spawns, card.ability.extra.jollies) do
-					if G.GAME.joker_buffer + #G.jokers.cards < G.jokers.config.card_limit then
-						local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
-						jolly:add_to_deck()
-						G.jokers:emplace(jolly)
-					end
+					local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
+					jolly:add_to_deck()
+					G.jokers:emplace(jolly)
 				end
 				card_eval_status_text(
 					context.blueprint_card or card,
