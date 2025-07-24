@@ -2235,3 +2235,9 @@ function SMODS.is_eternal(card)
 	end
 	return is_eternalref(card)
 end
+
+local unlock_allref = G.FUNCS.unlock_all
+G.FUNCS.unlock_all = function(e)
+	unlock_allref(e)
+	G.PROFILES[G.SETTGINGS.profile].cry_none = true
+end
