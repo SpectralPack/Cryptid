@@ -197,7 +197,7 @@ if CardSleeves then
 		name = "Critical Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 8, y = 0 },
-		config = { cry_crit_rate = 0.25, cry_crit_miss_rate = 0.125 },
+		config = { cry_crit_rate = 4, cry_crit_miss_rate = 8 },
 		unlocked = true,
 		unlock_condition = { deck = "Redeemed Deck", stake = 1 },
 		loc_vars = function(self)
@@ -206,9 +206,21 @@ if CardSleeves then
 		apply = function(self) end,
 		trigger_effect = function(self, args)
 			if args.context == "final_scoring_step" then
-				local crit_poll = pseudorandom(pseudoseed("cry_critical"))
-				crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
-				if crit_poll < self.config.cry_crit_rate then
+				local aaa = SMODS.pseudorandom_probability(
+					self,
+					"cry_critical",
+					1,
+					self.config.cry_crit_rate,
+					"Critical Sleeve"
+				)
+				local bbb = SMODS.pseudorandom_probability(
+					self,
+					"cry_critical",
+					1,
+					self.config.cry_crit_miss_rate,
+					"Critical Sleeve"
+				)
+				if aaa then
 					args.mult = args.mult ^ 2
 					update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
 					G.E_MANAGER:add_event(Event({
@@ -225,7 +237,7 @@ if CardSleeves then
 							return true
 						end,
 					}))
-				elseif crit_poll < self.config.cry_crit_rate + self.config.cry_crit_miss_rate then
+				elseif bbb then
 					args.mult = args.mult ^ 0.5
 					update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
 					G.E_MANAGER:add_event(Event({
@@ -366,7 +378,7 @@ if CardSleeves then
 		name = "Legendary Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 1, y = 1 },
-		config = { cry_legendary = true, cry_legendary_rate = 0.2 },
+		config = { cry_legendary = true, cry_legendary_rate = 5 },
 		unlocked = true,
 		unlock_condition = { deck = "Legendary Deck", stake = 1 },
 		loc_vars = function(self)
@@ -376,9 +388,15 @@ if CardSleeves then
 			if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
 				if G.jokers then
 					if #G.jokers.cards < G.jokers.config.card_limit then
-						local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
-						legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
-						if legendary_poll < self.config.cry_legendary_rate then
+						if
+							SMODS.pseudorandom_probability(
+								self,
+								"cry_legendary",
+								1,
+								self.config.cry_legendary_rate,
+								"Legendary Sleeve"
+							)
+						then
 							local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
 							card:add_to_deck()
 							card:start_materialize()
@@ -459,8 +477,8 @@ if CardSleeves then
 		config = {
 			voucher = {},
 			cry_antimatter = true,
-			cry_crit_rate = 0.25, -- Critical Sleeve, Effect Rate
-			cry_legendary_rate = 0.2, -- Legendary Sleeve, Effect Rate
+			cry_crit_rate = 4, -- Critical Sleeve, Effect Rate
+			cry_legendary_rate = 5, -- Legendary Sleeve, Effect Rate
 			cry_negative_rate = 20,
 			cry_highlight_limit = 1e20,
 		},
@@ -781,7 +799,15 @@ if CardSleeves then
 					if #G.jokers.cards < G.jokers.config.card_limit then
 						local legendary_poll = pseudorandom(pseudoseed("cry_legendary"))
 						legendary_poll = legendary_poll / (G.GAME.probabilities.normal or 1)
-						if legendary_poll < self.config.cry_legendary_rate then
+						if
+							SMODS.pseudorandom_probability(
+								self,
+								"cry_legendary",
+								1,
+								self.config.cry_legendary_rate,
+								"Antimatter Sleeve"
+							)
+						then
 							local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
 							card:add_to_deck()
 							card:start_materialize()
@@ -1321,9 +1347,15 @@ if CardSleeves then
 					or skip
 				then
 					if context.context == "final_scoring_step" then
-						local crit_poll = pseudorandom(pseudoseed("cry_critical"))
-						crit_poll = crit_poll / (G.GAME.probabilities.normal or 1)
-						if crit_poll < self.config.cry_crit_rate then
+						if
+							SMODS.pseudorandom_probability(
+								self,
+								"cry_critical",
+								1,
+								self.config.cry_crit_rate,
+								"Antimatter Sleeve"
+							)
+						then
 							context.mult = context.mult ^ 2
 							update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
 							G.E_MANAGER:add_event(Event({

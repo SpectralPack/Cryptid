@@ -4911,12 +4911,8 @@ local copypaste = {
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or 2)
 		return {
-			vars = {
-				num,
-				denom,
-			}, -- this effectively prevents a copypaste from ever initially misprinting at above 50% odds. still allows rigging/oops
+			vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Copy/Paste") },
 			key = Cryptid.gameset_loc(self, { madness = "madness", exp_modest = "modest" }),
 		}
 	end,
@@ -4959,7 +4955,8 @@ local copypaste = {
 						card,
 						"cry_copypaste_joker",
 						1,
-						card and card.ability.extra.odds or 2
+						card.ability.extra.odds,
+						"Copy/Paste"
 					)
 				then
 					G.E_MANAGER:add_event(Event({

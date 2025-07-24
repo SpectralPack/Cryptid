@@ -3921,7 +3921,7 @@ local rnjoker = {
 	config = {},
 	order = 59,
 	loc_vars = function(self, info_queue, card)
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.cond_value or 0)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra.cond_value or 0, "RNJoker")
 		local vars = {
 			vars = {
 				(card.ability.extra and card.ability.extra.value_mod and card.ability.extra.value) or 0,
@@ -4163,7 +4163,8 @@ local rnjoker = {
 										card,
 										"rnj",
 										1,
-										card and card.ability.extra.cond_value or 0
+										card and card.ability.extra.cond_value or 0,
+										"RNJoker"
 									)
 								then
 									cond_passed = true
@@ -4450,7 +4451,8 @@ local rnjoker = {
 									card,
 									"rnj",
 									1,
-									card and card.ability.extra.cond_value or 0
+									card and card.ability.extra.cond_value or 0,
+									"RNJoker"
 								)
 							then
 								cond_passed = true
@@ -4538,7 +4540,8 @@ local rnjoker = {
 									card,
 									"rnj",
 									1,
-									card and card.ability.extra.cond_value or 0
+									card and card.ability.extra.cond_value or 0,
+									"RNJoker"
 								)
 							then
 								cond_passed = true
