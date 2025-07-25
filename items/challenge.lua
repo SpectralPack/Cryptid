@@ -498,7 +498,7 @@ function Game:start_run(args)
 	end
 	Cryptid.base_values = {}
 	if G.PROFILES[G.SETTINGS.profile].all_unlocked then
-		G.PROFILES[G.SETTGINGS.profile].cry_none = true
+		G.PROFILES[G.SETTINGS.profile].cry_none = true
 	end
 end
 local challenges = {
