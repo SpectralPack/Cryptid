@@ -640,7 +640,7 @@ local beige = {
 	name = "cry-Beige",
 	key = "beige",
 	pos = { x = 1, y = 6 },
-	order = 15,
+	order = 17,
 	atlas = "atlasdeck",
 	apply = function(self)
 		G.GAME.modifiers.cry_common_value_quad = true
@@ -650,6 +650,136 @@ local beige = {
 		if args.type == "discover_amount" then
 			if args.amount >= 200 then
 				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
+}
+local magenta = {
+	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_deck",
+		},
+	},
+	name = "cry-Magenta",
+	key = "magenta",
+	pos = { x = 4, y = 6 },
+	order = 18,
+	atlas = "atlasdeck",
+	calculate = function(self, back, context)
+		if context.selling_card and context.card.config.center.set == "Joker" and context.card.sell_cost > 0 then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.jokers then
+						local card = create_card("Joker", G.jokers, nil, 0.95, nil, nil, nil, "cry_magenta")
+						card.sell_cost = context.card.sell_cost - 1
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+						return true
+					end
+				end,
+			}))
+		end
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "discover_amount" then
+			if args.amount >= 250 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
+}
+local cyan = {
+	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_deck",
+		},
+	},
+	name = "cry-Cyan",
+	key = "cyan",
+	pos = { x = 5, y = 6 },
+	order = 19,
+	atlas = "atlasdeck",
+	apply = function(self)
+		G.GAME.modifiers.cry_rare_blueprints = true
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "discover_amount" then
+			if args.amount >= 300 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
+}
+local herculean = {
+	object_type = "Back",
+	dependencies = {
+		items = {
+			"set_cry_deck",
+		},
+	},
+	name = "cry-Herculean",
+	key = "herculean",
+	pos = { x = 4, y = 2 },
+	order = 15,
+	atlas = "placeholders",
+	calculate = function(self, back, context)
+		if
+			context.context == "eval"
+			and G.GAME.last_blind
+			and G.GAME.last_blind.boss
+			and G.GAME.current_round.discards_used == 0
+			and G.GAME.current_round.discards_left > 0
+		then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					add_tag(Tag("tag_cry_epic"))
+					play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+					play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
+					return true
+				end,
+			}))
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 1,
+				func = function()
+					add_tag(Tag("tag_cry_epic"))
+					play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+					play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
+					return true
+				end,
+			}))
+		end
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.rarity == "cry_epic" then
+					unlock_card(self)
+				end
 			end
 		end
 		if args.type == "cry_lock_all" then
@@ -982,9 +1112,40 @@ local antimatter = {
 			then
 				G.GAME.modifiers.cry_common_value_quad = true
 			end
+			--Cyan Deck
+			if
+				(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_cyan", "wins", 8) or 0) ~= 0
+				or skip
+			then
+				G.GAME.modifiers.cry_rare_blueprints = true
+			end
 		end
 
 		function Cryptid.antimatter_trigger_final_scoring(self, context, skip)
+			--Magenta Deck
+			if context.selling_card and context.card.config.center.set == "Joker" and context.card.sell_cost > 0 then
+				if
+					(
+							Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_magenta", "wins", 8)
+							or 0
+						)
+						~= 0
+					or skip
+				then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if G.jokers then
+								local card = create_card("Joker", G.jokers, nil, 0.95, nil, nil, nil, "cry_magenta")
+								card.sell_cost = context.card.sell_cost - 1
+								card:add_to_deck()
+								card:start_materialize()
+								G.jokers:emplace(card)
+								return true
+							end
+						end,
+					}))
+				end
+			end
 			if context.context == "final_scoring_step" then
 				--Critical Deck
 				if
@@ -1152,6 +1313,42 @@ local antimatter = {
 						end
 					end
 				end
+				--Herculean Deck
+				if
+					(
+							Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_cry_herculean", "wins", 8)
+							or 0
+						)
+						~= 0
+					or skip
+				then
+					if
+						context.context == "eval"
+						and G.GAME.last_blind
+						and G.GAME.last_blind.boss
+						and G.GAME.current_round.discards_used == 0
+						and G.GAME.current_round.discards_left > 0
+					then
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								add_tag(Tag("tag_cry_epic"))
+								play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+								play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
+								return true
+							end,
+						}))
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 1,
+							func = function()
+								add_tag(Tag("tag_cry_epic"))
+								play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+								play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
+								return true
+							end,
+						}))
+					end
+				end
 				--Anaglyph Deck
 				if
 					(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_anaglyph", "wins", 8) or 0)
@@ -1274,6 +1471,9 @@ return {
 		beta,
 		bountiful,
 		beige,
+		magenta,
+		cyan,
+		herculean,
 		blank,
 		antimatter,
 		e_deck,
