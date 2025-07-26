@@ -7755,14 +7755,7 @@ local oldblueprint = {
 						return true
 					end,
 				}))
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("cry_destroyed_ex")}
-				)
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("cry_destroyed_ex") })
 			else
 				return {
 					message = localize("k_safe_ex"),
