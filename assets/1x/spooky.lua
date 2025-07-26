@@ -1995,6 +1995,10 @@ local candy_sticks = {
 						return true
 					end,
 				}))
+				return {
+					message = localize("k_eaten_ex"),
+					colour = G.C.FILTER,
+				}
 			end
 		end
 		if context.end_of_round and G.GAME.blind:get_type() == "Boss" then
