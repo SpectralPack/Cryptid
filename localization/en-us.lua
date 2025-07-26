@@ -5101,6 +5101,7 @@ return {
 			cry_active = "Active",
 			cry_inactive = "Inactive",
 			cry_divorced = "Divorced!",
+			cry_destroyed_ex = "Destroyed!",
 
 			k_disable_music = "Disable Music",
 
