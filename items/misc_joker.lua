@@ -7735,11 +7735,34 @@ local oldblueprint = {
 		then
 			if SMODS.pseudorandom_probability(card, "oldblueprint", 1, card.ability.extra.odds, "Old Blueprint") then
 				G.E_MANAGER:add_event(Event({
-					card:start_dissolve(),
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
 				}))
-				return {
-					message = localize("k_extinct_ex"),
-				}
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("cry_destroyed_ex")}
+				)
 			else
 				return {
 					message = localize("k_safe_ex"),

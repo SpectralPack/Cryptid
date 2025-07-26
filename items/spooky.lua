@@ -96,7 +96,7 @@ local wrapped = {
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				return {
-					message = localize("k_extinct_ex"),
+					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
 				}
 			end
@@ -1534,7 +1534,7 @@ local candy_cane = {
 					end,
 				}))
 				return {
-					message = localize("k_extinct_ex"),
+					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
 				}
 			end
@@ -1570,7 +1570,7 @@ local candy_cane = {
 					end,
 				}))
 				return {
-					message = localize("k_extinct_ex"),
+					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
 				}
 			end
@@ -1623,7 +1623,7 @@ local candy_buttons = {
 					end,
 				}))
 				return {
-					message = localize("k_extinct_ex"),
+					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
 				}
 			end
@@ -1701,7 +1701,7 @@ local jawbreaker = {
 				end,
 			}))
 			return {
-				message = localize("k_extinct_ex"),
+				message = localize("k_eaten_ex"),
 				colour = G.C.FILTER,
 			}
 		end
@@ -1833,7 +1833,7 @@ local brittle = {
 						end,
 					}))
 					return {
-						message = localize("k_extinct_ex"),
+						message = localize("k_eaten_ex"),
 						colour = G.C.FILTER,
 					}
 				end
@@ -1995,6 +1995,10 @@ local candy_sticks = {
 						return true
 					end,
 				}))
+				return {
+					message = localize("k_eaten_ex"),
+					colour = G.C.FILTER,
+				}
 			end
 		end
 		if context.end_of_round and G.GAME.blind:get_type() == "Boss" then
