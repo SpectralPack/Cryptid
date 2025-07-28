@@ -2730,7 +2730,7 @@ local magnet = {
 		return {
 			vars = {
 				number_format(center.ability.extra.money),
-				number_format(card.ability.extra.multiplier - (Card.get_gameset(card) == "modest" and 1 or 0)),
+				number_format(center.ability.extra.multiplier - (Card.get_gameset(center) == "modest" and 1 or 0)),
 				number_format(center.ability.extra.slots),
 			},
 		}
