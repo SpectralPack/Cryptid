@@ -1002,7 +1002,7 @@ local circulus_pistoris = {
 					sound = "cry_echips",
 				}),
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
-				remove_default_message = true
+				remove_default_message = true,
 			}
 		end
 	end,
