@@ -8728,6 +8728,16 @@ local kidnap = {
 	blueprint_compat = false,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_zany
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_mad
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_crazy
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_droll
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_sly
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_wily
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_clever
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_devious
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_crafty
 		local value = 0
 		if G.GAME and G.GAME.jokers_sold then
 			for _, v in ipairs(G.GAME.jokers_sold) do
