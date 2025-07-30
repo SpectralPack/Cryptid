@@ -4515,7 +4515,7 @@ local semicolon = {
 			"HexaCryonic",
 		},
 		code = {
-			"Math",
+			"WilsontheWolf",
 		},
 	},
 	dependencies = {
