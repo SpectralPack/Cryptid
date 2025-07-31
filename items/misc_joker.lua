@@ -10438,6 +10438,8 @@ local pizza = {
 	cost = 8,
 	order = 141,
 	demicoloncompat = true,
+	eternal_compat = false,
+	blueprint_compat = true,
 	config = { extra = { rounds_needed = 3, rounds_left = 3, slices = 6 }, immutable = { max_spawn = 100 } },
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_cry_pizza_slice
@@ -10517,6 +10519,8 @@ local pizza_slice = {
 		return false
 	end,
 	demicoloncompat = true,
+	eternal_compat = false,
+	blueprint_compat = true,
 	config = { extra = { xmult = 1, xmult_mod = 0.5 } },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { number_format(card.ability.extra.xmult_mod), number_format(card.ability.extra.xmult) } }
