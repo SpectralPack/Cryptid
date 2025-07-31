@@ -1902,7 +1902,7 @@ local glass_edition = {
 		if context.main_scoring and context.cardarea == G.play then
 			if
 				not SMODS.is_eternal(card)
-				and SMODS.pseudorandom_probability(card, "cry_fragile_destroy", 1, card.ability.odds) ("cry_fragile_destroy")
+				and SMODS.pseudorandom_probability(card, "cry_fragile_destroy", 1, card.ability.odds)
 			then
 				card.config.will_shatter = true
 			end
