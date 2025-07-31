@@ -2024,13 +2024,8 @@ function SMODS.four_fingers()
 end
 
 function Cryptid.create_dummy_from_stone(rank)
-	local r = rank
-	rank = tonumber(rank) or ({
-		Ace = 14,
-		King = 13,
-		Queen = 12,
-		Jack = 11,
-	})[rank] or rank
+	local r = tostring(rank)
+	rank = SMODS.Ranks[r].id
 	return {
 		get_id = function()
 			return rank
@@ -2038,6 +2033,7 @@ function Cryptid.create_dummy_from_stone(rank)
 		config = {
 			center = {},
 		},
+		ability = {},
 		base = {
 			id = rank,
 			value = rank >= 11 and "Queen" or "10",
