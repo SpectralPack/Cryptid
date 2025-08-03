@@ -129,18 +129,24 @@ local test3 = {
 		},
 	},
 	calculate = function(self, card, context)
-		if context.end_of_round and not context.individual and not context.repetition then
-			Cryptid.suit_level_up(context.blueprint_card or card, nil, 1, {
-				"High Card",
-				"Pair",
-				"Two Pair",
-				"Three of a Kind",
-				"Straight",
-				"Flush",
-				"Full House",
-				"Four of a Kind",
-				"Straight Flush",
-			}, true)
+		if context.using_consumeable then
+			if context.consumeable.ability.set == "Tarot" then
+				Cryptid.suit_level_up(
+					context.blueprint_card or card,
+					nil,
+					1,
+					Cryptid.table_merge({ "Three of a Kind" }, { "Three of a Kind" }, { "Full House" }, { "Pair" }),
+					true
+				)
+			else
+				Cryptid.suit_level_up(
+					context.blueprint_card or card,
+					nil,
+					1,
+					Cryptid.table_merge({ "Three of a Kind" }, { "Full House" }, { "Pair" }, { "Three of a Kind" }),
+					true
+				)
+			end
 		elseif context.pre_discard and not context.hook then
 			local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
 				G.FUNCS.get_poker_hand_info(G.hand.highlighted)
