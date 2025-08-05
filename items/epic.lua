@@ -2537,7 +2537,13 @@ local starfruit = {
 				}
 			else
 				return {
-					message = "-^" .. number_format(card.ability.emult_mod) .. " Mult",
+					message = localize({
+						type = "variable",
+						key = "a_powmult_minus",
+						vars = {
+							number_format(card.ability.emult_mod),
+						},
+					}),
 					colour = G.C.RARITY.cry_epic,
 				}
 			end
