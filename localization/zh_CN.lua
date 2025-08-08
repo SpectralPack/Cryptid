@@ -84,8 +84,8 @@ return {
 				name = "暴击牌组",
 				text = {
 					"每打出一手牌后",
-					"{C:green}#1#/4{}几率获得{X:dark_edition,C:white}^2{}倍率",
-					"{C:green}#1#/8{}几率获得{X:dark_edition,C:white}^0.5{}倍率",
+					"{C:green}#1#/#2#{}几率获得{X:dark_edition,C:white}^2{}倍率",
+					"{C:green}#1#/#3#{}几率获得{X:dark_edition,C:white}^0.5{}倍率",
 				},
 				unlock = {
 					"拥有一张{C:attention}灌铅{}小丑",
@@ -462,7 +462,7 @@ return {
 				text = {
 					"以一张{C:legendary}传奇{C:legendary}小丑牌开始",
 					"击败Boss盲注后",
-					"{C:green}1 / 5{} 几率创建另外一张",
+					"{C:green}#1# / #2#{} 几率创建另外一张",
 					"{C:inactive}(必须有空间){}",
 				},
 				unlock = {

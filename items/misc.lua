@@ -1253,10 +1253,15 @@ local blurred = {
 	end,
 	config = { retrigger_chance = 2, retriggers = 1, extra_retriggers = 1 },
 	loc_vars = function(self, info_queue, center)
-		local chance = center and center.edition and center.edition.retrigger_chance or self.config.retrigger_chance
+		local aaa, bbb = SMODS.get_probability_vars(
+			self,
+			1,
+			self.config.retrigger_chance,
+			"Blurred Edition"
+		)
 		local retriggers = center and center.edition and center.edition.retriggers or self.config.retriggers
 
-		return { vars = { G.GAME.probabilities.normal, chance, retriggers } }
+		return { vars = { aaa, bbb, retriggers } }
 	end,
 	--Note: This doesn't always play the animations properly for Jokers
 	calculate = function(self, card, context)
@@ -1267,17 +1272,16 @@ local blurred = {
 				or (context.retrigger_joker_check and not context.retrigger_joker)
 			)
 		then
-			local extra_retrigger = pseudorandom("cry_blurred")
-				<= G.GAME.probabilities.normal
-					/ (card and card.edition and card.edition.retrigger_chance or self.config.retrigger_chance)
 			return {
 				message = localize("cry_again_q"),
-				repetitions = (card and card.edition and card.edition.retriggers or self.config.retriggers)
-					+ (
-						extra_retrigger and card and card.edition and card.edition.extra_retriggers
-						or self.config.extra_retriggers
-						or 0
-					),
+				repetitions = self.config.retriggers
+					+ (SMODS.pseudorandom_probability(
+				self,
+				"cry_blurred",
+				1,
+				self.config.retrigger_chance,
+				"Blurred Edition"
+			) and self.config.extra_retriggers or 0),
 				card = card,
 			}
 		end

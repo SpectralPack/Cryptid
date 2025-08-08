@@ -89,8 +89,8 @@ return {
 				name = "Critical Deck",
 				text = {
 					"After each hand played,",
-					"{C:green}#1# in 4{} chance for {X:dark_edition,C:white} ^2 {} Mult",
-					"{C:green}#1# in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
+					"{C:green}#1# in #2#{} chance for {X:dark_edition,C:white} ^2 {} Mult",
+					"{C:green}#1# in #3#{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
 				},
 				unlock = {
 					"Obtain a {C:attention}Rigged Joker",
@@ -263,7 +263,7 @@ return {
 				name = "Legendary Deck",
 				text = {
 					"Start with a {C:legendary}Legendary{C:legendary} Joker",
-					"{C:green}1 in 5{} chance to create another",
+					"{C:green}#1# in #2#{} chance to create another",
 					"when Boss Blind is defeated {C:inactive}(must have room){}",
 				},
 				unlock = {

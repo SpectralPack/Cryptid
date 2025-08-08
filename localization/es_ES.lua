@@ -65,8 +65,8 @@ return {
 				name = "Baraja crítica",
 				text = {
 					"Después de cada mano jugada,",
-					"{C:green}#1# en 4{} probabilidades para {X:dark_edition,C:white} ^2 {} multi",
-					"{C:green}#1# en 8{} probabilidades para {X:dark_edition,C:white} ^0.5 {} multi",
+					"{C:green}#1# en #2#{} probabilidades para {X:dark_edition,C:white} ^2 {} multi",
+					"{C:green}#1# en #3#{} probabilidades para {X:dark_edition,C:white} ^0.5 {} multi",
 				},
 			},
 			b_cry_e_deck = {
@@ -188,7 +188,7 @@ return {
 				name = "Baraja legendaria",
 				text = {
 					"Comienza con un comodín {C:legendary}legendario{C:legendary}",
-					"{C:green}1 en 5{} probabilidades para crear otro",
+					"{C:green}#1# en #2#{} probabilidades para crear otro",
 					"cuando se derrota a la ciega jefe",
 					"{C:inactive}(debe haber espacio){}",
 				},

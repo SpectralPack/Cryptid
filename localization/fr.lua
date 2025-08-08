@@ -111,8 +111,8 @@ return {
 				name = "Jeu Critique",
 				text = {
 					"Après chaque main jouée,",
-					"{C:green}#1# chance#<s>1# sur 4{} d'obtenir {X:dark_edition,C:white} ^2 {} Multi",
-					"{C:green}#1# chance#<s>1# sur 8{} d'obtenir {X:dark_edition,C:white} ^0.5 {} Multi",
+					"{C:green}#1# chance#<s>1# sur #2#{} d'obtenir {X:dark_edition,C:white} ^2 {} Multi",
+					"{C:green}#1# chance#<s>1# sur #3#{} d'obtenir {X:dark_edition,C:white} ^0.5 {} Multi",
 				},
 				unlock = {
 					"Obtenir un {C:attention}Joker Truqué",
@@ -285,7 +285,7 @@ return {
 				name = "Jeu Légendaire",
 				text = {
 					"Démarre avec un Joker {C:legendary}Légendaire{C:legendary}",
-					"{C:green}1 chance sur 5{} d'en créer un autre",
+					"{C:green}#1# chance sur #2#{} d'en créer un autre",
 					"lorsque la Blinde de Boss est battue",
 					"{C:inactive}(selon la place disponible)",
 				},
