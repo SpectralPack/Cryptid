@@ -766,7 +766,7 @@ local m = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			if not context.retrigger_joker and (not msg or type(msg) == "string") then
 				--This doesn't display the correct amount of mult if retriggered it display the amount from the first retrigger instead of the final one
@@ -787,7 +787,7 @@ local m = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			return {
 				message = not msg and localize({
@@ -986,11 +986,12 @@ local number_blocks = {
 					card = card,
 				}
 			else
-				card.ability.extra.money = lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
+				card.ability.extra.money =
+					lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
 				local msg = SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "money",
-					scalar_value = "money_mod"
+					scalar_value = "money_mod",
 				})
 				if not msg or type(msg) == "string" then
 					card_eval_status_text(card, "extra", nil, nil, nil, { message = msg or localize("k_upgrade_ex") })
@@ -1733,11 +1734,12 @@ local goldjoker = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				card.ability.extra.percent = lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
+				card.ability.extra.percent =
+					lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
 				local msg = SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "percent",
-					scalar_value = "percent_mod"
+					scalar_value = "percent_mod",
 				})
 				if not msg or type(msg) == "string" then
 					return {
@@ -1750,11 +1752,12 @@ local goldjoker = {
 		end
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				card.ability.extra.percent = lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
+				card.ability.extra.percent =
+					lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
 				local msg = SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "percent",
-					scalar_value = "percent_mod"
+					scalar_value = "percent_mod",
 				})
 				if not msg or type(msg) == "string" then
 					return {
@@ -2557,7 +2560,7 @@ local starfruit = {
 				ref_table = card.ability,
 				ref_value = "emult",
 				scalar_value = "emult_mod",
-				operation = "-"
+				operation = "-",
 			})
 			--floating point precision can kiss my ass istg
 			if to_number(card.ability.emult) <= 1.00000001 then
