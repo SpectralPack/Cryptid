@@ -1031,18 +1031,27 @@ local double_scale = {
 	immutable = true,
 	atlas = "atlasepic",
 	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
-		if not G.GAME.cryptid_base_scales then G.GAME.cryptid_base_scales = {} end
-		if not G.GAME.cryptid_base_scales[other.config.center.key] then G.GAME.cryptid_base_scales[other.config.center.key] = {} end
-		if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar end
+		if not G.GAME.cryptid_base_scales then
+			G.GAME.cryptid_base_scales = {}
+		end
+		if not G.GAME.cryptid_base_scales[other.config.center.key] then
+			G.GAME.cryptid_base_scales[other.config.center.key] = {}
+		end
+		if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then
+			G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar
+		end
 		local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
 		local orig_scale_scale = current_scaling
 		if Cryptid.gameset(self) == "exp_modest" then
 			return {
 				scalar_value = lenient_bignum(to_big(true_base) * 2),
-				message = localize("k_upgrade_ex")
+				message = localize("k_upgrade_ex"),
 			}
 		end
-		return {scalar_value = lenient_bignum(orig_scale_scale + to_big(true_base)), message = localize("k_upgrade_ex")}
+		return {
+			scalar_value = lenient_bignum(orig_scale_scale + to_big(true_base)),
+			message = localize("k_upgrade_ex"),
+		}
 	end,
 	cry_credits = {
 		idea = {

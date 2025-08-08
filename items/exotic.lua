@@ -827,12 +827,18 @@ local scalae = {
 	end,
 	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
 		if other.ability.name ~= "cry-Scalae" then
-			if not G.GAME.cryptid_base_scales then G.GAME.cryptid_base_scales = {} end
-			if not G.GAME.cryptid_base_scales[other.config.center.key] then G.GAME.cryptid_base_scales[other.config.center.key] = {} end
-			if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar end
+			if not G.GAME.cryptid_base_scales then
+				G.GAME.cryptid_base_scales = {}
+			end
+			if not G.GAME.cryptid_base_scales[other.config.center.key] then
+				G.GAME.cryptid_base_scales[other.config.center.key] = {}
+			end
+			if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then
+				G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar
+			end
 			local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
 			local orig_scale_scale = current_scaling
-					local new_scale = lenient_bignum(
+			local new_scale = lenient_bignum(
 				to_big(true_base)
 					* (
 						(
@@ -849,7 +855,7 @@ local scalae = {
 			end
 			return {
 				scalar_value = new_scale,
-				message = localize("k_upgrade_ex")
+				message = localize("k_upgrade_ex"),
 			}
 		end
 	end,
