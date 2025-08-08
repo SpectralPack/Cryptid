@@ -374,11 +374,6 @@ local exponentia = {
 							vars = { number_format(v.ability.extra.Emult) },
 						}),
 					})
-					Cryptid.apply_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult, {
-						base = { { "extra", "Emult" } },
-						scaler = { { "extra", "Emult_mod" } },
-						scaler_base = { v.ability.extra.Emult_mod },
-					})
 				end
 			end
 			return ret
@@ -830,9 +825,14 @@ local scalae = {
 			}
 		end
 	end,
-	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
-		if joker.ability.name ~= "cry-Scalae" then
-			local new_scale = lenient_bignum(
+	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		if other.ability.name ~= "cry-Scalae" then
+			if not G.GAME.cryptid_base_scales then G.GAME.cryptid_base_scales = {} end
+			if not G.GAME.cryptid_base_scales[other.config.center.key] then G.GAME.cryptid_base_scales[other.config.center.key] = {} end
+			if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar end
+			local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
+			local orig_scale_scale = current_scaling
+					local new_scale = lenient_bignum(
 				to_big(true_base)
 					* (
 						(
@@ -844,10 +844,13 @@ local scalae = {
 						) ^ to_big(card.ability.extra.scale)
 					)
 			)
-			if not Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
+			if not Cryptid.is_card_big(other) and to_big(new_scale) >= to_big(1e300) then
 				new_scale = 1e300
 			end
-			return new_scale
+			return {
+				scalar_value = new_scale,
+				message = localize("k_upgrade_ex")
+			}
 		end
 	end,
 	loc_vars = function(self, info_queue, card)

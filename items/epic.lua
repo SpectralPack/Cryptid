@@ -1030,11 +1030,19 @@ local double_scale = {
 	cost = 18,
 	immutable = true,
 	atlas = "atlasepic",
-	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		if not G.GAME.cryptid_base_scales then G.GAME.cryptid_base_scales = {} end
+		if not G.GAME.cryptid_base_scales[other.config.center.key] then G.GAME.cryptid_base_scales[other.config.center.key] = {} end
+		if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar end
+		local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
+		local orig_scale_scale = current_scaling
 		if Cryptid.gameset(self) == "exp_modest" then
-			return lenient_bignum(to_big(true_base) * 2)
+			return {
+				scalar_value = lenient_bignum(to_big(true_base) * 2),
+				message = localize("k_upgrade_ex")
+			}
 		end
-		return lenient_bignum(orig_scale_scale + to_big(true_base))
+		return {scalar_value = lenient_bignum(orig_scale_scale + to_big(true_base)), message = localize("k_upgrade_ex")}
 	end,
 	cry_credits = {
 		idea = {
