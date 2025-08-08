@@ -5092,7 +5092,7 @@ local cut = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "Xmult",
-				scalar_value = "Xmult_mod"
+				scalar_value = "Xmult_mod",
 			})
 			return {
 				message = not msg and localize({
