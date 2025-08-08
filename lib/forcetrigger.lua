@@ -129,8 +129,8 @@ function Cryptid.forcetrigger(card, context)
 				local msg = SMODS.scale_card(card, {
 					ref_table = card.ability,
 					ref_value = "mult",
-					scalar_table = {cost = sliced_card.sell_cost * 2},
-					scalar_value = "cost"
+					scalar_table = { cost = sliced_card.sell_cost * 2 },
+					scalar_value = "cost",
 				})
 			end
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
@@ -254,7 +254,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
@@ -282,7 +282,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "extra_value",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			card:set_cost()
 		end
@@ -303,7 +303,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "chips",
-				scalar_value = "chip_mod"
+				scalar_value = "chip_mod",
 			})
 			results = { jokers = { chips = card.ability.extra.chips, card = card } }
 		end
@@ -313,7 +313,7 @@ function Cryptid.forcetrigger(card, context)
 				ref_table = card.ability,
 				ref_value = "chips",
 				scalar_value = "chip_mod",
-				operation = "-"
+				operation = "-",
 			})
 			results = { jokers = { chips = card.ability.extra.chips, card = card } }
 			if card.ability.extra.chips - card.ability.extra.chip_mod <= 0 then
@@ -381,7 +381,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -444,7 +444,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
@@ -477,7 +477,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -539,7 +539,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -549,7 +549,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -582,7 +582,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "dollars",
-				scalar_value = "increase"
+				scalar_value = "increase",
 			})
 			ease_dollars(card.ability.extra.dollars)
 		end
@@ -591,7 +591,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -656,7 +656,7 @@ function Cryptid.forcetrigger(card, context)
 				ref_table = card.ability.extra,
 				ref_value = "h_size",
 				scalar_value = "h_mod",
-				operation = "-"
+				operation = "-",
 			})
 			G.hand:change_size(card.ability.extra.h_size)
 		end
@@ -734,7 +734,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
@@ -744,7 +744,7 @@ function Cryptid.forcetrigger(card, context)
 				ref_table = card.ability,
 				ref_value = "mult",
 				scalar_value = "extra",
-				operation = "-"
+				operation = "-",
 			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
@@ -753,7 +753,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
@@ -766,7 +766,7 @@ function Cryptid.forcetrigger(card, context)
 				ref_table = card.ability,
 				ref_value = "x_mult",
 				scalar_value = "extra",
-				operation = "-"
+				operation = "-",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -779,7 +779,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "chips",
-				scalar_value = "chip_mod"
+				scalar_value = "chip_mod",
 			})
 			results = { jokers = { chips = card.ability.extra.chips, card = card } }
 		end
@@ -791,7 +791,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -849,7 +849,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -864,7 +864,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "chips",
-				scalar_value = "chip_mod"
+				scalar_value = "chip_mod",
 			})
 			results = { jokers = { chips = card.ability.extra.chips, card = card } }
 		end
@@ -887,7 +887,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
@@ -1000,7 +1000,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.caino_xmult, card = card } }
 		end
@@ -1012,7 +1012,7 @@ function Cryptid.forcetrigger(card, context)
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "x_mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
