@@ -2189,5 +2189,5 @@ end
 local unlock_allref = G.FUNCS.unlock_all
 G.FUNCS.unlock_all = function(e)
 	unlock_allref(e)
-	G.PROFILES[G.SETTINGS.profile].cry_none = true
+	G.PROFILES[G.SETTINGS.profile].cry_none = (Cryptid.enabled("set_cry_poker_hand_stuff") == true)
 end
