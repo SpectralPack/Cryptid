@@ -16,23 +16,38 @@ SMODS.Joker:take_ownership("green_joker", {
 			local prev_mult = card.ability.mult
 			card.ability.mult = math.max(0, card.ability.mult - card.ability.extra)
 			if card.ability.mult ~= prev_mult then
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_mult_minus",
-						vars = { card.ability.extra },
-					}),
-					colour = G.C.RED,
-					card = card,
-				}
+				local msg = SMODS.scale_card(card, {
+					ref_table = card.ability,
+					ref_value = "mult",
+					scalar_value = "extra",
+					operation = "-"
+				})
+				if not msg or type(msg) == "string" then
+					return {
+						message = msg or localize({
+							type = "variable",
+							key = "a_mult_minus",
+							vars = { card.ability.extra },
+						}),
+						colour = G.C.RED,
+						card = card,
+					}
+				end
 			end
 		end
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			card.ability.mult = card.ability.mult + card.ability.extra
-			return {
-				card = card,
-				message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra } }),
-			}
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "mult",
+				scalar_value = "extra"
+			})
+			if not msg or type(msg) == "string" then
+				return {
+					card = card,
+					message = localize({ type = "variable", key = "a_mult", vars = { card.ability.extra } }),
+				}
+			end
 		end
 		if context.joker_main then
 			return {
