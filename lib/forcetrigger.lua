@@ -126,6 +126,12 @@ function Cryptid.forcetrigger(card, context)
 						return true
 					end,
 				}))
+				local msg = SMODS.scale_card(card, {
+					ref_table = card.ability,
+					ref_value = "mult",
+					scalar_table = {cost = sliced_card.sell_cost * 2},
+					scalar_value = "cost"
+				})
 			end
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
@@ -245,6 +251,11 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Ride The Bus" then
 			card.ability.mult = card.ability.mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
 		if card.ability.name == "Space Joker" then
@@ -268,6 +279,11 @@ function Cryptid.forcetrigger(card, context)
 		-- page 4
 		if card.ability.name == "Egg" then
 			card.ability.extra_value = card.ability.extra_value + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "extra_value",
+				scalar_value = "extra"
+			})
 			card:set_cost()
 		end
 		if card.ability.name == "Burglar" then
@@ -284,10 +300,21 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Runner" then
 			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "chips",
+				scalar_value = "chip_mod"
+			})
 			results = { jokers = { chips = card.ability.extra.chips, card = card } }
 		end
 		if card.ability.name == "Ice Cream" then
 			card.ability.extra.chips = card.ability.extra.chips - card.ability.extra.chip_mod
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "chips",
+				scalar_value = "chip_mod",
+				operation = "-"
+			})
 			results = { jokers = { chips = card.ability.extra.chips, card = card } }
 			if card.ability.extra.chips - card.ability.extra.chip_mod <= 0 then
 				G.E_MANAGER:add_event(Event({
@@ -351,6 +378,11 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Constellation" then
 			card.ability.x_mult = card.ability.x_mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		-- if card.ability.name == "Hiker" then results = { jokers = { }, } end
@@ -409,6 +441,11 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Red Card" then
 			card.ability.mult = card.ability.mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
 		if card.ability.name == "Madness" then
@@ -437,6 +474,11 @@ function Cryptid.forcetrigger(card, context)
 					end,
 				}))
 			end
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		if card.ability.name == "Square Joker" then
@@ -494,11 +536,21 @@ function Cryptid.forcetrigger(card, context)
 				end
 			end
 			card.ability.x_mult = card.ability.x_mult + (card.ability.extra * #enhanced or 1)
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		-- if card.ability.name == "Shortcut" then results = { jokers = { } } end
 		if card.ability.name == "Hologram" then
 			card.ability.x_mult = card.ability.x_mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		if card.ability.name == "Vagabond" then
@@ -527,10 +579,20 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Rocket" then
 			card.ability.extra.dollars = card.ability.extra.dollars + card.ability.extra.increase
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "dollars",
+				scalar_value = "increase"
+			})
 			ease_dollars(card.ability.extra.dollars)
 		end
 		if card.ability.name == "Obelisk" then -- Sobelisk
 			card.ability.x_mult = card.ability.x_mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		-- page 6
@@ -590,6 +652,12 @@ function Cryptid.forcetrigger(card, context)
 		if card.ability.name == "Turtle Bean" then
 			G.hand:change_size(-card.ability.extra.h_size)
 			card.ability.extra.h_size = card.ability.extra.h_size - card.ability.extra.h_mod
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "h_size",
+				scalar_value = "h_mod",
+				operation = "-"
+			})
 			G.hand:change_size(card.ability.extra.h_size)
 		end
 		if card.ability.name == "Erosion" then
@@ -663,14 +731,30 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Flash Card" then
 			card.ability.mult = card.ability.mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
 		if card.ability.name == "Popcorn" then
 			card.ability.mult = card.ability.mult - card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "mult",
+				scalar_value = "extra",
+				operation = "-"
+			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
 		if card.ability.name == "Spare Trousers" then
 			card.ability.mult = card.ability.mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }
 		end
 		if card.ability.name == "Ancient Joker" then
@@ -678,6 +762,12 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Ramen" then
 			card.ability.x_mult = card.ability.x_mult - card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra",
+				operation = "-"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		if card.ability.name == "Walkie Talkie" then
@@ -686,6 +776,11 @@ function Cryptid.forcetrigger(card, context)
 		-- if card.ability.name == "Seltzer" then results = { jokers = { } } end
 		if card.ability.name == "Castle" then
 			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "chips",
+				scalar_value = "chip_mod"
+			})
 			results = { jokers = { chips = card.ability.extra.chips, card = card } }
 		end
 		if card.ability.name == "Smiley Face" then
@@ -693,6 +788,11 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Campfire" then
 			card.ability.x_mult = card.ability.x_mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		-- page 8
@@ -746,6 +846,11 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Glass Joker" then
 			card.ability.x_mult = card.ability.x_mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		-- page 9
@@ -756,6 +861,11 @@ function Cryptid.forcetrigger(card, context)
 		-- if card.ability.name == "Blueprint" then results = { jokers = { } } end
 		if card.ability.name == "Wee Joker" then
 			card.ability.extra.chips = card.ability.extra.chips + card.ability.extra.chip_mod
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "chips",
+				scalar_value = "chip_mod"
+			})
 			results = { jokers = { chips = card.ability.extra.chips, card = card } }
 		end
 		if card.ability.name == "Merry Andy" then
@@ -774,6 +884,11 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Hit The Road" then
 			card.ability.x_mult = card.ability.x_mult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		if card.ability.name == "The Duo" then
@@ -882,6 +997,11 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Caino" then
 			card.ability.caino_xmult = card.ability.caino_xmult + card.ability.extra
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.caino_xmult, card = card } }
 		end
 		if card.ability.name == "Triboulet" then
@@ -889,6 +1009,11 @@ function Cryptid.forcetrigger(card, context)
 		end
 		if card.ability.name == "Yorick" then
 			card.ability.x_mult = card.ability.x_mult + card.ability.extra.xmult
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "x_mult",
+				scalar_value = "extra"
+			})
 			results = { jokers = { Xmult_mod = card.ability.x_mult, card = card } }
 		end
 		if card.ability.name == "Chicot" then
