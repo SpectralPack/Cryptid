@@ -323,7 +323,7 @@ local exponentia = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "Emult",
-				scalar_value = "Emult_mod"
+				scalar_value = "Emult_mod",
 			})
 			return {
 				message = not msg and localize({
@@ -375,7 +375,7 @@ local exponentia = {
 					local msg = SMODS.scale_card(card, {
 						ref_table = card.ability.extra,
 						ref_value = "Emult",
-						scalar_value = "Emult_mod"
+						scalar_value = "Emult_mod",
 					})
 					if not msg or type(msg) == "string" then
 						card_eval_status_text(v, "extra", nil, nil, nil, {
@@ -660,7 +660,7 @@ local crustulum = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "chips",
-				scalar_value = "chip_mod"
+				scalar_value = "chip_mod",
 			})
 			if not msg or type(msg) == "string" then
 				card_eval_status_text(card, "extra", nil, nil, nil, {
@@ -689,7 +689,7 @@ local crustulum = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "chips",
-				scalar_value = "chip_mod"
+				scalar_value = "chip_mod",
 			})
 			return {
 				message = not msg and localize({
@@ -761,11 +761,12 @@ local primus = {
 				end
 			end
 			if check then
-				card.ability.extra.Emult = lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
+				card.ability.extra.Emult =
+					lenient_bignum(to_big(card.ability.extra.Emult) + card.ability.extra.Emult_mod)
 				local msg = SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "Emult",
-					scalar_value = "Emult_mod"
+					scalar_value = "Emult_mod",
 				})
 				card.children.floating_sprite:set_sprite_pos({ x = 8, y = 6 })
 				if not msg or type(msg) == "string" then
@@ -798,7 +799,7 @@ local primus = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "Emult",
-				scalar_value = "Emult_mod"
+				scalar_value = "Emult_mod",
 			})
 			return {
 				message = not msg and localize({
@@ -855,7 +856,7 @@ local scalae = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "scale",
-				scalar_value = "scale_mod"
+				scalar_value = "scale_mod",
 			})
 			if not msg or type(msg) == "string" then
 				return {
@@ -970,11 +971,12 @@ local stella_mortis = {
 					quaota = planet_to_destroy.ability.immutable and planet_to_destroy.ability.immutable.overflow_amount
 				end
 				planet_to_destroy.getting_sliced = true
-				card.ability.extra.Emult = lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
+				card.ability.extra.Emult =
+					lenient_bignum(card.ability.extra.Emult + to_big(card.ability.extra.Emult_mod) * quota)
 				local msg = SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "Emult",
-					scalar_value = "Emult_mod"
+					scalar_value = "Emult_mod",
 				})
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1361,7 +1363,7 @@ local energia = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "tags",
-				scalar_value = "tag_mod"
+				scalar_value = "tag_mod",
 			})
 			if t > 0 and (not msg or type(msg) == "string") then
 				card_eval_status_text(card, "extra", nil, nil, nil, {
@@ -1380,7 +1382,7 @@ local energia = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "tags",
-				scalar_value = "tag_mod"
+				scalar_value = "tag_mod",
 			})
 		end
 	end,
@@ -1536,7 +1538,7 @@ local duplicare = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "Xmult",
-				scalar_value = "Xmult_mod"
+				scalar_value = "Xmult_mod",
 			})
 			if not msg or type(msg) == "string" then
 				card_eval_status_text(card, "extra", nil, nil, nil, { message = msg or localize("k_upgrade_ex") })
@@ -1549,7 +1551,7 @@ local duplicare = {
 				local msg = SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "Xmult",
-					scalar_value = "Xmult_mod"
+					scalar_value = "Xmult_mod",
 				})
 			end
 			return {

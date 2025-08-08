@@ -20,7 +20,7 @@ SMODS.Joker:take_ownership("green_joker", {
 					ref_table = card.ability,
 					ref_value = "mult",
 					scalar_value = "extra",
-					operation = "-"
+					operation = "-",
 				})
 				if not msg or type(msg) == "string" then
 					return {
@@ -40,7 +40,7 @@ SMODS.Joker:take_ownership("green_joker", {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "mult",
-				scalar_value = "extra"
+				scalar_value = "extra",
 			})
 			if not msg or type(msg) == "string" then
 				return {

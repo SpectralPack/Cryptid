@@ -82,17 +82,10 @@ local dropshot = {
 					scalar_value = "Xmult_mod",
 				})
 				if not msg or type(msg) == "string" then
-					card_eval_status_text(
-						card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{
-							message = msg
-								or localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
-						}
-					)
+					card_eval_status_text(card, "extra", nil, nil, nil, {
+						message = msg
+							or localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
+					})
 				end
 				return nil, true
 			end
