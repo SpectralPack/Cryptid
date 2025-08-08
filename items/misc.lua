@@ -1253,12 +1253,7 @@ local blurred = {
 	end,
 	config = { retrigger_chance = 2, retriggers = 1, extra_retriggers = 1 },
 	loc_vars = function(self, info_queue, center)
-		local aaa, bbb = SMODS.get_probability_vars(
-			self,
-			1,
-			self.config.retrigger_chance,
-			"Blurred Edition"
-		)
+		local aaa, bbb = SMODS.get_probability_vars(self, 1, self.config.retrigger_chance, "Blurred Edition")
 		local retriggers = center and center.edition and center.edition.retriggers or self.config.retriggers
 
 		return { vars = { aaa, bbb, retriggers } }
@@ -1274,14 +1269,13 @@ local blurred = {
 		then
 			return {
 				message = localize("cry_again_q"),
-				repetitions = self.config.retriggers
-					+ (SMODS.pseudorandom_probability(
-				self,
-				"cry_blurred",
-				1,
-				self.config.retrigger_chance,
-				"Blurred Edition"
-			) and self.config.extra_retriggers or 0),
+				repetitions = self.config.retriggers + (SMODS.pseudorandom_probability(
+					self,
+					"cry_blurred",
+					1,
+					self.config.retrigger_chance,
+					"Blurred Edition"
+				) and self.config.extra_retriggers or 0),
 				card = card,
 			}
 		end
