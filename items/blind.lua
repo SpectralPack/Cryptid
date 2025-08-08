@@ -743,22 +743,24 @@ local greed = {
 		}
 	end,
 	set_blind = function(self, reset, silent)
-		if to_big(G.GAME.dollars) < to_big(5000) then
-			G.GAME.blind.chips = -- go my equations
-				((get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling) + (math.floor(
-					G.GAME.dollars / 5
-				) * (get_blind_amount(G.GAME.round_resets.ante) * 0.25)))
-		else
-			G.GAME.blind.chips = -- set cap at $5000
-				(
-					(get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling)
-					+ (
-						math.floor(5000 / 5) -- 1000 extra increments
-						* (get_blind_amount(G.GAME.round_resets.ante) * 0.25)
+		if to_big(G.GAME.dollars) > to_big(0) then
+			if to_big(G.GAME.dollars) < to_big(5000) then
+				G.GAME.blind.chips = -- go my equations
+					((get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling) + (math.floor(
+						G.GAME.dollars / 5
+					) * (get_blind_amount(G.GAME.round_resets.ante) * 0.25)))
+			else
+				G.GAME.blind.chips = -- set cap at $5000
+					(
+						(get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling)
+						+ (
+							math.floor(5000 / 5) -- 1000 extra increments
+							* (get_blind_amount(G.GAME.round_resets.ante) * 0.25)
+						)
 					)
-				)
+			end
+			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		end
-		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
 	disable = function(self, silent)
 		G.GAME.blind.chips = get_blind_amount(G.GAME.round_resets.ante) * G.GAME.starting_params.ante_scaling
