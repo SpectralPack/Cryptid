@@ -677,7 +677,7 @@ local bonk = {
 				local msg = SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "chips",
-					scalar_value = "bonus"
+					scalar_value = "bonus",
 				})
 				if not msg or type("msg") == "string" then
 					card_eval_status_text(card, "extra", nil, nil, nil, {
@@ -730,10 +730,10 @@ local bonk = {
 		end
 		if context.forcetrigger then
 			local msg = SMODS.scale_card(card, {
-					ref_table = card.ability.extra,
-					ref_value = "chips",
-					scalar_value = "bonus"
-				})
+				ref_table = card.ability.extra,
+				ref_value = "chips",
+				scalar_value = "bonus",
+			})
 			return {
 				message = localize({
 					type = "variable",
@@ -1231,7 +1231,8 @@ local function virgoJollies(card)
 				func = function()
 					local summon = lenient_bignum(
 						math.floor(
-							(to_big(card.ability.extra_value) + to_big(card.cost/2)) / to_big(card.ability.extra.bonus)
+							(to_big(card.ability.extra_value) + to_big(card.cost / 2))
+								/ to_big(card.ability.extra.bonus)
 						)
 					)
 					if summon == nil or to_big(summon) < to_big(1) then
@@ -1309,7 +1310,7 @@ local virgo = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "extra_value",
-				scalar_value = "bonus"
+				scalar_value = "bonus",
 			})
 			card:set_cost()
 			if not msg or type(msg) == "string" then
@@ -1318,16 +1319,14 @@ local virgo = {
 					colour = G.C.MONEY,
 				})
 			end
-
-		elseif (context.selling_self and not context.blueprint and not context.retrigger_joker) then
+		elseif context.selling_self and not context.blueprint and not context.retrigger_joker then
 			virgoJollies(card)
 			return nil, true
-
 		elseif context.forcetrigger then
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "extra_value",
-				scalar_value = "bonus"
+				scalar_value = "bonus",
 			})
 
 			virgoJollies(card)
@@ -1538,14 +1537,14 @@ local mprime = {
 				msg = SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "mult",
-					scalar_value = "bonus"
+					scalar_value = "bonus",
 				})
 			end
 			if not context.retrigger_joker and not context.blueprint and (not msg or type(msg) == "string") then
 				return {
 					message = msg or localize("cry_m_ex"),
 					card = card,
-					colour = G.C.DARK_EDITION
+					colour = G.C.DARK_EDITION,
 				}
 			end
 		elseif
@@ -1600,7 +1599,7 @@ local mprime = {
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "mult",
-				scalar_value = "bonus"
+				scalar_value = "bonus",
 			})
 			local mjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 			G.GAME.joker_buffer = G.GAME.joker_buffer + mjoker
@@ -1772,7 +1771,7 @@ local megg = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "amount",
-				scalar_value = "amount_mod"
+				scalar_value = "amount_mod",
 			})
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
@@ -1806,7 +1805,7 @@ local megg = {
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "amount",
-				scalar_value = "amount_mod"
+				scalar_value = "amount_mod",
 			})
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
@@ -1842,7 +1841,7 @@ local longboi = {
 		extra = {
 			monster = 1,
 			bonus = 0.75,
-			secret_variable_so_smods_scale_works_correctly = 1
+			secret_variable_so_smods_scale_works_correctly = 1,
 		},
 		immutable = { max_bonus = 0.75 }, -- this is technically a minimum but i didn't name the variable
 	},
@@ -1869,11 +1868,9 @@ local longboi = {
 			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "secret_variable_so_smods_scale_works_correctly",
-				scalar_value = "bonus"
+				scalar_value = "bonus",
 			})
-			G.GAME.monstermult = lenient_bignum(
-				card.ability.extra.secret_variable_so_smods_scale_works_correctly
-			)
+			G.GAME.monstermult = lenient_bignum(card.ability.extra.secret_variable_so_smods_scale_works_correctly)
 			if not context.retrigger_joker and (not msg or type(msg) == "string") then
 				return {
 					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
