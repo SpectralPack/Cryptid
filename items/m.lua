@@ -1231,7 +1231,7 @@ local function virgoJollies(card)
 				func = function()
 					local summon = lenient_bignum(
 						math.floor(
-							to_big(card.ability.extra_value) / to_big(card.ability.extra.bonus)
+							(to_big(card.ability.extra_value) + to_big(card.cost/2)) / to_big(card.ability.extra.bonus)
 						)
 					)
 					if summon == nil or to_big(summon) < to_big(1) then
