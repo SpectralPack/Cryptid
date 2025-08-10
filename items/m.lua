@@ -1308,8 +1308,9 @@ local virgo = {
 		then
 			--this doesn't seem to work with retrigger jokers. Intentional?
 			local msg = SMODS.scale_card(card, {
-				ref_table = card.ability.extra,
+				ref_table = card.ability,
 				ref_value = "extra_value",
+				scalar_table = card.ability.extra,
 				scalar_value = "bonus",
 			})
 			card:set_cost()
@@ -1324,8 +1325,9 @@ local virgo = {
 			return nil, true
 		elseif context.forcetrigger then
 			SMODS.scale_card(card, {
-				ref_table = card.ability.extra,
+				ref_table = card.ability,
 				ref_value = "extra_value",
+				scalar_table = card.ability.extra,
 				scalar_value = "bonus",
 			})
 
@@ -1863,14 +1865,13 @@ local longboi = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition then
-			card.ability.extra.secret_variable_so_smods_scale_works_correctly = G.GAME.monstermult
 			card.ability.extra.bonus = math.max(card.ability.extra.bonus, card.ability.immutable.max_bonus) -- maybe remove this entirely
 			local msg = SMODS.scale_card(card, {
-				ref_table = card.ability.extra,
-				ref_value = "secret_variable_so_smods_scale_works_correctly",
+				ref_table = G.GAME,
+				ref_value = "monstermult",
+				scalar_table = card.ability.extra,
 				scalar_value = "bonus",
 			})
-			G.GAME.monstermult = lenient_bignum(card.ability.extra.secret_variable_so_smods_scale_works_correctly)
 			if not context.retrigger_joker and (not msg or type(msg) == "string") then
 				return {
 					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
@@ -1890,9 +1891,13 @@ local longboi = {
 			}
 		end
 		if context.forcetrigger then
-			G.GAME.monstermult = lenient_bignum(
-				G.GAME.monstermult + math.max(card.ability.immutable.max_bonus, to_big(card.ability.extra.bonus))
-			)
+			card.ability.extra.bonus = math.max(card.ability.extra.bonus, card.ability.immutable.max_bonus) -- maybe remove this entirely
+			SMODS.scale_card(card, {
+				ref_table = G.GAME,
+				ref_value = "monstermult",
+				scalar_table = card.ability.extra,
+				scalar_value = "bonus",
+			})
 			return {
 				message = localize({
 					type = "variable",
