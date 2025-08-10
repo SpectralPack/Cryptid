@@ -696,17 +696,17 @@ local crustulum = {
 		end
 		if context.food_joker_expired then
 			center.ability.extra.rerolls_stored = center.ability.extra.rerolls_stored + center.ability.extra.rerolls_per
-      local msg = SMODS.scale_card(card, {
+			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "rerolls_stored",
 				scalar_value = "rerolls_per",
 			})
-      if not msg or type(msg) == "string" then
-          return {
-            message = msg or localize("k_upgrade_ex"),
-            colour = G.C.DARK_EDITION,
-          }
-        end
+			if not msg or type(msg) == "string" then
+				return {
+					message = msg or localize("k_upgrade_ex"),
+					colour = G.C.DARK_EDITION,
+				}
+			end
 		end
 		if context.forcetrigger then
 			center.ability.extra.rerolls_stored = center.ability.extra.rerolls_stored
@@ -717,17 +717,17 @@ local crustulum = {
 					area = G.jokers,
 				})
 			end
-      local msg = SMODS.scale_card(card, {
+			local msg = SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "rerolls_stored",
 				scalar_value = "rerolls_per",
 			})
-      if not msg or type(msg) == "string" then
-          return {
-            message = msg or localize("k_upgrade_ex"),
-            colour = G.C.DARK_EDITION,
-          }
-      end
+			if not msg or type(msg) == "string" then
+				return {
+					message = msg or localize("k_upgrade_ex"),
+					colour = G.C.DARK_EDITION,
+				}
+			end
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -882,8 +882,13 @@ local scalae = {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if
-			(context.end_of_round and not context.individual and not context.repetition and not context.blueprint and G.GAME.blind_on_deck == "Boss")
-			or context.forcetrigger
+			(
+				context.end_of_round
+				and not context.individual
+				and not context.repetition
+				and not context.blueprint
+				and G.GAME.blind_on_deck == "Boss"
+			) or context.forcetrigger
 		then
 			card.ability.extra.scale = lenient_bignum(to_big(card.ability.extra.scale) + card.ability.extra.scale_mod)
 			local msg = SMODS.scale_card(card, {

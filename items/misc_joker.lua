@@ -1336,7 +1336,7 @@ local compound_interest = {
 	cry_calc_interest = function(self, card, interest)
 		local old = lenient_bignum(card.ability.extra.percent)
 		card.ability.extra.percent = lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-    local msg = SMODS.scale_card(card, {
+		local msg = SMODS.scale_card(card, {
 			ref_table = card.ability.extra,
 			ref_value = "percent",
 			scalar_value = "percent_mod",
@@ -7858,8 +7858,12 @@ local oldblueprint = {
 				},
 			}
 		end
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds, "Old Blueprint")
+		local num, denom = SMODS.get_probability_vars(
+			card,
+			1,
+			card and card.ability.extra.odds or self.config.extra.odds,
+			"Old Blueprint"
+		)
 		return {
 			vars = {
 				num,

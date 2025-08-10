@@ -24,7 +24,8 @@ local echo = {
 	pos = { x = 2, y = 0 },
 	config = { retriggers = 2, extra = 2 },
 	loc_vars = function(self, info_queue, card)
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra or self.config.extra, "Echo Card")
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra or self.config.extra, "Echo Card")
 		return {
 			vars = {
 				card and card.ability.retriggers or self.config.retriggers,

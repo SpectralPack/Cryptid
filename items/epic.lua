@@ -228,7 +228,8 @@ local googol_play = {
 					card,
 					"cry_googol_play",
 					1,
-					card and card.ability.extra.odds or self.config.extra.odds, "Googol Play Card"
+					card and card.ability.extra.odds or self.config.extra.odds,
+					"Googol Play Card"
 				)
 			then
 				return {
@@ -1054,7 +1055,7 @@ local double_scale = {
 			times_current = times_current - times_needed
 		else
 			return {
-				message = number_format(times_current).."/"..number_format(times_needed)
+				message = number_format(times_current) .. "/" .. number_format(times_needed),
 			}
 		end
 		if not G.GAME.cryptid_base_scales then
@@ -1093,16 +1094,16 @@ local double_scale = {
 	},
 	config = {
 		times_needed = 4,
-		times_current = 0
+		times_current = 0,
 	},
 	loc_vars = function(sef, queue, card)
 		return {
 			vars = {
 				card.ability.times_needed,
-				card.ability.times_current
-			}
+				card.ability.times_current,
+			},
 		}
-	end
+	end,
 }
 
 -- Nostalgic Candy
