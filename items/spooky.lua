@@ -101,7 +101,7 @@ local wrapped = {
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				return {
-					message = localize("k_extinct_ex"),
+					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
 				}
 			end
@@ -171,17 +171,21 @@ local choco1 = {
 	object_type = "Event",
 	key = "choco1",
 	loc_vars = function(self, info_queue, center)
+		local _, aaa = SMODS.get_probability_vars(self, 1, 6, "Chocolate Dice 1")
 		info_queue[#info_queue + 1] = { set = "Other", key = self.key } --todo specific_vars
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_flickering_desc", specific_vars = { 5 } }
-		info_queue[#info_queue + 1] =
-			{ set = "Joker", key = "j_cry_ghost", specific_vars = { G.GAME.probabilities.normal or 1, 2, 6 } }
+		info_queue[#info_queue + 1] = {
+			set = "Joker",
+			key = "j_cry_ghost",
+			specific_vars = { SMODS.get_probability_vars(self, 1, 2, "Chocolate Dice 1"), aaa },
+		}
 	end,
 	start = function(self)
 		G.GAME.events[self.key] = true
 		local areas = { "jokers", "deck", "hand", "play", "discard" }
 		for k, v in pairs(areas) do
 			for i = 1, #G[v].cards do
-				if pseudorandom(pseudoseed("cry_choco_possession")) < G.GAME.probabilities.normal / 3 then
+				if SMODS.pseudorandom_probability(self, "cry_choco_possession", 1, 3, "Chocolate Dice 1") then
 					SMODS.Stickers.cry_flickering:apply(G[v].cards[i], true)
 				end
 			end
@@ -388,7 +392,7 @@ local choco4 = { --lunar abyss
 			and not context.retrigger_joker
 		then
 			for i = 1, #G.play.cards do
-				if pseudorandom(pseudoseed("cry_choco_lunar")) < G.GAME.probabilities.normal / 4 then
+				if SMODS.pseudorandom_probability(self, "cry_choco_lunar", 1, 4, "Chocolate Dice 4") then
 					local faces = {}
 					for _, v in ipairs(SMODS.Rank.obj_buffer) do
 						local r = SMODS.Ranks[v]
@@ -452,7 +456,7 @@ local choco5 = { --bloodsucker
 			and not context.retrigger_joker
 		then
 			if context.destroying_card:is_suit("Hearts") or context.destroying_card:is_suit("Diamonds") then
-				if pseudorandom(pseudoseed("cry_choco_blood")) < G.GAME.probabilities.normal / 3 then
+				if SMODS.pseudorandom_probability(self, "cry_choco_blood", 1, 3, "Chocolate Dice 5") then
 					context.destroying_card.will_shatter = true
 					local destroying_card = context.destroying_card
 					G.E_MANAGER:add_event(Event({
@@ -947,12 +951,24 @@ local candy_basket = {
 					card.ability.extra.candies
 						+ to_big(card.ability.extra.candy_mod) * card.ability.extra.candy_boss_mod
 				)
+				local msg = SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "candies",
+					scalar_value = "candy_boss_mod",
+				})
 			end
 			if card.ability.immutable.current_win_count >= card.ability.immutable.wins_needed then
 				card.ability.immutable.current_win_count = 0
 				card.ability.extra.candies =
 					lenient_bignum(to_big(card.ability.extra.candies) + card.ability.extra.candy_mod)
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
+				local msg = SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "candies",
+					scalar_value = "candy_mod",
+				})
+				if not msg or type(msg) == "string" then
+					card_eval_status_text(card, "extra", nil, nil, nil, { message = msg or localize("k_upgrade_ex") })
+				end
 			end
 		end
 		if context.forcetrigger then
@@ -963,7 +979,19 @@ local candy_basket = {
 			)
 			card.ability.extra.candies =
 				lenient_bignum(to_big(card.ability.extra.candies) + card.ability.extra.candy_mod)
-			card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_upgrade_ex") })
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "candies",
+				scalar_value = "candy_boss_mod",
+			})
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "candies",
+				scalar_value = "candy_mod",
+			})
+			if not msg or type(msg) == "string" then
+				card_eval_status_text(card, "extra", nil, nil, nil, { message = msg or localize("k_upgrade_ex") })
+			end
 			for i = 1, math.floor(math.min(card.ability.immutable.max_spawn, card.ability.extra.candies)) do
 				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_candy_basket")
 				card:add_to_deck()
@@ -1535,7 +1563,7 @@ local candy_cane = {
 					end,
 				}))
 				return {
-					message = localize("k_extinct_ex"),
+					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
 				}
 			end
@@ -1571,7 +1599,7 @@ local candy_cane = {
 					end,
 				}))
 				return {
-					message = localize("k_extinct_ex"),
+					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
 				}
 			end
@@ -1624,7 +1652,7 @@ local candy_buttons = {
 					end,
 				}))
 				return {
-					message = localize("k_extinct_ex"),
+					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
 				}
 			end
@@ -1712,7 +1740,7 @@ local jawbreaker = {
 				end,
 			}))
 			return {
-				message = localize("k_extinct_ex"),
+				message = localize("k_eaten_ex"),
 				colour = G.C.FILTER,
 			}
 		end
@@ -1842,7 +1870,7 @@ local brittle = {
 						end,
 					}))
 					return {
-						message = localize("k_extinct_ex"),
+						message = localize("k_eaten_ex"),
 						colour = G.C.FILTER,
 					}
 				end
@@ -2004,6 +2032,10 @@ local candy_sticks = {
 						return true
 					end,
 				}))
+				return {
+					message = localize("k_eaten_ex"),
+					colour = G.C.FILTER,
+				}
 			end
 		end
 		if context.end_of_round and G.GAME.blind:get_type() == "Boss" then

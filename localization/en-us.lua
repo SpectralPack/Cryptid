@@ -82,8 +82,8 @@ return {
 				name = "Critical Deck",
 				text = {
 					"After each hand played,",
-					"{C:green}#1# in 4{} chance for {X:dark_edition,C:white} ^2 {} Mult",
-					"{C:green}#1# in 8{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
+					"{C:green}#1# in #2#{} chance for {X:dark_edition,C:white} ^2 {} Mult",
+					"{C:green}#1# in #3#{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
 				},
 				unlock = {
 					"Obtain a {C:attention}Rigged Joker",
@@ -4919,6 +4919,7 @@ return {
 			cry_active = "Active",
 			cry_inactive = "Inactive",
 			cry_divorced = "Divorced!",
+			cry_destroyed_ex = "Destroyed!",
 
 			k_disable_music = "Disable Music",
 

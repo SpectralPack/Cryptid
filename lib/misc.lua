@@ -1002,13 +1002,12 @@ function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)
 	return {}
 end
 
-function Cryptid.table_merge(t1, t2)
+function Cryptid.table_merge(...)
 	local tbl = {}
-	for i, v in pairs(t1) do
-		tbl[#tbl + 1] = v
-	end
-	for i, v in pairs(t2) do
-		tbl[#tbl + 1] = v
+	for _, t in ipairs({ ... }) do
+		for _, v in pairs(t) do
+			tbl[#tbl + 1] = v
+		end
 	end
 	return tbl
 end
@@ -1596,4 +1595,21 @@ function Cryptid.get_next_tag(override)
 	if next(SMODS.find_card("j_cry_kittyprinter")) then
 		return "tag_cry_cat"
 	end
+end
+
+-- for Cryptid.isNonRollProbabilityContext
+local probability_contexts = {
+	"mod_probability",
+	"fix_probability",
+}
+
+-- Checks if a context table is a probability context called outside of a roll
+function Cryptid.isNonRollProbabilityContext(context)
+	for _, ctx in ipairs(probability_contexts) do
+		if context[ctx] then
+			return context.from_roll
+		end
+	end
+
+	return true
 end

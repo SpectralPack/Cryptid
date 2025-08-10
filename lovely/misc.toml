@@ -220,17 +220,6 @@ end
 '''
 match_indent = true
 
-# calculate wheel fail (for Wheel of Hope)
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if self.ability.name == 'Ectoplasm' or self.ability.name == 'Hex' or pseudorandom('wheel_of_fortune') < G.GAME.probabilities.normal/self.ability.extra then"
-position = "after"
-payload = '''
-if self.ability.name == 'The Wheel of Fortune' then self.cry_wheel_success = true end
-'''
-match_indent = false
-
 # no "Again!" text if a card will shatter
 [[patches]]
 [patches.pattern]
@@ -257,8 +246,8 @@ target = "functions/button_callbacks.lua"
 pattern = '''add_tag(_tag.config.ref_table)'''
 position = "at"
 payload = '''
-local tag = Cryptid.get_next_tag()
-add_tag(tag and Tag(tag) or _tag.config.ref_table, true)
+local tag_key = Cryptid.get_next_tag()
+add_tag(tag_key and Tag(tag_key) or _tag.config.ref_table, true)
 '''
 match_indent = true
 

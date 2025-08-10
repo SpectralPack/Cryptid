@@ -478,6 +478,8 @@ local mneon = {
 			card.ability.extra.money = lenient_bignum(
 				to_big(card.ability.extra.money) + math.max(1, to_big(card.ability.extra.bonus)) * (jollycount or 1)
 			)
+			-- currently can't use SMODS.scale_card unless a for loop is used to trigger scaling once for every jolly joker
+
 			return { message = localize("cry_m_ex") }
 		end
 		if context.forcetrigger then
@@ -538,12 +540,11 @@ local notebook = {
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Notebook")
 		return {
 			vars = {
-				num,
-				denom,
+				aaa,
+				bbb,
 				number_format(card.ability.immutable.slots),
 				number_format(card.ability.extra.active),
 				number_format(card.ability.extra.jollies),
@@ -565,15 +566,8 @@ local notebook = {
 					jollycount = jollycount + 1
 				end
 			end
-			if
-				to_number(jollycount) >= to_number(card.ability.extra.jollies) --if there are 5 or more jolly jokers
-				or SMODS.pseudorandom_probability(
-					card,
-					"cry_notebook",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
-			then
+			local aaa = to_number(jollycount) >= to_number(card.ability.extra.jollies)
+			if aaa or SMODS.pseudorandom_probability(card, "cry_notebook", 1, card.ability.extra.odds, "Notebook") then
 				card.ability.immutable.slots = to_number(
 					math.min(
 						card.ability.immutable.max_slots,
@@ -680,11 +674,18 @@ local bonk = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_name == card.ability.extra.type then
-				card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + card.ability.extra.bonus)
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize("k_upgrade_ex"),
-					colour = G.C.CHIPS,
+				local msg = SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "chips",
+					scalar_value = "bonus",
 				})
+				if not msg or type("msg") == "string" then
+					card_eval_status_text(card, "extra", nil, nil, nil, {
+						message = msg or localize("k_upgrade_ex"),
+						colour = G.C.CHIPS,
+					})
+				end
+
 				return nil, true
 			end
 		end
@@ -728,7 +729,11 @@ local bonk = {
 			end
 		end
 		if context.forcetrigger then
-			card.ability.extra.chips = lenient_bignum(to_big(card.ability.extra.chips) + card.ability.extra.bonus)
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "chips",
+				scalar_value = "bonus",
+			})
 			return {
 				message = localize({
 					type = "variable",
@@ -849,14 +854,7 @@ local scrabble = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.retrigger_joker then
 			local check = false
-			if
-				SMODS.pseudorandom_probability(
-					card,
-					"scrabbleother",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
-			then
+			if SMODS.pseudorandom_probability(card, "scrabbleother", 1, card.ability.extra.odds, "Scrabble Tile") then
 				check = true
 				local card = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "scrabbletile")
 				if Cryptid.enabled("e_cry_m") == true then
@@ -1230,6 +1228,44 @@ local doodlem = {
 		},
 	},
 }
+-- To organize virgo's code a little better
+local function virgoJollies(card)
+	G.E_MANAGER:add_event(Event({
+		func = function()
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local summon = lenient_bignum(
+						math.floor(
+							(to_big(card.ability.extra_value) + to_big(card.cost / 2))
+								/ to_big(card.ability.extra.bonus)
+						)
+					)
+					if summon == nil or to_big(summon) < to_big(1) then
+						summon = 1
+					end --precautionary measure, just in case
+					for i = 1, math.min(card.ability.immutable.max_summons, summon) do --another precautionary measure
+						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
+						card:set_edition({
+							polychrome = true,
+						})
+						card:add_to_deck()
+						G.jokers:emplace(card)
+					end
+					return true
+				end,
+			}))
+			card_eval_status_text(
+				card,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
+			)
+			return true
+		end,
+	}))
+end
 local virgo = {
 	object_type = "Joker",
 	name = "cry-virgo",
@@ -1275,50 +1311,30 @@ local virgo = {
 			and next(context.poker_hands["Pair"])
 			and not context.blueprint
 		then
-			card.ability.extra_value = lenient_bignum(card.ability.extra_value + to_big(card.ability.extra.bonus)) --this doesn't seem to work with retrigger jokers. Intentional?
-			card:set_cost()
-			card_eval_status_text(card, "extra", nil, nil, nil, {
-				message = localize("k_val_up"),
-				colour = G.C.MONEY,
+			--this doesn't seem to work with retrigger jokers. Intentional?
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "extra_value",
+				scalar_value = "bonus",
 			})
-		end
-		if (context.selling_self and not context.blueprint and not context.retrigger_joker) or context.forcetrigger then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							local summon = lenient_bignum(
-								math.floor(
-									(to_big(card.ability.extra_value) + card.ability.extra.bonus)
-										/ to_big(card.ability.extra.bonus)
-								)
-							)
-							if summon == nil or to_big(summon) < to_big(1) then
-								summon = 1
-							end --precautionary measure, just in case
-							for i = 1, math.min(card.ability.immutable.max_summons, summon) do --another precautionary measure
-								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
-								card:set_edition({
-									polychrome = true,
-								})
-								card:add_to_deck()
-								G.jokers:emplace(card)
-							end
-							return true
-						end,
-					}))
-					card_eval_status_text(
-						card,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
-					)
-					return true
-				end,
-			}))
+			card:set_cost()
+			if not msg or type(msg) == "string" then
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = msg or localize("k_val_up"),
+					colour = G.C.MONEY,
+				})
+			end
+		elseif context.selling_self and not context.blueprint and not context.retrigger_joker then
+			virgoJollies(card)
 			return nil, true
+		elseif context.forcetrigger then
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "extra_value",
+				scalar_value = "bonus",
+			})
+
+			virgoJollies(card)
 		end
 	end,
 	cry_credits = {
@@ -1521,18 +1537,20 @@ local mprime = {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.selling_card and (context.card:is_jolly()) then
+			local msg
 			if not context.blueprint then
-				card.ability.extra.mult = lenient_bignum(to_big(card.ability.extra.mult) + card.ability.extra.bonus)
+				msg = SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "mult",
+					scalar_value = "bonus",
+				})
 			end
-			if not context.retrigger_joker then
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("cry_m_ex"), colour = G.C.DARK_EDITION }
-				)
+			if not context.retrigger_joker and not context.blueprint and (not msg or type(msg) == "string") then
+				return {
+					message = msg or localize("cry_m_ex"),
+					card = card,
+					colour = G.C.DARK_EDITION,
+				}
 			end
 		elseif
 			context.end_of_round
@@ -1577,7 +1595,11 @@ local mprime = {
 			end
 		end
 		if context.forcetrigger then
-			card.ability.extra.mult = lenient_bignum(to_big(card.ability.extra.mult) + card.ability.extra.bonus)
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "mult",
+				scalar_value = "bonus",
+			})
 			local mjoker = math.min(1, G.jokers.config.card_limit - (#G.jokers.cards + G.GAME.joker_buffer))
 			G.GAME.joker_buffer = G.GAME.joker_buffer + mjoker
 			G.E_MANAGER:add_event(Event({
@@ -1737,19 +1759,26 @@ local megg = {
 			and to_big(card.ability.extra.amount) < to_big(card.ability.immutable.max_amount)
 			and not (context.individual or context.repetition or context.blueprint)
 		then
-			card.ability.extra.amount =
-				lenient_bignum(card.ability.extra.amount + math.max(1, to_big(card.ability.extra.amount_mod)))
+			-- could be a bit unintuitive?
+			card.ability.extra.amount_mod = math.max(1, card.ability.extra.amount_mod)
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "amount",
+				scalar_value = "amount_mod",
+			})
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
 			end
-			card_eval_status_text(
-				card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = { localize("cry_jolly_ex") }, colour = G.C.FILTER }
-			)
+			if not msg or type(msg) == "string" then
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = { msg = localize("cry_jolly_ex") }, colour = G.C.FILTER }
+				)
+			end
 			return nil, true
 		end
 		if
@@ -1764,8 +1793,13 @@ local megg = {
 			end
 		end
 		if context.forcetrigger then
-			card.ability.extra.amount =
-				lenient_bignum(card.ability.extra.amount + math.max(1, to_big(card.ability.extra.amount_mod)))
+			-- could be a bit unintuitive?
+			card.ability.extra.amount_mod = math.max(1, card.ability.extra.amount_mod)
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "amount",
+				scalar_value = "amount_mod",
+			})
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
 			end
@@ -1800,8 +1834,9 @@ local longboi = {
 		extra = {
 			monster = 1,
 			bonus = 0.75,
+			secret_variable_so_smods_scale_works_correctly = 1,
 		},
-		immutable = { max_bonus = 0.75 },
+		immutable = { max_bonus = 0.75 }, -- this is technically a minimum but i didn't name the variable
 	},
 	rarity = 1,
 	cost = 5,
@@ -1821,13 +1856,18 @@ local longboi = {
 	atlas = "atlasthree",
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition then
-			G.GAME.monstermult = lenient_bignum(
-				G.GAME.monstermult + math.max(card.ability.immutable.max_bonus, to_big(card.ability.extra.bonus))
-			)
-			if not context.retrigger_joker then
+			card.ability.extra.secret_variable_so_smods_scale_works_correctly = G.GAME.monstermult
+			card.ability.extra.bonus = math.max(card.ability.extra.bonus, card.ability.immutable.max_bonus) -- maybe remove this entirely
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "secret_variable_so_smods_scale_works_correctly",
+				scalar_value = "bonus",
+			})
+			G.GAME.monstermult = lenient_bignum(card.ability.extra.secret_variable_so_smods_scale_works_correctly)
+			if not context.retrigger_joker and (not msg or type(msg) == "string") then
 				return {
 					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-						message = localize("cry_m_ex"),
+						message = msg or localize("cry_m_ex"),
 						colour = G.C.FILTER,
 					}),
 				}

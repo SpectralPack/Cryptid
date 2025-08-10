@@ -85,8 +85,8 @@ return {
 				name = "Критическая колода",
 				text = {
 					"После каждой сыгранной руки,",
-					"{C:green}#1# к 4{} шанс для {X:dark_edition,C:white} ^2 {} Множ",
-					"{C:green}#1# к 8{} шанс для {X:dark_edition,C:white} ^0.5 {} Множ",
+					"{C:green}#1# к #2#{} шанс для {X:dark_edition,C:white} ^2 {} Множ",
+					"{C:green}#1# к #3#{} шанс для {X:dark_edition,C:white} ^0.5 {} Множ",
 				},
 			},
 			b_cry_encoded = {

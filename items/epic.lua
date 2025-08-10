@@ -210,12 +210,11 @@ local googol_play = {
 		},
 	},
 	loc_vars = function(self, info_queue, card)
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Googol Play Card")
 		return {
 			vars = {
-				num,
-				denom,
+				aaa,
+				bbb,
 				number_format(card.ability.extra.Xmult),
 				number_format(card.ability.extra.Xmult_payout),
 			},
@@ -229,7 +228,7 @@ local googol_play = {
 					card,
 					"cry_googol_play",
 					1,
-					card and card.ability.extra.odds or self.config.extra.odds
+					card and card.ability.extra.odds or self.config.extra.odds, "Googol Play Card"
 				)
 			then
 				return {
@@ -785,12 +784,17 @@ local m = {
 		end
 		if context.selling_card and context.card:is_jolly() and not context.blueprint then
 			card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.extra)
-			if not context.retrigger_joker then
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "x_mult",
+				scalar_value = "extra",
+			})
+			if not context.retrigger_joker and (not msg or type(msg) == "string") then
 				--This doesn't display the correct amount of mult if retriggered it display the amount from the first retrigger instead of the final one
 				--But I would rather have this than constant card_eval_status_text spam
 				--If anyone knows a solution feel free to do a pr xd
 				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize({
+					message = msg or localize({
 						type = "variable",
 						key = "a_xmult",
 						vars = { number_format(card.ability.extra.x_mult) },
@@ -801,12 +805,17 @@ local m = {
 		end
 		if context.forcetrigger then
 			card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.extra)
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "x_mult",
+				scalar_value = "extra",
+			})
 			return {
-				message = localize({
+				message = not msg and localize({
 					type = "variable",
 					key = "a_xmult",
 					vars = { number_format(card.ability.extra.x_mult) },
-				}),
+				}) or (type(msg) == "string" and msg) or nil,
 				Xmult_mod = card.ability.extra.x_mult,
 			}
 		end
@@ -897,8 +906,7 @@ local boredom = {
 	cost = 14,
 	blueprint_compat = true,
 	loc_vars = function(self, info_queue, card)
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+		local num, denom = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Boredom")
 		return {
 			vars = {
 				num,
@@ -927,14 +935,7 @@ local boredom = {
 			and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
 			and card.cry_boredom_marked == context.other_card
 		then
-			if
-				SMODS.pseudorandom_probability(
-					card,
-					"cry_boredom_joker",
-					1,
-					card and card.ability.extra.odds or self.config.extra.odds
-				)
-			then
+			if SMODS.pseudorandom_probability(card, "cry_boredom_joker", 1, card.ability.extra.odds, "Boredom") then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
@@ -947,12 +948,7 @@ local boredom = {
 		if
 			context.repetition
 			and context.cardarea == G.play
-			and SMODS.pseudorandom_probability(
-				card,
-				"cry_boredom_card",
-				1,
-				card and card.ability.extra.odds or self.config.extra.odds
-			)
+			and SMODS.pseudorandom_probability(card, "cry_boredom_card", 1, card.ability.extra.odds, "Boredom")
 		then
 			return {
 				message = localize("k_again_ex"),
@@ -1053,8 +1049,28 @@ local double_scale = {
 	cost = 18,
 	immutable = true,
 	atlas = "atlasepic",
-	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
-		return lenient_bignum(to_big(true_base) * 2)
+	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		if not G.GAME.cryptid_base_scales then
+			G.GAME.cryptid_base_scales = {}
+		end
+		if not G.GAME.cryptid_base_scales[other.config.center.key] then
+			G.GAME.cryptid_base_scales[other.config.center.key] = {}
+		end
+		if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then
+			G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar
+		end
+		local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
+		local orig_scale_scale = current_scaling
+		if Cryptid.gameset(self) == "exp_modest" then
+			return {
+				scalar_value = lenient_bignum(to_big(true_base) * 2),
+				message = localize("k_upgrade_ex"),
+			}
+		end
+		return {
+			scalar_value = lenient_bignum(orig_scale_scale + to_big(true_base)),
+			message = localize("k_upgrade_ex"),
+		}
 	end,
 	cry_credits = {
 		idea = {
@@ -1505,12 +1521,11 @@ local bonusjoker = {
 	enhancement_gate = "m_bonus",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Bonus Joker")
 		return {
 			vars = {
-				num,
-				denom,
+				aaa,
+				bbb,
 				number_format(math.min(card.ability.extra.add, card.ability.immutable.max)),
 			},
 		}
@@ -1520,12 +1535,7 @@ local bonusjoker = {
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_bonus") then
 				if
-					SMODS.pseudorandom_probability(
-						card,
-						"bonusjoker",
-						1,
-						card and card.ability.extra.odds or self.config.extra.odds
-					)
+					SMODS.pseudorandom_probability(card, "bonusjoker", 1, card.ability.extra.odds, "Bonus Joker")
 					and card.ability.immutable.check < 2
 					and not context.retrigger_joker
 				then
@@ -1628,13 +1638,8 @@ local multjoker = {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_mult
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_cryptid
-		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
-			vars = {
-				num,
-				denom,
-			},
+			vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Mult Joker") },
 		}
 	end,
 	atlas = "atlasepic",
@@ -1644,14 +1649,7 @@ local multjoker = {
 				SMODS.has_enhancement(context.other_card, "m_mult")
 				and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 			then
-				if
-					SMODS.pseudorandom_probability(
-						card,
-						"multjoker",
-						1,
-						card and card.ability.extra.odds or self.config.extra.odds
-					)
-				then
+				if SMODS.pseudorandom_probability(card, "multjoker", 1, card.ability.extra.odds, "Mult Joker") then
 					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 					G.E_MANAGER:add_event(Event({
 						func = function()
@@ -1740,22 +1738,36 @@ local goldjoker = {
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
 				card.ability.extra.percent =
 					lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-				return {
-					extra = { focus = card, message = localize("k_upgrade_ex") },
-					card = card,
-					colour = G.C.MONEY,
-				}
+				local msg = SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "percent",
+					scalar_value = "percent_mod",
+				})
+				if not msg or type(msg) == "string" then
+					return {
+						extra = { focus = card, message = msg or localize("k_upgrade_ex") },
+						card = card,
+						colour = G.C.MONEY,
+					}
+				end
 			end
 		end
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
 				card.ability.extra.percent =
 					lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-				return {
-					message = localize("k_upgrade_ex"),
-					card = card,
-					colour = G.C.CHIPS,
-				}
+				local msg = SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "percent",
+					scalar_value = "percent_mod",
+				})
+				if not msg or type(msg) == "string" then
+					return {
+						message = msg or localize("k_upgrade_ex"),
+						card = card,
+						colour = G.C.CHIPS,
+					}
+				end
 			end
 		end
 	end,
@@ -2588,6 +2600,12 @@ local starfruit = {
 		end
 		if context.reroll_shop or context.forcetrigger then
 			card.ability.emult = card.ability.emult - card.ability.emult_mod
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability,
+				ref_value = "emult",
+				scalar_value = "emult_mod",
+				operation = "-",
+			})
 			--floating point precision can kiss my ass istg
 			if to_number(card.ability.emult) <= 1.00000001 then
 				G.E_MANAGER:add_event(Event({
@@ -2616,10 +2634,18 @@ local starfruit = {
 					colour = G.C.RARITY.cry_epic,
 				}
 			else
-				return {
-					message = "-^" .. number_format(card.ability.emult_mod) .. " Mult",
-					colour = G.C.RARITY.cry_epic,
-				}
+				if not msg or type(msg) == "string" then
+					return {
+						message = msg or localize({
+							type = "variable",
+							key = "a_powmult_minus",
+							vars = {
+								number_format(card.ability.emult_mod),
+							},
+						}),
+						colour = G.C.RARITY.cry_epic,
+					}
+				end
 			end
 		end
 	end,

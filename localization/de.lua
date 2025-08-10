@@ -84,8 +84,8 @@ return {
 				name = "Kritisches Deck",
 				text = {
 					"Nach jeder gespielten Hand,",
-					"Chance von {C:green}#1# zu 4{} für {X:dark_edition,C:white} ^2 {} Mult",
-					"Chance von {C:green}#1# zu 8{} für {X:dark_edition,C:white} ^0.5 {} Mult",
+					"Chance von {C:green}#1# zu #2#{} für {X:dark_edition,C:white} ^2 {} Mult",
+					"Chance von {C:green}#1# zu #3#{} für {X:dark_edition,C:white} ^0.5 {} Mult",
 				},
 				unlock = {
 					"Erhalte einen {C:attention}Manipulierten Joker",
@@ -258,7 +258,7 @@ return {
 				name = "Legendäres Deck",
 				text = {
 					"Beginne mit einem {C:legendary}Legendären{C:legendary} Joker",
-					"Chance von {C:green}1 in 5{}, einen Weiteren zu erstellen",
+					"Chance von {C:green}#1# in #2#{}, einen Weiteren zu erstellen",
 					"wenn Boss Blind besiegt wurde",
 					"{C:inactive}(Muss Platz haben){}",
 				},

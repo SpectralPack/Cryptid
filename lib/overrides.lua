@@ -1958,13 +1958,8 @@ function SMODS.four_fingers()
 end
 
 function Cryptid.create_dummy_from_stone(rank)
-	local r = rank
-	rank = tonumber(rank) or ({
-		Ace = 14,
-		King = 13,
-		Queen = 12,
-		Jack = 11,
-	})[rank] or rank
+	local r = tostring(rank)
+	rank = SMODS.Ranks[r].id
 	return {
 		get_id = function()
 			return rank
@@ -1972,6 +1967,7 @@ function Cryptid.create_dummy_from_stone(rank)
 		config = {
 			center = {},
 		},
+		ability = {},
 		base = {
 			id = rank,
 			value = rank >= 11 and "Queen" or "10",
@@ -2240,4 +2236,18 @@ local unlock_allref = G.FUNCS.unlock_all
 G.FUNCS.unlock_all = function(e)
 	unlock_allref(e)
 	G.PROFILES[G.SETTINGS.profile].cry_none = true
+end
+
+local is_eternalref = SMODS.is_eternal
+function SMODS.is_eternal(card)
+	if not G.deck then
+		return card.ability.eternal
+	end
+	return is_eternalref(card)
+end
+
+local unlock_allref = G.FUNCS.unlock_all
+G.FUNCS.unlock_all = function(e)
+	unlock_allref(e)
+	G.PROFILES[G.SETTINGS.profile].cry_none = (Cryptid.enabled("set_cry_poker_hand_stuff") == true)
 end

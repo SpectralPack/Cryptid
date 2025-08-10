@@ -24,7 +24,7 @@ local echo = {
 	pos = { x = 2, y = 0 },
 	config = { retriggers = 2, extra = 2 },
 	loc_vars = function(self, info_queue, card)
-		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra or self.config.extra)
+		local num, denom = SMODS.get_probability_vars(card, 1, card and card.ability.extra or self.config.extra, "Echo Card")
 		return {
 			vars = {
 				card and card.ability.retriggers or self.config.retriggers,
@@ -34,10 +34,7 @@ local echo = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if
-			context.repetition
-			and SMODS.pseudorandom_probability(card, "cry_echo", 1, card and card.ability.extra or self.config.extra)
-		then
+		if context.repetition and SMODS.pseudorandom_probability(card, "echo", 1, card.ability.extra, "Echo Card") then
 			return {
 				message = localize("k_again_ex"),
 				repetitions = card.ability.retriggers,
@@ -210,28 +207,20 @@ local abstract = {
 	config = { extra = { Emult = 1.15, odds_after_play = 2, odds_after_round = 4, marked = false, survive = false } },
 	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
 	loc_vars = function(self, info_queue, card)
-		local num1, denom1 = SMODS.get_probability_vars(
-			card,
-			1,
-			card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play
-		)
-		local num2, denom2 = SMODS.get_probability_vars(
-			card,
-			1,
-			card and card.ability.extra.odds_after_round or self.config.extra.odds_after_round
-		)
+		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_play, "Abstract Card")
+		local ccc, ddd = SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_round, "Abstract Card")
 		return {
 			vars = {
 				card.ability.extra.Emult,
-				num1,
-				denom1,
-				num2,
-				denom2,
+				aaa,
+				bbb,
+				ccc,
+				ddd,
 			},
 		}
 	end,
 	calculate = function(self, card, context)
-		--Druing scoring
+		--During scoring
 		if
 			context.cardarea == G.hand
 			and context.before
@@ -242,7 +231,8 @@ local abstract = {
 				card,
 				"cry_abstract_destroy",
 				1,
-				card and card.ability.extra.odds_after_play or self.config.extra.odds_after_play
+				card.ability.extra.odds_after_play,
+				"Abstract Card"
 			)
 		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
 			card.ability.extra.marked = true
@@ -424,9 +414,11 @@ local azure_seal = {
 							end
 						end
 						if
-							G.GAME.last_hand_played == "cry_Declare0"
-							or G.GAME.last_hand_played == "cry_Declare1"
-							or G.GAME.last_hand_played == "cry_Declare2"
+							(
+								G.GAME.last_hand_played == "cry_Declare0"
+								or G.GAME.last_hand_played == "cry_Declare1"
+								or G.GAME.last_hand_played == "cry_Declare2"
+							) and Cryptid.enabled("c_cry_voxel") == true
 						then
 							_planet = "c_cry_voxel"
 						end
@@ -1257,10 +1249,10 @@ local blurred = {
 	end,
 	config = { retrigger_chance = 2, retriggers = 1, extra_retriggers = 1 },
 	loc_vars = function(self, info_queue, center)
-		local chance = center and center.edition and center.edition.retrigger_chance or self.config.retrigger_chance
+		local aaa, bbb = SMODS.get_probability_vars(self, 1, self.config.retrigger_chance, "Blurred Edition")
 		local retriggers = center and center.edition and center.edition.retriggers or self.config.retriggers
 
-		return { vars = { G.GAME.probabilities.normal, chance, retriggers } }
+		return { vars = { aaa, bbb, retriggers } }
 	end,
 	--Note: This doesn't always play the animations properly for Jokers
 	calculate = function(self, card, context)
@@ -1271,17 +1263,15 @@ local blurred = {
 				or (context.retrigger_joker_check and not context.retrigger_joker)
 			)
 		then
-			local extra_retrigger = pseudorandom("cry_blurred")
-				<= G.GAME.probabilities.normal
-					/ (card and card.edition and card.edition.retrigger_chance or self.config.retrigger_chance)
 			return {
 				message = localize("cry_again_q"),
-				repetitions = (card and card.edition and card.edition.retriggers or self.config.retriggers)
-					+ (
-						extra_retrigger and card and card.edition and card.edition.extra_retriggers
-						or self.config.extra_retriggers
-						or 0
-					),
+				repetitions = self.config.retriggers + (SMODS.pseudorandom_probability(
+					self,
+					"cry_blurred",
+					1,
+					self.config.retrigger_chance,
+					"Blurred Edition"
+				) and self.config.extra_retriggers or 0),
 				card = card,
 			}
 		end
@@ -2564,9 +2554,10 @@ return {
 						self,
 						"cry_abstract_destroy2",
 						1,
-						self and self.ability and self.ability.extra and self.ability.extra.odds_after_round
+						self.ability and self.ability.extra and self.ability.extra.odds_after_round
 							or self.config.extra.odds_after_round
-							or 4
+							or 4,
+						"Abstract Card"
 					)
 				then
 					self.ability.extra.marked = true

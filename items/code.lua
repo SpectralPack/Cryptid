@@ -3387,6 +3387,15 @@ local variable = {
 				local c = SMODS.Ranks[card.base.value] or {}
 				if c.hidden or c.noe_doe or c.no_collection or c.no_variable or c.no_code then
 					card.debuff = true
+				else
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						blocking = false,
+						func = function()
+							card.debuff = false
+							return true
+						end,
+					}))
 				end
 			end
 			return emplace_ref(self, card, ...)
@@ -4469,7 +4478,7 @@ local semicolon = {
 			"HexaCryonic",
 		},
 		code = {
-			"Math",
+			"WilsontheWolf",
 		},
 	},
 	dependencies = {
@@ -4982,6 +4991,11 @@ local cut = {
 				codecard_to_destroy.getting_sliced = true
 				card.ability.extra.Xmult =
 					lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
+				local msg = SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "Xmult",
+					scalar_value = "Xmult_mod",
+				})
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						(context.blueprint_card or card):juice_up(0.8, 0.8)
@@ -4989,9 +5003,9 @@ local cut = {
 						return true
 					end,
 				}))
-				if not (context.blueprint_card or self).getting_sliced then
+				if not (context.blueprint_card or self).getting_sliced and (not msg or type(msg) == "string") then
 					card_eval_status_text((context.blueprint_card or card), "extra", nil, nil, nil, {
-						message = localize({
+						message = msg or localize({
 							type = "variable",
 							key = "a_xmult",
 							vars = { number_format(to_big(card.ability.extra.Xmult)) },
@@ -5016,14 +5030,19 @@ local cut = {
 		end
 		if context.forcetrigger then
 			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
+			local msg = SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "Xmult",
+				scalar_value = "Xmult_mod",
+			})
 			return {
-				message = localize({
+				message = not msg and localize({
 					type = "variable",
 					key = "a_xmult",
 					vars = {
 						number_format(card.ability.extra.Xmult),
 					},
-				}),
+				}) or (type(msg) == "string" and msg) or nil,
 				Xmult_mod = card.ability.extra.Xmult,
 				colour = G.C.MULT,
 			}

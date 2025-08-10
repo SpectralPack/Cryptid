@@ -187,6 +187,9 @@ function SMODS.injectItems(...)
 			end
 		end
 	end
+	if G.PROFILES[G.SETTINGS.profile].all_unlocked then
+		G.PROFILES[G.SETTINGS.profile].cry_none = (Cryptid.enabled("set_cry_poker_hand_stuff") == true)
+	end
 	G.P_CENTERS.j_stencil.immutable = true
 	G.P_CENTERS.j_four_fingers.immutable = true
 	G.P_CENTERS.j_mime.immutable = true
