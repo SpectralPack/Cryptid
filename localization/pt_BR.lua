@@ -4,13 +4,6 @@ return {
 			b_cry_antimatter = {
 				name = "Baralho Antimatéria",
 				text = {
-					"Applies the {C:legendary,E:1}upsides{}",
-					"of {C:attention}every{} deck",
-				},
-			},
-			b_cry_antimatter_balanced = {
-				name = "Baralho Anti-Materia",
-				text = {
 					"Aplica TODOS os efeitos {C:legendary,E:1}positivos{}",
 					"de {C:attention}cada{} deck vencido",
 					"na {C:gold}Aposta Dourada{}",
@@ -877,21 +870,6 @@ return {
 					"Quando vendido, aplica {C:dark_edition}Astral{}",
 					"e {C:attention}Perecível{} para",
 					"um {C:attention}Curinga{} aleatório",
-				},
-			},
-			j_cry_astral_bottle_mainline = {
-				name = "Astral na Garrafa",
-				text = {
-					"Quando vendido, aplica {C:dark_edition}Astral{}",
-					"e {C:attention}Perecível{} para",
-					"um {C:attention}Curinga{} aleatório",
-				},
-			},
-			j_cry_astral_bottle_madness = {
-				name = "Astral na Garrafa",
-				text = {
-					"Quando vendido, aplica {C:dark_edition}Astral{}",
-					"para um {C:attention}Curinga{} aleatório",
 				},
 			},
 			j_cry_big_cube = {

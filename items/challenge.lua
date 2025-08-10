@@ -497,6 +497,9 @@ function Game:start_run(args)
 		table.insert(G.handlist, 1, "cry_Declare2")
 	end
 	Cryptid.base_values = {}
+	if G.PROFILES[G.SETTINGS.profile].all_unlocked then
+		G.PROFILES[G.SETTINGS.profile].cry_none = true
+	end
 end
 local challenges = {
 	sticker_sheet,

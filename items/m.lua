@@ -691,7 +691,7 @@ local bonk = {
 		end
 		if context.other_joker and context.other_joker.ability.set == "Joker" then
 			if context.other_joker:is_jolly() then
-				if not Talisman.config_file.disable_anims then
+				if Talisman and not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							context.other_joker:juice_up(0.5, 0.5)
@@ -710,7 +710,7 @@ local bonk = {
 					chip_mod = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
 				}
 			else
-				if not Talisman.config_file.disable_anims then
+				if Talisman and not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							context.other_joker:juice_up(0.5, 0.5)
@@ -842,8 +842,13 @@ local scrabble = {
 		if Cryptid.enabled("e_cry_m") == true then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_cry_m
 		end
+		local num, denom =
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
-			vars = { SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Scrabble Tile") },
+			vars = {
+				num,
+				denom,
+			},
 		}
 	end,
 	calculate = function(self, card, context)
@@ -944,16 +949,16 @@ local sacrifice = {
 				if to_big(card.ability.extra.unc) < to_big(1) then
 					card.ability.extra.unc = 1
 				end
-				for i = 1, math.min(card.ability.immutable.max_spawns, card.ability.extra.jollies) do
-					local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
-					jolly:add_to_deck()
-					G.jokers:emplace(jolly)
-				end
 				for i = 1, math.min(card.ability.immutable.max_spawns, card.ability.extra.unc) do
 					local unc = create_card("Joker", G.jokers, nil, 0.9, nil, nil, nil, "sacrifice")
 					unc:add_to_deck()
 					G.jokers:emplace(unc)
 					unc:start_materialize()
+				end
+				for i = 1, math.min(card.ability.immutable.max_spawns, card.ability.extra.jollies) do
+					local jolly = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_jolly")
+					jolly:add_to_deck()
+					G.jokers:emplace(jolly)
 				end
 				card_eval_status_text(
 					context.blueprint_card or card,
@@ -1163,7 +1168,7 @@ local doodlem = {
 	config = {
 		extra = {
 			add = 1,
-			init = 2,
+			init = 1,
 		},
 		immutable = { max_jollies = 25 },
 	},
@@ -1575,7 +1580,7 @@ local mprime = {
 					context.other_joker:is_jolly() or Cryptid.safe_get(context.other_joker.config.center, "pools", "M")
 				)
 			then
-				if not Talisman.config_file.disable_anims then
+				if Talisman and not Talisman.config_file.disable_anims then
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							context.other_joker:juice_up(0.5, 0.5)
@@ -1584,13 +1589,7 @@ local mprime = {
 					}))
 				end
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_powmult",
-						vars = { number_format(card.ability.extra.mult) },
-					}),
-					Emult_mod = lenient_bignum(card.ability.extra.mult),
-					colour = G.C.DARK_EDITION,
+					e_mult = lenient_bignum(card.ability.extra.mult),
 					card = card,
 				}
 			end
@@ -1616,13 +1615,7 @@ local mprime = {
 				end,
 			}))
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.DARK_EDITION,
+				e_mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,

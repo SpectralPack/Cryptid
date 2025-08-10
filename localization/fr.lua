@@ -28,19 +28,12 @@ return {
 				text = {
 					"Applique les {C:legendary,E:1}effets{}",
 					"de {C:attention}tous{} les jeux",
+					"battus avec la {C:attention}Mise Or",
 				},
 				unlock = {
 					"Gagner une partie",
 					"avec le {C:attention}Jeu à Blanc",
 					"et la {C:attention}Mise Or",
-				},
-			},
-			b_cry_antimatter_balanced = {
-				name = "Jeu d'Antimatière",
-				text = {
-					"Applique les {C:legendary,E:1}effets{}",
-					"de {C:attention}tous{} les jeux",
-					"battus avec la {C:attention}Mise Or",
 				},
 			},
 			b_cry_beige = {
@@ -1122,24 +1115,7 @@ return {
 					"Lorsque cette carte est vendue,",
 					"applique {C:dark_edition}Astral{}",
 					"et {C:attention}Périssable{} à",
-					"un {C:attention}Joker{} aléatoire",
-				},
-			},
-			j_cry_astral_bottle_mainline = {
-				name = "Astres en Bouteille",
-				text = {
-					"Lorsque cette carte est vendue,",
-					"applique {C:dark_edition}Astral{}",
-					"et {C:attention}Périssable{} à",
 					"des Jokers {C:attention}Jokers{} différents, aléatoirement",
-				},
-			},
-			j_cry_astral_bottle_madness = {
-				name = "Astres en Bouteille",
-				text = {
-					"Lorsque cette carte est vendue,",
-					"applique {C:dark_edition}Astral{}",
-					"à un {C:attention}Joker{} aléatoire",
 				},
 			},
 			j_cry_big_cube = {
