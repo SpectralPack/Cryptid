@@ -1553,21 +1553,14 @@ return {
 					"for each {C:attention}Jolly Joker{}",
 				},
 			},
-			-- ["j_cry_Double Scale"] = { -- ?????????????
-			-- 	name = "Double Scale",
-			-- 	text = {
-			-- 		"Scaling {C:attention}Jokers{}",
-			-- 		"scale {C:attention}quadratically",
-			-- 		"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
-			-- 		"{C:inactive,s:0.8}(grows by +1, +2, +3)",
-			-- 	},
-			-- },
-			["j_cry_Double Scale"] = {
+			["j_cry_Double Scale"] = { -- ?????????????
 				name = "Double Scale",
 				text = {
 					"Scaling {C:attention}Jokers{}",
-					"scale {C:attention}twice{} as fast",
-					'{C:inactive,s:0.8}"It\'s called double scale, not quadratic scale!"',
+					"scale {C:attention}quadratically",
+					"every {C:attention}#1#{} {C:inactive}[#2#]{} Scales"
+					"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
+					"{C:inactive,s:0.8}(grows by +1, +2, +3)",
 				},
 			},
 			j_cry_dropshot = {
@@ -2590,10 +2583,11 @@ return {
 				name = "Scalae",
 				text = {
 					"Scaling {C:attention}Jokers{} scale",
-					"{X:dark_edition,C:white}X#1#{} as fast",
-					"increase multiplier by {C:attention}#2#{}",
-					"at end of round",
+					"as a degree-{C:attention}#1#{} polynomial",
+					"raise degree by {C:attention}#2#{}",
+					"when a Boss Blind is defeated",
 					"{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} excluded)",
+					"{C:inactive,s:0.8}(ex. +1, +#3#, +#4#, +#5#)",
 				},
 			},
 			j_cry_scrabble = {

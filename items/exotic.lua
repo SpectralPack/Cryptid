@@ -882,7 +882,7 @@ local scalae = {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if
-			(context.end_of_round and not context.individual and not context.repetition and not context.blueprint)
+			(context.end_of_round and not context.individual and not context.repetition and not context.blueprint and G.GAME.blind_on_deck == "Boss")
 			or context.forcetrigger
 		then
 			card.ability.extra.scale = lenient_bignum(to_big(card.ability.extra.scale) + card.ability.extra.scale_mod)
@@ -934,10 +934,17 @@ local scalae = {
 		end
 	end,
 	loc_vars = function(self, info_queue, card)
+		local example = { 2, 3, 4 }
+		for i = 1, #example do
+			example[i] = to_big(example[i]) ^ (card.ability.extra.scale + 1)
+		end
 		return {
 			vars = {
-				number_format(card.ability.extra.scale),
+				number_format(card.ability.extra.scale + 1),
 				number_format(card.ability.extra.scale_mod),
+				example[1],
+				example[2],
+				example[3],
 			},
 		}
 	end,

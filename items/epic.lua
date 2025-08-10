@@ -1050,6 +1050,13 @@ local double_scale = {
 	immutable = true,
 	atlas = "atlasepic",
 	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		if to_big(times_current) >= to_big(times_needed) then
+			times_current = times_current - times_needed
+		else
+			return {
+				message = number_format(times_current).."/"..number_format(times_needed)
+			}
+		end
 		if not G.GAME.cryptid_base_scales then
 			G.GAME.cryptid_base_scales = {}
 		end
@@ -1084,6 +1091,18 @@ local double_scale = {
 			"Mathguy",
 		},
 	},
+	config = {
+		times_needed = 4
+		times_current = 0
+	},
+	loc_vars = function(sef, queue, card)
+		return {
+			vars = {
+				card.ability.times_needed,
+				card.ability.times_current
+			}
+		}
+	end
 }
 
 -- Nostalgic Candy
