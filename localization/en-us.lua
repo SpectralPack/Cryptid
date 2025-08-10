@@ -1558,7 +1558,7 @@ return {
 				text = {
 					"Scaling {C:attention}Jokers{}",
 					"scale {C:attention}quadratically",
-					"every {C:attention}#1#{} {C:inactive}[#2#]{} Scales"
+					"every {C:attention}#1#{} {C:inactive}[#2#]{} Scales",
 					"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
 					"{C:inactive,s:0.8}(grows by +1, +2, +3)",
 				},

@@ -1092,7 +1092,7 @@ local double_scale = {
 		},
 	},
 	config = {
-		times_needed = 4
+		times_needed = 4,
 		times_current = 0
 	},
 	loc_vars = function(sef, queue, card)

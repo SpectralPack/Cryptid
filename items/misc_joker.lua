@@ -7859,7 +7859,7 @@ local oldblueprint = {
 			}
 		end
 		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds, "Old Blueprint)
+			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds, "Old Blueprint")
 		return {
 			vars = {
 				num,
