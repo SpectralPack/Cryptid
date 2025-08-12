@@ -4339,6 +4339,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "Das Rad des Schicksals",
+				text = {
+					"{C:green}#1#-zu-#2#{}-Chance, die",
+					"{C:dark_edition}Foil{}, {C:dark_edition}holographische{} oder",
+					"{C:dark_edition}Polychrom{}-Edition",
+					"zu einem zufälligen {C:attention}Joker{} hinzuzufügen",
+				},
+			},
 			disabled = {
 				name = "Deaktiviert",
 				text = {

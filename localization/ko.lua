@@ -4068,6 +4068,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "운명의 수레바퀴",
+				text = {
+					"{C:green}#1# / #2#{} 의 확률로",
+					"{C:dark_edition}포일{}, {C:dark_edition}홀로그래픽{}, 또는",
+					"{C:dark_edition}폴리크롬{} 에디션을",
+					"무작위 {C:attention}조커{} 에 추가합니다",
+				},
+			},
 			disabled = {
 				name = "비활성화됨",
 				text = {

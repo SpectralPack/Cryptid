@@ -3141,6 +3141,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "Koło Fortuny",
+				text = {
+					"{C:green}#1# na #2#{} szans zamiany",
+					"losowego {C:attention}jokera na jego wersję",
+					"{C:dark_edition}w folii{}, {C:dark_edition}holograficzną{} lub",
+					"{C:dark_edition}polichromowaną{}",
+				},
+			},
 			banana = {
 				name = "Bananowy",
 				text = {

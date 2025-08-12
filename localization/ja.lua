@@ -2716,6 +2716,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "運命の輪",
+				text = {
+					"{C:green}#2#分の#1#{} の確率で",
+					"ランダムな {C:attention}ジョーカー{} に",
+					"{C:dark_edition}フォイル{}、 {C:dark_edition}ホログラム{}",
+					"{C:dark_edition}ポリクローム{} エディションのいずれかを加える",
+				},
+			},
 			banana = {
 				name = "Banana",
 				text = {

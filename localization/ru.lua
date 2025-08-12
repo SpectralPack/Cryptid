@@ -2750,6 +2750,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "Колесо Фортуны",
+				text = {
+					"Шанс {C:green}#1# из #2#{} добавить",
+					"{C:dark_edition}фольговый{}, {C:dark_edition}голографический{} или",
+					"{C:dark_edition}полихромный{} выпуск",
+					"к случайному {C:attention}джокеру",
+				},
+			},
 			banana = {
 				name = "Banana",
 				text = {

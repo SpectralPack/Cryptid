@@ -3655,6 +3655,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "Bánh Xe Số Phận",
+				text = {
+					"Xác suất {C:green}#1# trên #2#{} để thêm",
+					"ấn bản {C:dark_edition}Ánh Kim{}, {C:dark_edition}Lấp Lánh",
+					"hoặc {C:dark_edition}Đa Sắc{} cho một {C:attention}Joker",
+					"ngẫu nhiên",
+				},
+			},
 			disabled = {
 				name = "Vô Hiệu",
 				text = {

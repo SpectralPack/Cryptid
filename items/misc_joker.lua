@@ -7818,7 +7818,8 @@ local wheelhope = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = G.P_CENTERS.c_wheel_of_fortune
+		local aaa, bbb = SMODS.get_probability_vars(nil, 1, 4, "wheel_of_fortune")
+		info_queue[#info_queue + 1] = { key = "alt_wheel_of_fortune", set = "Other", specific_vars = { aaa, bbb } }
 		return {
 			vars = {
 				number_format(center.ability.extra.extra),
