@@ -645,7 +645,7 @@ function Cryptid.gameset_config_UI(center)
 		end
 	end
 	if center.set == "Content Set" then
-		gamesets = { "disabled", G.PROFILES[G.SETTINGS.profile].cry_gameset }
+		gamesets = { "disabled", G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline" }
 	end
 	for i = 1, #gamesets do
 		if
