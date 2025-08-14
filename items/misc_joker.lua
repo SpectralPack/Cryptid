@@ -4227,6 +4227,9 @@ local rnjoker = {
 					if valid_context then
 						local cond_passed = false
 						local times_passed = 1
+						if (j_context == "playing_card_added" and context.cards and context.cards[1]) then
+							times_passed = #context.cards
+						end
 						if j.cond then
 							if j.cond == "buy_common" then
 								if
@@ -4375,16 +4378,39 @@ local rnjoker = {
 									cond_passed = true
 								end
 							elseif j.cond == "odds" then
-								if
-									SMODS.pseudorandom_probability(
-										card,
-										"rnj",
-										1,
-										card and card.ability.extra.cond_value or 0,
-										"RNJoker"
-									)
-								then
-									cond_passed = true
+								if (j_context == "playing_card_added" and context.cards and context.cards[1]) then
+									for i = 1, #context.cards do
+										if
+											SMODS.pseudorandom_probability(
+												card,
+												"rnj",
+												1,
+												card and card.ability.extra.cond_value or 0,
+												"RNJoker"
+											)
+										then
+											
+										else
+											times_passed = math.max(0, times_passed - 1)
+										end
+									end
+									if times_passed == 0 then 
+										cond_passed = false 
+									else
+										cond_passed = true
+									end
+								else
+									if
+										SMODS.pseudorandom_probability(
+											card,
+											"rnj",
+											1,
+											card and card.ability.extra.cond_value or 0,
+											"RNJoker"
+										)
+									then
+										cond_passed = true
+									end
 								end
 							end
 						else
@@ -5038,12 +5064,7 @@ local rnjoker = {
 						"odds",
 					}
 				elseif context == "playing_card_added" then
-					conds = {
-						"suit",
-						"rank",
-						"face",
-						"odds",
-					}
+					conds = { "odds" }
 				elseif context == "setting_blind" then
 					conds = {
 						"boss",
