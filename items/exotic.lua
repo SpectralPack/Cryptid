@@ -169,10 +169,10 @@ local universum = {
 		--Universum Patches
 		SMODS.Scoring_Parameter:take_ownership("mult", {
 			level_up_hand = function(amount, hand)
-				if not next(find_joker('cry-Universum')) then
-					hand[self.key] = math.max(hand['s_'..self.key] + hand['l_'..self.key]*(hand.level - 1), 0)
+				if not next(find_joker("cry-Universum")) then
+					hand[self.key] = math.max(hand["s_" .. self.key] + hand["l_" .. self.key] * (hand.level - 1), 0)
 				end
-			end
+			end,
 		})
 		local uht = update_hand_text
 		function update_hand_text(config, vals)
