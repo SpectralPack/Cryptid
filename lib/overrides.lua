@@ -2115,8 +2115,9 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 			if effect.card then
 				juice_card(effect.card)
 			end
-			hand_chips = mod_chips(hand_chips ^ amount)
-			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+			local chips = SMODS.Scoring_Parameters["chips"]
+			chips.current = mod_chips(chips.current ^ amount)
+			update_hand_text({delay = 0}, {chips = chips.current})
 			if not effect.remove_default_message then
 				if from_edition then
 					card_eval_status_text(
@@ -2125,31 +2126,20 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 						nil,
 						percent,
 						nil,
-						{ message = "^" .. amount, colour = G.C.EDITION, edition = true, sound = "cry_chips" }
+						{ message = "^" .. amount, colour = G.C.EDITION, edition = true }
 					)
 				elseif key ~= "Echip_mod" then
-					if effect.echip_message or effect.message then
-						local msg = effect.echip_message or effect.message
-						if not msg.sound then
-							msg.sound = "cry_echips"
-						end
+					if effect.echip_message then
 						card_eval_status_text(
 							scored_card or effect.card or effect.focus,
-							"e_chips",
-							amount,
+							"extra",
+							nil,
 							percent,
 							nil,
-							msg
+							effect.echip_message
 						)
 					else
-						card_eval_status_text(
-							scored_card or effect.card or effect.focus,
-							"e_chips",
-							amount,
-							percent,
-							nil,
-							{ colour = G.C.DARK_EDITION }
-						)
+						card_eval_status_text(scored_card or effect.card or effect.focus, "e_chips", amount, percent)
 					end
 				end
 			end
@@ -2159,39 +2149,31 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 			if effect.card then
 				juice_card(effect.card)
 			end
-			mult = mod_mult(mult ^ amount)
-			update_hand_text({ delay = 0 }, { chips = hand_chips, mult = mult })
+			local mult = SMODS.Scoring_Parameters["mult"]
+			mult.current = mod_mult(mult.current ^ amount)
+			update_hand_text({delay = 0}, {mult = mult.current})
 			if not effect.remove_default_message then
 				if from_edition then
-					card_eval_status_text(scored_card, "jokers", nil, percent, nil, {
-						message = "^" .. amount .. " " .. localize("k_mult"),
-						colour = G.C.EDITION,
-						edition = true,
-						sound = "cry_emult",
-					})
+					card_eval_status_text(
+						scored_card,
+						"jokers",
+						nil,
+						percent,
+						nil,
+						{ message = "^" .. amount .. " " .. localize("k_mult"), colour = G.C.EDITION, edition = true }
+					)
 				elseif key ~= "Emult_mod" then
-					if effect.emult_message or effect.message then
-						local msg = effect.echip_message or effect.message
-						if not msg.sound then
-							msg.sound = "cry_emult"
-						end
+					if effect.emult_message then
 						card_eval_status_text(
 							scored_card or effect.card or effect.focus,
-							"e_mult",
-							amount,
+							"extra",
+							nil,
 							percent,
 							nil,
-							msg
+							effect.emult_message
 						)
 					else
-						card_eval_status_text(
-							scored_card or effect.card or effect.focus,
-							"e_mult",
-							amount,
-							percent,
-							nil,
-							{ colour = G.C.DARK_EDITION }
-						)
+						card_eval_status_text(scored_card or effect.card or effect.focus, "e_mult", amount, percent)
 					end
 				end
 			end
