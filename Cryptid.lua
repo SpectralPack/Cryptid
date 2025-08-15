@@ -251,13 +251,13 @@ function SMODS.injectItems(...)
 	Cryptid.reload_localization()
 	local keys = {}
 	local a_keys = {}
-	for i, v in pairs(SMODS.calculation_keys) do
+	for i, v in pairs(SMODS.other_calculation_keys) do
 		if not keys[v] then
 			a_keys[#a_keys + 1] = v
 		end
 		keys[v] = true
 	end
-	SMODS.calculation_keys = a_keys
+	SMODS.other_calculation_keys = a_keys
 end
 
 local old_repitions = SMODS.calculate_repetitions
