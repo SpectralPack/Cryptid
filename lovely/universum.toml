@@ -5,7 +5,7 @@ priority = -1
 
 [[patches]]
 [patches.pattern]
-target = '''=[SMODS _ "src/game_objects.lua"]'''
+target = '''=[SMODS _ "src/game_object.lua"]'''
 pattern = "hand[self.key] = math.max(hand['s_'..self.key] + hand['l_'..self.key]*(hand.level - 1), 0)"
 position = "at"
 payload = '''
