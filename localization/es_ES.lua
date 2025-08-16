@@ -3916,6 +3916,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "La rueda de la fortuna",
+				text = {
+					"{C:green}#1# en #2#{} probabilidades de agregar",
+					"que sean {C:dark_edition}laminadas{}, {C:dark_edition}holográficas{} o",
+					"{C:dark_edition}polícromas{}",
+					"a un {C:attention}comodín al azar",
+				},
+			},
 			disabled = {
 				name = "Deshabilitado",
 				text = {

@@ -4367,6 +4367,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "La Roue de Fortune",
+				text = {
+					"{C:green}#1# chance(s) sur #2#{} d'ajouter une édition",
+					"{C:dark_edition}Brillantes{}, {C:dark_edition}Holographique{} ou",
+					"{C:dark_edition}Polychrome{}",
+					"à un {C:attention}Joker au hasard",
+				},
+			},
 			disabled = {
 				name = "Désactivé",
 				text = {

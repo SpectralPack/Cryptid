@@ -4989,12 +4989,12 @@ local cut = {
 
 			if codecard_to_destroy then
 				codecard_to_destroy.getting_sliced = true
-				card.ability.extra.Xmult =
-					lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
-				local msg = SMODS.scale_card(card, {
+				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "Xmult",
 					scalar_value = "Xmult_mod",
+					message_key = "a_xmult",
+					colour = G.C.RED,
 				})
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -5029,20 +5029,14 @@ local cut = {
 			}
 		end
 		if context.forcetrigger then
-			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
-			local msg = SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "Xmult",
 				scalar_value = "Xmult_mod",
+				message_key = "a_xmult",
+				colour = G.C.RED,
 			})
 			return {
-				message = not msg and localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = {
-						number_format(card.ability.extra.Xmult),
-					},
-				}) or (type(msg) == "string" and msg) or nil,
 				Xmult_mod = card.ability.extra.Xmult,
 				colour = G.C.MULT,
 			}

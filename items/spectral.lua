@@ -566,8 +566,8 @@ local analog = {
 	set = "Spectral",
 	name = "cry-Analog",
 	key = "analog",
-	pos = { x = 3, y = 0 },
-	config = { copies = 1, ante = 1, immutable = { max_copies = 200, max_ante = 1e300 } },
+	pos = { x = 6, y = 2 },
+	config = { copies = 2, ante = 1, immutable = { max_copies = 200, max_ante = 1e300 } },
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {

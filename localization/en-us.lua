@@ -4148,6 +4148,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "The Wheel of Fortune",
+				text = {
+					"{C:green}#1# in #2#{} chance to add",
+					"{C:dark_edition}Foil{}, {C:dark_edition}Holographic{}, or",
+					"{C:dark_edition}Polychrome{} edition",
+					"to a random {C:attention}Joker",
+				},
+			},
 			disabled = {
 				name = "Disabled",
 				text = {

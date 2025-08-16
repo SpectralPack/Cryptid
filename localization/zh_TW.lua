@@ -2716,6 +2716,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "幸運之輪",
+				text = {
+					"{C:green}#1#/#2#{}的機率會增加",
+					"{C:dark_edition}銀箔{}、{C:dark_edition}全像攝影{}和",
+					"{C:dark_edition}彩色{}版本",
+					"至隨機一張{C:attention}小丑牌",
+				},
+			},
 			banana = {
 				name = "Banana",
 				text = {

@@ -3263,7 +3263,15 @@ return {
 			},
 		},
 		Other = {
-
+			alt_wheel_of_fortune = {
+				name = "命运之轮",
+				text = {
+					"有{C:green}#1#/#2#{}几率",
+					"给一张随机{C:attention}小丑牌",
+					"添加{C:dark_edition}闪箔{}、{C:dark_edition}镭射{}",
+					"或{C:dark_edition}多彩{}版本",
+				},
+			},
 			banana = {
 				name = "香蕉",
 				text = {

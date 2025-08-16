@@ -2717,6 +2717,15 @@ return {
 			},
 		},
 		Other = {
+			alt_wheel_of_fortune = {
+				name = "The Wheel of Fortune",
+				text = {
+					"{C:green}#1# dalam #2#{} peluang untuk menambah",
+					"edisi {C:dark_edition}Foil{}, {C:dark_edition}Holographic{}, dan",
+					"{C:dark_edition}Polychrome{}",
+					"menghancurkan sebuah {C:attention}Joker secara acak",
+				},
+			},
 			banana = {
 				name = "Banana",
 				text = {
