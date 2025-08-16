@@ -762,39 +762,24 @@ local m = {
 			}
 		end
 		if context.selling_card and context.card:is_jolly() and not context.blueprint then
-			card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.extra)
-			local msg = SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "x_mult",
 				scalar_value = "extra",
+				message_key = "a_xmult",
+				message_colour = G.C.RED
 			})
-			if not context.retrigger_joker and (not msg or type(msg) == "string") then
-				--This doesn't display the correct amount of mult if retriggered it display the amount from the first retrigger instead of the final one
-				--But I would rather have this than constant card_eval_status_text spam
-				--If anyone knows a solution feel free to do a pr xd
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = msg or localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.x_mult) },
-					}),
-				})
-			end
 			return nil, true
 		end
 		if context.forcetrigger then
-			card.ability.extra.x_mult = lenient_bignum(to_big(card.ability.extra.x_mult) + card.ability.extra.extra)
-			local msg = SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "x_mult",
 				scalar_value = "extra",
+				message_key = "a_xmult",
+				message_colour = G.C.RED
 			})
 			return {
-				message = not msg and localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}) or (type(msg) == "string" and msg) or nil,
 				Xmult_mod = card.ability.extra.x_mult,
 			}
 		end
@@ -986,16 +971,11 @@ local number_blocks = {
 					card = card,
 				}
 			else
-				card.ability.extra.money =
-					lenient_bignum(to_big(card.ability.extra.money) + card.ability.extra.money_mod)
-				local msg = SMODS.scale_card(card, {
+				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "money",
 					scalar_value = "money_mod",
 				})
-				if not msg or type(msg) == "string" then
-					card_eval_status_text(card, "extra", nil, nil, nil, { message = msg or localize("k_upgrade_ex") })
-				end
 				return nil, true
 			end
 		end
@@ -1065,8 +1045,8 @@ local double_scale = {
 				message = localize("k_upgrade_ex"),
 			}
 		end
+		args.scalar_table[args.scalar_value] = new_scale
 		return {
-			scalar_value = lenient_bignum(orig_scale_scale + to_big(true_base)),
 			message = localize("k_upgrade_ex"),
 		}
 	end,
@@ -1734,38 +1714,20 @@ local goldjoker = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.play and context.individual and not context.blueprint then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				card.ability.extra.percent =
-					lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-				local msg = SMODS.scale_card(card, {
+				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "percent",
 					scalar_value = "percent_mod",
 				})
-				if not msg or type(msg) == "string" then
-					return {
-						extra = { focus = card, message = msg or localize("k_upgrade_ex") },
-						card = card,
-						colour = G.C.MONEY,
-					}
-				end
 			end
 		end
 		if context.individual and context.cardarea == G.play then
 			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				card.ability.extra.percent =
-					lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-				local msg = SMODS.scale_card(card, {
+				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "percent",
 					scalar_value = "percent_mod",
 				})
-				if not msg or type(msg) == "string" then
-					return {
-						message = msg or localize("k_upgrade_ex"),
-						card = card,
-						colour = G.C.CHIPS,
-					}
-				end
 			end
 		end
 	end,
@@ -2555,12 +2517,12 @@ local starfruit = {
 			}
 		end
 		if context.reroll_shop or context.forcetrigger then
-			card.ability.emult = card.ability.emult - card.ability.emult_mod
-			local msg = SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "emult",
 				scalar_value = "emult_mod",
 				operation = "-",
+				no_message = true
 			})
 			--floating point precision can kiss my ass istg
 			if to_number(card.ability.emult) <= 1.00000001 then

@@ -674,18 +674,12 @@ local bonk = {
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_name == card.ability.extra.type then
-				local msg = SMODS.scale_card(card, {
+				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "chips",
 					scalar_value = "bonus",
+					message_colour = G.C.CHIPS
 				})
-				if not msg or type("msg") == "string" then
-					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = msg or localize("k_upgrade_ex"),
-						colour = G.C.CHIPS,
-					})
-				end
-
 				return nil, true
 			end
 		end
@@ -729,19 +723,14 @@ local bonk = {
 			end
 		end
 		if context.forcetrigger then
-			local msg = SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "chips",
 				scalar_value = "bonus",
+				message_key = "a_chips",
+				message_colour = G.C.CHIPS
 			})
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = {
-						number_format(lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips)),
-					},
-				}),
 				chip_mod = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
 			}
 		end
@@ -1307,7 +1296,7 @@ local virgo = {
 			and not context.blueprint
 		then
 			--this doesn't seem to work with retrigger jokers. Intentional?
-			local msg = SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "extra_value",
 				scalar_table = card.ability.extra,
@@ -1534,20 +1523,14 @@ local mprime = {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.selling_card and (context.card:is_jolly()) then
-			local msg
 			if not context.blueprint then
-				msg = SMODS.scale_card(card, {
+				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "mult",
 					scalar_value = "bonus",
+					scaling_message = localize("cry_m_ex"),
+					message_colour = G.C.DARK_EDITION
 				})
-			end
-			if not context.retrigger_joker and not context.blueprint and (not msg or type(msg) == "string") then
-				return {
-					message = msg or localize("cry_m_ex"),
-					card = card,
-					colour = G.C.DARK_EDITION,
-				}
 			end
 		elseif
 			context.end_of_round
@@ -1770,23 +1753,14 @@ local megg = {
 		then
 			-- could be a bit unintuitive?
 			card.ability.extra.amount_mod = math.max(1, card.ability.extra.amount_mod)
-			local msg = SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "amount",
 				scalar_value = "amount_mod",
+				scaling_message = localize("cry_jolly_ex")
 			})
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
-			end
-			if not msg or type(msg) == "string" then
-				card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = { msg = localize("cry_jolly_ex") }, colour = G.C.FILTER }
-				)
 			end
 			return nil, true
 		end
@@ -1803,11 +1777,11 @@ local megg = {
 		end
 		if context.forcetrigger then
 			-- could be a bit unintuitive?
-			card.ability.extra.amount_mod = math.max(1, card.ability.extra.amount_mod)
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "amount",
 				scalar_value = "amount_mod",
+				no_message = true
 			})
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
@@ -1866,12 +1840,6 @@ local longboi = {
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition then
 			card.ability.extra.bonus = math.max(card.ability.extra.bonus, card.ability.immutable.max_bonus) -- maybe remove this entirely
-			local msg = SMODS.scale_card(card, {
-				ref_table = G.GAME,
-				ref_value = "monstermult",
-				scalar_table = card.ability.extra,
-				scalar_value = "bonus",
-			})
 			if not context.retrigger_joker and (not msg or type(msg) == "string") then
 				return {
 					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
@@ -1892,12 +1860,6 @@ local longboi = {
 		end
 		if context.forcetrigger then
 			card.ability.extra.bonus = math.max(card.ability.extra.bonus, card.ability.immutable.max_bonus) -- maybe remove this entirely
-			SMODS.scale_card(card, {
-				ref_table = G.GAME,
-				ref_value = "monstermult",
-				scalar_table = card.ability.extra,
-				scalar_value = "bonus",
-			})
 			return {
 				message = localize({
 					type = "variable",
