@@ -25,7 +25,7 @@ function Cryptid.forcetrigger(card, context)
 	end
 	local results = {}
 	local check = Cryptid.forcetriggerVanillaCheck(card)
-	if not Talisman.config_file.disable_anims then
+	if Talisman and not Talisman.config_file.disable_anims then
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",
 			func = function()
@@ -578,12 +578,6 @@ function Cryptid.forcetrigger(card, context)
 			end
 		end
 		if card.ability.name == "Rocket" then
-			SMODS.scale_card(card, {
-				ref_table = card.ability.extra,
-				ref_value = "dollars",
-				scalar_value = "increase",
-				no_message = true,
-			})
 			ease_dollars(card.ability.extra.dollars)
 		end
 		if card.ability.name == "Obelisk" then -- Sobelisk
