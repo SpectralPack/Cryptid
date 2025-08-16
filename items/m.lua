@@ -1536,7 +1536,7 @@ local mprime = {
 					scaling_message = {
 						message = localize("cry_m_ex"),
 						colour = G.C.DARK_EDITION,
-					}
+					},
 				})
 			end
 		elseif
@@ -1753,7 +1753,7 @@ local megg = {
 				ref_value = "amount",
 				scalar_value = "amount_mod",
 				scaling_message = {
-					message = localize("cry_jolly_ex")
+					message = localize("cry_jolly_ex"),
 				},
 			})
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then

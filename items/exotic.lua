@@ -1332,8 +1332,8 @@ local energia = {
 						key = card.ability.extra.tags == 1 and "a_tag" or "a_tags",
 						vars = { t },
 					})[1],
-					colour = G.C.DARK_EDITION
-				}
+					colour = G.C.DARK_EDITION,
+				},
 			})
 			return { tags = math.max(t, 0) }
 		end
