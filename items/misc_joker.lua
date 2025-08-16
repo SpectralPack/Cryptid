@@ -1276,7 +1276,7 @@ local compound_interest = {
 			ref_table = card.ability.extra,
 			ref_value = "percent",
 			scalar_value = "percent_mod",
-      no_message = true
+			no_message = true,
 		})
 		return (1 + old / 100) * interest
 	end,

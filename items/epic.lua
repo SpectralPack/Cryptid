@@ -992,10 +992,10 @@ local number_blocks = {
 			for i, v in pairs(G.hand.cards) do
 				if v:get_id() == G.GAME.current_round.cry_nb_card.id and not v.debuff then
 					SMODS.scale_card(card, {
-            ref_table = card.ability.extra,
-            ref_value = "money",
-            scalar_value = "money_mod",
-          })
+						ref_table = card.ability.extra,
+						ref_value = "money",
+						scalar_value = "money_mod",
+					})
 					return nil, true
 				end
 			end
