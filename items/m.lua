@@ -1528,8 +1528,10 @@ local mprime = {
 					ref_table = card.ability.extra,
 					ref_value = "mult",
 					scalar_value = "bonus",
-					scaling_message = localize("cry_m_ex"),
-					message_colour = G.C.DARK_EDITION,
+					scaling_message = {
+						message = localize("cry_m_ex"),
+						colour = G.C.DARK_EDITION,
+					}
 				})
 			end
 		elseif
@@ -1757,7 +1759,9 @@ local megg = {
 				ref_table = card.ability.extra,
 				ref_value = "amount",
 				scalar_value = "amount_mod",
-				scaling_message = localize("cry_jolly_ex"),
+				scaling_message = {
+					message = localize("cry_jolly_ex"),
+				}
 			})
 			if to_big(card.ability.extra.amount) > to_big(card.ability.immutable.max_amount) then
 				card.ability.extra.amount = lenient_bignum(card.ability.immutable.max_amount)
