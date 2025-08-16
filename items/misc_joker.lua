@@ -9144,8 +9144,10 @@ local cookie = {
 					ref_table = card.ability.extra,
 					ref_value = "chips",
 					scalar_value = "chip_mod",
-					scaling_message = "-" .. number_format(card.ability.extra.chip_mod),
-					message_colour = G.C.CHIPS,
+					scaling_message = {
+						message = "-" .. number_format(card.ability.extra.chip_mod),
+						colour = G.C.CHIPS,
+					}
 				})
 			end
 		end

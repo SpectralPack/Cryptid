@@ -1326,12 +1326,14 @@ local energia = {
 				ref_table = card.ability.extra,
 				ref_value = "tags",
 				scalar_value = "tag_mod",
-				scaling_message = localize({
-					type = "variable",
-					key = card.ability.extra.tags == 1 and "a_tag" or "a_tags",
-					vars = { t },
-				})[1],
-				message_colour = G.C.DARK_EDITION,
+				scaling_message = {
+					message = localize({
+						type = "variable",
+						key = card.ability.extra.tags == 1 and "a_tag" or "a_tags",
+						vars = { t },
+					})[1],
+					colour = G.C.DARK_EDITION
+				}
 			})
 			return { tags = math.max(t, 0) }
 		end
