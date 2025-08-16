@@ -324,7 +324,7 @@ local exponentia = {
 				ref_value = "Emult",
 				scalar_value = "Emult_mod",
 				message_key = "a_powmult",
-				message_colour = G.C.DARK_EDITION
+				message_colour = G.C.DARK_EDITION,
 			})
 			return {
 				Emult_mod = lenient_bignum(card.ability.extra.Emult),
@@ -369,7 +369,7 @@ local exponentia = {
 						ref_value = "Emult",
 						scalar_value = "Emult_mod",
 						message_key = "a_powmult",
-						message_colour = G.C.DARK_EDITION
+						message_colour = G.C.DARK_EDITION,
 					})
 				end
 			end
@@ -646,7 +646,7 @@ local crustulum = {
 				ref_value = "chips",
 				scalar_value = "chip_mod",
 				message_key = "a_chips",
-				colour = G.C.CHIPS
+				colour = G.C.CHIPS,
 			})
 			return nil, true
 		end
@@ -666,7 +666,7 @@ local crustulum = {
 				ref_value = "chips",
 				scalar_value = "chip_mod",
 				message_key = "a_chips",
-				colour = G.C.CHIPS
+				colour = G.C.CHIPS,
 			})
 			return {
 				chip_mod = lenient_bignum(card.ability.extra.chips),
@@ -737,7 +737,7 @@ local primus = {
 					ref_table = card.ability.extra,
 					ref_value = "Emult",
 					scalar_value = "Emult_mod",
-					message_colour = G.C.DARK_EDITION
+					message_colour = G.C.DARK_EDITION,
 				})
 				card.children.floating_sprite:set_sprite_pos({ x = 8, y = 6 })
 			end
@@ -764,7 +764,7 @@ local primus = {
 				ref_table = card.ability.extra,
 				ref_value = "Emult",
 				scalar_value = "Emult_mod",
-				message_colour = G.C.DARK_EDITION
+				message_colour = G.C.DARK_EDITION,
 			})
 			return {
 				Emult_mod = lenient_bignum(card.ability.extra.Emult),
@@ -814,7 +814,7 @@ local scalae = {
 				ref_table = card.ability.extra,
 				ref_value = "scale",
 				scalar_value = "scale_mod",
-				message_colour = G.C.DARK_EDITION
+				message_colour = G.C.DARK_EDITION,
 			})
 		end
 	end,
@@ -928,9 +928,9 @@ local stella_mortis = {
 					ref_value = "Emult",
 					scalar_value = "Emult_mod",
 					operation = function(ref_table, ref_value, initial, change)
-						ref_table[ref_value] = initial + change*quota
+						ref_table[ref_value] = initial + change * quota
 					end,
-					message_key = "a_powmult"
+					message_key = "a_powmult",
 				})
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1311,7 +1311,7 @@ local energia = {
 					key = card.ability.extra.tags == 1 and "a_tag" or "a_tags",
 					vars = { t },
 				})[1],
-				message_colour = G.C.DARK_EDITION
+				message_colour = G.C.DARK_EDITION,
 			})
 			return { tags = math.max(t, 0) }
 		end
@@ -1320,7 +1320,7 @@ local energia = {
 				ref_table = card.ability.extra,
 				ref_value = "tags",
 				scalar_value = "tag_mod",
-				no_message = true
+				no_message = true,
 			})
 		end
 	end,
@@ -1484,7 +1484,7 @@ local duplicare = {
 					ref_table = card.ability.extra,
 					ref_value = "Xmult",
 					scalar_value = "Xmult_mod",
-					no_message = true
+					no_message = true,
 				})
 			end
 			return {

@@ -947,9 +947,9 @@ local candy_basket = {
 					ref_value = "candies",
 					scalar_value = "candy_boss_mod",
 					operation = function(ref_table, ref_value, initial, change)
-						ref_table[ref_value] = initial + change* card.ability.extra.candy_boss_mod
+						ref_table[ref_value] = initial + change * card.ability.extra.candy_boss_mod
 					end,
-					no_message = true
+					no_message = true,
 				})
 			end
 			if card.ability.immutable.current_win_count >= card.ability.immutable.wins_needed then
@@ -967,9 +967,9 @@ local candy_basket = {
 				ref_value = "candies",
 				scalar_value = "candy_boss_mod",
 				operation = function(ref_table, ref_value, initial, change)
-					ref_table[ref_value] = initial + change* card.ability.extra.candy_boss_mod
+					ref_table[ref_value] = initial + change * card.ability.extra.candy_boss_mod
 				end,
-				no_message = true
+				no_message = true,
 			})
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,

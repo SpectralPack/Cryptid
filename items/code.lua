@@ -5053,7 +5053,7 @@ local cut = {
 					ref_value = "Xmult",
 					scalar_value = "Xmult_mod",
 					message_key = "a_xmult",
-					colour = G.C.RED
+					colour = G.C.RED,
 				})
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -5093,7 +5093,7 @@ local cut = {
 				ref_value = "Xmult",
 				scalar_value = "Xmult_mod",
 				message_key = "a_xmult",
-				colour = G.C.RED
+				colour = G.C.RED,
 			})
 			return {
 				Xmult_mod = card.ability.extra.Xmult,

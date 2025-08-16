@@ -767,7 +767,7 @@ local m = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 				message_key = "a_xmult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 			return nil, true
 		end
@@ -777,7 +777,7 @@ local m = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 				message_key = "a_xmult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 			return {
 				Xmult_mod = card.ability.extra.x_mult,
@@ -2522,7 +2522,7 @@ local starfruit = {
 				ref_value = "emult",
 				scalar_value = "emult_mod",
 				operation = "-",
-				no_message = true
+				no_message = true,
 			})
 			--floating point precision can kiss my ass istg
 			if to_number(card.ability.emult) <= 1.00000001 then

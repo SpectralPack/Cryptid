@@ -130,7 +130,7 @@ function Cryptid.forcetrigger(card, context)
 					ref_value = "mult",
 					scalar_table = { cost = sliced_card.sell_cost * 2 },
 					scalar_value = "cost",
-					no_message = true
+					no_message = true,
 				})
 			end
 			results = { jokers = { mult_mod = card.ability.mult, card = card } }

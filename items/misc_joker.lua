@@ -80,7 +80,7 @@ local dropshot = {
 					ref_value = "x_mult",
 					scalar_value = "Xmult_mod",
 					message_key = "a_xmult",
-					message_colour = G.C.RED
+					message_colour = G.C.RED,
 				})
 				return nil, true
 			end
@@ -96,7 +96,7 @@ local dropshot = {
 				ref_table = card.ability.extra,
 				ref_value = "x_mult",
 				scalar_value = "Xmult_mod",
-				no_message = true
+				no_message = true,
 			})
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
@@ -354,7 +354,7 @@ local potofjokes = {
 				ref_table = card.ability.extra,
 				ref_value = "h_size",
 				scalar_value = "h_mod",
-				message_key = "a_handsize"
+				message_key = "a_handsize",
 			})
 		end
 	end,
@@ -521,7 +521,7 @@ local wee_fib = {
 					ref_table = card.ability.extra,
 					ref_value = "mult",
 					scalar_value = "mult_mod",
-					message_colour = G.C.MULT
+					message_colour = G.C.MULT,
 				})
 			end
 		end
@@ -654,7 +654,7 @@ local whip = {
 							ref_value = "x_mult",
 							scalar_value = "Xmult_mod",
 							message_key = "a_xmult",
-							message_colour = G.C.MULT
+							message_colour = G.C.MULT,
 						})
 						return nil, true
 					end
@@ -676,7 +676,7 @@ local whip = {
 				ref_table = card.ability.extra,
 				ref_value = "x_mult",
 				scalar_value = "Xmult_mod",
-				no_message = true
+				no_message = true,
 			})
 			return {
 				xmult = card.ability.extra.x_mult,
@@ -798,7 +798,7 @@ local cursor = {
 				ref_value = "chips",
 				scalar_value = "chip_mod",
 				message_key = "a_chips",
-				message_colour = G.C.CHIPS
+				message_colour = G.C.CHIPS,
 			})
 			return nil, true
 		end
@@ -818,7 +818,7 @@ local cursor = {
 				ref_value = "chips",
 				scalar_value = "chip_mod",
 				message_key = "a_chips",
-				message_colour = G.C.CHIPS
+				message_colour = G.C.CHIPS,
 			})
 			return {
 				chip_mod = lenient_bignum(card.ability.extra.chips),
@@ -909,7 +909,7 @@ local pickle = {
 				ref_value = "tags",
 				scalar_value = "tags_mod",
 				operation = "-",
-				no_message = true
+				no_message = true,
 			})
 			if to_big(card.ability.extra.tags) > to_big(0) then
 				if not msg or type(msg) == "string" then
@@ -1185,7 +1185,7 @@ local chili_pepper = {
 				ref_table = card.ability.extra,
 				ref_value = "Xmult",
 				scalar_value = "Xmult_mod",
-				no_message = true
+				no_message = true,
 			})
 			if to_big(card.ability.extra.rounds_remaining) > to_big(0) then
 				if not msg or type(msg) == "string" then
@@ -1234,7 +1234,7 @@ local chili_pepper = {
 				ref_value = "Xmult",
 				scalar_value = "Xmult_mod",
 				message_key = "a_xmult",
-				message_colour = G.C.MULT
+				message_colour = G.C.MULT,
 			})
 			return {
 				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
@@ -1295,7 +1295,7 @@ local compound_interest = {
 				ref_table = card.ability.extra,
 				ref_value = "percent",
 				scalar_value = "percent_mod",
-				no_message = true
+				no_message = true,
 			})
 			if to_big(bonus) > to_big(0) then
 				return bonus
@@ -1425,7 +1425,7 @@ local eternalflame = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 				message_key = "a_xmult",
-				message_colour = G.C.MULT
+				message_colour = G.C.MULT,
 			})
 			return nil, true
 		end
@@ -1435,7 +1435,7 @@ local eternalflame = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 				message_key = "a_xmult",
-				message_colour = G.C.MULT
+				message_colour = G.C.MULT,
 			})
 			return {
 				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
@@ -1714,7 +1714,7 @@ local jimball = {
 					ref_value = "x_mult",
 					scalar_value = "X_mult_mod",
 					message_key = "a_xmult",
-					message_colour = G.C.MULT
+					message_colour = G.C.MULT,
 				})
 				return nil, true
 			end
@@ -1736,7 +1736,7 @@ local jimball = {
 				ref_value = "x_mult",
 				scalar_value = "X_mult_mod",
 				message_key = "a_xmult",
-				message_colour = G.C.MULT
+				message_colour = G.C.MULT,
 			})
 			return {
 				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
@@ -1966,7 +1966,7 @@ local fspinner = {
 				ref_value = "chips",
 				scalar_value = "chip_mod",
 				message_key = "a_chips",
-				message_colour = G.C.BLUE
+				message_colour = G.C.BLUE,
 			})
 			return {
 				chip_mod = lenient_bignum(card.ability.extra.chips),
@@ -2165,7 +2165,7 @@ local krustytheclown = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 				message_key = "a_xmult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 			return {
 				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
@@ -2458,7 +2458,7 @@ local antennastoheaven = {
 				ref_value = "x_chips",
 				scalar_value = "bonus",
 				message_key = "a_xchips",
-				message_colour = G.C.CHIPS
+				message_colour = G.C.CHIPS,
 			})
 			return {
 				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
@@ -2947,7 +2947,7 @@ local unjust_dagger = {
 				},
 				scalar_value = "sell_cost",
 				message_key = "a_xmult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 			return nil, true
 		end
@@ -2977,7 +2977,7 @@ local unjust_dagger = {
 				},
 				scalar_value = "sell_cost",
 				message_key = "a_xmult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 			return {
 				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
@@ -3111,7 +3111,7 @@ local monkey_dagger = {
 				},
 				scalar_value = "sell_cost",
 				message_key = "a_chips",
-				message_colour = G.C.BLUE
+				message_colour = G.C.BLUE,
 			})
 			return {
 				chip_mod = lenient_bignum(card.ability.extra.chips),
@@ -3202,7 +3202,7 @@ local pirate_dagger = {
 				},
 				scalar_value = "sell_cost",
 				message_key = "a_xchips",
-				message_colour = G.C.BLUE
+				message_colour = G.C.BLUE,
 			})
 			return nil, true
 		end
@@ -3232,7 +3232,7 @@ local pirate_dagger = {
 				},
 				scalar_value = "sell_cost",
 				message_key = "a_xchips",
-				message_colour = G.C.BLUE
+				message_colour = G.C.BLUE,
 			})
 			return {
 				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
@@ -3312,7 +3312,7 @@ local mondrian = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 				message_key = "a_xmult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 			return {
 				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
@@ -3529,7 +3529,7 @@ local spaceglobe = {
 				ref_value = "x_chips",
 				scalar_value = "Xchipmod",
 				message_key = "a_xchips",
-				message_colour = G.C.BLUE
+				message_colour = G.C.BLUE,
 			})
 			return {
 				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
@@ -7685,7 +7685,7 @@ local wheelhope = {
 					ref_value = "x_mult",
 					scalar_value = "extra",
 					message_key = "a_xmult",
-					message_colour = G.C.RED
+					message_colour = G.C.RED,
 				})
 				return nil, true
 			end
@@ -7696,7 +7696,7 @@ local wheelhope = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 				message_key = "a_xmult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 			return {
 				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
@@ -8165,7 +8165,7 @@ local morse = {
 				ref_table = card.ability.extra,
 				ref_value = "money",
 				scalar_value = "bonus",
-				no_message = true
+				no_message = true,
 			})
 			ease_dollars(lenient_bignum(card.ability.extra.money))
 		end
@@ -9240,7 +9240,7 @@ local cookie = {
 					ref_value = "chips",
 					scalar_value = "chip_mod",
 					scaling_message = "-" .. number_format(card.ability.extra.chip_mod),
-					message_colour = G.C.CHIPS
+					message_colour = G.C.CHIPS,
 				})
 			end
 		end
@@ -9844,7 +9844,7 @@ local zooble = {
 				ref_value = "mult",
 				scalar_value = "a_mult",
 				message_key = "a_mult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 			return {
 				mult_mod = lenient_bignum(card.ability.extra.mult),
@@ -10590,7 +10590,7 @@ local pizza_slice = {
 					scalar_value = "xmult_mod",
 					message_key = "a_xmult",
 					message_colour = G.C.RED,
-					no_message = context.forcetrigger
+					no_message = context.forcetrigger,
 				})
 			end
 		end
@@ -10672,7 +10672,7 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 				scalar_value = "xmult_mod",
 				message_key = "a_xmult",
 				message_colour = G.C.RED,
-				no_message = context.forcetrigger
+				no_message = context.forcetrigger,
 			})
 		end
 		if context.joker_main or context.forcetrigger then
@@ -10743,7 +10743,7 @@ local poor_joker = { -- +1 to all listed probabilities for the highest cat tag l
 				scalar_value = "mult_mod",
 				message_key = "a_mult",
 				message_colour = G.C.RED,
-				no_message = context.forcetrigger
+				no_message = context.forcetrigger,
 			})
 		end
 		if context.joker_main or context.forcetrigger then

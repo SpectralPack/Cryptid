@@ -21,17 +21,17 @@ SMODS.Joker:take_ownership("green_joker", {
 					scalar_value = "extra",
 					operation = "-",
 					message_key = "a_mult_minus",
-					message_colour = G.C.RED
+					message_colour = G.C.RED,
 				})
 			end
 		end
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
-			 SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = card.ability,
 				ref_value = "mult",
 				scalar_value = "extra",
 				message_key = "a_mult",
-				message_colour = G.C.RED
+				message_colour = G.C.RED,
 			})
 		end
 		if context.joker_main then
