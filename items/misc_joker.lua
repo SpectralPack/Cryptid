@@ -9242,7 +9242,7 @@ local cookie = {
 					scaling_message = {
 						message = "-" .. number_format(card.ability.extra.chip_mod),
 						colour = G.C.CHIPS,
-					}
+					},
 				})
 			end
 		end

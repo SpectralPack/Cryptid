@@ -1313,7 +1313,7 @@ local energia = {
 						vars = { t },
 					})[1],
 					colour = G.C.DARK_EDITION,
-				}
+				},
 			})
 			return { tags = math.max(t, 0) }
 		end
