@@ -9201,6 +9201,7 @@ local cookie = {
 				chip_mod = lenient_bignum(card.ability.extra.chips),
 				message = "+" .. number_format(card.ability.extra.chips),
 				colour = G.C.CHIPS,
+				operation = "-"
 			}
 		end
 		if context.cry_press then
