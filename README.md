@@ -2,7 +2,7 @@
 # Cryptid
 An unbalanced Balatro mod.
 
-Note: Cryptid requires [Steamodded](https://github.com/Steamodded/smods/releases/tag/latest) and [Talisman](https://github.com/SpectralPack/Talisman/archive/refs/heads/main.zip).
+Note: Cryptid requires [Steamodded](https://github.com/Steamodded/smods/releases/tag/latest) and [Talisman](https://github.com/SpectralPack/Talisman/releases/latest).
 
 Cryptid currently adds:
 
@@ -23,11 +23,8 @@ Cryptid currently adds:
 > *My game is crashing on startup/something doesn't appear to be loading!*
 
 Make sure everything is properly installed.
-For Talisman, the folder that contains Talisman should be named `Talisman`. If you've downloaded the source code from GitHub (by clicking on [Code] and then [Download ZIP]), the folder within the ZIP may be called `Talisman-main`, which will cause a problem. Simply rename the folder(s) so that the `-main` part of the name is removed, so that the folder is just called `Talisman`.
-Whenever you are manually updating Talisman or Cryptid, or any other mod for that matter, it's a good approach to instead delete the contents of the folder, then install the contents of the folder from the ZIP into the existing folder to avoid having to constantly rename the folder over and over.
 For automatic updates, try using the [automatic update script](https://discord.com/channels/1264429948970733782/1268911536638787625).
 It could also be that Steamodded is out of date, sometimes mods may use features of a new version that's absent in an older version, but don't change the version that they ask for.
-You can grab the latest Steamodded by [clicking here](https://github.com/Steamopollys/Steamodded/archive/refs/heads/main.zip).
 
 > *I can't see any new jokers/content!*
 
