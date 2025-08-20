@@ -44,6 +44,12 @@ local pointer = {
 				return true
 			end,
 		}))
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				check_for_unlock({ cry_used_consumable = "c_cry_pointer" })
+				return true
+			end,
+		}))
 		G.GAME.POINTER_SUBMENU = nil
 	end,
 	init = function(self)
@@ -2643,7 +2649,7 @@ local aliases = {
 	-- Cryptid T3 Vouchers
 	-- super strong placeholder
 
-	--[[ 
+	--[[
 	Format:
 		<joker key> = {
 			"<alias1>",
