@@ -2116,8 +2116,7 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 				juice_card(effect.card)
 			end
 			local chips = SMODS.Scoring_Parameters["chips"]
-			chips.current = mod_chips(chips.current ^ amount)
-			update_hand_text({ delay = 0 }, { chips = chips.current })
+			chips:modify((chips.current ^ amount) - chips.current)
 			if not effect.remove_default_message then
 				if from_edition then
 					card_eval_status_text(
@@ -2150,8 +2149,7 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 				juice_card(effect.card)
 			end
 			local mult = SMODS.Scoring_Parameters["mult"]
-			mult.current = mod_mult(mult.current ^ amount)
-			update_hand_text({ delay = 0 }, { mult = mult.current })
+			mult:modify((mult.current ^ amount) - mult.current)
 			if not effect.remove_default_message then
 				if from_edition then
 					card_eval_status_text(
@@ -2192,16 +2190,16 @@ if SMODS and SMODS.Mods and (not SMODS.Mods.Talisman or not SMODS.Mods.Talisman.
 			table.insert(SMODS.calculation_keys, v)
 		end
 	end
-	function to_number(a)
+	to_number = to_number or function(a)
 		return a
 	end
-	function to_big(a)
+	to_big = to_big or function(a)
 		return a
 	end
-	function lenient_bignum(a)
+	lenient_bignum = lenient_bignum or function(a)
 		return a
 	end
-	function is_number(x)
+	is_number = is_number or function(x)
 		return type(x) == "number"
 	end
 end
