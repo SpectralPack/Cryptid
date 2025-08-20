@@ -1712,7 +1712,7 @@ local jimball = {
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "x_mult",
-					scalar_value = "X_mult_mod",
+					scalar_value = "x_mult_mod",
 					message_key = "a_xmult",
 					message_colour = G.C.MULT,
 				})
@@ -1734,7 +1734,7 @@ local jimball = {
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "x_mult",
-				scalar_value = "X_mult_mod",
+				scalar_value = "x_mult_mod",
 				message_key = "a_xmult",
 				message_colour = G.C.MULT,
 			})
