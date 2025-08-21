@@ -558,6 +558,7 @@ return {
 				text = {
 					"Merge a selected {C:cry_code}consumable",
 					"with a selected {C:cry_code}playing card",
+					"{C:inactive}(Hidden consumables excluded){}",
 				},
 			},
 			c_cry_commit = {
@@ -696,6 +697,7 @@ return {
 					"Transfer {C:attention}#1#{} selected",
 					"{C:attention}Card#<s>1#{}, or {C:attention}Booster#<s>1#{}",
 					"to the {C:attention}Jokers{} tray",
+					"{C:inactive}(Hidden consumables excluded){}",
 				},
 			},
 			c_cry_divide = {

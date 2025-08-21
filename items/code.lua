@@ -1314,7 +1314,7 @@ local merge = {
 	can_use = function(self, card)
 		local hand = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
 		local consumeables = Cryptid.get_highlighted_cards({ G.consumeables }, card, 1, 1, function(card)
-			return card.ability.consumeable
+			return card.ability.consumeable and not card.config.center.hidden
 		end)
 		if
 			#hand ~= 1
@@ -3778,6 +3778,9 @@ local quantify = {
 				if to_big(G.GAME.dollars - G.GAME.bankrupt_at) < to_big(highlighted.cost) then
 					return
 				end
+			end
+			if h.config.center.hidden then 
+				return 
 			end
 		end
 		return t > 0 and t <= card.ability.extra
