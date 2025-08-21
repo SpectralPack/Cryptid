@@ -3779,8 +3779,8 @@ local quantify = {
 					return
 				end
 			end
-			if h.config.center.hidden then 
-				return 
+			if h.config.center.hidden then
+				return
 			end
 		end
 		return t > 0 and t <= card.ability.extra
