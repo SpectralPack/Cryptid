@@ -1349,91 +1349,59 @@ local verisimile = {
 	rarity = "cry_exotic",
 	cost = 50,
 	order = 516,
-	immutable = true,
+
+	-- "i'm not making this compatible" - nova
+	-- "well i am" - invalid, writing this comment
+	demicoloncompat = true,
 	blueprint_compat = true,
-	demicoloncompat = false, -- "i'm not making this compatible" - nova
+	
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { number_format(center.ability.extra.xmult) } }
 	end,
 	calculate = function(self, card, context)
-		if context.post_trigger and not context.blueprint then
-			--Todo: Gros Michel, Cavendish, Planet.lua
-			--Bus driver is ignored because it always triggers anyway
-			if
-				context.other_joker.ability.name == "8 Ball"
-				or context.other_joker.ability.name == "Space Joker"
-				or context.other_joker.ability.name == "Business Card"
-				or context.other_joker.ability.name == "Hallucination"
-			then
-				local variable = context.other_joker
-				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra)
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.xmult) },
-					}),
-				})
-			elseif
-				context.other_joker.ability.name == "Reserved Parking"
-				or context.other_joker.ability.name == "Bloodstone"
-				or context.other_joker.ability.name == "cry-Googol Play Card"
-				or context.other_joker.ability.name == "cry-Boredom"
-				or context.other_joker.ability.name == "cry-bonusjoker"
-				or context.other_joker.ability.name == "cry-multjoker"
-				or context.other_joker.ability.name == "cry-scrabble"
-			then
-				local variable = context.other_joker
-				card.ability.extra.xmult =
-					lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.xmult) },
-					}),
-				})
-			elseif context.other_joker.ability.name == "cry-notebook" then
-				--This also triggers at notebook's end of round which isn't intentional but i'm not bothered enough about this to find a workaround
-				local variable = context.other_joker
-				card.ability.extra.xmult =
-					lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra.odds)
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.xmult) },
-					}),
-				})
-			end
-			return nil, true
-		elseif context.consumeable and not context.blueprint then
-			if context.consumeable.ability.name == "The Wheel of Fortune" and context.consumeable.cry_wheel_success then
-				local variable = context.consumeable
-				card.ability.extra.xmult = lenient_bignum(to_big(card.ability.extra.xmult) + variable.ability.extra) --Doesn't account for misprintizing for some reason
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.xmult) },
-					}),
-				})
-			end
-		elseif context.joker_main and (to_big(card.ability.extra.xmult) > to_big(1)) then
+		if context.pseudorandom_result and context.result then
+            -- implementation that doesn't use SMODS.scale_card; use if scale_card causes weird or unexpected behavior
+			--[[
+			card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + context.denominator)
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
+                message = localize({
+                    type = "variable",
+                    key = "a_xmult",
+                    vars = { number_format(card.ability.extra.xmult) },
+                })
 			}
-		end
+			]]
+
+			SMODS.scale_card(card, {
+				-- this should not affect the probability in the context table
+				block_overrides = {
+					scalar = true
+				},
+
+				ref_table = card.ability.extra,
+				ref_value = "xmult",
+				scalar_table = context,
+				scalar_value = "denominator",
+				scaling_message = {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.xmult) },
+					}),
+				},
+			})
+
+        -- forcetriggers won't scale non verisimile, because how much would you scale it by
+        elseif context.joker_main or context.forcetrigger then
+			return {
+				xmult = lenient_bignum(card.ability.extra.xmult),
+			}
+        end
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		code = { "Jevonn" },
+		code = { "Jevonn", "invalidOS" },
 	},
 }
 local duplicare = {
