@@ -10447,7 +10447,7 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 			end
 
 			return {
-				additive.numerator = (additive.numerator or context.numerator) + highest_cat_lvl
+				numerator = context.numerator + highest_cat_lvl
 			}
 		end
 
