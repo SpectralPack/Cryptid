@@ -10403,7 +10403,7 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 			"Darren_The_Frog",
 		},
 		code = {
-			"Lily",
+			"Lily Felli",
 		},
 	},
 	object_type = "Joker",
@@ -10420,53 +10420,37 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 	cost = 8,
 	order = 140,
 	demicoloncompat = false,
-	config = { extra = { oddsmod = 1 }, immutable = { lasthighest = 0 } },
-	loc_vars = function(self, info_queue, card)
-		return { vars = { card.ability.extra.oddsmod } }
-	end,
-	update = function(self, card, dt)
-		if G.GAME and G.GAME.tags and card.ability then
-			local highest = 0
-			for i, tag in pairs(G.GAME.tags) do
-				local lvl = tag.ability.level
-				if lvl == nil then
-					lvl = 1
-				end
-
-				-- print("trying comparison of " .. tostring(lvl) .. " > " .. tostring(highest))
-				if tag.key == "tag_cry_cat" and lvl > highest then
-					highest = lvl
-					-- get highest cat tag level
-					-- unfortunately this probably causes lag if you have 2763 cat tags but thats your problem not mine
-				end
-			end
-
-			-- print(card.ability.immutable.lasthighest, highest)
-			if highest ~= card.ability.immutable.lasthighest then
-				for k, v in pairs(G.GAME.probabilities) do
-					G.GAME.probabilities[k] = (v - card.ability.immutable.lasthighest) + highest
-					-- im not fully sure on this, but we're having fun :)
-
-					-- i dont even know if you have to iterate through all of them, but this is what oa6 does
-				end
-				card.ability.immutable.lasthighest = highest
-			end
-		end
-	end,
 	in_pool = function(self)
-		local r = false
+		if not G.GAME.tags or #G.GAME.tags == 0 then return false end
 		for _, tag in pairs(G.GAME.tags) do
 			if tag.key == "tag_cry_cat" then
-				r = true
+				return true
 			end
 		end
-		return r
+		return false
 	end,
+	calculate = function(self, card, context)
 
-	remove_from_deck = function(self, card, from_debuff)
-		for k, v in pairs(G.GAME.probabilities) do
-			G.GAME.probabilities[k] = (v - card.ability.immutable.lasthighest)
+		if context.mod_probability and not context.blueprint then
+
+			local highest_cat_lvl = 0
+			for _,tag in pairs(G.GAME.tags) do
+				local lvl = tag.ability.level
+				if highest_cat_lvl < 1 and tag.key == "tag_cry_cat" then
+					highest_cat_lvl = 1
+				end
+				if (lvl and lvl > highest_cat_lvl) then
+					highest_cat_lvl = lvl
+				end
+				
+
+			end
+
+			return {
+				additive.numerator = (additive.numerator or context.numerator) + highest_cat_lvl
+			}
 		end
+
 	end,
 }
 
@@ -10902,7 +10886,7 @@ local miscitems = {
 	highfive,
 	sock_and_sock,
 	brokenhome,
-	--yarnball,
+	yarnball,
 	pizza,
 	pizza_slice,
 	paved_joker,
