@@ -1343,8 +1343,8 @@ local verisimile = {
 	object_type = "Joker",
 	name = "cry-verisimile",
 	key = "verisimile",
-	pos = { x = 6, y = 5 },
-	soul_pos = { x = 7, y = 6, extra = { x = 8, y = 6 } },
+	pos = { x = 0, y = 1 },
+	soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
 	config = { extra = { xmult = 1 } },
 	rarity = "cry_exotic",
 	cost = 50,
@@ -1355,7 +1355,7 @@ local verisimile = {
 	demicoloncompat = true,
 	blueprint_compat = true,
 	
-	atlas = "exotics",
+	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { number_format(center.ability.extra.xmult) } }
 	end,
