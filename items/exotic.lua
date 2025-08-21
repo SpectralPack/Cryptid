@@ -1354,14 +1354,14 @@ local verisimile = {
 	-- "well i am" - invalid, writing this comment
 	demicoloncompat = true,
 	blueprint_compat = true,
-	
+
 	atlas = "placeholders",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { number_format(center.ability.extra.xmult) } }
 	end,
 	calculate = function(self, card, context)
 		if context.pseudorandom_result and context.result then
-            -- implementation that doesn't use SMODS.scale_card; use if scale_card causes weird or unexpected behavior
+			-- implementation that doesn't use SMODS.scale_card; use if scale_card causes weird or unexpected behavior
 			--[[
 			card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + context.denominator)
 			return {
@@ -1376,7 +1376,7 @@ local verisimile = {
 			SMODS.scale_card(card, {
 				-- this should not affect the probability in the context table
 				block_overrides = {
-					scalar = true
+					scalar = true,
 				},
 
 				ref_table = card.ability.extra,
@@ -1392,12 +1392,12 @@ local verisimile = {
 				},
 			})
 
-        -- forcetriggers won't scale non verisimile, because how much would you scale it by
-        elseif context.joker_main or context.forcetrigger then
+		-- forcetriggers won't scale non verisimile, because how much would you scale it by
+		elseif context.joker_main or context.forcetrigger then
 			return {
 				xmult = lenient_bignum(card.ability.extra.xmult),
 			}
-        end
+		end
 	end,
 	cry_credits = {
 		idea = { "Enemui" },

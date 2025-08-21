@@ -10421,7 +10421,9 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 	order = 140,
 	demicoloncompat = false,
 	in_pool = function(self)
-		if not G.GAME.tags or #G.GAME.tags == 0 then return false end
+		if not G.GAME.tags or #G.GAME.tags == 0 then
+			return false
+		end
 		for _, tag in pairs(G.GAME.tags) do
 			if tag.key == "tag_cry_cat" then
 				return true
@@ -10430,27 +10432,22 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 		return false
 	end,
 	calculate = function(self, card, context)
-
 		if context.mod_probability and not context.blueprint then
-
 			local highest_cat_lvl = 0
-			for _,tag in pairs(G.GAME.tags) do
+			for _, tag in pairs(G.GAME.tags) do
 				local lvl = tag.ability.level
 				if highest_cat_lvl < 1 and tag.key == "tag_cry_cat" then
 					highest_cat_lvl = 1
 				end
-				if (lvl and lvl > highest_cat_lvl) then
+				if lvl and lvl > highest_cat_lvl then
 					highest_cat_lvl = lvl
 				end
-				
-
 			end
 
 			return {
-				numerator = context.numerator + highest_cat_lvl
+				numerator = context.numerator + highest_cat_lvl,
 			}
 		end
-
 	end,
 }
 
