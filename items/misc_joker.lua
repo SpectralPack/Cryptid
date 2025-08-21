@@ -10421,7 +10421,7 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 	order = 140,
 	demicoloncompat = false,
 	in_pool = function(self)
-		if not G.GAME.tags or G.GAME.tags == 0 then return false end
+		if not G.GAME.tags or #G.GAME.tags == 0 then return false end
 		for _, tag in pairs(G.GAME.tags) do
 			if tag.key == "tag_cry_cat" then
 				return true
