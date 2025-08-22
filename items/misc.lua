@@ -433,7 +433,6 @@ local azure_seal = {
 					end
 					for i = 1, self.config.planets_amount do
 						local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
-
 						card:set_edition({ negative = true }, true)
 						card:add_to_deck()
 						G.consumeables:emplace(card)
@@ -949,15 +948,15 @@ local glitched = {
 	on_apply = function(card)
 		if not card.ability.cry_glitched then
 			Cryptid.manipulate(card, {
-				min = 0.25,
-				max = 4,
+				min = Cryptid.gameset(G.P_CENTERS.e_cry_glitched) == "madness" and 0.1 or 0.25,
+				max = Cryptid.gameset(G.P_CENTERS.e_cry_glitched) == "madness" and 10 or 4,
 			})
 
 			if card.config.center.apply_glitched then
 				card.config.center:apply_glitched(card, function(val)
 					return Cryptid.manipulate_value(val, {
-						min = 0.25 * (G.GAME.modifiers.cry_misprint_min or 1),
-						max = 4 * (G.GAME.modifiers.cry_misprint_max or 1),
+						min = (Cryptid.gameset(G.P_CENTERS.e_cry_glitched) == "madness" and 0.1 or 0.25) * (G.GAME.modifiers.cry_misprint_min or 1),
+						max = (Cryptid.gameset(G.P_CENTERS.e_cry_glitched) == "madness" and 10 or 4) * (G.GAME.modifiers.cry_misprint_max or 1),
 						type = "X",
 					}, Cryptid.is_card_big(card))
 				end)

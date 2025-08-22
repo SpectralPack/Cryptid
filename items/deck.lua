@@ -85,6 +85,12 @@ local misprint = {
 	key = "misprint",
 	order = 4,
 	config = { cry_misprint_min = 0.25, cry_misprint_max = 4 },
+	gameset_config = {
+		madness = {
+			cry_misprint_min = 0.1,
+			cry_misprint_max = 10
+		}
+	},
 	pos = { x = 4, y = 2 },
 	atlas = "atlasdeck",
 	apply = function(self)

@@ -1383,7 +1383,7 @@ local eternalflame = {
 				number_format(center.ability.extra.extra),
 				number_format(center.ability.extra.x_mult),
 			},
-			key = Card.get_gameset(card) ~= "modest" and "j_cry_eternalflame2" or "j_cry_eternalflame",
+			key = Cryptid.gameset_loc({madness = "madness", mainline = "2"})
 		}
 	end,
 	atlas = "atlasone",
@@ -1399,7 +1399,7 @@ local eternalflame = {
 			}
 		elseif
 			context.selling_card
-			and context.card.config.center.set == "Joker"
+			and (context.card.config.center.set == "Joker" or Card.get_gameset(card) == "madness")
 			and (context.card.sell_cost >= 2 or Card.get_gameset(card) ~= "modest")
 			and not context.blueprint
 		then
