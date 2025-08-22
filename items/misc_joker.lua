@@ -1383,7 +1383,7 @@ local eternalflame = {
 				number_format(center.ability.extra.extra),
 				number_format(center.ability.extra.x_mult),
 			},
-			key = Cryptid.gameset_loc({madness = "madness", mainline = "2"})
+			key = Cryptid.gameset_loc({ madness = "madness", mainline = "2" }),
 		}
 	end,
 	atlas = "atlasone",
@@ -8915,7 +8915,7 @@ local tropical_smoothie = {
 	pools = { ["Food"] = true },
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { number_format(center.ability.extra) },}
+		return { vars = { number_format(center.ability.extra) } }
 	end,
 	calculate = function(self, card, context)
 		if context.selling_self or context.forcetrigger then

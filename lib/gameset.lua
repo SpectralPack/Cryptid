@@ -300,14 +300,18 @@ end
 G.FUNCS.cry_modest = function(e)
 	G.modestBtn.config.colour = G.C.CRY_SELECTED
 	G.mainlineBtn.config.colour = G.C.RED
-	if G.madnessBtn then G.madnessBtn.config.colour = G.C.CRY_EXOTIC end
+	if G.madnessBtn then
+		G.madnessBtn.config.colour = G.C.CRY_EXOTIC
+	end
 	G.FUNCS.cry_intro_part("modest")
 	G.selectedGameset = "modest"
 end
 G.FUNCS.cry_mainline = function(e)
 	G.modestBtn.config.colour = G.C.GREEN
 	G.mainlineBtn.config.colour = G.C.CRY_SELECTED
-	if G.madnessBtn then G.madnessBtn.config.colour = G.C.CRY_EXOTIC end
+	if G.madnessBtn then
+		G.madnessBtn.config.colour = G.C.CRY_EXOTIC
+	end
 	G.FUNCS.cry_intro_part("mainline")
 	G.selectedGameset = "mainline"
 end

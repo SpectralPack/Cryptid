@@ -531,7 +531,7 @@ local error_joker = {
 					},
 				},
 			},
-			key = Cryptid.gameset(self) == "madness" and "j_cry_error_madness" or "j_cry_error"
+			key = Cryptid.gameset(self) == "madness" and "j_cry_error_madness" or "j_cry_error",
 		}
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -899,7 +899,7 @@ local boredom = {
 				num,
 				denom,
 			},
-			key = Cryptid.gameset(self) == "madness" and "j_cry_boredom_madness" or "j_cry_boredom"
+			key = Cryptid.gameset(self) == "madness" and "j_cry_boredom_madness" or "j_cry_boredom",
 		}
 	end,
 	atlas = "atlasepic",
@@ -1019,7 +1019,13 @@ local number_blocks = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.after and not context.blueprint and not context.before and not context.repetition and Cryptid.gameset(self) ~= "madness" then
+		if
+			context.after
+			and not context.blueprint
+			and not context.before
+			and not context.repetition
+			and Cryptid.gameset(self) ~= "madness"
+		then
 			for i, v in pairs(G.hand.cards) do
 				if v:get_id() == G.GAME.current_round.cry_nb_card.id and not v.debuff then
 					SMODS.scale_card(card, {
@@ -1031,7 +1037,7 @@ local number_blocks = {
 				end
 			end
 		end
-		if Cryptid.gameset(self) ~= "madness" then	
+		if Cryptid.gameset(self) ~= "madness" then
 			if
 				context.individual
 				and not context.end_of_round
@@ -1146,7 +1152,7 @@ local double_scale = {
 				card.ability.times_needed,
 				card.ability.times_current,
 			},
-			key = Cryptid.gameset(self) == "madness" and "j_cry_Double Scale_madness" or "j_cry_Double Scale"
+			key = Cryptid.gameset(self) == "madness" and "j_cry_Double Scale_madness" or "j_cry_Double Scale",
 		}
 	end,
 }

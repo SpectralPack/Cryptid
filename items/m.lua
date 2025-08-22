@@ -1164,7 +1164,7 @@ local doodlem = {
 	gameset_config = {
 		madness = {
 			extra = {
-				init = 2
+				init = 2,
 			},
 		},
 	},

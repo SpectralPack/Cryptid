@@ -52,7 +52,7 @@ local cotton_candy = {
 	end,
 	loc_vars = function(self, q, card)
 		return { key = Cryptid.gameset_loc(self, { madness = "madness" }) }
-	end
+	end,
 }
 local wrapped = {
 	object_type = "Joker",
@@ -1640,7 +1640,7 @@ local candy_buttons = {
 	gameset_config = {
 		madness = {
 			extra = {
-				rerolls = 15
+				rerolls = 15,
 			},
 		},
 	},

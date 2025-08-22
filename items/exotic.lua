@@ -522,8 +522,8 @@ local tenebris = {
 	gameset_config = {
 		extra = {
 			slots = 25,
-			money = 25
-		}
+			money = 25,
+		},
 	},
 	calc_dollar_bonus = function(self, card)
 		return lenient_bignum(card.ability.extra.money)
@@ -906,7 +906,7 @@ local scalae = {
 				example[2],
 				example[3],
 			},
-			key = Cryptid.gameset_loc({madness = "madness"})
+			key = Cryptid.gameset_loc({ madness = "madness" }),
 		}
 	end,
 	cry_credits = {

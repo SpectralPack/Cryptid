@@ -1410,7 +1410,6 @@ return {
 				unlock = {
 					"Discover {C:attention}every",
 					"{C:cry_code}Code Card",
-				
 				},
 			},
 			j_cry_CodeJoker_madness = {
@@ -1423,7 +1422,7 @@ return {
 				unlock = {
 					"Discover {C:attention}every",
 					"{C:cry_code}Code Card",
-				}
+				},
 			},
 			-- j_cry_CodeJoker_modest = {
 			-- 	name = "Code Joker",
@@ -1600,14 +1599,14 @@ return {
 				},
 			},
 			["j_cry_Double Scale_madness"] = { -- ?????????????
-			name = "Double Scale",
-			text = {
-				"Scaling {C:attention}Jokers{}",
-				"scale {C:attention}quadratically",
-				"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
-				"{C:inactive,s:0.8}(grows by +1, +2, +3)",
+				name = "Double Scale",
+				text = {
+					"Scaling {C:attention}Jokers{}",
+					"scale {C:attention}quadratically",
+					"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
+					"{C:inactive,s:0.8}(grows by +1, +2, +3)",
+				},
 			},
-		},
 			j_cry_dropshot = {
 				name = "Dropshot",
 				text = {
@@ -4751,7 +4750,7 @@ return {
 			cry_madness_4 = {
 				"{C:inactive,S:0.8}Please note, Madness is not the",
 				"{C:inactive,S:0.8}intended experience and is kept around for legacy purposes",
-				"{C:inactive,S:0.8}future content will not be designed with Madness in mind"
+				"{C:inactive,S:0.8}future content will not be designed with Madness in mind",
 			},
 		},
 		poker_hands = {

@@ -11,6 +11,5 @@ return {
 	["force_tooltips"] = true, -- i don't actually know what this does
 	["HTTPS"] = true, -- your internet connection
 	["menu"] = true, -- i don't know what this does either
-	["madness_enabled"] = false
-
+	["madness_enabled"] = false,
 }

@@ -955,8 +955,10 @@ local glitched = {
 			if card.config.center.apply_glitched then
 				card.config.center:apply_glitched(card, function(val)
 					return Cryptid.manipulate_value(val, {
-						min = (Cryptid.gameset(G.P_CENTERS.e_cry_glitched) == "madness" and 0.1 or 0.25) * (G.GAME.modifiers.cry_misprint_min or 1),
-						max = (Cryptid.gameset(G.P_CENTERS.e_cry_glitched) == "madness" and 10 or 4) * (G.GAME.modifiers.cry_misprint_max or 1),
+						min = (Cryptid.gameset(G.P_CENTERS.e_cry_glitched) == "madness" and 0.1 or 0.25)
+							* (G.GAME.modifiers.cry_misprint_min or 1),
+						max = (Cryptid.gameset(G.P_CENTERS.e_cry_glitched) == "madness" and 10 or 4)
+							* (G.GAME.modifiers.cry_misprint_max or 1),
 						type = "X",
 					}, Cryptid.is_card_big(card))
 				end)

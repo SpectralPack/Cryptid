@@ -88,8 +88,8 @@ local misprint = {
 	gameset_config = {
 		madness = {
 			cry_misprint_min = 0.1,
-			cry_misprint_max = 10
-		}
+			cry_misprint_max = 10,
+		},
 	},
 	pos = { x = 4, y = 2 },
 	atlas = "atlasdeck",
