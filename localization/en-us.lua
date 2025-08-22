@@ -1186,6 +1186,20 @@ return {
 					"{C:attention}10 minutes",
 				},
 			},
+			j_cry_boredom_madness = {
+				name = "Boredom",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"{C:attention}retrigger{} each {C:attention}Joker{}",
+					"or {C:attention}played card{}",
+					"{C:inactive,s:0.8}Does not affect other Boredom{}",
+				},
+				unlock = {
+					"AFK in the title",
+					"screen for",
+					"{C:attention}10 minutes",
+				},
+			},
 			j_cry_brittle = {
 				name = "Brittle Candy",
 				text = {
@@ -1396,7 +1410,20 @@ return {
 				unlock = {
 					"Discover {C:attention}every",
 					"{C:cry_code}Code Card",
+				
 				},
+			},
+			j_cry_CodeJoker_madness = {
+				name = "Code Joker",
+				text = {
+					"Create a {C:dark_edition}Negative{}",
+					"{C:cry_code}Code Card{} when",
+					"{C:attention}Blind{} is selected",
+				},
+				unlock = {
+					"Discover {C:attention}every",
+					"{C:cry_code}Code Card",
+				}
 			},
 			-- j_cry_CodeJoker_modest = {
 			-- 	name = "Code Joker",
@@ -1449,6 +1476,13 @@ return {
 				text = {
 					"When sold, apply {C:dark_edition}Negative{}",
 					"to two {C:attention}random{} Jokers",
+				},
+			},
+			j_cry_cotton_candy_madness = {
+				name = "Cotton Candy",
+				text = {
+					"When sold, apply {C:dark_edition}Negative{}",
+					"to adjacent {C:attention}Jokers",
 				},
 			},
 			j_cry_crustulum = {
@@ -1565,6 +1599,15 @@ return {
 					"{C:inactive,s:0.8}(grows by +1, +2, +3)",
 				},
 			},
+			["j_cry_Double Scale_madness"] = { -- ?????????????
+			name = "Double Scale",
+			text = {
+				"Scaling {C:attention}Jokers{}",
+				"scale {C:attention}quadratically",
+				"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
+				"{C:inactive,s:0.8}(grows by +1, +2, +3)",
+			},
+		},
 			j_cry_dropshot = {
 				name = "Dropshot",
 				text = {
@@ -1965,11 +2008,9 @@ return {
 			j_cry_jtron = {
 				name = "Jimbo-tron 9000",
 				text = {
-					"This Joker gains {X:mult,C:white} X#1# {} Mult",
+					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
 					"for each default {C:attention}Joker{}",
-					"Generate a default {C:attention}Joker{} at the end of round",
-					"{C:inactive}(Must have room){}",
-					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
 				},
 			},
 			j_cry_kidnap = {
@@ -2438,6 +2479,13 @@ return {
 					"{C:red,E:2}Self destructs{}",
 				},
 			},
+			j_cry_pity_prize_madness = {
+				name = "Pity Prize",
+				text = {
+					"On skipping a {C:attention}Booster Pack{},",
+					"gain a random {C:attention}Tag{}",
+				},
+			},
 			j_cry_pot_of_jokes = {
 				name = "Pot of Jokes",
 				text = {
@@ -2588,6 +2636,17 @@ return {
 					"as a degree-{C:attention}#1#{} polynomial",
 					"raise degree by {C:attention}#2#{}",
 					"when a Boss Blind is defeated",
+					"{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} excluded)",
+					"{C:inactive,s:0.8}(ex. +1, +#3#, +#4#, +#5#)",
+				},
+			},
+			j_cry_Scalae_madness = {
+				name = "Scalae",
+				text = {
+					"Scaling {C:attention}Jokers{} scale",
+					"as a degree-{C:attention}#1#{} polynomial",
+					"raise degree by {C:attention}#2#{}",
+					"when a Blind is defeated",
 					"{C:inactive,s:0.8}({C:attention,s:0.8}Scalae{C:inactive,s:0.8} excluded)",
 					"{C:inactive,s:0.8}(ex. +1, +#3#, +#4#, +#5#)",
 				},
@@ -4681,6 +4740,11 @@ return {
 				"Just be careful not to {C:attention,E:1}crash{} the game,",
 				"as that'll probably happen before you lose...",
 			},
+			cry_madness_4 = {
+				"{C:inactive,S:0.8}Please note, Madness is not the",
+				"{C:inactive,S:0.8}intended experience and is kept around for legacy purposes",
+				"{C:inactive,S:0.8}future content will not be designed with Madness in mind"
+			},
 		},
 		poker_hands = {
 			["cry_Bulwark"] = "Bulwark",
@@ -4823,6 +4887,7 @@ return {
 			cry_mus_alt_bg = "Background Music (by MathIsFun_)",
 			cry_force_tooltips = "Force Tooltips",
 			cry_family = "Family Friendly Mode",
+			cry_madness_enabled = "Enable Selecting Madness for new Profiles",
 			cry_experimental = "Experimental Mode",
 
 			k_cry_program_pack = "Program Pack",

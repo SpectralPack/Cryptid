@@ -1161,6 +1161,13 @@ local doodlem = {
 		},
 		immutable = { max_jollies = 25 },
 	},
+	gameset_config = {
+		madness = {
+			extra = {
+				init = 2
+			},
+		},
+	},
 	pos = { x = 2, y = 0 },
 	rarity = "cry_epic",
 	cost = 13,

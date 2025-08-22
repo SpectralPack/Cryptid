@@ -598,6 +598,23 @@ SMODS.Sound({
 			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
 	end,
 })
+
+SMODS.Sound({
+	key = "music_madness",
+	path = "music_madness.ogg",
+	volume = 0.7,
+	sync = {
+		cry_music_mainline = true,
+		cry_music_modest = true,
+	},
+	pitch = 1,
+	select_music_track = function()
+		return G.STAGE == G.STAGES.MAIN_MENU
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" or G.selectedGameset == "madness")
+			and Cryptid_config.Cryptid.alt_bg_music
+	end,
+})
+
 SMODS.Sound({
 	key = "music_mainline",
 	path = "music_mainline.ogg",
@@ -607,11 +624,8 @@ SMODS.Sound({
 	},
 	pitch = 1,
 	select_music_track = function()
-		if G.PROFILES[G.SETTINGS.profile].cry_gameset == "madness" then
-			G.PROFILES[G.SETTINGS.profile].cry_gameset = "mainline"
-		end
 		return G.STAGE == G.STAGES.MAIN_MENU
-			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset and G.selectedGameset ~= "modest")
+			and (G.PROFILES[G.SETTINGS.profile].cry_gameset and G.PROFILES[G.SETTINGS.profile].cry_gameset == "mainline" or G.selectedGameset == "mainline")
 			and Cryptid_config.Cryptid.alt_bg_music
 	end,
 })

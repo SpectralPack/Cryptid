@@ -571,6 +571,12 @@ local whip = {
 				x_mult = 1,
 			},
 		},
+		madness = {
+			extra = {
+				Xmult_mod = 0.5,
+				x_mult = 1,
+			},
+		},
 	},
 	rarity = 2,
 	cost = 8,
@@ -7891,7 +7897,7 @@ local busdriver = {
 	},
 	name = "cry-busdriver",
 	key = "busdriver",
-	config = { extra = { mult = 25, odds = 4 } },
+	config = { extra = { mult = 50, odds = 4 } },
 	pos = { x = 5, y = 1 },
 	rarity = 2,
 	cost = 7,
@@ -8378,7 +8384,7 @@ local oldinvisible = {
 						func = function()
 							local card =
 								copy_card(pseudorandom_element(eligibleJokers, pseudoseed("cry_oldinvis")), nil)
-							if card.edition and card.edition.negative then
+							if card.edition and card.edition.negative and ryptid.gameset(self) ~= "madness" then
 								card:set_edition()
 							end
 							card:add_to_deck()
@@ -8909,7 +8915,7 @@ local tropical_smoothie = {
 	pools = { ["Food"] = true },
 	immutable = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { number_format(center.ability.extra) } }
+		return { vars = { number_format(center.ability.extra) },}
 	end,
 	calculate = function(self, card, context)
 		if context.selling_self or context.forcetrigger then
@@ -9415,7 +9421,7 @@ local pity_prize = {
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
 		return {
-			key = Cryptid.gameset_loc(self, { modest = "modest" }),
+			key = Cryptid.gameset_loc(self, { modest = "modest", madness = "madness" }),
 			vars = {
 				center.ability.extra.active and localize("cry_active") or localize("cry_inactive"),
 			},
@@ -9426,7 +9432,7 @@ local pity_prize = {
 			card.ability.extra.active = true
 		end
 		if context.skipping_booster or context.forcetrigger then
-			if card.ability.extra.active or context.forcetrigger then
+			if card.ability.extra.active or context.forcetrigger or Cryptid.gameset(self) == "madness" then
 				if not context.forcetrigger then
 					card.ability.extra.active = false
 				end

@@ -4786,15 +4786,28 @@ local CodeJoker = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	atlas = "atlasepic",
+	loc_vars = function(self, info_queue, center)
+		return { key = Cryptid.gameset_loc(self, { madness = "madness" }) }
+	end,
 	calculate = function(self, card, context)
 		if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
-			if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+			if Cryptid.gameset(self) == "madness" then
 				play_sound("timpani")
 				local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
 				card:add_to_deck()
 				G.consumeables:emplace(card)
+				card:set_edition("e_negative")
 				card:juice_up(0.3, 0.5)
 				return nil, true
+			else
+				if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+					play_sound("timpani")
+					local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
+					card:add_to_deck()
+					G.consumeables:emplace(card)
+					card:juice_up(0.3, 0.5)
+					return nil, true
+				end
 			end
 		end
 		if context.forcetrigger then
@@ -4802,6 +4815,9 @@ local CodeJoker = {
 			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)
 			card:add_to_deck()
 			G.consumeables:emplace(card)
+			if Cryptid.gameset(self) == "madness" then
+				card:set_edition("e_negative")
+			end
 			card:juice_up(0.3, 0.5)
 			return nil, true
 		end

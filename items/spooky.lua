@@ -20,23 +20,39 @@ local cotton_candy = {
 			(context.selling_self and not context.retrigger_joker and not context.blueprint_card)
 			or context.forcetrigger
 		then
-			local jokers = {}
-			for i, v in pairs(G.jokers.cards) do
-				if not v.edition or not v.edition.negative then
-					if v ~= card then
-						jokers[#jokers + 1] = v
+			if Cryptid.gameset(self) == "madness" then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i] == card then
+						if i > 1 then
+							G.jokers.cards[i - 1]:set_edition({ negative = true })
+						end
+						if i < #G.jokers.cards then
+							G.jokers.cards[i + 1]:set_edition({ negative = true })
+						end
 					end
 				end
-			end
-			pseudoshuffle(jokers, pseudoseed("cry_cotton_candy"))
-			if jokers[1] then
-				jokers[1]:set_edition({ negative = true })
-				if jokers[2] then
-					jokers[2]:set_edition({ negative = true })
+			else
+				local jokers = {}
+				for i, v in pairs(G.jokers.cards) do
+					if not v.edition or not v.edition.negative then
+						if v ~= card then
+							jokers[#jokers + 1] = v
+						end
+					end
+				end
+				pseudoshuffle(jokers, pseudoseed("cry_cotton_candy"))
+				if jokers[1] then
+					jokers[1]:set_edition({ negative = true })
+					if jokers[2] then
+						jokers[2]:set_edition({ negative = true })
+					end
 				end
 			end
 		end
 	end,
+	loc_vars = function(self, q, card)
+		return { key = Cryptid.gameset_loc(self, { madness = "madness" }) }
+	end
 }
 local wrapped = {
 	object_type = "Joker",
@@ -935,6 +951,15 @@ local candy_basket = {
 			max_spawn = 100,
 		},
 	},
+	gameset_config = {
+		madness = {
+			extra = {
+				candies = 0,
+				candy_mod = 1,
+				candy_boss_mod = 2,
+			},
+		},
+	},
 	calculate = function(self, card, context)
 		if context.selling_self then
 			for i = 1, math.floor(math.min(card.ability.immutable.max_spawn, card.ability.extra.candies)) do
@@ -1612,6 +1637,13 @@ local candy_buttons = {
 	atlas = "atlasspooky",
 	blueprint_compat = true,
 	pools = { ["Food"] = true },
+	gameset_config = {
+		madness = {
+			extra = {
+				rerolls = 15
+			},
+		},
+	},
 	loc_vars = function(self, info_queue, center)
 		return { vars = { number_format(center.ability.extra.rerolls) } }
 	end,

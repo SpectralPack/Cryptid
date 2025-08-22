@@ -519,6 +519,12 @@ local tenebris = {
 	order = 507,
 	atlas = "atlasexotic",
 	demicoloncompat = true,
+	gameset_config = {
+		extra = {
+			slots = 25,
+			money = 25
+		}
+	},
 	calc_dollar_bonus = function(self, card)
 		return lenient_bignum(card.ability.extra.money)
 	end,
@@ -842,7 +848,7 @@ local scalae = {
 				and not context.individual
 				and not context.repetition
 				and not context.blueprint
-				and G.GAME.blind_on_deck == "Boss"
+				and (G.GAME.blind_on_deck == "Boss" or Cryptid.gameset(self) == "madness")
 			) or context.forcetrigger
 		then
 			SMODS.scale_card(card, {
@@ -900,6 +906,7 @@ local scalae = {
 				example[2],
 				example[3],
 			},
+			key = Cryptid.gameset_loc({madness = "madness"})
 		}
 	end,
 	cry_credits = {

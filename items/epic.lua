@@ -531,6 +531,7 @@ local error_joker = {
 					},
 				},
 			},
+			key = Cryptid.gameset(self) == "madness" and "j_cry_error_madness" or "j_cry_error"
 		}
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -596,7 +597,7 @@ local error_joker = {
 			local buff = 0
 			local cards = #G.jokers.cards
 			for i = 1, #jokers do
-				if cards + buff < G.jokers.config.card_limit then
+				if cards + buff < G.jokers.config.card_limit or Cryptid.gameset(self) == "madness" then
 					local card = copy_card(jokers[i])
 					card:add_to_deck()
 					G.jokers:emplace(card)
@@ -898,49 +899,79 @@ local boredom = {
 				num,
 				denom,
 			},
+			key = Cryptid.gameset(self) == "madness" and "j_cry_boredom_madness" or "j_cry_boredom"
 		}
 	end,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
-		if context.before then
-			local cards = {}
-			for i, v in pairs(G.jokers.cards) do
-				if v.config.center.key ~= "j_cry_boredom" then
-					cards[#cards + 1] = v
+		if Cryptid.gameset(self) == "madness" then
+			if
+				context.retrigger_joker_check
+				and not context.retrigger_joker
+				and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
+			then
+				if SMODS.pseudorandom_probability(card, "cry_boredom_joker", 1, card.ability.extra.odds, "Boredom") then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = 1,
+						card = card,
+					}
+				else
+					return nil, true
 				end
 			end
-			local joker = pseudorandom_element(cards, pseudoseed("cry_boredom_joker"))
-			card.cry_boredom_marked = joker
-		end
-		if context.after then
-			card.cry_boredom_marked = nil
-		end
-		if
-			context.retrigger_joker_check
-			and not context.retrigger_joker
-			and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
-			and card.cry_boredom_marked == context.other_card
-		then
-			if SMODS.pseudorandom_probability(card, "cry_boredom_joker", 1, card.ability.extra.odds, "Boredom") then
+			if
+				context.repetition
+				and context.cardarea == G.play
+				and SMODS.pseudorandom_probability(card, "cry_boredom_joker", 1, card.ability.extra.odds, "Boredom")
+			then
 				return {
 					message = localize("k_again_ex"),
 					repetitions = 1,
 					card = card,
 				}
-			else
-				return nil, true
 			end
-		end
-		if
-			context.repetition
-			and context.cardarea == G.play
-			and SMODS.pseudorandom_probability(card, "cry_boredom_card", 1, card.ability.extra.odds, "Boredom")
-		then
-			return {
-				message = localize("k_again_ex"),
-				repetitions = 1,
-				card = card,
-			}
+		else
+			if context.before then
+				local cards = {}
+				for i, v in pairs(G.jokers.cards) do
+					if v.config.center.key ~= "j_cry_boredom" then
+						cards[#cards + 1] = v
+					end
+				end
+				local joker = pseudorandom_element(cards, pseudoseed("cry_boredom_joker"))
+				card.cry_boredom_marked = joker
+			end
+			if context.after then
+				card.cry_boredom_marked = nil
+			end
+			if
+				context.retrigger_joker_check
+				and not context.retrigger_joker
+				and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
+				and card.cry_boredom_marked == context.other_card
+			then
+				if SMODS.pseudorandom_probability(card, "cry_boredom_joker", 1, card.ability.extra.odds, "Boredom") then
+					return {
+						message = localize("k_again_ex"),
+						repetitions = 1,
+						card = card,
+					}
+				else
+					return nil, true
+				end
+			end
+			if
+				context.repetition
+				and context.cardarea == G.play
+				and SMODS.pseudorandom_probability(card, "cry_boredom_card", 1, card.ability.extra.odds, "Boredom")
+			then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = 1,
+					card = card,
+				}
+			end
 		end
 	end,
 	cry_credits = {
@@ -988,9 +1019,35 @@ local number_blocks = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.after and not context.blueprint and not context.before and not context.repetition then
+		if context.after and not context.blueprint and not context.before and not context.repetition and Cryptid.gameset(self) ~= "madness" then
 			for i, v in pairs(G.hand.cards) do
 				if v:get_id() == G.GAME.current_round.cry_nb_card.id and not v.debuff then
+					SMODS.scale_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "money",
+						scalar_value = "money_mod",
+					})
+					return nil, true
+				end
+			end
+		end
+		if Cryptid.gameset(self) ~= "madness" then	
+			if
+				context.individual
+				and not context.end_of_round
+				and context.cardarea == G.hand
+				and not context.blueprint
+				and not context.before
+				and not context.after
+				and context.other_card:get_id() == G.GAME.current_round.cry_nb_card.id
+			then
+				if context.other_card.debuff then
+					return {
+						message = localize("k_debuffed"),
+						colour = G.C.RED,
+						card = card,
+					}
+				else
 					SMODS.scale_card(card, {
 						ref_table = card.ability.extra,
 						ref_value = "money",
@@ -1038,7 +1095,7 @@ local double_scale = {
 	immutable = true,
 	atlas = "atlasepic",
 	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
-		if to_big(times_current) >= to_big(times_needed) then
+		if to_big(times_current) >= to_big(times_needed) or Cryptid.gameset(self) == "madness" then
 			times_current = times_current - times_needed
 		else
 			return {
@@ -1089,6 +1146,7 @@ local double_scale = {
 				card.ability.times_needed,
 				card.ability.times_current,
 			},
+			key = Cryptid.gameset(self) == "madness" and "j_cry_Double Scale_madness" or "j_cry_Double Scale"
 		}
 	end,
 }
@@ -2173,7 +2231,7 @@ local jtron = {
 	name = "cry-jtron",
 	key = "jtron",
 	config = {
-		extra = { bonus = 2 },
+		extra = { bonus = 1 },
 		immutable = { current = 0 },
 	},
 	rarity = "cry_epic",
@@ -2195,63 +2253,32 @@ local jtron = {
 		}
 	end,
 	calculate = function(self, card, context)
+		card.ability.immutable.current =
+			lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
 		if context.cardarea == G.jokers and context.joker_main then
-			card.ability.immutable.current =
-				lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
-			if to_big(card.ability.immutable.current) > to_big(0) then
-				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = {
-							number_format(card.ability.immutable.current),
-						},
-					}),
-					Xmult_mod = lenient_bignum(card.ability.immutable.current),
-					colour = G.C.MULT,
-				}
-			end
-		end
-		if
-			context.end_of_round
-			and not context.blueprint
-			and not context.individual
-			and not context.repetition
-			and not context.retrigger_joker
-		then
-			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						SMODS.add_card({
-							key = "j_joker",
-							area = G.jokers,
-						})
-						return true
-					end,
-				}))
-			end
-		end
-		if context.forcetrigger then
-			G.GAME.joker_buffer = G.GAME.joker_buffer + 1
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					SMODS.add_card({
-						key = "j_joker",
-						area = G.jokers,
-					})
-					return true
-				end,
-			}))
 			return {
 				message = localize({
 					type = "variable",
-					key = "a_xmult",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.immutable.current),
+					},
+				}),
+				Emult_mod = lenient_bignum(card.ability.immutable.current),
+				colour = G.C.DARK_EDITION,
+			}
+		end
+		if context.forcetrigger then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
 					vars = {
 						number_format(1 + to_big(card.ability.extra.bonus)),
 					},
 				}),
-				Xmult_mod = lenient_bignum(1 + to_big(card.ability.extra.bonus)),
-				colour = G.C.MULT,
+				Emult_mod = lenient_bignum(1 + to_big(card.ability.extra.bonus)),
+				colour = G.C.DARK_EDITION,
 			}
 		end
 	end,
