@@ -3168,7 +3168,6 @@ return {
 					"{C:chips}+#4#{} chip#<s>4#",
 				},
 			},
-			-- Reserved Spot For None Hand Planet
 			c_cry_nibiru = {
 				name = "Nibiru",
 				text = {
@@ -3211,9 +3210,20 @@ return {
 				name = "Sol",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
-					"Increase power of",
+					"Increase Ascension Factor of",
 					"{C:attention}Ascended{} hands by {X:gold,C:white}#2#{}",
-					"{C:inactive}(Currently {X:gold,C:white}X(#3#^asc){C:inactive})",
+					"{C:inactive}(Currently {X:gold,C:white}X#3#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
+					"{C:inactive}Per {C:attention}1{C:inactive} Ascension power)",
+				},
+			},
+			c_cry_sunplanet2 = {
+				name = "Sol",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
+					"Increase Ascension Factor of",
+					"{C:attention}Ascended{} hands by {X:gold,C:white}#2#{}",
+					"{C:inactive}(Currently {X:gold,C:white}+#3#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
+					"{C:inactive}Per {C:attention}1{C:inactive} Ascension power)",
 				},
 			},
 			c_cry_Timantii = {
@@ -4344,6 +4354,22 @@ return {
 					"to a random {C:attention}Joker",
 				},
 			},
+			asc_misc = {
+				name = "Ascended hand information",
+				text = {
+					"{C:gold}#1#{} Ascension power",
+					"{X:gold,C:white}X#2#{C:chips} Chips{} and {C:mult}Mult",
+					"{C:inactive}({C:gold}#3#{C:inactive} ^ {C:gold}#1#{C:inactive})",
+				},
+			},
+			asc_misc2 = {
+				name = "Ascended hand information",
+				text = {
+					"{C:gold}#1#{} Ascension power",
+					"{X:gold,C:white}X#2#{C:chips} Chips{} and {C:mult}Mult",
+					"{C:inactive}({C:gold}#3#{C:inactive} X {C:gold}#1#{C:inactive})",
+				},
+			},
 			disabled = {
 				name = "Disabled",
 				text = {
@@ -4672,6 +4698,27 @@ return {
 				text = {
 					"{C:green}#1# in #2#{} chance to do",
 					"nothing on use",
+				},
+			},
+			o_nstar = {
+				name = "Observatory Effect",
+				text = {
+					"{X:mult,C:white}X#1#{} Mult for each",
+					"{C:attention}Neutron Star{} used",
+					"in this run",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+				},
+			},
+			o_planetlua = {
+				name = "Observatory Effect",
+				text = { "" },
+			},
+			o_sunplanet = {
+				name = "Observatory Effect",
+				text = {
+					"Held {C:attention}Sol{} Cards increase",
+					"{C:attention}Ascension power",
+					"{C:inactive}(Currently {X:gold,C:white}+#1#{C:inactive})",
 				},
 			},
 			p_cry_code_normal_1 = {

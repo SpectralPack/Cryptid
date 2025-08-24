@@ -313,9 +313,78 @@ local planetlua = {
 	atlas = "atlasnotjokers",
 	order = 101,
 	loc_vars = function(self, info_queue, card)
+		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Planet.lua")
+		local xmulttexts = {}
+		local loc_mult = " " .. (localize("k_mult")) .. " "
+		for i = 0, 100 do
+			xmulttexts[#xmulttexts + 1] = "X" .. (1 + (i / 100))
+		end
+		local o_plua = {
+			-- For people "borrowing" this code: There's a lovely patch done in order to get this to work properly on infoqueues, if you don't need this on infoqueues then ignore this line
+			-- Small "Correction" to center text a bit more
+			{ n = G.UIT.T, config = { text = "  ", colour = G.C.WHITE, scale = 0.32 } },
+			-- Xmult text
+			{
+				n = G.UIT.C,
+				config = { align = "m", colour = G.C.RED, r = 0.05, padding = 0.03, res = 0.15 },
+				nodes = {
+					{
+						n = G.UIT.O,
+						config = {
+							object = DynaText({
+								string = xmulttexts,
+								colours = { G.C.WHITE },
+								pop_in_rate = 9999999,
+								silent = true,
+								random_element = true,
+								pop_delay = 0.5,
+								scale = 0.32,
+								min_cycle_time = 0,
+							}),
+						},
+					},
+				},
+			},
+			-- Mult Text
+			{
+				n = G.UIT.O,
+				config = {
+					object = DynaText({
+						string = {
+							{ string = "rand()", colour = G.C.JOKER_GREY },
+							{ string = "#@" .. (Cryptid.get_m_jokers()) .. "M", colour = G.C.RED },
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+							loc_mult,
+						},
+						colours = { G.C.UI.TEXT_DARK },
+						pop_in_rate = 9999999,
+						silent = true,
+						random_element = true,
+						pop_delay = 0.2011,
+						scale = 0.32,
+						min_cycle_time = 0,
+					}),
+				},
+			},
+		}
+		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
+			info_queue[#info_queue + 1] = { key = "o_planetlua", set = "Other", plua_extra = o_plua }
+		end
 		return {
 			vars = {
-				SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Planet.lua"),
+				aaa,
+				bbb,
 			},
 		}
 	end,
@@ -566,24 +635,23 @@ local planetlua = {
 			end
 		end
 	end,
-	calculate = function(self, card, context) --Observatory effect: (G.GAME.probabilities.normal) in (odds) chance for (G.P_CENTERS.v_observatory.config.extra) Mult
-		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
-			and (
-				SMODS.pseudorandom_probability(
-					card,
-					"mstar", --this is how it was before i didnt make it use the same seed
-					1,
-					card.ability.extra.odds,
-					"Planet.lua"
-				)
-			)
-		then
-			local value = G.P_CENTERS.v_observatory.config.extra
+	calculate = function(self, card, context) --Observatory effect: Variable XMult
+		if G.GAME.used_vouchers.v_observatory and context.joker_main then
+			pseudorandom("cry_googol_play")
+			local aaa = pseudorandom("mstar")
+			local limit = Card.get_gameset(card) == "modest" and 2 or 1e100
+			local formula = aaa + (0.07 * (aaa ^ 5 / (1 - aaa ^ 2)))
+			local value = Cryptid.nuke_decimals(math.min(limit, 1.7 ^ formula), 2)
+			--[[
+
+			OverFlow Compat TODO
+			It needs to be done in a way that keep expected score consistent between having 1 big stack and several smaller stacks
+			and ideally doesn't cause a lot of lag at large stacks like the bulk_use does
+			
 			if Overflow then
 				value = value ^ to_big(card:getQty())
 			end
+			]]
 			return {
 				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
 				Xmult_mod = value,
@@ -630,13 +698,14 @@ local nstar = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { (G.GAME and G.GAME.neutronstarsusedinthisrun or 0) } }
+		local aaa = Cryptid.safe_get(G, "GAME", "neutronstarsusedinthisrun") or 0
+		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
+			info_queue[#info_queue + 1] = { key = "o_nstar", set = "Other", specific_vars = { 0.1, (1 + (0.1 * aaa)) } }
+		end
+		return { vars = { aaa } }
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		--Get amount of Neutron stars use this run or set to 0 if nil
-		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun or 0
-
 		--Add +1 to amount of neutron stars used this run
 		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun + 1
 		local neutronhand = Cryptid.get_random_hand(nil, "nstar" .. G.GAME.round_resets.ante) --Random poker hand
@@ -655,8 +724,6 @@ local nstar = {
 	end,
 	bulk_use = function(self, card, area, copier, number)
 		local used_consumable = copier or card
-		G.GAME.neutronstarsusedinthisrun = G.GAME.neutronstarsusedinthisrun or 0
-
 		local handstolv = {}
 		local neutronhand = "n/a"
 		for i = 1, number do
@@ -694,7 +761,7 @@ local nstar = {
 		}))
 	end,
 	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
-		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun ~= nil and context.joker_main then
+		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun > 0 and context.joker_main then
 			local value = G.GAME.neutronstarsusedinthisrun
 			if Overflow then
 				value = value ^ to_big(card:getQty())
@@ -740,9 +807,8 @@ local nstar = {
 		card:use_consumeable(area)
 	end,
 }
-
 -- Sol
--- Upgrades Ascended Hand Power by 0.05
+-- Upgrades Ascended Hand Power
 local sunplanet = {
 	cry_credits = {
 		idea = {
@@ -756,7 +822,6 @@ local sunplanet = {
 			"Toneblock",
 		},
 	},
-	--TODO: disable ascendant hands if this is disabled
 	dependencies = {
 		items = {
 			"set_cry_planet",
@@ -773,7 +838,7 @@ local sunplanet = {
 	atlas = "atlasnotjokers",
 	order = 150,
 	config = {
-		extra = 0.05,
+		extra = { modest = 0.1, not_modest = 0.05 },
 	},
 	set_card_type_badge = function(self, card, badges)
 		badges[1] = create_badge(localize("cry_p_star"), get_type_colour(self or card.config, card), nil, 1.2)
@@ -783,12 +848,13 @@ local sunplanet = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
-		local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
-		G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
+		G.GAME.sunlevel = G.GAME.sunlevel + 1
+		G.GAME.sunnumber.modest = G.GAME.sunnumber.modest + card.ability.extra.modest
+		G.GAME.sunnumber.not_modest = G.GAME.sunnumber.not_modest + card.ability.extra.not_modest
 		delay(0.4)
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(sunlevel) }
+			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(G.GAME.sunlevel - 1) }
 		)
 		delay(1.0)
 		G.E_MANAGER:add_event(Event({
@@ -798,48 +864,7 @@ local sunplanet = {
 				play_sound("tarot1")
 				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
 				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				Cryptid.pulse_flame(0.01, sunlevel)
-				used_consumable:juice_up(0.8, 0.5)
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					blockable = false,
-					blocking = false,
-					delay = 1.2,
-					func = function()
-						ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
-						ease_colour(G.C.UI_MULT, G.C.RED, 1)
-						return true
-					end,
-				}))
-				return true
-			end,
-		}))
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(sunlevel + 1) })
-		delay(2.6)
-		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + card.ability.extra or card.ability.extra
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
-			{ mult = 0, chips = 0, handname = "", level = "" }
-		)
-	end,
-	bulk_use = function(self, card, area, copier, number)
-		local used_consumable = copier or card
-		local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
-		G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
-		delay(0.4)
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(sunlevel) }
-		)
-		delay(1.0)
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("tarot1")
-				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
-				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				Cryptid.pulse_flame(0.01, (sunlevel - 1) + number)
+				Cryptid.pulse_flame(0.01, G.GAME.sunlevel)
 				used_consumable:juice_up(0.8, 0.5)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -857,46 +882,117 @@ local sunplanet = {
 		}))
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 },
-			{ level = to_big(sunlevel + number) }
+			{ level = to_big(G.GAME.sunlevel) }
 		)
 		delay(2.6)
-		G.GAME.sunnumber = G.GAME.sunnumber ~= nil and G.GAME.sunnumber + number * card.ability.extra
-			or number * card.ability.extra
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
 			{ mult = 0, chips = 0, handname = "", level = "" }
 		)
 	end,
-	calculate = function(self, card, context) --Observatory effect: X1.5 mult if hand is an ascended hand
-		if
-			G.GAME.used_vouchers.v_observatory
-			and G.GAME.current_round.current_hand.cry_asc_num ~= 0
-			and context.joker_main
-		then
-			local value = G.P_CENTERS.v_observatory.config.extra
-			if Overflow then
-				value = value ^ to_big(card:getQty())
-			end
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
-		end
+	bulk_use = function(self, card, area, copier, number)
+		local used_consumable = copier or card
+		G.GAME.sunlevel = G.GAME.sunlevel + number
+		G.GAME.sunnumber.modest = G.GAME.sunnumber.modest + number * card.ability.extra.modest
+		G.GAME.sunnumber.not_modest = G.GAME.sunnumber.not_modest + number * card.ability.extra.not_modest
+		delay(0.4)
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+			handname = localize("cry_asc_hands"),
+			chips = "...",
+			mult = "...",
+			level = to_big(G.GAME.sunlevel - number),
+		})
+		delay(1.0)
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				play_sound("tarot1")
+				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+				Cryptid.pulse_flame(0.01, G.GAME.sunlevel)
+				used_consumable:juice_up(0.8, 0.5)
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					blockable = false,
+					blocking = false,
+					delay = 1.2,
+					func = function()
+						ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+						ease_colour(G.C.UI_MULT, G.C.RED, 1)
+						return true
+					end,
+				}))
+				return true
+			end,
+		}))
+		update_hand_text(
+			{ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 },
+			{ level = to_big(G.GAME.sunlevel) }
+		)
+		delay(2.6)
+		update_hand_text(
+			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+			{ mult = 0, chips = 0, handname = "", level = "" }
+		)
 	end,
 	loc_vars = function(self, info_queue, center)
-		local levelone = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
+		local levelone = Cryptid.safe_get(G, "GAME", "sunlevel") or 1
 		local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+		if G.STAGE == G.STAGES.RUN then
+			local modest = Cryptid.gameset(G.P_CENTERS.c_cry_sunplanet) == "modest"
+			local current_power = Cryptid.safe_get(G, "GAME", "current_round", "current_hand", "cry_asc_num")
+				or Cryptid.calculate_ascension_power(
+					nil,
+					nil,
+					nil,
+					G.GAME.used_vouchers.v_cry_hyperspacetether,
+					G.GAME.bonus_asc_power
+				)
+			local multiplier = modest and 1 + ((0.25 + G.GAME.sunnumber.modest) * current_power)
+				or (1.25 + G.GAME.sunnumber.not_modest) ^ current_power
+			info_queue[#info_queue + 1] = {
+				key = "asc_misc" .. (modest and 2 or ""),
+				set = "Other",
+				specific_vars = {
+					current_power,
+					multiplier,
+					modest and (G.GAME.sunnumber.modest + 0.25) or (G.GAME.sunnumber.not_modest + 1.25),
+				},
+			}
+		end
+		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
+			local observatory_power = 0
+			if #find_joker("cry-sunplanet") == 1 then
+				observatory_power = 1
+			elseif #find_joker("cry-sunplanet") > 1 then
+				observatory_power = Cryptid.funny_log(2, #find_joker("cry-sunplanet") + 1)
+			end
+			info_queue[#info_queue + 1] = { key = "o_sunplanet", set = "Other", specific_vars = { observatory_power } }
+		end
 		if levelone == 1 then
 			planetcolourone = G.C.UI.TEXT_DARK
 		end
-		return {
-			vars = {
-				(G.GAME.sunlevel or 0) + 1,
-				center.ability.extra or 0.05,
-				(G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25,
-				colours = { planetcolourone },
-			},
-		}
+		if Cryptid.gameset(center) == "modest" then
+			return {
+				vars = {
+					levelone,
+					center.ability.extra.modest,
+					(Cryptid.safe_get(G, "GAME", "sunnumber", "modest") or 0) + 0.25,
+					colours = { planetcolourone },
+				},
+				key = "c_cry_sunplanet2",
+			}
+		else
+			return {
+				vars = {
+					levelone,
+					center.ability.extra.not_modest,
+					(Cryptid.safe_get(G, "GAME", "sunnumber", "not_modest") or 0) + 1.25,
+					colours = { planetcolourone },
+				},
+			}
+		end
 	end,
 	in_pool = function(self)
 		if G.GAME.cry_asc_played and G.GAME.cry_asc_played > 0 then

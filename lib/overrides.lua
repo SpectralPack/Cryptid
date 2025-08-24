@@ -251,6 +251,10 @@ function Game:init_game_object()
 	g.current_round.cry_nb_card = { rank = "Ace" }
 	g.current_round.cry_dropshot_card = { suit = "Spades" }
 	g.monstermult = 1
+	g.neutronstarsusedinthisrun = 0
+	g.sunlevel = 1
+	g.sunnumber = { modest = 0, not_modest = 0 }
+	g.bonus_asc_power = 0
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
 	g.jokers_sold = {}

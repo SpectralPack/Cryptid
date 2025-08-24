@@ -117,141 +117,185 @@ function G.FUNCS.get_poker_hand_info(_cards)
 				)
 		end
 	end
-	local hand_table = {
-		["High Card"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 1 or nil,
-		["Pair"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
-		["Two Pair"] = 4,
-		["Three of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
-		["Straight"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["Flush"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["Full House"] = 5,
-		["Four of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
-		["Straight Flush"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5, --debatable
-		["cry_Bulwark"] = 5,
-		["Five of a Kind"] = 5,
-		["Flush House"] = 5,
-		["Flush Five"] = 5,
-		["cry_Clusterfuck"] = 8,
-		["cry_UltPair"] = 8,
-		["cry_WholeDeck"] = 52,
-		["cry_Declare0"] = G.GAME.hands.cry_Declare0
-			and G.GAME.hands.cry_Declare0.declare_cards
-			and #G.GAME.hands.cry_Declare0.declare_cards,
-		["cry_Declare1"] = G.GAME.hands.cry_Declare1
-			and G.GAME.hands.cry_Declare1.declare_cards
-			and #G.GAME.hands.cry_Declare1.declare_cards,
-		["cry_Declare2"] = G.GAME.hands.cry_Declare2
-			and G.GAME.hands.cry_Declare2.declare_cards
-			and #G.GAME.hands.cry_Declare2.declare_cards,
-		["bunc_Spectrum"] = 5,
-		["bunc_Straight Spectrum"] = 5,
-		["bunc_Spectrum House"] = 5,
-		["bunc_Spectrum Five"] = 5,
-		["spa_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
-			SMODS.find_card("j_four_fingers")
-		) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Straight_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
-			SMODS.find_card("j_four_fingers")
-		) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Spectrum_House"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
-			SMODS.find_card("j_four_fingers")
-		) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Spectrum_Five"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
-			SMODS.find_card("j_four_fingers")
-		) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Flush_Spectrum"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
-			SMODS.find_card("j_four_fingers")
-		) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Straight_Flush_Spectrum"] = SpectrumAPI
-				and SpectrumAPI.configuration.misc.four_fingers_spectrums
-				and next(SMODS.find_card("j_four_fingers"))
-				and Cryptid.gameset() ~= "modest"
-				and 4
-			or 5,
-		["spa_Flush_Spectrum_House"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
-			SMODS.find_card("j_four_fingers")
-		) and Cryptid.gameset() ~= "modest" and 4 or 5,
-		["spa_Flush_Spectrum_Five"] = SpectrumAPI and SpectrumAPI.configuration.misc.four_fingers_spectrums and next(
-			SMODS.find_card("j_four_fingers")
-		) and Cryptid.gameset() ~= "modest" and 4 or 5,
-	}
-	if not hand_table[text] and Cryptid.ascension_numbers[text] then
-		hand_table[text] = Cryptid.ascension_numbers[text]()
-	end
-	-- this is where all the logic for asc hands is. currently it's very simple but if you want more complex logic, here's the place to do it
-	if hand_table[text] and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
-		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.used_vouchers.v_cry_hyperspacetether
-				and #_cards - hand_table[text]
-			or #scoring_hand - hand_table[text]
-
-		if G.GAME.hands[text] and G.GAME.hands[text].declare_cards then
-			G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num
-				+ (Cryptid.declare_hand_ascended_counter(_cards, G.GAME.hands[text]) - #scoring_hand)
+	-- Ascension power
+	local a_power = Cryptid.calculate_ascension_power(
+		text,
+		_cards,
+		scoring_hand,
+		G.GAME.used_vouchers.v_cry_hyperspacetether,
+		G.GAME.bonus_asc_power
+	)
+	if a_power > 0 then
+		G.GAME.current_round.current_hand.cry_asc_num = a_power
+		-- Change mult and chips colors if hand is ascended
+		if not hidden then
+			ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
+			ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
+			G.GAME.current_round.current_hand.cry_asc_num_text = (
+				a_power and (type(a_power) == "table" and a_power:gt(to_big(0)) or a_power > 0)
+			)
+					and " (+" .. a_power .. ")"
+				or ""
+		else
+			ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+			ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+			G.GAME.current_round.current_hand.cry_asc_num_text = ""
 		end
 	else
 		G.GAME.current_round.current_hand.cry_asc_num = 0
-	end
-	-- Change mult and chips colors if hand is ascended
-	if G.GAME.current_round.current_hand.cry_asc_num > 0 and not hidden then
-		ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
-		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
-	else
 		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
 		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
-	end
-	G.GAME.current_round.current_hand.cry_asc_num = math.max(0, G.GAME.current_round.current_hand.cry_asc_num)
-	if G.GAME.cry_exploit_override then
-		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + 1
-	end
-	if not hidden then
-		G.GAME.current_round.current_hand.cry_asc_num_text = (
-			G.GAME.current_round.current_hand.cry_asc_num
-			and (
-				type(G.GAME.current_round.current_hand.cry_asc_num) == "table"
-					and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(0))
-				or G.GAME.current_round.current_hand.cry_asc_num > 0
-			)
-		)
-				and " (+" .. G.GAME.current_round.current_hand.cry_asc_num .. ")"
-			or ""
-	else
 		G.GAME.current_round.current_hand.cry_asc_num_text = ""
 	end
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 function Cryptid.ascend(num) -- edit this function at your leisure
-	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
+	if (Cryptid.safe_get(G, "GAME", "current_round", "current_hand", "cry_asc_num") or 0) <= 0 then
 		return num
 	end
-	if Cryptid.gameset() == "modest" then
-		-- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
-		if not G.GAME.current_round.current_hand.cry_asc_num then
-			return num
-		end
-		if G.GAME.current_round.current_hand.cry_asc_num <= 0 then
-			return num
-		end
-		return math.max(
-			num,
-			num
-				* (
-					1
-					+ 0.1
-					+ to_big(G.GAME.sunnumber or 0)
-					+ to_big(
-						(0.1 + (G.GAME.sunnumber or 0)) * to_big(G.GAME.current_round.current_hand.cry_asc_num or 0)
-					)
-				)
-		)
+	if Cryptid.gameset(G.P_CENTERS.c_cry_sunplanet) == "modest" then
+		-- Default: Chips and Mult multiplier + 0.25 for every 1 Ascension power
+		return num * to_big(1 + ((0.25 + G.GAME.sunnumber.modest) * G.GAME.current_round.current_hand.cry_asc_num))
 	else
-		return math.max(
-			num,
-			num * to_big((1.25 + (G.GAME.sunnumber or 0)) ^ to_big(G.GAME.current_round.current_hand.cry_asc_num or 0))
-		)
+		-- Default: Chips and Mult multiplier X1.25 for every 1 Ascension power
+		return num * to_big((1.25 + G.GAME.sunnumber.not_modest) ^ G.GAME.current_round.current_hand.cry_asc_num)
 	end
 end
+
 function Cryptid.pulse_flame(duration, intensity) -- duration is in seconds, intensity is in idfk honestly, but it increases pretty quickly
 	G.cry_flame_override = G.cry_flame_override or {}
 	G.cry_flame_override["duration"] = duration or 0.01
 	G.cry_flame_override["intensity"] = intensity or 2
+end
+
+function Cryptid.calculate_ascension_power(hand_name, hand_cards, hand_scoring_cards, tether, bonus)
+	bonus = bonus or 0
+	local starting = 0
+	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
+		return 0
+	end
+	if hand_name then
+		-- Get Starting Ascension power from Poker Hands
+		if hand_cards then
+			local check = Cryptid.hand_ascension_numbers(hand_name, tether)
+			if check then
+				starting = (tether and #hand_cards or #hand_scoring_cards) - check
+			end
+		end
+		-- Extra starting calculation for Declare hands
+		if G.GAME.hands[hand_name] and G.GAME.hands[hand_name].declare_cards then
+			local total = 0
+			for i, v in pairs(G.GAME.hands[hand_name].declare_cards or {}) do
+				local how_many_fit = 0
+				local suit, rank
+				for i2, v2 in pairs(hand_cards) do
+					if not v2.marked then
+						if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then
+							rank = true
+						end
+						if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then
+							suit = true
+						end
+						if not (suit and rank) then
+							suit = false
+							rank = false
+						end
+						if suit and rank then
+							how_many_fit = how_many_fit + 1
+							v2.marked = true
+						end
+					end
+				end
+				if not rank or not suit then
+					how_many_fit = 0
+				end
+				total = total + how_many_fit
+			end
+			for i2, v2 in pairs(hand_cards) do
+				v2.marked = nil
+			end
+			starting = starting + (total - #hand_scoring_cards)
+		end
+	end
+	-- Get Ascension power from Exploit
+	if G.GAME.cry_exploit_override then
+		bonus = bonus + 1
+	end
+	-- Get Ascension Power From Sol (Observatory effect)
+	if G.GAME.used_vouchers.v_observatory and next(find_joker("cry-sunplanet")) then
+		if #find_joker("cry-sunplanet") == 1 then
+			bonus = bonus + 1
+		else
+			bonus = bonus + Cryptid.nuke_decimals(Cryptid.funny_log(2, #find_joker("cry-sunplanet") + 1), 2)
+		end
+	end
+	local final = math.max(0, starting + bonus)
+	-- Round to 1 if final value is less than 1 but greater than 0
+	if final > 0 and final < 1 then
+		final = 1
+	end
+	return final
+end
+function Cryptid.hand_ascension_numbers(hand_name, tether)
+	if Cryptid.ascension_numbers[hand_name] and type(Cryptid.ascension_numbers[hand_name]) == "function" then
+		return Cryptid.ascension_numbers[hand_name](hand_name, tether)
+	end
+	if hand_name == "High Card" then
+		return tether and 1 or nil
+	elseif hand_name == "Pair" then
+		return tether and 2 or nil
+	elseif hand_name == "Two Pair" then
+		return 4
+	elseif hand_name == "Three of a Kind" then
+		return tether and 3 or nil
+	elseif hand_name == "Straight" or hand_name == "Flush" or hand_name == "Straight Flush" then
+		return next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5
+	elseif
+		hand_name == "Full House"
+		or hand_name == "Five of a Kind"
+		or hand_name == "Flush House"
+		or hand_name == "cry_Bulwark"
+		or hand_name == "Flush Five"
+		or hand_name == "bunc_Spectrum"
+		or hand_name == "bunc_Straight Spectrum"
+		or hand_name == "bunc_Spectrum House"
+		or hand_name == "bunc_Spectrum Five"
+	then
+		return 5
+	elseif hand_name == "Four of a Kind" then
+		return G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil
+	elseif hand_name == "cry_Clusterfuck" or hand_name == "cry_UltPair" then
+		return 8
+	elseif hand_name == "cry_WholeDeck" then
+		return 52
+	elseif hand_name == "cry_Declare0" then
+		return G.GAME.hands.cry_Declare0
+			and G.GAME.hands.cry_Declare0.declare_cards
+			and #G.GAME.hands.cry_Declare0.declare_cards
+	elseif hand_name == "cry_Declare1" then
+		return G.GAME.hands.cry_Declare1
+			and G.GAME.hands.cry_Declare1.declare_cards
+			and #G.GAME.hands.cry_Declare1.declare_cards
+	elseif hand_name == "cry_Declare2" then
+		return G.GAME.hands.cry_Declare2
+			and G.GAME.hands.cry_Declare2.declare_cards
+			and #G.GAME.hands.cry_Declare2.declare_cards
+	elseif
+		hand_name == "spa_Spectrum"
+		or hand_name == "spa_Straight_Spectrum"
+		or hand_name == "spa_Spectrum_House"
+		or hand_name == "spa_Spectrum_Five"
+		or hand_name == "spa_Flush_Spectrum"
+		or hand_name == "spa_Straight_Flush_Spectrum"
+		or hand_name == "spa_Flush_Spectrum_House"
+		or hand_name == "spa_Flush_Spectrum_Five"
+	then
+		return SpectrumAPI
+				and SpectrumAPI.configuration.misc.four_fingers_spectrums
+				and next(SMODS.find_card("j_four_fingers"))
+				and Cryptid.gameset() ~= "modest"
+				and 4
+			or 5
+	end
+	return nil
 end

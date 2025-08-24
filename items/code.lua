@@ -1030,6 +1030,28 @@ local exploit = {
 	order = 403,
 	config = { cry_multiuse = 2, extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
 	loc_vars = function(self, info_queue, card)
+		if G.STAGE == G.STAGES.RUN and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
+			local modest = Cryptid.gameset(G.P_CENTERS.c_cry_sunplanet) == "modest"
+			local current_power = Cryptid.safe_get(G, "GAME", "current_round", "current_hand", "cry_asc_num")
+				or Cryptid.calculate_ascension_power(
+					nil,
+					nil,
+					nil,
+					G.GAME.used_vouchers.v_cry_hyperspacetether,
+					G.GAME.bonus_asc_power
+				)
+			local multiplier = modest and 1 + ((0.25 + G.GAME.sunnumber.modest) * current_power)
+				or (1.25 + G.GAME.sunnumber.not_modest) ^ current_power
+			info_queue[#info_queue + 1] = {
+				key = "asc_misc" .. (modest and 2 or ""),
+				set = "Other",
+				specific_vars = {
+					current_power,
+					multiplier,
+					modest and (G.GAME.sunnumber.modest + 0.25) or (G.GAME.sunnumber.not_modest + 1.25),
+				},
+			}
+		end
 		return { vars = { Cryptid.safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
 	end,
 	can_use = function(self, card)

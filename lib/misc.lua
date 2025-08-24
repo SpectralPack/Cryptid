@@ -1002,8 +1002,10 @@ end
 function Cryptid.table_merge(...)
 	local tbl = {}
 	for _, t in ipairs({ ... }) do
-		for _, v in pairs(t) do
-			tbl[#tbl + 1] = v
+		if type(t) == "table" then
+			for _, v in pairs(t) do
+				tbl[#tbl + 1] = v
+			end
 		end
 	end
 	return tbl
@@ -1416,41 +1418,6 @@ create_UIBox_your_collection_seals_pointer = function()
 	})
 end
 
-function Cryptid.declare_hand_ascended_counter(hand, declarehand)
-	local total = 0
-	for i, v in pairs(declarehand.declare_cards or {}) do
-		local how_many_fit = 0
-		local suit
-		local rank
-		for i2, v2 in pairs(hand) do
-			if not v2.marked then
-				if SMODS.has_no_rank(v2) and v.rank == "rankless" or v2:get_id() == v.rank then
-					rank = true
-				end
-				if v2:is_suit(v.suit) or (v.suit == "suitless" and SMODS.has_no_suit(v2)) or not v.suit then
-					suit = true
-				end
-				if not (suit and rank) then
-					suit = false
-					rank = false
-				end
-				if suit and rank then
-					how_many_fit = how_many_fit + 1
-					v2.marked = true
-				end
-			end
-		end
-		if not rank or not suit then
-			how_many_fit = 0
-		end
-		total = total + how_many_fit
-	end
-	for i2, v2 in pairs(hand) do
-		v2.marked = nil
-	end
-	return total
-end
-
 function Cryptid.get_next_tag(override)
 	if next(SMODS.find_card("j_cry_kittyprinter")) then
 		return "tag_cry_cat"
@@ -1472,4 +1439,16 @@ function Cryptid.isNonRollProbabilityContext(context)
 	end
 
 	return true
+end
+
+function Cryptid.nuke_decimals(number, surviving_decimals, round)
+	surviving_decimals = surviving_decimals or 0
+	--Set round to 0.5 to round or 0 to floor
+	round = round or 0
+	local aaa = 10 ^ surviving_decimals
+	return math.floor(number * aaa + round) / aaa
+end
+-- "log base (x) of (y)". Pre-Calculus courses recommended
+function Cryptid.funny_log(x, y)
+	return math.log(y) / math.log(x)
 end
