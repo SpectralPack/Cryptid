@@ -1477,20 +1477,6 @@ local clone = {
 			end
 			return r
 		end
-		local set_costref = Card.set_cost
-		function Card:set_cost(...)
-			local c = set_costref(self, ...)
-			local has
-			for i = 1, #G.GAME.tags do
-				if G.GAME.tags[i].key == "tag_cry_clone" then
-					has = true
-					break
-				end
-			end
-			if has then
-				self.cost = self.cost * 1.5
-			end
-		end
 	end,
 }
 

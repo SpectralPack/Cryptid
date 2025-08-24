@@ -1238,14 +1238,18 @@ local rotten_egg = {
 	no_dbl = true,
 	add_to_deck = function(self, card, from_debuff)
 		G.GAME.cry_rotten_amount = card.ability.extra.starting_money
-		for i, v in pairs(G.jokers.cards) do
-			v:set_cost()
+		for k, v in pairs(G.I.CARD) do
+			if v.set_cost then
+				v:set_cost()
+			end
 		end
 	end,
 	remove_from_deck = function()
 		G.GAME.cry_rotten_amount = nil
-		for i, v in pairs(G.jokers.cards) do
-			v:set_cost()
+		for k, v in pairs(G.I.CARD) do
+			if v.set_cost then
+				v:set_cost()
+			end
 		end
 	end,
 	calculate = function(self, card, context)

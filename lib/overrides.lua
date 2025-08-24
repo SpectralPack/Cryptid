@@ -572,10 +572,10 @@ function Card:set_cost()
 		self.cost = 27
 	end
 	--Make Tarots free if Tarot Acclimator is redeemed
+	--Make Planets free if Planet Acclimator is redeemed
 	if self.ability.set == "Tarot" and G.GAME.used_vouchers.v_cry_tacclimator then
 		self.cost = 0
 	end
-	--Make Planets free if Planet Acclimator is redeemed
 	if self.ability.set == "Planet" and G.GAME.used_vouchers.v_cry_pacclimator then
 		self.cost = 0
 	end
@@ -584,23 +584,33 @@ function Card:set_cost()
 	--Used by bronze stake to make vouchers %50 more expensive
 	if self.ability.set == "Voucher" and G.GAME.modifiers.cry_voucher_price_hike then
 		self.cost = math.floor(self.cost * G.GAME.modifiers.cry_voucher_price_hike)
-		--Update related costs
-		self.sell_cost = math.max(1, math.floor(self.cost / 2)) + (self.ability.extra_value or 0)
-		if self.area and self.ability.couponed and (self.area == G.shop_jokers or self.area == G.shop_booster) then
-			self.cost = 0
+	end
+	--Clone Tag
+	for i = 1, #G.GAME.tags do
+		if G.GAME.tags[i].key == "tag_cry_clone" then
+			self.cost = self.cost * 1.5
+			break
 		end
-		self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
 	end
 
+	--Update related costs
+	self.sell_cost = math.max(1, math.floor(self.cost / 2)) + (self.ability.extra_value or 0)
+	if
+		self.area
+		and self.ability.couponed
+		and (self.area == G.shop_jokers or self.area == G.shop_booster)
+		and self.ability.name ~= "cry-Cube"
+	then
+		self.cost = 0
+	end
 	--Makes Cursed Jokers always sell for $0
 	if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
 		self.sell_cost = 0
-		self.sell_cost_label = 0
 	--Rotten Egg
 	elseif G.GAME.cry_rotten_amount then
 		self.sell_cost = G.GAME.cry_rotten_amount
-		self.sell_cost_label = self.facing == "back" and "?" or number_format(self.sell_cost)
 	end
+	self.sell_cost_label = self.facing == "back" and "?" or self.sell_cost
 end
 
 local sell_card_stuff = Card.sell_card
@@ -632,7 +642,6 @@ function Card:sell_card()
 			end
 		end
 	end
-	--G.P_CENTERS.j_jolly
 	sell_card_stuff(self)
 end
 
@@ -1139,11 +1148,41 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	return card
 end
 
--- Make tags fit if there's more than 13 of them
--- These two overrides modify the offset to squeeze in more tags when needed
 local at = add_tag
-function add_tag(tag)
-	at(tag)
+function add_tag(tag, from_skip, no_copy)
+	--add calculation context and callback to tag function
+	--used for Energia, etc.
+	if no_copy then
+		at(tag)
+	else
+		local added_tags = 1
+		local ret = {}
+		SMODS.calculate_context({ cry_add_tag = true }, ret)
+		for i = 1, #ret do
+			if ret[i].jokers then
+				added_tags = added_tags + (ret[i].jokers.tags or 0)
+			end
+		end
+		if added_tags >= 1 then
+			at(tag)
+		end
+		for i = 2, added_tags do
+			local ab = copy_table(G.GAME.tags[#G.GAME.tags].ability)
+			local new_tag = Tag(tag.key)
+			at(new_tag)
+			new_tag.ability = ab
+		end
+	end
+	-- Update Costs for Clone Tag
+	if tag.name == "cry-Clone Tag" then
+		for k, v in pairs(G.I.CARD) do
+			if v.set_cost then
+				v:set_cost()
+			end
+		end
+	end
+	-- Make tags fit if there's more than 13 of them
+	-- This + Tag.remove Hook modify the offset to squeeze in more tags when needed
 	if #G.HUD_tags > 13 then
 		for i = 2, #G.HUD_tags do
 			G.HUD_tags[i].config.offset.y = 0.9 - 0.9 * 13 / #G.HUD_tags
@@ -1158,33 +1197,6 @@ function Tag:remove()
 		for i = 2, #G.HUD_tags do
 			G.HUD_tags[i].config.offset.y = 0.9 - 0.9 * 13 / #G.HUD_tags
 		end
-	end
-end
-
---add calculation context and callback to tag function
---used for Energia, etc.
-local at2 = add_tag
-function add_tag(tag, from_skip, no_copy)
-	if no_copy then
-		at2(tag)
-		return
-	end
-	local added_tags = 1
-	local ret = {}
-	SMODS.calculate_context({ cry_add_tag = true }, ret)
-	for i = 1, #ret do
-		if ret[i].jokers then
-			added_tags = added_tags + (ret[i].jokers.tags or 0)
-		end
-	end
-	if added_tags >= 1 then
-		at2(tag)
-	end
-	for i = 2, added_tags do
-		local ab = copy_table(G.GAME.tags[#G.GAME.tags].ability)
-		local new_tag = Tag(tag.key)
-		at2(new_tag)
-		new_tag.ability = ab
 	end
 end
 
