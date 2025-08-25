@@ -3573,6 +3573,7 @@ return {
 			cry_debuff_obsidian_orb = "Aplica las habilidades de todos los jefes derrotados",
 
 			k_code = "Código",
+			k_chips = "fichas",
 			k_unique = "Único",
 			b_code_cards = "Cartas de código",
 			b_unique_cards = "Cartas únicas",

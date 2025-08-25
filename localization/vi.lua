@@ -4283,6 +4283,7 @@ return {
 			cry_joke_placeholder = "(bội số của 8)",
 
 			k_code = "Code",
+			k_chips = "chip",
 			k_content_set = "Thiết Lập Chủ Đề",
 			b_content_sets = "Thiết Lập Chủ Đề",
 			--Why aren't these in vanilla?

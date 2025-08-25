@@ -1374,7 +1374,7 @@ local noisy = {
 		for i = self.config.min_chips, self.config.max_chips do
 			r_chips[#r_chips + 1] = tostring(i)
 		end
-		local loc_chips = " Chips "
+		local loc_chips = " " .. (localize("k_chips")) .. " "
 		mult_ui = {
 			{ n = G.UIT.T, config = { text = "  +", colour = G.C.MULT, scale = 0.32 } },
 			{

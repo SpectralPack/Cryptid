@@ -5038,6 +5038,7 @@ return {
 			cry_code_with_suits = "包括花色",
 			cry_code_without_suits = "忽略花色",
 			k_code = "代码",
+			k_chips = "筹码",
 			k_cry_candy = "糖果",
 			k_cry_cursed = "诅咒",
 			k_cry_epic = "史诗",

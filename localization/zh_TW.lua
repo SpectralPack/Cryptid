@@ -3050,6 +3050,7 @@ return {
 			cry_debuff_obsidian_orb = "Applies abilities of all defeated bosses",
 
 			k_code = "Code",
+			k_chips = "銀箔",
 			b_code_cards = "Code Cards",
 			b_pull = "PULL",
 			cry_hooked_ex = "Hooked!",

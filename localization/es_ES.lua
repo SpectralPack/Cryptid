@@ -4567,6 +4567,7 @@ return {
 			cry_joke_placeholder = "(múltiplo of 8)",
 
 			k_code = "Código",
+			k_chips = "fichas",
 			k_content_set = "Set temático",
 			b_content_sets = "Sets temáticos",
 			--Why aren't these in vanilla?

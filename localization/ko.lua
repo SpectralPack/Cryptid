@@ -4663,6 +4663,7 @@ return {
 			cry_blind_baneful_pack = "라운드 후, 유해한 익살꾼 팩 열기",
 
 			k_code = "코드",
+			k_chips = "개의 칩",
 			k_content_set = "테마 세트",
 			b_content_sets = "테마 세트",
 			b_tag = "태그",

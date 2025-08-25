@@ -3534,17 +3534,6 @@ local log = {
 				return get_voucherref(vouchers)
 			end
 		end
-		local get_bossref = get_new_boss
-		function get_new_boss(...)
-			if G.GAME.LOG_BOSS then
-				local v = "" .. G.GAME.LOG_BOSS
-				if not G.GAME.USING_LOG then
-					G.GAME.LOG_BOSS = nil
-				end
-				return v
-			end
-			return get_bossref(...)
-		end
 		function Cryptid.predict_joker(seed)
 			local _pool, _pool_key = get_current_pool("Joker", nil, nil, seed)
 			center = pseudorandom_element(_pool, pseudoseed(_pool_key))
@@ -4162,9 +4151,6 @@ local delete = {
 			)
 	end,
 	use = function(self, card, area, copier)
-		if not G.GAME.banned_keys then
-			G.GAME.banned_keys = {}
-		end -- i have no idea if this is always initialised already tbh
 		if not G.GAME.cry_banned_pcards then
 			G.GAME.cry_banned_pcards = {}
 		end

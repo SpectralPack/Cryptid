@@ -3662,6 +3662,7 @@ return {
 			cry_debuff_obsidian_orb = "Aplikuje zdolności wszystkich pokonanych bossów",
 
 			k_code = "Kod",
+			k_chips = "żet",
 			k_unique = "Unikalny",
 			b_code_cards = "Karty Kodowe",
 			b_unique_cards = "Unikalne Karty",

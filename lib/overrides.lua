@@ -119,6 +119,14 @@ function get_new_boss()
 			return bl
 		end
 	end
+	-- Log
+	if G.GAME.LOG_BOSS then
+		local v = "" .. G.GAME.LOG_BOSS
+		if not G.GAME.USING_LOG then
+			G.GAME.LOG_BOSS = nil
+		end
+		return v
+	end
 	--This is how nostalgic deck replaces the boss blinds with Nostalgic versions
 	if G.GAME.modifiers.cry_beta then
 		local bl_key = string.sub(bl, 4)

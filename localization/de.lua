@@ -5035,6 +5035,7 @@ return {
 			cry_blind_baneful_pack = "Öffne ein Unheilvolles Clownspaket am Ende der Runde",
 
 			k_code = "Code",
+			k_chips = "Chips",
 			k_content_set = "Thematisches Set",
 			b_content_sets = "Thematische Sets",
 			--Why aren't these in vanilla?
