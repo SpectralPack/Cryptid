@@ -134,6 +134,14 @@ local membershipcardtwo = {
 	demicoloncompat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, card)
+		local aaa
+		if not Cryptid_config.HTTPS then
+			if G.localization.descriptions.Other.cry_https_disabled then
+				aaa = {}
+				localize({ type = "other", key = "cry_https_disabled", nodes = aaa, vars = {} })
+				aaa = aaa[1]
+			end
+		end
 		return {
 			key = Cryptid.gameset_loc(self, { modest = "balanced" }),
 			vars = {
@@ -145,6 +153,7 @@ local membershipcardtwo = {
 					)
 				),
 			},
+			main_end = aaa,
 		}
 	end,
 	calculate = function(self, card, context)

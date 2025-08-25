@@ -2205,7 +2205,18 @@ local blurred = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
-		return { vars = { math.min(center.ability.immutable.max_hand_size_mod, center.ability.extra.extra_hands) } }
+		local aaa
+		if next(SMODS.find_mod("sdm0sstuff")) then
+			if G.localization.descriptions.Other.blurred_sdm0 then
+				aaa = {}
+				localize({ type = "other", key = "blurred_sdm0", nodes = aaa, vars = {} })
+				aaa = aaa[1]
+			end
+		end
+		return {
+			vars = { math.min(center.ability.immutable.max_hand_size_mod, center.ability.extra.extra_hands) },
+			main_end = aaa,
+		}
 	end,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
@@ -8070,11 +8081,28 @@ local translucent = {
 	cost = 4,
 	order = 52,
 	immutable = true,
+	blueprint_compat = true,
 	eternal_compat = false,
 	demicoloncompat = true,
 	atlas = "atlasthree",
+	loc_vars = function(self, info_queue, card)
+		local aaa
+		if G.jokers then
+			for k, v in ipairs(G.jokers.cards) do
+				if (v.edition and v.edition.negative) and G.localization.descriptions.Other.remove_negative then
+					aaa = {}
+					localize({ type = "other", key = "remove_negative", nodes = aaa, vars = {} })
+					aaa = aaa[1]
+					break
+				end
+			end
+		end
+		return {
+			main_end = aaa,
+		}
+	end,
 	calculate = function(self, card, context)
-		if (context.selling_self and not (context.retrigger_joker or context.blueprint)) or context.forcetrigger then
+		if context.selling_self and not context.retrigger_joker or context.forcetrigger then
 			local jokers = {}
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] ~= card and not G.jokers.cards[i].debuff then
@@ -8083,7 +8111,14 @@ local translucent = {
 			end
 			if #jokers > 0 then
 				if #G.jokers.cards <= G.jokers.config.card_limit then
-					card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_duplicated_ex") })
+					card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_duplicated_ex") }
+					)
 					local chosen_joker = pseudorandom_element(jokers, pseudoseed("trans"))
 					local _card =
 						copy_card(chosen_joker, nil, nil, nil, chosen_joker.edition and chosen_joker.edition.negative)
@@ -8094,10 +8129,24 @@ local translucent = {
 					G.jokers:emplace(_card)
 					return nil, true
 				else
-					card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_no_room_ex") })
+					card_eval_status_text(
+						context.blueprint_card or card,
+						"extra",
+						nil,
+						nil,
+						nil,
+						{ message = localize("k_no_room_ex") }
+					)
 				end
 			else
-				card_eval_status_text(card, "extra", nil, nil, nil, { message = localize("k_no_other_jokers") })
+				card_eval_status_text(
+					context.blueprint_card or card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_no_other_jokers") }
+				)
 			end
 		end
 	end,
@@ -8206,11 +8255,20 @@ local membershipcard = {
 	demicoloncompat = true,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, card)
+		local aaa
+		if not Cryptid_config.HTTPS then
+			if G.localization.descriptions.Other.cry_https_disabled then
+				aaa = {}
+				localize({ type = "other", key = "cry_https_disabled", nodes = aaa, vars = {} })
+				aaa = aaa[1]
+			end
+		end
 		return {
 			vars = {
 				number_format(card.ability.extra.Xmult_mod),
 				number_format(lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count)),
 			},
+			main_end = aaa,
 		}
 	end,
 	calculate = function(self, card, context)
