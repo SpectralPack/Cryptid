@@ -17,7 +17,6 @@ Cryptid_config.gameset_toggle = true
 SMODS.current_mod.optional_features = {
 	retrigger_joker = true,
 	post_trigger = true,
-	quantum_enhancements = false,
 	-- Here are some other ones Steamodded has
 	-- Cryptid doesn't use them YET, but these should be uncommented if Cryptid uses them
 	-- These ones add new card areas that Steamodded will calculate through
