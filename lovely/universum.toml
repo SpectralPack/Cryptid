@@ -20,7 +20,7 @@ else
     for i = 1, #effects do
         universum_mod = universum_mod * (effects[i] and effects[i].jokers and effects[i].jokers.mod or 1)
     end
-    hand[self.key] = hand[self.key]* (universum_mod)^amount
+    hand[self.key] = math.max(hand[self.key]* (universum_mod)^amount, hand['s_'..self.key])
 end
 '''
 match_indent = true
