@@ -2076,7 +2076,7 @@ return {
 					"{C:attention}Cryptid 디스코드{}의 각 멤버당",
 					"{X:mult,C:white}배수 X#1#{}",
 					"{C:inactive}(현재 {X:mult,C:white}배수 X#2#{C:inactive})",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -2085,7 +2085,7 @@ return {
 					"{C:attention}Cryptid 디스코드{}의 각 멤버당",
 					"{C:chips}칩 +#1#{}",
 					"{C:inactive}(현재 {C:chips}칩 +#2#{C:inactive})",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_meteor = {

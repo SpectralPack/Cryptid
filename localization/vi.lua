@@ -1797,7 +1797,7 @@ return {
 					"{X:mult,C:white}X#1#{} Nhân cho mỗi thành viên",
 					"ở trong {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Hiện tại là {X:mult,C:white}X#2#{C:inactive} Nhân)",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1806,7 +1806,7 @@ return {
 					"{C:chips}+#1#{} Chip cho mỗi thành viên",
 					"ở trong {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Hiện tại là {C:chips}+#2#{C:inactive} Chip)",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_meteor = {

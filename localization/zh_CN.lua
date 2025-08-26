@@ -2385,7 +2385,7 @@ return {
 				text = {
 					"Cryptid Discord{}中的每个成员提供{X:mult,C:white}X#1#{} {C:attention}倍率",
 					"{C:inactive}(当前{X:mult,C:white}X#2#{C:inactive}倍率)",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -2394,7 +2394,7 @@ return {
 					"在{C:attention}Cryptid Discord{}中的每个成员",
 					"提供{C:chips}+#1#{}筹码",
 					"{C:inactive}(当前 {C:chips}+#2#{C:inactive}筹码)",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_membershipcardtwo_balanced = {
@@ -2403,7 +2403,7 @@ return {
 					"每有{C:attention}8{}名{C:attention}Cryptid Discord{}成员",
 					"获得{C:chips}+#1#{}筹码",
 					"{C:inactive}(当前为{C:chips}+#2#{C:inactive}筹码)",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_meteor = {

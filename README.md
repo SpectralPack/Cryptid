@@ -11,7 +11,7 @@ Cryptid currently adds:
 ![image](https://github.com/user-attachments/assets/2441010d-1f0d-4b3f-80f7-de45e071ad06)
 
 
-### [Official Discord](https://discord.gg/cryptid)
+### [Official Discord](https://discord.gg/eUf9Ur6RyB)
 ### [Mac Video Installation Guide](https://youtu.be/l5ni7fHgwTE?si=GAN5t5-y_IuEv8uA)
 ### [Not Mac Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
 

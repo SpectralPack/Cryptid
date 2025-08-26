@@ -1916,7 +1916,7 @@ return {
 					"{X:mult,C:white}X#1#{} Mult para cada membro",
 					"no {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Atualmente {X:mult,C:white}X#2#{C:inactive} Mult)",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -1925,7 +1925,7 @@ return {
 					"{C:chips}+#1#{} Fichas#<s>1# para cada menbro",
 					"no {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Atualmente {C:chips}+#2#{C:inactive} Ficha#<s>2#)",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_membershipcardtwo_balanced = {
@@ -1934,7 +1934,7 @@ return {
 					"{C:chips}+#1#{} Ficha#<s>1# para cada {C:attention}8{} membros",
 					"no {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Atualmente {C:chips}+#2#{C:inactive} Ficha#<s>2#)",
-					"{C:blue,s:0.7}https://discord.gg/cryptid{}",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
 			j_cry_meteor = {
