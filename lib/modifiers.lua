@@ -320,13 +320,6 @@ function Card:update(dt)
 		end
 		self:flip_side()
 	end
-	if self.ability.cry_absolute then -- feedback loop... may be problematic
-		self.cry_absolute = true
-	end
-	if self.cry_absolute then
-		self.ability.cry_absolute = true
-		self.ability.eternal = true
-	end
 	if self.ability.pinned then
 		self.pinned = true
 	end -- gluing these variables together

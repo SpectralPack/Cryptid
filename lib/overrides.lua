@@ -2206,8 +2206,8 @@ end
 
 local is_eternalref = SMODS.is_eternal
 function SMODS.is_eternal(card)
-	if not G.deck then
-		return card.ability.eternal
+	if Cryptid.safe_get(card, "ability", "cry_absolute") then
+		return true
 	end
 	return is_eternalref(card)
 end
