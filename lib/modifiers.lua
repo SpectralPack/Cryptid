@@ -407,6 +407,7 @@ G.FUNCS.evaluate_round = function()
 	G.GAME.interest_cap = cry_best_interest_cap() -- blehhhhhh
 	--Semicolon Stuff
 	if G.GAME.current_round.semicolon then
+		G.GAME.saved_text = ";"
 		add_round_eval_row({ dollars = 0, name = "blind1", pitch = 0.95, saved = true })
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",

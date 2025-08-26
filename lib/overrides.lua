@@ -1213,6 +1213,8 @@ function new_round()
 	-- I don't remember exactly what this patch was for, perhaps issues with syncing hand size with jokers like Effarcire?
 	G.hand:change_size(0)
 	nr()
+	-- Reset Semicolon
+	G.GAME.current_round.semicolon = false
 	-- Force losses if Rush hour is played with clock and lavender loop disabled
 	if G.GAME.modifiers.cry_rush_hour then
 		if not (Cryptid.enabled("bl_cry_clock") == true) or not (Cryptid.enabled("bl_cry_lavender_loop") == true) then

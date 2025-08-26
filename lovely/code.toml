@@ -80,16 +80,6 @@ if G.GAME.current_round.semicolon then
 end
 '''
 
-# Semicolon - end screen text
-[[patches]]
-[patches.regex]
-target = "functions/common_events.lua"
-pattern = '''localize\(type\(SMODS.saved\) == 'string' and SMODS.saved or 'ph_mr_bones'\)..' '\}, colours = \{G.C.FILTER'''
-position = 'at'
-# match_indent = true
-line_prepend = ''
-payload = '''(G.GAME.current_round.semicolon and ";" or localize(type(SMODS.saved) == 'string' and SMODS.saved or 'ph_mr_bones'))..' '}, colours = {(G.GAME.current_round.semicolon and G.C.SET.Code or G.C.FILTER)'''
-
 # Semicolon - polished UI
 [[patches]]
 [patches.pattern]
@@ -115,17 +105,6 @@ target = "functions/common_events.lua"
 pattern = '''{n=G.UIT.R, config={id = 'cash_out_button', align = "cm", padding = 0.1, minw = 7, r = 0.15, colour = G.C.ORANGE, shadow = true, hover = true, one_press = true, button = 'cash_out', focus_args = {snap_to = true}}, nodes={'''
 position = "at"
 payload = '''{n=G.UIT.R, config={id = 'cash_out_button', align = "cm", padding = 0.1, minw = 7, r = 0.15, colour = G.GAME.current_round.semicolon and G.C.SET.Code or G.C.ORANGE, shadow = true, hover = true, one_press = true, button = 'cash_out', focus_args = {snap_to = true}}, nodes={'''
-match_indent = true
-
-# Semicolon - reset value at start of round
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "G.GAME.blind:set_blind(G.GAME.round_resets.blind)"
-position = "after"
-payload = '''
-G.GAME.current_round.semicolon = false
-'''
 match_indent = true
 
 # Delete - placeholder booster, in the case that all are deleted
