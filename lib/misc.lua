@@ -1455,7 +1455,7 @@ end
 
 local say_stuff_ref = Card_Character.say_stuff
 function Card_Character:say_stuff(n, not_first, quip_key)
-    local quip = SMODS.JimboQuips[quip_key]
+	local quip = SMODS.JimboQuips[quip_key]
 	if quip then
 		return say_stuff_ref(self, n, not_first, quip_key)
 	end
