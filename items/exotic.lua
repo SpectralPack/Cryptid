@@ -1299,9 +1299,21 @@ local energia = {
 	cost = 50,
 	atlas = "atlasexotic",
 	calculate = function(self, card, context)
-		if context.cry_add_tag then
-			local value = #G.GAME.tags or 0
-			local t = to_number(math.min(card.ability.immutable.max_tags - value, card.ability.extra.tags))
+		if context.tag_added and not context.tag_added.from_energia then
+			-- Don't add tags if there are more then 40 (lag)
+			local added_tags =
+				math.max(math.min(card.ability.immutable.max_tags - #G.GAME.tags, card.ability.extra.tags), 0)
+			print(added_tags)
+			if added_tags > 0 then
+				for i = 1, added_tags do
+					local ab = copy_table(context.tag_added.ability)
+					local new_tag = Tag(context.tag_added.key)
+					new_tag.from_energia = true
+					add_tag(new_tag)
+					new_tag.from_energia = nil
+					new_tag.ability = ab
+				end
+			end
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "tags",
@@ -1310,14 +1322,12 @@ local energia = {
 					message = localize({
 						type = "variable",
 						key = card.ability.extra.tags == 1 and "a_tag" or "a_tags",
-						vars = { t },
+						vars = { added_tags },
 					})[1],
 					colour = G.C.DARK_EDITION,
 				},
 			})
-			return { tags = math.max(t, 0) }
-		end
-		if context.forcetrigger then
+		elseif context.forcetrigger then
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "tags",

@@ -1157,30 +1157,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 end
 
 local at = add_tag
-function add_tag(tag, from_skip, no_copy)
-	--add calculation context and callback to tag function
-	--used for Energia, etc.
-	if no_copy then
-		at(tag)
-	else
-		local added_tags = 1
-		local ret = {}
-		SMODS.calculate_context({ cry_add_tag = true }, ret)
-		for i = 1, #ret do
-			if ret[i].jokers then
-				added_tags = added_tags + (ret[i].jokers.tags or 0)
-			end
-		end
-		if added_tags >= 1 then
-			at(tag)
-		end
-		for i = 2, added_tags do
-			local ab = copy_table(G.GAME.tags[#G.GAME.tags].ability)
-			local new_tag = Tag(tag.key)
-			at(new_tag)
-			new_tag.ability = ab
-		end
-	end
+function add_tag(tag)
+	at(tag)
 	-- Update Costs for Clone Tag
 	if tag.name == "cry-Clone Tag" then
 		for k, v in pairs(G.I.CARD) do
