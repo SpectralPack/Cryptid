@@ -9295,6 +9295,7 @@ local cookie = {
 				)
 			else
 				SMODS.scale_card(card, {
+					operation = '-',
 					ref_table = card.ability.extra,
 					ref_value = "chips",
 					scalar_value = "chip_mod",
