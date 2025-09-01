@@ -266,7 +266,7 @@ local tax = {
 	order = 2,
 	boss_colour = HEX("40ff40"),
 	loc_vars = function(self, info_queue, card)
-		return { vars = { 0.4 * get_blind_amount(G.GAME.round_resets.ante) * 2 * G.GAME.starting_params.ante_scaling } } -- no bignum?
+		return { vars = { 0.4 * get_blind_amount(G.GAME.round_resets.ante) * 2 * G.GAME.starting_params.ante_scaling } }
 	end,
 	preview_ui = function(self)
 		local value = self:loc_vars().vars[1]
@@ -293,8 +293,14 @@ local tax = {
 	collection_loc_vars = function(self)
 		return { vars = { localize("cry_tax_placeholder") } }
 	end,
-	cry_cap_score = function(self, score)
-		return math.floor(math.min(0.4 * G.GAME.blind.chips, score) + 0.5)
+	set_blind = function(self, reset, silent)
+		SMODS.set_scoring_calculation("cry_tax")
+	end,
+	defeat = function(self, silent)
+		SMODS.set_scoring_calculation("multiply")
+	end,
+	disable = function(self, silent)
+		SMODS.set_scoring_calculation("multiply")
 	end,
 	in_pool = function()
 		return G.GAME.round_resets.hands >= 3

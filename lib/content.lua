@@ -796,3 +796,71 @@ SMODS.Atlas({
 	px = 73,
 	py = 95,
 })
+-- Scoring Calculation for The Tax
+SMODS.Scoring_Calculation({
+	key = "tax",
+	func = function(self, chips, mult, flames)
+		return math.floor(math.min(0.4 * G.GAME.blind.chips, chips * mult) + 0.5)
+	end,
+	replace_ui = function(self)
+		local aaa = 40
+		local bbb = localize({ type = "variable", key = "tax_hand", vars = { aaa } })[1]
+		-- rebuild the ui to change colours and add text and stuff
+		-- SMODS made some stuff for this so that's kinda convienient ig
+		return {
+			n = G.UIT.R,
+			config = { minh = 1.2, align = "cm" },
+			nodes = {
+				{
+					n = G.UIT.C,
+					config = { align = "cm" },
+					nodes = {
+						{
+							n = G.UIT.R,
+							config = { align = "cm", minh = 1, padding = 0.1 },
+							nodes = {
+								-- Chips box
+								{
+									n = G.UIT.C,
+									config = { align = "cm", id = "hand_chips_container" },
+									nodes = {
+										SMODS.GUI.score_container({
+											type = "chips",
+											text = "chip_text",
+											align = "cr",
+											colour = G.C.CRY_TAX_CHIPS,
+										}),
+									},
+								},
+								-- Operator thingy (Stays the same)
+								SMODS.GUI.operator(0.4),
+								-- Mult box
+								{
+									n = G.UIT.C,
+									config = { align = "cm", id = "hand_mult_container" },
+									nodes = {
+										SMODS.GUI.score_container({
+											type = "mult",
+											colour = G.C.CRY_TAX_MULT,
+										}),
+									},
+								},
+							},
+						},
+						-- Text
+						{
+							n = G.UIT.R,
+							config = { align = "cm" },
+							nodes = {
+								{
+									n = G.UIT.T,
+									config = { text = bbb, scale = 0.25, colour = G.C.IMPORTANT },
+								},
+							},
+						},
+					},
+				},
+			},
+		}
+	end,
+})

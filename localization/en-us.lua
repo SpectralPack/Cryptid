@@ -5341,7 +5341,7 @@ return {
 				"to win on #2##1#",
 				"#2#Stake#3# difficulty",
 			},
-
+			tax_hand = { "Max #1#% of required chips" },
 			cry_art = { "Art: #1#" },
 			cry_code = { "Code: #1#" },
 			cry_idea = { "Idea: #1#" },

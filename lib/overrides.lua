@@ -347,6 +347,8 @@ Cryptid.C = {
 	SELECTED = { HEX("e38039"), HEX("ccdd1b") },
 	GREENGRADIENT = { HEX("51e099"), HEX("1e523a") },
 	ALTGREENGRADIENT = { HEX("6bb565"), HEX("bd28bf") },
+	TAX_MULT = { HEX("FE5F55"), HEX("40ff40") },
+	TAX_CHIPS = { HEX("009dff"), HEX("40ff40") },
 }
 cry_pointer_dt = 0
 cry_jimball_dt = 0
