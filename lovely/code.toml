@@ -413,18 +413,18 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = "{card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1})"
+pattern = "{card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1, negative_info = 'consumable'})"
 position = "at"
-payload = "{card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1e100})"
+payload = "{card_limit = self.GAME.starting_params.consumable_slots, type = 'joker', highlight_limit = 1e100, negative_info = 'consumable'})"
 match_indent = true
 
 # Increase highlight limit for jokers
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = "{card_limit = self.GAME.starting_params.joker_slots, type = 'joker', highlight_limit = 1})"
+pattern = "{card_limit = self.GAME.starting_params.joker_slots, type = 'joker', highlight_limit = 1, negative_info = 'joker'})"
 position = "at"
-payload = "{card_limit = self.GAME.starting_params.joker_slots, type = 'joker', highlight_limit = 1e100})"
+payload = "{card_limit = self.GAME.starting_params.joker_slots, type = 'joker', highlight_limit = 1e100, negative_info = 'joker'})"
 match_indent = true
 
 # Satellite Uplink
