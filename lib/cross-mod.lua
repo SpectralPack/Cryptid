@@ -13,13 +13,15 @@ SMODS.Joker:take_ownership("green_joker", {
 			and not context.blueprint
 			and context.other_card == context.full_hand[#context.full_hand]
 		then
-			local prev_mult = card.ability.mult
-			if card.ability.mult ~= prev_mult then
+			if card.ability.mult ~= 0 then
 				SMODS.scale_card(card, {
 					ref_table = card.ability,
 					ref_value = "mult",
+					scalar_table = card.ability,
 					scalar_value = "extra",
-					operation = "-",
+					operation = function(ref_table, ref_value, initial, change)
+						ref_table[ref_value] = math.max(0, initial - change)
+					end,
 					message_key = "a_mult_minus",
 					message_colour = G.C.RED,
 				})
