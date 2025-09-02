@@ -1399,7 +1399,7 @@ local booster = {
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.BLUE, function()
-				G.GAME.boostertag = (G.GAME.boostertag or 0) + 1
+				G.GAME.boostertag = G.GAME.boostertag + 1
 				G.CONTROLLER.locks[lock] = nil
 				return true
 			end)

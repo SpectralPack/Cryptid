@@ -263,6 +263,8 @@ function Game:init_game_object()
 	g.sunlevel = 1
 	g.sunnumber = { modest = 0, not_modest = 0 }
 	g.bonus_asc_power = 0
+	g.cry_oboe = 0
+	g.boostertag = 0
 	-- Create G.GAME.events when starting a run, so there's no errors
 	g.events = {}
 	g.jokers_sold = {}

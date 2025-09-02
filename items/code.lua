@@ -2309,18 +2309,18 @@ local oboe = {
 	can_bulk_use = true,
 	loc_vars = function(self, info_queue, card)
 		if not card then
-			return { vars = { self.config.extra.choices, (Cryptid.safe_get(G.GAME, "cry_oboe") or 0) } }
+			return { vars = { math.floor(self.config.extra.choices), (Cryptid.safe_get(G.GAME, "cry_oboe") or 0) } }
 		end
-		return { vars = { card.ability.extra.choices, (Cryptid.safe_get(G.GAME, "cry_oboe") or 0) } }
+		return { vars = { math.floor(card.ability.extra.choices), (Cryptid.safe_get(G.GAME, "cry_oboe") or 0) } }
 	end,
 	can_use = function(self, card)
 		return true
 	end,
 	use = function(self, card, area, copier)
-		G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + card.ability.extra.choices
+		G.GAME.cry_oboe = G.GAME.cry_oboe + math.floor(card.ability.extra.choices)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		G.GAME.cry_oboe = (G.GAME.cry_oboe or 0) + (card.ability.extra.choices * number)
+		G.GAME.cry_oboe = G.GAME.cry_oboe + (math.floor(card.ability.extra.choices) * number)
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
