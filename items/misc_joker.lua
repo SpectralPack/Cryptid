@@ -9939,8 +9939,8 @@ local zooble = {
 						ref_value = "mult",
 						scalar_value = "a_mult",
 						operation = function(ref_table, ref_value, initial, scaling)
-                        	ref_table[ref_value] = initial + scaling*#unique_ranks
-                        end
+							ref_table[ref_value] = initial + scaling * #unique_ranks
+						end,
 					})
 				end
 			end
