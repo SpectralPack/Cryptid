@@ -10659,7 +10659,6 @@ local pizza_slice = {
 	dependencies = {
 		items = {
 			"set_cry_misc_joker",
-			"j_cry_pizza",
 		},
 	},
 	name = "cry-pizza_slice",

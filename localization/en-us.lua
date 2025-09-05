@@ -5,7 +5,7 @@ return {
 				name = "Antimatter Deck",
 				text = {
 					"Applies the {C:legendary,E:1}upsides{}",
-					"of {C:attention}every{} deck",
+					"of {C:attention}almost every{} deck",
 				},
 				unlock = {
 					"Win a run",
@@ -17,8 +17,26 @@ return {
 				name = "Antimatter Deck",
 				text = {
 					"Applies the {C:legendary,E:1}upsides{}",
-					"of {C:attention}every{} deck won",
+					"of {C:attention}almost every{} deck won",
 					"with {C:gold}Gold Stake{}",
+				},
+				unlock = {
+					"Win a run",
+					"with {C:attention}Blank Deck",
+					"on {C:attention}Gold Stake",
+				},
+			},
+			b_cry_antimatter_custom = {
+				name = "Antimatter Deck",
+				text = {
+					"Applies the {C:legendary,E:1}upsides{}",
+					"of {C:attention}some{} decks won",
+					"with {C:gold}Gold Stake{}",
+				},
+				unlock = {
+					"Win a run",
+					"with {C:attention}Blank Deck",
+					"on {C:attention}Gold Stake",
 				},
 			},
 			b_cry_beige = {
@@ -5189,6 +5207,7 @@ return {
 			cry_gameset_mainline = "Mainline",
 			cry_gameset_madness = "Madness",
 			cry_gameset_custom = "Modified",
+			cry_gameset_Custom = "Custom",
 			cry_gameset_exp = "Experimental",
 			cry_gameset_exp_modest = "Experimental (Modest)",
 			cry_gameset_exp_mainline = "Experimental (Mainline)",
