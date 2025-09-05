@@ -2927,7 +2927,8 @@ local unjust_dagger = {
 		end
 		if
 			context.setting_blind
-			and not (context.blueprint_card or self).getting_sliced
+			and not card.getting_sliced
+			and not context.blueprint
 			and my_pos
 			and G.jokers.cards[my_pos - 1]
 			and not SMODS.is_eternal(G.jokers.cards[my_pos - 1])
@@ -2942,8 +2943,6 @@ local unjust_dagger = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.joker_buffer = 0
-					card.ability.extra.x_mult =
-						lenient_bignum(to_big(card.ability.extra.x_mult) + sliced_card.sell_cost * 0.2)
 					card:juice_up(0.8, 0.8)
 					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
 					play_sound("slice1", 0.96 + math.random() * 0.08)
@@ -2953,43 +2952,64 @@ local unjust_dagger = {
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "x_mult",
-				scalar_table = {
-					sell_cost = sliced_card.sell_cost * 0.2,
-				},
+				scalar_table = sliced_card,
 				scalar_value = "sell_cost",
-				message_key = "a_xmult",
-				message_colour = G.C.RED,
+				operation = function(ref_table, ref_value, initial, scaling)
+					ref_table[ref_value] = initial + 0.2 * scaling
+				end,
+				scaling_message = {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { card.ability.extra.x_mult + 0.2 * sliced_card.sell_cost },
+					}),
+					colour = G.C.MULT,
+					no_juice = true,
+				},
 			})
 			return nil, true
 		end
-		if context.forcetrigger and my_pos and G.jokers.cards[my_pos - 1] then
-			local sliced_card = G.jokers.cards[my_pos - 1]
-			sliced_card.getting_sliced = true
-			if sliced_card.config.center.rarity == "cry_exotic" then
-				check_for_unlock({ type = "what_have_you_done" })
+		if context.forcetrigger then
+			if
+				my_pos
+				and G.jokers.cards[my_pos - 1]
+				and not SMODS.is_eternal(G.jokers.cards[my_pos - 1])
+				and not G.jokers.cards[my_pos - 1].getting_sliced
+			then
+				local sliced_card = G.jokers.cards[my_pos - 1]
+				sliced_card.getting_sliced = true
+				if sliced_card.config.center.rarity == "cry_exotic" then
+					check_for_unlock({ type = "what_have_you_done" })
+				end
+				G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.GAME.joker_buffer = 0
+						card:juice_up(0.8, 0.8)
+						sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+						play_sound("slice1", 0.96 + math.random() * 0.08)
+						return true
+					end,
+				}))
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "x_mult",
+					scalar_table = sliced_card,
+					scalar_value = "sell_cost",
+					operation = function(ref_table, ref_value, initial, scaling)
+						ref_table[ref_value] = initial + 0.2 * scaling
+					end,
+					scaling_message = {
+						message = localize({
+							type = "variable",
+							key = "a_xmult",
+							vars = { card.ability.extra.x_mult + 0.2 * sliced_card.sell_cost },
+						}),
+						colour = G.C.MULT,
+						no_juice = true,
+					},
+				})
 			end
-			G.GAME.joker_buffer = G.GAME.joker_buffer - 1
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					G.GAME.joker_buffer = 0
-					card.ability.extra.x_mult =
-						lenient_bignum(to_big(card.ability.extra.x_mult) + sliced_card.sell_cost * 0.2)
-					card:juice_up(0.8, 0.8)
-					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
-					play_sound("slice1", 0.96 + math.random() * 0.08)
-					return true
-				end,
-			}))
-			SMODS.scale_card(card, {
-				ref_table = card.ability.extra,
-				ref_value = "x_mult",
-				scalar_table = {
-					sell_cost = sliced_card.sell_cost * 0.2,
-				},
-				scalar_value = "sell_cost",
-				message_key = "a_xmult",
-				message_colour = G.C.RED,
-			})
 			return {
 				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
 			}
@@ -3048,7 +3068,8 @@ local monkey_dagger = {
 		end
 		if
 			context.setting_blind
-			and not (context.blueprint_card or self).getting_sliced
+			and not card.getting_sliced
+			and not context.blueprint
 			and my_pos
 			and G.jokers.cards[my_pos - 1]
 			and not SMODS.is_eternal(G.jokers.cards[my_pos - 1])
@@ -3063,51 +3084,6 @@ local monkey_dagger = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.joker_buffer = 0
-					card.ability.extra.chips =
-						lenient_bignum(to_big(card.ability.extra.chips) + sliced_card.sell_cost * 10)
-					card:juice_up(0.8, 0.8)
-					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
-					play_sound("slice1", 0.96 + math.random() * 0.08)
-					return true
-				end,
-			}))
-			local msg = SMODS.scale_card(card, {
-				ref_table = card.ability.extra,
-				ref_value = "x_mult",
-				scalar_table = {
-					sell_cost = sliced_card.sell_cost * 10,
-				},
-				scalar_value = "sell_cost",
-			})
-			if not msg or type(msg) == "string" then
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = msg or localize({
-						type = "variable",
-						key = "a_chips",
-						vars = {
-							number_format(
-								lenient_bignum(to_big(card.ability.extra.chips) + 10 * sliced_card.sell_cost)
-							),
-						},
-					}),
-					colour = G.C.CHIPS,
-					no_juice = true,
-				})
-			end
-			return nil, true
-		end
-		if context.forcetrigger and my_pos and G.jokers.cards[my_pos - 1] then
-			local sliced_card = G.jokers.cards[my_pos - 1]
-			sliced_card.getting_sliced = true
-			if sliced_card.config.center.rarity == "cry_exotic" then
-				check_for_unlock({ type = "what_have_you_done" })
-			end
-			G.GAME.joker_buffer = G.GAME.joker_buffer - 1
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					G.GAME.joker_buffer = 0
-					card.ability.extra.chips =
-						lenient_bignum(to_big(card.ability.extra.chips) + sliced_card.sell_cost * 10)
 					card:juice_up(0.8, 0.8)
 					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
 					play_sound("slice1", 0.96 + math.random() * 0.08)
@@ -3117,13 +3093,64 @@ local monkey_dagger = {
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "chips",
-				scalar_table = {
-					sell_cost = sliced_card.sell_cost * 10,
-				},
+				scalar_table = sliced_card,
 				scalar_value = "sell_cost",
-				message_key = "a_chips",
-				message_colour = G.C.BLUE,
+				operation = function(ref_table, ref_value, initial, scaling)
+					ref_table[ref_value] = initial + 10 * scaling
+				end,
+				scaling_message = {
+					message = localize({
+						type = "variable",
+						key = "a_chips",
+						vars = { card.ability.extra.chips + 10 * sliced_card.sell_cost },
+					}),
+					colour = G.C.CHIPS,
+					no_juice = true,
+				},
 			})
+			return nil, true
+		end
+		if context.forcetrigger then
+			if
+				my_pos
+				and G.jokers.cards[my_pos - 1]
+				and not SMODS.is_eternal(G.jokers.cards[my_pos - 1])
+				and not G.jokers.cards[my_pos - 1].getting_sliced
+			then
+				local sliced_card = G.jokers.cards[my_pos - 1]
+				sliced_card.getting_sliced = true
+				if sliced_card.config.center.rarity == "cry_exotic" then
+					check_for_unlock({ type = "what_have_you_done" })
+				end
+				G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.GAME.joker_buffer = 0
+						card:juice_up(0.8, 0.8)
+						sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+						play_sound("slice1", 0.96 + math.random() * 0.08)
+						return true
+					end,
+				}))
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "chips",
+					scalar_table = sliced_card,
+					scalar_value = "sell_cost",
+					operation = function(ref_table, ref_value, initial, scaling)
+						ref_table[ref_value] = initial + 10 * scaling
+					end,
+					scaling_message = {
+						message = localize({
+							type = "variable",
+							key = "a_chips",
+							vars = { card.ability.extra.chips + 10 * sliced_card.sell_cost },
+						}),
+						colour = G.C.CHIPS,
+						no_juice = true,
+					},
+				})
+			end
 			return {
 				chip_mod = lenient_bignum(card.ability.extra.chips),
 			}
@@ -3182,7 +3209,8 @@ local pirate_dagger = {
 		end
 		if
 			context.setting_blind
-			and not (context.blueprint_card or self).getting_sliced
+			and not card.getting_sliced
+			and not context.blueprint
 			and my_pos
 			and G.jokers.cards[my_pos + 1]
 			and not SMODS.is_eternal(G.jokers.cards[my_pos + 1])
@@ -3197,8 +3225,6 @@ local pirate_dagger = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.joker_buffer = 0
-					card.ability.extra.x_chips =
-						lenient_bignum(to_big(card.ability.extra.x_chips) + sliced_card.sell_cost * 0.25)
 					card:juice_up(0.8, 0.8)
 					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
 					play_sound("slice1", 0.96 + math.random() * 0.08)
@@ -3208,45 +3234,71 @@ local pirate_dagger = {
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "x_chips",
-				scalar_table = {
-					sell_cost = sliced_card.sell_cost * 0.25,
-				},
+				scalar_table = sliced_card,
 				scalar_value = "sell_cost",
-				message_key = "a_xchips",
-				message_colour = G.C.BLUE,
+				operation = function(ref_table, ref_value, initial, scaling)
+					ref_table[ref_value] = initial + 0.25 * scaling
+				end,
+				scaling_message = {
+					message = localize({
+						type = "variable",
+						key = "a_xchips",
+						vars = { card.ability.extra.x_chips + 0.25 * sliced_card.sell_cost },
+					}),
+					colour = G.C.CHIPS,
+					no_juice = true,
+				},
 			})
 			return nil, true
 		end
-		if context.forcetrigger and my_pos and G.jokers.cards[my_pos + 1] then
-			local sliced_card = G.jokers.cards[my_pos + 1]
-			sliced_card.getting_sliced = true
-			if sliced_card.config.center.rarity == "cry_exotic" then
-				check_for_unlock({ type = "what_have_you_done" })
+		if context.forcetrigger then
+			if
+				my_pos
+				and G.jokers.cards[my_pos + 1]
+				and not SMODS.is_eternal(G.jokers.cards[my_pos + 1])
+				and not G.jokers.cards[my_pos + 1].getting_sliced
+			then
+				local sliced_card = G.jokers.cards[my_pos + 1]
+				sliced_card.getting_sliced = true
+				if sliced_card.config.center.rarity == "cry_exotic" then
+					check_for_unlock({ type = "what_have_you_done" })
+				end
+				G.GAME.joker_buffer = G.GAME.joker_buffer - 1
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.GAME.joker_buffer = 0
+						card:juice_up(0.8, 0.8)
+						sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+						play_sound("slice1", 0.96 + math.random() * 0.08)
+						return true
+					end,
+				}))
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "x_chips",
+					scalar_table = sliced_card,
+					scalar_value = "sell_cost",
+					operation = function(ref_table, ref_value, initial, scaling)
+						ref_table[ref_value] = initial + 0.25 * scaling
+					end,
+					scaling_message = {
+						message = localize({
+							type = "variable",
+							key = "a_xchips",
+							vars = { card.ability.extra.x_chips + 0.25 * sliced_card.sell_cost },
+						}),
+						colour = G.C.CHIPS,
+						no_juice = true,
+					},
+				})
 			end
-			G.GAME.joker_buffer = G.GAME.joker_buffer - 1
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					G.GAME.joker_buffer = 0
-					card.ability.extra.x_chips =
-						lenient_bignum(to_big(card.ability.extra.x_chips) + sliced_card.sell_cost * 0.25)
-					card:juice_up(0.8, 0.8)
-					sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
-					play_sound("slice1", 0.96 + math.random() * 0.08)
-					return true
-				end,
-			}))
-			SMODS.scale_card(card, {
-				ref_table = card.ability.extra,
-				ref_value = "x_chips",
-				scalar_table = {
-					sell_cost = sliced_card.sell_cost * 0.25,
-				},
-				scalar_value = "sell_cost",
-				message_key = "a_xchips",
-				message_colour = G.C.BLUE,
-			})
 			return {
 				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				message = localize({
+					type = "variable",
+					key = "a_xchips",
+					vars = { number_format(card.ability.extra.x_chips) },
+				}),
 			}
 		end
 	end,
