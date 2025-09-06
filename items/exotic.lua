@@ -819,41 +819,42 @@ local scalae = {
 		end
 	end,
 	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
-		if other.ability.name ~= "cry-Scalae" then
-			if not G.GAME.cryptid_base_scales then
-				G.GAME.cryptid_base_scales = {}
-			end
-			if not G.GAME.cryptid_base_scales[other.config.center.key] then
-				G.GAME.cryptid_base_scales[other.config.center.key] = {}
-			end
-			if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then
-				G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar
-			end
-			local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
-			local orig_scale_scale = current_scaling
-			local new_scale = lenient_bignum(
-				to_big(true_base)
-					* (
-						(
-							1
-							+ (
-								(to_big(orig_scale_scale) / to_big(true_base))
-								^ (to_big(1) / to_big(card.ability.extra.scale))
-							)
-						) ^ to_big(card.ability.extra.scale)
-					)
-			)
-			if not Cryptid.is_card_big(other) and to_big(new_scale) >= to_big(1e300) then
-				new_scale = 1e300
-			end
-			return {
-				scalar_value = new_scale,
-				message = localize("k_upgrade_ex"),
+		-- checks if the scaled joker is also a scalae
+		-- if so, return nothing
+		if other.config.center.key == self.key then return end
+
+		-- store original scaling rate
+		if not other.ability.cry_scaling_info then
+			other.ability.cry_scaling_info = {
+				[args.scalar_value] = current_scalar
 			}
+		elseif not other.ability.cry_scaling_info[args.scalar_value] then
+			other.ability.cry_scaling_info[args.scalar_value] = current_scalar
 		end
+
+		-- joker scaling stuff
+		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
+		local new_scale = lenient_bignum(
+			to_big(original_scalar) * (
+				(
+					1
+					+ (
+						(to_big(current_scaling) / to_big(original_scalar))
+						^ (to_big(1) / to_big(card.ability.extra.scale))
+					)
+				) ^ to_big(card.ability.extra.scale)
+			)
+		)
+		args.scalar_table[args.scalar_value] = new_scale
+
+		return {
+			message = localize("k_upgrade_ex"),
+		}
 	end,
+
 	loc_vars = function(self, info_queue, card)
 		local example = { 2, 3, 4 }
+		-- this is literally just straight up wrong atm, scalae doesn't work like this
 		for i = 1, #example do
 			example[i] = to_big(example[i]) ^ (card.ability.extra.scale + 1)
 		end

@@ -1009,7 +1009,6 @@ local number_blocks = {
 
 -- Double Scale
 -- Scaling jokers scale quadratically
--- Most of the code for this lies in Card:cry_double_scale_calc in lib/calculate.lua
 local double_scale = {
 	object_type = "Joker",
 	name = "cry-Double Scale",
@@ -1036,28 +1035,30 @@ local double_scale = {
 	cost = 18,
 	immutable = true,
 	atlas = "atlasepic",
-	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
-		if not G.GAME.cryptid_base_scales then
-			G.GAME.cryptid_base_scales = {}
+		calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		-- store original scaling rate
+		if not other.ability.cry_scaling_info then
+			other.ability.cry_scaling_info = {
+				[args.scalar_value] = current_scalar
+			}
+		elseif not other.ability.cry_scaling_info[args.scalar_value] then
+			other.ability.cry_scaling_info[args.scalar_value] = current_scalar
 		end
-		if not G.GAME.cryptid_base_scales[other.config.center.key] then
-			G.GAME.cryptid_base_scales[other.config.center.key] = {}
-		end
-		if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then
-			G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar
-		end
-		local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
-		local orig_scale_scale = current_scaling
+
+		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
+
+		-- joker scaling stuff
 		if Cryptid.gameset(self) == "exp_modest" then
 			return {
-				scalar_value = lenient_bignum(to_big(true_base) * 2),
+				scalar_value = lenient_bignum(to_big(original_scalar) * 2),
+				message = localize("k_upgrade_ex"),
+			}
+		else
+			args.scalar_table[args.scalar_value] = current_scalar + original_scalar
+			return {
 				message = localize("k_upgrade_ex"),
 			}
 		end
-		args.scalar_table[args.scalar_value] = new_scale
-		return {
-			message = localize("k_upgrade_ex"),
-		}
 	end,
 	cry_credits = {
 		idea = {
@@ -1068,7 +1069,7 @@ local double_scale = {
 		},
 		code = {
 			"Math",
-			"Mathguy",
+			"Mathguy"
 		},
 	},
 }
