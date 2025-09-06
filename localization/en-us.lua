@@ -1611,8 +1611,9 @@ return {
 			["j_cry_Double Scale"] = { -- ?????????????
 				name = "Double Scale",
 				text = {
-					"Scaling {C:attention}Jokers{}",
-					"scale {C:attention}quadratically",
+					"Whenever a {C:attention}Joker scales{}",
+					"The {C:attention}scaling rate{} is increased by its {C:attention}original scale rate{}",
+					"{C:inactive,s:0.8}(Does not stack with copies of this Joker){}",
 					"{C:inactive,s:0.8}(ex. +1, +3, +6, +10)",
 					"{C:inactive,s:0.8}(grows by +1, +2, +3)",
 				},
