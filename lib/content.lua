@@ -343,7 +343,7 @@ SMODS.Rarity({
 	pools = { ["Joker"] = true },
 	get_weight = function(self, weight, object_type)
 		-- The game shouldn't try generating Epic Jokers when they are disabled
-		if Cryptid_config["Epic Jokers"] then
+		if Cryptid.enabled("set_cry_epic") then
 			return 0.003
 		else
 			return 0
