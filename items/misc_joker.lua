@@ -1950,7 +1950,7 @@ local fspinner = {
 					ref_table = card.ability.extra,
 					ref_value = "chips",
 					scalar_value = "chip_mod",
-					message_colour = G.C.BLUE
+					message_colour = G.C.BLUE,
 				})
 			end
 		end
