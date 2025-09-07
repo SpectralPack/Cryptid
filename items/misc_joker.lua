@@ -1939,15 +1939,19 @@ local fspinner = {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint then
-			local play_more_than = (G.GAME.hands[context.scoring_name].played or 0)
+			local play_more_than, yes = (G.GAME.hands[context.scoring_name].played or 0), false
 			for k, v in pairs(G.GAME.hands) do
 				if k ~= context.scoring_name and v.played >= play_more_than and v.visible then
-					SMODS.scale_card(card, {
-						ref_table = card.ability.extra,
-						ref_value = "chips",
-						scalar_value = "chip_mod",
-					})
+					yes = true
 				end
+			end
+			if yes then
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "chips",
+					scalar_value = "chip_mod",
+					message_colour = G.C.BLUE
+				})
 			end
 		end
 		if context.joker_main and (to_big(card.ability.extra.chips) > to_big(0)) then
@@ -1966,7 +1970,7 @@ local fspinner = {
 				ref_value = "chips",
 				scalar_value = "chip_mod",
 				message_key = "a_chips",
-				message_colour = G.C.BLUE,
+				message_colour = G.C.CHIPS,
 			})
 			return {
 				chip_mod = lenient_bignum(card.ability.extra.chips),
