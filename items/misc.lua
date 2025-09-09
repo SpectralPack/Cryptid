@@ -1983,6 +1983,7 @@ local gold_edition = {
 			(
 				context.post_trigger -- for when on jonklers
 				and context.other_card == card
+				and Cryptid.isNonRollProbabilityContext(context.other_context)
 			)
 			or (
 				context.main_scoring -- for when on playing cards
