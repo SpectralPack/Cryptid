@@ -80,7 +80,10 @@ local dropshot = {
 					ref_value = "x_mult",
 					scalar_value = "Xmult_mod",
 					message_key = "a_xmult",
-					message_colour = G.C.RED,
+					message_colour = G.C.MULT,
+					operation = function(ref_table, ref_value, initial, scaling)
+						ref_table[ref_value] = initial + scaling * cards
+					end,
 				})
 				return nil, true
 			end
@@ -1950,7 +1953,7 @@ local fspinner = {
 					ref_table = card.ability.extra,
 					ref_value = "chips",
 					scalar_value = "chip_mod",
-					message_colour = G.C.CHIPS,
+					message_colour = G.C.BLUE,
 				})
 			end
 		end
