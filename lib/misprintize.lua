@@ -499,20 +499,19 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 						or Cryptid.base_values[card.config.center.key][i .. "consumeable"]
 				end
 			end
-			local new_val = Cryptid.manipulate_value(
-				num,
-				args,
-				args.big or Cryptid.is_card_big(card),
-				i
-			)
+			local new_val = Cryptid.manipulate_value(num, args, args.big or Cryptid.is_card_big(card), i)
 			ref_table[ref_value][i] = new_val
 
 			-- take double scale / scalae into account
 			if ref_value == "ability" and ref_table.ability.cry_scaling_info then
 				ref_table.ability.cry_scaling_info[i] = new_val
 			end
-
-		elseif i ~= "immutable" and not (ref_value == "ability" and i == "cry_scaling_info") and type(v) == "table" and Cryptid.misprintize_value_blacklist[i] ~= false then
+		elseif
+			i ~= "immutable"
+			and not (ref_value == "ability" and i == "cry_scaling_info")
+			and type(v) == "table"
+			and Cryptid.misprintize_value_blacklist[i] ~= false
+		then
 			Cryptid.manipulate_table(card, ref_table[ref_value], i, args)
 		end
 	end

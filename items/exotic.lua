@@ -821,12 +821,14 @@ local scalae = {
 	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
 		-- checks if the scaled joker is also a scalae
 		-- if so, return nothing
-		if other.config.center.key == self.key then return end
+		if other.config.center.key == self.key then
+			return
+		end
 
 		-- store original scaling rate
 		if not other.ability.cry_scaling_info then
 			other.ability.cry_scaling_info = {
-				[args.scalar_value] = current_scalar
+				[args.scalar_value] = current_scalar,
 			}
 		elseif not other.ability.cry_scaling_info[args.scalar_value] then
 			other.ability.cry_scaling_info[args.scalar_value] = current_scalar
@@ -835,15 +837,16 @@ local scalae = {
 		-- joker scaling stuff
 		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
 		local new_scale = lenient_bignum(
-			to_big(original_scalar) * (
-				(
-					1
-					+ (
-						(to_big(current_scaling) / to_big(original_scalar))
-						^ (to_big(1) / to_big(card.ability.extra.scale))
-					)
-				) ^ to_big(card.ability.extra.scale)
-			)
+			to_big(original_scalar)
+				* (
+					(
+						1
+						+ (
+							(to_big(current_scaling) / to_big(original_scalar))
+							^ (to_big(1) / to_big(card.ability.extra.scale))
+						)
+					) ^ to_big(card.ability.extra.scale)
+				)
 		)
 		args.scalar_table[args.scalar_value] = new_scale
 

@@ -1035,11 +1035,11 @@ local double_scale = {
 	cost = 18,
 	immutable = true,
 	atlas = "atlasepic",
-		calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
 		-- store original scaling rate
 		if not other.ability.cry_scaling_info then
 			other.ability.cry_scaling_info = {
-				[args.scalar_value] = current_scalar
+				[args.scalar_value] = current_scalar,
 			}
 		elseif not other.ability.cry_scaling_info[args.scalar_value] then
 			other.ability.cry_scaling_info[args.scalar_value] = current_scalar
@@ -1069,7 +1069,7 @@ local double_scale = {
 		},
 		code = {
 			"Math",
-			"Mathguy"
+			"Mathguy",
 		},
 	},
 }
