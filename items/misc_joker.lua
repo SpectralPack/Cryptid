@@ -3579,6 +3579,7 @@ local spaceglobe = {
 					ref_table = card.ability.extra,
 					ref_value = "x_chips",
 					scalar_value = "Xchipmod",
+					message_colour = G.C.CHIPS,
 				})
 			end
 		end
@@ -3599,7 +3600,7 @@ local spaceglobe = {
 				ref_value = "x_chips",
 				scalar_value = "Xchipmod",
 				message_key = "a_xchips",
-				message_colour = G.C.BLUE,
+				message_colour = G.C.CHIPS,
 			})
 			return {
 				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
