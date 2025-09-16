@@ -604,7 +604,7 @@ local shackle = {
 		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then
 			return false
 		end
-		return #Cryptid.advanced_find_joker(nil, nil, "e_negative", nil, true) ~= 0
+		return #Cryptid.advanced_find_joker(nil, nil, "e_negative", nil, true, "j") ~= 0
 	end,
 	recalc_debuff = function(self, card, from_blind)
 		if
