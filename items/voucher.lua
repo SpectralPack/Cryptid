@@ -336,7 +336,6 @@ local command_prompt = { -- Code T1; Code cards can appear in the shop
 		}))
 	end,
 }
-
 local satellite_uplink = { -- Code T2; Code cards may appear in any of the Celestial Packs
 	cry_credits = {
 		idea = {
