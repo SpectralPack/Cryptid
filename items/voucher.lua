@@ -368,7 +368,7 @@ local satellite_uplink = { -- Code T2; Code cards may appear in any of the Celes
 }
 
 --i removed the patch as it didnt do anything and its not needed
---mainly just took from vanillaremade -yadifriend
+--mainly just took from vanillaremade
 SMODS.Booster:take_ownership_by_kind('Celestial', {
         create_card = function(self, card, i)
             local _card
