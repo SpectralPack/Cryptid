@@ -540,23 +540,29 @@ SMODS.Sound({
 			and Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.jimball_music
 			-- Lowering priority for edition Jimballs later
-			and 7
+			and 200
 	end,
 })
 SMODS.Sound({
 	key = "music_code",
 	path = "music_code.ogg",
 	select_music_track = function()
-		return Cryptid_config.Cryptid
+		return (Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.code_music
 			and (
+				-- in a code pack
 				(
-					G.pack_cards
-					and G.pack_cards.cards
-					and G.pack_cards.cards[1]
-					and G.pack_cards.cards[1].ability.set == "Code"
-				) or (G.GAME and G.GAME.USING_CODE)
-			)
+					G.booster_pack
+					and not G.booster_pack.REMOVED
+					and SMODS.OPENED_BOOSTER
+					and SMODS.OPENED_BOOSTER.config.center.kind == "Code"
+				)
+				-- using a code card
+				or (
+					G.GAME
+					and G.GAME.USING_CODE
+				)
+			)) and 100
 	end,
 })
 SMODS.Sound({
@@ -565,14 +571,13 @@ SMODS.Sound({
 	select_music_track = function()
 		if G.GAME.cry_music_big then
 			return G.GAME.cry_music_big
-		end
-		if
+		elseif
 			Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.big_music
 			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
 		then
-			G.GAME.cry_music_big = true
-			return true
+			G.GAME.cry_music_big = 6
+			return 101
 		end
 	end,
 })
@@ -581,12 +586,12 @@ SMODS.Sound({
 	path = "music_exotic.ogg",
 	volume = 0.4,
 	select_music_track = function()
-		return Cryptid_config.Cryptid
+		return (Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.exotic_music
-			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
+			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0)
+			and 102
 	end,
-})
-SMODS.Sound({
+})SMODS.Sound({
 	key = "music_mainline",
 	path = "music_mainline.ogg",
 	volume = 0.7,
