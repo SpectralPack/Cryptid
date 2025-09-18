@@ -336,6 +336,7 @@ local command_prompt = { -- Code T1; Code cards can appear in the shop
 		}))
 	end,
 }
+
 local satellite_uplink = { -- Code T2; Code cards may appear in any of the Celestial Packs
 	cry_credits = {
 		idea = {
@@ -365,6 +366,36 @@ local satellite_uplink = { -- Code T2; Code cards may appear in any of the Celes
 	end,
 	requires = { "v_cry_command_prompt" },
 }
+
+--i removed the patch as it didnt do anything and its not needed
+--mainly just took from vanillaremade -yadifriend
+SMODS.Booster:take_ownership_by_kind('Celestial', {
+        create_card = function(self, card, i)
+            local _card
+            if (G.GAME.used_vouchers.v_cry_satellite_uplink and pseudorandom('satellite_uplink') > 0.8) then
+                _card = {
+                    set = "Code",
+                    area = G.pack_cards,
+                    skip_materialize = true,
+                    soulable = true,
+                    key_append =
+                    "pl2"
+                }
+            else
+                _card = {
+                    set = "Planet",
+                    area = G.pack_cards,
+                    skip_materialize = true,
+                    soulable = true,
+                    key_append =
+                    "pl1"
+                }
+            end
+            return _card
+        end,
+    },
+    true
+)
 
 -- Tier 3 Vouchers
 local overstock_multi = { -- Overstock T3; +1 card slot, +1 booster pack slot and +1 voucher slot available in the shop
