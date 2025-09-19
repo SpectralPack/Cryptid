@@ -547,22 +547,21 @@ SMODS.Sound({
 	key = "music_code",
 	path = "music_code.ogg",
 	select_music_track = function()
-		return (Cryptid_config.Cryptid
+		return (
+			Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.code_music
 			and (
-				-- in a code pack
-				(
+								-- in a code pack
+(
 					G.booster_pack
 					and not G.booster_pack.REMOVED
 					and SMODS.OPENED_BOOSTER
 					and SMODS.OPENED_BOOSTER.config.center.kind == "Code"
 				)
 				-- using a code card
-				or (
-					G.GAME
-					and G.GAME.USING_CODE
-				)
-			)) and 100
+				or (G.GAME and G.GAME.USING_CODE)
+			)
+		) and 100
 	end,
 })
 SMODS.Sound({
@@ -586,12 +585,14 @@ SMODS.Sound({
 	path = "music_exotic.ogg",
 	volume = 0.4,
 	select_music_track = function()
-		return (Cryptid_config.Cryptid
+		return (
+			Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.exotic_music
-			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0)
-			and 100.002
+			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0
+		) and 100.002
 	end,
-})SMODS.Sound({
+})
+SMODS.Sound({
 	key = "music_mainline",
 	path = "music_mainline.ogg",
 	volume = 0.7,
