@@ -577,7 +577,7 @@ SMODS.Sound({
 			and to_big(G.GAME.round_scores["hand"].amt) > to_big(10) ^ 1000000
 		then
 			G.GAME.cry_music_big = 6
-			return 101
+			return 100.001
 		end
 	end,
 })
@@ -589,7 +589,7 @@ SMODS.Sound({
 		return (Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.exotic_music
 			and #Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0)
-			and 102
+			and 100.002
 	end,
 })SMODS.Sound({
 	key = "music_mainline",
