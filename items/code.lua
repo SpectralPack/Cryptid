@@ -4669,14 +4669,15 @@ local source = {
 		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, card.ability.max_highlighted)
 		return #cards > 0 and #cards <= to_number(card.ability.max_highlighted)
 	end,
-	use = function(self, card, area, copier) --Good enough
+	use = function(self, card, area, copier)
+		local used_consumable = copier or card
 		local cards = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, 1)
 		for i = 1, #cards do
 			local highlighted = cards[i]
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound("tarot1")
-					highlighted:juice_up(0.3, 0.5)
+					used_consumable:juice_up(0.3, 0.5)
 					return true
 				end,
 			}))
@@ -4685,7 +4686,7 @@ local source = {
 				delay = 0.1,
 				func = function()
 					if highlighted then
-						highlighted:set_seal("cry_green")
+						highlighted:set_seal("cry_green", nil, true)
 					end
 					return true
 				end,
