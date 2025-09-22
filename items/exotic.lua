@@ -585,9 +585,21 @@ local effarcire = {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if not context.blueprint and not context.retrigger_joker or context.forcetrigger then
-			if context.first_hand_drawn or context.forcetrigger then
-				G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
-				return nil, true
+			if context.first_hand_drawn or context.forcetrigger and not G.GAME.effarcire_buffer then
+				G.GAME.effarcire_buffer = true
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						G.FUNCS.draw_from_deck_to_hand(#G.deck.cards)
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								G.GAME.effarcire_buffer = nil
+								save_run()
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
 			elseif G.hand.config.card_limit < 1 then
 				G.hand.config.card_limit = 1
 			end
