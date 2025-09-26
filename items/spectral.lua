@@ -33,7 +33,8 @@ local lock = {
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		check_for_unlock({ cry_used_consumable = "c_cry_lock" })
-		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
+		local target = #G.jokers.cards == 1 and G.jokers.cards[1]
+			or pseudorandom_element(G.jokers.cards, pseudoseed("Dudeman"))
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
