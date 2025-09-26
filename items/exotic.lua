@@ -657,8 +657,7 @@ local crustulum = {
 				ref_table = card.ability.extra,
 				ref_value = "chips",
 				scalar_value = "chip_mod",
-				message_key = "a_chips",
-				colour = G.C.CHIPS,
+				message_colour = G.C.CHIPS,
 			})
 			return nil, true
 		end
@@ -677,8 +676,7 @@ local crustulum = {
 				ref_table = card.ability.extra,
 				ref_value = "chips",
 				scalar_value = "chip_mod",
-				message_key = "a_chips",
-				colour = G.C.CHIPS,
+				message_colour = G.C.CHIPS,
 			})
 			return {
 				chip_mod = lenient_bignum(card.ability.extra.chips),
