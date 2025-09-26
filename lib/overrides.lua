@@ -2205,8 +2205,8 @@ local smods_calc = SMODS.calculate_context
 function SMODS.calculate_context(context, return_table, no_resolve)
 	local aaa = smods_calc(context, return_table, no_resolve)
 	if context.modify_ante and context.ante_end then
-		if G.GAME.blind then
-			aaa.modify = G.GAME.blind:cry_calc_ante_gain() - 1
+		if G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() ~= 1 then
+			aaa.modify = G.GAME.blind:cry_calc_ante_gain()
 		end
 	end
 	return aaa
