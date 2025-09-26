@@ -931,17 +931,32 @@ local chromatic = {
 	boss = {
 		min = 1,
 		max = 666666,
-		yes_orb = true,
 	},
 	atlas = "blinds_two",
 	order = 25,
 	boss_colour = HEX("a34f98"),
-	cry_modify_score = function(self, score)
-		if math.floor(G.GAME.current_round.hands_played + 1) % 2 == 1 then
-			return score * -1
-		else
-			return score
+	set_blind = function(self, reset, silent)
+		G.GAME.chromatic_mod = 0
+		SMODS.set_scoring_calculation("cry_chromatic")
+	end,
+	defeat = function(self, silent)
+		G.GAME.chromatic_mod = nil
+		SMODS.set_scoring_calculation("multiply")
+	end,
+	disable = function(self, silent)
+		G.GAME.chromatic_mod = nil
+		SMODS.set_scoring_calculation("multiply")
+	end,
+	press_play = function(self)
+		if not G.GAME.blind.disabled then
+			G.GAME.blind.prepped = true
 		end
+	end,
+	drawn_to_hand = function(self)
+		if G.GAME.blind.prepped and not G.GAME.blind.disabled then
+			G.GAME.chromatic_mod = G.GAME.chromatic_mod + 1
+		end
+		G.GAME.blind.prepped = nil
 	end,
 }
 

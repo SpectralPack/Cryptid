@@ -870,3 +870,23 @@ SMODS.Scoring_Calculation({
 		}
 	end,
 })
+
+-- Scoring Calculation for The Chromatic
+SMODS.Scoring_Calculation({
+	key = "chromatic",
+	func = function(self, chips, mult, flames)
+		if Cryptid.safe_get(G, "GAME", "chromatic_mod") then
+			if G.GAME.chromatic_mod % 2 == 1 then
+				return chips * mult * -1
+			end
+		end
+		return chips * mult
+	end,
+	update_ui = function(self, container, chip_display, mult_display, operator)
+		local aaa = Cryptid.safe_get(G, "GAME", "chromatic_mod") or -1
+		if aaa > 0 and aaa % 2 == 1 then
+			ease_colour(G.C.UI_CHIPS, HEX("a34f98"), 0.3)
+			ease_colour(G.C.UI_MULT, HEX("a34f98"), 0.3)
+		end
+	end,
+})
