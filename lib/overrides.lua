@@ -198,6 +198,7 @@ function Blind:defeat(s)
 	end
 	if
 		--Stop impossible blind combinations from happening
+		--Needs a better system than this, needs a lovely patch for other mods to add to this list currently (TODO)
 		(self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_psychic"])
 		and (self.name ~= "The Psychic" or not G.GAME.defeated_blinds["bl_cry_oldarm"])
 		and (self.name ~= "cry-oldarm" or not G.GAME.defeated_blinds["bl_cry_scorch"])
@@ -208,6 +209,10 @@ function Blind:defeat(s)
 		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_cry_lavender_loop"])
 		and (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_tax"])
 		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_needle"])
+		and (self.name ~= "The Needle" or not G.GAME.defeated_blinds["bl_cry_chromatic"])
+		and (self.name ~= "cry-chromatic" or not G.GAME.defeated_blinds["bl_needle"])
+		and (self.name ~= "cry-Tax" or not G.GAME.defeated_blinds["bl_cry_chromatic"])
+		and (self.name ~= "cry-chromatic" or not G.GAME.defeated_blinds["bl_cry_tax"])
 	then
 		G.GAME.defeated_blinds[self.config.blind.key or ""] = true
 	end
