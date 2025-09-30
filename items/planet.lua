@@ -912,13 +912,15 @@ local sunplanet = {
 			}
 		end
 		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
-			local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet") + #find_joker("cry-Perkele")
+			local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet")
+				+ #find_joker("cry-Perkele")
 			local observatory_power = 0
 
 			if super_entropic_local_variable_that_stores_the_amount_of_suns == 1 then
 				observatory_power = 1
 			elseif super_entropic_local_variable_that_stores_the_amount_of_suns > 1 then
-				observatory_power = Cryptid.funny_log(2, super_entropic_local_variable_that_stores_the_amount_of_suns + 1)
+				observatory_power =
+					Cryptid.funny_log(2, super_entropic_local_variable_that_stores_the_amount_of_suns + 1)
 			end
 			info_queue[#info_queue + 1] = { key = "o_sunplanet", set = "Other", specific_vars = { observatory_power } }
 		end
@@ -1423,7 +1425,7 @@ local perkele = {
 		-- "cry_asc_hands" is not a hand so don't include it here
 		hand_types = { "cry_None", "cry_WholeDeck" },
 		level_types = { "cry_None", "cry_WholeDeck", "cry_asc_hands" },
-		softlock = true
+		softlock = true,
 	},
 	cost = 4,
 
@@ -1444,9 +1446,7 @@ local perkele = {
 		local colours = {}
 
 		for i, lvl in ipairs(levels) do
-			colours[i] = to_big(lvl) == to_big(1)
-				and G.C.UI.TEXT_DARK
-				or G.C.HAND_LEVELS[to_number(math.min(7, lvl))]
+			colours[i] = to_big(lvl) == to_big(1) and G.C.UI.TEXT_DARK or G.C.HAND_LEVELS[to_number(math.min(7, lvl))]
 		end
 
 		-- don't want to entirely rework ascension power just for one consumable
@@ -1474,13 +1474,15 @@ local perkele = {
 			}
 		end
 		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
-			local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet") + #find_joker("cry-Perkele")
+			local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet")
+				+ #find_joker("cry-Perkele")
 			local observatory_power = 0
 
 			if super_entropic_local_variable_that_stores_the_amount_of_suns == 1 then
 				observatory_power = 1
 			elseif super_entropic_local_variable_that_stores_the_amount_of_suns > 1 then
-				observatory_power = Cryptid.funny_log(2, super_entropic_local_variable_that_stores_the_amount_of_suns + 1)
+				observatory_power =
+					Cryptid.funny_log(2, super_entropic_local_variable_that_stores_the_amount_of_suns + 1)
 			end
 			info_queue[#info_queue + 1] = {
 				key = "o_perkele",
@@ -1490,7 +1492,7 @@ local perkele = {
 					G.P_CENTERS.v_observatory.config.extra,
 					localize("cry_None", "poker_hands"),
 					localize("cry_WholeDeck", "poker_hands"),
-				}
+				},
 			}
 		end
 
@@ -1522,7 +1524,6 @@ local perkele = {
 
 			if context.scoring_name == "cry_None" then
 				return { xmult = value }
-
 			elseif context.scoring_name == "cry_WholeDeck" then
 				return {
 					message = localize({
@@ -1683,7 +1684,7 @@ function Cryptid.asc_level_up(card, copier, number, message)
 
 	if message then
 		SMODS.calculate_effect({
-			message = localize("k_level_up_ex")
+			message = localize("k_level_up_ex"),
 		}, card)
 	end
 
@@ -1741,7 +1742,7 @@ function Cryptid.suit_level_up(card, copier, number, poker_hands, message)
 	end
 	if message then
 		SMODS.calculate_effect({
-			message = localize("k_level_up_ex")
+			message = localize("k_level_up_ex"),
 		}, card)
 	end
 	for _, v in pairs(poker_hands) do
