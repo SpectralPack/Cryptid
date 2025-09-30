@@ -261,17 +261,17 @@ local universe = {
 		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
-		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
+		--[[if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
 			-- won't show up for some fucking reason
-			--[[info_queue[#info_queue + 1] = {
+			info_queue[#info_queue + 1] = {
 				key = "o_cry_universe",
 				set = "Other",
 				specific_vars = {
 					G.P_CENTERS.v_observatory.config.extra,
 					localize("cry_WholeDeck"),
 				}
-			}]]
-		end
+			}
+		end]]
 		return {
 			vars = {
 				localize("cry_WholeDeck"),
