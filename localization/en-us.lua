@@ -4740,16 +4740,17 @@ return {
 					"{C:inactive}(Currently {X:gold,C:white}+#1#{C:inactive})",
 				},
 			},
-			--[[o_perkele = {
+			o_perkele = {
 				name = "Observatory Effect",
 				text = {
+					"{X:dark_edition,C:white}^#2#{} mult if played hand is a",
+					"{C:attention}#4#{}",
+					"{X:mult,C:white}X#2#{} mult if played hand is a {C:attention}#3#{}",
 					"Held {C:attention}Sol{} and {C:attention}Perkele{} Cards",
 					"increase {C:attention}Ascension power",
 					"{C:inactive}(Currently {X:gold,C:white}+#1#{C:inactive})",
-					"{X:mult,C:white}X#2#{} mult if played hand is a {C:attention}#3#{}",
-					"or {C:attention}#4#{}",
 				},
-			},]]
+			},
 			p_cry_code_normal_1 = {
 				name = "Program Pack",
 				text = {
