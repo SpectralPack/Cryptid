@@ -1668,7 +1668,7 @@ function Cryptid.asc_level_up(card, copier, number, message)
 		}, card)
 	end
 
-	if not Cryptid.safe_get("Talisman", "config_file", "disable_anims") then
+	if not Cryptid.safe_get(Talisman, "config_file", "disable_anims") then
 		delay(0.4)
 		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
 			handname = localize("cry_asc_hands"),
