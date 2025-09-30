@@ -261,6 +261,17 @@ local universe = {
 		badges[1] = create_badge(localize("k_planet_universe"), get_type_colour(self or card.config, card), nil, 1.2)
 	end,
 	loc_vars = function(self, info_queue, center)
+		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
+			-- won't show up for some fucking reason
+			--[[info_queue[#info_queue + 1] = {
+				key = "o_cry_universe",
+				set = "Other",
+				specific_vars = {
+					G.P_CENTERS.v_observatory.config.extra,
+					localize("cry_WholeDeck"),
+				}
+			}]]
+		end
 		return {
 			vars = {
 				localize("cry_WholeDeck"),
@@ -277,6 +288,30 @@ local universe = {
 		}
 	end,
 	generate_ui = 0,
+
+	-- give emult instead of xmult
+	calculate = function(self, card, context)
+		if context.cry_observatory and card.ability.consumeable.hand_type == context.scoring_name then
+			local value = context.cry_observatory.ability.extra
+
+			-- because it's ((n^a)^a)^a
+			if Overflow then
+				value = value ^ to_big(card:getQty())
+			end
+
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(context.cry_observatory.ability.extra),
+					},
+				}),
+				Emult_mod = lenient_bignum(context.cry_observatory.ability.extra),
+				colour = G.C.DARK_EDITION,
+			}
+		end
+	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
@@ -635,9 +670,9 @@ local planetlua = {
 			end
 		end
 	end,
-	calculate = function(self, card, context) --Observatory effect: Variable XMult
-		if G.GAME.used_vouchers.v_observatory and context.joker_main then
-			pseudorandom("cry_googol_play")
+	calculate = function(self, card, context)
+		if context.cry_observatory then
+			-- pseudorandom("cry_googol_play")
 			local aaa = pseudorandom("mstar")
 			local limit = Card.get_gameset(card) == "modest" and 2 or 1e100
 			local formula = aaa + (0.07 * (aaa ^ 5 / (1 - aaa ^ 2)))
@@ -653,8 +688,7 @@ local planetlua = {
 			end
 			]]
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
+				xmult = value,
 			}
 		end
 	end,
@@ -760,8 +794,8 @@ local nstar = {
 			end,
 		}))
 	end,
-	calculate = function(self, card, context) --Observatory effect: X0.1 mult for each neutron star used this run
-		if G.GAME.used_vouchers.v_observatory and G.GAME.neutronstarsusedinthisrun > 0 and context.joker_main then
+	calculate = function(self, card, context)
+		if context.cry_observatory and G.GAME.neutronstarsusedinthisrun > 0 then
 			local value = G.GAME.neutronstarsusedinthisrun
 			if Overflow then
 				value = value ^ to_big(card:getQty())
@@ -989,22 +1023,18 @@ local ruutu = {
 	end,
 	calculate = function(self, card, context)
 		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
+			context.cry_observatory
 			and (
 				context.scoring_name == "High Card"
 				or context.scoring_name == "Pair"
 				or context.scoring_name == "Two Pair"
 			)
 		then
-			local value = G.P_CENTERS.v_observatory.config.extra
+			local value = context.cry_observatory.ability.extra
 			if Overflow then
 				value = value ^ to_big(card:getQty())
 			end
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
+			return { xmult = value }
 		end
 	end,
 	demicoloncompat = true,
@@ -1078,22 +1108,18 @@ local risti = {
 	end,
 	calculate = function(self, card, context)
 		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
+			context.cry_observatory
 			and (
 				context.scoring_name == "Three of a Kind"
 				or context.scoring_name == "Straight"
 				or context.scoring_name == "Flush"
 			)
 		then
-			local value = G.P_CENTERS.v_observatory.config.extra
+			local value = context.cry_observatory.ability.extra
 			if Overflow then
 				value = value ^ to_big(card:getQty())
 			end
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
+			return { xmult = value }
 		end
 	end,
 	demicoloncompat = true,
@@ -1167,22 +1193,18 @@ local hertta = {
 	end,
 	calculate = function(self, card, context)
 		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
+			context.cry_observatory
 			and (
 				context.scoring_name == "Full House"
 				or context.scoring_name == "Four of a Kind"
 				or context.scoring_name == "Straight Flush"
 			)
 		then
-			local value = G.P_CENTERS.v_observatory.config.extra
+			local value = context.cry_observatory.ability.extra
 			if Overflow then
 				value = value ^ to_big(card:getQty())
 			end
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
+			return { xmult = value }
 		end
 	end,
 	demicoloncompat = true,
@@ -1256,22 +1278,18 @@ local pata = {
 	end,
 	calculate = function(self, card, context)
 		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
+			context.cry_observatory
 			and (
 				context.scoring_name == "Five of a Kind"
 				or context.scoring_name == "Flush House"
 				or context.scoring_name == "Flush Five"
 			)
 		then
-			local value = G.P_CENTERS.v_observatory.config.extra
+			local value = context.cry_observatory.ability.extra
 			if Overflow then
 				value = value ^ to_big(card:getQty())
 			end
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
+			return { xmult = value }
 		end
 	end,
 	demicoloncompat = true,
@@ -1353,22 +1371,18 @@ local kaikki = {
 	end,
 	calculate = function(self, card, context)
 		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
+			context.cry_observatory
 			and (
 				context.scoring_name == "cry_Bulwark"
 				or context.scoring_name == "cry_Clusterfuck"
 				or context.scoring_name == "cry_UltPair"
 			)
 		then
-			local value = G.P_CENTERS.v_observatory.config.extra
+			local value = context.cry_observatory.ability.extra
 			if Overflow then
 				value = value ^ to_big(card:getQty())
 			end
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
+			return { xmult = value }
 		end
 	end,
 	demicoloncompat = true,
@@ -1376,6 +1390,7 @@ local kaikki = {
 		card:use_consumeable(area)
 	end,
 }
+
 -- Perkele
 -- Upgrades None, TEFD, and Ascended Hands
 local perkele = {
@@ -1468,13 +1483,13 @@ local perkele = {
 				observatory_power = Cryptid.funny_log(2, super_entropic_local_variable_that_stores_the_amount_of_suns + 1)
 			end
 			info_queue[#info_queue + 1] = {
-				key = "o_sunplanet",
+				key = "o_perkele",
 				set = "Other",
 				specific_vars = {
 					observatory_power,
-					--G.P_CENTERS.v_observatory.config.extra,
-					--localize("cry_None", "poker_hands"),
-					--localize("cry_WholeDeck", "poker_hands"),
+					G.P_CENTERS.v_observatory.config.extra,
+					localize("cry_None", "poker_hands"),
+					localize("cry_WholeDeck", "poker_hands"),
 				}
 			}
 		end
@@ -1499,20 +1514,28 @@ local perkele = {
 		Cryptid.suit_level_up(card, copier, number, card.config.center.config.level_types)
 	end,
 	calculate = function(self, card, context)
-		-- see lib/ascended.lua for ascension power effect
-		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
-			and (
-				context.scoring_name == "cry_None"
-				or context.scoring_name == "cry_WholeDeck"
-			)
-		then
-			local value = G.P_CENTERS.v_observatory.config.extra
+		if context.cry_observatory then
+			local value = context.cry_observatory.ability.extra
 			if Overflow then
 				value = value ^ to_big(card:getQty())
 			end
-			return { xmult = value }
+
+			if context.scoring_name == "cry_None" then
+				return { xmult = value }
+
+			elseif context.scoring_name == "cry_WholeDeck" then
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_powmult",
+						vars = {
+							number_format(context.cry_observatory.ability.extra),
+						},
+					}),
+					Emult_mod = lenient_bignum(context.cry_observatory.ability.extra),
+					colour = G.C.DARK_EDITION,
+				}
+			end
 		end
 	end,
 	demicoloncompat = true,
@@ -1631,22 +1654,18 @@ local voxel = {
 	end,
 	calculate = function(self, card, context)
 		if
-			G.GAME.used_vouchers.v_observatory
-			and context.joker_main
+			context.cry_observatory
 			and (
 				context.scoring_name == "cry_Declare0"
 				or context.scoring_name == "cry_Declare1"
 				or context.scoring_name == "cry_Declare2"
 			)
 		then
-			local value = G.P_CENTERS.v_observatory.config.extra
+			local value = context.cry_observatory.ability.extra
 			if Overflow then
 				value = value ^ to_big(card:getQty())
 			end
-			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { value } }),
-				Xmult_mod = value,
-			}
+			return { xmult = value }
 		end
 	end,
 	demicoloncompat = true,
