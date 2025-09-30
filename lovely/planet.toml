@@ -25,3 +25,22 @@ end
 if not softlocked then
 '''
 match_indent = true
+
+# context.cry_observatory
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/game_object.lua"]'
+pattern = '''if
+    context.other_consumeable and'''
+position = "at"
+payload = '''
+if context.other_consumeable then
+    local ctx = SMODS.shallow_copy(context)
+    ctx.cry_observatory = card
+    ctx.other_consumeable = nil
+    local ret = context.other_consumeable:calculate_joker(ctx)
+    if ret then SMODS.calculate_effect(ret, context.other_consumeable) end
+elseif context.other_consumeable and
+    not ret and
+'''
+match_indent = true
