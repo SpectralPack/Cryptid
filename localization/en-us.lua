@@ -4735,11 +4735,21 @@ return {
 			o_sunplanet = {
 				name = "Observatory Effect",
 				text = {
-					"Held {C:attention}Sol{} Cards increase",
-					"{C:attention}Ascension power",
+					"Held {C:attention}Sol{} and {C:attention}Perkele{} Cards",
+					"increase {C:attention}Ascension power",
 					"{C:inactive}(Currently {X:gold,C:white}+#1#{C:inactive})",
 				},
 			},
+			--[[o_perkele = {
+				name = "Observatory Effect",
+				text = {
+					"Held {C:attention}Sol{} and {C:attention}Perkele{} Cards",
+					"increase {C:attention}Ascension power",
+					"{C:inactive}(Currently {X:gold,C:white}+#1#{C:inactive})",
+					"{X:mult,C:white}X#2#{} mult if played hand is a {C:attention}#3#{}",
+					"or {C:attention}#4#{}",
+				},
+			},]]
 			p_cry_code_normal_1 = {
 				name = "Program Pack",
 				text = {
