@@ -847,94 +847,10 @@ local sunplanet = {
 		return true
 	end,
 	use = function(self, card, area, copier)
-		local used_consumable = copier or card
-		G.GAME.sunlevel = G.GAME.sunlevel + 1
-		G.GAME.sunnumber.modest = G.GAME.sunnumber.modest + card.ability.extra.modest
-		G.GAME.sunnumber.not_modest = G.GAME.sunnumber.not_modest + card.ability.extra.not_modest
-		delay(0.4)
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-			{ handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(G.GAME.sunlevel - 1) }
-		)
-		delay(1.0)
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("tarot1")
-				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
-				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				Cryptid.pulse_flame(0.01, G.GAME.sunlevel)
-				used_consumable:juice_up(0.8, 0.5)
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					blockable = false,
-					blocking = false,
-					delay = 1.2,
-					func = function()
-						ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
-						ease_colour(G.C.UI_MULT, G.C.RED, 1)
-						return true
-					end,
-				}))
-				return true
-			end,
-		}))
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 },
-			{ level = to_big(G.GAME.sunlevel) }
-		)
-		delay(2.6)
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
-			{ mult = 0, chips = 0, handname = "", level = "" }
-		)
+		Cryptid.asc_level_up(card, copier, 1)
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		local used_consumable = copier or card
-		G.GAME.sunlevel = G.GAME.sunlevel + number
-		G.GAME.sunnumber.modest = G.GAME.sunnumber.modest + number * card.ability.extra.modest
-		G.GAME.sunnumber.not_modest = G.GAME.sunnumber.not_modest + number * card.ability.extra.not_modest
-		delay(0.4)
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
-			handname = localize("cry_asc_hands"),
-			chips = "...",
-			mult = "...",
-			level = to_big(G.GAME.sunlevel - number),
-		})
-		delay(1.0)
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.2,
-			func = function()
-				play_sound("tarot1")
-				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
-				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
-				Cryptid.pulse_flame(0.01, G.GAME.sunlevel)
-				used_consumable:juice_up(0.8, 0.5)
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					blockable = false,
-					blocking = false,
-					delay = 1.2,
-					func = function()
-						ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
-						ease_colour(G.C.UI_MULT, G.C.RED, 1)
-						return true
-					end,
-				}))
-				return true
-			end,
-		}))
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 },
-			{ level = to_big(G.GAME.sunlevel) }
-		)
-		delay(2.6)
-		update_hand_text(
-			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
-			{ mult = 0, chips = 0, handname = "", level = "" }
-		)
+		Cryptid.asc_level_up(card, copier, number)
 	end,
 	loc_vars = function(self, info_queue, center)
 		local levelone = Cryptid.safe_get(G, "GAME", "sunlevel") or 1
@@ -962,11 +878,13 @@ local sunplanet = {
 			}
 		end
 		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
+			local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet") + #find_joker("cry-Perkele")
 			local observatory_power = 0
-			if #find_joker("cry-sunplanet") == 1 then
+
+			if super_entropic_local_variable_that_stores_the_amount_of_suns == 1 then
 				observatory_power = 1
-			elseif #find_joker("cry-sunplanet") > 1 then
-				observatory_power = Cryptid.funny_log(2, #find_joker("cry-sunplanet") + 1)
+			elseif super_entropic_local_variable_that_stores_the_amount_of_suns > 1 then
+				observatory_power = Cryptid.funny_log(2, super_entropic_local_variable_that_stores_the_amount_of_suns + 1)
 			end
 			info_queue[#info_queue + 1] = { key = "o_sunplanet", set = "Other", specific_vars = { observatory_power } }
 		end
@@ -1458,7 +1376,156 @@ local kaikki = {
 		card:use_consumeable(area)
 	end,
 }
--- order 166 reserved for suit planet of TEFD, None and Sol
+-- Perkele
+-- Upgrades None, TEFD, and Ascended Hands
+local perkele = {
+	cry_credits = {
+		idea = {
+			"cassknows",
+		},
+		art = {
+			"cassknows",
+			"Lil Mr. Slipstream",
+		},
+		code = {
+			"InvalidOS",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_planet",
+			"set_cry_poker_hand_stuff",
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	name = "cry-Perkele",
+	key = "perkele",
+	pos = { x = 2, y = 6 },
+	config = {
+		-- avoids having to mirror tweaks to sol on perkele
+		extra = sunplanet.config.extra,
+		-- "cry_asc_hands" is not a hand so don't include it here
+		hand_types = { "cry_None", "cry_WholeDeck" },
+		level_types = { "cry_None", "cry_WholeDeck", "cry_asc_hands" },
+		softlock = true
+	},
+	cost = 4,
+
+	-- idk if this even matters
+	aurinko = true,
+
+	atlas = "atlasnotjokers",
+	order = 166,
+	can_use = function(self, card)
+		return true
+	end,
+	loc_vars = function(self, info_queue, center)
+		local levels = {
+			G.GAME.hands["cry_None"].level or 1,
+			G.GAME.hands["cry_WholeDeck"].level or 1,
+			Cryptid.safe_get(G, "GAME", "sunlevel") or 1,
+		}
+		local colours = {}
+
+		for i, lvl in ipairs(levels) do
+			colours[i] = to_big(lvl) == to_big(1)
+				and G.C.UI.TEXT_DARK
+				or G.C.HAND_LEVELS[to_number(math.min(7, lvl))]
+		end
+
+		-- don't want to entirely rework ascension power just for one consumable
+		local modest = Cryptid.gameset(G.P_CENTERS.c_cry_sunplanet) == "modest"
+
+		if G.STAGE == G.STAGES.RUN then
+			local current_power = Cryptid.safe_get(G, "GAME", "current_round", "current_hand", "cry_asc_num")
+				or Cryptid.calculate_ascension_power(
+					nil,
+					nil,
+					nil,
+					G.GAME.used_vouchers.v_cry_hyperspacetether,
+					G.GAME.bonus_asc_power
+				)
+			local multiplier = modest and 1 + ((0.25 + G.GAME.sunnumber.modest) * current_power)
+				or (1.25 + G.GAME.sunnumber.not_modest) ^ current_power
+			info_queue[#info_queue + 1] = {
+				key = "asc_misc" .. (modest and 2 or ""),
+				set = "Other",
+				specific_vars = {
+					current_power,
+					multiplier,
+					modest and (G.GAME.sunnumber.modest + 0.25) or (G.GAME.sunnumber.not_modest + 1.25),
+				},
+			}
+		end
+		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
+			local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet") + #find_joker("cry-Perkele")
+			local observatory_power = 0
+
+			if super_entropic_local_variable_that_stores_the_amount_of_suns == 1 then
+				observatory_power = 1
+			elseif super_entropic_local_variable_that_stores_the_amount_of_suns > 1 then
+				observatory_power = Cryptid.funny_log(2, super_entropic_local_variable_that_stores_the_amount_of_suns + 1)
+			end
+			info_queue[#info_queue + 1] = {
+				key = "o_sunplanet",
+				set = "Other",
+				specific_vars = {
+					observatory_power,
+					--G.P_CENTERS.v_observatory.config.extra,
+					--localize("cry_None", "poker_hands"),
+					--localize("cry_WholeDeck", "poker_hands"),
+				}
+			}
+		end
+
+		return {
+			vars = {
+				localize("cry_None", "poker_hands"),
+				localize("cry_WholeDeck", "poker_hands"),
+				localize("cry_asc_hands"),
+				levels[1],
+				levels[2],
+				levels[3],
+				(Cryptid.safe_get(G, "GAME", "sunnumber", modest == "modest" and "modest" or "not_modest") or 0) + 0.25,
+				colours = colours,
+			},
+		}
+	end,
+	use = function(self, card, area, copier)
+		Cryptid.suit_level_up(card, copier, 1, card.config.center.config.level_types)
+	end,
+	bulk_use = function(self, card, area, copier, number)
+		Cryptid.suit_level_up(card, copier, number, card.config.center.config.level_types)
+	end,
+	calculate = function(self, card, context)
+		-- see lib/ascended.lua for ascension power effect
+		if
+			G.GAME.used_vouchers.v_observatory
+			and context.joker_main
+			and (
+				context.scoring_name == "cry_None"
+				or context.scoring_name == "cry_WholeDeck"
+			)
+		then
+			local value = G.P_CENTERS.v_observatory.config.extra
+			if Overflow then
+				value = value ^ to_big(card:getQty())
+			end
+			return { xmult = value }
+		end
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
+	in_pool = function(self)
+		return (G.GAME.cry_asc_played and G.GAME.cry_asc_played > 0)
+			or SMODS.is_poker_hand_visible("cry_WholeDeck")
+			or SMODS.is_poker_hand_visible("cry_None")
+	end,
+}
+
 local voxel = {
 	cry_credits = {
 		idea = {
@@ -1588,6 +1655,63 @@ local voxel = {
 	end,
 }
 
+function Cryptid.asc_level_up(card, copier, number, message)
+	local number = number or 1
+	local used_consumable = copier or card
+	G.GAME.sunlevel = G.GAME.sunlevel + number
+	G.GAME.sunnumber.modest = G.GAME.sunnumber.modest + number * card.ability.extra.modest
+	G.GAME.sunnumber.not_modest = G.GAME.sunnumber.not_modest + number * card.ability.extra.not_modest
+
+	if message then
+		SMODS.calculate_effect({
+			message = localize("k_level_up_ex")
+		}, card)
+	end
+
+	if not Cryptid.safe_get("Talisman", "config_file", "disable_anims") then
+		delay(0.4)
+		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+			handname = localize("cry_asc_hands"),
+			chips = "...",
+			mult = "...",
+			level = to_big(G.GAME.sunlevel - number),
+		})
+		delay(1.0)
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+				play_sound("tarot1")
+				ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+				ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+				Cryptid.pulse_flame(0.01, G.GAME.sunlevel)
+				used_consumable:juice_up(0.8, 0.5)
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					blockable = false,
+					blocking = false,
+					delay = 1.2,
+					func = function()
+						ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+						ease_colour(G.C.UI_MULT, G.C.RED, 1)
+						return true
+					end,
+				}))
+				return true
+			end,
+		}))
+		update_hand_text(
+			{ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 },
+			{ level = to_big(G.GAME.sunlevel) }
+		)
+		delay(2.6)
+		update_hand_text(
+			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+			{ mult = 0, chips = 0, handname = "", level = "" }
+		)
+	end
+end
+
 function Cryptid.suit_level_up(card, copier, number, poker_hands, message)
 	local used_consumable = copier or card
 	if not number then
@@ -1597,23 +1721,16 @@ function Cryptid.suit_level_up(card, copier, number, poker_hands, message)
 		poker_hands = { "Two Pair", "Straight Flush" }
 	end
 	if message then
-		card_eval_status_text(
-			card,
-			"extra",
-			nil,
-			nil,
-			nil,
-			{ message = localize("k_level_up_ex"), colour = G.C.FILTER }
-		)
+		SMODS.calculate_effect({
+			message = localize("k_level_up_ex")
+		}, card)
 	end
 	for _, v in pairs(poker_hands) do
-		update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
-			handname = localize(v, "poker_hands"),
-			chips = G.GAME.hands[v].chips,
-			mult = G.GAME.hands[v].mult,
-			level = G.GAME.hands[v].level,
-		})
-		level_up_hand(used_consumable, v, nil, number)
+		if v == "cry_asc_hands" then
+			Cryptid.asc_level_up(card, copier, number, message)
+		else
+			SMODS.smart_level_up_hand(used_consumable, v, nil, number)
+		end
 	end
 	update_hand_text(
 		{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -1637,7 +1754,7 @@ local planet_cards = {
 	hertta,
 	pata,
 	kaikki,
-	-- reserved for tefd/none/sol suit planet
+	perkele,
 	voxel,
 }
 return {
