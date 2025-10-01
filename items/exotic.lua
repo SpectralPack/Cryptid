@@ -1671,6 +1671,155 @@ local formidiulosus = {
 		code = { "Foegro" },
 	},
 }
+local caeruleum = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+			"set_cry_exotic",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-Caeruleum",
+	key = "caeruleum",
+	config = {
+		immutable = {
+			max_op = 3,
+		}
+	},
+
+	init = function(self)
+		-- this is probably not a very good way of doing this but uh it's how i did it
+		local ccj = Card.calculate_joker
+		function Card:calculate_joker(context, ...)
+			local ret = ccj(self, context, ...)
+
+			local left_joker = nil
+			local right_joker = nil
+
+			if #SMODS.find_card("j_cry_caeruleum") >= 1 then
+				-- find caeruleum, call its function if it exists
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i] == self then
+						left_joker = G.jokers.cards[i-1]
+						right_joker = G.jokers.cards[i+1]
+					end
+				end
+
+				-- with supercell, 2 copies will only give ^15 instead of ^30 due to the ^2 from the first one being overridden
+				-- fixing this would be very hard
+				if left_joker and left_joker.config.center.key == "j_cry_caeruleum" then
+					ret = Cryptid.caeruleum_mod_chips(ret, left_joker)
+				end
+
+				if right_joker and right_joker.config.center.key == "j_cry_caeruleum" then
+					ret = Cryptid.caeruleum_mod_chips(ret, right_joker)
+				end
+			end
+
+			return ret
+		end
+	end,
+
+	pos = { x = 3, y = 6 },
+	rarity = "cry_exotic",
+	order = 519,
+	cost = 50,
+	blueprint_compat = false,
+	demicoloncompat = false,
+	atlas = "atlasexotic",
+	soul_pos = { x = 5, y = 6, extra = { x = 4, y = 6 } },
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {},
+		}
+	end,
+	calculate = function(self, card, context)
+	end,
+	cry_credits = {
+		idea = { "HexaCryonic" },
+		art = { "Tatteredlurker" },
+		code = { "InvalidOS" },
+	},
+}
+
+local chipsOperators = {
+	{
+        keys = {
+            "eq_chips",
+            "Eqchips_mod",
+            "EQchips_mod",
+			-- TARGET: add =chips modifiers (or succession if you're silly)
+        },
+        operation = 0,
+    },
+	{
+        keys = {
+            "chips",
+            "h_chips",
+            "chip_mod"
+        },
+        operation = 1,
+    },
+	{
+        keys = {
+            "xchips",
+            "x_chips",
+            "Xchip_mod"
+        },
+		operation = 2,
+    },
+}
+
+local chipsReturnOperators = {
+	"chips",
+	"xchips",
+	"echips",
+}
+
+local chipsMessageKeys = {
+	"a_chips",
+	"a_xchips",
+	"a_powchips",
+}
+
+function Cryptid.caeruleum_mod_chips(effect, caeruleum)
+	if not SMODS.Calculation_Controls.chips or not effect or not next(effect) then return end
+
+	local new_effect = SMODS.shallow_copy(effect)
+
+	-- recursively go down extra tables
+	if effect.extra then new_effect.extra = Cryptid.caeruleum_mod_chips(effect.extra) end
+
+	for _, op in ipairs(chipsOperators) do
+        for _, key in pairs(op.keys) do
+            if effect[key] then
+                new_effect[key] = nil
+				local op2 = math.max(1, math.min(op.operation + 1, 3))
+				new_effect[chipsReturnOperators[op2]] = effect[key]
+
+				if key:sub(-4) == "_mod" then new_effect.remove_default_message = true end
+
+				new_effect = SMODS.merge_effects{
+					new_effect,
+					{
+						message = localize({
+							type = "variable",
+							key = chipsMessageKeys[op2],
+							vars = {
+								number_format(effect[key]),
+							},
+						}),
+						card = caeruleum,
+						focus = caeruleum
+					}
+				}
+            end
+        end
+    end
+
+	return new_effect
+end
+
 local items = {
 	gateway,
 	iterum,
@@ -1694,6 +1843,7 @@ local items = {
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
 	formidiulosus, -- see tenebris
+	caeruleum,
 }
 return {
 	name = "Exotic Jokers",
