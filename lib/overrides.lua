@@ -2243,6 +2243,8 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 				func = (function()
 					-- scored_card:juice_up()
 					local pitch_mod = pseudorandom("cry_broken_sync")*0.05 + 0.85
+					-- wolf fifth as opposed to plasma deck's just-intonated fifth
+					-- yes i'm putting music theory nerd stuff in here no you cannot stop me
 					play_sound('gong', pitch_mod, 0.3)
 					play_sound('gong', pitch_mod*1.4814814, 0.2)
 					play_sound('tarot1', 1.5)
