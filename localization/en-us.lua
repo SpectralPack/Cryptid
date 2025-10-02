@@ -1235,7 +1235,7 @@ return {
 			j_cry_broken_sync_catalyst = {
 				name = "Broken Sync Catalyst",
 				text = {
-					"Balances {C:attention}#1#%{} of {C:chips}Chips{} and {C:attention}#1#%{} of {C:mult}Mult{}",
+					"Swaps {C:attention}#1#%{} of {C:chips}Chips{} with {C:attention}#1#%{} of {C:mult}Mult{}",
 					"{C:inactive,s:0.8}I've seen this one before...",
 					"{C:inactive,s:0.8}...it's seen better days.",
 				},

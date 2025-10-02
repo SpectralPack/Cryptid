@@ -2237,19 +2237,17 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		chips:modify(mult_mod - chip_mod)
         mult:modify(chip_mod - mult_mod)
 
+		print(not Cryptid.safe_get(Talisman, "config_file", "disable_anims"))
 		if not Cryptid.safe_get(Talisman, "config_file", "disable_anims") then
 			G.E_MANAGER:add_event(Event({
 				func = (function()
 					-- scored_card:juice_up()
 					local pitch_mod = pseudorandom("cry_broken_sync")*0.05 + 0.85
-					-- in 12 tone equal temperament a tritone is a ratio of 1:sqrt(2)
-					-- the actual plasma deck balance sound effect uses a just intonated perfect fifth
-					local SQRT_2 = 1.41421356
 					play_sound('gong', pitch_mod, 0.3)
-					play_sound('gong', pitch_mod*SQRT_2, 0.2)
+					play_sound('gong', pitch_mod*1.4814814, 0.2)
 					play_sound('tarot1', 1.5)
-					ease_colour(G.C.UI_CHIPS, {0.8, 0.45, 0.85, 1})
-					ease_colour(G.C.UI_MULT, {0.8, 0.45, 0.85, 1})
+					ease_colour(G.C.UI_CHIPS, mix_colours(G.C.BLUE, G.C.RED, amount))
+					ease_colour(G.C.UI_MULT, mix_colours(G.C.RED, G.C.BLUE, amount))
 					G.E_MANAGER:add_event(Event({
 						trigger = 'after',
 						blockable = false,
@@ -2290,4 +2288,4 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
     end
 end
 
-SMODS.scoring_parameter_keys[#SMODS.scoring_parameter_keys+1] = "cry_broken_balance"
+SMODS.scoring_parameter_keys[#SMODS.scoring_parameter_keys+1] = "cry_broken_swap"
