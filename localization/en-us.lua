@@ -1232,6 +1232,14 @@ return {
 					"{C:attention}10 minutes",
 				},
 			},
+			j_cry_broken_sync_catalyst = {
+				name = "Broken Sync Catalyst",
+				text = {
+					"Balances {C:attention}#1#%{} of {C:chips}Chips{} and {C:attention}#1#%{} of {C:mult}Mult{}",
+					"{C:inactive,s:0.8}I've seen this one before...",
+					"{C:inactive,s:0.8}...it's seen better days.",
+				},
+			},
 			j_cry_brittle = {
 				name = "Brittle Candy",
 				text = {
@@ -5166,6 +5174,7 @@ return {
 			cry_p_star = "Star",
 
 			cry_again_q = "Again?",
+			cry_balanced_q = "Balanced...?",
 			cry_curse = "Curse",
 			cry_curse_ex = "Curse!",
 			cry_demicolon = "Demitrigger!",

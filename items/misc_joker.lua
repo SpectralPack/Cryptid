@@ -10879,6 +10879,48 @@ local poor_joker = { -- +1 to all listed probabilities for the highest cat tag l
 	end,
 }
 
+-- Broken Sync Catalyst
+-- Swaps 10% of chips with 10% of mult
+local broken_sync = {
+	cry_credits = {
+		idea = {
+			"arnideus",
+		},
+		art = {
+			"Tatteredlurker",
+		},
+		code = {
+			"InvalidOS",
+		},
+	},
+	object_type = "Joker",
+	dependencies = {
+		items = {
+			"set_cry_misc_joker",
+		},
+	},
+	name = "cry-broken_sync_catalyst",
+	key = "broken_sync_catalyst",
+	atlas = "atlastwo",
+	pos = { x = 6, y = 3 },
+	rarity = 3,
+	cost = 8,
+	order = 145,
+	demicoloncompat = true,
+	blueprint_compat = true,
+	config = { extra = { portion = 0.1 } },
+	loc_vars = function(self, info_queue, card)
+		return { vars = { number_format(Cryptid.clamp(card.ability.extra.portion * 100, 0, 100)) } }
+	end,
+	calculate = function(self, card, context)
+		if context.joker_main or context.forcetrigger then
+			return {
+				cry_broken_swap = card.ability.extra.portion
+			}
+		end
+	end
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -11010,6 +11052,7 @@ local miscitems = {
 	paved_joker,
 	fading_joker,
 	poor_joker,
+	broken_sync,
 }
 
 return {

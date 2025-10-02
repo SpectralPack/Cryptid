@@ -1453,6 +1453,11 @@ function Cryptid.funny_log(x, y)
 	return math.log(y) / math.log(x)
 end
 
+-- Clamps n between min and max
+function Cryptid.clamp(n, min, max)
+	return math.min(math.max(n, min), max)
+end
+
 local say_stuff_ref = Card_Character.say_stuff
 function Card_Character:say_stuff(n, not_first, quip_key)
 	local quip = SMODS.JimboQuips[quip_key]
