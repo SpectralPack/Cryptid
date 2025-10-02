@@ -1274,6 +1274,14 @@ return {
 					"to the next shop",
 				},
 			},
+			j_cry_caeruleum = {
+				name = "Caeruleum",
+				text = {
+					"Adjacent {C:chips}chips{}-modifying jokers",
+					"use the next highest {C:attention}operator{} for scoring",
+					"{C:inactive}(Caps at exponentiation)",
+				},
+			},
 			j_cry_candy_basket = {
 				name = "Candy Basket",
 				text = {
