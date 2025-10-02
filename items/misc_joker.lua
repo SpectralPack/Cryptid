@@ -10915,10 +10915,10 @@ local broken_sync = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				cry_broken_swap = card.ability.extra.portion
+				cry_broken_swap = card.ability.extra.portion,
 			}
 		end
-	end
+	end,
 }
 
 local miscitems = {
