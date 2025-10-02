@@ -4,3 +4,4 @@
 .lovelyignore
 .idea/*
 *.diff
+*.code-workspace
