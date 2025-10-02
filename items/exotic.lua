@@ -1684,7 +1684,7 @@ local caeruleum = {
 	config = {
 		immutable = {
 			max_op = 3,
-		}
+		},
 	},
 
 	init = function(self)
@@ -1700,8 +1700,8 @@ local caeruleum = {
 				-- find caeruleum, call its function if it exists
 				for i = 1, #G.jokers.cards do
 					if G.jokers.cards[i] == self then
-						left_joker = G.jokers.cards[i-1]
-						right_joker = G.jokers.cards[i+1]
+						left_joker = G.jokers.cards[i - 1]
+						right_joker = G.jokers.cards[i + 1]
 					end
 				end
 
@@ -1733,8 +1733,7 @@ local caeruleum = {
 			vars = {},
 		}
 	end,
-	calculate = function(self, card, context)
-	end,
+	calculate = function(self, card, context) end,
 	cry_credits = {
 		idea = { "HexaCryonic" },
 		art = { "Tatteredlurker" },
@@ -1744,30 +1743,30 @@ local caeruleum = {
 
 local chipsOperators = {
 	{
-        keys = {
-            "eq_chips",
-            "Eqchips_mod",
-            "EQchips_mod",
+		keys = {
+			"eq_chips",
+			"Eqchips_mod",
+			"EQchips_mod",
 			-- TARGET: add =chips modifiers (or succession if you're silly)
-        },
-        operation = 0,
-    },
+		},
+		operation = 0,
+	},
 	{
-        keys = {
-            "chips",
-            "h_chips",
-            "chip_mod"
-        },
-        operation = 1,
-    },
+		keys = {
+			"chips",
+			"h_chips",
+			"chip_mod",
+		},
+		operation = 1,
+	},
 	{
-        keys = {
-            "xchips",
-            "x_chips",
-            "Xchip_mod"
-        },
+		keys = {
+			"xchips",
+			"x_chips",
+			"Xchip_mod",
+		},
 		operation = 2,
-    },
+	},
 }
 
 local chipsReturnOperators = {
@@ -1783,23 +1782,29 @@ local chipsMessageKeys = {
 }
 
 function Cryptid.caeruleum_mod_chips(effect, caeruleum)
-	if not SMODS.Calculation_Controls.chips or not effect or not next(effect) then return end
+	if not SMODS.Calculation_Controls.chips or not effect or not next(effect) then
+		return
+	end
 
 	local new_effect = SMODS.shallow_copy(effect)
 
 	-- recursively go down extra tables
-	if effect.extra then new_effect.extra = Cryptid.caeruleum_mod_chips(effect.extra) end
+	if effect.extra then
+		new_effect.extra = Cryptid.caeruleum_mod_chips(effect.extra)
+	end
 
 	for _, op in ipairs(chipsOperators) do
-        for _, key in pairs(op.keys) do
-            if effect[key] then
-                new_effect[key] = nil
+		for _, key in pairs(op.keys) do
+			if effect[key] then
+				new_effect[key] = nil
 				local op2 = math.max(1, math.min(op.operation + 1, 3))
 				new_effect[chipsReturnOperators[op2]] = effect[key]
 
-				if key:sub(-4) == "_mod" then new_effect.remove_default_message = true end
+				if key:sub(-4) == "_mod" then
+					new_effect.remove_default_message = true
+				end
 
-				new_effect = SMODS.merge_effects{
+				new_effect = SMODS.merge_effects({
 					new_effect,
 					{
 						message = localize({
@@ -1810,12 +1815,12 @@ function Cryptid.caeruleum_mod_chips(effect, caeruleum)
 							},
 						}),
 						card = caeruleum,
-						focus = caeruleum
-					}
-				}
-            end
-        end
-    end
+						focus = caeruleum,
+					},
+				})
+			end
+		end
+	end
 
 	return new_effect
 end
