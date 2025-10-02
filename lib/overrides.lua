@@ -2237,7 +2237,6 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		chips:modify(mult_mod - chip_mod)
         mult:modify(chip_mod - mult_mod)
 
-		print(not Cryptid.safe_get(Talisman, "config_file", "disable_anims"))
 		if not Cryptid.safe_get(Talisman, "config_file", "disable_anims") then
 			G.E_MANAGER:add_event(Event({
 				func = (function()
