@@ -10950,21 +10950,31 @@ local thal = {
 	end,
 
 	calc_xmult = function(self, card)
-		if not (G.jokers or G.jokers.cards[1]) then return 1 end
+		if not (G.jokers or G.jokers.cards[1]) then
+			return 1
+		end
 
 		local seen = {}
 		for _, c in ipairs(G.jokers.cards) do
 			local rarity = c.config.center.rarity
-			if not seen[rarity] then seen[rarity] = 1 end
+			if not seen[rarity] then
+				seen[rarity] = 1
+			end
 		end
 
 		-- because lua generates keys automatically we ahve to do this
 		local n = 0
-		for _, r in pairs(seen) do if r then n = n + 1 end end
+		for _, r in pairs(seen) do
+			if r then
+				n = n + 1
+			end
+		end
 
 		-- n pick 2, or n!/(n-2)!, simplified bc of how lua is
 		local bonus = (n * (n - 1)) / 2
-		if bonus < 1 then return 1 end
+		if bonus < 1 then
+			return 1
+		end
 		return bonus * card.ability.extra.xmgain
 	end,
 
@@ -10972,7 +10982,7 @@ local thal = {
 		if context.joker_main or context.force_trigger then
 			return { mult = self:calc_xmult(card) }
 		end
-	end
+	end,
 }
 
 local miscitems = {
