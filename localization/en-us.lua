@@ -1240,6 +1240,13 @@ return {
 					"{C:inactive,s:0.8}...it's seen better days.",
 				},
 			},
+			j_cry_thalia = {
+				name = "Thalia and Melpomeme",
+				text = {
+					"Gains {C:white,X:mult}X#1#{} for every pair of unique rarities",
+					"{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive}){}",
+				},
+			},
 			j_cry_brittle = {
 				name = "Brittle Candy",
 				text = {
