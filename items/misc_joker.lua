@@ -10927,7 +10927,7 @@ local thal = {
 			"ODanK8604",
 		},
 		art = {
-			"none :(",
+			"Pangaea",
 		},
 		code = {
 			"candycanearter",
