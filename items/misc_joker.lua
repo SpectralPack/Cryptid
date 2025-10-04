@@ -9624,7 +9624,7 @@ local pity_prize = {
 			local tag_key
 			repeat
 				tag_key = get_next_tag_key("cry_pity_prize")
-			until tag_key ~= "tag_boss" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
+			until tag_key ~= "tag_boss" and tag_key ~= "tag_cry_gambler" --I saw pickle not generating boss tags because it apparently causes issues, so I did the same here
 
 			local tag = Cryptid.get_next_tag()
 			if tag then
@@ -9632,6 +9632,7 @@ local pity_prize = {
 			end
 
 			-- this is my first time seeing repeat... wtf
+			-- ^^ using repeat...until in this economy? absurd!
 			local tag = Tag(tag_key)
 			tag.ability.shiny = Cryptid.is_shiny()
 			if tag.name == "Orbital Tag" then
