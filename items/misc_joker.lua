@@ -10936,8 +10936,9 @@ local thal = {
 	object_type = "Joker",
 	name = "cry-thalia",
 	key = "thalia",
-	atlas = "placeholders",
-	pos = { x = 1, y = 1 },
+	atlas = "atlasthree",
+	pos = { x = 0, y = 8 },
+	soul_pos = { x = 1, y = 8 },
 	config = { extra = { xmgain = 1 } },
 	rarity = 4,
 	cost = 20,
@@ -10950,9 +10951,7 @@ local thal = {
 	end,
 
 	calc_xmult = function(self, card)
-		if not (G.jokers or G.jokers.cards[1]) then
-			return 1
-		end
+		if not (G.jokers and G.jokers.cards) then return 1 end
 
 		local seen = {}
 		for _, c in ipairs(G.jokers.cards) do
