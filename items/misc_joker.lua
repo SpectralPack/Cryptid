@@ -10921,6 +10921,71 @@ local broken_sync = {
 	end,
 }
 
+local thal = {
+	cry_credits = {
+		idea = {
+			"ODanK8604",
+		},
+		art = {
+			"Pangaea",
+		},
+		code = {
+			"candycanearter",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-thalia",
+	key = "thalia",
+	atlas = "atlasthree",
+	pos = { x = 0, y = 8 },
+	soul_pos = { x = 1, y = 8 },
+	config = { extra = { xmgain = 1 } },
+	rarity = 4,
+	cost = 20,
+	order = 145,
+	demicoloncompat = true,
+	blueprint_compat = true,
+
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmgain, self:calc_xmult(card) } }
+	end,
+
+	calc_xmult = function(self, card)
+		if not (G.jokers and G.jokers.cards) then
+			return 1
+		end
+
+		local seen = {}
+		for _, c in ipairs(G.jokers.cards) do
+			local rarity = c.config.center.rarity
+			if not seen[rarity] then
+				seen[rarity] = 1
+			end
+		end
+
+		-- because lua generates keys automatically we ahve to do this
+		local n = 0
+		for _, r in pairs(seen) do
+			if r then
+				n = n + 1
+			end
+		end
+
+		-- n pick 2, or n!/(n-2)!, simplified bc of how lua is
+		local bonus = (n * (n - 1)) / 2
+		if bonus < 1 then
+			return 1
+		end
+		return bonus * card.ability.extra.xmgain
+	end,
+
+	calculate = function(self, card, context)
+		if context.joker_main or context.force_trigger then
+			return { mult = self:calc_xmult(card) }
+		end
+	end,
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -11053,6 +11118,7 @@ local miscitems = {
 	fading_joker,
 	poor_joker,
 	broken_sync,
+	thal,
 }
 
 return {
