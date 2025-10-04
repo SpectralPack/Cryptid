@@ -10951,7 +10951,9 @@ local thal = {
 	end,
 
 	calc_xmult = function(self, card)
-		if not (G.jokers and G.jokers.cards) then return 1 end
+		if not (G.jokers and G.jokers.cards) then
+			return 1
+		end
 
 		local seen = {}
 		for _, c in ipairs(G.jokers.cards) do
