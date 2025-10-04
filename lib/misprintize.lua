@@ -18,15 +18,20 @@ Cryptid.misprintize_value_blacklist = {
 	colour = false,
 	suit_nominal_original = false,
 	times_played = false,
-	card_limit = false,
 	extra_slots_used = false,
-
+	card_limit = false,
 	-- TARGET: Misprintize Value Blacklist (format: key = false, )
 }
 Cryptid.misprintize_bignum_blacklist = {
 	odds = false,
 	cry_prob = false,
-	nominal = false,
+	perma_repetitions = false,
+	repetitions = false,
+	nominal = false, --keep here, please.
+}
+Cryptid.misprintize_value_cap = {
+	perma_repetitions = 40,
+	repetitions = 40,
 }
 
 function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level)
@@ -564,6 +569,9 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end
 		end
+	end
+	if Cryptid.misprintize_value_cap[name] then
+		num = math.min(num, Cryptid.misprintize_value_cap[name])
 	end
 	if Cryptid.misprintize_bignum_blacklist[name] == false then
 		num = to_number(num)
