@@ -11016,7 +11016,9 @@ local keychange = {
 	end,
 
 	calculate = function(self, card, context)
-		if context.before and G.GAME.hands[context.scoring_name]
+		if
+			context.before
+			and G.GAME.hands[context.scoring_name]
 			and G.GAME.hands[context.scoring_name].played_this_round < 2
 		then
 			card.ability.extra.xm = card.ability.extra.xm + card.ability.extra.xmgain
@@ -11028,11 +11030,10 @@ local keychange = {
 
 		if context.end_of_round and context.main_eval and not context.blueprint then
 			card.ability.extra.xm = 1
-			return { message = localize('k_reset') }
+			return { message = localize("k_reset") }
 		end
-	end
+	end,
 }
-
 
 local miscitems = {
 	jimball_sprite,
