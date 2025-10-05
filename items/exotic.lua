@@ -1695,7 +1695,6 @@ local caeruleum = {
 					if G.jokers.cards[i] == card then
 						for _, b in ipairs(card.ability.cry_caeruleum) do
 							local caeruleum = G.jokers.cards[i + (b and 1 or -1)]
-							print(i + (b and 1 or -1))
 							local was_key_changed, new_key, op = Cryptid.caeruleum_new_key(key)
 
 							-- change the key!
