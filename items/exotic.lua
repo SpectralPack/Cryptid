@@ -1682,12 +1682,7 @@ local caeruleum = {
 	name = "cry-Caeruleum",
 	key = "caeruleum",
 
-	-- this is just hardcoded because it's kinda unavoidable
-	--[[config = {
-		immutable = {
-			max_op = 3,
-		},
-	},]]
+	config = {},
 
 	init = function(self)
 		local scie = SMODS.calculate_individual_effect
@@ -1708,7 +1703,7 @@ local caeruleum = {
 								key = new_key
 
 								-- no _mod returns because i hate them
-								-- effect.remove_default_message = (key:sub(-4) == "_mod")
+								effect.remove_default_message = (key:sub(-4) == "_mod")
 
 								-- create a new message for caeruleum to display
 								local chipsMessageKeys = {
@@ -1861,25 +1856,6 @@ function Cryptid.caeruleum_new_key(key)
 				local new_key = chipsReturnOperators[op2]
 
 				return true, new_key, op2
-
-				--[[if key:sub(-4) == "_mod" then
-					new_effect.remove_default_message = true
-				end]]
-
-				--[[new_effect = SMODS.merge_effects({
-					new_effect,
-					{
-						message = localize({
-							type = "variable",
-							key = chipsMessageKeys[op2],
-							vars = {
-								number_format(effect[key]),
-							},
-						}),
-						card = caeruleum,
-						focus = caeruleum,
-					},
-				})]]
 			end
 		end
 	end
