@@ -1712,7 +1712,7 @@ local caeruleum = {
 								}
 
 								-- these get run through card_eval_status_text AFTER the normal calculate_individual_effect runs
-								caeruleum_messages[#caeruleum_messages+1] = {
+								caeruleum_messages[#caeruleum_messages + 1] = {
 									caeruleum,
 									"extra",
 									nil,
@@ -1727,8 +1727,8 @@ local caeruleum = {
 											},
 										}),
 										focus = caeruleum,
-										sound = 'chips1',
-									}
+										sound = "chips1",
+									},
 								}
 							end
 						end
@@ -1781,12 +1781,12 @@ local caeruleum = {
 			-- boolean value is true if the joker was to the left of caeruleum (so caeruleum is to the right of it)
 			if left_joker and left_joker.config.center.key ~= "j_cry_caeruleum" then
 				left_joker.ability.cry_caeruleum = left_joker.ability.cry_caeruleum or {}
-				left_joker.ability.cry_caeruleum[#left_joker.ability.cry_caeruleum+1] = true
+				left_joker.ability.cry_caeruleum[#left_joker.ability.cry_caeruleum + 1] = true
 			end
 
 			if right_joker and right_joker.config.center.key ~= "j_cry_caeruleum" then
 				right_joker.ability.cry_caeruleum = right_joker.ability.cry_caeruleum or {}
-				right_joker.ability.cry_caeruleum[#right_joker.ability.cry_caeruleum+1] = false
+				right_joker.ability.cry_caeruleum[#right_joker.ability.cry_caeruleum + 1] = false
 			end
 		end
 
