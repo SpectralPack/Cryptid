@@ -1681,41 +1681,72 @@ local caeruleum = {
 	object_type = "Joker",
 	name = "cry-Caeruleum",
 	key = "caeruleum",
-	config = {
-		immutable = {
-			max_op = 3,
-		},
-	},
+
+	config = {},
 
 	init = function(self)
-		-- this is probably not a very good way of doing this but uh it's how i did it
-		local ccj = Card.calculate_joker
-		function Card:calculate_joker(context, ...)
-			local ret = ccj(self, context, ...)
+		local scie = SMODS.calculate_individual_effect
+		function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition, ...)
+			local card = effect.card or scored_card
+			local caeruleum_messages = {}
 
-			local left_joker = nil
-			local right_joker = nil
-
-			if #SMODS.find_card("j_cry_caeruleum") >= 1 then
-				-- find caeruleum, call its function if it exists
+			if Cryptid.safe_get(card, "ability", "cry_caeruleum") then
 				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i] == self then
-						left_joker = G.jokers.cards[i - 1]
-						right_joker = G.jokers.cards[i + 1]
+					if G.jokers.cards[i] == card then
+						for _, b in ipairs(card.ability.cry_caeruleum) do
+							local caeruleum = G.jokers.cards[i + (b and 1 or -1)]
+							local was_key_changed, new_key, op = Cryptid.caeruleum_new_key(key)
+
+							-- change the key!
+							if was_key_changed then
+								key = new_key
+
+								-- no _mod returns because i hate them
+								effect.remove_default_message = (key:sub(-4) == "_mod")
+
+								-- create a new message for caeruleum to display
+								local chipsMessageKeys = {
+									"a_chips",
+									"a_xchips",
+									"a_powchips",
+								}
+
+								-- these get run through card_eval_status_text AFTER the normal calculate_individual_effect runs
+								caeruleum_messages[#caeruleum_messages+1] = {
+									caeruleum,
+									"extra",
+									nil,
+									percent,
+									nil,
+									{
+										message = localize({
+											type = "variable",
+											key = chipsMessageKeys[op],
+											vars = {
+												number_format(amount),
+											},
+										}),
+										focus = caeruleum,
+										sound = 'chips1',
+									}
+								}
+							end
+						end
 					end
-				end
-
-				-- with supercell, 2 copies will only give ^15 instead of ^30 due to the ^2 from the first one being overridden
-				-- fixing this would be very hard
-				if left_joker and left_joker.config.center.key == "j_cry_caeruleum" then
-					ret = Cryptid.caeruleum_mod_chips(ret, left_joker)
-				end
-
-				if right_joker and right_joker.config.center.key == "j_cry_caeruleum" then
-					ret = Cryptid.caeruleum_mod_chips(ret, right_joker)
 				end
 			end
 
+			-- run normal function
+			local ret = scie(effect, scored_card, key, amount, from_edition, ...)
+
+			-- display caeruleum messages
+			if #caeruleum_messages > 0 then
+				for _, msg in ipairs(caeruleum_messages) do
+					card_eval_status_text(unpack(msg))
+				end
+			end
+
+			-- return result
 			return ret
 		end
 	end,
@@ -1733,7 +1764,39 @@ local caeruleum = {
 			vars = {},
 		}
 	end,
-	calculate = function(self, card, context) end,
+	calculate = function(self, card, context)
+		-- used to "mark" jokers to be affected by caeruleum
+		if context.before and context.cardarea == G.jokers then
+			local left_joker = nil
+			local right_joker = nil
+
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i] == card then
+					left_joker = G.jokers.cards[i - 1]
+					right_joker = G.jokers.cards[i + 1]
+				end
+			end
+
+			-- allows caeruleum to stack
+			-- boolean value is true if the joker was to the left of caeruleum (so caeruleum is to the right of it)
+			if left_joker and left_joker.config.center.key ~= "j_cry_caeruleum" then
+				left_joker.ability.cry_caeruleum = left_joker.ability.cry_caeruleum or {}
+				left_joker.ability.cry_caeruleum[#left_joker.ability.cry_caeruleum+1] = true
+			end
+
+			if right_joker and right_joker.config.center.key ~= "j_cry_caeruleum" then
+				right_joker.ability.cry_caeruleum = right_joker.ability.cry_caeruleum or {}
+				right_joker.ability.cry_caeruleum[#right_joker.ability.cry_caeruleum+1] = false
+			end
+		end
+
+		if context.after and context.cardarea == G.jokers then
+			-- reset this on every joker just to avoid weird bugs
+			for i = 1, #G.jokers.cards do
+				G.jokers.cards[i].ability.cry_caeruleum = nil
+			end
+		end
+	end,
 	cry_credits = {
 		idea = { "HexaCryonic" },
 		art = { "Tatteredlurker" },
@@ -1775,54 +1838,28 @@ local chipsReturnOperators = {
 	"echips",
 }
 
-local chipsMessageKeys = {
-	"a_chips",
-	"a_xchips",
-	"a_powchips",
-}
-
-function Cryptid.caeruleum_mod_chips(effect, caeruleum)
-	if not SMODS.Calculation_Controls.chips or not effect or not next(effect) then
-		return
-	end
-
-	local new_effect = SMODS.shallow_copy(effect)
-
-	-- recursively go down extra tables
-	if effect.extra then
-		new_effect.extra = Cryptid.caeruleum_mod_chips(effect.extra)
+--- Handles Caeruleum's operator increase.
+--- @param key string The key being checked.
+--- @return boolean was_key_changed Whether the key was actually changed.
+--- @return string new_key The new key if it was changed, or old one if it wasn't.
+--- @return integer? op The new operator's position in the hyperoperation sequence. `nil` if the key wasn't changed.\n(1 is addition, 2 is multiplication, 3 is exponentiation)
+function Cryptid.caeruleum_new_key(key)
+	if not SMODS.Calculation_Controls.chips or not key then
+		return false, key
 	end
 
 	for _, op in ipairs(chipsOperators) do
-		for _, key in pairs(op.keys) do
-			if effect[key] then
-				new_effect[key] = nil
+		for _, key2 in pairs(op.keys) do
+			if key == key2 then
 				local op2 = math.max(1, math.min(op.operation + 1, 3))
-				new_effect[chipsReturnOperators[op2]] = effect[key]
+				local new_key = chipsReturnOperators[op2]
 
-				if key:sub(-4) == "_mod" then
-					new_effect.remove_default_message = true
-				end
-
-				new_effect = SMODS.merge_effects({
-					new_effect,
-					{
-						message = localize({
-							type = "variable",
-							key = chipsMessageKeys[op2],
-							vars = {
-								number_format(effect[key]),
-							},
-						}),
-						card = caeruleum,
-						focus = caeruleum,
-					},
-				})
+				return true, new_key, op2
 			end
 		end
 	end
 
-	return new_effect
+	return false, key
 end
 
 local items = {
