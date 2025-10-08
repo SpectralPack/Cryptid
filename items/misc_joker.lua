@@ -11021,7 +11021,11 @@ local keychange = {
 			and G.GAME.hands[context.scoring_name]
 			and G.GAME.hands[context.scoring_name].played_this_round < 2
 		then
-			card.ability.extra.xm = card.ability.extra.xm + card.ability.extra.xmgain
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "xm",
+				scalar_value = "mgain",
+			})
 		end
 
 		if context.joker_main or context.force_trigger then
