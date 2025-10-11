@@ -857,8 +857,8 @@ local trick_or_treat = {
 	demicoloncompat = true,
 	calculate = function(self, card, context)
 		if context.selling_self then
-			if not
-				SMODS.pseudorandom_probability(
+			if
+				not SMODS.pseudorandom_probability(
 					card,
 					"cry_trick_or_treat",
 					1,
