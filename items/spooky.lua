@@ -858,10 +858,10 @@ local trick_or_treat = {
 	calculate = function(self, card, context)
 		if context.selling_self then
 			if
-				not SMODS.pseudorandom_probability(
+				SMODS.pseudorandom_probability(
 					card,
 					"cry_trick_or_treat",
-					1,
+					3,
 					card and card.ability.extra.odds or self.config.extra.odds
 				)
 			then
@@ -891,7 +891,7 @@ local trick_or_treat = {
 	end,
 	loc_vars = function(self, info_queue, center)
 		local num, denom =
-			SMODS.get_probability_vars(card, 1, card and card.ability.extra.odds or self.config.extra.odds)
+			SMODS.get_probability_vars(card, 3, card and card.ability.extra.odds or self.config.extra.odds)
 		return {
 			vars = {
 				num,
