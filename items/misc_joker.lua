@@ -10982,7 +10982,7 @@ local thal = {
 
 	calculate = function(self, card, context)
 		if context.joker_main or context.force_trigger then
-			return { mult = self:calc_xmult(card) }
+			return { xmult = self:calc_xmult(card) }
 		end
 	end,
 }
