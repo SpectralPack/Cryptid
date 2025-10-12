@@ -4477,6 +4477,7 @@ return {
 					"trigger {C:cry_code}#1#",
 					"{C:inactive}Not all cards can be triggered this way{}",
 					"{C:inactive}but all Jokers can trigger the other{}",
+					"Removed at end of round",
 				},
 			},
 			cry_global_sticker = {

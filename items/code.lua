@@ -2276,6 +2276,10 @@ local hooked = {
 				end
 			end
 		end
+
+		if context.end_of_round and context.individual then
+			card.ability.cry_hooked = nil
+		end
 	end,
 }
 -- ://Off By One
