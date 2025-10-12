@@ -1247,15 +1247,6 @@ return {
 					"{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive}){}",
 				},
 			},
-			j_cry_keychange = {
-				name = "Key Change",
-				text = {
-					"Gains {C:white,X:mult}X#1#{} if {C:attention}poker hand{} has",
-					"not been played this round",
-					"Resets at {C:attention}end of round{}",
-					"{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive{}){}",
-				},
-			},
 			j_cry_brittle = {
 				name = "Brittle Candy",
 				text = {
