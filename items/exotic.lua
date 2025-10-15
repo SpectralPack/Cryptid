@@ -1874,7 +1874,7 @@ local items = {
 	effarcire_sprite,
 	crustulum,
 	primus,
-	scalae,
+	-- scalae, -- too strong
 	stella_mortis,
 	circulus_pistoris,
 	aequilibrium,
