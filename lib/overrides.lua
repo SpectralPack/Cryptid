@@ -743,7 +743,7 @@ function SMODS.create_mod_badges(obj, badges)
 			}
 			local function eq_col(x, y)
 				for i = 1, 4 do
-					if x[1] ~= y[1] then
+					if x[i] ~= y[i] then
 						return false
 					end
 				end
