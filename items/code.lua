@@ -3068,14 +3068,30 @@ local declare = {
 		local localize_ref = localize
 		function localize(first, second, ...)
 			if second == "poker_hands" then
-				if G then if G.GAME then if G.GAME.hands then if G.GAME.hands[first] then if G.GAME.hands[first].declare_name then
-					return G.GAME.hands[first].declare_name
-				end end end end end
+				if G then
+					if G.GAME then
+						if G.GAME.hands then
+							if G.GAME.hands[first] then
+								if G.GAME.hands[first].declare_name then
+									return G.GAME.hands[first].declare_name
+								end
+							end
+						end
+					end
+				end
 			end
 			if second == "poker_hand_descriptions" then
-				if G then if G.GAME then if G.GAME.hands then if G.GAME.hands[first] then if G.GAME.hands[first].suitless then
-					return localize_ref(first .. "_suitless", second, ...)
-				end end end end end
+				if G then
+					if G.GAME then
+						if G.GAME.hands then
+							if G.GAME.hands[first] then
+								if G.GAME.hands[first].suitless then
+									return localize_ref(first .. "_suitless", second, ...)
+								end
+							end
+						end
+					end
+				end
 			end
 			return localize_ref(first, second, ...)
 		end
