@@ -9,6 +9,8 @@ local code = {
 	default = "c_cry_crash",
 	can_stack = true,
 	can_divide = true,
+	select_card = "consumeables",
+	select_button_text = "b_pull",
 }
 
 local code_digital_hallucinations_compat = {
@@ -5344,47 +5346,6 @@ local code_cards = {
 return {
 	name = "Code Cards",
 	init = function()
-		--Code from Betmma's Vouchers
-		G.FUNCS.can_reserve_card = function(e)
-			local c1 = e.config.ref_table
-			if
-				#G.consumeables.cards
-				< G.consumeables.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
-			then
-				e.config.colour = G.C.GREEN
-				e.config.button = "reserve_card"
-			else
-				e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-				e.config.button = nil
-			end
-		end
-		G.FUNCS.reserve_card = function(e)
-			local c1 = e.config.ref_table
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.1,
-				func = function()
-					c1.area:remove_card(c1)
-					c1:add_to_deck()
-					if c1.children.price then
-						c1.children.price:remove()
-					end
-					c1.children.price = nil
-					if c1.children.buy_button then
-						c1.children.buy_button:remove()
-					end
-					c1.children.buy_button = nil
-					remove_nils(c1.children)
-					G.consumeables:emplace(c1)
-					SMODS.calculate_context({ pull_card = true, card = c1 })
-					G.GAME.pack_choices = G.GAME.pack_choices - 1
-					if G.GAME.pack_choices <= 0 then
-						G.FUNCS.end_consumeable(nil, delay_fac)
-					end
-					return true
-				end,
-			}))
-		end
 		--some code to make typing more characters better
 		G.FUNCS.text_input_key = function(args)
 			args = args or {}
