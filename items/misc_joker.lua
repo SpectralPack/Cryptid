@@ -1894,13 +1894,13 @@ local sus = {
 				G.GAME.sus_cards = destroyed_cards
 			end
 			-- SMODS.calculate_context({ remove_playing_cards = true, removed = G.GAME.sus_cards })
-			return { 
+			return {
 				message = localize("cry_sus_ex"),
-				func = function() 
+				func = function()
 					-- this was moved to here because of a timing issue (no bugs/odd behaviour, but looked weird)
-                    draw_card(G.play, G.deck, 90, "up", nil)
-                    playing_card_joker_effects({ _c })
-                end
+					draw_card(G.play, G.deck, 90, "up", nil)
+					playing_card_joker_effects({ _c })
+				end,
 			}
 		end
 	end,
