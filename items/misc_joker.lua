@@ -1878,11 +1878,11 @@ local sus = {
 						#king_of_hearts_cards > 0 and pseudorandom_element(king_of_hearts_cards, pseudoseed("cry_sus2"))
 					) or chosen_card
 					local _c = copy_card(to_copy, nil, nil, G.playing_card)
-					_c:start_materialize()
 					_c:add_to_deck()
 					G.deck.config.card_limit = G.deck.config.card_limit + 1
 					table.insert(G.playing_cards, _c)
-					G.hand:emplace(_c)
+					G.play:emplace(_c)
+					_c:start_materialize()
 					playing_card_joker_effects({ _c })
 					return true
 				end,
@@ -1894,7 +1894,14 @@ local sus = {
 				G.GAME.sus_cards = destroyed_cards
 			end
 			-- SMODS.calculate_context({ remove_playing_cards = true, removed = G.GAME.sus_cards })
-			return { message = localize("cry_sus_ex") }
+			return { 
+				message = localize("cry_sus_ex"),
+				func = function() 
+					-- this was moved to here because of a timing issue (no bugs/odd behaviour, but looked weird)
+                    draw_card(G.play, G.deck, 90, "up", nil)
+                    playing_card_joker_effects({ _c })
+                end
+			}
 		end
 	end,
 	cry_credits = {
