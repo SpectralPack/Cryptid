@@ -1384,7 +1384,7 @@ local verisimile = {
 		return { vars = { number_format(center.ability.extra.xmult) } }
 	end,
 	calculate = function(self, card, context)
-		if context.pseudorandom_result and context.result then
+		if context.pseudorandom_result and context.result and not context.blueprint then
 			-- implementation that doesn't use SMODS.scale_card; use if scale_card causes weird or unexpected behavior
 			--[[
 			card.ability.extra.xmult = lenient_bignum(card.ability.extra.xmult + context.denominator)
@@ -1408,14 +1408,16 @@ local verisimile = {
 				scalar_table = context,
 				scalar_value = "denominator",
 				scaling_message = {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.xmult) },
-					}),
 				},
 			})
 
+			return{
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(card.ability.extra.xmult) },
+				}),
+			}
 		-- forcetriggers won't scale non verisimile, because how much would you scale it by
 		elseif context.joker_main or context.forcetrigger then
 			return {
