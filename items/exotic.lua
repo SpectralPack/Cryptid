@@ -1407,11 +1407,10 @@ local verisimile = {
 				ref_value = "xmult",
 				scalar_table = context,
 				scalar_value = "denominator",
-				scaling_message = {
-				},
+				scaling_message = {},
 			})
 
-			return{
+			return {
 				message = localize({
 					type = "variable",
 					key = "a_xmult",
