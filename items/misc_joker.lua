@@ -10048,6 +10048,14 @@ local lebaron_james = {
 					}
 				end
 			end
+		elseif
+			context.end_of_round
+			and not context.repetition
+			and not context.individual
+			and not context.blueprint
+			and not context.retrigger_joker
+		then
+			card.ability.immutable.added_h = 0
 		end
 	end,
 	cry_credits = {
