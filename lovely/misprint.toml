@@ -24,13 +24,18 @@ end
 match_indent = true
 
 # Packs
+# changed this patch to fix certain shop booster stuff
+# the function used was kinda problematic though
+# so consider this a quickfix, as i feel as if the function itself could be changed
 [[patches]]
 [patches.pattern]
 target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "before"
 payload = '''
-Cryptid.manipulate(card)
+if G.GAME.modifiers.cry_misprint_min then
+    Cryptid.manipulate(card)
+end
 '''
 match_indent = true
 
