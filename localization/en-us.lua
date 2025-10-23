@@ -4471,6 +4471,15 @@ return {
 					"Removed at end of round",
 				},
 			},
+			cry_hooked = {
+				name = "Hooked",
+				text = {
+					"When this Joker is {C:cry_code}triggered{},",
+					"trigger {C:cry_code}#1#",
+					"{C:inactive}Not all cards can be triggered this way{}",
+					"{C:inactive}but all Jokers can trigger the other{}",
+				},
+			},
 			cry_global_sticker = {
 				name = "Global",
 				text = {
