@@ -2174,6 +2174,9 @@ local hook = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
+		return {
+			key = Cryptid.gameset_loc(self, { madness = "2" })
+		}
 	end,
 	use = function(self, card, area, copier)
 		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 2, 2)
@@ -2277,7 +2280,7 @@ local hooked = {
 			end
 		end
 
-		if context.end_of_round and context.individual then
+		if context.end_of_round and context.individual and Cryptid.gameset(G.P_CENTERS.c_cry_hook) ~= "madness" then
 			card.ability.cry_hooked = nil
 		end
 	end,
