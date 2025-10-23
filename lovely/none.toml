@@ -303,3 +303,29 @@ payload = '''
             else
 '''
 match_indent = true
+
+# Fix a crash with Cerlulean bell if there are no cards in hand 1/2
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''
+forced_card.ability.forced_selection = true
+'''
+position = "before"
+payload = '''
+if forced_card then
+'''
+match_indent = true
+
+# Fix a crash with Cerlulean bell if there are no cards in hand 2/2
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''
+G.hand:add_to_highlighted(forced_card)
+'''
+position = "after"
+payload = '''
+end
+'''
+match_indent = true
