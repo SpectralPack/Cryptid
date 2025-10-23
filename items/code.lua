@@ -2248,9 +2248,9 @@ local hooked = {
 			end
 			var = var or ("[no joker found - " .. (card.ability.cry_hook_id or "nil") .. "]")
 		end
-		return { 
+		return {
 			vars = { var or "hooked Joker" },
-			key = Cryptid.gameset_loc(self, { madness = "2" })
+			key = Cryptid.gameset_loc(self, { madness = "2" }),
 		}
 	end,
 	key = "cry_hooked",
