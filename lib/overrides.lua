@@ -227,6 +227,8 @@ function Game:start_run(args)
 	if not G.GAME.defeated_blinds then
 		G.GAME.defeated_blinds = {}
 	end
+	G.consumeables.config.highlighted_limit = 1e100
+	G.jokers.config.highlighted_limit = 1e100
 end
 
 --patch for multiple Clocks to tick separately and load separately
