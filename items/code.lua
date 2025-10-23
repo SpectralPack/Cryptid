@@ -2175,7 +2175,7 @@ local hook = {
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
 		return {
-			key = Cryptid.gameset_loc(self, { madness = "2" })
+			key = Cryptid.gameset_loc(self, { madness = "2" }),
 		}
 	end,
 	use = function(self, card, area, copier)
