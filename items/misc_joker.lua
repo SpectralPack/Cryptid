@@ -11002,6 +11002,58 @@ local thal = {
 	end,
 }
 
+local keychange = {
+	cry_credits = {
+		idea = {
+			"arnideus",
+		},
+		art = {
+			"Tatteredlurker",
+		},
+		code = {
+			"candycanearter",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-keychange",
+	key = "keychange",
+	atlas = "placeholders",
+	pos = { x = 1, y = 1 },
+	config = { extra = { xm = 1, xmgain = 0.25 } },
+	rarity = 2,
+	cost = 5,
+	order = 145,
+	demicoloncompat = true,
+	blueprint_compat = true,
+
+	loc_vars = function(self, info_queue, card)
+		return { vars = { card.ability.extra.xmgain, card.ability.extra.xm } }
+	end,
+
+	calculate = function(self, card, context)
+		if
+			context.before
+			and G.GAME.hands[context.scoring_name]
+			and G.GAME.hands[context.scoring_name].played_this_round < 2
+		then
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "xm",
+				scalar_value = "mgain",
+			})
+		end
+
+		if context.joker_main or context.force_trigger then
+			return { xmult = card.ability.extra.xm }
+		end
+
+		if context.end_of_round and context.main_eval and not context.blueprint then
+			card.ability.extra.xm = 1
+			return { message = localize("k_reset") }
+		end
+	end,
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -11135,6 +11187,7 @@ local miscitems = {
 	poor_joker,
 	broken_sync,
 	thal,
+	keychange,
 }
 
 return {
