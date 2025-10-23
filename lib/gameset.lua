@@ -330,6 +330,8 @@ G.FUNCS.cry_gameset_confirm = function(e)
 		if G.selectedGameset == "madness" then
 			--Unlock All by default in madness
 			G.PROFILES[G.SETTINGS.profile].all_unlocked = true
+			G.PROFILES[G.SETTINGS.profile].cry_none2 = true
+			G.PROFILES[G.SETTINGS.profile].cry_none = (Cryptid.enabled("set_cry_poker_hand_stuff") == true)
 			for k, v in pairs(G.P_CENTERS) do
 				if not v.demo and not v.wip then
 					v.alerted = true
@@ -1129,8 +1131,7 @@ function Cryptid.update_obj_registry(m, force_enable)
 								G.PROFILES,
 								G.SETTINGS.profile,
 								"cry_none2"
-							) or nil
-							G.PROFILES[G.SETTINGS.profile].cry_none2 = nil
+							) and true or nil
 						end
 					end
 				else
@@ -1138,8 +1139,6 @@ function Cryptid.update_obj_registry(m, force_enable)
 						v:_disable(en)
 						if v.key == "set_cry_poker_hand_stuff" and G.PROFILES[G.SETTINGS.profile].cry_none then
 							--Remove the none flag if poker hands are disabled because leaving it on can leave to softlocks
-							G.PROFILES[G.SETTINGS.profile].cry_none2 =
-								Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_none")
 							G.PROFILES[G.SETTINGS.profile].cry_none = nil
 						end
 					end

@@ -1839,6 +1839,7 @@ function end_round()
 			Cryptid.enabled("set_cry_poker_hand_stuff") == true
 			and not Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_none")
 		then
+			G.PROFILES[G.SETTINGS.profile].cry_none2 = true
 			G.PROFILES[G.SETTINGS.profile].cry_none = true
 		end
 		if not Cryptid.enabled("set_cry_poker_hand_stuff") then
@@ -1975,6 +1976,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
 	-- None Stuff
 	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 1 then
 		G.PROFILES[G.SETTINGS.profile].cry_none = true
+		G.PROFILES[G.SETTINGS.profile].cry_none2 = true
 		print("nonelock stuff here")
 		G.GAME.hands["cry_None"].visible = true
 	end
@@ -2204,6 +2206,7 @@ end
 local unlock_allref = G.FUNCS.unlock_all
 G.FUNCS.unlock_all = function(e)
 	unlock_allref(e)
+	G.PROFILES[G.SETTINGS.profile].cry_none2 = true
 	G.PROFILES[G.SETTINGS.profile].cry_none = (Cryptid.enabled("set_cry_poker_hand_stuff") == true)
 end
 
