@@ -2174,9 +2174,6 @@ local hook = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { key = "cry_hooked", set = "Other", vars = { "hooked Joker" } }
-		return {
-			key = Cryptid.gameset_loc(self, { madness = "2" }),
-		}
 	end,
 	use = function(self, card, area, copier)
 		local jokers = Cryptid.get_highlighted_cards({ G.jokers }, card, 2, 2)
@@ -2251,7 +2248,10 @@ local hooked = {
 			end
 			var = var or ("[no joker found - " .. (card.ability.cry_hook_id or "nil") .. "]")
 		end
-		return { vars = { var or "hooked Joker" } }
+		return { 
+			vars = { var or "hooked Joker" },
+			key = Cryptid.gameset_loc(self, { madness = "2" })
+		}
 	end,
 	key = "cry_hooked",
 	no_sticker_sheet = true,
