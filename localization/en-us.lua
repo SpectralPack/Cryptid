@@ -4471,7 +4471,7 @@ return {
 					"Removed at end of round",
 				},
 			},
-			cry_hooked2 = {
+			cry_hooked_2 = {
 				name = "Hooked",
 				text = {
 					"When this Joker is {C:cry_code}triggered{},",
