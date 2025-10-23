@@ -2250,7 +2250,10 @@ local hooked = {
 			end
 			var = var or ("[no joker found - " .. (card.ability.cry_hook_id or "nil") .. "]")
 		end
-		return { vars = { var or "hooked Joker" } }
+		return {
+			vars = { var or "hooked Joker" },
+			key = Cryptid.gameset_loc(self, { madness = "2" }),
+		}
 	end,
 	key = "cry_hooked",
 	no_sticker_sheet = true,
@@ -2277,6 +2280,10 @@ local hooked = {
 					end
 				end
 			end
+		end
+
+		if context.end_of_round and context.individual and Cryptid.gameset(G.P_CENTERS.c_cry_hook) ~= "madness" then
+			card.ability.cry_hooked = nil
 		end
 	end,
 }
