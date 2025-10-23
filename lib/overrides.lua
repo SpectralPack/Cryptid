@@ -2205,18 +2205,6 @@ G.FUNCS.unlock_all = function(e)
 	G.PROFILES[G.SETTINGS.profile].cry_none = (Cryptid.enabled("set_cry_poker_hand_stuff") == true)
 end
 
--- Calc ante gain for The Joke (Scuffed)
-local smods_calc = SMODS.calculate_context
-function SMODS.calculate_context(context, return_table, no_resolve)
-	local aaa = smods_calc(context, return_table, no_resolve)
-	if context.modify_ante and context.ante_end then
-		if G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() ~= 1 then
-			aaa.modify = G.GAME.blind:cry_calc_ante_gain()
-		end
-	end
-	return aaa
-end
-
 local scie = SMODS.calculate_individual_effect
 function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition, ...)
 	local ret = scie(effect, scored_card, key, amount, from_edition, ...)

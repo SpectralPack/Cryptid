@@ -423,7 +423,6 @@ local joke = {
 	boss = {
 		min = 1,
 		max = 10,
-		yes_orb = true,
 	},
 	atlas = "blinds",
 	order = 15,
@@ -448,14 +447,15 @@ local joke = {
 	collection_loc_vars = function(self)
 		return { vars = { "8", localize("cry_joke_placeholder") } }
 	end,
-	cry_calc_ante_gain = function(self)
-		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) * 2 then
-			if G.GAME.round_resets.ante == 1 then
-				G.GAME.cry_ach_conditions.the_jokes_on_you_triggered = true
+	calculate = function(self, blind, context)
+		if context.modify_ante and context.ante_end and not blind.disabled then
+			if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) * 2 then
+				if G.GAME.round_resets.ante == 1 then
+					G.GAME.cry_ach_conditions.the_jokes_on_you_triggered = true
+				end
+				return { modify = G.GAME.win_ante - G.GAME.round_resets.ante % G.GAME.win_ante }
 			end
-			return G.GAME.win_ante - G.GAME.round_resets.ante % G.GAME.win_ante
 		end
-		return 1
 	end,
 }
 local hammer = {
