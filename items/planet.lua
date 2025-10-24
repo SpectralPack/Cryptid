@@ -967,7 +967,7 @@ local ruutu = {
 			"Jevonn",
 		},
 		art = {
-			"jenwalter666",
+			"Tatteredlurker",
 		},
 		code = {
 			"Math",
@@ -1052,7 +1052,7 @@ local risti = {
 			"Jevonn",
 		},
 		art = {
-			"jenwalter666",
+			"Tatteredlurker",
 		},
 		code = {
 			"Math",
@@ -1137,7 +1137,7 @@ local hertta = {
 			"Jevonn",
 		},
 		art = {
-			"jenwalter666",
+			"Tatteredlurker",
 		},
 		code = {
 			"Math",
@@ -1222,7 +1222,7 @@ local pata = {
 			"Jevonn",
 		},
 		art = {
-			"jenwalter666",
+			"Tatteredlurker",
 		},
 		code = {
 			"Math",
@@ -1307,7 +1307,7 @@ local kaikki = {
 			"HexaCryonic",
 		},
 		art = {
-			"HexaCryonic",
+			"Tatteredlurker",
 		},
 		code = {
 			"HexaCryonic",
@@ -1401,8 +1401,7 @@ local perkele = {
 			"cassknows",
 		},
 		art = {
-			"cassknows",
-			"Lil Mr. Slipstream",
+			"Tatteredlurker",
 		},
 		code = {
 			"InvalidOS",
@@ -1530,10 +1529,10 @@ local perkele = {
 						type = "variable",
 						key = "a_powmult",
 						vars = {
-							number_format(context.cry_observatory.ability.extra),
+							number_format(value),
 						},
 					}),
-					Emult_mod = lenient_bignum(context.cry_observatory.ability.extra),
+					Emult_mod = lenient_bignum(value),
 					colour = G.C.DARK_EDITION,
 				}
 			end
