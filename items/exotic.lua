@@ -1426,7 +1426,7 @@ local verisimile = {
 	end,
 	cry_credits = {
 		idea = { "Enemui" },
-		art  = { "Tatteredlurker" },
+		art = { "Tatteredlurker" },
 		code = { "Jevonn", "invalidOS" },
 	},
 }
