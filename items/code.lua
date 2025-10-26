@@ -4409,15 +4409,9 @@ local ctrl_v = {
 		end
 	end,
 	bulk_use = function(self, card, area, copier, number)
-		local cards = Cryptid.get_highlighted_cards(
-			{ G.hand, G.consumeables, G.pack_cards },
-			card,
-			1,
-			1,
-			function(card)
-				return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
-			end
-		)
+		local cards = Cryptid.get_highlighted_cards({ G.hand, G.consumeables, G.pack_cards }, card, 1, 1, function(card)
+			return card.area ~= G.pack_Cards or card.ability.set == "Default" or card.ability.set == "Enhanced"
+		end)
 		for i = 1, number do
 			if cards[1] then
 				if cards[1].area == G.hand then
