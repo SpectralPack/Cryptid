@@ -137,7 +137,7 @@ pattern = '''for k, v in pairs(self.children) do'''
 position = 'before'
 match_indent = true
 payload = '''
-if Cryptid.safe_get(self, "config", "tag", "ability", "edshader") then
+if Cryptid and Cryptid.safe_get and Cryptid.safe_get(self, "config", "tag", "ability", "edshader") then
 	local ed = self.config.tag.ability.edshader
 	self.ARGS.send_to_shader = self.ARGS.send_to_shader or {}
 	self.ARGS.send_to_shader[1] = math.min(self.VT.r*3, 1) + G.TIMERS.REAL/28 + (self.juice and self.juice.r*10 or 0) + (Cryptid.safe_get(self, "tilt_var", "amt") or 0)
