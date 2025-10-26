@@ -4411,7 +4411,7 @@ local ctrl_v = {
 	bulk_use = function(self, card, area, copier, number)
 		local cards = Cryptid.get_highlighted_cards(
 			{ G.hand, G.consumeables, G.pack_cards },
-			cards,
+			card,
 			1,
 			1,
 			function(card)
