@@ -11079,15 +11079,27 @@ local emergencychips = {
 	blueprint_compat = true,
 
 	loc_vars = function(self, info_queue, card)
-		return { vars = { number_format(card.ability.extra.chips) } }
+		return { 
+			vars = { 
+				number_format(card.ability.extra.chips),
+			},
+		}
 	end,
 
 	calculate = function(self, card, context)
-		if context.selling_self or context.forcetrigger:
-			ease_chips(card.ability.extra.chips)
+		if context.selling_self or context.forcetrigger then
+			return
+			{
+				message = localize({
+					type = "variable",
+					key = "a_chips",
+					vars = { number_format(card.ability.extra.chips) },
+				}),
+				colour = G.C.BLUE,
+				chip_mod = lenient_bignum(card.ability.extra.chips),
+			}
 		end
 	end,
-	
 }
 
 local miscitems = {
