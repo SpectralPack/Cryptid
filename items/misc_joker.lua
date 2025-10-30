@@ -11054,6 +11054,42 @@ local keychange = {
 	end,
 }
 
+local emergencychips = {
+	cry_credits = {
+		idea = {
+			"AlexZGreat",
+		},
+		art = {
+			"Tatteredlurker"
+		},
+		code = {
+			"BobJoe400",
+		},
+	}
+	object_type = "Joker",
+	name = "cry-emergencychips",
+	key = "emergencychips",
+	atlas = "placeholders",
+	pos = { x = 1, y = 1 },
+	config = { extra = { chips = 10000 } },
+	rarity = 1, 
+	cost = 3,
+	order = 145,
+	demicoloncompat = true,
+	blueprint_compat = true,
+
+	loc_vars = function(self, info_queue, card)
+		return { vars = { number_format(card.ability.extra.chips) } }
+	end,
+
+	calculate = function(self, card, context)
+		if context.selling_self or context.forcetrigger:
+			ease_chips(card.ability.extra.chips)
+		end
+	end,
+	
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
