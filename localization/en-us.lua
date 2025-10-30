@@ -1712,6 +1712,14 @@ return {
 					"{C:inactive,s:0.8}you don't deserve me at my 2x\"",
 				},
 			},
+			j_cry_emergencychips = {
+				name = "Emergency Chips",
+				text = {
+					"Immediately gain {C:chips}#1#{} Chips",
+					"when sold",
+					"{C:inactive}(IN CASE OF EMERGENCY){}",
+				}
+			},
 			j_cry_energia = {
 				name = "Energia",
 				text = {
