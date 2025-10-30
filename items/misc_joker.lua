@@ -11236,6 +11236,7 @@ local miscitems = {
 	broken_sync,
 	thal,
 	keychange,
+	emergencychips,
 }
 
 return {
