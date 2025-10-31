@@ -1243,7 +1243,8 @@ return {
 			j_cry_thalia = {
 				name = "Thalia and Melpomeme",
 				text = {
-					"Gains {C:white,X:mult}X#1#{} for every pair of unique rarities",
+					"{C:white,X:mult}X#1#{} Mult for every",
+					"pair of unique rarities",
 					"{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive}){}",
 				},
 			},
@@ -3327,6 +3328,18 @@ return {
 					"and {C:attention}#3#{}",
 				},
 			},
+			c_cry_perkele = {
+				name = "Perkele",
+				text = {
+					"({V:1}lvl.#4#{})({V:2}lvl.#5#{})({V:3}lvl.#6#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:inactive}(Currently {X:gold,C:white}X#7#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
+					"{C:inactive}Per {C:attention}1{C:inactive} Ascension power)",
+				},
+			},
 			c_cry_voxel = {
 				name = "Voxel",
 				text = {
@@ -4471,6 +4484,16 @@ return {
 				},
 			},
 			cry_hooked = {
+				name = "Hooked",
+				text = {
+					"When this Joker is {C:cry_code}triggered{},",
+					"trigger {C:cry_code}#1#",
+					"{C:inactive}Not all cards can be triggered this way{}",
+					"{C:inactive}but all Jokers can trigger the other{}",
+					"Removed at end of round",
+				},
+			},
+			cry_hooked_2 = {
 				name = "Hooked",
 				text = {
 					"When this Joker is {C:cry_code}triggered{},",

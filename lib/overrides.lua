@@ -227,6 +227,8 @@ function Game:start_run(args)
 	if not G.GAME.defeated_blinds then
 		G.GAME.defeated_blinds = {}
 	end
+	G.consumeables.config.highlighted_limit = 1e100
+	G.jokers.config.highlighted_limit = 1e100
 end
 
 --patch for multiple Clocks to tick separately and load separately
@@ -743,7 +745,7 @@ function SMODS.create_mod_badges(obj, badges)
 			}
 			local function eq_col(x, y)
 				for i = 1, 4 do
-					if x[1] ~= y[1] then
+					if x[i] ~= y[i] then
 						return false
 					end
 				end
@@ -1837,6 +1839,7 @@ function end_round()
 			Cryptid.enabled("set_cry_poker_hand_stuff") == true
 			and not Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_none")
 		then
+			G.PROFILES[G.SETTINGS.profile].cry_none2 = true
 			G.PROFILES[G.SETTINGS.profile].cry_none = true
 		end
 		if not Cryptid.enabled("set_cry_poker_hand_stuff") then
@@ -1973,6 +1976,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
 	-- None Stuff
 	if G.GAME.stamp_mod and not G.PROFILES[G.SETTINGS.profile].cry_none and #G.hand.highlighted == 1 then
 		G.PROFILES[G.SETTINGS.profile].cry_none = true
+		G.PROFILES[G.SETTINGS.profile].cry_none2 = true
 		print("nonelock stuff here")
 		G.GAME.hands["cry_None"].visible = true
 	end
@@ -2202,19 +2206,8 @@ end
 local unlock_allref = G.FUNCS.unlock_all
 G.FUNCS.unlock_all = function(e)
 	unlock_allref(e)
+	G.PROFILES[G.SETTINGS.profile].cry_none2 = true
 	G.PROFILES[G.SETTINGS.profile].cry_none = (Cryptid.enabled("set_cry_poker_hand_stuff") == true)
-end
-
--- Calc ante gain for The Joke (Scuffed)
-local smods_calc = SMODS.calculate_context
-function SMODS.calculate_context(context, return_table, no_resolve)
-	local aaa = smods_calc(context, return_table, no_resolve)
-	if context.modify_ante and context.ante_end then
-		if G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() ~= 1 then
-			aaa.modify = G.GAME.blind:cry_calc_ante_gain()
-		end
-	end
-	return aaa
 end
 
 local scie = SMODS.calculate_individual_effect

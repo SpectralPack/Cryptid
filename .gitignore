@@ -5,3 +5,4 @@
 .idea/*
 *.diff
 *.code-workspace
+.DS_Store
