@@ -11091,7 +11091,7 @@ local emergencychips = {
 			if G.STATE ~= G.STATES.SELECTING_HAND then
 				return
 			end
-			
+
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.hand_text_area.game_chips:juice_up()
@@ -11104,17 +11104,11 @@ local emergencychips = {
 			G.STATE = G.STATES.HAND_PLAYED
 			G.STATE_COMPLETE = false
 
-			return { message = localize("k_saved_ex")}
-			-- return
-			-- {
-			-- 	message = localize({
-			-- 		type = "variable",
-			-- 		key = "a_chips",
-			-- 		vars = { number_format(card.ability.extra.chips) },
-			-- 	}),
-			-- 	colour = G.C.BLUE,
-			-- 	chip_mod = lenient_bignum(card.ability.extra.chips),
-			-- }
+			if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) then
+				return { message = localize("k_saved_ex")}
+			else
+				return { message = localize("k_nope_ex")}
+			end
 		end
 	end,
 }
