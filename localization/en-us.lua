@@ -1715,7 +1715,8 @@ return {
 			j_cry_emergencychips = {
 				name = "Emergency Chips",
 				text = {
-					"Immediately gain {C:chips}#1#{} Chips",
+					"Immediately gain",
+					"{C:chips}#1#{} score",
 					"when sold",
 					"{C:inactive}(IN CASE OF EMERGENCY){}",
 				}
