@@ -11065,12 +11065,12 @@ local emergencychips = {
 		code = {
 			"BobJoe400",
 		},
-	}
+	},
 	object_type = "Joker",
 	name = "cry-emergencychips",
 	key = "emergencychips",
 	atlas = "placeholders",
-	pos = { x = 1, y = 1 },
+	pos = { x = 3, y = 9 },
 	config = { extra = { chips = 10000 } },
 	rarity = 1, 
 	cost = 3,
