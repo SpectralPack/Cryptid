@@ -11071,23 +11071,24 @@ local emergencychips = {
 	key = "emergencychips",
 	atlas = "atlasthree",
 	pos = { x = 2, y = 8 },
-	config = { extra = { chips = 10000 } },
-	rarity = 1, 
+	config = { immutable = { blind_mult = 0.2 } },
+	rarity = 1,
 	cost = 3,
 	order = 145,
-	demicoloncompat = true,
+	demicoloncompat = false,
 	blueprint_compat = true,
 
 	loc_vars = function(self, info_queue, card)
-		return { 
-			vars = { 
-				number_format(card.ability.extra.chips),
+		return {
+			vars = {
+				number_format(card.ability.immutable.blind_mult * 100),
+				number_format(G and G.GAME and G.GAME.blind and G.GAME.blind.chips and to_big(G.GAME.blind.chips) > to_big(0) and (G.GAME.blind.chips * card.ability.immutable.blind_mult) or 0)
 			},
 		}
 	end,
 
 	calculate = function(self, card, context)
-		if context.selling_self or context.forcetrigger then
+		if context.selling_self and not context.forcetrigger then
 			if G.STATE ~= G.STATES.SELECTING_HAND then
 				return
 			end
@@ -11100,7 +11101,7 @@ local emergencychips = {
 				end,
 			}))
 
-			G.GAME.chips = G.GAME.chips + card.ability.extra.chips
+			G.GAME.chips = G.GAME.chips + G.GAME.blind.chips * card.ability.immutable.blind_mult
 			G.STATE = G.STATES.HAND_PLAYED
 			G.STATE_COMPLETE = false
 

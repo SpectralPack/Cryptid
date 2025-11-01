@@ -1716,9 +1716,9 @@ return {
 				name = "Emergency Chips",
 				text = {
 					"Immediately gain",
-					"{C:chips}#1#{} score",
-					"when sold",
-					"{C:inactive}(IN CASE OF EMERGENCY){}",
+					"{C:chips}#1#%{} of blind requirement",
+					"as score when sold",
+					"{C:inactive}(Currently {}{C:chips}#2#{}{C:inactive}){}",
 				}
 			},
 			j_cry_energia = {
