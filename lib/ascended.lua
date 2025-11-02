@@ -125,7 +125,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		G.GAME.used_vouchers.v_cry_hyperspacetether,
 		G.GAME.bonus_asc_power
 	)
-	if a_power > 0 then
+	if to_big(a_power) > to_big(0) then
 		G.GAME.current_round.current_hand.cry_asc_num = a_power
 		-- Change mult and chips colors if hand is ascended
 		if not hidden then
