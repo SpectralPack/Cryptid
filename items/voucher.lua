@@ -371,7 +371,30 @@ local satellite_uplink = { -- Code T2; Code cards may appear in any of the Celes
 SMODS.Booster:take_ownership_by_kind("Celestial", {
 	create_card = function(self, card, i)
 		local _card
-		if G.GAME.used_vouchers.v_cry_satellite_uplink and pseudorandom("satellite_uplink") > 0.8 then
+		if G.GAME.used_vouchers.v_telescope and i == 1 then
+			local _planet, _hand, _tally = nil, nil, 0
+			for k, v in ipairs(G.handlist) do
+				if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
+					_hand = v
+					_tally = G.GAME.hands[v].played
+				end
+			end
+			if _hand then
+				for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+					if v.config.hand_type == _hand then
+						_planet = v.key
+					end
+				end
+			end
+			_card = {
+				set = "Planet",
+				area = G.pack_cards,
+				skip_materialize = true,
+				soulable = true,
+				key = _planet,
+				key_append = "pl1",
+			}
+		elseif G.GAME.used_vouchers.v_cry_satellite_uplink and pseudorandom("satellite_uplink") > 0.8 then
 			_card = {
 				set = "Code",
 				area = G.pack_cards,
