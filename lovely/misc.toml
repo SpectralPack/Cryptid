@@ -207,10 +207,8 @@ payload = '''
 if args and args.vars and type(args.vars) == "table" then
     local reset = {}
     for i, j in pairs(args.vars) do
-        if type(j) == 'table' then
-            if (j.new and type(j.new) == "function") and ((j.m and j.e) or (j.array and j.sign and (type(j.array) == "table"))) then
-                reset[i] = number_format(j)
-            end
+        if Cryptid.is_big(j) then
+            reset[i] = number_format(j)
         end
     end
     for i, j in pairs(reset) do

@@ -24,7 +24,7 @@ function Card:cry_copy_ability()
 	local orig_ability = {}
 	if self.ability then
 		for i, j in pairs(self.ability) do
-			if (type(j) == "table") and is_number(j) then
+			if Cryptid.is_big(j) then
 				orig_ability[i] = to_big(j)
 			elseif type(j) == "table" then
 				orig_ability[i] = {}

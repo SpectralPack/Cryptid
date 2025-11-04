@@ -1466,3 +1466,11 @@ function Card_Character:say_stuff(n, not_first, quip_key)
 		return say_stuff_ref(self, n, not_first, quip_key)
 	end
 end
+
+
+function Cryptid.is_number(x)
+	return type(x) == "number" or (type(x) == "table" and is_number(x)) or (is_big and is_big(x))
+end
+function Cryptid.is_big(x)
+	return (type(x) == "table" and is_number(x)) or (is_big and is_big(x))
+end

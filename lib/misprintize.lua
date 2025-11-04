@@ -229,11 +229,12 @@ function Cryptid.misprintize_val(val, override, big, grow_type, pow_level)
 	return val
 end
 function Cryptid.sanity_check(val, is_big)
+	if not Talisman then return val end
 	if is_big then
 		if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
 			val = 1e300
 		end
-		if type(val) == "table" then
+		if Cryptid.is_big(val) then
 			return val
 		end
 		if val > 1e100 or val < -1e100 then
@@ -243,7 +244,7 @@ function Cryptid.sanity_check(val, is_big)
 	if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
 		return 1e300
 	end
-	if type(val) == "table" then
+	if Cryptid.is_big(val) then
 		if val > to_big(1e300) then
 			return 1e300
 		end
@@ -333,7 +334,7 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 	end
 	if clamps then
 		for i, v in pairs(clamps) do
-			if type(v) == "table" and not v.tetrate then
+			if type(v) == "table" and not Cryptid.is_big(v) then
 				for i2, v2 in pairs(v) do
 					if to_big(card.ability[i][i2]) > to_big(v2) then
 						card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
@@ -345,7 +346,7 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 						end
 					end
 				end
-			elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
+			elseif Cryptid.is_number(v) then
 				if to_big(card.ability[i]) > to_big(v) then
 					card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
 					if to_big(card.ability[i]) > to_big(-1e100) or to_big(card.ability[i]) < to_big(1e100) then
@@ -396,11 +397,12 @@ function Card:get_nominal(mod)
 end
 
 function Cryptid.manipulate(card, args)
+	if not card or not card.config or not card.config.center then return end
 	if not Card.no(card, "immutable", true) or (args and args.bypass_checks) then
 		if not args then
 			return Cryptid.manipulate(card, {
-				min = (G.GAME.modifiers.cry_misprint_min or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
-				max = (G.GAME.modifiers.cry_misprint_max or 1) * (G.GAME.modifiers.cry_jkr_misprint_mod or 1),
+				min = (G.GAME.modifiers.cry_misprint_min or 1),
+				max = (G.GAME.modifiers.cry_misprint_max or 1),
 				type = "X",
 				dont_stack = true,
 				no_deck_effects = true,
@@ -438,13 +440,13 @@ function Cryptid.manipulate(card, args)
 				end
 				if caps then
 					for i, v in pairs(caps) do
-						if type(v) == "table" and not v.tetrate then
+						if Cryptid.is_big(v) then
 							for i2, v2 in pairs(v) do
 								if to_big(card.ability[i][i2]) > to_big(v2) then
 									card.ability[i][i2] = Cryptid.sanity_check(v2, Cryptid.is_card_big(card))
 								end
 							end
-						elseif (type(v) == "table" and v.tetrate) or type(v) == "number" then
+						elseif Cryptid.is_number(v) then
 							if to_big(card.ability[i]) > to_big(v) then
 								card.ability[i] = Cryptid.sanity_check(v, Cryptid.is_card_big(card))
 							end
@@ -456,7 +458,7 @@ function Cryptid.manipulate(card, args)
 			if not Cryptid.base_values[card.config.center.key] then
 				Cryptid.base_values[card.config.center.key] = {}
 				for i, v in pairs(config) do
-					if (type(v) == "table" and v.tetrate) or type(v) == "number" and to_big(v) ~= to_big(0) then
+					if Cryptid.is_number(v) and to_big(v) ~= to_big(0) then
 						Cryptid.base_values[card.config.center.key][i .. "ability"] = v
 					elseif type(v) == "table" then
 						for i2, v2 in pairs(v) do
@@ -488,7 +490,7 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 	end
 	for i, v in pairs(ref_table[ref_value]) do
 		if
-			(type(v) == "number" or (type(v) == "table" and v.tetrate))
+			Cryptid.is_number(v)
 			and Cryptid.misprintize_value_blacklist[i] ~= false
 		then
 			local num = v
@@ -504,19 +506,12 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 						or Cryptid.base_values[card.config.center.key][i .. "consumeable"]
 				end
 			end
-			local new_val = Cryptid.manipulate_value(num, args, args.big or Cryptid.is_card_big(card), i)
-			ref_table[ref_value][i] = new_val
-
-			-- take double scale / scalae into account
-			if ref_value == "ability" and ref_table.ability.cry_scaling_info then
-				ref_table.ability.cry_scaling_info[i] = new_val
+			if args.big ~= nil then
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big, i)
+			else
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card), i)
 			end
-		elseif
-			i ~= "immutable"
-			and not (ref_value == "ability" and i == "cry_scaling_info")
-			and type(v) == "table"
-			and Cryptid.misprintize_value_blacklist[i] ~= false
-		then
+		elseif i ~= "immutable" and type(v) == "table" and Cryptid.misprintize_value_blacklist[i] ~= false then
 			Cryptid.manipulate_table(card, ref_table[ref_value], i, args)
 		end
 	end
@@ -547,7 +542,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				end
 			elseif args.type == "^" then
 				num = to_big(num) ^ new_value
-			elseif args.type == "hyper" then
+			elseif args.type == "hyper" and SMODS.Mods.Talisman and SMODS.Mods.Talisman.can_load then
 				if to_big(num) ~= to_big(0) and to_big(num) ~= to_big(1) then
 					num = to_big(num):arrow(args.value.arrows, to_big(new_value))
 				end
@@ -565,7 +560,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 				end
 			elseif args.type == "^" then
 				num = to_big(num) ^ args.value
-			elseif args.type == "hyper" then
+			elseif args.type == "hyper" and SMODS.Mods.Talisman and SMODS.Mods.Talisman.can_load then
 				num = to_big(num):arrow(args.value.arrows, to_big(args.value.height))
 			end
 		end
