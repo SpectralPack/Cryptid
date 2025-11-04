@@ -56,8 +56,8 @@ return {
 				text = {
 					"{C:attention}Joker{} and {C:attention}Consumable{}",
 					"slots are {C:attention}combined",
-					"{C:attention}Nostalgic{} Blinds replace",
-					"their updated Blind",
+					"{C:attention}Nostalgic{} ブラインド replace",
+					"their updated ブラインド",
 				},
 				unlock = {
 					"Win a run",
@@ -78,7 +78,7 @@ return {
 				},
 				unlock = {
 					"Beat {C:attention}The Serpent",
-					"without {C:red}discarding",
+					"without {C:red}ディスカード",
 				},
 			},
 			b_cry_CCD = {
@@ -167,7 +167,7 @@ return {
 				text = {
 					"Multiply the values of",
 					"all Jokers by {X:dark_edition,C:white} X1.25 {}",
-					"when Boss Blind is defeated",
+					"when Boss ブラインド is defeated",
 					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
 				},
 				unlock = {
@@ -191,7 +191,7 @@ return {
 				name = "Misprint Deck",
 				text = {
 					"Values of cards",
-					"and poker hands",
+					"and ポーカーハンド",
 					"are {C:attention}randomized",
 				},
 				unlock = {
@@ -201,12 +201,12 @@ return {
 			b_cry_redeemed = {
 				name = "Redeemed Deck",
 				text = {
-					"When a {C:attention}Voucher{} is purchased,",
+					"When a {C:attention}バウチャー{} is purchased,",
 					"gain its {C:attention}extra tiers",
 				},
 				unlock = {
 					"Discover every",
-					"{C:attention}Voucher",
+					"{C:attention}バウチャー",
 				},
 			},
 			b_cry_sk_deck = {
@@ -234,7 +234,7 @@ return {
 				name = "Spooky Deck",
 				text = {
 					"Start with an {C:eternal}Eternal{} {C:attention,T:j_cry_chocolate_dice}Chocolate Die",
-					"After each {C:attention}Ante{}, create a",
+					"After each {C:attention}アンティ{}, create a",
 					"{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
 				},
 				unlock = {
@@ -255,9 +255,9 @@ return {
 			b_cry_very_fair = {
 				name = "Very Fair Deck",
 				text = {
-					"{C:blue}-2{} hands, {C:red}-2{} discards",
+					"{C:blue}-2{} hands, {C:red}-2{} ディスカード",
 					"every round",
-					"{C:attention}Vouchers{} no longer",
+					"{C:attention}バウチャー{} no longer",
 					"appear in the shop",
 				},
 				unlock = {
@@ -270,7 +270,7 @@ return {
 				text = {
 					"Start with an {C:cry_exotic}Exotic{C:attention} Joker",
 					"Jokers are {C:attention}20X{} more",
-					"likely to be {C:dark_edition}Negative",
+					"likely to be {C:dark_edition}ネガティブ",
 					"{C:attention}-2{} Joker slots",
 				},
 				unlock = {
@@ -282,7 +282,7 @@ return {
 				text = {
 					"Start with a {C:legendary}Legendary{C:legendary} Joker",
 					"{C:green}#1# in #2#{} chance to create another",
-					"when Boss Blind is defeated {C:inactive}(must have room){}",
+					"when Boss ブラインド is defeated {C:inactive}(空きが必要){}",
 				},
 				unlock = {
 					"Have {C:attention}2 Legendary Jokers",
@@ -301,7 +301,7 @@ return {
 			bl_cry_clock = {
 				name = "The Clock",
 				text = {
-					"+0.1X blind requirements every",
+					"+0.1X ブラインド requirements every",
 					"12 seconds spent this ante,",
 					"multiplied by game speed",
 				},
@@ -330,7 +330,7 @@ return {
 			bl_cry_lavender_loop = {
 				name = "Lavender Loop",
 				text = {
-					"1.25X blind requirements every",
+					"1.25X ブラインド requirements every",
 					"6 seconds spent this round,",
 					"multiplied by game speed",
 				},
@@ -371,7 +371,7 @@ return {
 			bl_cry_oldmanacle = {
 				name = "Nostalgic Manacle",
 				text = {
-					"Divide Mult by discards",
+					"Divide Mult by ディスカード",
 				},
 			},
 			bl_cry_oldmark = {
@@ -398,7 +398,7 @@ return {
 				name = "Nostalgic Serpent",
 				text = {
 					"Divide Mult by level",
-					"of played poker hand",
+					"of played ポーカーハンド",
 				},
 			},
 			bl_cry_pin = {
@@ -419,7 +419,7 @@ return {
 			bl_cry_greed = {
 				name = "The Greed",
 				text = {
-					"+#2# blind requirement",
+					"+#2# ブラインド requirement",
 					"per $#1# when selected",
 				},
 			},
@@ -464,7 +464,7 @@ return {
 			bl_cry_shackle = {
 				name = "The Shackle",
 				text = {
-					"All Negative Jokers",
+					"All ネガティブ Jokers",
 					"are debuffed",
 				},
 			},
@@ -520,7 +520,7 @@ return {
 			bl_cry_decision = {
 				name = "The Decision",
 				text = {
-					"Fasten Jokers on play or discard",
+					"Fasten Jokers on play or ディスカード",
 					"Open a Baneful Buffoon",
 					"Pack after round",
 				},
@@ -537,21 +537,21 @@ return {
 				name = "://KEYGEN",
 				text = {
 					"Create a random {C:cry_code}Perishable Banana{}",
-					"voucher, {C:cry_code}destroy{} previously created",
-					"voucher created this way.",
+					"バウチャー, {C:cry_code}destroy{} previously created",
+					"バウチャー created this way.",
 				},
 			},
 			c_cry_payload = {
 				name = "://PAYLOAD",
 				text = {
-					"Next defeated Blind",
+					"Next defeated ブラインド",
 					"gives {C:cry_code}X#1#{} interest",
 				},
 			},
 			c_cry_exploit = {
 				name = "://EXPLOIT",
 				text = {
-					"{C:cry_code}Choose{} a {C:cry_code}currently visible{} poker hand,",
+					"{C:cry_code}Choose{} a {C:cry_code}currently visible{} ポーカーハンド,",
 					"next hand is {C:cry_code}calculated{} as that hand,",
 					"and gains {C:cry_code}one{} temp {C:cry_code}Ascension Power{}",
 				},
@@ -574,7 +574,7 @@ return {
 				name = "://REWORK",
 				text = {
 					"Destroy a {C:cry_code}selected{} Joker,",
-					"create a {C:cry_code}Rework Tag{} with",
+					"create a {C:cry_code}Rework タグ{} with",
 					"an {C:cry_code}upgraded{} edition",
 					"{C:inactive,s:0.8}Upgrades using order in the Collection",
 				},
@@ -643,7 +643,7 @@ return {
 					"Next {C:cry_code}Booster Pack{} has",
 					"{C:cry_code}#1#{} extra card#<s>1# and",
 					"{C:cry_code}#1#{} extra choice#<s>1#",
-					"{C:inactive}(Currently {C:cry_code}+#2#{C:inactive})",
+					"{C:inactive}(現在 {C:cry_code}+#2#{C:inactive})",
 				},
 			},
 			c_cry_assemble = {
@@ -666,7 +666,7 @@ return {
 				name = "://REVERT",
 				text = {
 					"Set {C:cry_code}game state{} to",
-					"start of {C:cry_code}this Ante{}",
+					"start of {C:cry_code}this アンティ{}",
 				},
 			},
 			c_cry_cryfunction = {
@@ -681,7 +681,7 @@ return {
 				name = "://RUN",
 				text = {
 					"Visit a {C:cry_code}shop",
-					"during a {C:cry_code}Blind",
+					"during a {C:cry_code}ブラインド",
 				},
 			},
 			c_cry_class = {
@@ -709,10 +709,10 @@ return {
 				name = "://LOG",
 				text = {
 					"Show a {C:cry_code}readout{} of either: ",
-					"{C:attention}next{} antes {C:attention}Boss-Blind{} and {C:attention}Voucher{},",
+					"{C:attention}next{} antes {C:attention}Boss-Blind{} and {C:attention}バウチャー{},",
 					"the next {C:attention}5{} {C:attention}Jokers{} from the shop, or",
 					"the next {C:attention}10{} playing cards to be {C:attention}drawn{}",
-					"{C:inactive}(If in a Blind){}",
+					"{C:inactive}(If in a ブラインド){}",
 				},
 			},
 			c_cry_quantify = {
@@ -750,7 +750,7 @@ return {
 				name = "://ALTTAB",
 				text = {
 					"Create the {C:cry_code}current{}",
-					"blind's skip tag",
+					"ブラインド's skip tag",
 					"{C:inactive}(Current: {C:cry_code}#1#{C:inactive})",
 				},
 			},
@@ -772,7 +772,7 @@ return {
 			c_cry_semicolon = {
 				name = ";//",
 				text = {
-					"Ends current non-Boss {C:cry_code}Blind{}",
+					"Ends current non-Boss {C:cry_code}ブラインド{}",
 					"{C:cry_code}without{} cashing out",
 				},
 			},
@@ -788,9 +788,9 @@ return {
 		},
 		["Content Set"] = {
 			set_cry_blind = {
-				name = "Blinds",
+				name = "ブラインド",
 				text = {
-					"{C:attention}Boss Blinds{} added",
+					"{C:attention}ボスブラインド{} added",
 					"by Cryptid",
 				},
 			},
@@ -871,7 +871,7 @@ return {
 			set_cry_poker_hand_stuff = {
 				name = "Poker Hand Stuff",
 				text = {
-					"Add 5 new {C:attention}poker hands",
+					"Add 5 new {C:attention}ポーカーハンド",
 					"and enable {C:attention}Ascended hands",
 				},
 			},
@@ -890,17 +890,17 @@ return {
 				},
 			},
 			set_cry_tag = {
-				name = "Tags",
+				name = "タグ",
 				text = {
-					"{C:attention}Tags{} added",
+					"{C:attention}タグ{} added",
 					"by Cryptid",
 				},
 			},
 			set_cry_tier3 = {
-				name = "Tier 3 Vouchers",
+				name = "Tier 3 バウチャー",
 				text = {
 					"An extra {C:attention}tier{}",
-					"of Vouchers",
+					"of バウチャー",
 				},
 			},
 			set_cry_timer = {
@@ -911,9 +911,9 @@ return {
 				},
 			},
 			set_cry_voucher = {
-				name = "Misc. Vouchers",
+				name = "Misc. バウチャー",
 				text = {
-					"Tier 1 and 2 {C:attention}Vouchers{}",
+					"Tier 1 and 2 {C:attention}バウチャー{}",
 					"added by Cryptid",
 				},
 			},
@@ -922,7 +922,7 @@ return {
 			e_cry_astral = {
 				name = "Astral",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult",
+					"倍率 {X:dark_edition,C:white}#1#乗{}",
 				},
 			},
 			e_cry_blur = {
@@ -1018,13 +1018,13 @@ return {
 					"When triggered with {C:attention}#4#{} {C:inactive}(#3#){} other",
 					"scoring card#<s>4#, gain {X:mult,C:white}X#1#{} Mult and",
 					"increase requirement by {C:attention}5{}",
-					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					"{C:inactive}(現在 {X:mult,C:white}X#2#{C:inactive} Mult)",
 				},
 			},
 			m_cry_abstract = {
 				name = "Abstract Card",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult,",
+					"倍率 {X:dark_edition,C:white}#1#乗{},",
 					"Counts as its {C:attention}own{} rank and suit",
 					"{C:green}#4# in #5#{} chance to",
 					"{C:red,E:2}destroy{} card when held at",
@@ -1043,21 +1043,21 @@ return {
 				name = "Test Joker",
 				text = {
 					"{C:chips}+#1#{} Chip#<s>1#",
-					"{C:money}+$44{} at start of {C:attention}Blind{}",
+					"{C:money}+$44{} at start of {C:attention}ブラインド{}",
 				},
 			},
 			j_cry_test_madness = {
 				name = "Test Joker",
 				text = {
 					"{C:chips}+#1#{} Chip#<s>1#",
-					"{C:money}+$44444{} at start of {C:attention}Blind{}",
+					"{C:money}+$44444{} at start of {C:attention}ブラインド{}",
 				},
 			},
 			j_cry_test_cryptid_in_2025 = {
 				name = "Test Joker",
 				text = {
 					"{C:chips}+#1#{} Chip#<s>1#",
-					"{C:money}+$44444{} at start of {C:attention}Blind{}",
+					"{C:money}+$44444{} at start of {C:attention}ブラインド{}",
 				},
 			},
 			j_cry_adroit = {
@@ -1084,21 +1084,21 @@ return {
 					"{C:attention}#1#{} cop#<ies,y>1# of the leftmost {C:attention}Joker{}",
 					"{C:inactive,s:0.8}Does not copy Nostalgic Googol Play Cards{}",
 					"{C:inactive}(Must have room){}",
-					--todo: add "removes negative from copy" like Ankh/Invis Joker
+					--todo: add "removes ネガティブ from copy" like Ankh/Invis Joker
 				},
 			},
 			j_cry_antennastoheaven = {
-				name = "...Like Antennas to Heaven",
+				name = "...Like アンティnnas to Heaven",
 				text = {
 					"This Joker gains",
 					"{X:chips,C:white} X#1# {} Chips when each",
 					"played {C:attention}7{} or {C:attention}4{} is scored",
-					"{C:inactive}(Currently {X:chips,C:white}X#2# {C:inactive} Chips)",
+					"{C:inactive}(現在 {X:chips,C:white}X#2# {C:inactive} Chips)",
 				},
 			},
 			j_cry_apjoker = {
 				name = "AP Joker",
-				text = { "{X:mult,C:white} X#1# {} Mult against {C:attention}Boss Blinds{}" },
+				text = { "倍率 {X:mult,C:white} X#1# {} against {C:attention}ボスブラインド{}" },
 			},
 			j_cry_arsonist = {
 				name = "Arsonist",
@@ -1141,10 +1141,10 @@ return {
 			j_cry_biggestm = {
 				name = "Huge",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult until end",
-					"of round if {C:attention}poker hand{}",
+					"倍率 {X:mult,C:white} X#1# {} until end",
+					"of round if {C:attention}ポーカーハンド{}",
 					"is a {C:attention}#2#{}",
-					"{C:inactive}(Currently {C:attention}#3#{}{C:inactive}){}",
+					"{C:inactive}(現在 {C:attention}#3#{}{C:inactive}){}",
 					"{C:inactive,s:0.8}not fat, just big boned.",
 				},
 			},
@@ -1180,7 +1180,7 @@ return {
 				name = "Blurred Joker",
 				text = {
 					"Gain {C:blue}+#1#{} hand#<s>1# when",
-					"{C:attention}Blind{} is selected",
+					"{C:attention}ブラインド{} is selected",
 				},
 			},
 			j_cry_bonk = {
@@ -1188,7 +1188,7 @@ return {
 				text = {
 					"Each {C:attention}Joker{} gives {C:chips}+#1#{} Chip#<s>1#",
 					"Increase amount by {C:chips}+#2#{} if",
-					"{C:attention} poker hand{} is a {C:attention}#3#{}",
+					"{C:attention} ポーカーハンド{} is a {C:attention}#3#{}",
 					"{C:inactive,s:0.8}Jolly Jokers give{} {C:chips,s:0.8}+#4#{} {C:inactive,s:0.8}Chip#<s>4# instead{}",
 				},
 			},
@@ -1245,16 +1245,16 @@ return {
 				text = {
 					"{C:white,X:mult}X#1#{} Mult for every",
 					"pair of unique rarities",
-					"{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive}){}",
+					"{C:inactive}(現在 {C:white,X:mult}X#2#{C:inactive}){}",
 				},
 			},
 			j_cry_keychange = {
 				name = "Key Change",
 				text = {
-					"Gains {C:white,X:mult}X#1#{} if {C:attention}poker hand{} has",
+					"Gains {C:white,X:mult}X#1#{} if {C:attention}ポーカーハンド{} has",
 					"not been played this round",
 					"Resets at {C:attention}end of round{}",
-					"{C:inactive}(Currently {C:white,X:mult}X#2#{C:inactive{}){}",
+					"{C:inactive}(現在 {C:white,X:mult}X#2#{C:inactive{}){}",
 				},
 			},
 			j_cry_brittle = {
@@ -1303,8 +1303,8 @@ return {
 				name = "Candy Basket",
 				text = {
 					"Sell this card to create {C:attention}#1#{} {C:cry_candy}Cand#<ies,y>1#",
-					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}#3#{} Blinds defeated",
-					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>4#{} when {C:attention}Boss Blind{} defeated",
+					"{C:attention}+#2#{} {C:cry_candy}Cand#<ies,y>2#{} every {C:attention}#3#{} ブラインド defeated",
+					"{C:attention}+#3#{} {C:cry_candy}Cand#<ies,y>4#{} when {C:attention}Boss ブラインド{} defeated",
 				},
 			},
 			j_cry_candy_buttons = {
@@ -1325,7 +1325,7 @@ return {
 			j_cry_candy_dagger = {
 				name = "Candy Dagger",
 				text = {
-					"When {C:attention}Blind{} is selected,",
+					"When {C:attention}ブラインド{} is selected,",
 					"destroy Joker to the right",
 					"to create a {C:cry_candy}Candy{}",
 				},
@@ -1333,7 +1333,7 @@ return {
 			j_cry_candy_sticks = {
 				name = "Candy Sticks",
 				text = {
-					"Next boss blind's effect isn't active",
+					"Next ボスブラインド's effect isn't active",
 					"until you've played {C:attention}#1#{} hand#<s>1#",
 				},
 			},
@@ -1394,22 +1394,22 @@ return {
 					"This Joker gains {X:mult,C:white} X#2# {} Mult",
 					"at end of round,",
 					"{C:red,E:2}self destructs{} after {C:attention}#3#{} round#<s>3#",
-					"{C:inactive}(Currently{} {X:mult,C:white} X#1# {} {C:inactive}Mult){}",
+					"{C:inactive}(現在{} {X:mult,C:white} X#1# {} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_chocolate_dice = {
 				name = "Chocolate Die",
 				text = {
 					"Roll a {C:green}d10{} when",
-					"{C:attention}Boss Blind{} defeated",
+					"{C:attention}ボスブラインド{} defeated",
 					"to start an {C:cry_ascendant,E:1}event",
-					"{C:inactive}(Currently: #1#)",
+					"{C:inactive}(現在: #1#)",
 				},
 			},
 			j_cry_circulus_pistoris = {
 				name = "Circulus Pistoris",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Chips and {X:dark_edition,C:white}^#1#{} Mult",
+					"{X:dark_edition,C:white}^#1#{} Chips and 倍率 {X:dark_edition,C:white}#1#乗{}",
 					"if {C:attention}exactly{} #2#",
 					"hand#<s>2# remaining",
 				},
@@ -1420,13 +1420,13 @@ return {
 				unlock = {
 					"Obtain a {C:red}Rare{},",
 					"{C:cry_epic}Epic{} and {C:legendary}Legendary{}",
-					"Joker before {C:attention}Ante 9",
+					"Joker before {C:attention}アンティ 9",
 				},
 			},
 			j_cry_clash = {
 				name = "The Clash",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"an {C:attention}#2#",
 				},
@@ -1439,7 +1439,7 @@ return {
 			j_cry_the = {
 				name = "The",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand is {C:attention}#2#",
 				},
 				unlock = {
@@ -1468,9 +1468,9 @@ return {
 			j_cry_CodeJoker = {
 				name = "Code Joker",
 				text = {
-					"Create a {C:dark_edition}Negative{}",
+					"Create a {C:dark_edition}ネガティブ{}",
 					"{C:cry_code}Code Card{} when",
-					"{C:attention}Blind{} is selected",
+					"{C:attention}ブラインド{} is selected",
 				},
 				unlock = {
 					"Discover {C:attention}every",
@@ -1480,9 +1480,9 @@ return {
 			j_cry_CodeJoker_modest = {
 				name = "Code Joker",
 				text = {
-					"Create a {C:dark_edition}Negative{}",
+					"Create a {C:dark_edition}ネガティブ{}",
 					"{C:cry_code}Code Card{} when",
-					"{C:attention}Boss Blind{} is selected",
+					"{C:attention}ボスブラインド{} is selected",
 				},
 				unlock = {
 					"Discover {C:attention}every",
@@ -1535,7 +1535,7 @@ return {
 				name = "Cotton Candy",
 				text = {
 					"When sold, adjacent",
-					"{C:attention}Jokers{} become {C:dark_edition}Negative{}",
+					"{C:attention}Jokers{} become {C:dark_edition}ネガティブ{}",
 				},
 			},
 			j_cry_crustulum = {
@@ -1544,7 +1544,7 @@ return {
 					"This Joker gains {C:chips}+#2#{} Chip#<s>2#",
 					"per {C:attention}reroll{} in the shop",
 					"{C:green}All rerolls are free{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chip#<s>1#)",
+					"{C:inactive}(現在 {C:chips}+#1#{C:inactive} chip#<s>1#)",
 				},
 			},
 			j_cry_cryptidmoment = {
@@ -1579,7 +1579,7 @@ return {
 				text = {
 					"This Joker gains {C:chips}+#2#{} Chip#<s>2#",
 					"for each card {C:attention}purchased{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#<s>1#)",
+					"{C:inactive}(現在 {C:chips}+#1#{C:inactive} Chip#<s>1#)",
 				},
 			},
 			j_cry_cut = {
@@ -1587,9 +1587,9 @@ return {
 				text = {
 					"This Joker destroys",
 					"a random {C:cry_code}Code{} card",
-					"to gain {X:mult,C:white} X#1# {} Mult",
+					"to gain 倍率 {X:mult,C:white} X#1# {}",
 					"at the end of the {C:attention}shop{}",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_delirious = {
@@ -1610,7 +1610,7 @@ return {
 			j_cry_starfruit = {
 				name = "Starfruit",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult,",
+					"倍率 {X:dark_edition,C:white}#1#乗{},",
 					"loses {X:dark_edition,C:white}^#2#{} Mult per",
 					"{C:attention}reroll{} in the shop",
 				},
@@ -1618,16 +1618,16 @@ return {
 			j_cry_digitalhallucinations = {
 				name = "Digital Hallucinations",
 				text = {
-					"When a {C:attention}Booster Pack{} is opened,",
+					"When a {C:attention}ブースターパック{} is opened,",
 					"{C:green}#1# in #2#{} chance to create",
-					"a random {C:dark_edition}Negative{} card",
+					"a random {C:dark_edition}ネガティブ{} card",
 					"corresponding to its {C:attention}type{}",
 				},
 			},
 			j_cry_discreet = {
 				name = "Discreet Joker",
 				text = {
-					"{C:chips}+#1#{} Chips if played",
+					"チップ {C:chips}+#1#{} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -1635,8 +1635,8 @@ return {
 			j_cry_doodlem = {
 				name = "Doodle M",
 				text = {
-					"Create #2# {C:dark_edition}Negative{} {C:attention}consumables{}",
-					"when {C:attention}Blind{} is selected",
+					"Create #2# {C:dark_edition}ネガティブ{} {C:attention}consumables{}",
+					"when {C:attention}ブラインド{} is selected",
 					"Create #1# more {C:attention}consumable",
 					"for each {C:attention}Jolly Joker{}",
 				},
@@ -1662,10 +1662,10 @@ return {
 			j_cry_dropshot = {
 				name = "Dropshot",
 				text = {
-					"This Joker gains {X:mult,C:white} X#1# {} Mult for",
+					"This Joker gains 倍率 {X:mult,C:white} X#1# {} for",
 					"each played, {C:attention}nonscoring{} {V:1}#2#{} card,",
 					"suit changes every round",
-					"{C:inactive}(Currently {X:mult,C:white} X#3# {C:inactive} Mult)",
+					"{C:inactive}(現在 {X:mult,C:white} X#3# {C:inactive} Mult)",
 				},
 				unlock = {
 					"Play a {C:attention}High Card{}",
@@ -1676,7 +1676,7 @@ return {
 			j_cry_dubious = {
 				name = "Dubious Joker",
 				text = {
-					"{C:chips}+#1#{} Chips if played",
+					"チップ {C:chips}+#1#{} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -1684,7 +1684,7 @@ return {
 			j_cry_duos = {
 				name = "The Duos",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -1700,14 +1700,14 @@ return {
 					"This Joker gains {X:mult,C:white} X#2# {} Mult",
 					"when a {C:attention}Joker{} or",
 					"playing card is scored",
-					"{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
+					"{C:inactive}(現在 {X:mult,C:white} X#1# {C:inactive} Mult)",
 				},
 			},
 			j_cry_effarcire = {
 				name = "Effarcire",
 				text = {
 					"Draw {C:green}full deck{} to hand",
-					"when {C:attention}Blind{} is selected",
+					"when {C:attention}ブラインド{} is selected",
 					"{C:inactive,s:0.8}\"If you can't handle me at my 1x,",
 					"{C:inactive,s:0.8}you don't deserve me at my 2x\"",
 				},
@@ -1715,7 +1715,7 @@ return {
 			j_cry_energia = {
 				name = "Energia",
 				text = {
-					"When a {C:attention}Tag{} is acquired,",
+					"When a {C:attention}タグ{} is acquired,",
 					"create up to {C:attention}#1#{} cop#<ies,y>1# of it",
 					"and {C:attention}increase{} the number of",
 					"copies by {C:attention}#2#",
@@ -1726,7 +1726,7 @@ return {
 				text = {
 					"Jokers appear using the",
 					"order from the {C:attention}Collection{}",
-					"Create {C:attention}#1#{} {C:dark_edition}Negative{} Joker#<s>1#",
+					"Create {C:attention}#1#{} {C:dark_edition}ネガティブ{} Joker#<s>1#",
 					"when hand is played",
 					"{C:cry_exotic,s:0.8}Exotic {C:inactive,s:0.8}or better Jokers cannot appear",
 					"{s:0.8}Last Joker Generated: {C:attention,s:0.8}#2#",
@@ -1741,18 +1741,18 @@ return {
 			j_cry_eternalflame = {
 				name = "Eternal Flame",
 				text = {
-					"This Joker gains {X:mult,C:white} X#1# {} Mult",
+					"This Joker gains 倍率 {X:mult,C:white} X#1# {}",
 					"for each card {C:attention}sold{} with",
 					"at least {C:money}$3{} of {C:attention}sell value",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_eternalflame2 = {
 				name = "Eternal Flame",
 				text = {
-					"This Joker gains {X:mult,C:white} X#1# {} Mult",
+					"This Joker gains 倍率 {X:mult,C:white} X#1# {}",
 					"for each card {C:attention}sold{}",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_exoplanet = {
@@ -1767,7 +1767,7 @@ return {
 				text = {
 					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
 					"when {X:red,C:white} XMult {} is triggered",
-					"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:dark_edition,C:white} #2#乗 {C:inactive})",
 				},
 			},
 			j_cry_exposed = {
@@ -1798,7 +1798,7 @@ return {
 			j_cry_facile = {
 				name = "Facile",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult if",
+					"倍率 {X:dark_edition,C:white}#1#乗{} if",
 					"played cards are scored",
 					"{C:attention}#2#{} or fewer times",
 				},
@@ -1815,7 +1815,7 @@ return {
 			j_cry_filler = {
 				name = "The Filler",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -1875,9 +1875,9 @@ return {
 				name = "Formidiulosus",
 				text = {
 					"When a {X:cry_cursed,C:white}Cursed{} Joker is obtained, destroy it",
-					"Creates {C:attention}#1#{} {C:dark_edition}Negative {C:cry_candy}Cand#<ies,y>1#{} at end of shop",
+					"Creates {C:attention}#1#{} {C:dark_edition}ネガティブ {C:cry_candy}Cand#<ies,y>1#{} at end of shop",
 					"Gains {X:dark_edition,C:white}^#2#{} Mult for each {C:cry_candy}Candy{} in possession",
-					"{C:inactive}(Currently {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
+					"{C:inactive}(現在 {X:dark_edition,C:white}^#3#{C:inactive} Mult)",
 				},
 			},
 			j_cry_foxy = {
@@ -1893,8 +1893,8 @@ return {
 				text = {
 					"This Joker gains {C:chips}+#2#{} Chip#<s>2#",
 					"if hand played is {C:attention}not{}",
-					"most played {C:attention}poker hand{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#<s>1#)",
+					"most played {C:attention}ポーカーハンド{}",
+					"{C:inactive}(現在 {C:chips}+#1#{C:inactive} Chip#<s>1#)",
 				},
 			},
 			j_cry_fuckedup = {
@@ -1972,16 +1972,16 @@ return {
 			j_cry_happyhouse = {
 				name = "Happy House",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult only after",
+					"倍率 {X:dark_edition,C:white}#1#乗{} only after",
 					"playing {C:attention}#3#{} hands{}",
-					"{C:inactive}(Currently #2#/#3#){}",
+					"{C:inactive}(現在 #2#/#3#){}",
 					"{C:inactive,s:0.8}There is no place like home!{}",
 				},
 			},
 			j_cry_home = {
 				name = "The Home",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2011,14 +2011,14 @@ return {
 					"Retrigger all cards played",
 					"{C:attention}#2#{} time#<s>2#,",
 					"each played card gives",
-					"{X:mult,C:white} X#1# {} Mult when scored",
+					"倍率 {X:mult,C:white} X#1# {} when scored",
 					"{C:inactive}(Max {}{C:attention}#3#{}{C:inactive} retriggers)",
 				},
 			},
 			j_cry_jawbreaker = {
 				name = "Jawbreaker",
 				text = {
-					"When {C:attention}Boss Blind{} defeated,",
+					"When {C:attention}ボスブラインド{} defeated,",
 					"{C:attention}double{} values of adjacent Jokers",
 					"{E:2,C:red}self destructs{}",
 				},
@@ -2026,17 +2026,17 @@ return {
 			j_cry_jimball = {
 				name = "Jimball",
 				text = {
-					"This Joker gains {X:mult,C:white} X#1# {} Mult",
+					"This Joker gains 倍率 {X:mult,C:white} X#1# {}",
 					"per {C:attention}consecutive{} hand played",
 					"while playing your",
-					"most played {C:attention}poker hand",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"most played {C:attention}ポーカーハンド",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 				unlock = {
 					"Win a run",
 					"while playing a",
 					" {C:attention}single type of{}",
-					"{C:attention}poker hand",
+					"{C:attention}ポーカーハンド",
 				},
 			},
 			j_cry_jollysus = {
@@ -2054,7 +2054,7 @@ return {
 				text = {
 					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
 					"for each default {C:attention}Joker{}",
-					"{C:inactive}(Currently {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
+					"{C:inactive}(現在 {X:dark_edition,C:white}^#2#{C:inactive} Mult)",
 				},
 			},
 			j_cry_kidnap = {
@@ -2063,15 +2063,15 @@ return {
 					"Earn {C:money}$#1#{} at end of round",
 					"per unique {C:attention}Type Mult{} or",
 					"{C:attention}Type Chips{} Joker sold this run",
-					"{C:inactive}(Currently {C:money}$#2#{C:inactive})",
+					"{C:inactive}(現在 {C:money}$#2#{C:inactive})",
 				},
 			},
 			j_cry_kittyprinter = {
 				name = "Kitty Printer",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult",
+					"倍率 {X:mult,C:white} X#1# {}",
 					"All {C:attention}skip{} tags",
-					"become {C:attention}Cat Tags{}",
+					"become {C:attention}Cat タグ{}",
 				},
 			},
 			j_cry_kooky = {
@@ -2086,9 +2086,9 @@ return {
 				name = "Krusty the Clown",
 				text = {
 					"This Joker gains",
-					"{X:mult,C:white} X#1# {} Mult when",
+					"倍率 {X:mult,C:white} X#1# {} when",
 					"each played {C:attention}card{} is scored",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_kscope = {
@@ -2096,10 +2096,10 @@ return {
 				text = {
 					"Add {C:dark_edition}Polychrome{} to",
 					"a random {C:attention}Joker{} when",
-					"{C:attention}Boss Blind{} is defeated",
+					"{C:attention}ボスブラインド{} is defeated",
 				},
 				unlock = {
-					"Defeat a {C:attention}Boss Blind",
+					"Defeat a {C:attention}ボスブラインド",
 					"with {C:attention}5{} or more",
 					"{C:attention}Editioned Cards{} or",
 					"{C:attention}Jokers",
@@ -2111,7 +2111,7 @@ return {
 					"Played and scoring {C:attention}Kings{} give",
 					"{C:attention}+#1#{} hand size for the round",
 					"and trigger {C:attention}held in hand{} effects",
-					"{C:inactive}(Currently {}{C:attention}+#2#{}{C:inactive})",
+					"{C:inactive}(現在 {}{C:attention}+#2#{}{C:inactive})",
 				},
 			},
 			j_cry_lightupthenight = {
@@ -2127,7 +2127,7 @@ return {
 					"Give future copies of",
 					"this Joker {X:mult,C:white}X#1#{} Mult",
 					"at end of round",
-					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}",
+					"{C:inactive}(現在 {X:mult,C:white}X#2#{C:inactive} Mult){}",
 				},
 			},
 			j_cry_loopy = {
@@ -2136,7 +2136,7 @@ return {
 					"{C:attention}Retrigger{} all Jokers",
 					"once for each {C:attention}Jolly{}",
 					"{C:attention}Joker{} sold this round",
-					"{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retrigger#<s>1#){}",
+					"{C:inactive}(現在{}{C:attention:} #1#{}{C:inactive} retrigger#<s>1#){}",
 					"{C:inactive,s:0.8}There wasn't enough room...{}",
 				},
 			},
@@ -2158,23 +2158,23 @@ return {
 			j_cry_m = {
 				name = "m",
 				text = {
-					"This Joker gains {X:mult,C:white} X#1# {} Mult",
+					"This Joker gains 倍率 {X:mult,C:white} X#1# {}",
 					"when {C:attention}Jolly Joker{} is sold",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_M = {
 				name = "M",
 				text = {
-					"Create a {C:dark_edition}Negative{}",
+					"Create a {C:dark_edition}ネガティブ{}",
 					"{C:attention}Jolly Joker{} when",
-					"{C:attention}Blind{} is selected",
+					"{C:attention}ブラインド{} is selected",
 				},
 			},
 			j_cry_macabre = {
 				name = "Macabre Joker",
 				text = {
-					"When {C:attention}Blind{} is selected,",
+					"When {C:attention}ブラインド{} is selected,",
 					"destroys each {C:attention}Joker{} except",
 					"{C:legendary}M Jokers{} and {C:attention}Jolly Jokers{}",
 					"and create #1# {C:attention}Jolly Joker#<s>1#{}",
@@ -2230,8 +2230,8 @@ return {
 				text = {
 					"All hands are considered the",
 					"{C:attention}first hand{} of each round,",
-					"all discards are considered the",
-					"{C:attention}first discard{} of each round",
+					"all ディスカード are considered the",
+					"{C:attention}first ディスカード{} of each round",
 				},
 			},
 			j_cry_megg = {
@@ -2255,7 +2255,7 @@ return {
 				text = {
 					"{X:mult,C:white}X#1#{} Mult for each member",
 					"in the {C:attention}Cryptid Discord{}",
-					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					"{C:inactive}(現在 {X:mult,C:white}X#2#{C:inactive} Mult)",
 					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
@@ -2264,7 +2264,7 @@ return {
 				text = {
 					"{C:chips}+#1#{} Chip#<s>1# for each member",
 					"in the {C:attention}Cryptid Discord{}",
-					"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chip#<s>2#)",
+					"{C:inactive}(現在 {C:chips}+#2#{C:inactive} Chip#<s>2#)",
 					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
@@ -2273,7 +2273,7 @@ return {
 				text = {
 					"{C:chips}+#1#{} Chip#<s>1# for every {C:attention}8{} members",
 					"in the {C:attention}Cryptid Discord{}",
-					"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chip#<s>2#)",
+					"{C:inactive}(現在 {C:chips}+#2#{C:inactive} Chip#<s>2#)",
 					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
 				},
 			},
@@ -2297,20 +2297,20 @@ return {
 			j_cry_mondrian = {
 				name = "Mondrian",
 				text = {
-					"This Joker gains {X:mult,C:white} X#1# {} Mult",
-					"if no {C:attention}discards{} were",
+					"This Joker gains 倍率 {X:mult,C:white} X#1# {}",
+					"if no {C:attention}ディスカード{} were",
 					"used this round",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_monkey_dagger = {
 				name = "Monkey Dagger",
 				text = {
-					"When {C:attention}Blind{} is selected,",
+					"When {C:attention}ブラインド{} is selected,",
 					"destroy Joker to the left",
 					"and permanently add {C:attention}ten times{}",
 					"its sell value to this {C:chips}Chips{}",
-					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} Chip#<s>1#)",
+					"{C:inactive}(現在 {C:chips}+#1#{C:inactive} Chip#<s>1#)",
 				},
 			},
 			j_cry_monopoly_money = {
@@ -2334,7 +2334,7 @@ return {
 				text = {
 					"Create an {C:legendary}M Joker{} at end of round",
 					"Each {C:attention}Jolly Joker{} or {C:legendary}M Joker",
-					"gives {X:dark_edition,C:white}^#1#{} Mult",
+					"gives 倍率 {X:dark_edition,C:white}#1#乗{}",
 					"Increase amount by {X:dark_edition,C:white}^#2#{}",
 					"when a {C:attention}Jolly Joker{} is {C:attention}sold",
 					"{C:inactive,s:0.8}(Tredecim excluded)",
@@ -2346,7 +2346,7 @@ return {
 					"Retrigger all cards played",
 					"once for every",
 					"{C:attention}#2#{} {C:inactive}[#3#]{} {C:attention}Jolly Joker#<s>2#{} sold",
-					"{C:inactive}(Currently{}{C:attention:} #1#{}{C:inactive} retriggers){}",
+					"{C:inactive}(現在{}{C:attention:} #1#{}{C:inactive} retriggers){}",
 				},
 			},
 			j_cry_multjoker = {
@@ -2383,7 +2383,7 @@ return {
 			j_cry_night = {
 				name = "Night",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult on final",
+					"倍率 {X:dark_edition,C:white}#1#乗{} on final",
 					"hand of round",
 					"{E:2,C:red}self destructs{} on",
 					"final hand of round",
@@ -2404,7 +2404,7 @@ return {
 					"{C:green}Always triggers{} if there are",
 					"{C:attention}#5#{} or more {C:attention}Jolly Jokers{}",
 					"{C:red}Works once per round{}",
-					"{C:inactive}(Currently {C:dark_edition}+#3#{}{C:inactive} and #4#){}",
+					"{C:inactive}(現在 {C:dark_edition}+#3#{}{C:inactive} and #4#){}",
 				},
 			},
 			j_cry_number_blocks = {
@@ -2419,7 +2419,7 @@ return {
 			j_cry_nuts = {
 				name = "The Nuts",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2469,7 +2469,7 @@ return {
 					"{C:attention}Joker{} every {C:attention}4",
 					"Joker cards sold",
 					"{s:0.8}Nostalgic Invisible Joker Excluded{}",
-					"{C:inactive}(Currently #1#/4){}",
+					"{C:inactive}(現在 #1#/4){}",
 				},
 			},
 			j_cry_panopticon = {
@@ -2482,7 +2482,7 @@ return {
 			j_cry_penetrating = {
 				name = "Penetrating Joker",
 				text = {
-					"{C:chips}+#1#{} Chips if played",
+					"チップ {C:chips}+#1#{} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2490,33 +2490,33 @@ return {
 			j_cry_pickle = {
 				name = "Pickle",
 				text = {
-					"When {C:attention}Blind{} is skipped, create",
-					"{C:attention}#1#{} Tags, reduced by",
-					"{C:red}#2#{} when {C:attention}Blind{} is selected",
+					"When {C:attention}ブラインド{} is skipped, create",
+					"{C:attention}#1#{} タグ, reduced by",
+					"{C:red}#2#{} when {C:attention}ブラインド{} is selected",
 				},
 			},
 			j_cry_pirate_dagger = {
 				name = "Pirate Dagger",
 				text = {
-					"When {C:attention}Blind{} is selected,",
+					"When {C:attention}ブラインド{} is selected,",
 					"destroy Joker to the right",
 					"and gain {C:attention}one-fourth{} of",
 					"its sell value as {X:chips,C:white} XChips {}",
-					"{C:inactive}(Currently {X:chips,C:white} X#1# {C:inactive} Chips)",
+					"{C:inactive}(現在 {X:chips,C:white} X#1# {C:inactive} Chips)",
 				},
 			},
 			j_cry_pity_prize = {
 				name = "Pity Prize",
 				text = {
-					"On skipping a {C:attention}Booster Pack{},",
-					"gain a random {C:attention}Tag{}",
+					"On skipping a {C:attention}ブースターパック{},",
+					"gain a random {C:attention}タグ{}",
 				},
 			},
 			j_cry_pity_prize_modest = {
 				name = "Pity Prize",
 				text = {
-					"On skipping a {C:attention}Booster Pack{},",
-					"gain a random {C:attention}Tag{}",
+					"On skipping a {C:attention}ブースターパック{},",
+					"gain a random {C:attention}タグ{}",
 					"{C:red,E:2}Self destructs{}",
 				},
 			},
@@ -2539,7 +2539,7 @@ return {
 					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
 					"if all cards in played hand are",
 					"{C:attention}Aces{}, {C:attention}2s{}, {C:attention}3s{}, {C:attention}5s{}, or {C:attention}7s{}",
-					"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:dark_edition,C:white} #2#乗 {C:inactive})",
 				},
 			},
 			j_cry_pumpkin = {
@@ -2554,7 +2554,7 @@ return {
 			j_cry_carved_pumpkin = {
 				name = "Carved Pumpkin",
 				text = {
-					"The next {C:attention}#1#{} Boss Blinds",
+					"The next {C:attention}#1#{} ボスブラインド",
 					"will have their abilities",
 					"{C:attention}disabled",
 				},
@@ -2563,24 +2563,24 @@ return {
 				name = "Python",
 				text = {
 					"This Joker gains",
-					"{X:mult,C:white} X#1# {} Mult when a",
+					"倍率 {X:mult,C:white} X#1# {} when a",
 					"{C:cry_code}Code{} card is used",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_queens_gambit = {
 				name = "Queen's Gambit",
 				text = {
-					"If {C:attention}poker hand{} is a",
+					"If {C:attention}ポーカーハンド{} is a",
 					"{C:attention}Royal Flush{}, destroy scored",
 					"{C:attention}Queen{} and create a",
-					"{C:dark_edition}Negative {}{C:red}Rare{}{C:attention} Joker{}",
+					"{C:dark_edition}ネガティブ {}{C:red}Rare{}{C:attention} Joker{}",
 				},
 			},
 			j_cry_quintet = {
 				name = "The Quintet",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2600,7 +2600,7 @@ return {
 			j_cry_redeo = {
 				name = "Redeo",
 				text = {
-					"{C:attention}-#1#{} Ante when",
+					"{C:attention}-#1#{} アンティ when",
 					"{C:money}$#2#{} {C:inactive}($#3#){} spent",
 					"{s:0.8}Requirements increase",
 					"{C:attention,s:0.8}exponentially{s:0.8} per use",
@@ -2621,7 +2621,7 @@ return {
 				text = {
 					"Fill all empty Joker slots {C:inactive}(Max 100){}",
 					"with {C:dark_edition}Holographic{} {C:attention}Jolly Jokers{} if",
-					"{C:attention}discarded poker hand{} is a {C:attention}#1#{}",
+					"{C:attention}discarded ポーカーハンド{} is a {C:attention}#1#{}",
 					"{C:red,E:2}self destructs{}",
 					"{C:inactive,s:0.8}The ULTIMATE comeback{}",
 				},
@@ -2629,7 +2629,7 @@ return {
 			j_cry_rnjoker = {
 				name = "RNJoker",
 				text = {
-					"Randomize abilities each {C:attention}Ante{}",
+					"Randomize abilities each {C:attention}アンティ{}",
 				},
 				unlock = {
 					"{C:green}1 in 20{} chance",
@@ -2709,7 +2709,7 @@ return {
 				name = "Tiny",
 				text = {
 					"Create a {C:cry_jolly}Double M",
-					"tag if {C:attention}poker hand{}",
+					"tag if {C:attention}ポーカーハンド{}",
 					"is a {C:attention}#1#{}",
 					"{C:inactive,s:0.8}ok so basically i'm very smol",
 				},
@@ -2722,7 +2722,7 @@ return {
 					"{C:attention}+#1#{} hand size",
 					"{C:attention}+#1#{} consumable slot#<s>1#",
 					"{C:attention}+#1#{} card#<s>1# in shop",
-					"{C:attention}+#1#{} voucher slot#<s>1#",
+					"{C:attention}+#1#{} バウチャー slot#<s>1#",
 				},
 				unlock = {
 					"Win a run with",
@@ -2736,7 +2736,7 @@ return {
 					"{C:attention}+#1#{} hand size",
 					"{C:attention}+#1#{} consumable slot#<s>1#",
 					"{C:attention}+#1#{} card#<s>1# in shop",
-					"{C:attention}+#1#{} voucher slot#<s>1#",
+					"{C:attention}+#1#{} バウチャー slot#<s>1#",
 				},
 				unlock = {
 					"Win a run with",
@@ -2746,10 +2746,10 @@ return {
 			j_cry_fleshpanopticon = {
 				name = "Flesh Panopticon",
 				text = {
-					"{C:red}X#1#{} {C:attention}Boss Blind{} size",
-					"When {C:attention}Boss Blind{} is defeated,",
+					"{C:red}X#1#{} {C:attention}ボスブラインド{} size",
+					"When {C:attention}ボスブラインド{} is defeated,",
 					"{C:red}self destructs{}, and creates",
-					"a {C:dark_edition}Negative{} {C:spectral}Gateway{} card",
+					"a {C:dark_edition}ネガティブ{} {C:spectral}Gateway{} card",
 					'{C:inactive,s:0.8}"This prison... to hold... me?"',
 				},
 			},
@@ -2763,7 +2763,7 @@ return {
 			j_cry_brokenhome = {
 				name = "Broken Home",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult",
+					"倍率 {X:mult,C:white} X#1# {}",
 					"{C:green}#2# in #3#{} chance this",
 					"card is destroyed",
 					"at end of round",
@@ -2772,7 +2772,7 @@ return {
 			j_cry_yarnball = {
 				name = "Yarn Ball",
 				text = {
-					"Add the level of the highest level {C:attention}Cat Tag{}",
+					"Add the level of the highest level {C:attention}Cat タグ{}",
 					"to all {C:green}listed probabilities",
 				},
 			},
@@ -2789,7 +2789,7 @@ return {
 				text = {
 					"This Joker gains {X:mult,C:white}X#1#{} Mult",
 					"when a {C:attention}Pizza Slice{} is sold",
-					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{}{C:inactive} Mult){}",
+					"{C:inactive}(現在{} {X:mult,C:white}X#2#{}{C:inactive} Mult){}",
 				},
 			},
 			j_cry_paved_joker = {
@@ -2806,7 +2806,7 @@ return {
 					"This Joker Gains",
 					"{X:mult,C:white}X#1#{} Mult whenever",
 					"a {C:attention}Perishable{} card is debuffed",
-					"{C:inactive}(Currently{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}",
+					"{C:inactive}(現在{} {X:mult,C:white}X#2#{} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_poor_joker = {
@@ -2815,16 +2815,16 @@ return {
 					"This Joker gains",
 					"{C:mult}+#1#{} Mult whenever",
 					"a {C:attention}Rental{} card takes money",
-					"{C:inactive}(Currently{} {C:mult}+#2#{} {C:inactive}Mult){}",
+					"{C:inactive}(現在{} {C:mult}+#2#{} {C:inactive}Mult){}",
 				},
 			},
 			j_cry_spaceglobe = {
 				name = "Celestial Globe",
 				text = {
 					"This Joker gains {X:chips,C:white}X#2#{} Chips",
-					"if {C:attention}poker hand{} is a {C:attention}#3#{},",
+					"if {C:attention}ポーカーハンド{} is a {C:attention}#3#{},",
 					"Hand changes after increase{}",
-					"{C:inactive}(Currently{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}",
+					"{C:inactive}(現在{} {X:chips,C:white}X#1#{} {C:inactive}Chips){}",
 				},
 			},
 			j_cry_spectrogram = {
@@ -2838,7 +2838,7 @@ return {
 			j_cry_speculo = {
 				name = "Speculo",
 				text = {
-					"Creates a {C:dark_edition}Negative{} copy",
+					"Creates a {C:dark_edition}ネガティブ{} copy",
 					"of a random {C:attention}Joker{}",
 					"at the end of the {C:attention}shop",
 					"{C:inactive,s:0.8}Does not copy other Speculo{}",
@@ -2865,13 +2865,13 @@ return {
 					"random {C:planet}Planet{} card",
 					"to gain {X:dark_edition,C:white} ^#1# {} Mult",
 					"at the end of the {C:attention}shop{}",
-					"{C:inactive}(Currently {X:dark_edition,C:white} ^#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:dark_edition,C:white} #2#乗 {C:inactive})",
 				},
 			},
 			j_cry_stronghold = {
 				name = "The Stronghold",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2884,7 +2884,7 @@ return {
 			j_cry_subtle = {
 				name = "Subtle Joker",
 				text = {
-					"{C:chips}+#1#{} Chips if played",
+					"チップ {C:chips}+#1#{} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2919,7 +2919,7 @@ return {
 			j_cry_swarm = {
 				name = "The Swarm",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -2985,7 +2985,7 @@ return {
 			j_cry_many_lost_minds = {
 				name = "Many Have Lost Their Minds Comprehending This Joker",
 				text = {
-					"{C:chips}+#1#{} Chips if played",
+					"チップ {C:chips}+#1#{} if played",
 					"hand contains",
 					"{C:attention}#2#",
 				},
@@ -2994,7 +2994,7 @@ return {
 			j_cry_annihalation = {
 				name = "The Complete and Utter Annihilation of Everything That Makes Balatro Sacred",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult if played",
+					"倍率 {X:dark_edition,C:white}#1#乗{} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -3024,7 +3024,7 @@ return {
 			j_cry_triplet_rhythm = {
 				name = "Triplet Rhythm",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if scoring hand",
+					"倍率 {X:mult,C:white} X#1# {} if scoring hand",
 					"contains {C:attention}exactly{} three {C:attention}3s",
 				},
 			},
@@ -3039,7 +3039,7 @@ return {
 			j_cry_unity = {
 				name = "The Unity",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -3053,7 +3053,7 @@ return {
 				name = "Universe",
 				text = {
 					"Other {C:dark_edition}Astral{} cards",
-					"each give {X:dark_edition,C:white}^#1#{} Mult",
+					"each give 倍率 {X:dark_edition,C:white}#1#乗{}",
 				},
 			},
 			j_cry_universum = {
@@ -3067,11 +3067,11 @@ return {
 			j_cry_unjust_dagger = {
 				name = "Unjust Dagger",
 				text = {
-					"When {C:attention}Blind{} is selected,",
+					"When {C:attention}ブラインド{} is selected,",
 					"destroy Joker to the left",
 					"and gain {C:attention}one-fifth{} of",
 					"its sell value as {X:mult,C:white} XMult {}",
-					"{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
+					"{C:inactive}(現在 {X:mult,C:white} X#1# {C:inactive} Mult)",
 				},
 			},
 			j_cry_verisimile = {
@@ -3081,14 +3081,14 @@ return {
 					"is {C:green}successfully{} triggered,",
 					"this Joker gains {X:red,C:white}XMult{}",
 					"equal to its listed {C:attention}odds",
-					"{C:inactive}(Currently {X:mult,C:white} X#1# {C:inactive} Mult)",
+					"{C:inactive}(現在 {X:mult,C:white} X#1# {C:inactive} Mult)",
 				},
 			},
 			j_cry_virgo = {
 				name = "Virgo",
 				text = {
 					"This Joker gains {C:money}$#1#{} of {C:attention}sell value{}",
-					"if {C:attention}poker hand{} contains a {C:attention}#2#{}",
+					"if {C:attention}ポーカーハンド{} contains a {C:attention}#2#{}",
 					"Sell this card to create a",
 					"{C:dark_edition}Polychrome{} {C:attention}Jolly Joker{} for",
 					"every {C:money}$4{} of {C:attention}sell value{} {C:inactive}(Min 1){}",
@@ -3106,7 +3106,7 @@ return {
 				name = "Waluigi",
 				text = {
 					"All Jokers give",
-					"{X:mult,C:white} X#1# {} Mult",
+					"倍率 {X:mult,C:white} X#1# {}",
 				},
 			},
 			j_cry_wario = {
@@ -3123,7 +3123,7 @@ return {
 					"{C:mult}+#2#{} Mult when each played",
 					"{C:attention}Ace{}, {C:attention}2{}, {C:attention}3{}, {C:attention}5{}, or {C:attention}8{}",
 					"is scored",
-					"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)",
+					"{C:inactive}(現在 {C:mult}+#1#{C:inactive} Mult)",
 				},
 			},
 			j_cry_weegaming = {
@@ -3138,18 +3138,18 @@ return {
 				name = "Wheel of Hope",
 				text = {
 					"This Joker gains",
-					"{X:mult,C:white} X#1# {} Mult when failing",
+					"倍率 {X:mult,C:white} X#1# {} when failing",
 					"a {C:attention}Wheel of Fortune{}",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_whip = {
 				name = "The WHIP",
 				text = {
-					"This Joker gains {X:mult,C:white} X#1# {} Mult",
+					"This Joker gains 倍率 {X:mult,C:white} X#1# {}",
 					"if {C:attention}played hand{} contains a",
 					"{C:attention}2{} and {C:attention}7{} of different suits",
-					"{C:inactive}(Currently {X:mult,C:white} X#2# {C:inactive} Mult)",
+					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
 			j_cry_wonka_bar = {
@@ -3171,7 +3171,7 @@ return {
 			j_cry_wtf = {
 				name = Cryptid_config.family_mode and "The Cluster" or "The Fuck!?",
 				text = {
-					"{X:mult,C:white} X#1# {} Mult if played",
+					"倍率 {X:mult,C:white} X#1# {} if played",
 					"hand contains",
 					"a {C:attention}#2#",
 				},
@@ -3188,7 +3188,7 @@ return {
 					"{C:attention}not{} contain a {C:attention}Straight{},",
 					"this Joker gains {C:mult}+#2#{} Mult for every",
 					"{C:attention}unique rank{} in scoring hand",
-					"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)",
+					"{C:inactive}(現在 {C:mult}+#1#{C:inactive} Mult)",
 				},
 			},
 		},
@@ -3243,7 +3243,7 @@ return {
 				text = {
 					"{C:green}#1# in #2#{} chance to",
 					"upgrade every",
-					"{C:legendary,E:1}poker hand{}",
+					"{C:legendary,E:1}ポーカーハンド{}",
 					"by {C:attention}1{} level",
 				},
 			},
@@ -3251,11 +3251,11 @@ return {
 				name = "Neutron Star",
 				text = {
 					"Upgrade a random",
-					"poker hand by",
+					"ポーカーハンド by",
 					"{C:attention}1{} level for each",
 					"{C:attention}Neutron Star{} used",
 					"in this run",
-					"{C:inactive}(Currently{C:attention} #1#{C:inactive}){}",
+					"{C:inactive}(現在{C:attention} #1#{C:inactive}){}",
 				},
 			},
 			c_cry_sunplanet = {
@@ -3264,7 +3264,7 @@ return {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Increase Ascension Factor of",
 					"{C:attention}Ascended{} hands by {X:gold,C:white}#2#{}",
-					"{C:inactive}(Currently {X:gold,C:white}X#3#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
+					"{C:inactive}(現在 {X:gold,C:white}X#3#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
 					"{C:inactive}Per {C:attention}1{C:inactive} Ascension power)",
 				},
 			},
@@ -3274,7 +3274,7 @@ return {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Increase Ascension Factor of",
 					"{C:attention}Ascended{} hands by {X:gold,C:white}#2#{}",
-					"{C:inactive}(Currently {X:gold,C:white}+#3#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
+					"{C:inactive}(現在 {X:gold,C:white}+#3#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
 					"{C:inactive}Per {C:attention}1{C:inactive} Ascension power)",
 				},
 			},
@@ -3336,7 +3336,7 @@ return {
 					"{C:attention}#1#{},",
 					"{C:attention}#2#{},",
 					"and {C:attention}#3#{}",
-					"{C:inactive}(Currently {X:gold,C:white}X#7#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
+					"{C:inactive}(現在 {X:gold,C:white}X#7#{C:inactive} {C:chips}C{}+{C:mult}M{C:inactive} Multiplier",
 					"{C:inactive}Per {C:attention}1{C:inactive} Ascension power)",
 				},
 			},
@@ -3371,8 +3371,8 @@ return {
 				text = {
 					"{C:attention}Joker{} and {C:attention}Consumable{}",
 					"slots are {C:attention}combined",
-					"{C:attention}Nostalgic{} Blinds replace",
-					"their updated Blind",
+					"{C:attention}Nostalgic{} ブラインド replace",
+					"their updated ブラインド",
 				},
 			},
 			sleeve_cry_bountiful_sleeve = {
@@ -3429,7 +3429,7 @@ return {
 				text = {
 					"Multiply the values of",
 					"all Jokers by {X:dark_edition,C:white} X1.25 {}",
-					"when Boss Blind is defeated",
+					"when ボスブラインド is defeated",
 					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
 				},
 			},
@@ -3451,7 +3451,7 @@ return {
 			sleeve_cry_redeemed_sleeve = {
 				name = "Redeemed Sleeve",
 				text = {
-					"When a {C:attention}Voucher{} is purchased,",
+					"When a {C:attention}バウチャー{} is purchased,",
 					"gain its {C:attention}extra tiers",
 				},
 			},
@@ -3459,16 +3459,16 @@ return {
 				name = "Spooky Sleeve",
 				text = {
 					"Start with an {C:eternal}Eternal{} {C:attention,T:j_cry_chocolate_dice}Chocolate Die",
-					"After each {C:attention}Ante{}, create a",
+					"After each {C:attention}アンティ{}, create a",
 					"{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
 				},
 			},
 			sleeve_cry_very_fair_sleeve = {
 				name = "Very Fair Sleeve",
 				text = {
-					"{C:blue}-2{} hands, {C:red}-2{} discards",
+					"{C:blue}-2{} hands, {C:red}-2{} ディスカード",
 					"every round",
-					"{C:attention}Vouchers{} no longer",
+					"{C:attention}バウチャー{} no longer",
 					"appear in the shop",
 				},
 			},
@@ -3477,7 +3477,7 @@ return {
 				text = {
 					"Start with an {C:cry_exotic}Exotic{C:attention} Joker",
 					"Jokers are {C:attention}20X{} more",
-					"likely to be {C:dark_edition}Negative",
+					"likely to be {C:dark_edition}ネガティブ",
 					"{C:attention}-2{} Joker slots",
 				},
 			},
@@ -3486,7 +3486,7 @@ return {
 				text = {
 					"Start with an {C:legendary}Legendary{C:legendary} Joker",
 					"{C:green}1 in 5{} chance to create another",
-					"when Boss Blind is defeated {C:inactive}(must have room){}",
+					"when ボスブラインド is defeated {C:inactive}(空きが必要){}",
 				},
 			},
 			sleeve_cry_antimatter_sleeve = {
@@ -3513,7 +3513,7 @@ return {
 			c_cry_adversary = {
 				name = "Adversary",
 				text = {
-					"{C:red}All{} of your {C:attention}Jokers{} become {C:dark_edition}Negative{},",
+					"{C:red}All{} of your {C:attention}Jokers{} become {C:dark_edition}ネガティブ{},",
 					"{C:red}all{} {C:attention}Jokers{} in the shop cost",
 					"{C:red}double{} for the rest of the run",
 				},
@@ -3523,13 +3523,13 @@ return {
 				text = {
 					"Create {C:attention}#1#{} cop#<ies,y>1# of a",
 					"random {C:attention}Joker{}, destroy",
-					"all other Jokers, {C:attention}+#2#{} Ante",
+					"all other Jokers, {C:attention}+#2#{} アンティ",
 				},
 			},
 			c_cry_chambered = {
 				name = "Chambered",
 				text = {
-					"Create {C:attention}#1#{} {C:dark_edition}Negative{}",
+					"Create {C:attention}#1#{} {C:dark_edition}ネガティブ{}",
 					"cop#<ies,y>1# of a",
 					"{C:attention}random{} consumable",
 					"in your possession",
@@ -3588,7 +3588,7 @@ return {
 			c_cry_ritual = {
 				name = "Ritual",
 				text = {
-					"Apply {C:dark_edition}Negative{}, {C:dark_edition}Mosaic{},",
+					"Apply {C:dark_edition}ネガティブ{}, {C:dark_edition}Mosaic{},",
 					"or {C:dark_edition}Astral{} to {C:attention}#1#{}",
 					"selected card#<s>1# in hand",
 				},
@@ -3612,8 +3612,8 @@ return {
 			c_cry_trade = {
 				name = "Trade",
 				text = {
-					"{C:attention}Lose{} a random Voucher,",
-					"gain {C:attention}2{} random Vouchers",
+					"{C:attention}Lose{} a random バウチャー,",
+					"gain {C:attention}2{} random バウチャー",
 				},
 			},
 			c_cry_typhoon = {
@@ -3645,7 +3645,7 @@ return {
 				name = "White Hole",
 				text = {
 					"Upgrade {C:legendary,E:1}most played{}",
-					"poker hand by {C:attention}4{}",
+					"ポーカーハンド by {C:attention}4{}",
 					"{C:attention}Remove{} all other hand levels",
 				},
 			},
@@ -3653,7 +3653,7 @@ return {
 				name = "White Hole",
 				text = {
 					"{C:attention}Remove{} all hand levels,",
-					"upgrade {C:legendary,E:1}most played{} poker hand",
+					"upgrade {C:legendary,E:1}most played{} ポーカーハンド",
 					"by {C:attention}3{} for each removed level",
 				},
 			},
@@ -3664,7 +3664,7 @@ return {
 				colour = "Pink", --this is used for auto-generated sticker localization
 				text = {
 					"Required score scales",
-					"faster for each {C:attention}Ante",
+					"faster for each {C:attention}アンティ",
 				},
 			},
 			stake_cry_brown = {
@@ -3709,14 +3709,14 @@ return {
 				name = "Crimson Stake",
 				colour = "Crimson",
 				text = {
-					"Vouchers restock on {C:attention}even{} Antes",
+					"バウチャー restock on {C:attention}even{} アンティs",
 				},
 			},
 			stake_cry_diamond = {
 				name = "Diamond Stake",
 				colour = "Diamond",
 				text = {
-					"Must beat Ante {C:attention}10{} to win",
+					"Must beat アンティ {C:attention}10{} to win",
 				},
 			},
 			stake_cry_amber = {
@@ -3730,7 +3730,7 @@ return {
 				name = "Bronze Stake",
 				colour = "Bronze",
 				text = {
-					"Vouchers are {C:attention}50%{} more expensive",
+					"バウチャー are {C:attention}50%{} more expensive",
 				},
 			},
 			stake_cry_quartz = {
@@ -3745,8 +3745,8 @@ return {
 				name = "Ruby Stake",
 				colour = "Ruby",
 				text = {
-					"{C:attention}Big{} Blinds can become",
-					"{C:attention}Boss{} Blinds",
+					"{C:attention}Big{} ブラインド can become",
+					"{C:attention}Boss{} ブラインド",
 				},
 			},
 			stake_cry_glass = {
@@ -3761,7 +3761,7 @@ return {
 				colour = "Sapphire",
 				text = {
 					"Lose {C:attention}25%{} of current money",
-					"at end of Ante",
+					"at end of アンティ",
 					"{s:0.8,C:inactive}(Up to $10){}",
 				},
 			},
@@ -3769,7 +3769,7 @@ return {
 				name = "Emerald Stake",
 				colour = "Emerald",
 				text = {
-					"Cards, packs, and vouchers",
+					"Cards, packs, and バウチャー",
 					"can be {C:attention}face down{}",
 					"{s:0.8,C:inactive}(Unable to be viewed until purchased){}",
 				},
@@ -3778,7 +3778,7 @@ return {
 				name = "Platinum Stake",
 				colour = "Platinum",
 				text = {
-					"Small Blinds are {C:attention}removed{}",
+					"Small ブラインド are {C:attention}removed{}",
 				},
 			},
 			stake_cry_twilight = {
@@ -3794,7 +3794,7 @@ return {
 				colour = "Verdant",
 				text = {
 					"Required score scales",
-					"faster for each {C:attention}Ante",
+					"faster for each {C:attention}アンティ",
 				},
 			},
 			stake_cry_ember = {
@@ -3817,7 +3817,7 @@ return {
 				name = "Horizon Stake",
 				colour = "Horizon",
 				text = {
-					"When blind selected, add a",
+					"When ブラインド selected, add a",
 					"{C:attention}random card{} to deck",
 				},
 			},
@@ -3825,8 +3825,8 @@ return {
 				name = "Blossom Stake",
 				colour = "Blossom",
 				text = {
-					"{C:attention}Final{} Boss Blinds can appear",
-					"in {C:attention}any{} Ante",
+					"{C:attention}Final{} ボスブラインド can appear",
+					"in {C:attention}any{} アンティ",
 				},
 			},
 			stake_cry_azure = {
@@ -3847,7 +3847,7 @@ return {
 		},
 		Tag = {
 			tag_cry_astral = {
-				name = "Astral Tag",
+				name = "Astral タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
@@ -3855,14 +3855,14 @@ return {
 				},
 			},
 			tag_cry_banana = {
-				name = "Banana Tag",
+				name = "Banana タグ",
 				text = {
 					"Creates {C:attention}#1#",
 					"{C:inactive}(Must have room){}",
 				},
 			},
 			tag_cry_bettertop_up = {
-				name = "Better Top-up Tag",
+				name = "Better Top-up タグ",
 				text = {
 					"Creates up to {C:attention}#1#",
 					"{C:green}Uncommon{} Joker#<s>1#",
@@ -3870,14 +3870,14 @@ return {
 				},
 			},
 			tag_cry_better_voucher = {
-				name = "Golden Voucher Tag",
+				name = "Golden バウチャー タグ",
 				text = {
-					"Adds one Tier {C:attention}#1#{} Voucher",
+					"Adds one Tier {C:attention}#1#{} バウチャー",
 					"to the next shop",
 				},
 			},
 			tag_cry_blur = {
-				name = "Blurred Tag",
+				name = "Blurred タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
@@ -3885,7 +3885,7 @@ return {
 				},
 			},
 			tag_cry_booster = {
-				name = "Booster Tag",
+				name = "Booster タグ",
 				text = {
 					"Next {C:cry_code}Booster Pack{} has",
 					"{C:attention}double{} cards and",
@@ -3893,53 +3893,53 @@ return {
 				},
 			},
 			tag_cry_bundle = {
-				name = "Bundle Tag",
+				name = "Bundle タグ",
 				text = {
-					"Create a {C:attention}Standard Tag{}, {C:tarot}Charm Tag{},",
-					"{C:attention}Buffoon Tag{}, and {C:planet}Meteor Tag",
+					"Create a {C:attention}Standard タグ{}, {C:tarot}Charm タグ{},",
+					"{C:attention}Buffoon タグ{}, and {C:planet}Meteor タグ",
 				},
 			},
 			tag_cry_cat = {
-				name = "Cat Tag",
+				name = "Cat タグ",
 				text = { "Meow.", "{C:inactive}Level {C:dark_edition}#1#" },
 			},
 			tag_cry_console = {
-				name = "Console Tag",
+				name = "Console タグ",
 				text = {
 					"Gives a free",
 					"{C:cry_code}Program Pack",
 				},
 			},
 			tag_cry_double_m = {
-				name = "Double M Tag",
+				name = "Double M タグ",
 				text = {
 					"Shop has a",
 					"{C:dark_edition}Jolly {C:legendary}M Joker{}",
 				},
 			},
 			tag_cry_empowered = {
-				name = "Empowered Tag",
+				name = "Empowered タグ",
 				text = {
 					"Gives a free {C:spectral}Spectral Pack",
 					"with {C:legendary,E:1}The Soul{} and {C:cry_exotic,E:1}Gateway{}",
 				},
 			},
 			tag_cry_epic = {
-				name = "Epic Tag",
+				name = "Epic タグ",
 				text = {
 					"Shop has a half-price",
 					"{C:cry_epic}Epic Joker",
 				},
 			},
 			tag_cry_gambler = {
-				name = "Gambler's Tag",
+				name = "Gambler's タグ",
 				text = {
 					"{C:green}#1# in #2#{} chance to create",
-					"an {C:cry_exotic,E:1}Empowered Tag",
+					"an {C:cry_exotic,E:1}Empowered タグ",
 				},
 			},
 			tag_cry_glass = {
-				name = "Fragile Tag",
+				name = "Fragile タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
@@ -3947,7 +3947,7 @@ return {
 				},
 			},
 			tag_cry_glitched = {
-				name = "Glitched Tag",
+				name = "Glitched タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
@@ -3955,7 +3955,7 @@ return {
 				},
 			},
 			tag_cry_gold = {
-				name = "Golden Tag",
+				name = "Golden タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
@@ -3963,7 +3963,7 @@ return {
 				},
 			},
 			tag_cry_gourmand = {
-				name = "Gourmand Tag",
+				name = "Gourmand タグ",
 				text = {
 					"Shop has a free",
 					"{C:attention}Food Joker",
@@ -3977,7 +3977,7 @@ return {
 				},
 			},
 			tag_cry_m = {
-				name = "Jolly Tag",
+				name = "Jolly タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
@@ -3985,17 +3985,17 @@ return {
 				},
 			},
 			tag_cry_memory = {
-				name = "Memory Tag",
+				name = "Memory タグ",
 				text = {
 					"Create {C:attention}#1#{} cop#<ies,y>1# of",
-					"the last {C:attention}Tag{} used",
+					"the last {C:attention}タグ{} used",
 					"during this run",
-					"{s:0.8,C:inactive}Copying Tags excluded",
-					"{s:0.8,C:inactive}Currently: {s:0.8,C:attention}#2#",
+					"{s:0.8,C:inactive}Copying タグ excluded",
+					"{s:0.8,C:inactive}現在: {s:0.8,C:attention}#2#",
 				},
 			},
 			tag_cry_mosaic = {
-				name = "Mosaic Tag",
+				name = "Mosaic タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
@@ -4003,7 +4003,7 @@ return {
 				},
 			},
 			tag_cry_oversat = {
-				name = "Oversaturated Tag",
+				name = "Oversaturated タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
@@ -4011,52 +4011,52 @@ return {
 				},
 			},
 			tag_cry_quadruple = {
-				name = "Quadruple Tag",
+				name = "Quadruple タグ",
 				text = {
 					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
-					"next selected {C:attention}Tag",
-					"{s:0.8,C:inactive}Copying Tags excluded",
+					"next selected {C:attention}タグ",
+					"{s:0.8,C:inactive}Copying タグ excluded",
 				},
 			},
 			tag_cry_quintuple = {
-				name = "Quintuple Tag",
+				name = "Quintuple タグ",
 				text = {
 					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
-					"next selected {C:attention}Tag",
-					"{s:0.8,C:inactive}Copying Tags excluded",
+					"next selected {C:attention}タグ",
+					"{s:0.8,C:inactive}Copying タグ excluded",
 				},
 			},
 			tag_cry_rework = {
-				name = "Rework Tag",
+				name = "Rework タグ",
 				text = {
 					"Shop has a#3#",
 					"{C:dark_edition}#1# {C:cry_code}#2#",
 				},
 			},
 			tag_cry_schematic = {
-				name = "Schematic Tag",
+				name = "Schematic タグ",
 				text = {
 					"Shop has a",
 					"{C:attention}Brainstorm",
 				},
 			},
 			tag_cry_scope = {
-				name = "Scope Tag",
+				name = "Scope タグ",
 				text = {
 					"{C:attention}+#1# {C:blue}hand#<s>1#{} and",
 					"{C:red}discard#<s>1#{} next round",
 				},
 			},
 			tag_cry_triple = {
-				name = "Triple Tag",
+				name = "Triple タグ",
 				text = {
 					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
-					"next selected {C:attention}Tag",
-					"{s:0.8,C:inactive}Copying Tags excluded",
+					"next selected {C:attention}タグ",
+					"{s:0.8,C:inactive}Copying タグ excluded",
 				},
 			},
 			tag_cry_clone = {
-				name = "Clone Tag",
+				name = "Clone タグ",
 				text = {
 					"Shop Items cost {C:attention}X#1#{}",
 					"as much, obtain a {C:attention}Copy{}",
@@ -4064,15 +4064,15 @@ return {
 				},
 			},
 			tag_cry_lens = {
-				name = "Lens Tag",
+				name = "Lens タグ",
 				text = {
-					"Apply {C:dark_edition}Negative{}",
+					"Apply {C:dark_edition}ネガティブ{}",
 					"to {C:attention}#1#{} random",
 					"consumable#<s>1#",
 				},
 			},
 			tag_cry_palette_cleanser = {
-				name = "Palette Cleanser Tag",
+				name = "Palette Cleanser タグ",
 				text = {
 					"Remove a {C:attention}random{}",
 					"sticker from a {C:attention}random{}",
@@ -4124,16 +4124,16 @@ return {
 			v_cry_copies = {
 				name = "Copies",
 				text = {
-					"Double Tags become",
-					"{C:attention}Triple Tags{} and are",
+					"Double タグ become",
+					"{C:attention}Triple タグ{} and are",
 					"{C:attention}2X{} as common",
 				},
 			},
 			v_cry_tag_printer = {
-				name = "Tag Printer",
+				name = "タグ Printer",
 				text = {
-					"Double Tags become",
-					"{C:attention}Quadruple Tags{} and",
+					"Double タグ become",
+					"{C:attention}Quadruple タグ{} and",
 					"are {C:attention}3X{} as common",
 				},
 			},
@@ -4201,7 +4201,7 @@ return {
 				text = {
 					"{C:attention}+#1#{} card slot#<s>1#,",
 					"{C:attention}+#1#{} booster pack slot#<s>1#,",
-					"and {C:attention}+#1#{} voucher slot#<s>1#,",
+					"and {C:attention}+#1#{} バウチャー slot#<s>1#,",
 					"available in shop",
 				},
 				unlock = {
@@ -4218,7 +4218,7 @@ return {
 				},
 				unlock = {
 					"Redeem {C:attention}25",
-					"{C:attention}Vouchers",
+					"{C:attention}バウチャー",
 					"in one run",
 				},
 			},
@@ -4254,7 +4254,7 @@ return {
 			-- 	text = {
 			-- 		"Create the {C:planet}Planet",
 			-- 		"card for played",
-			-- 		"{C:attention}poker hand{}",
+			-- 		"{C:attention}ポーカーハンド{}",
 			-- 		"{C:inactive}(Must have room){}",
 			-- 	},
 			-- 	unlock = {
@@ -4349,10 +4349,10 @@ return {
 			v_cry_asteroglyph = {
 				name = "Asteroglyph",
 				text = {
-					"Set Ante to {C:attention}#1#{}",
+					"Set アンティ to {C:attention}#1#{}",
 				},
 				unlock = {
-					"Reach Ante {C:attention}36",
+					"Reach アンティ {C:attention}36",
 				},
 			},
 			-- RESERVATION FOR DIRECTOR'S CUT T3
@@ -4370,8 +4370,8 @@ return {
 			v_cry_clone_machine = {
 				name = "Clone Machine",
 				text = {
-					"Double Tags become",
-					"{C:attention}Quintuple Tags{} and",
+					"Double タグ become",
+					"{C:attention}Quintuple タグ{} and",
 					"are {C:attention}4X{} as common",
 				},
 			},
@@ -4537,7 +4537,7 @@ return {
 				text = {
 					"Creates the next",
 					"{C:cry_code}Function://{} consumable",
-					"{C:inactive}Currently #1#, #2# and #3#{}",
+					"{C:inactive}現在 #1#, #2# and #3#{}",
 				},
 			},
 			cry_possessed = {
@@ -4579,9 +4579,9 @@ return {
 			ev_cry_choco2 = {
 				name = "2: Haunted House",
 				text = {
-					"Prevents skipping {C:attention}Blind{}",
+					"Prevents skipping {C:attention}ブラインド{}",
 					"One {C:attention}reroll{} allowed per shop",
-					"{C:attention}Voucher{} prices are doubled",
+					"{C:attention}バウチャー{} prices are doubled",
 					"{C:inactive,s:0.7}Spooky spirits have taken over! Don't touch",
 					"{C:inactive,s:0.7}anything and get out as soon as possible!",
 				},
@@ -4590,8 +4590,8 @@ return {
 				name = "3: Witch's Brews",
 				text = {
 					"Create 3 {C:attention}Potions",
-					"Use one by the end of the {C:attention}Small Blind{},",
-					"or {C:attention}all{} maluses will be applied this {C:attention}Ante",
+					"Use one by the end of the {C:attention}Small ブラインド{},",
+					"or {C:attention}all{} maluses will be applied this {C:attention}アンティ",
 					"{C:inactive,s:0.7}You have been kidnapped by a witch!",
 					"{C:inactive,s:0.7}She offers you three potions, watching you closely.",
 					"{C:inactive,s:0.7}Pick one, lest she makes the decision for you.",
@@ -4639,7 +4639,7 @@ return {
 			ev_cry_choco8 = {
 				name = "8: Candy Rain",
 				text = {
-					"When {C:attention}Blind{} defeated, obtain 1 {C:cry_candy}Candy{}",
+					"When {C:attention}ブラインド{} defeated, obtain 1 {C:cry_candy}Candy{}",
 					"per hand remaining; Obtain a {C:attention}Food Joker{}",
 					"when a {C:cry_candy}Candy{} is generated",
 					"{C:inactive,s:0.7}Candies rain from the sky! Quick,",
@@ -4661,7 +4661,7 @@ return {
 				name = "10: Revered Antique",
 				text = {
 					"A {C:legendary}Legendary{} {C:attention}Joker{} appears",
-					"in the {C:attention}Voucher{} slot for {C:money}$50",
+					"in the {C:attention}バウチャー{} slot for {C:money}$50",
 					"Only buyable as {C:attention}last{} item in shop",
 					"{C:inactive,s:0.7}You've attracted the attention of a relic's spirit,",
 					"{C:inactive,s:0.7}but it won't be easy to quell.",
@@ -4780,7 +4780,7 @@ return {
 					"{X:mult,C:white}X#1#{} Mult for each",
 					"{C:attention}Neutron Star{} used",
 					"in this run",
-					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
+					"{C:inactive}(現在 {X:mult,C:white}X#2#{C:inactive} Mult)",
 				},
 			},
 			o_planetlua = {
@@ -4792,7 +4792,7 @@ return {
 				text = {
 					"Held {C:attention}Sol{} and {C:attention}Perkele{} Cards",
 					"increase {C:attention}Ascension power",
-					"{C:inactive}(Currently {X:gold,C:white}+#1#{C:inactive})",
+					"{C:inactive}(現在 {X:gold,C:white}+#1#{C:inactive})",
 				},
 			},
 			o_perkele = {
@@ -4803,7 +4803,7 @@ return {
 					"{X:mult,C:white}X#2#{} mult if played hand is a {C:attention}#3#{}",
 					"Held {C:attention}Sol{} and {C:attention}Perkele{} Cards",
 					"increase {C:attention}Ascension power",
-					"{C:inactive}(Currently {X:gold,C:white}+#1#{C:inactive})",
+					"{C:inactive}(現在 {X:gold,C:white}+#1#{C:inactive})",
 				},
 			},
 			p_cry_code_normal_1 = {
@@ -4839,7 +4839,7 @@ return {
 				text = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{C:spectral} Spectral{} card#<s>2#",
-					"{s:0.8,C:inactive}(Generated by Empowered Tag)",
+					"{s:0.8,C:inactive}(Generated by Empowered タグ)",
 				},
 			},
 			p_cry_meme_1 = {
@@ -4901,9 +4901,9 @@ return {
 			cry_azure_seal = {
 				name = "Azure Seal",
 				text = {
-					"Create {C:attention}#1#{} {C:dark_edition}Negative{}",
+					"Create {C:attention}#1#{} {C:dark_edition}ネガティブ{}",
 					"{C:planet}Planet#<s>1#{} for played",
-					"{C:attention}poker hand{}, then",
+					"{C:attention}ポーカーハンド{}, then",
 					"{C:red}destroy{} this card",
 				},
 			},
@@ -5036,7 +5036,7 @@ return {
 		},
 		achievement_names = {
 			ach_cry_ace_in_crash = "Pocket ACE",
-			ach_cry_blurred_blurred_joker = "Legally Blind",
+			ach_cry_blurred_blurred_joker = "Legally ブラインド",
 			ach_cry_bullet_hell = "Bullet Hell",
 			ach_cry_break_infinity = "Break Infinity",
 			ach_cry_cryptid_the_cryptid = "Cryptid the Cryptid",
@@ -5074,11 +5074,11 @@ return {
 			ach_cry_freak_house = "Play a Flush House consisting of 6s and 9s of Hearts whilst possessing Nice",
 			ach_cry_googol_play_pass = "Rig a Googol Play Card",
 			ach_cry_haxxor = "Use a cheat code",
-			ach_cry_home_realtor = "Activate Happy House before Ante 8 (without DoE/Antimatter)",
-			ach_cry_jokes_on_you = "Trigger The Joke's effect on Ante 1 and win the run",
-			ach_cry_niw_uoy = "Reach Ante -8",
+			ach_cry_home_realtor = "Activate Happy House before アンティ 8 (without DoE/Antimatter)",
+			ach_cry_jokes_on_you = "Trigger The Joke's effect on アンティ 1 and win the run",
+			ach_cry_niw_uoy = "Reach アンティ -8",
 			ach_cry_now_the_fun_begins = "Obtain Canvas",
-			ach_cry_patience_virtue = "Wait out Lavender Loop for 2 minutes before playing first hand and beat the blind",
+			ach_cry_patience_virtue = "Wait out Lavender Loop for 2 minutes before playing first hand and beat the ブラインド",
 			ach_cry_perfectly_balanced = "Beat Very Fair Deck on Ascendant Stake",
 			ach_cry_pull_request = "Have ://COMMIT spawn the same Joker that it destroyed",
 			ach_cry_traffic_jam = "Beat all Rush Hour challenges",
@@ -5086,7 +5086,7 @@ return {
 			ach_cry_used_crash = "Use ://CRASH",
 			ach_cry_what_have_you_done = "Delete or Sacrifice an Exotic Joker",
 			ach_cry_pin = "Lose a run to The Pin",
-			ach_cry_technically_positive = "Obtain a Negative Negative Joker",
+			ach_cry_technically_positive = "Obtain a ネガティブ ネガティブ Joker",
 			ach_cry_youre_fucking_kidding = "Discard " .. localize("cry_WholeDeck", "poker_hands"),
 			ach_cry_stoned = "Get " .. localize("cry_Bulwark", "poker_hands") .. " to level 420",
 			ach_cry_fucked = "Get " .. localize("cry_Clusterfuck", "poker_hands") .. " to level 69",
@@ -5113,7 +5113,7 @@ return {
 			cry_set_enable_features = "Use this section to enable or disable entire Thematic Sets.",
 			cry_feat_achievements = "Achievements",
 			["cry_feat_antimatter deck"] = "Antimatter Deck",
-			cry_feat_blinds = "Blinds",
+			cry_feat_blinds = "ブラインド",
 			cry_feat_challenges = "Challenges",
 			["cry_feat_code cards"] = "Code Cards",
 			["cry_feat_misc. decks"] = "Misc. Decks",
@@ -5128,12 +5128,12 @@ return {
 			["cry_feat_misc. jokers"] = "Misc. Jokers",
 			cry_feat_planets = "Planets",
 			cry_feat_jokerdisplay = "JokerDisplay (Does Nothing)",
-			cry_feat_tags = "Tags",
+			cry_feat_tags = "タグ",
 			cry_feat_sleeves = "Sleeves",
 			cry_feat_spectrals = "Spectrals",
 			cry_feat_spooky = "Spooky Update",
 			["cry_feat_more stakes"] = "Stakes",
-			cry_feat_vouchers = "Vouchers",
+			cry_feat_vouchers = "バウチャー",
 			cry_mus_jimball = "Jimball (Funkytown by Lipps Inc. - Copyrighted)",
 			cry_mus_code = "Code Cards (://LETS_BREAK_THE_GAME by HexaCryonic)",
 			cry_mus_exotic = "Exotic Jokers (Joker in Latin by AlexZGreat)",
@@ -5152,7 +5152,7 @@ return {
 			cry_critical_miss_ex = "Critical Miss!",
 
 			cry_potion1 = "-1 to all Hand Levels",
-			cry_potion2 = "X1.15 Blind size",
+			cry_potion2 = "X1.15 ブラインド size",
 			cry_potion3 = "-1 Hand and Discard",
 
 			cry_debuff_oldhouse = "No Full Houses",
@@ -5163,7 +5163,7 @@ return {
 			cry_debuff_obsidian_orb = "Applies abilities of all defeated bosses",
 			cry_blind_baneful_pack = "After round, open a Baneful Buffoon Pack",
 
-			cry_tax_placeholder = "(X0.4 blind requirement)",
+			cry_tax_placeholder = "(X0.4 ブラインド requirement)",
 			cry_joke_placeholder = "(multiple of 8)",
 
 			k_code = "Code",
@@ -5171,8 +5171,8 @@ return {
 			k_content_set = "Thematic Set",
 			b_content_sets = "Thematic Sets",
 			--Why aren't these in vanilla?
-			b_tag = "Tag",
-			b_blind = "Blind",
+			b_tag = "タグ",
+			b_blind = "ブラインド",
 			rush_hour_reminder = "Enable the Clock and Lavender loop to play Rush Hour",
 
 			b_tarot_rate = "Tarot Rate",
@@ -5184,7 +5184,7 @@ return {
 			b_pull = "PULL",
 			b_playing_cards = "Playing Cards",
 			cry_hooked_ex = "Hooked!",
-			k_end_blind = "End Blind",
+			k_end_blind = "End ブラインド",
 			k_cry_shiny = "Shiny",
 
 			cry_code_rank = "ENTER RANK",
@@ -5205,7 +5205,7 @@ return {
 			cry_code_suitless = "Hand does not require specific suits",
 			cry_code_empty = "[Declare Hand]",
 			cry_code_exit = "EXIT",
-			cry_code_antevoucher = "Next Boss Blind and Voucher",
+			cry_code_antevoucher = "Next ボスブラインド and バウチャー",
 			cry_code_nextjokers = "Next Shop Jokers",
 			cry_code_nextcards = "Next Drawn Cards",
 
@@ -5334,12 +5334,12 @@ return {
 				money = { "{C:money}+$#2#{} at payout" },
 			},
 			stats_inactive = {
-				plus_mult = { "{C:inactive}(Currently {C:red}+#1#{C:inactive} Mult)" },
-				plus_chips = { "{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chip(s))" },
-				x_mult = { "{C:inactive}(Currently {X:red,C:white} X#1# {C:inactive} Mult)" },
-				x_chips = { "{C:inactive}(Currently {X:blue,C:white} X#1# {C:inactive} Chips)" },
-				h_size = { "{C:inactive}(Currently {C:attention}+#1#{C:inactive} Hand Size)" },
-				money = { "{C:inactive}(Currently {C:money}+$#1#{C:inactive})" },
+				plus_mult = { "{C:inactive}(現在 {C:red}+#1#{C:inactive} Mult)" },
+				plus_chips = { "{C:inactive}(現在 {C:blue}+#1#{C:inactive} Chip(s))" },
+				x_mult = { "{C:inactive}(現在 {X:red,C:white} X#1# {C:inactive} Mult)" },
+				x_chips = { "{C:inactive}(現在 {X:blue,C:white} X#1# {C:inactive} Chips)" },
+				h_size = { "{C:inactive}(現在 {C:attention}+#1#{C:inactive} Hand Size)" },
+				money = { "{C:inactive}(現在 {C:money}+$#1#{C:inactive})" },
 			},
 			actions = {
 				make_joker = { "Create {C:attention}#2# Joker(s){}" },
@@ -5355,16 +5355,16 @@ return {
 				selling_card = { "when a card is sold" },
 				reroll_shop = { "on reroll" },
 				ending_shop = { "at the end of the {C:attention}shop{}" },
-				skip_blind = { "when a {C:attention}blind{} is skipped" },
-				skipping_booster = { "when any {C:attention}Booster Pack{} is skipped" },
+				skip_blind = { "when a {C:attention}ブラインド{} is skipped" },
+				skipping_booster = { "when any {C:attention}ブースターパック{} is skipped" },
 				playing_card_added = { "every time a {C:attention}playing card{} is added to your deck" },
 				first_hand_drawn = { "when round begins" },
-				setting_blind = { "when {C:attention}Blind{} is selected" },
+				setting_blind = { "when {C:attention}ブラインド{} is selected" },
 				remove_playing_cards = { "when a card is destroyed" },
 				using_consumeable = { "when a {C:attention}consumable{} card is used" },
 				debuffed_hand = { "if played {C:attention}hand{} is not allowed" },
-				pre_discard = { "before each discard" },
-				discard = { "for each discarded card" },
+				pre_discard = { "before each ディスカード" },
+				discard = { "for each ディスカードed card" },
 				end_of_round = { "at end of {C:attention}round{}" },
 				individual_play = { "for each card scored" },
 				individual_hand_score = { "for each card held in hand during scoring" },
@@ -5386,10 +5386,10 @@ return {
 				suit = { "if card is a {V:1}#3#{}" },
 				rank = { "if card is rank {C:attention}#3#{}" },
 				face = { "if card is a {C:attention}face{} card" },
-				boss = { "if {C:attention}blind{} is a {C:attention}Boss {C:attention}Blind{}" },
-				non_boss = { "if {C:attention}blind{} is a {C:attention}Non-Boss {C:attention}Blind{}" },
-				small = { "if {C:attention}blind{} is a {C:attention}Small {C:attention}Blind{}" },
-				big = { "if {C:attention}blind{} is a {C:attention}Big {C:attention}Blind{}" },
+				boss = { "if {C:attention}ブラインド{} is a {C:attention}Boss {C:attention}ブラインド{}" },
+				non_boss = { "if {C:attention}ブラインド{} is a {C:attention}Non-Boss {C:attention}ブラインド{}" },
+				small = { "if {C:attention}ブラインド{} is a {C:attention}Small {C:attention}ブラインド{}" },
+				big = { "if {C:attention}ブラインド{} is a {C:attention}Big {C:attention}ブラインド{}" },
 				first = { "if it's the {C:attention}first {C:attention}hand{}" },
 				last = { "if it's the {C:attention}last {C:attention}hand{}" },
 				common = { "if it is a {C:blue}Common{} {C:attention}Joker{}" },
@@ -5399,9 +5399,9 @@ return {
 				or_more = { "if hand contains {C:attention}#3#{} or more cards" },
 				or_less = { "if hand contains {C:attention}#3#{} or less cards" },
 				hands_left = { "if #3# {C:blue}hand(s){} remaining at end of round" },
-				discards_left = { "if #3# {C:red}discard(s){} remaining at end of round" },
-				first_discard = { "if it's the {C:attention}first {C:attention}discard{}" },
-				last_discard = { "if it's the {C:attention}last {C:attention}discard{}" },
+				discards_left = { "if #3# {C:red}ディスカード(s){} remaining at end of round" },
+				first_discard = { "if it's the {C:attention}first {C:attention}ディスカード{}" },
+				last_discard = { "if it's the {C:attention}last {C:attention}ディスカード{}" },
 				odds = { "with a {C:green}#4# {C:green}in {C:green}#3#{} chance" },
 			},
 		},
@@ -5417,10 +5417,10 @@ return {
 			a_powchips_minus = { "-^#1# Chips" },
 			a_powmultchips_minus = { "-^#1# Mult+Chips" },
 			a_round_minus = { "-#1# Round" },
-			a_tag_minus = { "-#1# Tag" },
-			a_tags_minus = { "-#1# Tags" },
-			a_tag = { "+#1# Tag" },
-			a_tags = { "+#1# Tags" },
+			a_tag_minus = { "-#1# タグ" },
+			a_tags_minus = { "-#1# タグ" },
+			a_tag = { "+#1# タグ" },
+			a_tags = { "+#1# タグ" },
 
 			cry_sticker_name = { "#1# Sticker" },
 			cry_sticker_desc = {
@@ -5440,13 +5440,13 @@ return {
 			ch_c_cry_all_banana = { "All Jokers are {C:eternal}Banana{}" },
 			ch_c_all_rnj = { "All Jokers are {C:attention}RNJoker{}" },
 			ch_c_cry_sticker_sheet_plus = { "All purchasable items have all stickers" },
-			ch_c_cry_rush_hour = { "All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop" },
-			ch_c_cry_rush_hour_ii = { "All Blinds are {C:attention}Boss Blinds{}" },
+			ch_c_cry_rush_hour = { "All ボスブラインド are {C:attention}The Clock{} or {C:attention}Lavender Loop" },
+			ch_c_cry_rush_hour_ii = { "All ブラインド are {C:attention}ボスブラインド{}" },
 			ch_c_cry_rush_hour_iii = {
 				"{C:attention}The Clock{} and {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast",
 			},
 			ch_c_cry_no_tags = { "Skipping is {C:attention}disabled{}" },
-			ch_c_cry_no_vouchers = { "{C:attention}Vouchers{} no longer appear in the shop" },
+			ch_c_cry_no_vouchers = { "{C:attention}バウチャー{} no longer appear in the shop" },
 			ch_c_cry_no_boosters = { "{C:attention}Booster Packs{} no longer appear in the shop" },
 			ch_c_cry_no_rerolls = { "Rerolling is {C:attention}disabled{}" },
 			ch_c_cry_no_consumables = { "{C:attention}Consumables{} no longer appear" },
