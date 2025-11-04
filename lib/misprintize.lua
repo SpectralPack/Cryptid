@@ -229,7 +229,9 @@ function Cryptid.misprintize_val(val, override, big, grow_type, pow_level)
 	return val
 end
 function Cryptid.sanity_check(val, is_big)
-	if not Talisman then return val end
+	if not Talisman then
+		return val
+	end
 	if is_big then
 		if not val or type(val) == "number" and (val ~= val or val > 1e300 or val < -1e300) then
 			val = 1e300
@@ -397,7 +399,9 @@ function Card:get_nominal(mod)
 end
 
 function Cryptid.manipulate(card, args)
-	if not card or not card.config or not card.config.center then return end
+	if not card or not card.config or not card.config.center then
+		return
+	end
 	if not Card.no(card, "immutable", true) or (args and args.bypass_checks) then
 		if not args then
 			return Cryptid.manipulate(card, {
@@ -489,10 +493,7 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 		return
 	end
 	for i, v in pairs(ref_table[ref_value]) do
-		if
-			Cryptid.is_number(v)
-			and Cryptid.misprintize_value_blacklist[i] ~= false
-		then
+		if Cryptid.is_number(v) and Cryptid.misprintize_value_blacklist[i] ~= false then
 			local num = v
 			if args.dont_stack then
 				if
