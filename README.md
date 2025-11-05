@@ -42,8 +42,7 @@ You can also enable/disable certain music tracks in the Music tab. If you're a s
 
 > *I'm hitting infinity very often, is there any way to raise the limit of the scoring system?*
 
-Talisman may be configured to be on **BigNum** mode, which has a maximum limit of ee308. You can make the limit virtually disappear by changing it to **OmegaNum**, which can handle e10##1000. You can configure it by going into Mods, then clicking Talisman, and changing the Score Limit under Config. Be careful; if you have a saved run that was on a different number system, you won't be able to load it (unless if you switch back)!
-
+Talisman may not be configured to be on **Omeganum** mode, which has a maximum limit of e10##1000. You can make the limit virtually disappear by going into Mods, then clicking Talisman, and changing the Score Limit under Config. Be careful; if you have a saved run that was on a different number system, you won't be able to load it (unless if you switch back)!
 
 > *I've experienced a crash/bug!*
 
