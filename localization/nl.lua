@@ -2,6 +2,7 @@
 --yes somehow that was harder than RNJoker
 --Wip Localization, putting this here since people have expressed interst in this
 --I'm Assuming de is the file for dutch? just rename it if it isn't
+-- de is the language code for german????
 
 --[[
 Progress:
@@ -2736,6 +2737,8 @@ return {
 					"destroyed each round",
 				},
 			},
+			-- commented out so this will default to the english description
+			--[[
 			cry_rigged = {
 				name = "Rigged",
 				text = {
@@ -2743,6 +2746,7 @@ return {
 					"are {C:cry_code}guaranteed",
 				},
 			},
+			]]
 			cry_hooked = {
 				name = "Hooked",
 				text = {
