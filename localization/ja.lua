@@ -154,7 +154,7 @@ return {
 			b_cry_et_deck = {
 				name = "Enhancement Deck",
 				text = {
-					"All {C:attention}playing cards{}",
+					"All {C:attention}トランプ{}",
 					"are {C:attention}#1#{}(s)",
 					"{C:inactive}(Click to edit)",
 				},
@@ -222,7 +222,7 @@ return {
 			b_cry_sl_deck = {
 				name = "Seal Deck",
 				text = {
-					"All playing cards have a {C:dark_edition}#1#{}",
+					"All トランプ have a {C:dark_edition}#1#{}",
 					"Cards cannot change seals",
 					"{C:inactive}(Click to edit)",
 				},
@@ -244,7 +244,7 @@ return {
 			b_cry_st_deck = {
 				name = "Suit Deck",
 				text = {
-					"All playing cards are {C:dark_edition}#1#",
+					"All トランプ are {C:dark_edition}#1#",
 					"and cannot change suits",
 					"{C:inactive}(Click to edit)",
 				},
@@ -292,233 +292,227 @@ return {
 		},
 		Blind = {
 			bl_cry_box = {
-				name = "The Box",
+				name = "箱",
 				text = {
-					"All Common Jokers",
-					"are debuffed",
+					"すべてのコモンジョーカーに",
+					"デバフがかかる",
 				},
 			},
 			bl_cry_clock = {
-				name = "The Clock",
+				name = "時計",
 				text = {
-					"+0.1X ブラインド requirements every",
-					"12 seconds spent this ante,",
-					"multiplied by game speed",
+					"このアンティに12秒費やすごとに",
+					"ブラインドの要求スコアを +0.1倍 する",
+					"増分にはゲームスピードが乗算される",
 				},
 			},
 			bl_cry_hammer = {
-				name = "The Hammer",
+				name = "槌",
 				text = {
-					"All cards with odd",
-					"rank are debuffed",
+					"すべての奇数カードに",
+					"デバフがかかる",
 				},
 			},
 			bl_cry_joke = {
-				name = "The Joke",
+				name = "嘘",
 				text = {
-					"If score is >2X requirements,",
-					"set ante to #2#",
+					"スコアがブラインドの2倍を上回ると",
+					"アンティを #2# にする",
 				},
 			},
 			bl_cry_magic = {
-				name = "The Magic",
+				name = "魔法",
 				text = {
-					"All cards with even",
-					"rank are debuffed",
+					"すべての偶数カードに",
+					"デバフがかかる",
 				},
 			},
 			bl_cry_lavender_loop = {
-				name = "Lavender Loop",
+				name = "ラベンダー・ループ",
 				text = {
-					"1.25X ブラインド requirements every",
-					"6 seconds spent this round,",
-					"multiplied by game speed",
+					"このラウンドに6秒費やすごとに",
+					"ブラインドの要求スコアを x1.25倍 する",
+					"増分にはゲームスピードが乗算される",
 				},
 			},
 			bl_cry_obsidian_orb = {
-				name = "Obsidian Orb",
+				name = "黒曜石",
 				text = {
-					"Applies abilities of",
-					"all defeated bosses",
+					"すべての討伐済みボスブラインドの",
+					"能力が発動する",
 				},
 			},
 			bl_cry_oldarm = {
-				name = "Nostalgic Arm",
+				name = "郷愁の腕",
 				text = {
-					"Must play 4",
-					"or fewer cards",
+					"4枚以下のカードを",
+					"プレイしなければならない",
 				},
 			},
 			bl_cry_oldfish = {
-				name = "Nostalgic Fish",
+				name = "郷愁の魚",
 				text = {
-					"All hands start",
-					"with 1 Mult",
+					"すべてのポーカーハンドのデフォルト倍率が",
+					"1になる",
 				},
 			},
 			bl_cry_oldflint = {
-				name = "Nostalgic Flint",
+				name = "郷愁のフリント",
 				text = {
-					"No Flushes",
+					"フラッシュが無効になる",
 				},
 			},
 			bl_cry_oldhouse = {
-				name = "Nostalgic House",
+				name = "郷愁の家",
 				text = {
-					"No Full Houses",
+					"フルハウスが無効になる",
 				},
 			},
 			bl_cry_oldmanacle = {
-				name = "Nostalgic Manacle",
+				name = "郷愁の手枷",
 				text = {
-					"Divide Mult by ディスカード",
+					"倍率 ÷ ディスカード数",
 				},
 			},
 			bl_cry_oldmark = {
-				name = "Nostalgic Mark",
+				name = "郷愁の印",
 				text = {
-					"No hands that",
-					"contain a Pair",
+					"ワンペアを含むポーカーハンドが無効になる",
 				},
 			},
 			bl_cry_oldox = {
-				name = "Nostalgic Ox",
+				name = "郷愁の雄牛",
 				text = {
-					"All hands start",
-					"with 0 Chips",
+					"すべてのポーカーハンドのデフォルトチップが",
+					"0 になる",
 				},
 			},
 			bl_cry_oldpillar = {
-				name = "Nostalgic Pillar",
+				name = "郷愁の柱",
 				text = {
-					"No Straights",
+					"ストレートが無効になる",
 				},
 			},
 			bl_cry_oldserpent = {
-				name = "Nostalgic Serpent",
+				name = "郷愁の大蛇",
 				text = {
-					"Divide Mult by level",
-					"of played ポーカーハンド",
+					"倍率 ÷ プレイされたポーカーハンドのプレイ数",
 				},
 			},
 			bl_cry_pin = {
-				name = "The Pin",
+				name = "ピン",
 				text = {
-					"Jokers with Epic or higher",
-					"rarity are debuffed",
+					"エピック以上のレアリティのジョーカーに",
+					"デバフがかかる",
 				},
 			},
 			bl_cry_scorch = {
-				name = "The Scorch",
+				name = "焼印",
 				text = {
-					"Must play 5 cards,",
-					"destroy played and",
-					"discarded cards",
+					"5枚のカードをプレイしなければならない",
+					"プレイされたカードとディスカードされたカードは",
+					"破壊される"
 				},
 			},
 			bl_cry_greed = {
-				name = "The Greed",
+				name = "強欲",
 				text = {
-					"+#2# ブラインド requirement",
-					"per $#1# when selected",
+					"ブラインドが選択されたときに持っている所持金 $#1# ごとに", 
+					"要求スコア +#2#",	
 				},
 			},
 			bl_cry_repulsor = {
-				name = "The Repulsor",
+				name = "リパルサー",
 				text = {
-					"Retrigger rightmost and",
-					"leftmost Jokers, all other",
-					"Jokers do not trigger",
+					"左端と右端のジョーカーが",
+					"再発動する代わりに",
+					"それ以外のジョーカーが発動しない"
 				},
 			},
 			bl_cry_chromatic = {
-				name = "The Chromatic",
+				name = "色相",
 				text = {
-					"Hand score is",
-					"subtracted on",
-					"odd numbered hands",
+					"奇数回目にプレイされたスコアは",
+					"マイナスされる",
 				},
 			},
 			bl_cry_landlord = {
-				name = "The Landlord",
+				name = "地主",
 				text = {
-					"Apply rental to",
-					"a random Joker",
-					"when hand is played",
+					"ランダムなジョーカーに",
+					"レンタルを適用する",
 				},
 			},
 			bl_cry_pinkbow = {
-				name = "Pink Bow",
+				name = "ピンク・ボウ",
 				text = {
 					"Randomize rank of cards",
 					"held in hand on play",
 				},
 			},
 			bl_cry_sapphire_stamp = {
-				name = "Sapphire Stamp",
+				name = "サファイア・スタンプ",
 				text = {
 					"Select an extra card, deselect",
 					"random card before scoring",
 				},
 			},
 			bl_cry_shackle = {
-				name = "The Shackle",
+				name = "足枷",
 				text = {
-					"All ネガティブ Jokers",
-					"are debuffed",
+					"すべてのネガティブジョーカーが",
+					"デバフを受ける",
 				},
 			},
 			bl_cry_striker = {
-				name = "The Striker",
+				name = "撃鉄",
 				text = {
-					"All Rare Jokers",
-					"are debuffed",
+					"すべてのレアジョーカーが",
+					"デバフを受ける",
 				},
 			},
 			bl_cry_tax = {
-				name = "The Tax",
+				name = "税",
 				text = {
-					"Score per hand capped",
-					"at #1#",
+					"1回のハンドのスコア上限 #1#",
 				},
 			},
 			bl_cry_tornado = {
-				name = "Turquoise Tornado",
+				name = "ターコイズ・トルネード",
 				text = {
-					"#1# in #2# chance for",
-					"played hand to not score",
+					"#2#分の#1# の確率で",
+					"プレイしたハンドがスコアされない",
 				},
 			},
 			bl_cry_trick = {
-				name = "The Trick",
+				name = "技",
 				text = {
-					"After each hand, flip all",
-					"face-up cards held in hand",
+					"各ハンドごとに",
+					"手札内の表を向いているカードを裏返す",
 				},
 			},
 			bl_cry_trophy = {
-				name = "Lemon Trophy",
+				name = "レモン・トロフィー",
 				text = {
-					"Mult cannot",
-					"exceed Chips",
+					"倍率はチップ数を超えることができない",
 				},
 			},
 			bl_cry_vermillion_virus = {
-				name = "Vermillion Virus",
+				name = "ヴァーミリオン・ウィルス",
 				text = {
-					"One random Joker",
-					"replaced every hand",
+					"各ハンドごとに",
+					"ジョーカーの位置をシャッフルする",
 				},
 			},
 			bl_cry_windmill = {
-				name = "The Windmill",
+				name = "風車",
 				text = {
-					"All Uncommon Jokers",
-					"are debuffed",
+					"すべてのアンコモンジョーカーが",
+					"デバフを受ける",
 				},
 			},
 			bl_cry_decision = {
-				name = "The Decision",
+				name = "判決",
 				text = {
 					"Fasten Jokers on play or ディスカード",
 					"Open a Baneful Buffoon",
@@ -530,7 +524,7 @@ return {
 			c_cry_crash = {
 				name = "://CRASH",
 				text = {
-					"{C:cry_code,E:1}Don't.",
+					"{C:cry_code,E:1}やめて。",
 				},
 			},
 			c_cry_keygen = {
@@ -544,54 +538,54 @@ return {
 			c_cry_payload = {
 				name = "://PAYLOAD",
 				text = {
-					"Next defeated ブラインド",
-					"gives {C:cry_code}X#1#{} interest",
+					"次に倒すブラインドが",
+					"{C:cry_code}#1#倍{} の利息を与える",
 				},
 			},
 			c_cry_exploit = {
 				name = "://EXPLOIT",
 				text = {
-					"{C:cry_code}Choose{} a {C:cry_code}currently visible{} ポーカーハンド,",
-					"next hand is {C:cry_code}calculated{} as that hand,",
+					"{C:cry_code}現在有効な{}ポーカーハンドを1つ{C:cry_code}選ぶ{}",
+					"次のハンドがそのポーカーハンドとして{C:cry_code}計算される{}",
 					"and gains {C:cry_code}one{} temp {C:cry_code}Ascension Power{}",
 				},
 			},
 			c_cry_malware = {
 				name = "://MALWARE",
 				text = {
-					"Add {C:dark_edition}Glitched{} to all",
-					"cards {C:cry_code}held in hand",
+					"{C:cry_code}手札にある{}すべてのカードに",
+					"{C:dark_edition}グリッチ{}を追加する",
 				},
 			},
 			c_cry_nperror = {
 				name = "://NPERROR",
 				text = {
-					"Returns the {C:cry_code}last played hand{}",
-					"to your hand",
+					"{C:cry_code}最後にプレイしたハンド{}を",
+					"手札に戻す",
 				},
 			},
 			c_cry_rework = {
 				name = "://REWORK",
 				text = {
-					"Destroy a {C:cry_code}selected{} Joker,",
-					"create a {C:cry_code}Rework タグ{} with",
-					"an {C:cry_code}upgraded{} edition",
-					"{C:inactive,s:0.8}Upgrades using order in the Collection",
+					"{C:cry_code}選択した{}ジョーカーを破壊し",
+					"{C:cry_code}アップグレードされた{} エディションの",
+					"{C:cry_code}リワークタグ{}を1つ作成する",
+					"{C:inactive,s:0.8}アップグレードの序列はコレクションでの表示順に基づく",
 				},
 			},
 			c_cry_merge = {
 				name = "://MERGE",
 				text = {
-					"Merge a selected {C:cry_code}consumable",
-					"with a selected {C:cry_code}playing card",
+					"選択された1枚の{C:cry_code}トランプ{}と",
+					"選択された1枚の{C:cry_code}消耗アイテム{}を融合させる",
 				},
 			},
 			c_cry_commit = {
 				name = "://COMMIT",
 				text = {
-					"Destroy a {C:cry_code}selected{} Joker,",
-					"create a {C:cry_code}new{} Joker",
-					"of the {C:cry_code}same rarity",
+					"{C:cry_code}選択された{}1枚のジョーカーを破壊し",
+					"{C:cry_code}同じレアリティ{}の",
+					"{C:cry_code}新たな{}ジョーカーを生成する",
 				},
 			},
 			c_cry_machinecode = {
@@ -603,24 +597,22 @@ return {
 			c_cry_spaghetti = {
 				name = "://SPAGHETTI",
 				text = {
-					"Create a {C:cry_code}Glitched",
-					"Food Joker",
+					"{C:cry_code}グリッチ{}の",
+					"フードジョーカーを作成する",
 				},
 			},
 			c_cry_seed = {
 				name = "://SEED",
 				text = {
-					"Select a Joker",
-					"or playing card",
-					"to become {C:cry_code}Rigged",
+					"選択された1枚のジョーカーかトランプに",
+					"{C:cry_code}リグ{}を付与する",
 				},
 			},
 			c_cry_patch = {
 				name = "://PATCH",
 				text = {
-					"Remove all {C:cry_code}debuffs",
-					"from currently visible items",
-					"{C:cry_code}Resets{} shop state",
+					"すべてのアイテムから{C:cry_code}デバフ{}を取り除く",
+					"ショップの状態をリセットする",
 				},
 			},
 			c_cry_cryupdate = {
@@ -633,16 +625,16 @@ return {
 			c_cry_hook = {
 				name = "HOOK://",
 				text = {
-					"Apply {C:cry_code}Hooked{} to",
-					"2 selected Jokers",
+					"2枚の選択したジョーカーに",
+					"{C:cry_code}フック{}を付与する",
 				},
 			},
 			c_cry_oboe = {
 				name = "://OFFBYONE",
 				text = {
-					"Next {C:cry_code}Booster Pack{} has",
-					"{C:cry_code}#1#{} extra card#<s>1# and",
-					"{C:cry_code}#1#{} extra choice#<s>1#",
+					"次の{C:cry_code}ブースターパック{}には",
+					"{C:cry_code}#1#{}枚多くカードが含まれ",
+					"{C:cry_code}#1#{}枚多くカードを選択できる",
 					"{C:inactive}(現在 {C:cry_code}+#2#{C:inactive})",
 				},
 			},
@@ -665,54 +657,55 @@ return {
 			c_cry_revert = {
 				name = "://REVERT",
 				text = {
-					"Set {C:cry_code}game state{} to",
-					"start of {C:cry_code}this アンティ{}",
+					"{C:cry_code}ゲームの状態{}を",
+					"{C:cry_code}このアンティ{}の開始時に戻す",
 				},
 			},
 			c_cry_cryfunction = {
 				name = "FUNCTION://",
 				text = {
-					"Saves the {C:cry_code}Last Three{} consumables used,",
-					"using this card again creates a copy of",
-					"the first with a {C:cry_code}Function://{} sticker",
+					"{C:cry_code}直近3件{}の消耗アイテムが記憶される",
+					"このコードを使用すると",
+					"{C:cry_code}Function://{}ステッカーを持つ最初のアイテムのコピーを作成する",
 				},
 			},
 			c_cry_run = {
 				name = "://RUN",
 				text = {
-					"Visit a {C:cry_code}shop",
-					"during a {C:cry_code}ブラインド",
+					"{C:cry_code}ブラインド{}中に",
+					"{C:cry_code}ショップ{}に訪れることができる",
+
 				},
 			},
 			c_cry_class = {
 				name = "://CLASS",
 				text = {
-					"Convert {C:cry_code}#1#{} selected card#<s>1#",
-					"to a {C:cry_code}chosen{} enhancement",
+					"選択した{C:cry_code}#1#{}枚のカードを",
+					"{C:cry_code}選択した{}種別に強化する",
 				},
 			},
 			c_cry_global = {
 				name = "://GLOBAL",
 				text = {
-					"Select a playing card",
-					"to become {C:cry_code}Global{}",
+					"選択した1枚のトランプが",
+					"{C:cry_code}グローバル{}になる",
 				},
 			},
 			c_cry_variable = {
 				name = "://VARIABLE",
 				text = {
-					"Convert {C:cry_code}#1#{} selected card#<s>1#",
-					"to a {C:cry_code}chosen{} rank",
+					"選択した{C:cry_code}#1#{}枚のカードを",
+					"{C:cry_code}選択した{}カードランクにする",
 				},
 			},
 			c_cry_log = {
 				name = "://LOG",
 				text = {
-					"Show a {C:cry_code}readout{} of either: ",
-					"{C:attention}next{} antes {C:attention}Boss-Blind{} and {C:attention}バウチャー{},",
-					"the next {C:attention}5{} {C:attention}Jokers{} from the shop, or",
-					"the next {C:attention}10{} playing cards to be {C:attention}drawn{}",
-					"{C:inactive}(If in a ブラインド){}",
+					"次のいずれかを{C:cry_code}読み出す{}",
+					"・{C:attention}次の{}アンティの{C:attention}ボスブラインド{}と{C:attention}バウチャー{}",
+					"・次にショップに出現する{C:attention}5{}枚の {C:attention}ジョーカー{}",
+					"・次に{C:attention}ドロー{}する{C:attention}10{}枚の トランプ",
+					"{C:inactive}(ブラインド中に限る){}",
 				},
 			},
 			c_cry_quantify = {
@@ -758,7 +751,7 @@ return {
 				name = "://CTRL+V",
 				text = {
 					"Create a {C:cry_code}copy{} of a selected",
-					"playing card or consumable",
+					"トランプ or consumable",
 				},
 			},
 			c_cry_reboot = {
@@ -1088,12 +1081,12 @@ return {
 				},
 			},
 			j_cry_antennastoheaven = {
-				name = "...Like アンティnnas to Heaven",
+				name = "極楽への天線の如し",
 				text = {
-					"This Joker gains",
-					"{X:chips,C:white} X#1# {} Chips when each",
-					"played {C:attention}7{} or {C:attention}4{} is scored",
-					"{C:inactive}(現在 {X:chips,C:white}X#2# {C:inactive} Chips)",
+					"このジョーカーは",
+					"プレイされた{C:attention}7{}か{C:attention}4{}がスコアされる毎に",
+					"チップ {X:chips,C:white} X#1# {} を得る",
+					"{C:inactive}(現在 チップ {X:chips,C:white}X#2#{C:inactive})",
 				},
 			},
 			j_cry_apjoker = {
@@ -1318,7 +1311,7 @@ return {
 				name = "Candy Cane",
 				text = {
 					"For the next {C:attention}#1#{} round#<s>1#,",
-					"playing cards give {C:money}$#2#",
+					"トランプ give {C:money}$#2#",
 					"when {C:attention}retriggered",
 				},
 			},
@@ -1699,7 +1692,7 @@ return {
 				text = {
 					"This Joker gains {X:mult,C:white} X#2# {} Mult",
 					"when a {C:attention}Joker{} or",
-					"playing card is scored",
+					"トランプ is scored",
 					"{C:inactive}(現在 {X:mult,C:white} X#1# {C:inactive} Mult)",
 				},
 			},
@@ -1765,7 +1758,7 @@ return {
 			j_cry_exponentia = {
 				name = "Exponentia",
 				text = {
-					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+					"This Joker gains {X:dark_edition,C:white}  #1# {} Mult",
 					"when {X:red,C:white} XMult {} is triggered",
 					"{C:inactive}(現在 倍率 {X:dark_edition,C:white} #2#乗 {C:inactive})",
 				},
@@ -2367,26 +2360,26 @@ return {
 				},
 			},
 			j_cry_negative = {
-				name = "Negative Joker",
+				name = "ネガティブジョーカー",
 				text = {
-					"{C:dark_edition}+#1#{C:attention} Joker{} slot#<s>1#",
+					"{C:attention}ジョーカー{}スロット {C:dark_edition}+#1#",
 				},
 			},
 			j_cry_nice = {
 				name = "Nice",
 				text = {
-					"{C:chips}+#1#{} Chip#<s>1# if played hand",
-					"contains a {C:attention}6{} and a {C:attention}9",
+					"プレイされたハンドに",
+					"1枚の{C:attention}6{}と1枚の{C:attention}9{}が含まれている場合",
+					"チップ{C:chips}+#1#{}",
 					"{C:inactive,s:0.8}Nice.{}",
 				},
 			},
 			j_cry_night = {
-				name = "Night",
+				name = "夜",
 				text = {
-					"倍率 {X:dark_edition,C:white}#1#乗{} on final",
-					"hand of round",
-					"{E:2,C:red}self destructs{} on",
-					"final hand of round",
+					"ラウンドの 最終ハンド で",
+					"倍率 {X:dark_edition,C:white}#1#乗{}",
+					"その後 {E:2,C:red}自身を破壊する{}",
 				},
 			},
 			j_cry_nosound = {
@@ -2536,7 +2529,7 @@ return {
 			j_cry_primus = {
 				name = "Primus",
 				text = {
-					"This Joker gains {X:dark_edition,C:white} ^#1# {} Mult",
+					"This Joker gains {X:dark_edition,C:white} #1#乗 {} Mult",
 					"if all cards in played hand are",
 					"{C:attention}Aces{}, {C:attention}2s{}, {C:attention}3s{}, {C:attention}5s{}, or {C:attention}7s{}",
 					"{C:inactive}(現在 倍率 {X:dark_edition,C:white} #2#乗 {C:inactive})",
@@ -3511,48 +3504,46 @@ return {
 		},
 		Spectral = {
 			c_cry_adversary = {
-				name = "Adversary",
+				name = "アドバーサリー",
 				text = {
-					"{C:red}All{} of your {C:attention}Jokers{} become {C:dark_edition}ネガティブ{},",
-					"{C:red}all{} {C:attention}Jokers{} in the shop cost",
-					"{C:red}double{} for the rest of the run",
+					"{C:red}全て{}の所持{C:attention}ジョーカー{}が{C:dark_edition}ネガティブ{}になる",
+					"以降ショップの{C:red}全て{}の{C:attention}ジョーカー{}の価格が",
+					"{C:red}2倍{}になる",
 				},
 			},
 			c_cry_analog = {
-				name = "Analog",
+				name = "アナログ",
 				text = {
-					"Create {C:attention}#1#{} cop#<ies,y>1# of a",
-					"random {C:attention}Joker{}, destroy",
-					"all other Jokers, {C:attention}+#2#{} アンティ",
+					"ランダムな{C:attention}ジョーカー{}のコピーを",
+					"{C:attention}#1#{}枚作り",
+					"それ以外のジョーカーを破壊する",
+					"アンティ {C:attention}+#2#{}",
 				},
 			},
 			c_cry_chambered = {
-				name = "Chambered",
+				name = "チャンバー",
 				text = {
-					"Create {C:attention}#1#{} {C:dark_edition}ネガティブ{}",
-					"cop#<ies,y>1# of a",
-					"{C:attention}random{} consumable",
-					"in your possession",
-					"{C:inactive,s:0.8}Does not copy Chambered{}",
+					"所持している{C:attention}ランダムな{}消耗品の",
+					"{C:dark_edition}ネガティブ{}コピーを{C:attention}#1#{}枚作る",
+					"{C:inactive,s:0.8}但し チャンバー は除く{}",
 				},
 			},
 			c_cry_conduit = {
-				name = "Conduit",
+				name = "コンジット",
 				text = {
-					"Swap the {C:attention}editions{} of",
-					"{C:attention}2{} selected playing cards or {C:attention}Jokers{}",
+					"選択された{C:attention}2{}枚のトランプか{C:attention}ジョーカー{}の",
+					"{C:attention}エディション{}を入れ替える",
 				},
 			},
 			c_cry_gateway = {
-				name = "Gateway",
+				name = "ゲートウェイ",
 				text = {
-					"Create a random",
-					"{C:cry_exotic,E:1}Exotic{C:attention} Joker{}, destroy",
-					"all other Jokers",
+					"ランダムな{C:cry_exotic,E:1}エキゾチック{C:attention}{C:attention}ジョーカー{}を作成し",
+					"それ以外のジョーカーを破壊する",
 				},
 			},
 			c_cry_hammerspace = {
-				name = "Hammerspace",
+				name = "ハンマースペース",
 				text = {
 					"Apply random {C:attention}consumables{}",
 					"as if they were {C:dark_edition}Enhancements{}",
@@ -3560,29 +3551,27 @@ return {
 				},
 			},
 			c_cry_lock = {
-				name = "Lock",
+				name = "ロック",
 				text = {
-					"Remove {C:red}all{} stickers",
-					"from {C:red}all{} Jokers,",
-					"then apply {C:purple,E:1}Eternal{}",
-					"to a random {C:attention}Joker{}",
+					"{C:red}全ての{}ジョーカーから",
+					"{C:red}全ての{} ステッカーを削除する",
+					"ランダムな{C:attention}ジョーカー{}に",
+					"{C:purple,E:1}エターナル{}を付与する",
 				},
 			},
 			c_cry_pointer = {
 				name = "POINTER://",
 				text = {
-					"Create a card",
-					"of {C:cry_code}your choice",
-					"{C:inactive,s:0.8}(Exotic Jokers excluded)",
+					"{C:cry_code}好きなカード{}を",
+					"1枚だけ作成する",
+					"{C:inactive,s:0.8}(エキゾチックジョーカーは除く)",
 				},
 			},
 			c_cry_replica = {
-				name = "Replica",
+				name = "レプリカ",
 				text = {
-					"Convert all cards",
-					"held in hand",
-					"to a {C:attention}random{}",
-					"card held in hand",
+					"手札にある全てのカードを",
+					"いずれかの{C:attention}ランダムな{}手札に変換する"
 				},
 			},
 			c_cry_ritual = {
@@ -3628,7 +3617,7 @@ return {
 				name = "Meld",
 				text = {
 					"Select a {C:attention}Joker{} or",
-					"{C:attention}playing card{} to",
+					"{C:attention}トランプ{} to",
 					"become {C:dark_edition}Double-Sided",
 				},
 			},
@@ -4076,7 +4065,7 @@ return {
 				text = {
 					"Remove a {C:attention}random{}",
 					"sticker from a {C:attention}random{}",
-					"Joker or playing card",
+					"Joker or トランプ",
 				},
 			},
 		},
@@ -4273,7 +4262,7 @@ return {
 				},
 				unlock = {
 					"Play {C:attention}5000{}",
-					"{C:attention}Playing Cards{}",
+					"{C:attention}トランプ{}",
 					"in total",
 				},
 			},
@@ -4286,7 +4275,7 @@ return {
 				},
 				unlock = {
 					"Discard {C:attention}5000{}",
-					"{C:attention}Playing Cards{}",
+					"{C:attention}トランプ{}",
 					"in total",
 				},
 			},
@@ -4569,7 +4558,7 @@ return {
 			ev_cry_choco1 = {
 				name = "1: Possession",
 				text = {
-					"{C:attention}Jokers{} and playing cards have a",
+					"{C:attention}Jokers{} and トランプ have a",
 					"{C:green}1 in 3{} chance of gaining Flickering",
 					"Create a {C:attention}Ghost",
 					"{C:inactive,s:0.7}You've been possessed by a ghost, and your",
@@ -5182,7 +5171,7 @@ return {
 			b_code_cards = "Code Cards",
 			b_unique_cards = "Unique Cards",
 			b_pull = "PULL",
-			b_playing_cards = "Playing Cards",
+			b_playing_cards = "トランプ",
 			cry_hooked_ex = "Hooked!",
 			k_end_blind = "End ブラインド",
 			k_cry_shiny = "Shiny",
@@ -5326,27 +5315,27 @@ return {
 		},
 		rnj_loc_txts = {
 			stats = {
-				plus_mult = { "{C:red}+#2#{} Mult" },
-				plus_chips = { "{C:blue}+#2#{} Chip(s)" },
-				x_mult = { "{X:red,C:white} X#2#{} Mult" },
-				x_chips = { "{X:blue,C:white} X#2#{} Chips" },
-				h_size = { "{C:attention}+#2#{} Hand Size" },
-				money = { "{C:money}+$#2#{} at payout" },
+				plus_mult = { "倍率 {C:red}+#2#{}" },
+				plus_chips = { "チップ {C:blue}+#2#{}" },
+				x_mult = { "倍率 {X:red,C:white} X#2#{}" },
+				x_chips = { "チップ {X:blue,C:white} X#2#{}" },
+				h_size = { "ハンドサイズ {C:attention}+#2#{}" },
+				money = { "報酬 {C:money}+$#2#{}" },
 			},
 			stats_inactive = {
-				plus_mult = { "{C:inactive}(現在 {C:red}+#1#{C:inactive} Mult)" },
-				plus_chips = { "{C:inactive}(現在 {C:blue}+#1#{C:inactive} Chip(s))" },
-				x_mult = { "{C:inactive}(現在 {X:red,C:white} X#1# {C:inactive} Mult)" },
-				x_chips = { "{C:inactive}(現在 {X:blue,C:white} X#1# {C:inactive} Chips)" },
-				h_size = { "{C:inactive}(現在 {C:attention}+#1#{C:inactive} Hand Size)" },
+				plus_mult = { "{C:inactive}(現在 倍率 {C:red}+#1#{C:inactive})" },
+				plus_chips = { "{C:inactive}(現在 チップ {C:blue}+#1#{C:inactive})" },
+				x_mult = { "{C:inactive}(現在 倍率 {X:red,C:white} X#1# {C:inactive})" },
+				x_chips = { "{C:inactive}(現在 チップ {X:blue,C:white} X#1# {C:inactive})" },
+				h_size = { "{C:inactive}(現在 ハンドサイズ {C:attention}+#1#{C:inactive}" },
 				money = { "{C:inactive}(現在 {C:money}+$#1#{C:inactive})" },
 			},
 			actions = {
-				make_joker = { "Create {C:attention}#2# Joker(s){}" },
-				make_tarot = { "Create {C:attention}#2#{C:tarot} Tarot{} card(s)" },
-				make_planet = { "Create {C:attention}#2#{C:planet} Planet{} card(s)" },
-				make_spectral = { "Create {C:attention}#2#{C:spectral} Spectral{} card(s)" },
-				add_dollars = { "Earn {C:money}$#2#{}" },
+				make_joker = { "{C:attention}#2#枚のジョーカー{}を作成する" },
+				make_tarot = { "{C:attention}#2#枚{}の{C:tarot}タロット{}を作成する" },
+				make_planet = { "{C:attention}#2#枚{}の{C:planet}惑星{}カードを作成する" },
+				make_spectral = { "{C:attention}#2#枚{}の{C:spectral}スペクトラム{}カードを作成する" },
+				add_dollars = { "{C:money}$#2#{}を得る" },
 			},
 			contexts = {
 				open_booster = { "when a {C:attention}Booster{} is opened" },
@@ -5357,7 +5346,7 @@ return {
 				ending_shop = { "at the end of the {C:attention}shop{}" },
 				skip_blind = { "when a {C:attention}ブラインド{} is skipped" },
 				skipping_booster = { "when any {C:attention}ブースターパック{} is skipped" },
-				playing_card_added = { "every time a {C:attention}playing card{} is added to your deck" },
+				playing_card_added = { "every time a {C:attention}トランプ{} is added to your deck" },
 				first_hand_drawn = { "when round begins" },
 				setting_blind = { "when {C:attention}ブラインド{} is selected" },
 				remove_playing_cards = { "when a card is destroyed" },
