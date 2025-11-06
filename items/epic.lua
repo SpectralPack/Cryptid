@@ -1227,7 +1227,7 @@ local circus = {
 		if context.forcetrigger then
 			local total = 1
 			for i, v in pairs(card.ability.extra) do
-				if type(v) == "number" or (type(v) == "table" and v.tetrate) then
+				if Cryptid.is_number(v) then
 					total = total * v
 				end
 			end

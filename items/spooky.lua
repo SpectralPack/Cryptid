@@ -1341,26 +1341,17 @@ local spookydeck = {
 			end,
 		}))
 	end,
-	init = function(self)
-		local Backapply_to_runRef = Back.apply_to_run
-		function Back.apply_to_run(self)
-			Backapply_to_runRef(self)
-			if self.effect.config.cry_spooky then
-				G.GAME.modifiers.cry_spooky = true
-				G.GAME.modifiers.cry_curse_rate = self.effect.config.cry_curse_rate or 0.25
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_chocolate_dice")
-							card:add_to_deck()
-							card:start_materialize()
-							card:set_eternal(true)
-							G.jokers:emplace(card)
-							return true
-						end
-					end,
-				}))
+	calculate = function(self, blind, context)
+		if context.modify_ante and context.ante_end then
+			local card
+			if pseudorandom(pseudoseed("cry_spooky_curse")) < G.GAME.modifiers.cry_curse_rate then
+				card = create_card("Joker", G.jokers, nil, "cry_cursed", nil, nil, nil, "cry_spooky")
+			else
+				card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_spooky")
 			end
+			card:add_to_deck()
+			card:start_materialize()
+			G.jokers:emplace(card)
 		end
 	end,
 	unlocked = false,

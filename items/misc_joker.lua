@@ -11039,7 +11039,7 @@ local keychange = {
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
 				ref_value = "xm",
-				scalar_value = "mgain",
+				scalar_value = "xmgain",
 			})
 		end
 

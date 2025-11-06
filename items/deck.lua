@@ -455,7 +455,8 @@ local critical = {
 	atlas = "atlasdeck",
 	loc_vars = function(self, info_queue, center)
 		local _, aaa = SMODS.get_probability_vars(self, 1, self.config.cry_crit_miss_rate, "Critical Deck")
-		return { vars = { SMODS.get_probability_vars(self, 1, self.config.cry_crit_rate, "Critical Deck"), aaa } }
+		local bbb, ccc = SMODS.get_probability_vars(self, 1, self.config.cry_crit_rate, "Critical Deck")
+		return { vars = { bbb, ccc, aaa } }
 	end,
 	calculate = function(self, card, context)
 		if context.final_scoring_step then
