@@ -2635,7 +2635,7 @@ local sundial = {
 	demicoloncompat = true,
 	atlas = "atlasepic",
 	pos = { x = 5, y = 5 },
-	config = { extra = {handleft = 12, handloss = -1 } },
+	config = { extra = { handleft = 12, handloss = -1 } },
 
 	cry_credits = {
 		art = { "Tatturedlurker" },
@@ -2643,16 +2643,17 @@ local sundial = {
 		idea = { "HexaCryonic" },
 	},
 
-
 	loc_vars = function(self, info_queue, center)
-        local active = "permanently"
-        if G.GAME.sundial then active = "already active, does nothing" end
+		local active = "permanently"
+		if G.GAME.sundial then
+			active = "already active, does nothing"
+		end
 		return { vars = { number_format(center.ability.extra.handleft), G.GAME.sundial_amount, active } }
-    end,
+	end,
 
 	in_pool = function(self)
-        return not G.GAME.sundial
-    end,
+		return not G.GAME.sundial
+	end,
 
 	calculate = function(self, card, context)
 		if
@@ -2661,30 +2662,26 @@ local sundial = {
 			and not context.retrigger_joker
 			and not context.individual
 			and not context.repetition
-            and card.ability.extra.handleft > 0
-        then
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "handleft",
-                scalar_value = "handloss"
-            })
-            return { message = localize('k_upgrade_ex') }
-        end
-
-		if
-			context.selling_self
-			and not context.retrigger_joker
-			and not context.blueprint
+			and card.ability.extra.handleft > 0
 		then
-            if card.ability.extra.handleft < 1 then
-                G.GAME.sundial = true
-                G.GAME.cry_banished_keys[card.config.center.key] = true
-                return { message = localize('k_active_ex') }
-            else
-                return { message = localize('k_nope_ex') }
-            end
-        end
-    end,
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "handleft",
+				scalar_value = "handloss",
+			})
+			return { message = localize("k_upgrade_ex") }
+		end
+
+		if context.selling_self and not context.retrigger_joker and not context.blueprint then
+			if card.ability.extra.handleft < 1 then
+				G.GAME.sundial = true
+				G.GAME.cry_banished_keys[card.config.center.key] = true
+				return { message = localize("k_active_ex") }
+			else
+				return { message = localize("k_nope_ex") }
+			end
+		end
+	end,
 }
 
 return {
@@ -2717,6 +2714,6 @@ return {
 		clockwork,
 		demicolon,
 		starfruit,
-        sundial,
+		sundial,
 	},
 }
