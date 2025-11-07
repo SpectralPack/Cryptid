@@ -4445,8 +4445,9 @@ return {
 			cry_rigged = {
 				name = "Truqué",
 				text = {
-					"Toutes les probabilités {C:cry_code}listées{}",
-					"sont {C:cry_code}garanties",
+					"Double toutes",
+					"les probabilités {C:cry_code}listées{}",
+					"sur cette carte",
 				},
 			},
 			cry_hooked = {
