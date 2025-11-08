@@ -4149,7 +4149,7 @@ return {
 				name = "Double Slit",
 				text = {
 					"{C:attention}Meld{} が",
-					"いずれかの {C:spectral}スペクトラム{}パック に", 
+					"いずれかの {C:spectral}スペクトル{}パック に", 
 					"含まれている可能性がある",
 				},
 			},
@@ -5117,7 +5117,7 @@ return {
 			cry_feat_jokerdisplay = "JokerDisplay (Does Nothing)",
 			cry_feat_tags = "タグ",
 			cry_feat_sleeves = "スリーブ",
-			cry_feat_spectrals = "スペクトラム",
+			cry_feat_spectrals = "スペクトル",
 			cry_feat_spooky = "Spooky Update",
 			["cry_feat_more stakes"] = "ステーク",
 			cry_feat_vouchers = "バウチャー",
@@ -5332,7 +5332,7 @@ return {
 				make_joker = { "{C:attention}#2#枚のジョーカー{}を作成する" },
 				make_tarot = { "{C:attention}#2#枚{}の{C:tarot}タロット{}を作成する" },
 				make_planet = { "{C:attention}#2#枚{}の{C:planet}惑星{}カードを作成する" },
-				make_spectral = { "{C:attention}#2#枚{}の{C:spectral}スペクトラム{}カードを作成する" },
+				make_spectral = { "{C:attention}#2#枚{}の{C:spectral}スペクトル{}カードを作成する" },
 				add_dollars = { "{C:money}$#2#{}を得る" },
 			},
 			contexts = {
