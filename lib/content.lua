@@ -890,3 +890,30 @@ SMODS.Scoring_Calculation({
 		end
 	end,
 })
+-- There's probably a better way to fix observatory on these than this
+for k, v in pairs({
+	"mercury",
+	"venus",
+	"earth",
+	"mars",
+	"jupiter",
+	"saturn",
+	"uranus",
+	"neptune",
+	"pluto",
+	"planet_x",
+	"ceres",
+	"eris",
+}) do
+	SMODS.Consumable:take_ownership(v, {
+		calculate = function(self, card, context)
+			if context.cry_observatory and context.scoring_name == card.ability.consumeable.hand_type then
+				local value = context.cry_observatory.ability.extra
+				if Overflow then
+					value = value ^ to_big(card:getQty())
+				end
+				return { xmult = value }
+			end
+		end,
+	}, true)
+end

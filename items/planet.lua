@@ -45,6 +45,15 @@ local abelt = {
 			},
 		}
 	end,
+	calculate = function(self, card, context)
+		if context.cry_observatory and context.scoring_name == card.ability.consumeable.hand_type then
+			local value = context.cry_observatory.ability.extra
+			if Overflow then
+				value = value ^ to_big(card:getQty())
+			end
+			return { xmult = value }
+		end
+	end,
 	generate_ui = 0,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
@@ -97,6 +106,15 @@ local void = {
 				},
 			},
 		}
+	end,
+	calculate = function(self, card, context)
+		if context.cry_observatory and context.scoring_name == card.ability.consumeable.hand_type then
+			local value = context.cry_observatory.ability.extra
+			if Overflow then
+				value = value ^ to_big(card:getQty())
+			end
+			return { xmult = value }
+		end
 	end,
 	generate_ui = 0,
 	demicoloncompat = true,
@@ -155,6 +173,15 @@ local marsmoons = {
 				},
 			},
 		}
+	end,
+	calculate = function(self, card, context)
+		if context.cry_observatory and context.scoring_name == card.ability.consumeable.hand_type then
+			local value = context.cry_observatory.ability.extra
+			if Overflow then
+				value = value ^ to_big(card:getQty())
+			end
+			return { xmult = value }
+		end
 	end,
 	generate_ui = 0,
 	demicoloncompat = true,
@@ -217,6 +244,15 @@ local nibiru = {
 				},
 			},
 		}
+	end,
+	calculate = function(self, card, context)
+		if context.cry_observatory and context.scoring_name == card.ability.consumeable.hand_type then
+			local value = context.cry_observatory.ability.extra
+			if Overflow then
+				value = value ^ to_big(card:getQty())
+			end
+			return { xmult = value }
+		end
 	end,
 	generate_ui = 0,
 	demicoloncompat = true,
