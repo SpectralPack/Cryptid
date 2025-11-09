@@ -1844,14 +1844,15 @@ local longboi = {
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition then
 			card.ability.extra.bonus = math.max(card.ability.extra.bonus, card.ability.immutable.max_bonus) -- maybe remove this entirely
-			if not context.retrigger_joker and (not msg or type(msg) == "string") then
-				return {
-					card_eval_status_text(context.blueprint_card or card, "extra", nil, nil, nil, {
-						message = msg or localize("cry_m_ex"),
-						colour = G.C.FILTER,
-					}),
-				}
-			end
+			local msg = SMODS.scale_card(card, {
+				ref_table = G.GAME,
+				ref_value = "monstermult",
+				scalar_table = card.ability.extra,
+				scalar_value = "bonus",
+				scaling_message = {
+					message = localize("cry_m_ex"),
+				},
+			})
 		elseif context.joker_main and to_big(card.ability.extra.monster) > to_big(1) then
 			return {
 				message = localize({
@@ -1864,6 +1865,13 @@ local longboi = {
 		end
 		if context.forcetrigger then
 			card.ability.extra.bonus = math.max(card.ability.extra.bonus, card.ability.immutable.max_bonus) -- maybe remove this entirely
+			SMODS.scale_card(card, {
+				ref_table = G.GAME,
+				ref_value = "monstermult",
+				scalar_table = card.ability.extra,
+				scalar_value = "bonus",
+				no_message = true,
+			})
 			return {
 				message = localize({
 					type = "variable",
