@@ -303,7 +303,7 @@ local tax = {
 		SMODS.set_scoring_calculation("multiply")
 	end,
 	in_pool = function()
-		return G.GAME.round_resets.hands >= 3
+		return math.floor(G.GAME.round_resets.hands) >= 3
 	end,
 }
 local box = {
@@ -952,6 +952,9 @@ local chromatic = {
 			G.GAME.blind.prepped = true
 		end
 	end,
+	in_pool = function()
+		return math.floor(G.GAME.round_resets.hands) > 1
+	end,
 	drawn_to_hand = function(self)
 		if G.GAME.blind.prepped and not G.GAME.blind.disabled then
 			G.GAME.chromatic_mod = G.GAME.chromatic_mod + 1
@@ -1094,7 +1097,7 @@ local tornado = {
 			--check for guarantee
 			if
 				G.GAME.probabilities.normal <= 1
-				and G.GAME.current_round.hands_left + 1 == G.GAME.blind.tornado_guarantee
+				and math.floor(G.GAME.current_round.hands_left) + 1 == G.GAME.blind.tornado_guarantee
 			then
 				return false
 			end
