@@ -1615,6 +1615,14 @@ return {
 					"{C:attention}reroll{} in the shop",
 				},
 			},
+			j_cry_sundial = {
+				name = "Project Sundial",
+				text = {
+					"After playing #1# hands, {C:attention}sell this Joker",
+					"to reduce blind size by #2# percent",
+					"{C:red,E:1}#3#",
+				},
+			},
 			j_cry_digitalhallucinations = {
 				name = "Digital Hallucinations",
 				text = {
