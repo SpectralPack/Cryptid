@@ -675,8 +675,8 @@ return {
 			c_cry_cryfunction = {
 				name = "FUNCTION://",
 				text = {
-					"{C:cry_code}直近3件{}の消耗アイテムが記憶される",
-					"このコードを使用すると",
+					"{C:cry_code}直近3件{}の消耗アイテムを記憶する",
+					"再度このコードを使用すると",
 					"{C:cry_code}Function://{}ステッカーを持つ最初のアイテムのコピーを作成する",
 				},
 			},
