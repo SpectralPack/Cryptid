@@ -42,7 +42,7 @@ return {
 				},
 			},
 			b_cry_beige = {
-				name = "Beige Deck",
+				name = "ベージュデッキ",
 				text = {
 					"{C:attention}コモン{}ジョーカーが",
 					"{C:attention}4倍{}の値を持つ",
@@ -54,7 +54,7 @@ return {
 				},
 			},
 			b_cry_beta = {
-				name = "Nostalgic Deck",
+				name = "郷愁デッキ",
 				text = {
 					"{C:attention}Joker{} and {C:attention}Consumable{}",
 					"slots are {C:attention}combined",
@@ -62,106 +62,107 @@ return {
 					"their updated ブラインド",
 				},
 				unlock = {
-					"Win a run",
-					"on {C:attention}Pink Stake",
+					"いずれかのデッキで",
+					"{C:attention}ピンクステーク{}以上の難易度で",
+					"ランに勝利する"
 				},
 			},
 			b_cry_blank = {
-				name = "Blank Deck",
+				name = "ブランクデッキ",
 				text = {
-					"{C:inactive,E:1}Does nothing?",
+					"{C:inactive,E:1}何もしない?",
 				},
 			},
 			b_cry_bountiful = {
-				name = "Bountiful Deck",
+				name = "豊作デッキ",
 				text = {
-					"After {C:blue}Play{} or {C:red}Discard{},",
-					"always draw {C:attention}5{} cards",
+					"{C:blue}プレイ{}または{C:red}ディスカード{}のあと",
+					"カードを{C:attention}5枚{}ドローする",
 				},
 				unlock = {
-					"Beat {C:attention}The Serpent",
-					"without {C:red}ディスカード",
+					"{C:attention}サーペント{}を",
+					"{C:red}ディスカード{}を使用せずに倒す",
 				},
 			},
 			b_cry_CCD = {
-				name = "CCD Deck",
+				name = "CCDデッキ",
 				text = {
-					"Every card is also",
-					"a {C:attention}random{} consumable",
+					"すべてのカードが",
+					"{C:attention}ランダムな{}消耗アイテムになる",
 				},
 				unlock = {
-					"Use {C:spectral}Hammerspace",
+					"{C:spectral}ハンマースペース{}を使用する",
 				},
 			},
 			b_cry_conveyor = {
-				name = "Conveyor Deck",
+				name = "コンベアデッキ",
 				text = {
-					"Jokers may {C:attention}not{} be moved",
-					"At start of round,",
-					"{C:attention}duplicate{} rightmost Joker",
-					"and {C:attention}destroy{} leftmost Joker",
+					"ジョーカーが移動{C:attention}できない{}",
+					"ラウンド開始時",
+					"右端のジョーカーを{C:attention}複製{}し",
+					"左端のジョーカーを{C:attention}破壊{}する",
 				},
 				unlock = {
-					"Use {C:spectral}Analog",
+					"{C:spectral}アナログ{}を使用する",
 				},
 			},
 			b_cry_critical = {
-				name = "Critical Deck",
+				name = "クリティカルデッキ",
 				text = {
-					"After each hand played,",
-					"{C:green}#1# in #2#{} chance for {X:dark_edition,C:white} ^2 {} Mult",
-					"{C:green}#1# in #3#{} chance for {X:dark_edition,C:white} ^0.5 {} Mult",
+					"ハンドをプレイするごとに",
+					"{C:green}#2#分の#1#{}の確率で 倍率 {X:dark_edition,C:white} 2乗 {}",
+					"{C:green}#3#分の#1#{}の確率で 倍率 {X:dark_edition,C:white} 0.5乗 {}",
 				},
 				unlock = {
-					"Obtain a {C:attention}Rigged Joker",
+					"{C:attention}リグ{}が適用されたジョーカーを所持する",
 				},
 			},
 			b_cry_e_deck = {
-				name = "Edition Deck",
+				name = "エディションデッキ",
 				text = {
-					"All cards are {C:dark_edition}#1#{}",
-					"Cards cannot change editions",
-					"{C:inactive}(Click to edit)",
+					"すべてのカードが{C:dark_edition}#1#{}になる",
+					"カードのエディションが変更できない",
+					"{C:inactive}(クリックして編集)",
 				},
 				unlock = {
-					"Discover every",
-					"{C:dark_edition}Edition",
+					"すべての{C:dark_edition}エディション{}を",
+					"発見する",
 				},
 			},
 			b_cry_encoded = {
-				name = "Encoded Deck",
+				name = "エンコーディドデッキ",
 				text = {
-					"Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
-					"and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
-					"Only {C:cry_code}Code Cards{} appear in shop",
+					"1枚の{C:cry_code,T:j_cry_CodeJoker}コードジョーカー{}と",
+					"1枚の{C:cry_code,T:j_cry_copypaste}Copy/Paste{}を所持して開始する",
+					"ショップのカード枠に{C:cry_code}コード{}のみが出現する",
 				},
 				unlock = {
-					"Use {C:spectral}POINTER://",
+					"{C:spectral}POINTER://{}を使用する",
 				},
 			},
 			b_cry_equilibrium = {
-				name = "Deck of Equilibrium",
+				name = "平衡デッキ",
 				text = {
-					"All cards have the",
-					"{C:attention}same chance{} of",
-					"appearing in shops,",
-					"start run with",
-					"{C:attention,T:v_overstock_plus}Overstock Plus",
+					"すべてのカードが",
+					"{C:attention}等しい確率{}で",
+					"ショップに出現する",
+					"{C:attention,T:v_overstock_plus}オーバーストックプラス{}で",
+					"ランをスタートする",
 				},
 				unlock = {
-					"Have {C:attention}100 Jokers",
-					"at the same time",
+					"1度に",
+					"{C:attention}100枚{}のジョーカーを持つ",
 				},
 			},
 			b_cry_et_deck = {
-				name = "Enhancement Deck",
+				name = "強化デッキ",
 				text = {
-					"All {C:attention}トランプ{}",
-					"are {C:attention}#1#{}(s)",
-					"{C:inactive}(Click to edit)",
+					"すべての{C:attention}トランプ{}が",
+					"{C:attention}#1#{}になる",
+					"{C:inactive}(クリックで編集)",
 				},
 				unlock = {
-					"Use {C:spectral}Vacuum",
+					"{C:spectral}バキューム{}を使用する",
 				},
 			},
 			b_cry_glowing = {
@@ -173,31 +174,30 @@ return {
 					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
 				},
 				unlock = {
-					"Win a run",
-					"with {C:attention}Beige Deck",
+					"{C:attention}ベージュデッキ{}で",
+					"ランに勝利する",
 				},
 			},
 			b_cry_infinite = {
-				name = "Infinite Deck",
+				name = "無限デッキ",
 				text = {
-					"You can select {C:attention}any",
-					"number of cards",
-					"{C:attention}+1{} hand size",
+					"手札から",
+					"{C:attention}何枚でも{}カードを選択できる",
+					"ハンドサイズ {C:attention}+1{}",
 				},
 				unlock = {
-					"Play a hand containing",
-					"{C:attention}6{} or more cards",
+					"{C:attention}6枚{}以上のカードを含む",
+					"ハンドをプレイする",
 				},
 			},
 			b_cry_misprint = {
-				name = "Misprint Deck",
+				name = "ミスプリントデッキ",
 				text = {
-					"Values of cards",
-					"and ポーカーハンド",
-					"are {C:attention}randomized",
+					"ポーカーハンドとカードの数値が",
+					"{C:attention}ランダム{}になる",
 				},
 				unlock = {
-					"Obtain a {C:dark_edition}Glitched{C:attention} Joker",
+					"{C:attention}グリッチ{}が適用されたジョーカーを所持する",
 				},
 			},
 			b_cry_redeemed = {
@@ -233,14 +233,15 @@ return {
 				},
 			},
 			b_cry_spooky = {
-				name = "Spooky Deck",
+				name = "不気味なデッキ",
 				text = {
-					"Start with an {C:eternal}Eternal{} {C:attention,T:j_cry_chocolate_dice}Chocolate Die",
-					"After each {C:attention}アンティ{}, create a",
-					"{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
+					"{C:eternal}エターナル{}の{C:attention,T:j_cry_chocolate_dice}チョコレート・ダイ{}", 
+					"を所持してランを開始する",
+					"{C:attention}アンティ{}ごとに",
+					"{C:cry_candy}キャンディ{}か{X:cry_cursed,C:white}呪い{}ジョーカーを作成する",
 				},
 				unlock = {
-					"Obtain a {C:cry_candy}Candy{C:attention} Joker",
+					"{C:cry_candy}キャンディ{C:attention}ジョーカーを所持する",
 				},
 			},
 			b_cry_st_deck = {
@@ -399,7 +400,7 @@ return {
 				},
 			},
 			bl_cry_oldserpent = {
-				name = "郷愁の大蛇",
+				name = "郷愁のサーペント",
 				text = {
 					"倍率 ÷ プレイされたポーカーハンドのプレイ数",
 				},
