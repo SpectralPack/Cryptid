@@ -763,7 +763,7 @@ return {
 			c_cry_ctrl_v = {
 				name = "://CTRL+V",
 				text = {
-					"選択されたトランプか消耗品の",
+					"選択されたトランプか消耗アイテムの",
 					"{C:cry_code}コピー{}を作る",
 				},
 			},
@@ -963,7 +963,7 @@ return {
 			e_cry_glitched = {
 				name = "グリッチ",
 				text = {
-					"カード内の全ての値が",
+					"カード内のすべての値が",
 					"{C:attention}X0.1{} ～ {C:attention}X10{} の範囲で",
 					"{C:dark_edition}ランダムになる{}",
 					"{C:inactive}(可能な場合){}",
@@ -3240,7 +3240,7 @@ return {
 				name = "Planet.lua",
 				text = {
 					"{C:green}#2#分の#1#{} の確率で",
-					"全ての",
+					"すべての",
 					"{C:legendary,E:1}ポーカーハンド{}の",
 					"レベルを {C:attention}1{} 上げる",
 				},
@@ -3510,8 +3510,8 @@ return {
 			c_cry_adversary = {
 				name = "アドバーサリー",
 				text = {
-					"{C:red}全て{}の所持{C:attention}ジョーカー{}が{C:dark_edition}ネガティブ{}になる",
-					"以降ショップの{C:red}全て{}の{C:attention}ジョーカー{}の価格が",
+					"{C:red}すべて{}の所持{C:attention}ジョーカー{}が{C:dark_edition}ネガティブ{}になる",
+					"以降ショップの{C:red}すべて{}の{C:attention}ジョーカー{}の価格が",
 					"{C:red}2倍{}になる",
 				},
 			},
@@ -3527,7 +3527,7 @@ return {
 			c_cry_chambered = {
 				name = "チャンバー",
 				text = {
-					"所持している{C:attention}ランダムな{}消耗品の",
+					"所持している{C:attention}ランダムな{}消耗アイテムの",
 					"{C:dark_edition}ネガティブ{}コピーを{C:attention}#1#{}枚作る",
 					"{C:inactive,s:0.8}但し チャンバー は除く{}",
 				},
@@ -3549,16 +3549,16 @@ return {
 			c_cry_hammerspace = {
 				name = "ハンマースペース",
 				text = {
-					"Apply random {C:attention}consumables{}",
-					"as if they were {C:dark_edition}Enhancements{}",
-					"to cards held in hand",
+					"手札にあるすべてのカードに",
+					"ランダムな{C:attention}消耗アイテム{}を",
+					"{C:dark_edition}強化{}として適用する",
 				},
 			},
 			c_cry_lock = {
 				name = "ロック",
 				text = {
-					"{C:red}全ての{}ジョーカーから",
-					"{C:red}全ての{} ステッカーを削除する",
+					"{C:red}すべての{}ジョーカーから",
+					"{C:red}すべての{} ステッカーを削除する",
 					"ランダムな{C:attention}ジョーカー{}に",
 					"{C:purple,E:1}エターナル{}を付与する",
 				},
@@ -3566,88 +3566,86 @@ return {
 			c_cry_pointer = {
 				name = "POINTER://",
 				text = {
-					"{C:cry_code}好きなカード{}を",
-					"1枚だけ作成する",
+					"{C:cry_code}好きなアイテム{}を",
+					"1つだけ作成する",
 					"{C:inactive,s:0.8}(エキゾチックジョーカーは除く)",
 				},
 			},
 			c_cry_replica = {
 				name = "レプリカ",
 				text = {
-					"手札にある全てのカードを",
+					"手札にあるすべてのカードを",
 					"いずれかの{C:attention}ランダムな{}手札に変換する"
 				},
 			},
 			c_cry_ritual = {
-				name = "Ritual",
+				name = "儀式",
 				text = {
-					"Apply {C:dark_edition}ネガティブ{}, {C:dark_edition}Mosaic{},",
-					"or {C:dark_edition}Astral{} to {C:attention}#1#{}",
-					"selected card#<s>1# in hand",
+					"手札から選んだ{C:attention}#1#{}枚のカードに",
+					"{C:dark_edition}ネガティブ{} {C:dark_edition}モザイク{}",
+					"{C:dark_edition}アストラル{} エディションのいずれかを与える",
 				},
 			},
 			c_cry_source = {
-				name = "Source",
+				name = "ソース",
 				text = {
-					"Add a {C:cry_code}Green Seal{}",
-					"to {C:attention}#1#{} selected",
-					"card#<s>1# in your hand",
+					"手札から選んだ{C:attention}#1#{}枚のカードに",
+					"{C:cry_code}グリーンシール{}を加える",
 				},
 			},
 			c_cry_summoning = {
-				name = "Summoning",
+				name = "召喚",
 				text = {
-					"Create a random",
-					"{V:1}#1#{} {C:joker}Joker{}, destroy",
-					"one random {C:joker}Joker{}",
+					"ランダムな {V:1}#1#{} {C:joker}ジョーカー{}を作成し",
+					"ランダムな 1枚の{C:joker}ジョーカー{} を破壊する",
 				},
 			},
 			c_cry_trade = {
-				name = "Trade",
+				name = "交換",
 				text = {
-					"{C:attention}Lose{} a random バウチャー,",
-					"gain {C:attention}2{} random バウチャー",
+					"ランダムなバウチャーを1つ{C:attention}失い{}",
+					"ランダムなバウチャーを{C:attention}2{}つ得る",
 				},
 			},
 			c_cry_typhoon = {
-				name = "Typhoon",
+				name = "台風",
 				text = {
-					"Add an {C:cry_azure}Azure Seal{}",
-					"to {C:attention}#1#{} selected",
-					"card#<s>1# in your hand",
+					"手札から選んだ{C:attention}#1#{}枚のカードに",
+					"{C:cry_azure}アジュールシール{}を加える",
 				},
 			},
 			c_cry_meld = {
 				name = "Meld",
 				text = {
-					"Select a {C:attention}Joker{} or",
-					"{C:attention}トランプ{} to",
-					"become {C:dark_edition}両面",
+					"選んだ{C:attention}ジョーカー{}か",
+					"{C:attention}トランプ{}に",
+					"{C:dark_edition}両面{} エディションを与える",
 				},
 			},
 			c_cry_vacuum = {
-				name = "Vacuum",
+				name = "真空",
 				text = {
-					"Removes {C:red}all {C:green}modifications{}",
-					"from {C:red}all{} cards held in hand,",
-					"Earn {C:money}$#1#{} per {C:green}modification{} removed",
-					"{C:inactive,s:0.7}(ex. Enhancements, Seals, Editions)",
+					"手札にある{C:red}すべての{}カードから",
+					"{C:red}すべての{C:green}変更{}を削除する",
+					"削除した{C:green}変更{}ごとに{C:money}$#1#{}を得る",
+					"{C:inactive,s:0.7}(変更: 強化、シール、エディションなど)",
 				},
 			},
 			c_cry_white_hole = {
-				name = "White Hole",
+				name = "ホワイトホール",
 				text = {
-					"Upgrade {C:legendary,E:1}most played{}",
-					"ポーカーハンド by {C:attention}4{}",
-					"{C:attention}Remove{} all other hand levels",
+					"{C:legendary,E:1}最も多くプレイした{}ポーカーハンドのレベルを",
+					"{C:attention}4{}上げる",
+					"他のハンドのレベルを{C:attention}リセット{}する",
 				},
 			},
 			c_cry_white_hole2 = {
-				name = "White Hole",
+				name = "ホワイトホール",
 				text = {
-					"{C:attention}Remove{} all hand levels,",
-					"upgrade {C:legendary,E:1}most played{} ポーカーハンド",
-					"by {C:attention}3{} for each removed level",
+					"すべてのポーカーハンドのレベルを",
+					"{C:attention}リセット{}し",
+					"{C:legendary,E:1}最も多くプレイした{}ポーカーハンドのレベルを",
+					"リセットしたレベル1ごとに {C:attention}3{}上げる",
 				},
 			},
 		},
@@ -3988,11 +3986,11 @@ return {
 				},
 			},
 			tag_cry_mosaic = {
-				name = "Mosaic タグ",
+				name = "モザイク タグ",
 				text = {
 					"Next base edition shop",
 					"Joker is free and",
-					"becomes {C:dark_edition}Mosaic{}",
+					"becomes {C:dark_edition}モザイク{}",
 				},
 			},
 			tag_cry_oversat = {
@@ -4529,7 +4527,7 @@ return {
 				name = "Function://",
 				text = {
 					"次の {C:cry_code}Function://{} シールを持つ",
-					"消耗品を作成する",
+					"消耗アイテムを作成する",
 					"{C:inactive}現在 #1# #2# #3#{}",
 				},
 			},
