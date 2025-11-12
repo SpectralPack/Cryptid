@@ -4868,21 +4868,19 @@ return {
 				},
 			},
 			undiscovered_code = {
-				name = "Not Discovered",
+				name = "未発見",
 				text = {
-					"Purchase or use",
-					"this card in an",
-					"unseeded run to",
-					"learn what it does",
+					"このカードを購入するか",
+					"シードされていないランで使用すると",
+					"効果を知ることができる",
 				},
 			},
 			undiscovered_unique = {
-				name = "Not Discovered",
+				name = "未発見",
 				text = {
-					"Purchase or use",
-					"this card in an",
-					"unseeded run to",
-					"learn what it does",
+					"このカードを購入するか",
+					"シードされていないランで使用すると",
+					"効果を知ることができる",
 				},
 			},
 			cry_green_seal = {
