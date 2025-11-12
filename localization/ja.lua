@@ -801,131 +801,126 @@ return {
 			set_cry_blind = {
 				name = "ブラインド",
 				text = {
-					"{C:attention}ボスブラインド{} added",
-					"by Cryptid",
+					"Cryptidによって追加された",
+					"{C:attention}ボスブラインド{}",
 				},
 			},
 			set_cry_code = {
-				name = "Code Cards",
+				name = "コードカード",
 				text = {
-					"{C:cry_code}Code Cards{} and",
-					"related content",
+					"{C:cry_code}コードカード{}と",
+					"それに関連するカード",
 				},
 			},
 			set_cry_cursed = {
-				name = "Cursed Jokers",
+				name = "呪いジョーカー",
 				text = {
-					"Harmful Jokers with",
-					"{X:cry_cursed,C:white}Cursed{} rarity",
+					"害を成す",
+					"{X:cry_cursed,C:white}呪い{} レアリティのジョーカー",
 				},
 			},
 			set_cry_deck = {
-				name = "Decks",
+				name = "デッキ",
 				text = {
-					"{C:attention}Decks{} added",
-					"by Cryptid",
+					"Cryptidによって追加された",
+					"{C:attention}デッキ{}",
 				},
 			},
 			set_cry_epic = {
-				name = "Epic Jokers",
+				name = "エピックジョーカー",
 				text = {
-					"Jokers with",
-					"{C:cry_epic}Epic{} rarity",
-					"{C:inactive,s:0.8}(Between Rare and Legendary)",
+					"{C:cry_epic}エピック{} レアリティのジョーカー",
+					"{C:inactive,s:0.8}(レア と レジェンド の中間に位置する)",
 				},
 			},
 			set_cry_exotic = {
-				name = "Exotic Jokers",
+				name = "エキゾチックジョーカー",
 				text = {
-					"Powerful Jokers with",
-					"{C:cry_exotic}Exotic{} rarity",
+					"{C:cry_exotic}エキゾチック{} レアリティの",
+					"強力なジョーカー",
 				},
 			},
 			set_cry_m = {
-				name = "M Jokers",
+				name = "M ジョーカー",
 				text = {
-					"Jokers related to",
-					"the letter {C:attention}M{}",
-					"and {C:attention}Jolly Joker",
+					"{C:attention}M{}の文字と",
+					"{C:attention}ジョリージョーカー{}に",
+					"関連するジョーカー"
 				},
 			},
 			set_cry_meme = {
-				name = "Meme",
+				name = "ミーム",
 				text = {
-					"Things related to",
-					"multiple references",
+					"いろんなことに",
+					"関係しているやつ",
 				},
 			},
 			set_cry_misc = {
-				name = "Misc.",
+				name = "その他",
 				text = {
-					"Things that don't",
-					"fit in any other",
-					"{C:cry_ascendant}Thematic Set",
+					"他の{C:cry_ascendant}テーマセット{}に適合しないもの",
 				},
 			},
 			set_cry_misc_joker = {
-				name = "Misc. Jokers",
+				name = "その他のジョーカー",
 				text = {
-					"{C:attention}Jokers{} that don't",
-					"fit in any other",
-					"{C:cry_ascendant}Thematic Set",
+					"他の{C:cry_ascendant}テーマセット{}に適合しないジョーカー",
 				},
 			},
 			set_cry_planet = {
-				name = "Planet Cards",
+				name = "惑星カード",
 				text = {
-					"Miscellaneous {C:planet}Planet{} Cards",
-					"added by Cryptid",
+					"Cryptidによって追加された",
+					"{C:attention}惑星{}",
 				},
 			},
 			set_cry_poker_hand_stuff = {
-				name = "Poker Hand Stuff",
+				name = "ポーカーハンド",
 				text = {
-					"Add 5 new {C:attention}ポーカーハンド",
-					"and enable {C:attention}Ascended hands",
+					"5つの新たな{C:attention}ポーカーハンド{}を追加し",
+					"{C:attention}昇天ハンド{}を有効にする",
 				},
 			},
 			set_cry_spectral = {
-				name = "Spectral Cards",
+				name = "スペクトルカード",
 				text = {
-					"{C:spectral}Spectral{} Cards added",
-					"by Cryptid",
+					"Cryptidによって追加された",
+					"{C:attention}スペクトル{}",
 				},
 			},
 			set_cry_spooky = {
-				name = "Spooky Update",
+				name = "奇妙なアップデート",
 				text = {
-					"Spooky Update content,",
-					"including {C:cry_candy}Candy{} Jokers",
+					"{C:cry_candy}キャンディ{}ジョーカーを含む",
+					"奇妙なアップデートコンテント",
 				},
 			},
 			set_cry_tag = {
 				name = "タグ",
 				text = {
-					"{C:attention}タグ{} added",
-					"by Cryptid",
+					"Cryptidによって追加された",
+					"{C:attention}タグ{}",
 				},
 			},
 			set_cry_tier3 = {
 				name = "Tier 3 バウチャー",
 				text = {
-					"An extra {C:attention}tier{}",
-					"of バウチャー",
+					"追加された{C:attention}Tier{}のバウチャー",
 				},
 			},
 			set_cry_timer = {
-				name = "Timer Mechanics",
+				name = "時限装置",
 				text = {
-					"Items with {C:attention}time-based",
-					"effects and mechanics",
+					"{C:attention}時間に関係{}する",
+					"効果や機構を持つアイテム",
 				},
 			},
 			set_cry_voucher = {
-				name = "Misc. バウチャー",
+				name = "その他のバウチャー",
 				text = {
-					"Tier 1 and 2 {C:attention}バウチャー{}",
-					"added by Cryptid",
+					"Tier 1 と 2 の",
+					"Cryptidによって追加された",
+					"{C:attention}バウチャー{}",
 				},
 			},
 		},
@@ -1431,28 +1426,27 @@ return {
 				},
 			},
 			j_cry_clash = {
-				name = "The Clash",
+				name = "破壊",
 				text = {
-					"倍率 {X:mult,C:white} X#1# {} if played",
-					"hand contains",
-					"an {C:attention}#2#",
+					"プレイされたハンドが{C:attention}#2#{}を含む場合",
+					"倍率 {X:mult,C:white} X#1# {}",
 				},
 				unlock = {
-					"Win a run with",
-					"your final hand being",
-					"an {E:1,C:attention}Ultimate Pair",
+					"最終ハンドに",
+					"{E:1,C:attention}アルティメットペア{}をプレイして",
+					"ランに勝利する"
 				},
 			},
 			j_cry_the = {
-				name = "The",
+				name = "、",
 				text = {
-					"倍率 {X:mult,C:white} X#1# {} if played",
-					"hand is {C:attention}#2#",
+					"プレイされたハンドが{C:attention}#2#{}の時",
+					"倍率 {X:mult,C:white} X#1# {}",
 				},
 				unlock = {
-					"Win a run with",
-					"your final hand being",
-					"a {E:1,C:attention}None",
+					"最終ハンドに",
+					"{E:1,C:attention}無{}をプレイして",
+					"ランに勝利する"
 				},
 			},
 			j_cry_clicked_cookie = {
