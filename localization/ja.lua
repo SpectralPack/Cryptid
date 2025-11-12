@@ -114,7 +114,7 @@ return {
 					"{C:green}#3#分の#1#{}の確率で 倍率 {X:dark_edition,C:white} 0.5乗 {}",
 				},
 				unlock = {
-					"{C:attention}リグ{}が適用されたジョーカーを所持する",
+					"{C:attention}リグ{}が適用されたジョーカーを獲得する",
 				},
 			},
 			b_cry_e_deck = {
@@ -133,7 +133,7 @@ return {
 				name = "エンコーディドデッキ",
 				text = {
 					"1枚の{C:cry_code,T:j_cry_CodeJoker}コードジョーカー{}と",
-					"1枚の{C:cry_code,T:j_cry_copypaste}Copy/Paste{}を所持して開始する",
+					"1枚の{C:cry_code,T:j_cry_copypaste}Copy/Paste{}でランをスタートする",
 					"ショップのカード枠に{C:cry_code}コード{}のみが出現する",
 				},
 				unlock = {
@@ -166,11 +166,11 @@ return {
 				},
 			},
 			b_cry_glowing = {
-				name = "Glowing Deck",
+				name = "成長デッキ",
 				text = {
-					"Multiply the values of",
-					"all Jokers by {X:dark_edition,C:white} X1.25 {}",
-					"when Boss ブラインド is defeated",
+					"ボスブラインドを倒した時",
+					"すべてのジョーカーの数値を",
+					"{X:dark_edition,C:white} 1.25倍 {}にする",
 					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person", --peak loc_vars right here
 				},
 				unlock = {
@@ -197,18 +197,18 @@ return {
 					"{C:attention}ランダム{}になる",
 				},
 				unlock = {
-					"{C:attention}グリッチ{}が適用されたジョーカーを所持する",
+					"{C:attention}グリッチ{}が適用されたジョーカーを獲得する",
 				},
 			},
 			b_cry_redeemed = {
-				name = "Redeemed Deck",
+				name = "引換デッキ",
 				text = {
-					"When a {C:attention}バウチャー{} is purchased,",
-					"gain its {C:attention}extra tiers",
+					"{C:attention}バウチャー{}を購入した時",
+					"{C:attention}上位Tier{}のバウチャーを獲得する",
 				},
 				unlock = {
-					"Discover every",
-					"{C:attention}バウチャー",
+					"すべての{C:attention}バウチャー{}を",
+					"発見する",
 				},
 			},
 			b_cry_sk_deck = {
@@ -222,74 +222,75 @@ return {
 				},
 			},
 			b_cry_sl_deck = {
-				name = "Seal Deck",
+				name = "シールデッキ",
 				text = {
-					"All トランプ have a {C:dark_edition}#1#{}",
-					"Cards cannot change seals",
-					"{C:inactive}(Click to edit)",
+					"すべてのカードに{C:dark_edition}#1#{}が加えられる",
+					"カードのシールが変更できない",
+					"{C:inactive}(クリックして編集)",
 				},
 				unlock = {
-					"Use {C:spectral}Typhoon",
+					"{C:spectral}台風{}を使用する",
 				},
 			},
 			b_cry_spooky = {
 				name = "不気味なデッキ",
 				text = {
-					"{C:eternal}エターナル{}の{C:attention,T:j_cry_chocolate_dice}チョコレート・ダイ{}", 
-					"を所持してランを開始する",
+					"{C:eternal}エターナル{}の{C:attention,T:j_cry_chocolate_dice}チョコレート・ダイ{}でランをスタートする",
 					"{C:attention}アンティ{}ごとに",
 					"{C:cry_candy}キャンディ{}か{X:cry_cursed,C:white}呪い{}ジョーカーを作成する",
 				},
 				unlock = {
-					"{C:cry_candy}キャンディ{C:attention}ジョーカーを所持する",
+					"{C:cry_candy}キャンディ{C:attention}ジョーカーを獲得する",
 				},
 			},
 			b_cry_st_deck = {
-				name = "Suit Deck",
+				name = "スートデッキ",
 				text = {
-					"All トランプ are {C:dark_edition}#1#",
-					"and cannot change suits",
-					"{C:inactive}(Click to edit)",
+					"すべてのカードが{C:dark_edition}#1#{}になる",
+					"カードのスートが変更できない",
+					"{C:inactive}(クリックして編集)",
 				},
 				unlock = {
-					"Use {C:spectral}Replica",
+					"{C:spectral}レプリカ{}を使用する",
 				},
 			},
 			b_cry_very_fair = {
-				name = "Very Fair Deck",
+				name = "非常にフェアなデッキ",
 				text = {
-					"{C:blue}-2{} hands, {C:red}-2{} ディスカード",
-					"every round",
-					"{C:attention}バウチャー{} no longer",
-					"appear in the shop",
+					"すべてのラウンドで",
+					"ハンド {C:blue}-2{} ディスカード {C:red}-2{}",
+					"{C:attention}バウチャー{}が",
+					"ショップに出現しない",
 				},
 				unlock = {
-					"Win a run",
-					"with {C:attention}Blank Deck",
+					"いずれかの難易度で",
+					"{C:attention}ブランクデッキ{}で",
+					"ランに勝利する",
 				},
 			},
 			b_cry_wormhole = {
-				name = "Wormhole Deck",
+				name = "ワームホールデッキ",
 				text = {
-					"Start with an {C:cry_exotic}Exotic{C:attention} Joker",
-					"Jokers are {C:attention}20X{} more",
-					"likely to be {C:dark_edition}ネガティブ",
-					"{C:attention}-2{} Joker slots",
+					"1枚の{C:cry_exotic}エキゾチック{C:attention}ジョーカーでランをスタートする",
+					"{C:dark_edition}ネガティブ{}ジョーカーの出現率",
+					"{C:attention}20倍{}",
+					"ジョーカースロット {C:attention}-2{}",
 				},
 				unlock = {
-					"Obtain an {C:cry_exotic}Exotic{C:attention} Joker",
+					"{C:cry_exotic}エキゾチック{C:attention}ジョーカーを獲得する",
 				},
 			},
 			b_cry_legendary = {
-				name = "Legendary Deck",
+				name = "レジェンダリーデッキ",
 				text = {
-					"Start with a {C:legendary}Legendary{C:legendary} Joker",
-					"{C:green}#1# in #2#{} chance to create another",
-					"when Boss ブラインド is defeated {C:inactive}(空きが必要){}",
+					"1枚の{C:legendary}レジェンダリー{C:legendary}ジョーカーでランをスタートする",
+					"ボスブラインドを倒した時 {C:green}#2#分の#1#{}の確率で",
+					"他のジョーカーを作成する",
+					"{C:inactive}(空きが必要){}",
 				},
 				unlock = {
-					"Have {C:attention}2 Legendary Jokers",
-					"at the same time",
+					"同時に{C:attention}2枚のレジェンダリージョーカー{}を",
+					"所持する",
 				},
 			},
 		},
@@ -678,7 +679,8 @@ return {
 				text = {
 					"{C:cry_code}直近3件{}の消耗アイテムを記憶する",
 					"再度このコードを使用すると",
-					"{C:cry_code}Function://{}ステッカーを持つ最初のアイテムのコピーを作成する",
+					"{C:cry_code}Function://{}ステッカーを持つ",
+					"最初のアイテムのコピーを作成する",
 				},
 			},
 			c_cry_run = {
@@ -3015,7 +3017,7 @@ return {
 				name = "Tricksy Joker",
 				text = {
 					"プレイしたハンドが",
-                                        "{C:attention}#2#{} を含む場合",
+                    "{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
@@ -5168,13 +5170,13 @@ return {
 			b_blind = "ブラインド",
 			rush_hour_reminder = "Enable the Clock and Lavender loop to play Rush Hour",
 
-			b_tarot_rate = "Tarot Rate",
-			b_planet_rate = "Planet Rate",
+			b_tarot_rate = "タロット出現率",
+			b_planet_rate = "惑星出現率",
 
 			k_unique = "Unique",
 			b_code_cards = "コードカード",
 			b_unique_cards = "Unique Cards",
-			b_pull = "PULL",
+			b_pull = "引き換え",
 			b_playing_cards = "トランプ",
 			cry_hooked_ex = "フック!",
 			k_end_blind = "ブラインドを終了",
