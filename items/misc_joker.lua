@@ -11054,6 +11054,66 @@ local keychange = {
 	end,
 }
 
+local emergencychips = {
+	cry_credits = {
+		idea = {
+			"AlexZGreat",
+		},
+		art = {
+			"Tatteredlurker"
+		},
+		code = {
+			"BobJoe400",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-emergencychips",
+	key = "emergencychips",
+	atlas = "atlasthree",
+	pos = { x = 2, y = 8 },
+	config = { immutable = { blind_mult = 0.2 } },
+	rarity = 1,
+	cost = 3,
+	order = 145,
+	demicoloncompat = false,
+	blueprint_compat = true,
+
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				number_format(card.ability.immutable.blind_mult * 100),
+				number_format(G and G.GAME and G.GAME.blind and G.GAME.blind.chips and to_big(G.GAME.blind.chips) > to_big(0) and (G.GAME.blind.chips * card.ability.immutable.blind_mult) or 0)
+			},
+		}
+	end,
+
+	calculate = function(self, card, context)
+		if context.selling_self and not context.forcetrigger then
+			if G.STATE ~= G.STATES.SELECTING_HAND then
+				return
+			end
+
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					G.hand_text_area.game_chips:juice_up()
+					play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,0.5)
+					return true
+				end,
+			}))
+
+			G.GAME.chips = G.GAME.chips + G.GAME.blind.chips * card.ability.immutable.blind_mult
+			G.STATE = G.STATES.HAND_PLAYED
+			G.STATE_COMPLETE = false
+
+			if to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips) then
+				return { message = localize("k_saved_ex")}
+			else
+				return { message = localize("k_nope_ex")}
+			end
+		end
+	end,
+}
+
 local miscitems = {
 	jimball_sprite,
 	dropshot,
@@ -11188,6 +11248,7 @@ local miscitems = {
 	broken_sync,
 	thal,
 	keychange,
+	emergencychips,
 }
 
 return {
