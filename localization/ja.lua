@@ -1104,10 +1104,10 @@ return {
 			j_cry_arsonist = {
 				name = "放火魔",
 				text = {
-					"If played hand",
-					"contains a {C:attention}Full House{},",
-					"{C:red}destroy{} all cards",
-					"after scoring",
+					"プレイされたハンドが",
+					"{C:attention}フルハウス{}を含む場合",
+					"スコア後に",
+					"{C:red}すべてのカードを破壊する{}",
 				},
 			},
 			j_cry_astral_bottle = {
@@ -1857,11 +1857,11 @@ return {
 				},
 			},
 			j_cry_foolhardy = {
-				name = "Foolhardy Joker",
+				name = "無謀なジョーカー",
 				text = {
-					"{C:red}+#1#{} Mult if played",
-					"hand contains",
-					"an {C:attention}#2#",
+					"プレイしたハンドが",
+					"{C:attention}#2#{}を含む場合",
+					"倍率 {C:red}+#1#{}",
 				},
 			},
 			j_cry_undefined = {
@@ -1998,10 +1998,10 @@ return {
 				},
 			},
 			j_cry_huntingseason = {
-				name = "Hunting Season",
+				name = "狩りの季節",
 				text = {
-					"If played hand contains exactly {C:attention}3{} cards,",
-					"{C:red}destroy{} the {C:attention}center{} card after scoring",
+					"プレイされたハンドがちょうど{C:attention}3{}枚のカードを含む場合",
+					"スコア後に{C:attention}中央{}のカードを{C:red}破壊する{}",
 				},
 			},
 			j_cry_iterum = {
@@ -2956,11 +2956,11 @@ return {
 				},
 			},
 			j_cry_treacherous = {
-				name = "Treacherous Joker",
+				name = "裏切り者のジョーカー",
 				text = {
-					"{C:chips}+#1#{} Chip#<s>1# if played",
-					"hand contains",
-					"an {C:attention}#2#",
+					"プレイしたハンドが",
+					"{C:attention}#2#{}を含む場合",
+					"チップ {C:chips}+#1#{}",
 				},
 			},
 			j_cry_nebulous = {
@@ -2971,19 +2971,19 @@ return {
 				},
 			},
 			j_cry_words_cant_even = {
-				name = "Words Can’t Even Begin to Describe This Joker",
+				name = "言葉では到底言い表せないこのジョーカー",
 				text = {
-					"{X:mult,C:white}X#1#{} Mult if played",
-					"hand contains",
-					"a {C:attention}#2#",
+					"プレイしたハンドが",
+					"{C:attention}#2#{}を含む場合",
+					"倍率 {X:mult,C:white}X#1#{}",
 				},
 			},
 			j_cry_many_lost_minds = {
-				name = "Many Have Lost Their Minds Comprehending This Joker",
+				name = "多勢がこのジョーカーの理解を試み 正気を失った",
 				text = {
-					"チップ {C:chips}+#1#{} if played",
-					"hand contains",
-					"{C:attention}#2#",
+					"プレイしたハンドが",
+					"{C:attention}#2#{}を含む場合",
+					"チップ {C:chips}+#1#{}",
 				},
 			},
 			-- i wanted to correct this typo, but its not even used anywhere?? (well, except other localizations lol)
@@ -5384,8 +5384,8 @@ return {
 				uncommon = { "if it is an {C:green}Uncommon{} {C:attention}Joker{}" },
 				rare = { "if it is a {C:red}Rare{} {C:attention}Joker{}" },
 				poker_hand = { "if hand is a {C:attention}#3#{}" },
-				or_more = { "if hand contains {C:attention}#3#{} or more cards" },
-				or_less = { "if hand contains {C:attention}#3#{} or less cards" },
+				or_more = { "ハンドが{C:attention}#3#{}枚以上のカードを含む場合" },
+				or_less = { "ハンドが{C:attention}#3#{}枚以下のカードを含む場合" },
 				hands_left = { "if #3# {C:blue}hand(s){} remaining at end of round" },
 				discards_left = { "if #3# {C:red}ディスカード(s){} remaining at end of round" },
 				first_discard = { "if it's the {C:attention}first {C:attention}ディスカード{}" },
