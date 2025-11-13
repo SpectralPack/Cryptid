@@ -680,7 +680,7 @@ return {
 				name = "FUNCTION://",
 				text = {
 					"{C:cry_code}直近3件{}の消耗アイテムを記憶する",
-					"再度このコードを使用すると",
+					"以降このコードを使用すると",
 					"{C:cry_code}Function://{}ステッカーを持つ",
 					"最初のアイテムのコピーを作成する",
 				},
@@ -1062,7 +1062,7 @@ return {
 				},
 			},
 			j_cry_adroit = {
-				name = "Adroit Joker",
+				name = "アドロイトジョーカー",
 				text = {
 					"プレイしたハンドが",
                     "{C:attention}#2#{} を含む場合",
@@ -1194,7 +1194,7 @@ return {
 				},
 			},
 			j_cry_bonkers = {
-				name = "Bonkers Joker",
+				name = "ボンカーズジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1594,7 +1594,7 @@ return {
 				},
 			},
 			j_cry_delirious = {
-				name = "Delirious Joker",
+				name = "デリリオスジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1626,7 +1626,7 @@ return {
 				},
 			},
 			j_cry_discreet = {
-				name = "Discreet Joker",
+				name = "ディスクリートジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1675,7 +1675,7 @@ return {
 				},
 			},
 			j_cry_dubious = {
-				name = "Dubious Joker",
+				name = "デュビオスジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1683,7 +1683,7 @@ return {
 				},
 			},
 			j_cry_duos = {
-				name = "The Duos",
+				name = "デュオ",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1814,7 +1814,7 @@ return {
 				},
 			},
 			j_cry_filler = {
-				name = "The Filler",
+				name = "フィラー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1881,10 +1881,10 @@ return {
 				},
 			},
 			j_cry_foxy = {
-				name = "Foxy Joker",
+				name = "フォクシージョーカー",
 				text = {
 					"プレイしたハンドが",
-                                        "{C:attention}#2#{} を含む場合",
+                    "{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
@@ -1898,7 +1898,7 @@ return {
 				},
 			},
 			j_cry_fuckedup = {
-				name = Cryptid_config.family_mode and "Tidy Joker" or "Fucked-Up Joker",
+				name = Cryptid_config.family_mode and "タイディージョーカー" or "ファックドアップジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1913,11 +1913,11 @@ return {
 				},
 			},
 			j_cry_gemino = {
-				name = "Gemini",
+				name = "ジェミニ",
 				text = {
-					"{C:attention}Double{} all values",
-					"of leftmost {C:attention}Joker",
-					"at end of round",
+					"ラウンド終了時",
+					"左端の{C:attention}ジョーカー{}の",
+					"すべての値を{C:attention}2倍{}にする",
 				},
 			},
 			j_cry_ghost = {
@@ -1931,7 +1931,7 @@ return {
 				},
 			},
 			j_cry_giggly = {
-				name = "Absurd Joker",
+				name = "アブサードジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1979,7 +1979,7 @@ return {
 				},
 			},
 			j_cry_home = {
-				name = "The Home",
+				name = "ホーム",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -2073,7 +2073,7 @@ return {
 				},
 			},
 			j_cry_kooky = {
-				name = "Kooky Joker",
+				name = "クーキージョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -2092,7 +2092,7 @@ return {
 			j_cry_kscope = {
 				name = "Kaleidoscope",
 				text = {
-					"Add {C:dark_edition}Polychrome{} to",
+					"Add {C:dark_edition}ポリクローム{} to",
 					"a random {C:attention}Joker{} when",
 					"{C:attention}ボスブラインド{} is defeated",
 				},
@@ -2188,7 +2188,7 @@ return {
 				},
 			},
 			j_cry_manic = {
-				name = "Manic Joker",
+				name = "マニックジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -2415,7 +2415,7 @@ return {
 				},
 			},
 			j_cry_nuts = {
-				name = "The Nuts",
+				name = "ナッツ",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -2427,7 +2427,7 @@ return {
 				},
 			},
 			j_cry_nutty = {
-				name = "Nutty Joker",
+				name = "ナッティージョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -2477,7 +2477,7 @@ return {
 				},
 			},
 			j_cry_penetrating = {
-				name = "Penetrating Joker",
+				name = "ペネトレーティングジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -2576,16 +2576,16 @@ return {
 				},
 			},
 			j_cry_quintet = {
-				name = "The Quintet",
+				name = "クインテット",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
 					"倍率 {C:red}X#1#{}",
 				},
 				unlock = {
-					"Win a run with",
-					"your final hand being",
-					"a {E:1,C:attention}Five of a Kind",
+					"最終ハンドに",
+					"{E:1,C:attention}ファイブカード{}をプレイして",
+					"ランに勝利する"
 				},
 			},
 			j_cry_redbloon = {
@@ -2654,10 +2654,10 @@ return {
 				},
 			},
 			j_cry_savvy = {
-				name = "Savvy Joker",
+				name = "サヴィージョーカー",
 				text = {
 					"プレイしたハンドが",
-                                        "{C:attention}#2#{} を含む場合",
+                    "{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
@@ -2687,15 +2687,15 @@ return {
 				},
 			},
 			j_cry_shrewd = {
-				name = "Shrewd Joker",
+				name = "シュレウドジョーカー",
 				text = {
 					"プレイしたハンドが",
-                                        "{C:attention}#2#{} を含む場合",
+                    "{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
 			j_cry_silly = {
-				name = "Silly Joker",
+				name = "シリージョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -2851,7 +2851,7 @@ return {
 			j_cry_stardust = {
 				name = "Stardust",
 				text = {
-					"Other {C:dark_edition}Polychrome{} cards",
+					"Other {C:dark_edition}ポリクローム{} cards",
 					"each give {X:mult,C:white}X#1#{} Mult",
 				},
 			},
@@ -2865,20 +2865,20 @@ return {
 				},
 			},
 			j_cry_stronghold = {
-				name = "The Stronghold",
+				name = "牙城",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
 					"倍率 {C:red}X#1#{}",
 				},
 				unlock = {
-					"Win a run with",
-					"your final hand being",
-					"a {E:1,C:attention}Bulwark",
+					"最終ハンドに",
+					"{E:1,C:attention}砦{}をプレイして",
+					"ランに勝利する"
 				},
 			},
 			j_cry_subtle = {
-				name = "Subtle Joker",
+				name = "サブトゥルジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -2920,9 +2920,9 @@ return {
 					"倍率 {C:red}X#1#{}",
 				},
 				unlock = {
-					"Win a run with",
-					"your final hand being",
-					"a {E:1,C:attention}Flush Five",
+					"最終ハンドに",
+					"{E:1,C:attention}フラッシュファイブ{}をプレイして",
+					"ランに勝利する"
 				},
 			},
 			j_cry_sync_catalyst = {
@@ -2995,9 +2995,10 @@ return {
 					"a {C:attention}#2#",
 				},
 				unlock = {
-					"Win a run with",
-					"your final hand being",
-					"a {E:1,C:attention}#1#",
+					"最終ハンドに",
+					"{E:1,C:attention}#1#{}をプレイして",
+					"ランに勝利する"
+
 				},
 			},
 			j_cry_trick_or_treat = {
@@ -3010,7 +3011,7 @@ return {
 				},
 			},
 			j_cry_tricksy = {
-				name = "Tricksy Joker",
+				name = "トリクシージョーカー",
 				text = {
 					"プレイしたハンドが",
                     "{C:attention}#2#{} を含む場合",
@@ -3033,16 +3034,17 @@ return {
 				},
 			},
 			j_cry_unity = {
-				name = "The Unity",
+				name = "ユニティ",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
 					"倍率 {C:red}X#1#{}",
 				},
 				unlock = {
-					"Win a run with",
-					"your final hand being",
-					"a {E:1,C:attention}Flush House",
+					"最終ハンドに",
+					"{E:1,C:attention}フラッシュハウス{}をプレイして",
+					"ランに勝利する"
+
 				},
 			},
 			j_cry_universe = {
@@ -3085,12 +3087,12 @@ return {
 					"This Joker gains {C:money}$#1#{} of {C:attention}sell value{}",
 					"if {C:attention}ポーカーハンド{} contains a {C:attention}#2#{}",
 					"Sell this card to create a",
-					"{C:dark_edition}Polychrome{} {C:attention}Jolly Joker{} for",
+					"{C:dark_edition}ポリクローム{} {C:attention}Jolly Joker{} for",
 					"every {C:money}$4{} of {C:attention}sell value{} {C:inactive}(Min 1){}",
 				},
 			},
 			j_cry_wacky = {
-				name = "Wacky Joker",
+				name = "ワッキージョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -3164,16 +3166,17 @@ return {
 				},
 			},
 			j_cry_wtf = {
-				name = Cryptid_config.family_mode and "The Cluster" or "The Fuck!?",
+				name = "星団",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
 					"倍率 {C:red}X#1#{}",
 				},
 				unlock = {
-					"Win a run with",
-					"your final hand being",
-					"a {E:1,C:attention}#1#",
+					"最終ハンドに",
+					"{E:1,C:attention}#1#{}をプレイして",
+					"ランに勝利する"
+
 				},
 			},
 			j_cry_zooble = {
@@ -3198,7 +3201,7 @@ return {
 				},
 			},
 			c_cry_void = {
-				name = "虚無〈ヴォイド〉",
+				name = "ヴォイド",
 				text = {
 					"{S:0.8}({S:0.8,V:1}レベル#1#{S:0.8}){} レベルアップ",
 					"{C:attention}#2#",
@@ -3207,7 +3210,7 @@ return {
 				},
 			},
 			c_cry_marsmoons = {
-				name = "フォボスとダイモス",
+				name = "フォボス＆ダイモス",
 				text = {
 					"{S:0.8}({S:0.8,V:1}レベル#1#{S:0.8}){} レベルアップ",
 					"{C:attention}#2#",
@@ -3882,136 +3885,137 @@ return {
 			tag_cry_bundle = {
 				name = "バンドルタグ",
 				text = {
-					"{C:attentionスタンダードタグ{}、{C:tarot}チャームタグ{}、",
+					"{C:attention}スタンダードタグ{}、{C:tarot}チャームタグ{}、",
 					"{C:attention}道化師タグ{}、{C:planet}惑星タグを",
 					"1つずつ作成する",
 				},
 			},
 			tag_cry_cat = {
 				name = "キャットタグ",
-				text = { "にゃ～", "{C:inactive}レベル {C:dark_edition}#1#" },
+				text = { "ニャー", "{C:inactive}レベル {C:dark_edition}#1#" },
 			},
 			tag_cry_console = {
-				name = "端末タグ",
+				name = "ターミナルタグ",
 				text = {
-					"無料の",
-					"{C:cry_code}プログラムパック{}を与える",
+					"無料の {C:cry_code}プログラムパック{} を",
+					"与える",
 				},
 			},
 			tag_cry_double_m = {
 				name = "ダブルM タグ",
 				text = {
-					"Shop has a",
-					"{C:dark_edition}Jolly {C:legendary}M Joker{}",
+					"ショップに出現:",
+					"{C:dark_edition}ジョリー{C:legendary}M ジョーカー{}",
 				},
 			},
 			tag_cry_empowered = {
-				name = "Empowered タグ",
+				name = "エンパワードタグ",
 				text = {
-					"Gives a free {C:spectral}Spectral Pack",
-					"with {C:legendary,E:1}The Soul{} and {C:cry_exotic,E:1}Gateway{}",
+					"無料の", 
+					"{C:legendary,E:1}魂{} と {C:cry_exotic,E:1}ゲートウェイ{} を含む",
+					"{C:spectral}スペクトルパック{}を与える",
 				},
 			},
 			tag_cry_epic = {
-				name = "Epic タグ",
+				name = "エピックタグ",
 				text = {
-					"Shop has a half-price",
-					"{C:cry_epic}Epic Joker",
+					"ショップに出現:",
+					"半額の {C:cry_epic}エピック ジョーカー",
 				},
 			},
 			tag_cry_gambler = {
-				name = "Gambler's タグ",
+				name = "ギャンブラータグ",
 				text = {
-					"{C:green}#1# in #2#{} chance to create",
-					"an {C:cry_exotic,E:1}Empowered タグ",
+					"{C:green}#2#分の#1#{} の確率で",
+					"{C:cry_exotic,E:1}エンパワードタグ{}を与える",
 				},
 			},
 			tag_cry_glass = {
-				name = "Fragile タグ",
+				name = "脆弱タグ",
 				text = {
-					"Next base edition shop",
-					"Joker is free and",
-					"becomes {C:dark_edition}Fragile{}",
+					"次のベースショップジョーカーが", 
+					"無料になり、以下の",
+					"エディションになる: {C:dark_edition}脆弱{}",
 				},
 			},
 			tag_cry_glitched = {
-				name = "Glitched タグ",
+				name = "グリッチタグ",
 				text = {
-					"Next base edition shop",
-					"Joker is free and",
-					"becomes {C:dark_edition}Glitched{}",
+					"次のベースショップジョーカーが", 
+					"無料になり、以下の",
+					"エディションになる: {C:dark_edition}グリッチ{}",
 				},
 			},
 			tag_cry_gold = {
-				name = "Golden タグ",
+				name = "ゴールデンタグ",
 				text = {
-					"Next base edition shop",
-					"Joker is free and",
-					"becomes {C:dark_edition}Golden{}",
+					"次のベースショップジョーカーが", 
+					"無料になり、以下の",
+					"エディションになる: {C:dark_edition}ゴールデン{}",
 				},
 			},
 			tag_cry_gourmand = {
-				name = "Gourmand タグ",
+				name = "美食家タグ",
 				text = {
-					"Shop has a free",
-					"{C:attention}Food Joker",
+					"ショップに出現: 無料の",
+					"{C:attention}フード{}ジョーカー",
 				},
 			},
 			tag_cry_loss = {
-				name = "Loss",
+				name = "損失",
 				text = {
-					"Gives a free",
-					"{C:cry_ascendant}Meme Pack",
+					"無料の",
+					"{C:cry_ascendant}ミームパック{}を与える",
 				},
 			},
 			tag_cry_m = {
-				name = "Jolly タグ",
+				name = "ジョリータグ",
 				text = {
-					"Next base edition shop",
-					"Joker is free and",
-					"becomes {C:dark_edition}Jolly{}",
+					"次のベースショップジョーカーが", 
+					"無料になり、以下の",
+					"エディションになる: {C:dark_edition}ジョリー{}",
 				},
 			},
 			tag_cry_memory = {
-				name = "Memory タグ",
+				name = "メモリータグ",
 				text = {
-					"Create {C:attention}#1#{} cop#<ies,y>1# of",
-					"the last {C:attention}タグ{} used",
-					"during this run",
-					"{s:0.8,C:inactive}Copying タグ excluded",
+					"このランで", 
+					"最後に使用された{C:attention}タグ{}のコピーを",
+					"{C:attention}#1#{}つ 与える",
+					"{s:0.8,C:inactive}コピー系のタグを除く",
 					"{s:0.8,C:inactive}現在: {s:0.8,C:attention}#2#",
 				},
 			},
 			tag_cry_mosaic = {
-				name = "モザイク タグ",
+				name = "モザイクタグ",
 				text = {
-					"Next base edition shop",
-					"Joker is free and",
-					"becomes {C:dark_edition}モザイク{}",
+					"次のベースショップジョーカーが", 
+					"無料になり、以下の",
+					"エディションになる: {C:dark_edition}モザイク{}",
 				},
 			},
 			tag_cry_oversat = {
-				name = "Oversaturated タグ",
+				name = "過飽和タグ",
 				text = {
-					"Next base edition shop",
-					"Joker is free and",
-					"becomes {C:dark_edition}Oversaturated{}",
+					"次のベースショップジョーカーが", 
+					"無料になり、以下の",
+					"エディションになる: {C:dark_edition}過飽和{}",
 				},
 			},
 			tag_cry_quadruple = {
-				name = "Quadruple タグ",
+				name = "クアドラプルタグ",
 				text = {
-					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
-					"next selected {C:attention}タグ",
-					"{s:0.8,C:inactive}Copying タグ excluded",
+					"次に選択した {C:attention}タグ{} の",
+					"コピーを {C:attention}#1#{}つ 与える",
+					"{s:0.8,C:inactive}コピー系のタグを除く",
 				},
 			},
 			tag_cry_quintuple = {
-				name = "Quintuple タグ",
+				name = "クインティプルタグ",
 				text = {
-					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
-					"next selected {C:attention}タグ",
-					"{s:0.8,C:inactive}Copying タグ excluded",
+					"次に選択した {C:attention}タグ{} の",
+					"コピーを {C:attention}#1#{}つ 与える",
+					"{s:0.8,C:inactive}コピー系のタグを除く",
 				},
 			},
 			tag_cry_rework = {
@@ -4023,88 +4027,88 @@ return {
 				},
 			},
 			tag_cry_schematic = {
-				name = "Schematic タグ",
+				name = "回路図タグ",
 				text = {
-					"Shop has a",
-					"{C:attention}Brainstorm",
+					"ショップに出現:",
+					"{C:attention}Brainstorm", -- ←何？
 				},
 			},
 			tag_cry_scope = {
-				name = "Scope タグ",
+				name = "スコープタグ",
 				text = {
-					"{C:attention}+#1# {C:blue}hand#<s>1#{} and",
-					"{C:red}discard#<s>1#{} next round",
+					"次のラウンドで",
+					"{C:blue}ハンド{}と{C:red}ディスカード {C:attention}+#1#",
 				},
 			},
 			tag_cry_triple = {
-				name = "Triple タグ",
+				name = "トリプルタグ",
 				text = {
-					"Gives {C:attention}#1#{} cop#<ies,y>1# of the",
-					"next selected {C:attention}タグ",
-					"{s:0.8,C:inactive}Copying タグ excluded",
+					"次に選択した {C:attention}タグ{} の",
+					"コピーを {C:attention}#1#{}つ 与える",
+					"{s:0.8,C:inactive}コピー系のタグを除く",
 				},
 			},
 			tag_cry_clone = {
-				name = "Clone タグ",
+				name = "クローンタグ",
 				text = {
-					"Shop Items cost {C:attention}X#1#{}",
-					"as much, obtain a {C:attention}Copy{}",
-					"of the next bought card",
+					"ショップアイテムのコストが{C:attention}X#1#{}倍になり",
+					"次に購入したカードの",
+					"{C:attention}コピー{}を与える",
 				},
 			},
 			tag_cry_lens = {
-				name = "Lens タグ",
+				name = "レンズタグ",
 				text = {
-					"Apply {C:dark_edition}ネガティブ{}",
-					"to {C:attention}#1#{} random",
-					"consumable#<s>1#",
+					"{C:attention}#1#{}個のランダムな",
+					"消耗アイテムに",
+					"{C:dark_edition}ネガティブ{}を与える",
 				},
 			},
 			tag_cry_palette_cleanser = {
-				name = "Palette Cleanser タグ",
+				name = "お口直しタグ",
 				text = {
-					"Remove a {C:attention}random{}",
-					"sticker from a {C:attention}random{}",
-					"Joker or トランプ",
+					"{C:attention}ランダム{}なジョーカーかトランプから",
+					"{C:attention}ランダム{}にステッカーを削除する",
 				},
 			},
 		},
 		Tarot = {
 			c_cry_automaton = {
-				name = "The Automaton",
+				name = "オートマトン",
 				text = {
-					"Creates up to {C:attention}#1#",
-					"random {C:cry_code}Code{} card#<s>1#",
-					"{C:inactive}(Must have room)",
+					"{C:attention}#1#{}個の",
+					"ランダムな{C:cry_code}コード{}カードを作成する",
+					"{C:inactive}(空きが必要)",
 				},
 			},
 			c_cry_eclipse = {
-				name = "The Eclipse",
+				name = "日食",
 				text = {
-					"Enhances {C:attention}#1#{} selected card#<s>1#",
-					"into an {C:attention}Echo Card",
+					"{C:attention}#1#{}枚の選択したカードを",
+					"{C:attention}エコー{}カードに強化する",
 				},
 			},
 			c_cry_instability = {
-				name = "Instability",
+				name = "不安定性",
 				text = {
-					"Enhances {C:attention}#1#{} selected card#<s>1#",
-					"into an {C:attention}Abstract Card",
+					"{C:attention}#1#{}枚の選択したカードを",
+					"{C:attention}アブストラクト{}カードに強化する",
 				},
 			},
 			c_cry_theblessing = {
-				name = "The Blessing",
+				name = "恩寵",
 				text = {
-					"Creates {C:attention}1{}",
-					"random {C:attention}consumable{}",
+					"{C:attention}1{}個の",
+					"ランダムな{C:attention}消耗アイテム{}を作成する",
 					"{C:inactive}(空きが必要){}",
 				},
 			},
 			c_cry_seraph = {
-				name = "The Seraph",
+				name = "天使",
 				text = {
-					"Enhances {C:attention}#1#{} selected card#<s>1#",
-					"into {C:attention}Light Cards",
+					"{C:attention}#1#{}枚の選択したカードを",
+					"{C:attention}ライト{}カードに強化する",
+
 				},
 			},
 		},
@@ -4538,12 +4542,12 @@ return {
 			},
 			--todo? add candy jokers to list
 			food_jokers = {
-				name = "Food Jokers",
+				name = "フードジョーカー",
 				text = {
-					"{s:0.8}Gros Michel, Egg, Ice Cream, Cavendish,",
-					"{s:0.8}Turtle Bean, Diet Cola, Popcorn, Ramen,",
-					"{s:0.8}Seltzer, Pickle, Chili Pepper, Caramel,",
-					"{s:0.8}Nostalgic Candy, Fast Food M, etc.",
+					"{s:0.8}グロスミッチェル、エッグ、アイスクリーム、キャベンディッシュ、",
+					"{s:0.8}タートルビーン、ダイエットコーラ、ポップコーン、ラーメン、",
+					"{s:0.8}セルツァー、ピクルス、チリペッパー、キャラメル、",
+					"{s:0.8}郷愁のキャンディ、ファストフード M、その他",
 				},
 			},
 			ev_cry_choco0 = {
@@ -4798,58 +4802,58 @@ return {
 			p_cry_code_normal_1 = {
 				name = "プログラムパック",
 				text = {
-					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
+					"{C:attention}#2#{} 枚までの {C:cry_code}コード{} カードから",
+					"{C:attention}#1#{} 枚を選ぶ"
 				},
 			},
 			p_cry_code_normal_2 = {
 				name = "プログラムパック",
 				text = {
-					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
+					"{C:attention}#2#{} 枚までの {C:cry_code}コード{} カードから",
+					"{C:attention}#1#{} 枚を選ぶ"
 				},
 			},
 			p_cry_code_jumbo_1 = {
 				name = "ジャンボプログラムパック",
 				text = {
-					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
+					"{C:attention}#2#{} 枚までの {C:cry_code}コード{} カードから",
+					"{C:attention}#1#{} 枚を選ぶ"
 				},
 			},
 			p_cry_code_mega_1 = {
 				name = "メガプログラムパック",
 				text = {
-					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:cry_code} Code{} card#<s>2#",
+					"{C:attention}#2#{} 枚までの {C:cry_code}コード{} カードから",
+					"{C:attention}#1#{} 枚を選ぶ"
 				},
 			},
 			p_cry_empowered = {
-				name = "Empowered Pack",
+				name = "エンパワードパック",
 				text = {
-					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{C:spectral} Spectral{} card#<s>2#",
-					"{s:0.8,C:inactive}(Generated by Empowered タグ)",
+					"{C:attention}#2#{}枚までの {C:spectral}スペクトル{} カードから",
+					"{C:attention}#1#{}枚を選ぶ",
+					"{s:0.8,C:inactive}(エンパワードタグによって生成)",
 				},
 			},
 			p_cry_meme_1 = {
-				name = "Meme Pack",
+				name = "ミームパック",
 				text = {
-					"Choose {C:attention}#1#{} of",
-					"up to {C:attention}#2# Meme Joker#<s>2#{}",
+					"{C:attention}#2#{} 枚までの {C:attention}ミーム ジョーカー{} から",
+					"{C:attention}#1#{} 枚を選ぶ"
 				},
 			},
 			p_cry_meme_two = {
-				name = "Meme Pack",
+				name = "ミームパック",
 				text = {
-					"Choose {C:attention}#1#{} of",
-					"up to {C:attention}#2# Meme Joker#<s>2#{}",
+					"{C:attention}#2#{} 枚までの {C:attention}ミーム ジョーカー{} から",
+					"{C:attention}#1#{} 枚を選ぶ"
 				},
 			},
 			p_cry_meme_three = {
-				name = "Meme Pack",
+				name = "ミームパック",
 				text = {
-					"Choose {C:attention}#1#{} of",
-					"up to {C:attention}#2# Meme Joker#<s>2#{}",
+					"{C:attention}#2#{} 枚までの {C:attention}ミーム ジョーカー{} から",
+					"{C:attention}#1#{} 枚を選ぶ"
 				},
 			},
 			p_cry_baneful_1 = {
