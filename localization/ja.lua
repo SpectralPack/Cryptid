@@ -1883,7 +1883,7 @@ return {
 				text = {
 					"倍率 {C:mult}+#1#{}",
 					"{C:attention}#2#{} ラウンド後に {C:red,E:2}自身を破壊{}する",
-					"{C:attention}ジョー・リージョーカー{} が {C:attention}売られる{}たびに",
+					"{C:attention}ジョリージョーカー{} が {C:attention}売られる{}たびに",
 					"{C:attention}#3#{}ラウンド増やす",
 					"{C:inactive,s:0.8}倍バーガー 2つ、 ナゲット 2つ、{}",
 					"{C:inactive,s:0.8}ポテトL、20個、ケーキ 大。{}",
