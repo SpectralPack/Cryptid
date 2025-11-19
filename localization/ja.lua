@@ -1151,22 +1151,24 @@ return {
 				},
 			},
 			j_cry_blacklist = {
-				name = "Blacklist",
+				name = "ブラックリスト",
 				text = {
-					"If a {C:attention}#1#{} is held in hand or played,",
-					"set {C:chips}Chips{} and {C:mult}Mult{} to 0",
-					"{C:red,E:2}自身を破壊{}する if no {C:attention}#1#{} in deck",
-					"{C:inactive,s:0.8}Rank does not change",
+					"手札かプレイされたカードに {C:attention}#1#{}を含む場合",
+					"{C:chips}チップ{} と {C:mult}倍率{} を 0 にする",
+					"デッキに {C:attention}#1#{} がない場合",
+					"{C:red,E:2}自身を破壊{}する",
+					"{C:inactive,s:0.8}対象のランクを変えることはできない",
 				},
 			},
 			j_cry_rotten_egg = {
 				name = "腐った卵",
 				text = {
-					"When obtained, set sell value of",
-					"all current and future Jokers to {C:attention}$#1#{}",
-					"Reduce sell value of all {C:attention}Jokers{} by {C:attention}$#2#{}",
-					"At end of round, after gaining {C:attention}$#3#{} {C:inactive}[#4#]{}",
-					"from selling {C:attention}Jokers{}, {C:red}Self-destruct{}",
+					"このカードを獲得した時",
+					"これから獲得するジョーカーを含め",
+					"すべてのジョーカーのセルバリューを {C:attention}$#1#{} にする",
+					"すべての{C:attention}ジョーカー{}のセルバリューを {C:attention}$#2#{} 減少させる",
+					"ラウンド終了時 {C:attention}$#3#{} {C:inactive}[#4#]{} を得て",
+					"{C:attention}ジョーカー{}を売り {C:red}自身を破壊{}する",
 				},
 			},
 			j_cry_blender = {
@@ -1287,11 +1289,11 @@ return {
 				},
 			},
 			j_cry_buttercup = {
-				name = "Buttercup",
+				name = "バターカップ",
 				text = {
-					"Can store {C:attention}#1#{} selected shop item#<s>1#",
-					"When sold: Add the stored item#<s>1#",
-					"to the next shop",
+					"{C:attention}#1#{}個のショップアイテムを選択して保持できる",
+					"このカードを売った時",
+					"保持したアイテムを次のショップに追加する",
 				},
 			},
 			j_cry_caeruleum = {
@@ -1372,11 +1374,11 @@ return {
 				},
 			},
 			j_cry_caramel = {
-				name = "Caramel",
+				name = "キャラメル",
 				text = {
-					"Each played card gives",
-					"{X:mult,C:white}X#1#{} Mult when scored",
-					"for the next {C:attention}#2#{} round#<s>2#",
+					"次の {C:attention}#2#{} ラウンドの間",
+					"すべてのカードが",
+					"倍率 {X:mult,C:white}X#1#{} を与える",
 				},
 			},
 			j_cry_cat_owl = {
@@ -1396,12 +1398,12 @@ return {
 				},
 			},
 			j_cry_chili_pepper = {
-				name = "Chili Pepper",
+				name = "チリペッパー",
 				text = {
-					"This Joker gains {X:mult,C:white} X#2# {} Mult",
-					"at end of round,",
-					"{C:red,E:2}自身を破壊{}する after {C:attention}#3#{} round#<s>3#",
-					"{C:inactive}(現在{} {X:mult,C:white} X#1# {} {C:inactive}Mult){}",
+					"ラウンド終了時に",
+					"倍率 {X:mult,C:white} X#2# {} を得る",
+					"{C:attention}#3#{}ラウンド後に {C:red,E:2}自身を破壊{}する",
+					"{C:inactive}(現在{} 倍率 {X:mult,C:white} X#1# {} {C:inactive}){}",
 				},
 			},
 			j_cry_chocolate_dice = {
@@ -1516,7 +1518,7 @@ return {
 				},
 			},
 			j_cry_copypaste = {
-				name = "コピペ",
+				name = "コピー/貼り付け",
 				text = {
 					"{C:green}#2#分の#1#{} の確率で",
 					"使用された{C:cry_code}コードカード{}の",
@@ -1526,7 +1528,7 @@ return {
 				},
 			},
 			j_cry_copypaste_modest = {
-				name = "コピペ",
+				name = "コピー/貼り付け",
 				text = {
 					"ショップなどで引き換えた", 
 					"{C:cry_code}コードカード{}の",
@@ -1535,7 +1537,7 @@ return {
 				},
 			},
 			j_cry_copypaste_madness = {
-				name = "コピペ",
+				name = "コピー/貼り付け",
 				text = {
 					"{C:green}#2#分の#1#{} の確率で",
 					"使用された{C:cry_code}コードカード{}の",
@@ -1599,12 +1601,11 @@ return {
 				},
 			},
 			j_cry_cut = {
-				name = "Cut",
+				name = "切り取り",
 				text = {
-					"This Joker destroys",
-					"a random {C:cry_code}コード{} card",
-					"to gain 倍率 {X:mult,C:white} X#1# {}",
-					"at the end of the {C:attention}shop{}",
+					"{C:attention}ショップ{}から出た時",
+					"ランダムな {C:cry_code}コード{} カードを破壊し",
+					"倍率 {X:mult,C:white} X#1# {} を得る",
 					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 			},
@@ -1624,11 +1625,11 @@ return {
 				},
 			},
 			j_cry_starfruit = {
-				name = "Starfruit",
+				name = "スターフルーツ",
 				text = {
-					"倍率 {X:dark_edition,C:white}#1#乗{},",
-					"loses {X:dark_edition,C:white}^#2#{} Mult per",
-					"{C:attention}reroll{} in the shop",
+					"倍率 {X:dark_edition,C:white}#1#乗{}",
+					"ショップで {C:attention}リロール{} するたび",
+					"倍率 {X:dark_edition,C:white}^#2#{} を失う",
 				},
 			},
 			j_cry_digitalhallucinations = {
@@ -1694,7 +1695,7 @@ return {
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
-					"チップ {C:red}+#1#{}",
+					"チップ {C:blue}+#1#{}",
 				},
 			},
 			j_cry_duos = {
@@ -1878,14 +1879,14 @@ return {
 				},
 			},
 			j_cry_foodm = {
-				name = "Fast Food M",
+				name = "ファストフード M",
 				text = {
-					"{C:mult}+#1#{} Mult",
-					"{C:red,E:2}自身を破壊{}する in {C:attention}#2#{} round#<s>2#",
-					"Increases by {C:attention}#3#{} round when",
-					"{C:attention}Jolly Joker{} is {C:attention}sold{}",
-					"{C:inactive,s:0.8}2 McDoubles, 2 McChickens{}",
-					"{C:inactive,s:0.8}Large Fries, 20 Piece & Large Cake{}",
+					"倍率 {C:mult}+#1#{}",
+					"{C:attention}#2#{} ラウンド後に {C:red,E:2}自身を破壊{}する",
+					"{C:attention}ジョー・リージョーカー{} が {C:attention}売られる{}たびに",
+					"{C:attention}#3#{}ラウンド増やす",
+					"{C:inactive,s:0.8}倍バーガー 2つ、 ナゲット 2つ、{}",
+					"{C:inactive,s:0.8}ポテトL、20個、ケーキ 大。{}",
 				},
 			},
 			j_cry_foolhardy = {
@@ -2068,7 +2069,7 @@ return {
 					"最も多くプレイした", 
 					"{C:attention}ポーカーハンド{}を{C:attention}連続{}で",
 					"プレイするたびに",
-					"倍率 {X:mult,C:white} X#1# {}",
+					"倍率 {X:mult,C:white} X#1# {}を得る",
 					"{C:inactive}(現在 倍率 {X:mult,C:white} X#2# {C:inactive})",
 				},
 				unlock = {
@@ -2352,11 +2353,11 @@ return {
 				},
 			},
 			j_cry_monopoly_money = {
-				name = "Monopoly Money",
+				name = "端金",
 				text = {
-					"{C:green}#1# in #2#{} chance to",
-					"{C:attention}destroy{} purchased items",
-					"Halves money when {C:attention}sold",
+					"{C:green}#2#分の#1#{} の確率で",
+					"購入したアイテムを{C:attention}破壊{}する",
+					"このカードを売ると 所持金を{C:attention}半分{}にする",
 				},
 			},
 			j_cry_morse = {
@@ -2495,11 +2496,11 @@ return {
 				},
 			},
 			j_cry_oldcandy = {
-				name = "Nostalgic Candy",
+				name = "郷愁のキャンディ",
 				text = {
-					"Sell this card to",
-					"permanently gain",
-					"{C:attention}+#1#{} hand size",
+					"このカードを売ると",
+					"永久的に",
+					"ハンドサイズ {C:attention}+#1#{} を得る",
 				},
 			},
 			j_cry_oldinvisible = {
@@ -3065,7 +3066,7 @@ return {
 				name = "トリック・オア・トリート",
 				text = {
 					"このカードを{C:attention}売る{}と",
-					"{C:green}#2#の#1#{} の確率で {C:attention}#3#{}個の {C:cry_candy}キャンディ{} を作る",
+					"{C:green}#2#分の#1#{} の確率で {C:attention}#3#{}個の {C:cry_candy}キャンディ{} を作る",
 					"残りの確率で {X:cry_cursed,C:white}呪い{} ジョーカー を作る",
 					"{C:inactive}(この効果はジョーカースロットの上限を突破できる)",
 				},
@@ -3086,11 +3087,10 @@ return {
 				},
 			},
 			j_cry_tropical_smoothie = {
-				name = "Tropical Smoothie",
+				name = "トロピカルスムージー",
 				text = {
-					"Sell this card",
-					"to {C:attention}multiply{} values",
-					"of owned Jokers by {C:attention}X#1#{}",
+					"このカードを売ると",
+					"所持ジョーカーの数値を {C:attention}X#1#倍{}にする",
 				},
 			},
 			j_cry_unity = {
@@ -3718,54 +3718,54 @@ return {
 		},
 		Stake = {
 			stake_cry_pink = {
-				name = "Pink Stake",
-				colour = "Pink", --this is used for auto-generated sticker localization
+				name = "ピンクステーク",
+				colour = "ピンク", --this is used for auto-generated sticker localization
 				text = {
-					"Required score scales",
-					"faster for each {C:attention}アンティ",
+					"各 {C:attention}アンティ に必要な",
+					"スコアスケールが速くなる",
 				},
 			},
 			stake_cry_brown = {
-				name = "Brown Stake",
-				colour = "Brown",
+				name = "ブラウンステーク",
+				colour = "ブラウン",
 				text = {
-					"All {C:attention}stickers{} are compatible",
-					"with each other",
+					"すべての {C:attention}ステッカー{} は",
+					"互いに互換性を持つ",
 				},
 			},
 			stake_cry_yellow = {
-				name = "Yellow Stake",
-				colour = "Yellow",
+				name = "イエローステーク",
+				colour = "イエロー",
 				text = {
-					"{C:attention}Stickers{} can appear on",
-					"all purchasable items",
+					"すべての種別のショップアイテムに",
+					"{C:attention}ステッカー{}が加わる場合がある",
 				},
 			},
 			stake_cry_jade = {
-				name = "Jade Stake",
-				colour = "Jade",
+				name = "ジェードステーク",
+				colour = "ジェード",
 				text = {
-					"Cards can be drawn {C:attention}face down{}",
+					"カードが{C:attention}裏面{}でドローされることがある",
 				},
 			},
 			stake_cry_cyan = {
-				name = "Cyan Stake",
-				colour = "Cyan",
+				name = "シアンステーク",
+				colour = "シアン",
 				text = {
-					"{C:green}Uncommon{} and {C:red}Rare{} Jokers are",
-					"less likely to appear",
+					"{C:green}アンコモン{} と {C:red}レア{} ジョーカーが",
+					"出現しづらくなる",
 				},
 			},
 			stake_cry_gray = {
-				name = "Gray Stake",
-				colour = "Gray",
+				name = "グレーステーク",
+				colour = "グレー",
 				text = {
-					"Rerolls increase by {C:attention}$2{} each",
+					"リロールコストが {C:attention}$2{}ずつ 増加する",
 				},
 			},
 			stake_cry_crimson = {
-				name = "Crimson Stake",
-				colour = "Crimson",
+				name = "クリムゾンステーク",
+				colour = "クリムゾン",
 				text = {
 					"バウチャー restock on {C:attention}even{} アンティs",
 				},
@@ -5112,16 +5112,15 @@ return {
 			ach_cry_pull_request = "Pull Request",
 			ach_cry_traffic_jam = "交通渋滞",
 			ach_cry_ult_full_skip = "究極の完全スキップ",
-			ach_cry_used_crash = "やめてっていったよね",
+			ach_cry_used_crash = "やめてって言っ",
 			ach_cry_what_have_you_done = "何しでかした?!",
 			ach_cry_pin = "晒し者",
 			ach_cry_technically_positive = "厳密にはポジティブ",
-			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and "You Can't Be Serious"
-				or "You're Fucking Kidding",
-			ach_cry_stoned = "Stoned",
-			ach_cry_fucked = Cryptid_config.family_mode and "Clustered" or "Fucked",
-			ach_cry_despaired = "Despaired",
-			ach_cry_decked = "Decked",
+			ach_cry_youre_fucking_kidding = "狂気の沙汰",
+			ach_cry_stoned = "最高にハイ",
+			ach_cry_fucked = "散在",
+			ach_cry_despaired = "絶望",
+			ach_cry_decked = "おめかし",
 		},
 		achievement_descriptions = {
 			ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
@@ -5133,7 +5132,7 @@ return {
 			ach_cry_freak_house = "Nice を所持した状態で ハートの6と9で構成される フラッシュハウスをプレイする",
 			ach_cry_googol_play_pass = "Googol Play Card にリグを付与する",
 			ach_cry_haxxor = "チートコードを使う",
-			ach_cry_home_realtor = "Activate Happy House before アンティ 8 (without DoE/Antimatter)",
+			ach_cry_home_realtor = "Happy House の効果を アンティ 8 に到達する前に発動する (without DoE/Antimatter)",
 			ach_cry_jokes_on_you = "アンティ 1 で 冗談 の効果を発動させ ランに勝利する",
 			ach_cry_niw_uoy = "アンティ -8 に到達する",
 			ach_cry_now_the_fun_begins = "キャンバス を得る",
@@ -5143,7 +5142,7 @@ return {
 			ach_cry_traffic_jam = "すべての ラッシュアワーチャレンジを クリアする",
 			ach_cry_ult_full_skip = "1ラウンドで勝利する",
 			ach_cry_used_crash = "://CRASH を使用する",
-			ach_cry_what_have_you_done = "エキゾチックジョーカーを破壊または生贄にする",
+			ach_cry_what_have_you_done = "エキゾチックジョーカーを 破壊または生贄にする",
 			ach_cry_pin = "ピンに負ける",
 			ach_cry_technically_positive = "ネガティブ の ネガティブジョーカー を得る",
 			ach_cry_youre_fucking_kidding = localize("cry_WholeDeck", "poker_hands") .. "をディスカードする",
@@ -5227,13 +5226,13 @@ return {
 
 			k_code = "コード",
 			k_chips = "チップ",
-			k_content_set = "Thematic Set",
-			b_content_sets = "Thematic Sets",
+			k_content_set = "テーマセット",
+			b_content_sets = "テーマセット",
 			--Why aren't these in vanilla?
 			b_tag = "タグ",
 			b_blind = "ブラインド",
-			rush_hour_reminder = "Enable the Clock and Lavender loop to play Rush Hour",
-
+			rush_hour_reminder = "ラッシュアワーチャレンジをプレイするには 時計とラベンダー・ループを有効にする必要があります",
+			
 			b_tarot_rate = "タロット出現確率",
 			b_planet_rate = "惑星出現確率",
 
@@ -5326,10 +5325,10 @@ return {
 			cry_notif_jimball_d3 = "動画配信などに用いることができません。",
 
 			cry_gameset_explanation = {
-				"Select a gameset config option",
-				"to apply to this card.",
+				"このカードに適用する", 
+				"ゲームセット設定オプションを選択してください"
 			},
-			cry_gameset_disabled = "Disabled",
+			cry_gameset_disabled = "無効",
 			cry_gameset_modest = "Modest",
 			cry_gameset_mainline = "Mainline",
 			cry_gameset_madness = "Madness",
@@ -5340,14 +5339,14 @@ return {
 			cry_gameset_exp_mainline = "Experimental (Mainline)",
 			cry_gameset_exp_madness = "Experimental (Madness)",
 
-			cry_view_set_contents = "View Items in Set",
+			cry_view_set_contents = "このセットのアイテム一覧",
 
-			cry_sapling_an = "an",
-			cry_sapling_a = "a",
+			cry_sapling_an = "1つの ",
+			cry_sapling_a = "1つの ",
 
-			b_reset_gameset_modest = "Reset Gameset Config (Modest)",
-			b_reset_gameset_mainline = "Reset Gameset Config (Mainline)",
-			b_reset_gameset_madness = "Reset Gameset Config (Madness)",
+			b_reset_gameset_modest = "初期設定に戻す (Modest)",
+			b_reset_gameset_mainline = "初期設定に戻す (Mainline)",
+			b_reset_gameset_madness = "初期設定に戻す (Madness)",
 
 			cry_circus_generic = "{V:#1#}#2#{} Jokers each give {X:mult,C:white} X#3# {} Mult",
 		},
