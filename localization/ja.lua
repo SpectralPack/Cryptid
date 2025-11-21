@@ -17,7 +17,7 @@ return {
 				name = "反物質デッキ",
 				text = {
 					"{C:attention}ほぼすべての{}",
-					"{C:gold}ゴールドステーク{}以上の", 
+					"{C:gold}ゴールドステーク{}以上の",
 					"難易度で勝利済みデッキの",
 					"{C:legendary,E:1}メリット効果{}を適用する",
 				},
@@ -31,7 +31,7 @@ return {
 				name = "反物質デッキ",
 				text = {
 					"{C:attention}ほぼすべての{}",
-					"{C:gold}ゴールドステーク{}以上の", 
+					"{C:gold}ゴールドステーク{}以上の",
 					"難易度で勝利済みデッキの",
 					"{C:legendary,E:1}メリット効果{}を適用する",
 				},
@@ -64,7 +64,7 @@ return {
 				unlock = {
 					"いずれかのデッキで",
 					"{C:attention}ピンクステーク{}以上の難易度で",
-					"ランに勝利する"
+					"ランに勝利する",
 				},
 			},
 			b_cry_blank = {
@@ -356,7 +356,7 @@ return {
 			bl_cry_oldfish = {
 				name = "郷愁の魚",
 				text = {
-					"すべてのポーカーハンドの", 
+					"すべてのポーカーハンドの",
 					"デフォルト倍率が",
 					"1になる",
 				},
@@ -382,14 +382,14 @@ return {
 			bl_cry_oldmark = {
 				name = "郷愁の印",
 				text = {
-					"ワンペアを含むポーカーハンドが", 
+					"ワンペアを含むポーカーハンドが",
 					"無効になる",
 				},
 			},
 			bl_cry_oldox = {
 				name = "郷愁の雄牛",
 				text = {
-					"すべてのポーカーハンドの", 
+					"すべてのポーカーハンドの",
 					"デフォルトチップが",
 					"0 になる",
 				},
@@ -419,15 +419,15 @@ return {
 					"5枚のカードをプレイしなければならない",
 					"プレイされたカードと",
 					"ディスカードされたカードは",
-					"破壊される"
+					"破壊される",
 				},
 			},
 			bl_cry_greed = {
 				name = "強欲",
 				text = {
-					"ブラインドが選択されたときに", 
-					"持っている所持金 $#1# ごとに", 
-					"要求スコア +#2#",	
+					"ブラインドが選択されたときに",
+					"持っている所持金 $#1# ごとに",
+					"要求スコア +#2#",
 				},
 			},
 			bl_cry_repulsor = {
@@ -435,7 +435,7 @@ return {
 				text = {
 					"左端と右端のジョーカーが",
 					"再発動する代わりに",
-					"それ以外のジョーカーが発動しない"
+					"それ以外のジョーカーが発動しない",
 				},
 			},
 			bl_cry_chromatic = {
@@ -456,7 +456,7 @@ return {
 				name = "ピンク・ボウ",
 				text = {
 					"プレイした時に",
-					"ハンドにあるカードのランクが", 
+					"ハンドにあるカードのランクが",
 					"ランダムになる",
 				},
 			},
@@ -464,7 +464,7 @@ return {
 				name = "サファイア・スタンプ",
 				text = {
 					"1枚多くのカードを選択する",
-					"スコアされる前に", 
+					"スコアされる前に",
 					"1枚のランダムなカードが未選択になる",
 				},
 			},
@@ -512,7 +512,7 @@ return {
 				name = "ヴァーミリオン・ウィルス",
 				text = {
 					"各ハンドごとに",
-					"1枚のジョーカーが", 
+					"1枚のジョーカーが",
 					"ランダムな別のジョーカーになる",
 				},
 			},
@@ -526,10 +526,10 @@ return {
 			bl_cry_decision = {
 				name = "判決",
 				text = {
-					"プレイかディスカードをすると", 
+					"プレイかディスカードをすると",
 					"ジョーカーを移動できなくなる",
 					"ラウンド終了後",
-					"不吉な道化師パックを開ける"
+					"不吉な道化師パックを開ける",
 				},
 			},
 		},
@@ -543,10 +543,10 @@ return {
 			c_cry_keygen = {
 				name = "://KEYGEN",
 				text = {
-					"この効果によって以前作成された", 
+					"この効果によって以前作成された",
 					"バウチャーを{C:cry_code}破壊{}し",
 					"ランダムな {C:cry_code}生モノ バナナ{}を持つ",
-					"バウチャーを作る"
+					"バウチャーを作る",
 				},
 			},
 			c_cry_payload = {
@@ -690,7 +690,6 @@ return {
 				text = {
 					"{C:cry_code}ブラインド{}中に",
 					"{C:cry_code}ショップ{}に訪れることができる",
-
 				},
 			},
 			c_cry_class = {
@@ -753,7 +752,7 @@ return {
 					"{C:cry_code}選択した{}ショップアイテムを",
 					"{C:cry_code}消滅{}させ",
 					"このラン中に",
-					"出現しないようにする"
+					"出現しないようにする",
 				},
 			},
 			c_cry_alttab = {
@@ -792,7 +791,7 @@ return {
 					"{C:attention}現在{}選択されているカードで構成される",
 					"{C:attention}#1#{}を含むと見なされる",
 					"{C:cry_code}新しい{}ポーカーハンドを作る",
-					"この効果によって{C:attention}3{}種 {C:inactive}[#2#]{} まで", 
+					"この効果によって{C:attention}3{}種 {C:inactive}[#2#]{} まで",
 					"役を作ることができる",
 				},
 			},
@@ -845,7 +844,7 @@ return {
 				text = {
 					"{C:attention}M{}の文字と",
 					"{C:attention}ジョリージョーカー{}に",
-					"関連するジョーカー"
+					"関連するジョーカー",
 				},
 			},
 			set_cry_meme = {
@@ -973,7 +972,7 @@ return {
 				name = "ゴールデン",
 				label = "ゴールデン",
 				text = {
-					"使用 または トリガーされた時", 
+					"使用 または トリガーされた時",
 					"{C:money}$#1#{} を得る",
 				},
 			},
@@ -1066,7 +1065,7 @@ return {
 				name = "アドロイトジョーカー",
 				text = {
 					"プレイしたハンドが",
-                    "{C:attention}#2#{} を含む場合",
+					"{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
@@ -1299,7 +1298,7 @@ return {
 			j_cry_caeruleum = {
 				name = {
 					"{s:0.4}カエルレウム",
-					"碧"
+					"碧",
 				},
 				text = {
 					"隣接する {C:chips}チップを{}操作するジョーカーは",
@@ -1444,7 +1443,7 @@ return {
 				unlock = {
 					"最終ハンドに",
 					"{E:1,C:attention}アルティメットペア{}をプレイして",
-					"ランに勝利する"
+					"ランに勝利する",
 				},
 			},
 			j_cry_the = {
@@ -1456,7 +1455,7 @@ return {
 				unlock = {
 					"最終ハンドに",
 					"{E:1,C:attention}無{}をプレイして",
-					"ランに勝利する"
+					"ランに勝利する",
 				},
 			},
 			j_cry_clicked_cookie = {
@@ -1481,7 +1480,7 @@ return {
 				text = {
 					"{C:attention}ブラインド{}を選択した時",
 					"{C:dark_edition}ネガティブ{} の {C:cry_code}コードカード{} を",
-					"1枚作る"
+					"1枚作る",
 				},
 				unlock = {
 					"{C:attention}すべての",
@@ -1530,7 +1529,7 @@ return {
 			j_cry_copypaste_modest = {
 				name = "コピー/貼り付け",
 				text = {
-					"ショップなどで引き換えた", 
+					"ショップなどで引き換えた",
 					"{C:cry_code}コードカード{}の",
 					"コピーを作る",
 					"{C:inactive}(空きが必要)",
@@ -1549,17 +1548,17 @@ return {
 				name = "わたあめ",
 				text = {
 					"このカードを売ると",
-					"隣接する{C:attention}ジョーカー{}に", 
+					"隣接する{C:attention}ジョーカー{}に",
 					"{C:dark_edition}ネガティブ{} を加える",
 				},
 			},
 			j_cry_crustulum = {
 				name = {
 					"{s:0.4}クラストルム",
-					"菓"
+					"菓",
 				},
 				text = {
-					"ショップで{C:attention}リロール{}するたびに", 
+					"ショップで{C:attention}リロール{}するたびに",
 					"チップ {C:chips}+#2#{}",
 					"{C:green}リロールが無料になる{}",
 					"{C:inactive}(現在 チップ {C:chips}+#1#{C:inactive})",
@@ -1713,7 +1712,7 @@ return {
 			j_cry_duplicare = {
 				name = {
 					"{s:0.4}デュプリケア{}",
-					"重"
+					"重",
 				},
 				text = {
 					"{C:attention}ジョーカー{}かトランプがスコアされるたびに",
@@ -1724,19 +1723,19 @@ return {
 			j_cry_effarcire = {
 				name = {
 					"{s:0.4}エフィリシア",
-					"満"
+					"満",
 				},
 				text = {
 					"{C:attention}ブラインド{}が選択された時",
 					"{C:green}デッキ内すべてのカード{}を手札に加える",
-					"{C:inactive,s:0.8}\"もしあなたが私が1枚の時にきちんと扱ってくれないなら、",
-					"{C:inactive,s:0.8}私を2枚扱う資格はない。\"",
+					'{C:inactive,s:0.8}"もしあなたが私が1枚の時にきちんと扱ってくれないなら、',
+					'{C:inactive,s:0.8}私を2枚扱う資格はない。"',
 				},
 			},
 			j_cry_energia = {
 				name = {
 					"{s:0.4}エネルジア",
-					"活"
+					"活",
 				},
 				text = {
 					"{C:attention}タグ{}を得た時",
@@ -1748,7 +1747,7 @@ return {
 			j_cry_equilib = {
 				name = {
 					"{s:0.4}アーチェ・エクイリビウム",
-					"均"
+					"均",
 				},
 				text = {
 					"ハンドをプレイした時",
@@ -1792,7 +1791,7 @@ return {
 			j_cry_exponentia = {
 				name = {
 					"{s:0.4}エクスポネンシア",
-					"騰"
+					"騰",
 				},
 				text = {
 					"このジョーカーは",
@@ -1829,7 +1828,7 @@ return {
 			j_cry_facile = {
 				name = {
 					"{s:0.4}ファーチレ",
-					"薄"
+					"薄",
 				},
 				text = {
 					"プレイされたポーカーハンドが",
@@ -1907,7 +1906,7 @@ return {
 			j_cry_formidiulosus = {
 				name = {
 					"{s:0.4}フォルミドゥロサス",
-					"畏"
+					"畏",
 				},
 				text = {
 					"{X:cry_cursed,C:white}呪い{}ジョーカーを得た時 それを破壊する",
@@ -1920,7 +1919,7 @@ return {
 				name = "フォクシージョーカー",
 				text = {
 					"プレイしたハンドが",
-                    "{C:attention}#2#{} を含む場合",
+					"{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
@@ -1934,7 +1933,8 @@ return {
 				},
 			},
 			j_cry_fuckedup = {
-				name = Cryptid_config.family_mode and "タイディージョーカー" or "ファックドアップジョーカー",
+				name = Cryptid_config.family_mode and "タイディージョーカー"
+					or "ファックドアップジョーカー",
 				text = {
 					"プレイしたハンドが",
 					"{C:attention}#2#{} を含む場合",
@@ -1951,7 +1951,7 @@ return {
 			j_cry_gemino = {
 				name = {
 					"{s:0.4}ジェミノ",
-					"双"
+					"双",
 				},
 				text = {
 					"ラウンド終了時",
@@ -2046,7 +2046,7 @@ return {
 			j_cry_iterum = {
 				name = {
 					"{s:0.4}イテルム",
-					"再"
+					"再",
 				},
 				text = {
 					"すべてのカードを {C:attention}#2#{} 回 再発動する",
@@ -2066,7 +2066,7 @@ return {
 			j_cry_jimball = {
 				name = "Jimball",
 				text = {
-					"最も多くプレイした", 
+					"最も多くプレイした",
 					"{C:attention}ポーカーハンド{}を{C:attention}連続{}で",
 					"プレイするたびに",
 					"倍率 {X:mult,C:white} X#1# {}を得る",
@@ -2075,7 +2075,7 @@ return {
 				unlock = {
 					"{C:attention}1種類の{}",
 					"{C:attention}ポーカーハンド{}のみで",
-					"ランに勝利する"
+					"ランに勝利する",
 				},
 			},
 			j_cry_jollysus = {
@@ -2284,8 +2284,8 @@ return {
 			j_cry_mellowcreme = {
 				name = "メロウクリーム",
 				text = {
-					"このカードを売ると", 
-					"すべての {C:attention}消耗アイテム{} のセルバリューを", 
+					"このカードを売ると",
+					"すべての {C:attention}消耗アイテム{} のセルバリューを",
 					"{C:attention}#1#倍{}にする",
 				},
 			},
@@ -2371,7 +2371,7 @@ return {
 			j_cry_mprime = {
 				name = {
 					"{s:0.4}トレデチム",
-					"拾参"
+					"拾参",
 				},
 				text = {
 					"ラウンド終了時 {C:legendary}M ジョーカー{}を作る",
@@ -2533,7 +2533,7 @@ return {
 				text = {
 					"{C:attention}ブラインド{}がスキップされた時",
 					"{C:attention}#1#{}個のタグを作る",
-					"{C:attention}ブラインド{}を選択すると", 
+					"{C:attention}ブラインド{}を選択すると",
 					"作成数を {C:red}#2#{} 減少させる",
 				},
 			},
@@ -2578,7 +2578,7 @@ return {
 			j_cry_primus = {
 				name = {
 					"{s:0.4}プリムス",
-					"素"
+					"素",
 				},
 				text = {
 					"プレイされたハンドが",
@@ -2631,7 +2631,7 @@ return {
 				unlock = {
 					"最終ハンドに",
 					"{E:1,C:attention}ファイブカード{}をプレイして",
-					"ランに勝利する"
+					"ランに勝利する",
 				},
 			},
 			j_cry_redbloon = {
@@ -2644,7 +2644,7 @@ return {
 			j_cry_redeo = {
 				name = {
 					"{s:0.4}レデオ",
-					"遡"
+					"遡",
 				},
 				text = {
 					"{C:money}$#2#{} {C:inactive}($#3#){} 費やすと",
@@ -2706,14 +2706,14 @@ return {
 				name = "サヴィージョーカー",
 				text = {
 					"プレイしたハンドが",
-                    "{C:attention}#2#{} を含む場合",
+					"{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
 			j_cry_Scalae = {
 				name = {
 					"{s:0.4}スカーラエ",
-					"階"
+					"階",
 				},
 				text = {
 					"成長する{C:attention}ジョーカー{}の増分は",
@@ -2742,7 +2742,7 @@ return {
 				name = "シュレウドジョーカー",
 				text = {
 					"プレイしたハンドが",
-                    "{C:attention}#2#{} を含む場合",
+					"{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
@@ -2887,7 +2887,7 @@ return {
 			j_cry_speculo = {
 				name = {
 					"{s:0.4}スペークロ",
-					"鏡"
+					"鏡",
 				},
 				text = {
 					"{C:attention}ショップ{}終了時",
@@ -2913,7 +2913,7 @@ return {
 			j_cry_stella_mortis = {
 				name = {
 					"{s:0.4}ステラ・モーティス",
-					"骸"
+					"骸",
 				},
 				text = {
 					"{C:attention}ショップ{}終了時",
@@ -2932,7 +2932,7 @@ return {
 				unlock = {
 					"最終ハンドに",
 					"{E:1,C:attention}砦{}をプレイして",
-					"ランに勝利する"
+					"ランに勝利する",
 				},
 			},
 			j_cry_subtle = {
@@ -2980,7 +2980,7 @@ return {
 				unlock = {
 					"最終ハンドに",
 					"{E:1,C:attention}フラッシュファイブ{}をプレイして",
-					"ランに勝利する"
+					"ランに勝利する",
 				},
 			},
 			j_cry_sync_catalyst = {
@@ -3000,7 +3000,7 @@ return {
 			j_cry_tenebris = {
 				name = {
 					"{s:0.4}テーネブリス",
-					"暗"
+					"暗",
 				},
 				text = {
 					"ジョーカースロット {C:dark_edition}+#1#{C:attention}",
@@ -3058,8 +3058,7 @@ return {
 				unlock = {
 					"最終ハンドに",
 					"{E:1,C:attention}#1#{}をプレイして",
-					"ランに勝利する"
-
+					"ランに勝利する",
 				},
 			},
 			j_cry_trick_or_treat = {
@@ -3075,7 +3074,7 @@ return {
 				name = "トリクシージョーカー",
 				text = {
 					"プレイしたハンドが",
-                    "{C:attention}#2#{} を含む場合",
+					"{C:attention}#2#{} を含む場合",
 					"チップ {C:chips}+#1#{}",
 				},
 			},
@@ -3103,8 +3102,7 @@ return {
 				unlock = {
 					"最終ハンドに",
 					"{E:1,C:attention}フラッシュハウス{}をプレイして",
-					"ランに勝利する"
-
+					"ランに勝利する",
 				},
 			},
 			j_cry_universe = {
@@ -3117,7 +3115,7 @@ return {
 			j_cry_universum = {
 				name = {
 					"{s:0.4}ユニヴァーザム",
-					"宙"
+					"宙",
 				},
 				text = {
 					"{C:attention}ポーカーハンド{}のレベルがあがった時",
@@ -3142,7 +3140,7 @@ return {
 				text = {
 					"確率で発動する効果の",
 					"トリガーに{C:green}成功{}した時",
-					"その{C:attention}オッズ{}に等しい", 
+					"その{C:attention}オッズ{}に等しい",
 					"倍率 {X:red,C:white}X倍{} を得る",
 					"{C:inactive}(現在 倍率{X:mult,C:white} X#1# {C:inactive})",
 				},
@@ -3219,7 +3217,7 @@ return {
 				name = "ウォンカバー",
 				text = {
 					"このカードを売ると",
-					"永久的に", 
+					"永久的に",
 					"カード選択上限 {C:attention}+#1#{} を得る",
 				},
 			},
@@ -3242,8 +3240,7 @@ return {
 				unlock = {
 					"最終ハンドに",
 					"{E:1,C:attention}#1#{}をプレイして",
-					"ランに勝利する"
-
+					"ランに勝利する",
 				},
 			},
 			j_cry_zooble = {
@@ -3642,7 +3639,7 @@ return {
 				name = "レプリカ",
 				text = {
 					"手札にあるすべてのカードを",
-					"いずれかの{C:attention}ランダムな{}手札に変換する"
+					"いずれかの{C:attention}ランダムな{}手札に変換する",
 				},
 			},
 			c_cry_ritual = {
@@ -3811,7 +3808,7 @@ return {
 				name = "グラスステーク",
 				colour = "グラス",
 				text = {
-					"スコアされたカードが", 
+					"スコアされたカードが",
 					"{C:attention}破壊{}されることがある",
 				},
 			},
@@ -3979,7 +3976,7 @@ return {
 			tag_cry_empowered = {
 				name = "エンパワードタグ",
 				text = {
-					"無料の", 
+					"無料の",
 					"{C:legendary,E:1}魂{} と {C:cry_exotic,E:1}ゲートウェイ{} を含む",
 					"{C:spectral}スペクトルパック{}を与える",
 				},
@@ -4001,7 +3998,7 @@ return {
 			tag_cry_glass = {
 				name = "脆弱タグ",
 				text = {
-					"次のベースショップジョーカーが", 
+					"次のベースショップジョーカーが",
 					"無料になり、以下の",
 					"エディションになる: {C:dark_edition}脆弱{}",
 				},
@@ -4009,7 +4006,7 @@ return {
 			tag_cry_glitched = {
 				name = "グリッチタグ",
 				text = {
-					"次のベースショップジョーカーが", 
+					"次のベースショップジョーカーが",
 					"無料になり、以下の",
 					"エディションになる: {C:dark_edition}グリッチ{}",
 				},
@@ -4017,7 +4014,7 @@ return {
 			tag_cry_gold = {
 				name = "ゴールデンタグ",
 				text = {
-					"次のベースショップジョーカーが", 
+					"次のベースショップジョーカーが",
 					"無料になり、以下の",
 					"エディションになる: {C:dark_edition}ゴールデン{}",
 				},
@@ -4039,7 +4036,7 @@ return {
 			tag_cry_m = {
 				name = "ジョリータグ",
 				text = {
-					"次のベースショップジョーカーが", 
+					"次のベースショップジョーカーが",
 					"無料になり、以下の",
 					"エディションになる: {C:dark_edition}ジョリー{}",
 				},
@@ -4047,7 +4044,7 @@ return {
 			tag_cry_memory = {
 				name = "メモリータグ",
 				text = {
-					"このランで", 
+					"このランで",
 					"最後に使用された{C:attention}タグ{}のコピーを",
 					"{C:attention}#1#{}つ 与える",
 					"{s:0.8,C:inactive}コピー系のタグを除く",
@@ -4057,7 +4054,7 @@ return {
 			tag_cry_mosaic = {
 				name = "モザイクタグ",
 				text = {
-					"次のベースショップジョーカーが", 
+					"次のベースショップジョーカーが",
 					"無料になり、以下の",
 					"エディションになる: {C:dark_edition}モザイク{}",
 				},
@@ -4065,7 +4062,7 @@ return {
 			tag_cry_oversat = {
 				name = "過飽和タグ",
 				text = {
-					"次のベースショップジョーカーが", 
+					"次のベースショップジョーカーが",
 					"無料になり、以下の",
 					"エディションになる: {C:dark_edition}過飽和{}",
 				},
@@ -4176,7 +4173,6 @@ return {
 				text = {
 					"{C:attention}#1#{}枚の選択したカードを",
 					"{C:attention}ライト{}カードに強化する",
-
 				},
 			},
 		},
@@ -4221,7 +4217,7 @@ return {
 				name = "二重スリット",
 				text = {
 					"{C:attention}Meld{} が",
-					"いずれかの {C:spectral}スペクトル{}パック に", 
+					"いずれかの {C:spectral}スペクトル{}パック に",
 					"含まれている可能性がある",
 				},
 			},
@@ -4250,7 +4246,7 @@ return {
 				name = "衛星通信",
 				text = {
 					"{C:cry_code}コード{} カードが",
-					"いずれかの {C:spectral}惑星{}パック に", 
+					"いずれかの {C:spectral}惑星{}パック に",
 					"含まれている可能性がある",
 				},
 			},
@@ -4331,9 +4327,9 @@ return {
 					"ハンド {C:blue}+#1#{} を得る",
 				},
 				unlock = {
-					"{C:attention}トランプ{} を", 
+					"{C:attention}トランプ{} を",
 					"合計 {C:attention}5000{} 枚",
-					"プレイする"
+					"プレイする",
 				},
 			},
 			v_cry_threers = {
@@ -4344,9 +4340,9 @@ return {
 					"ディスカード {C:red}+#1#{} を得る",
 				},
 				unlock = {
-					"{C:attention}トランプ{} を", 
+					"{C:attention}トランプ{} を",
 					"合計 {C:attention}5000{} 枚",
-					"ディスカードする"
+					"ディスカードする",
 				},
 			},
 			v_cry_tacclimator = {
@@ -4437,7 +4433,7 @@ return {
 			v_cry_pairamount_plus = {
 				name = "パラマウントプラス",
 				text = {
-					"プレイされたハンドに含まれる", 
+					"プレイされたハンドに含まれる",
 					"ワンペアの数ごとに",
 					"すべての M ジョーカー を {C:attention}再発動{}する",
 				},
@@ -4497,7 +4493,7 @@ return {
 				name = "無効",
 				text = {
 					"このラン中には",
-					"出現しない"
+					"出現しない",
 				},
 			},
 			disabled_card_dependency = {
@@ -4871,28 +4867,28 @@ return {
 				name = "プログラムパック",
 				text = {
 					"{C:attention}#2#{} 枚までの {C:cry_code}コード{} カードから",
-					"{C:attention}#1#{} 枚を選ぶ"
+					"{C:attention}#1#{} 枚を選ぶ",
 				},
 			},
 			p_cry_code_normal_2 = {
 				name = "プログラムパック",
 				text = {
 					"{C:attention}#2#{} 枚までの {C:cry_code}コード{} カードから",
-					"{C:attention}#1#{} 枚を選ぶ"
+					"{C:attention}#1#{} 枚を選ぶ",
 				},
 			},
 			p_cry_code_jumbo_1 = {
 				name = "ジャンボプログラムパック",
 				text = {
 					"{C:attention}#2#{} 枚までの {C:cry_code}コード{} カードから",
-					"{C:attention}#1#{} 枚を選ぶ"
+					"{C:attention}#1#{} 枚を選ぶ",
 				},
 			},
 			p_cry_code_mega_1 = {
 				name = "メガプログラムパック",
 				text = {
 					"{C:attention}#2#{} 枚までの {C:cry_code}コード{} カードから",
-					"{C:attention}#1#{} 枚を選ぶ"
+					"{C:attention}#1#{} 枚を選ぶ",
 				},
 			},
 			p_cry_empowered = {
@@ -4907,21 +4903,21 @@ return {
 				name = "ミームパック",
 				text = {
 					"{C:attention}#2#{} 枚までの {C:attention}ミーム ジョーカー{} から",
-					"{C:attention}#1#{} 枚を選ぶ"
+					"{C:attention}#1#{} 枚を選ぶ",
 				},
 			},
 			p_cry_meme_two = {
 				name = "ミームパック",
 				text = {
 					"{C:attention}#2#{} 枚までの {C:attention}ミーム ジョーカー{} から",
-					"{C:attention}#1#{} 枚を選ぶ"
+					"{C:attention}#1#{} 枚を選ぶ",
 				},
 			},
 			p_cry_meme_three = {
 				name = "ミームパック",
 				text = {
 					"{C:attention}#2#{} 枚までの {C:attention}ミーム ジョーカー{} から",
-					"{C:attention}#1#{} 枚を選ぶ"
+					"{C:attention}#1#{} 枚を選ぶ",
 				},
 			},
 			p_cry_baneful_1 = {
@@ -5050,8 +5046,8 @@ return {
 			cry_madness_2 = {
 				"{C:green}マウンテン・デュー{}を糧に",
 				"何週間も不眠不休で、君に",
-				"{C:cry_ascendant}\"カンペキ\"なゲームバランス{}を保証するために",
-				"働いたのさ。"
+				'{C:cry_ascendant}"カンペキ"なゲームバランス{}を保証するために',
+				"働いたのさ。",
 			},
 			cry_madness_3 = {
 				"すべてがアンロックされた状態で開始されるから",
@@ -5234,7 +5230,7 @@ return {
 			b_tag = "タグ",
 			b_blind = "ブラインド",
 			rush_hour_reminder = "ラッシュアワーチャレンジをプレイするには 時計とラベンダー・ループを有効にする必要があります",
-			
+
 			b_tarot_rate = "タロット出現確率",
 			b_planet_rate = "惑星出現確率",
 
@@ -5322,13 +5318,13 @@ return {
 
 			cry_notif_jimball_1 = "Jimball についての",
 			cry_notif_jimball_2 = "著作権上の注意",
-			cry_notif_jimball_d1 = 'Jimballは 楽曲『Funkytown』を再生します。',
+			cry_notif_jimball_d1 = "Jimballは 楽曲『Funkytown』を再生します。",
 			cry_notif_jimball_d2 = "これは著作権で保護されており、",
 			cry_notif_jimball_d3 = "動画配信などに用いることができません。",
 
 			cry_gameset_explanation = {
-				"このカードに適用する", 
-				"ゲームセット設定オプションを選択してください"
+				"このカードに適用する",
+				"ゲームセット設定オプションを選択してください",
 			},
 			cry_gameset_disabled = "無効",
 			cry_gameset_modest = "Modest",
@@ -5447,8 +5443,12 @@ return {
 				rank = { "if card is rank {C:attention}#3#{}" },
 				face = { "if card is a {C:attention}face{} card" },
 				boss = { "if {C:attention}ブラインド{} is a {C:attention}ボス{C:attention}ブラインド{}" },
-				non_boss = { "if {C:attention}ブラインド{} is a {C:attention}ボスではない{C:attention}ブラインド{}" },
-				small = { "if {C:attention}ブラインド{} is a {C:attention}スモール{C:attention}ブラインド{}" },
+				non_boss = {
+					"if {C:attention}ブラインド{} is a {C:attention}ボスではない{C:attention}ブラインド{}",
+				},
+				small = {
+					"if {C:attention}ブラインド{} is a {C:attention}スモール{C:attention}ブラインド{}",
+				},
 				big = { "if {C:attention}ブラインド{} is a {C:attention}ビッグ{C:attention}ブラインド{}" },
 				first = { "if it's the {C:attention}first {C:attention}hand{}" },
 				last = { "if it's the {C:attention}last {C:attention}hand{}" },
@@ -5485,7 +5485,7 @@ return {
 			cry_sticker_name = { "#1#ステッカー" },
 			cry_sticker_desc = {
 				"#2##1#ステーク#3# の難易度で",
-				"このジョーカーを使用して", 
+				"このジョーカーを使用して",
 				"勝利した",
 			},
 			tax_hand = { "Max #1#% of required chips" },
@@ -5498,9 +5498,13 @@ return {
 			ch_c_cry_all_rental = { "すべてのジョーカーが {C:eternal}レンタル{} を持つ" },
 			ch_c_cry_all_pinned = { "すべてのジョーカーが {C:eternal}ピン留め{} を持つ" },
 			ch_c_cry_all_banana = { "すべてのジョーカーが {C:eternal}バナナ{} を持つ" },
-			ch_c_all_rnj = { "すべてのジョーカーが {C:attention}アール・エヌ・ジョーカー{}になる" },
+			ch_c_all_rnj = {
+				"すべてのジョーカーが {C:attention}アール・エヌ・ジョーカー{}になる",
+			},
 			ch_c_cry_sticker_sheet_plus = { "すべての購入アイテムが すべてのステッカーを持つ" },
-			ch_c_cry_rush_hour = { "すべてのボスブラインドが {C:attention}時計{} か {C:attention}ラベンダー・ループ{} になる" },
+			ch_c_cry_rush_hour = {
+				"すべてのボスブラインドが {C:attention}時計{} か {C:attention}ラベンダー・ループ{} になる",
+			},
 			ch_c_cry_rush_hour_ii = { "すべてのブラインドが {C:attention}ボスブラインド{} になる" },
 			ch_c_cry_rush_hour_iii = {
 				"{C:attention}時計{} と {C:attention}ラベンダー・ループ{} の成長が {C:attention}倍速{} になる",
