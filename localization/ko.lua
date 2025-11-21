@@ -426,7 +426,7 @@ return {
 				},
 			},
 			bl_cry_chromatic = {
-				name = "채도" ,
+				name = "채도",
 				text = {
 					"홀수 번째 핸드에서는",
 					"핸드 점수가 차감됨",
@@ -1687,8 +1687,8 @@ return {
 				text = {
 					"{C:attention}블라인드{} 선택 시",
 					"{C:green}덱 전체{}를 핸드로 뽑음",
-					"{C:inactive,s:0.8}\"나의 1배를 감당하지 못하면,",
-					"{C:inactive,s:0.8}나의 2배를 누릴 자격도 없다\"",
+					'{C:inactive,s:0.8}"나의 1배를 감당하지 못하면,',
+					'{C:inactive,s:0.8}나의 2배를 누릴 자격도 없다"',
 				},
 			},
 			j_cry_energia = {
@@ -4933,9 +4933,18 @@ return {
 			["cry_Declare1"] = { "항상 플러시로 간주됨" },
 			["cry_Declare2"] = { "항상 풀 하우스로 간주됨" },
 
-			["cry_Declare0_suitless"] = { "항상 스트레이트로 간주됨", "핸드는 특정 슈트가 필요하지 않음" },
-			["cry_Declare1_suitless"] = { "항상 플러시로 간주됨", "핸드는 특정 슈트가 필요하지 않음" },
-			["cry_Declare2_suitless"] = { "항상 풀 하우스로 간주됨", "핸드는 특정 슈트가 필요하지 않음" },
+			["cry_Declare0_suitless"] = {
+				"항상 스트레이트로 간주됨",
+				"핸드는 특정 슈트가 필요하지 않음",
+			},
+			["cry_Declare1_suitless"] = {
+				"항상 플러시로 간주됨",
+				"핸드는 특정 슈트가 필요하지 않음",
+			},
+			["cry_Declare2_suitless"] = {
+				"항상 풀 하우스로 간주됨",
+				"핸드는 특정 슈트가 필요하지 않음",
+			},
 		},
 		achievement_names = {
 			ach_cry_ace_in_crash = "포켓 ACE",
@@ -4968,7 +4977,7 @@ return {
 			ach_cry_decked = "덱 아웃",
 		},
 		achievement_descriptions = {
-			ach_cry_ace_in_crash = "check_for_unlock({type = \"ace_in_crash\"})",
+			ach_cry_ace_in_crash = 'check_for_unlock({type = "ace_in_crash"})',
 			ach_cry_blurred_blurred_joker = "흐릿한 흐릿한 조커 획득",
 			ach_cry_bullet_hell = "AP 조커 15개 보유",
 			ach_cry_break_infinity = "한 핸드에서 1.79e308 칩 획득",
@@ -4990,11 +4999,15 @@ return {
 			ach_cry_what_have_you_done = "이그조틱 조커 삭제 또는 희생",
 			ach_cry_pin = "The Pin에게 패배",
 			ach_cry_technically_positive = "네거티브 네거티브 조커 획득",
-			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and "\"덱 전체\" 버리기" or "\"덱 전체 씨발\" 버리기",
-			ach_cry_stoned = Cryptid_config.family_mode and "\"방벽\"을 레벨 420으로 만들기" or "\"방벽\"을 레벨 420으로 만들기",
-			ach_cry_fucked = Cryptid_config.family_mode and "\"클러스터\"를 레벨 69로 만들기" or "\"개판\"을 레벨 69로 만들기",
-			ach_cry_despaired = "\"얼티밋 페어\"를 레벨 2222로 만들기",
-			ach_cry_decked = Cryptid_config.family_mode and "\"덱 전체\"를 레벨 5252로 만들기" or "\"덱 전체 씨발\"을 레벨 5252로 만들기",
+			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and '"덱 전체" 버리기'
+				or '"덱 전체 씨발" 버리기',
+			ach_cry_stoned = Cryptid_config.family_mode and '"방벽"을 레벨 420으로 만들기'
+				or '"방벽"을 레벨 420으로 만들기',
+			ach_cry_fucked = Cryptid_config.family_mode and '"클러스터"를 레벨 69로 만들기'
+				or '"개판"을 레벨 69로 만들기',
+			ach_cry_despaired = '"얼티밋 페어"를 레벨 2222로 만들기',
+			ach_cry_decked = Cryptid_config.family_mode and '"덱 전체"를 레벨 5252로 만들기'
+				or '"덱 전체 씨발"을 레벨 5252로 만들기',
 		},
 		challenge_names = {
 			c_cry_ballin = "Ballin'",
@@ -5338,7 +5351,9 @@ return {
 			ch_c_cry_all_banana = { "모든 조커는 {C:eternal}바나나{} 상태" },
 			ch_c_all_rnj = { "모든 조커는 {C:attention}RN조커{}" },
 			ch_c_cry_sticker_sheet_plus = { "구매 가능한 모든 아이템에 모든 스티커가 붙어 있음" },
-			ch_c_cry_rush_hour = { "모든 보스 블라인드는 {C:attention}The Clock{} 또는 {C:attention}Lavender Loop" },
+			ch_c_cry_rush_hour = {
+				"모든 보스 블라인드는 {C:attention}The Clock{} 또는 {C:attention}Lavender Loop",
+			},
 			ch_c_cry_rush_hour_ii = { "모든 블라인드는 {C:attention}보스 블라인드{}" },
 			ch_c_cry_rush_hour_iii = {
 				"{C:attention}The Clock{}과 {C:attention}Lavender Loop{}가 {C:attention}두 배{} 빠르게 증가",
