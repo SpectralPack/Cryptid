@@ -129,12 +129,12 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	if type(a_power) == "table" then
 		-- Entropy uses big-number tables. Normalize to a Lua number.
 		if a_power.to_number then
-				a_power = a_power:to_number()
+			a_power = a_power:to_number()
 		elseif a_power.val then
-				a_power = tonumber(a_power.val) or 0
+			a_power = tonumber(a_power.val) or 0
 		else
-				-- Unknown format: fail safe instead of crashing
-				a_power = 0
+			-- Unknown format: fail safe instead of crashing
+			a_power = 0
 		end
 	end
 
