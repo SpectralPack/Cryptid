@@ -429,15 +429,15 @@ function Cryptid.intro_info(args)
 						G.OVERLAY_TUTORIAL.button_listen = args.button_listen
 					end
 					if not args.no_button then
-						G.OVERLAY_TUTORIAL.Jimbo:add_button(
-							button.button,
-							button.func,
-							button.colour,
-							button.update_func,
-							true
-						)
-					end
-					G.OVERLAY_TUTORIAL.Jimbo:say_stuff(2 * #(G.localization.misc.tutorial[args.text_key] or {}) + 1)
+					G.OVERLAY_TUTORIAL.Jimbo:add_button(
+						button.button,
+						button.func,
+						button.colour,
+						button.update_func,
+						true
+					)
+				end
+				G.OVERLAY_TUTORIAL.Jimbo:say_stuff(2 * #(Cryptid.safe_get(G, "localization", "misc", "tutorial", args.text_key) or {}) + 1)
 					if args.snap_to then
 						G.E_MANAGER:add_event(
 							Event({
