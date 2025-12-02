@@ -18,12 +18,16 @@ function loc_colour(_c, _default)
 end
 
 function Cryptid.is_big(v)
-	if is_big then return is_big(v) end
+	if is_big then
+		return is_big(v)
+	end
 	return type(v) == "table" and v.array and v.tetrate
 end
 
 function Cryptid.is_number(v)
-	if is_number then return is_number(v) end
+	if is_number then
+		return is_number(v)
+	end
 	return type(v) == "number" or Cryptid.is_big(v)
 end
 
