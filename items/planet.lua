@@ -323,7 +323,7 @@ local universe = {
 			},
 		}
 	end,
-	generate_ui = 0,
+	generate_ui = 0, -- gup was here
 
 	-- give emult instead of xmult
 	calculate = function(self, card, context)
