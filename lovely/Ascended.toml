@@ -7,7 +7,7 @@ priority = 0
 # golden text
 [[patches]]
 [patches.pattern]
-target = "functions/UI_definitions.lua"
+target = '''=[SMODS _ "src/ui.lua"]'''
 pattern = '''
 {n=G.UIT.O, config={id = 'hand_name', func = 'hand_text_UI_set',object = DynaText({string = {{ref_table = G.GAME.current_round.current_hand, ref_value = "handname_text"}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, float = true, scale = scale*1.4})}},
 '''

@@ -137,7 +137,6 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			a_power = 0
 		end
 	end
-
 	if a_power > 0 then
 		G.GAME.current_round.current_hand.cry_asc_num = a_power
 		-- Change mult and chips colors if hand is ascended
@@ -163,6 +162,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 function Cryptid.ascend(num) -- edit this function at your leisure
+	G.GAME.sunnumber = G.GAME.sunnumber or {not_modest = 0, modest = 0}
 	if (Cryptid.safe_get(G, "GAME", "current_round", "current_hand", "cry_asc_num") or 0) <= 0 then
 		return num
 	end
@@ -171,7 +171,7 @@ function Cryptid.ascend(num) -- edit this function at your leisure
 		return num * to_big(1 + ((0.25 + G.GAME.sunnumber.modest) * G.GAME.current_round.current_hand.cry_asc_num))
 	else
 		-- Default: Chips and Mult multiplier X1.25 for every 1 Ascension power
-		return num * to_big((1.25 + G.GAME.sunnumber.not_modest) ^ G.GAME.current_round.current_hand.cry_asc_num)
+		return num * to_big((1.25 +G.GAME.sunnumber.not_modest) ^ G.GAME.current_round.current_hand.cry_asc_num)
 	end
 end
 
@@ -181,10 +181,17 @@ function Cryptid.pulse_flame(duration, intensity) -- duration is in seconds, int
 	G.cry_flame_override["intensity"] = intensity or 2
 end
 
+function Cryptid.ascension_power_enabled()
+	if Cryptid.enable_ascension_power then return true end
+	if (SMODS.Mods["Cryptid"] or {}).can_load then
+		return Cryptid.enabled("set_cry_poker_hand_stuff")
+	end
+end
+
 function Cryptid.calculate_ascension_power(hand_name, hand_cards, hand_scoring_cards, tether, bonus)
 	bonus = bonus or 0
 	local starting = 0
-	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
+	if not Cryptid.ascension_power_enabled() then
 		return 0
 	end
 	if hand_name then
@@ -236,11 +243,11 @@ function Cryptid.calculate_ascension_power(hand_name, hand_cards, hand_scoring_c
 	end
 	-- Get Ascension Power From Sol/Perkele (Observatory effect)
 	if
-		G.GAME.used_vouchers.v_observatory and (next(find_joker("cry-sunplanet")) or next(find_joker("cry-Perkele")))
+		G.GAME.used_vouchers.v_observatory and (next(SMODS.find_card("cry-sunplanet")) or next(SMODS.find_card("cry-Perkele")))
 	then
 		-- switch this to not use find_joker eventually please for the love of god
-		local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet")
-			+ #find_joker("cry-Perkele")
+		local super_entropic_local_variable_that_stores_the_amount_of_suns = #SMODS.find_card("cry-sunplanet")
+			+ #SMODS.find_card("cry-Perkele")
 
 		if super_entropic_local_variable_that_stores_the_amount_of_suns == 1 then
 			bonus = bonus + 1
