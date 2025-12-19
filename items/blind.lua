@@ -294,13 +294,14 @@ local tax = {
 		return { vars = { localize("cry_tax_placeholder") } }
 	end,
 	set_blind = function(self, reset, silent)
-		SMODS.set_scoring_calculation("cry_tax")
+		G.GAME.tax_mod = 0.4
+		--SMODS.set_scoring_calculation("cry_tax")
 	end,
 	defeat = function(self, silent)
-		SMODS.set_scoring_calculation("multiply")
+		G.GAME.tax_mod = nil
 	end,
 	disable = function(self, silent)
-		SMODS.set_scoring_calculation("multiply")
+		G.GAME.tax_mod = nil
 	end,
 	in_pool = function()
 		return math.floor(G.GAME.round_resets.hands) >= 3
@@ -937,15 +938,15 @@ local chromatic = {
 	boss_colour = HEX("a34f98"),
 	set_blind = function(self, reset, silent)
 		G.GAME.chromatic_mod = 0
-		SMODS.set_scoring_calculation("cry_chromatic")
+		--SMODS.set_scoring_calculation("cry_chromatic")
 	end,
 	defeat = function(self, silent)
 		G.GAME.chromatic_mod = nil
-		SMODS.set_scoring_calculation("multiply")
+		--SMODS.set_scoring_calculation("multiply")
 	end,
 	disable = function(self, silent)
 		G.GAME.chromatic_mod = nil
-		SMODS.set_scoring_calculation("multiply")
+		--SMODS.set_scoring_calculation("multiply")
 	end,
 	press_play = function(self)
 		if not G.GAME.blind.disabled then
