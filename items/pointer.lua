@@ -309,6 +309,13 @@ local pointer = {
 					and valid_check[2] == "Voucher"
 					and valid_check[3]
 				then
+					if not G.GAME.used_vouchers[current_card] then
+						G.GAME.used_vouchers[current_card] = true
+					end
+					Card.apply_to_run(nil, G.P_CENTERS[current_card])
+					play_sound("generic1", 0.9 + math.random() * 0.1, 0.8)
+					play_sound("holo1", 1.2 + math.random() * 0.1, 0.4)
+					--[[
 					local area
 					if G.STATE == G.STATES.HAND_PLAYED then
 						if not G.redeemed_vouchers_during_hand then
@@ -340,6 +347,8 @@ local pointer = {
 							return true
 						end,
 					}))
+					]]
+					--
 					created = true
 				end
 				if -- Booster check
