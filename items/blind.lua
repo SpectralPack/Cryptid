@@ -237,7 +237,7 @@ local oldmark = {
 	order = 12,
 	boss_colour = HEX("4f6367"),
 	debuff_hand = function(self, cards, hand, handname, check)
-		if next(hand["Pair"]) then
+		if hand and (hand.valid or (hand["Pair"] and next(hand["Pair"]))) then
 			G.GAME.blind.triggered = true
 			return true
 		end
