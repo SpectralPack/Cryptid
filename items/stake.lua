@@ -180,12 +180,17 @@ local glass = {
 	order = 21,
 	colour = HEX("ffffff8f"),
 	calculate = function(self, context)
-        if context.destroy_card and context.cardarea == G.play and G.GAME.modifiers.cry_shatter_rate
-            and SMODS.pseudorandom_probability(self, 'cry_shatter', 1, G.GAME.modifiers.cry_shatter_rate) and not SMODS.is_eternal(context.destroy_card) then
-            context.destroy_card.cry_glass_trigger = true
-            return { remove = true }
-        end
-    end,
+		if
+			context.destroy_card
+			and context.cardarea == G.play
+			and G.GAME.modifiers.cry_shatter_rate
+			and SMODS.pseudorandom_probability(self, "cry_shatter", 1, G.GAME.modifiers.cry_shatter_rate)
+			and not SMODS.is_eternal(context.destroy_card)
+		then
+			context.destroy_card.cry_glass_trigger = true
+			return { remove = true }
+		end
+	end,
 }
 local sapphire = {
 	object_type = "Stake",

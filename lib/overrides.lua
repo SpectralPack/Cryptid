@@ -2313,5 +2313,5 @@ end
 
 local smods_shatters_ref = SMODS.shatters
 function SMODS.shatters(card)
-    return card.cry_glass_trigger or smods_shatters_ref(card)
+	return card.cry_glass_trigger or smods_shatters_ref(card)
 end
