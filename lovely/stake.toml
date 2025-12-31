@@ -285,16 +285,13 @@ match_indent = true
 
 
 # Sapphire Stake - ante tax
-# The Joke boss effect
-# Save game state for Revert
-# this needs to be redone at a later point
-# [[patches]]
-#[patches.pattern]
-#target = "functions/state_events.lua"
-#pattern = "delay(0.4); ease_ante(1); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
-#position = "at"
-#payload = "delay(0.4); ease_ante(G.GAME.blind and G.GAME.blind:cry_calc_ante_gain() or 1); Cryptid.apply_ante_tax(); delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
-#match_indent = true
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "delay(0.4); SMODS.ante_end = true; ease_ante(1); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+position = "at"
+payload = "delay(0.4); SMODS.ante_end = true; ease_ante(1); Cryptid.apply_ante_tax(); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
+match_indent = true
 
 
 # Emerald Stake - Permanently flipped cards
