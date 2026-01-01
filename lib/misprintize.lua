@@ -257,6 +257,7 @@ function Cryptid.sanity_check(val, is_big)
 	end
 	return val
 end
+-- Do i not untersand smth or is this function literally not used for anything?
 function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_level)
 	local clamps = card.config.center.misprintize_caps or {}
 	if Card.no(card, "immutable", true) then
