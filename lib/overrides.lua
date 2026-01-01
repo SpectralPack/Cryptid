@@ -915,7 +915,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 
 	if forced_key and not G.GAME.banned_keys[forced_key] then
-		_type = (G.P_CENTERS[forced_key].set ~= "Default" and G.P_CENTERS[forced_key].set or _type)
+		_type = (
+			G.P_CENTERS[forced_key] and G.P_CENTERS[forced_key].set ~= "Default" and G.P_CENTERS[forced_key].set or _type
+		)
 	end
 
 	local front = (SMODS.set_create_card_front and (_type == "Base" or _type == "Enhanced")) or nil
