@@ -482,7 +482,9 @@ function Cryptid.manipulate(card, args)
 				end
 			end
 			--ew ew ew ew
-			G.P_CENTERS[card.config.center.key].config = config
+			if G.P_CENTERS[card.config.center.key] then
+				G.P_CENTERS[card.config.center.key].config = config
+			end
 		end
 		return true
 	end
