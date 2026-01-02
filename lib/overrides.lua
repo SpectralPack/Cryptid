@@ -290,6 +290,9 @@ function Game:init_game_object()
 		g.cry_percrate[v:lower()] = 100
 	end
 
+	g.sundial = false
+	g.sundial_amount = 85
+
 	return g
 end
 
