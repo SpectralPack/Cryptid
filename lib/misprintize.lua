@@ -239,7 +239,7 @@ function Cryptid.sanity_check(val, is_big)
 		if Cryptid.is_big(val) then
 			return val
 		end
-		if val > 1e100 or val < -1e100 then
+		if type(val) == "number" and (val > 1e100 or val < -1e100) then
 			return to_big(val)
 		end
 	end
