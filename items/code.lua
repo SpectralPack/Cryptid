@@ -5454,7 +5454,33 @@ return {
 	init = function()
 		--some code to make typing more characters better
 		G.FUNCS.text_input_key = function(args)
+			local pasting_clipboard = G.CONTROLLER.pasting_clipboard or false
 			args = args or {}
+			if pasting_clipboard == false then
+				-- Ctrl+V clipboard paste support
+				local is_ctrl = false
+				if G.CONTROLLER and G.CONTROLLER.held_keys then
+					is_ctrl = G.CONTROLLER.held_keys['lctrl'] or G.CONTROLLER.held_keys['rctrl'] or
+						G.CONTROLLER.held_keys['lgui'] or G.CONTROLLER.held_keys['rgui']
+				end
+				if not is_ctrl and love.keyboard then
+					is_ctrl = love.keyboard.isDown('lctrl', 'rctrl', 'lgui', 'rgui')
+				end
+				if args and (args.key == 'v' or args.key == 'V') and is_ctrl then
+					local clipboard = (G.F_LOCAL_CLIPBOARD and G.CLIPBOARD or (love.system and love.system.getClipboardText())) or
+						''
+					if type(clipboard) == 'string' and clipboard ~= "" and G.CONTROLLER.text_input_hook then
+						G.CONTROLLER.pasting_clipboard = true
+						for i = 1, #clipboard do
+							local c = clipboard:sub(i, i)
+							G.FUNCS.text_input_key({ key = c })
+						end
+						G.CONTROLLER.pasting_clipboard = false
+						return
+					end
+				end
+				-- Ctrl+V supported
+			end
 			local hook = G.CONTROLLER.text_input_hook
 			if not hook.config.ref_table.extended_corpus then
 				if args.key == "[" or args.key == "]" then
@@ -5475,7 +5501,8 @@ return {
 			hook_config.orig_colour = hook_config.orig_colour or copy_table(hook_config.colour)
 
 			args.key = args.key or "%"
-			args.caps = args.caps or G.CONTROLLER.capslock or hook_config.all_caps --capitalize if caps lock or hook requires
+			--capitalize if caps lock or hook requires
+			args.caps = args.caps or G.CONTROLLER.capslock or hook_config.all_caps
 
 			--Some special keys need to be mapped accordingly before passing through the corpus
 			local keymap = {
