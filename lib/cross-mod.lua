@@ -43,6 +43,25 @@ SMODS.Joker:take_ownership("green_joker", {
 			}
 		end
 	end,
+	simulate = function(self, joker_obj, context)
+		-- Ensure extra is a number before simulation to prevent indexing errors
+		-- The base game code may try to access extra as a table, so we normalize it first
+		if joker_obj and joker_obj.ability then
+			if type(joker_obj.ability.extra) == "table" then
+				-- If extra was somehow converted to a table, extract the value
+				joker_obj.ability.extra = joker_obj.ability.extra.value or joker_obj.ability.extra.mult or 1
+			elseif joker_obj.ability.extra == nil then
+				joker_obj.ability.extra = 1
+			end
+		end
+		-- Provide simulation results
+		if context.joker_main then
+			return {
+				mult_mod = (joker_obj.ability.mult or 0),
+			}
+		end
+		return nil
+	end,
 	loc_txt = {},
 }, true)
 
