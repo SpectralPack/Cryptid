@@ -21,7 +21,7 @@ pattern = "elseif config.name == 'interest' then"
 position = "before"
 payload = '''
 elseif config.name == 'interest_payload' then
-table.insert(left_text, {n=G.UIT.T, config={text = num_dollars, scale = 0.8*scale, colour = G.C.SECONDARY_SET.Code, shadow = true, juice = true}})
+table.insert(left_text, {n=G.UIT.T, config={text = format_ui_value(num_dollars), scale = 0.8*scale, colour = G.C.SECONDARY_SET.Code, shadow = true, juice = true}})
 table.insert(left_text,{n=G.UIT.O, config={object = DynaText({string = {" "..localize{type = 'variable', key = 'interest', vars = {G.GAME.interest_amount*config.payload, 5, G.GAME.interest_amount*config.payload*G.GAME.interest_cap/5}}}, colours = {G.C.SECONDARY_SET.Code}, shadow = true, pop_in = 0, scale = 0.4*scale, silent = true})}})
 '''
 match_indent = true

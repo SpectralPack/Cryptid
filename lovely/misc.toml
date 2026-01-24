@@ -719,3 +719,30 @@ pattern = "dollars = dollars + G.GAME.blind.dollars"
 position = "at"
 payload = "dollars = to_big(dollars) + to_big(G.GAME.blind.dollars)"
 match_indent = true
+
+# Fix interest UI display - num_dollars can be Big number
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''table.insert(left_text, {n=G.UIT.T, config={text = num_dollars, scale = 0.8*scale, colour = G.C.MONEY, shadow = true, juice = true}})'''
+position = "at"
+payload = '''table.insert(left_text, {n=G.UIT.T, config={text = format_ui_value(num_dollars), scale = 0.8*scale, colour = G.C.MONEY, shadow = true, juice = true}})'''
+match_indent = true
+
+# Fix hands UI display - config.dollars can be Big number
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''table.insert(left_text, {n=G.UIT.T, config={text = config.disp or config.dollars, scale = 0.8*scale, colour = G.C.BLUE, shadow = true, juice = true}})'''
+position = "at"
+payload = '''table.insert(left_text, {n=G.UIT.T, config={text = format_ui_value(config.disp or config.dollars), scale = 0.8*scale, colour = G.C.BLUE, shadow = true, juice = true}})'''
+match_indent = true
+
+# Fix discards UI display - config.dollars can be Big number
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''table.insert(left_text, {n=G.UIT.T, config={text = config.disp or config.dollars, scale = 0.8*scale, colour = G.C.RED, shadow = true, juice = true}})'''
+position = "at"
+payload = '''table.insert(left_text, {n=G.UIT.T, config={text = format_ui_value(config.disp or config.dollars), scale = 0.8*scale, colour = G.C.RED, shadow = true, juice = true}})'''
+match_indent = true
