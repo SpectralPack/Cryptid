@@ -647,3 +647,75 @@ local safe_seal = type(other.ability.seal) == "table" and other.ability.seal or 
 for k, v in pairs(safe_seal) do
 '''
 match_indent = true
+# Fix the original crash at line 1139: G.GAME.chips - G.GAME.blind.chips >= 0
+# This is where Big number comparison fails
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.chips - G.GAME.blind.chips >= 0 then"
+position = "at"
+payload = "if to_big(G.GAME.chips) - to_big(G.GAME.blind.chips) >= to_big(0) then"
+match_indent = true
+
+# Fix joker dollar bonus ret variable - make dollars big-number safe
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "dollars = dollars + ret"
+position = "at"
+payload = "dollars = to_big(dollars) + to_big(ret)"
+match_indent = true
+
+# Fix tag dollar bonus ret.dollars variable
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "dollars = dollars + ret.dollars"
+position = "at"
+payload = "dollars = to_big(dollars) + to_big(ret.dollars)"
+match_indent = true
+
+# Fix hands_left comparison (required for big number compatibility)
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.current_round.hands_left > 0 and not G.GAME.modifiers.no_extra_hand_money then"
+position = "at"
+payload = "if to_big(G.GAME.current_round.hands_left) > to_big(0) and not G.GAME.modifiers.no_extra_hand_money then"
+match_indent = true
+
+# Fix discards_left comparison
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.current_round.discards_left > 0 and G.GAME.modifiers.money_per_discard then"
+position = "at"
+payload = "if to_big(G.GAME.current_round.discards_left) > to_big(0) and G.GAME.modifiers.money_per_discard then"
+match_indent = true
+
+# Fix hands_left dollars accumulation
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "dollars = dollars + G.GAME.current_round.hands_left*(G.GAME.modifiers.money_per_hand or 1)"
+position = "at"
+payload = "dollars = to_big(dollars) + to_big(G.GAME.current_round.hands_left*(G.GAME.modifiers.money_per_hand or 1))"
+match_indent = true
+
+# Fix discards_left dollars accumulation
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "dollars = dollars +  G.GAME.current_round.discards_left*(G.GAME.modifiers.money_per_discard)"
+position = "at"
+payload = "dollars = to_big(dollars) + to_big(G.GAME.current_round.discards_left*(G.GAME.modifiers.money_per_discard))"
+match_indent = true
+
+# Fix blind dollars accumulation
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "dollars = dollars + G.GAME.blind.dollars"
+position = "at"
+payload = "dollars = to_big(dollars) + to_big(G.GAME.blind.dollars)"
+match_indent = true

@@ -395,8 +395,8 @@ end
 function Cryptid.apply_ante_tax()
 	if G.GAME.modifiers.cry_ante_tax then
 		local tax = math.max(
-			0,
-			math.min(G.GAME.modifiers.cry_ante_tax_max, math.floor(G.GAME.modifiers.cry_ante_tax * G.GAME.dollars))
+			to_big(0),
+			math.min(to_big(G.GAME.modifiers.cry_ante_tax_max), to_big(math.floor(G.GAME.modifiers.cry_ante_tax * G.GAME.dollars)))
 		)
 		ease_dollars(-1 * tax)
 		return true
