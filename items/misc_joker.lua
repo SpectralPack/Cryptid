@@ -10065,29 +10065,31 @@ local lebaron_james = {
 		},
 		code = {
 			"AlexZGreat",
+      "aten.dev"
 		},
 		art = {
 			"lamborghiniofficial",
 		},
 	},
 	init = function(self)
-		-- Calculate enhancements for kings as if held in hand
-		-- Note that for enhancements that work when played and held in hand, this will fail
-		-- Not tested since no enhancements use this yet (Steel is weird, and Gold won't work)
-		local cce = Card.calculate_enhancement
-		function Card:calculate_enhancement(context)
-			local ret = cce(self, context)
-			if
-				not ret
-				and next(SMODS.find_card("j_cry_lebaron_james"))
-				and SMODS.Ranks[self.base.value].key == "King"
-				and context.cardarea == G.play
-			then
+		-- Hook SMODS.calculate_main_scoring so that played Kings
+		-- also get scored as held-in-hand cards (Steel, etc.)
+		local orig_cms = SMODS.calculate_main_scoring
+		SMODS.calculate_main_scoring = function(context, scoring_hand)
+			orig_cms(context, scoring_hand)
+			-- After the G.hand pass, also score played Kings as held-in-hand
+			if context.cardarea == G.hand and G.play and G.play.cards and next(SMODS.find_card("j_cry_lebaron_james")) then
+				for _, card in ipairs(G.play.cards) do
+					if not card.debuff
+						and SMODS.Ranks[card.base.value]
+						and SMODS.Ranks[card.base.value].key == "King"
+					then
+						context.cardarea = G.hand
+						SMODS.score_card(card, context)
+					end
+				end
 				context.cardarea = G.hand
-				local ret = cce(self, context)
-				context.cardarea = G.play
 			end
-			return ret
 		end
 	end,
 }
