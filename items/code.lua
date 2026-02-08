@@ -3989,7 +3989,7 @@ local quantify = {
 						for i = 1, G.jokers.config.card_limit - #G.jokers.cards do
 							if to_big(self.ability.choose) > to_big(0) then
 								self.ability.choose = self.ability.choose - 1
-								local tbl = self.config.center.create_card and self.config.center:create_card(self)
+								local tbl = self.config.center.create_card and self.config.center:create_card(self, i)
 									or {}
 								local card = create_card(
 									kind or tbl.set,
