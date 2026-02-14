@@ -10931,7 +10931,7 @@ local broken_sync = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				cry_broken_swap = to_number(Cryptid.clamp(card.ability.extra.portion * 100, 0, 100)),
+				cry_broken_swap = to_number(Cryptid.clamp(card.ability.extra.portion, 0, 1)),
 			}
 		end
 	end,

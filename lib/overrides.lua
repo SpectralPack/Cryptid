@@ -2187,7 +2187,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		return ret
 	end
 
-	if key == "cry_broken_swap" and amount > 0 then
+	if key == "cry_broken_swap" or key == "cry_partial_swap" and amount > 0 then
 		if effect.card and effect.card ~= scored_card then
 			juice_card(effect.card)
 		end
@@ -2202,19 +2202,17 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		chips:modify(mult_mod - chip_mod)
 		mult:modify(chip_mod - mult_mod)
 
-		if not Cryptid.safe_get(Talisman, "config_file", "disable_anims") then
-			G.E_MANAGER:add_event(Event({
+		if key == "cry_broken_swap" and not Cryptid.safe_get(Talisman, "config_file", "disable_anims") then
+			G.E_MANAGER:add_event(Event{
 				func = function()
 					-- scored_card:juice_up()
 					local pitch_mod = pseudorandom("cry_broken_sync") * 0.05 + 0.85
-					-- wolf fifth as opposed to plasma deck's just-intonated fifth
-					-- yes i'm putting music theory nerd stuff in here no you cannot stop me
 					play_sound("gong", pitch_mod, 0.3)
 					play_sound("gong", pitch_mod * 1.4814814, 0.2)
 					play_sound("tarot1", 1.5)
 					ease_colour(G.C.UI_CHIPS, mix_colours(G.C.BLUE, G.C.RED, amount))
 					ease_colour(G.C.UI_MULT, mix_colours(G.C.RED, G.C.BLUE, amount))
-					G.E_MANAGER:add_event(Event({
+					G.E_MANAGER:add_event(Event{
 						trigger = "after",
 						blockable = false,
 						blocking = false,
@@ -2224,8 +2222,8 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 							ease_colour(G.C.UI_MULT, G.C.RED, 0.8)
 							return true
 						end,
-					}))
-					G.E_MANAGER:add_event(Event({
+					})
+					G.E_MANAGER:add_event(Event{
 						trigger = "after",
 						blockable = false,
 						blocking = false,
@@ -2238,10 +2236,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 								G.C.RED[1], G.C.RED[2], G.C.RED[3], G.C.RED[4]
 							return true
 						end,
-					}))
+					})
 					return true
 				end,
-			}))
+			})
 			if not effect.remove_default_message then
 				if effect.balance_message then
 					card_eval_status_text(
@@ -2270,7 +2268,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 	end
 end
 
-SMODS.scoring_parameter_keys[#SMODS.scoring_parameter_keys + 1] = "cry_broken_swap"
+for _, v in ipairs{ "cry_broken_swap", "cry_partial_swap" } do
+	table.insert(SMODS.scoring_parameter_keys, v)
+end
 
 local smods_calculate_round_score_stuff = SMODS.calculate_round_score
 function SMODS.calculate_round_score(flames)
