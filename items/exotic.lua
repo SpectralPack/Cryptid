@@ -1034,7 +1034,7 @@ local circulus_pistoris = {
 		then
 			local pi = math.pi
 			if Cryptid.safe_get(card, "edition", "cry_oversat") then
-				pi = 200 * pi
+				pi = 2 * pi
 			end
 			return {
 				Echip_mod = pi,
