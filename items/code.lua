@@ -3131,6 +3131,7 @@ local declare = {
 				played = 0,
 				_saved_d_v = true,
 				played_this_round = 0,
+				played_this_ante = 0,
 				s_mult = mult,
 				s_chips = chips,
 				from_declare = true,
