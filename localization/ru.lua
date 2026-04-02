@@ -858,8 +858,8 @@ return {
 				text = {
 					"Берёт {C:green}всю колоду{} в руку",
 					"при выборе {C:attention}Блайнда",
-					"{C:inactive,s:0.8}\"Если не можешь со мной при 1x,",
-					"{C:inactive,s:0.8}не заслуживаешь меня при 2x\"",
+					'{C:inactive,s:0.8}"Если не можешь со мной при 1x,',
+					'{C:inactive,s:0.8}не заслуживаешь меня при 2x"',
 				},
 			},
 			j_cry_energia = {
@@ -3089,7 +3089,7 @@ return {
 			cry_unredeemed = "Не активировано...",
 			cry_active = "Активен",
 			cry_inactive = "Неактивен",
- 
+
 			k_cry_epic = "Эпический",
 			k_cry_exotic = "Экзотический",
 		},
@@ -3099,10 +3099,10 @@ return {
 			code = "Код",
 			cry_rigged = "Подкручено",
 			cry_hooked = "Зацеплено",
- 
+
 			cry_green_seal = "Зелёная печать",
 			cry_azure_seal = "Лазурная печать",
- 
+
 			cry_astral = "Астральный",
 			cry_blur = "Размытый",
 			cry_double_sided = "Двухсторонний",
@@ -3113,7 +3113,7 @@ return {
 			cry_mosaic = "Мозаичный",
 			cry_noisy = "Шумный",
 			cry_oversat = "Перенасыщенный",
- 
+
 			k_cry_epic = "Эпический",
 			k_cry_exotic = "Экзотический",
 		},
