@@ -1,7 +1,7 @@
 {
-	"id": "Cryptid",
-	"name": "Cryptid",
-	"display_name": "Cryptid",
+	"id": "Cryptid-dev",
+	"name": "Cryptid-dev",
+	"display_name": "Cryptid-dev",
 	"author": ["MathIsFun_, Cryptid and Balatro Discords"],
 	"description": "Adds unbalanced ideas to Balatro.",
 	"prefix": "cry",

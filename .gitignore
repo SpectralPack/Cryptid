@@ -6,3 +6,6 @@
 *.diff
 *.code-workspace
 .DS_Store
+Cryptid.lua
+Cryptid.json
+.gitignore
