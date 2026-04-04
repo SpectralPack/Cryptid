@@ -1,0 +1,8 @@
+# LSP setting files (add more if applicable)
+.vscode/*
+.luarc.json
+.lovelyignore
+.idea/*
+*.diff
+*.code-workspace
+.DS_Store
