@@ -10974,8 +10974,10 @@ local thal = {
 		local seen = {}
 		for _, c in ipairs(G.jokers.cards) do
 			local rarity = c.config.center.rarity
-			if not seen[rarity] then
-				seen[rarity] = 1
+			if rarity then
+				if not seen[rarity] then
+					seen[rarity] = 1
+				end
 			end
 		end
 
