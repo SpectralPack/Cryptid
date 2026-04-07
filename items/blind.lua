@@ -691,7 +691,7 @@ local scorch = {
 			and (context.cardarea == G.play or context.cardarea == "unscored")
 			and not G.GAME.blind.disabled
 		then
-			return { remove = not SMODS.is_eternal(context.destroying_card) }
+			return { remove = not SMODS.is_eternal(context.destroy_card) }
 		end
 		if context.discard and not G.GAME.blind.disabled then
 			for i, card in ipairs(G.hand.highlighted) do
