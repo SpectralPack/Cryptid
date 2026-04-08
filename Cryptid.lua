@@ -317,6 +317,12 @@ local cryptidConfigTab = function()
 		ref_table = Cryptid_config,
 		ref_value = "menu",
 	})
+	cry_nodes[#cry_nodes + 1] = create_toggle({
+		label = localize("cry_feat_alt_rigged"),
+		active_colour = HEX("1c5c23"),
+		ref_table = Cryptid_config,
+		ref_value = "alt_rigged",
+	})
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
 		colour = G.C.CRY_ALTGREENGRADIENT,
 		button = "reset_gameset_config",
