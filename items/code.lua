@@ -2511,6 +2511,9 @@ local inst = {
 	use = function(self, card, area, copier)
 		local same = 0
 		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
+		if #cards == 0 then
+			return
+		end
 		for i = 1, #G.deck.cards do
 			if G.deck.cards[i].base.value == cards[1].base.value then
 				same = i
