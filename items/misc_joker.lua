@@ -10080,7 +10080,7 @@ local lebaron_james = {
 			if
 				not ret
 				and next(SMODS.find_card("j_cry_lebaron_james"))
-				and SMODS.Ranks[self.base.value].key == "King"
+				and (SMODS.Ranks[self.base.value] or {}).key == "King"
 				and context.cardarea == G.play
 			then
 				context.cardarea = G.hand
