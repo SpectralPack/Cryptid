@@ -62,7 +62,7 @@ local equilibrium = {
 			for i = 1, #G.jokers.cards do
 				count = count + 1
 			end
-			if count >= 10 then
+			if count >= 100 then
 				unlock_card(self)
 			end
 		end

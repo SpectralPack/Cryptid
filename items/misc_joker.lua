@@ -10933,7 +10933,7 @@ local broken_sync = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				cry_broken_swap = to_number(Cryptid.clamp(card.ability.extra.portion * 100, 0, 100)),
+				cry_broken_swap = to_number(Cryptid.clamp(card.ability.extra.portion, 0, 1)),
 			}
 		end
 	end,
@@ -10976,8 +10976,10 @@ local thal = {
 		local seen = {}
 		for _, c in ipairs(G.jokers.cards) do
 			local rarity = c.config.center.rarity
-			if not seen[rarity] then
-				seen[rarity] = 1
+			if rarity then
+				if not seen[rarity] then
+					seen[rarity] = 1
+				end
 			end
 		end
 

@@ -2511,6 +2511,9 @@ local inst = {
 	use = function(self, card, area, copier)
 		local same = 0
 		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, 1, 1)
+		if #cards == 0 then
+			return
+		end
 		for i = 1, #G.deck.cards do
 			if G.deck.cards[i].base.value == cards[1].base.value then
 				same = i
@@ -3131,6 +3134,7 @@ local declare = {
 				played = 0,
 				_saved_d_v = true,
 				played_this_round = 0,
+				played_this_ante = 0,
 				s_mult = mult,
 				s_chips = chips,
 				from_declare = true,
@@ -3989,7 +3993,7 @@ local quantify = {
 						for i = 1, G.jokers.config.card_limit - #G.jokers.cards do
 							if to_big(self.ability.choose) > to_big(0) then
 								self.ability.choose = self.ability.choose - 1
-								local tbl = self.config.center.create_card and self.config.center:create_card(self)
+								local tbl = self.config.center.create_card and self.config.center:create_card(self, i)
 									or {}
 								local card = create_card(
 									kind or tbl.set,

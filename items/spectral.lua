@@ -1142,6 +1142,7 @@ local white_hole = {
 					if v ~= _hand or not modest then
 						removed_levels = removed_levels + this_removed_levels
 						level_up_hand(used_consumable, v, true, -this_removed_levels)
+						G.GAME.hands[v].level = 1
 					end
 				end
 			end

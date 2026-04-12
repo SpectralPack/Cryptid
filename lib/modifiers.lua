@@ -283,23 +283,25 @@ function Card:set_ability(center, initial, delay_sprites)
 	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_random_edition") then
 		random = true
 	end
-	if
-		repeatcheck(self.ability.set, { "Joker", "Voucher", "Booster", "Base", "Enhanced" })
-		or self.ability.consumeable
-	then
-		if edition and not random then
-			self:set_edition({ [edition] = true }, true, true)
-		elseif random then
-			self:set_edition(Cryptid.poll_random_edition(), true, true)
+	if self.ability then
+		if
+			repeatcheck(self.ability.set, { "Joker", "Voucher", "Booster", "Base", "Enhanced" })
+			or self.ability.consumeable
+		then
+			if edition and not random then
+				self:set_edition({ [edition] = true }, true, true)
+			elseif random then
+				self:set_edition(Cryptid.poll_random_edition(), true, true)
+			end
+			if sticker then
+				self.ability[sticker] = true
+				self:set_cost()
+			end
 		end
-		if sticker then
-			self.ability[sticker] = true
-			self:set_cost()
-		end
-	end
-	if self.ability.set == "Voucher" then
-		if self.ability.perishable and not self.ability.perish_tally then
-			self.ability.perish_tally = G.GAME.cry_voucher_perishable_rounds
+		if self.ability.set == "Voucher" then
+			if self.ability.perishable and not self.ability.perish_tally then
+				self.ability.perish_tally = G.GAME.cry_voucher_perishable_rounds
+			end
 		end
 	end
 end
