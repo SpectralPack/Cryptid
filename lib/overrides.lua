@@ -2306,7 +2306,7 @@ function SMODS.shatters(card)
 	return card.cry_glass_trigger or smods_shatters_ref(card)
 end
 
--- Wrap SMODS.scale_card to prevent nil initial crashes
+-- Wrap SMODS.scale_card to prevent nil initial/modifier crashes
 local smods_scale_card_ref = SMODS.scale_card
 function SMODS.scale_card(card, args)
 	if args then
@@ -2322,11 +2322,18 @@ function SMODS.scale_card(card, args)
 			args.ref_table[args.ref_value] = default
 		end
 
+		-- Ensure scalar_table[scalar_value] (modifier) has a default value if nil
+		local scalar_table = args.scalar_table or (card and card.ability)
+		local scalar_value = args.scalar_value
+		if scalar_table and scalar_value and scalar_table[scalar_value] == nil then
+			scalar_table[scalar_value] = 0
+		end
+
 		if args.operation then
-			-- Wrap custom operation to protect against nil initial
+			-- Wrap custom operation to protect against nil initial and change/modifier
 			local orig_operation = args.operation
 			args.operation = function(ref_table, ref_value, initial, change)
-				return orig_operation(ref_table, ref_value, initial or default, change)
+				return orig_operation(ref_table, ref_value, initial or default, change or 0)
 			end
 		end
 	end
