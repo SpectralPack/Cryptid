@@ -20,7 +20,7 @@ SMODS.Joker:take_ownership("green_joker", {
 					scalar_table = card.ability,
 					scalar_value = "extra",
 					operation = function(ref_table, ref_value, initial, change)
-						ref_table[ref_value] = math.max(0, initial - change)
+						ref_table[ref_value] = math.max(0, (initial or 0) - change)
 					end,
 					message_key = "a_mult_minus",
 					message_colour = G.C.RED,

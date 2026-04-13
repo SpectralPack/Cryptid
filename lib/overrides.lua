@@ -2305,3 +2305,30 @@ local smods_shatters_ref = SMODS.shatters
 function SMODS.shatters(card)
 	return card.cry_glass_trigger or smods_shatters_ref(card)
 end
+
+-- Wrap SMODS.scale_card to prevent nil initial crashes
+local smods_scale_card_ref = SMODS.scale_card
+function SMODS.scale_card(card, args)
+	if args then
+		-- Determine appropriate default: 1 for multipliers, 0 for additive values
+		local ref_value = args.ref_value
+		local default = 0
+		if ref_value and (string.find(ref_value, "x_") or string.find(ref_value, "Xmult") or string.find(ref_value, "Emult") or string.find(ref_value, "xmult") or string.find(ref_value, "x_chips")) then
+			default = 1
+		end
+
+		-- Ensure ref_table[ref_value] has a default value if nil
+		if args.ref_table and args.ref_value and args.ref_table[args.ref_value] == nil then
+			args.ref_table[args.ref_value] = default
+		end
+
+		if args.operation then
+			-- Wrap custom operation to protect against nil initial
+			local orig_operation = args.operation
+			args.operation = function(ref_table, ref_value, initial, change)
+				return orig_operation(ref_table, ref_value, initial or default, change)
+			end
+		end
+	end
+	return smods_scale_card_ref(card, args)
+end

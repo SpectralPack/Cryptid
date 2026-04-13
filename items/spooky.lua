@@ -947,7 +947,7 @@ local candy_basket = {
 					ref_value = "candies",
 					scalar_value = "candy_boss_mod",
 					operation = function(ref_table, ref_value, initial, change)
-						ref_table[ref_value] = initial + change * card.ability.extra.candy_boss_mod
+						ref_table[ref_value] = (initial or 0) + change * card.ability.extra.candy_boss_mod
 					end,
 					no_message = true,
 				})
@@ -967,7 +967,7 @@ local candy_basket = {
 				ref_value = "candies",
 				scalar_value = "candy_boss_mod",
 				operation = function(ref_table, ref_value, initial, change)
-					ref_table[ref_value] = initial + change * card.ability.extra.candy_boss_mod
+					ref_table[ref_value] = (initial or 0) + change * card.ability.extra.candy_boss_mod
 				end,
 				no_message = true,
 			})

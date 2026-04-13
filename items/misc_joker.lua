@@ -82,7 +82,7 @@ local dropshot = {
 					message_key = "a_xmult",
 					message_colour = G.C.MULT,
 					operation = function(ref_table, ref_value, initial, scaling)
-						ref_table[ref_value] = initial + scaling * cards
+						ref_table[ref_value] = (initial or 1) + scaling * cards
 					end,
 				})
 				return nil, true
@@ -2969,7 +2969,7 @@ local unjust_dagger = {
 				scalar_table = sliced_card,
 				scalar_value = "sell_cost",
 				operation = function(ref_table, ref_value, initial, scaling)
-					ref_table[ref_value] = initial + 0.2 * scaling
+					ref_table[ref_value] = (initial or 1) + 0.2 * scaling
 				end,
 				scaling_message = {
 					message = localize({
@@ -3011,7 +3011,7 @@ local unjust_dagger = {
 					scalar_table = sliced_card,
 					scalar_value = "sell_cost",
 					operation = function(ref_table, ref_value, initial, scaling)
-						ref_table[ref_value] = initial + 0.2 * scaling
+						ref_table[ref_value] = (initial or 1) + 0.2 * scaling
 					end,
 					scaling_message = {
 						message = localize({
@@ -3110,7 +3110,7 @@ local monkey_dagger = {
 				scalar_table = sliced_card,
 				scalar_value = "sell_cost",
 				operation = function(ref_table, ref_value, initial, scaling)
-					ref_table[ref_value] = initial + 10 * scaling
+					ref_table[ref_value] = (initial or 0) + 10 * scaling
 				end,
 				scaling_message = {
 					message = localize({
@@ -3152,7 +3152,7 @@ local monkey_dagger = {
 					scalar_table = sliced_card,
 					scalar_value = "sell_cost",
 					operation = function(ref_table, ref_value, initial, scaling)
-						ref_table[ref_value] = initial + 10 * scaling
+						ref_table[ref_value] = (initial or 0) + 10 * scaling
 					end,
 					scaling_message = {
 						message = localize({
@@ -3251,7 +3251,7 @@ local pirate_dagger = {
 				scalar_table = sliced_card,
 				scalar_value = "sell_cost",
 				operation = function(ref_table, ref_value, initial, scaling)
-					ref_table[ref_value] = initial + 0.25 * scaling
+					ref_table[ref_value] = (initial or 1) + 0.25 * scaling
 				end,
 				scaling_message = {
 					message = localize({
@@ -3293,7 +3293,7 @@ local pirate_dagger = {
 					scalar_table = sliced_card,
 					scalar_value = "sell_cost",
 					operation = function(ref_table, ref_value, initial, scaling)
-						ref_table[ref_value] = initial + 0.25 * scaling
+						ref_table[ref_value] = (initial or 1) + 0.25 * scaling
 					end,
 					scaling_message = {
 						message = localize({
@@ -9955,7 +9955,7 @@ local zooble = {
 						ref_value = "mult",
 						scalar_value = "a_mult",
 						operation = function(ref_table, ref_value, initial, scaling)
-							ref_table[ref_value] = initial + scaling * #unique_ranks
+							ref_table[ref_value] = (initial or 0) + scaling * #unique_ranks
 						end,
 					})
 				end

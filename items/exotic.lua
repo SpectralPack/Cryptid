@@ -945,7 +945,7 @@ local stella_mortis = {
 					ref_value = "Emult",
 					scalar_value = "Emult_mod",
 					operation = function(ref_table, ref_value, initial, change)
-						ref_table[ref_value] = initial + change * quota
+						ref_table[ref_value] = (initial or 1) + change * quota
 					end,
 					message_key = "a_powmult",
 				})
