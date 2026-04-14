@@ -3317,17 +3317,17 @@ local class = {
 	force_use = function(self, card, area)
 		G.CODE_MAX_HIGHLIGHT = card.ability.max_highlighted
 		local choices = {
-			"bonus",
-			"mult",
-			"wild",
-			"glass",
-			"steel",
-			"stone",
-			"gold",
-			"lucky",
-			"echo",
-			"light",
-			"abstract",
+			"m_bonus",
+			"m_mult",
+			"m_wild",
+			"m_glass",
+			"m_steel",
+			"m_stone",
+			"m_gold",
+			"m_lucky",
+			"m_cry_echo",
+			"m_cry_light",
+			"m_cry_abstract",
 		}
 		for i, v in pairs(Cryptid.get_highlighted_cards({ G.hand }, {}, 1, card.ability.max_highlighted or 1)) do
 			v:set_ability(pseudorandom_element(choices, pseudoseed("forceclass")))
