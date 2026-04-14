@@ -2329,7 +2329,7 @@ function SMODS.scale_card(card, args)
 			scalar_table[scalar_value] = 0
 		end
 
-		if args.operation then
+		if args.operation and type(args.operation) == "function" then
 			-- Wrap custom operation to protect against nil initial and change/modifier
 			local orig_operation = args.operation
 			args.operation = function(ref_table, ref_value, initial, change)
