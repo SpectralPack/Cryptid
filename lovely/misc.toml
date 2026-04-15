@@ -548,7 +548,7 @@ if (key == 'mult' or key == 'h_mult' or key == 'mult_mod') and amount then
 """
 position = "at"
 payload = """
-if (key == 'mult' or key == 'h_mult' or key == 'mult_mod') and amount and mult then
+if (key == 'mult' or key == 'h_mult' or key == 'mult_mod') and amount and SMODS.Scoring_Parameters.mult then
 """
 match_indent = true
 
@@ -560,7 +560,7 @@ if (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 t
 """
 position = "at"
 payload = """
-if (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 and hand_chips then
+if (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 and SMODS.Scoring_Parameters.chips then
 """
 match_indent = true
 
@@ -572,7 +572,7 @@ if (key == 'x_mult' or key == 'xmult' or key == 'Xmult' or key == 'x_mult_mod' o
 """
 position = "at"
 payload = """
-if (key == 'x_mult' or key == 'xmult' or key == 'Xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 and mult then
+if (key == 'x_mult' or key == 'xmult' or key == 'Xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 and SMODS.Scoring_Parameters.mult then
 """
 match_indent = true
 
@@ -584,7 +584,7 @@ if key == 'balance' then
 """
 position = "at"
 payload = """
-if key == 'balance' and hand_chips and mult then
+if key == 'balance' and SMODS.Scoring_Parameters.chips and SMODS.Scoring_Parameters.mult then
 """
 match_indent = true
 
