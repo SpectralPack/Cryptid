@@ -4335,17 +4335,16 @@ local alttab = {
 	loc_vars = function(self, info_queue, card)
 		local ret = localize("k_none")
 		if Cryptid.safe_get(G.GAME, "blind", "in_blind") then
-			if G.GAME.blind:get_type() == "Small" then
+			local tag = Cryptid.get_next_tag()
+			if tag then
+				ret = localize({ type = "name_text", key = tag, set = "Tag" })
+			elseif G.GAME.blind:get_type() == "Small" then
 				ret = localize({ type = "name_text", key = G.GAME.round_resets.blind_tags.Small, set = "Tag" })
 			elseif G.GAME.blind:get_type() == "Big" then
 				ret = localize({ type = "name_text", key = G.GAME.round_resets.blind_tags.Big, set = "Tag" })
 			elseif G.GAME.blind:get_type() == "Boss" then
 				ret = "???"
 			end
-		end
-		local tag = Cryptid.get_next_tag()
-		if tag then
-			ret = localize({ type = "name_text", key = tag, set = "Tag" })
 		end
 		return { vars = { ret } }
 	end,
