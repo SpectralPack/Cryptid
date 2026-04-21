@@ -43,7 +43,6 @@ while i <= #G.deck.cards do
 end
 if G.GAME.used_vouchers.v_cry_double_down then
     local function update_dbl(area)
-        local area = G.jokers
         for i = 1, #area.cards do
             if area.cards[i].ability.immutable and type(area.cards[i].ability.immutable.other_side) == "table" then
                 --tweak to do deck effects with on the flip side
