@@ -6161,15 +6161,25 @@ local annihalation = {
 		if context.joker_main and (to_big(card.ability.extra.emult) > to_big(1)) then
 			if next(context.poker_hands["cry_WholeDeck"]) then
 				return {
+					message = localize({
+						type = "variable",
+						key = "a_powmult",
+						vars = { number_format(card.ability.extra.emult) },
+					}),
+					Emult_mod = lenient_bignum(card.ability.extra.emult),
 					colour = G.C.DARK_EDITION,
-					Emult = lenient_bignum(card.ability.extra.emult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = { number_format(card.ability.extra.emult) },
+				}),
+				Emult_mod = lenient_bignum(card.ability.extra.emult),
 				colour = G.C.DARK_EDITION,
-				Emult = lenient_bignum(card.ability.extra.emult),
 			}
 		end
 	end,
