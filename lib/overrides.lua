@@ -2339,3 +2339,17 @@ function SMODS.scale_card(card, args)
 	end
 	return smods_scale_card_ref(card, args)
 end
+
+-- Wrap SMODS.modify_rank to prevent crashes on cards with invalid/custom ranks (e.g., abstract cards)
+local smods_modify_rank_ref = SMODS.modify_rank
+function SMODS.modify_rank(card, amount, ...)
+	-- Skip modification for cards with specific_rank enhancements (like abstract)
+	if Cryptid.cry_enhancement_has_specific_rank(card) then
+		return false
+	end
+	-- Skip modification if the card's rank doesn't exist in the rank table
+	if card.rank and not SMODS.Ranks[SMODS.Rank.obj_buffer[card.rank]] then
+		return false
+	end
+	return smods_modify_rank_ref(card, amount, ...)
+end
