@@ -2314,6 +2314,9 @@ local double_sided = {
 			if not card.base.value then
 				return true
 			end
+			if Cryptid.cry_enhancement_has_specific_rank(card) then
+				return true
+			end
 			return no_rankref(card)
 		end
 
