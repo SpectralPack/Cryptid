@@ -693,8 +693,8 @@ payload = '''
 				key = "cry_Declare"..tostring(v.index)
 				local tbl = {cards}
 				local skey = ({
-					[0] = "Flush",
-					[1] = "Straight",
+					[0] = "Straight",
+					[1] = "Flush",
 					[2] = "Full House"
 				})[v.index]
 				results[key] = tbl
