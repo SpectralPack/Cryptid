@@ -1,3 +1,7 @@
+local Config = SMODS.current_mod.config
+
+
+
 local code = {
 	object_type = "ConsumableType",
 	key = "Code",
@@ -1954,7 +1958,11 @@ local seed = {
 		return #cards == 1
 	end,
 	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = { key = "cry_rigged", set = "Other", vars = {} }
+		if (Config.alt_rigged) then 
+			info_queue[#info_queue + 1] = { key = "cry_rigged_alt", set = "Other", vars = {} }
+		else
+			info_queue[#info_queue + 1] = { key = "cry_rigged", set = "Other", vars = {} }
+		end
 	end,
 	use = function(self, card, area, copier)
 		local cards = Cryptid.get_highlighted_cards({ G.jokers, G.hand, G.consumeables, G.pack_cards }, card, 1, 1)
@@ -1994,10 +2002,18 @@ local rigged = {
 	atlas = "sticker",
 	pos = { x = 6, y = 1 },
 	key = "cry_rigged",
+	loc_key = function(self)
+		return Config.alt_rigged and "cry_rigged_alt" or "cry_rigged"
+	end,
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
 	order = 605,
+	loc_vars = function(self, info_queue, card)
+		return {
+			key = Config.alt_rigged and "cry_rigged_alt" or "cry_rigged"
+		}
+	end,
 	draw = function(self, card) --don't draw shine
 		local notilt = nil
 		if card.area and card.area.config.type == "deck" then
@@ -2026,9 +2042,15 @@ local rigged = {
 	end,
 	calculate = function(self, card, context)
 		if context.mod_probability and context.trigger_obj == card then
-			return {
-				numerator = context.numerator * 2,
-			}
+			if (Config.alt_rigged) then
+				return{
+					numerator = context.denominator
+				}
+			else
+				return {
+					numerator = context.numerator * 2,
+				}
+			end
 		end
 	end,
 }

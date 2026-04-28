@@ -4500,6 +4500,13 @@ return {
 					"on this card",
 				},
 			},
+			cry_rigged_alt = {
+				name = "Rigged",
+				text = {
+					"All {C:cry_code}listed{} probabilities",
+					"are {C:cry_code}guaranteed",
+				},
+			},
 			cry_hooked = {
 				name = "Hooked",
 				text = {
@@ -5141,6 +5148,7 @@ return {
 			["cry_feat_exotic jokers"] = "Exotic Jokers",
 			["cry_feat_m jokers"] = "M Jokers",
 			cry_feat_menu = "Custom Main Menu",
+			cry_feat_alt_rigged = "Legacy Rigging",
 			["cry_feat_misc."] = "Misc.",
 			["cry_feat_misc. jokers"] = "Misc. Jokers",
 			cry_feat_planets = "Planets",
