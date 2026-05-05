@@ -10,5 +10,5 @@ return {
 	["experimental"] = false, -- experimental stuff
 	["force_tooltips"] = true, -- i don't actually know what this does
 	["HTTPS"] = true, -- your internet connection
-	["menu"] = true, -- i don't know what this does either
+	["menu"] = true, -- 99% sure it makes the ace of spades in the menu glitched
 }
