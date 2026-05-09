@@ -5101,6 +5101,10 @@ local copypaste = {
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local cards = copy_card(context.consumeable)
+							if G.GAME.ACTIVE_CODE_CARD then
+								-- don't copy the temporary multiuse increase for code cards that summon a UI
+								cards.ability.cry_multiuse = (cards.ability.cry_multiuse or 2) - 1
+							end
 							cards:add_to_deck()
 							G.consumeables:emplace(cards)
 							return true
