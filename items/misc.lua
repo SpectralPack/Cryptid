@@ -2163,10 +2163,12 @@ local double_sided = {
 					else
 						card:remove_from_deck(true)
 					end
+					local curr_pc = card.playing_card
 					local curr_abil = copy_table(card.ability)
 					local key = card.config.center.key
 					local base = copy_table(card.base)
 					local seal = card.seal
+					card.playing_card = card.ability.immutable.other_side.playing_card
 					if card.ability.immutable.other_side.base then
 						card.base = card.ability.immutable.other_side.base
 					else
@@ -2194,6 +2196,8 @@ local double_sided = {
 						card.ability.immutable = {}
 					end
 					card.ability.immutable.other_side = curr_abil
+					card.ability.immutable.other_side.base = base
+					card.ability.immutable.other_side.playing_card = curr_pc
 					card.ability.immutable.other_side.key = key
 					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
 					if next(find_joker("cry-Flip Side")) then
@@ -2213,9 +2217,11 @@ local double_sided = {
 						card:remove_from_deck(true)
 					end
 					local curr_abil = copy_table(card.ability)
+					local curr_pc = card.playing_card
 					local key = card.config.center.key
 					local seal = card.seal
 					local base = copy_table(card.base)
+					card.playing_card = card.ability.immutable.other_side.playing_card
 					if card.ability.immutable.other_side.base then
 						card.base = card.ability.immutable.other_side.base
 					else
@@ -2246,6 +2252,8 @@ local double_sided = {
 						card.ability.immutable = {}
 					end
 					card.ability.immutable.other_side = curr_abil
+					card.ability.immutable.other_side.base = base
+					card.ability.immutable.other_side.playing_card = curr_pc
 					card.ability.immutable.other_side.key = key
 					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
 					if next(find_joker("cry-Flip Side")) then
@@ -2458,6 +2466,7 @@ G.FUNCS.merge_ds = function(e)
 	card.ability.immutable.other_side = copy_table(other.ability)
 	card.ability.immutable.other_side.key = copy_table(other.config.center.key)
 	card.ability.immutable.other_side.seal = copy_table(other.seal)
+	card.ability.immutable.other_side.playing_card = other.playing_card
 	if other.base.nominal ~= 0 then
 		card.ability.immutable.other_side.base = copy_table(other.base)
 	end
