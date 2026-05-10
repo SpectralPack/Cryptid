@@ -124,7 +124,7 @@ target = "card.lua"
 pattern = '''return generate_card_ui(self.config.center, nil, loc_vars, card_type, badges, hide_desc, main_start, main_end, self)'''
 position = "before"
 payload = '''
-if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card then -- and card_type ~= 'Joker' then
+if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card then
 	loc_vars = loc_vars or {}
 	loc_vars.ccd = {
 		playing_card = not not self.base.colour, value = self.base.value, suit = self.base.suit, colour = self.base.colour,
