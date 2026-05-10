@@ -143,7 +143,6 @@ pattern = '''local loc_vars = {}'''
 position = "before"
 payload = '''
 if specific_vars and specific_vars.ccd then
-	local debug_table = specific_vars.ccd
 	full_UI_table.ccd = {name = {}, main = {}}
 	localize{type = 'other', key = 'playing_card', set = 'Other', nodes = full_UI_table.ccd.name, vars = {localize(specific_vars.ccd.value, 'ranks'), localize(specific_vars.ccd.suit, 'suits_plural'), colours = {specific_vars.ccd.colour}}}
 	full_UI_table.ccd.name = full_UI_table.ccd.name[1]
