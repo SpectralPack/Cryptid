@@ -2252,7 +2252,6 @@ local double_sided = {
 						card.ability.immutable = {}
 					end
 					card.ability.immutable.other_side = curr_abil
-					card.ability.immutable.other_side.base = base
 					card.ability.immutable.other_side.playing_card = curr_pc
 					card.ability.immutable.other_side.key = key
 					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
