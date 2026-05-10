@@ -2182,11 +2182,6 @@ local double_sided = {
 					end
 					if card.base.nominal ~= 0 then
 						SMODS.change_base(card, card.base.suit, card.base.value)
-					else
-						if card.children.front then
-							card.children.front:remove()
-							card.children.front = nil
-						end
 					end
 					card.seal = G.P_SEALS[card.ability.immutable.other_side.seal]
 							and card.ability.immutable.other_side.seal
@@ -2235,11 +2230,6 @@ local double_sided = {
 					end
 					if card.base.nominal ~= 0 then
 						SMODS.change_base(card, card.base.suit, card.base.value)
-					else
-						if card.children.front then
-							card.children.front:remove()
-							card.children.front = nil
-						end
 					end
 					card.seal = G.P_SEALS[card.ability.immutable.other_side.seal]
 							and card.ability.immutable.other_side.seal
@@ -2330,6 +2320,14 @@ local double_sided = {
 				return true
 			end
 			return no_suitref(card)
+		end
+
+		local should_hide_frontref = Card.should_hide_front
+		function Card:should_hide_front(...)
+			if self.edition and self.edition.key == "e_cry_double_sided" and not self.base.value then
+				return true
+			end
+			return should_hide_frontref(self, ...)
 		end
 
 		-- 		local calculate_joker = Card.calculate_joker
