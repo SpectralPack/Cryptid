@@ -2435,6 +2435,7 @@ G.FUNCS.can_merge_ds = function(e)
 		and not other.merged
 		and card.area
 		and card.area.config.type ~= "shop"
+		and (not not card.playing_card) == (not not other.playing_card)
 	then
 		e.config.colour = G.C.PURPLE
 		e.config.button = "merge_ds"
