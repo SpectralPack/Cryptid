@@ -12,17 +12,3 @@ return {
 	["HTTPS"] = true, -- your internet connection
 	["menu"] = true, -- Restart game and the main menu is now blue
 }
--- force tooltips:
---[[
-# Make description UI always appear if card is highlighted
-[[patches]]
---[[
-[patches.pattern]
-target = "engine/node.lua"
-pattern = "if self.children.h_popup then"
-position = 'at'
-match_indent = true
-payload = '''
-if self.children.h_popup and not (self.force_popup and self:force_popup() and Cryptid["force_tooltips"]) then
-'''
-]]
