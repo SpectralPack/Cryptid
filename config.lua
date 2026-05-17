@@ -10,7 +10,7 @@ return {
 	["experimental"] = false, -- experimental stuff
 	["force_tooltips"] = true, -- acivates lovely patch to always show the desc
 	["HTTPS"] = true, -- your internet connection
-	["menu"] = true, -- Restart game and the menu is now blue
+	["menu"] = true, -- Restart game and the main menu is now blue
 }
 -- force tooltips:
 --[[
