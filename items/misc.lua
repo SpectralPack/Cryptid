@@ -835,7 +835,9 @@ local oversat = {
 					return Cryptid.misprintize_val(val, {
 						min = 2 * (G.GAME.modifiers.cry_misprint_min or 1),
 						max = 2 * (G.GAME.modifiers.cry_misprint_max or 1),
-					}, Cryptid.is_card_big(card))
+					}, 
+					Cryptid.is_card_big(card),
+					card.config.center.key)
 				end)
 			end
 		end
@@ -962,7 +964,7 @@ local glitched = {
 						min = 0.1 * (G.GAME.modifiers.cry_misprint_min or 1),
 						max = 10 * (G.GAME.modifiers.cry_misprint_max or 1),
 						type = "X",
-					}, Cryptid.is_card_big(card))
+					}, Cryptid.is_card_big(card), nil, card)
 				end)
 			end
 		end
