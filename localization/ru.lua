@@ -2084,6 +2084,15 @@ return {
 					"{C:attention}#2#{} раз или меньше",
 				},
 			},
+			j_cry_eternalflame = {
+				name = "Вечный огонь",
+				text = {
+					"Этот джокер получает {X:mult,C:white} X#1# {} Множ.",
+					"за каждую проданную карту со",
+					"стоимостью продажи не менее {C:money}$3{}",
+					"{C:inactive}(Сейчас {X:mult,C:white} X#2# {C:inactive} Множ.)",
+				},
+			},
 			j_cry_eternalflame2 = {
 				name = "Вечный огонь",
 				text = {
