@@ -15,7 +15,7 @@ vars_other = []
 
 def read_vars_from_file(filename, into_list):
     current_var_path = []
-    with open(filename) as file_en:
+    with open(filename, encoding="utf-8") as file_en:
         for line in file_en:
             if " = {" in line:
                 current_var = line.split(" = {")[0].strip()
