@@ -3777,28 +3777,50 @@ return {
 			v_cry_asteroglyph = {
 				name = "Астероглиф",
 				text = { "Установить Анте на {C:attention}#1#{}" },
+				unlock = {
+					"Достигните {C:attention}36{} Анте",
+				},
 			},
 			v_cry_blankcanvas = {
 				name = "Чистый холст",
 				text = { "{C:attention}+#1#{} размер руки" },
+				unlock = {
+					"Уменьшите свой {C:attention}размер руки",
+					"до {C:attention}0",
+				},
 			},
 			v_cry_rerollexchange = {
 				name = "Обмен перебросов",
 				text = { "Все переброски", "стоят {C:attention}$2" },
+				unlock = {
+					"Перебросьте {C:attention}магазин",
+					"в сумме",
+					"{C:attention}250 раз",
+					"за один забег",
+				},
 			},
 			v_cry_fabric = {
 				name = "Универсальная ткань",
 				text = { "{C:dark_edition}+#1#{} слот(а) для джокеров" },
+				unlock = {
+					"Приобретите {C:dark_edition}Антиматерию",
+					"{C:attention}10{} раз",
+				},
 			},
 			v_cry_massproduct = {
 				name = "Массовое производство",
 				text = { "Все карты и паки", "в магазине стоят {C:attention}$1" },
+				unlock = {
+					"Приобретите {C:attention}25",
+					"{C:attention}ваучеров",
+					"за один забег",
+				},
 			},
 			v_cry_quantum_computing = {
 				name = "Квантовые вычисления",
 				text = {
-					"{C:cry_code}Карты кода{} могут появляться",
-					"с {C:dark_edition}Негативным{} выпуском",
+					"Все будущие {C:cry_code}карты кода{} имеют",
+					"{C:cry_code}+#1#{} мультииспользования",
 				},
 			},
 			v_cry_double_vision = {
@@ -3808,11 +3830,6 @@ return {
 					"в {C:attention}4X{} чаще",
 				},
 			},
-			v_cry_ember = {
-				name = "Огненная ставка",
-				text = { "Все предметы не дают деньги при продаже" },
-			},
-
 			-- Теги-апгрейды (Double→Triple/Quadruple/Quintuple)
 			v_cry_copies = {
 				name = "Копии",
@@ -3850,10 +3867,19 @@ return {
 			v_cry_curate = {
 				name = "Куратор",
 				text = { "Все карты", "появляются с", "{C:dark_edition}Выпуском" },
+				unlock = {
+					"Откройте",
+					"все {C:attention}Выпуски",
+				},
 			},
 			v_cry_dexterity = {
 				name = "Ловкость",
 				text = { "Навсегда", "получите {C:blue}+#1#{} рук(у)", "каждый раунд" },
+				unlock = {
+					"Сыграйте {C:attention}5000",
+					"{C:attention}игральных карт",
+					"в сумме",
+				},
 			},
 			v_cry_double_down = {
 				name = "Удвоение",
@@ -3868,8 +3894,7 @@ return {
 				name = "Двойной разрез",
 				text = {
 					"{C:attention}Слияние{} может появляться",
-					"в магазине и",
-					"Паках Арканы",
+					"в {C:spectral}Спектральных{} Паках",
 				},
 			},
 			v_cry_moneybean = {
@@ -3879,13 +3904,24 @@ return {
 					"заработанных процентов",
 					"в каждом раунде до {C:money}$#1#{}",
 				},
+				unlock = {
+					"Достигните макс.",
+					"{C:attention}заработка процентов",
+					"за {C:attention}весь забег",
+				},
 			},
 			v_cry_overstock_multi = {
 				name = "Мультизапас",
 				text = {
-					"{C:attention}+#1#{} слот(а) карт и",
+					"{C:attention}+#1#{} слот(а) карт,",
 					"{C:attention}+#1#{} слот(а) паков",
+					"и {C:attention}+#1#{} слот(а) ваучеров",
 					"в магазине",
+				},
+				unlock = {
+					"Потратьте {C:attention}1000$",
+					"в магазине",
+					"за один забег",
 				},
 			},
 			v_cry_pacclimator = {
@@ -3893,7 +3929,14 @@ return {
 				text = {
 					"{C:planet}Планетарные{} карты появляются",
 					"в {C:attention}X#1#{} чаще в магазине",
-					"Все будущие {C:planet}Планетарные карты {C:green}бесплатны",
+					"Позволяет контролировать",
+					"частоту {C:planet}Планет{} в магазине",
+					"{C:inactive}(Проверьте {C:attention}Инфо{C:inactive})",
+				},
+				unlock = {
+					"Купите {C:attention}100 {C:planet}Планетарных",
+					"карт в сумме",
+					"в магазине",
 				},
 			},
 			v_cry_pairamount_plus = {
@@ -3926,21 +3969,34 @@ return {
 					"{C:attention}Небесных Паков",
 				},
 			},
-			v_cry_scope = {
-				name = "Галактический прицел",
-				text = {
-					"Создаёт {C:planet}Планетарную",
-					"карту для сыгранной",
-					"{C:attention}покерной руки",
-					"{C:inactive}(Должно быть место)",
-				},
-			},
+			-- v_cry_scope = {
+			-- 	name = "Галактический прицел",
+			-- 	text = {
+			-- 		"Создаёт {C:planet}Планетарную",
+			-- 		"карту для сыгранной",
+			-- 		"{C:attention}покерной руки",
+			-- 		"{C:inactive}(Должно быть место)",
+			-- 	},
+			-- 	unlock = {
+			-- 		"Используйте {C:attention}50 {C:planet}Планетарных",
+			-- 		"карт из",
+			-- 		"{C:attention}Бустер-паков",
+			-- 		"за один забег",
+			-- 	},
+			-- },
 			v_cry_tacclimator = {
 				name = "Акклиматизатор таро",
 				text = {
 					"{C:tarot}Карты Таро{} появляются",
 					"в {C:attention}X#1#{} чаще в магазине",
-					"Все будущие {C:tarot}карты Таро {C:green}бесплатны",
+					"Позволяет контролировать",
+					"частоту {C:tarot}Таро{} в магазине",
+					"{C:inactive}(Проверьте {C:attention}Инфо{C:inactive})",
+				},
+				unlock = {
+					"Купите {C:attention}100 {C:tarot}карт Таро",
+					"в сумме",
+					"в магазине",
 				},
 			},
 			v_cry_threers = {
@@ -3949,6 +4005,11 @@ return {
 					"Навсегда",
 					"получите {C:red}+#1#{} сброс(ов)",
 					"каждый раунд",
+				},
+				unlock = {
+					"Сбросьте {C:attention}5000",
+					"{C:attention}игральных карт",
+					"в сумме",
 				},
 			},
 			v_cry_stickyhand = {
