@@ -78,6 +78,37 @@ return {
 					"Применяет {C:legendary,E:1}плюсы{}",
 					"{C:attention}каждой{} колоды",
 				},
+				unlock = {
+					"Победите с",
+					"{C:attention}Пустой Колодой",
+					"на {C:attention}Золотой Ставке",
+				},
+			},
+			b_cry_antimatter_balanced = {
+				name = "Колода антиматерии",
+				text = {
+					"Применяет {C:legendary,E:1}плюсы{}",
+					"почти {C:attention}каждой{} колоды, с",
+					"которой победили на {C:gold}Золотой Ставке{}",
+				},
+				unlock = {
+					"Победите с",
+					"{C:attention}Пустой Колодой",
+					"на {C:attention}Золотой Ставке",
+				},
+			},
+			b_cry_antimatter_custom = {
+				name = "Колода антиматерии",
+				text = {
+					"Применяет {C:legendary,E:1}плюсы{}",
+					"{C:attention}некоторых{} колод, с",
+					"которыми победили на {C:gold}Золотой Ставке{}",
+				},
+				unlock = {
+					"Победите с",
+					"{C:attention}Пустой Колодой",
+					"на {C:attention}Золотой Ставке",
+				},
 			},
 			b_cry_beta = {
 				name = "Ностальгическая колода",
@@ -646,6 +677,13 @@ return {
 					"{C:inactive,s:0.8}Следует порядку как в коллекции",
 				},
 			},
+			c_cry_cryupdate = {
+				name = "://UPDATE",
+				text = {
+					"Будет {C:cry_code}Определено{}",
+					"в будущем {C:cry_code}обновлении{}",
+				},
+			},
 			c_cry_patch = {
 				name = "://PATCH",
 				text = {
@@ -934,12 +972,49 @@ return {
 
 		-- ── ДЖОКЕРЫ ─────────────────────────────────────────
 		Joker = {
+			j_cry_test_modest = {
+				name = "Тестовый Джокер",
+				text = {
+					"{C:chips}+#1#{} Фишек",
+				},
+			},
+			j_cry_test_mainline = {
+				name = "Тестовый Джокер",
+				text = {
+					"{C:chips}+#1#{} Фишек",
+					"{C:money}+$44{} в начале {C:attention}Блайнда{}",
+				},
+			},
+			j_cry_test_madness = {
+				name = "Тестовый Джокер",
+				text = {
+					"{C:chips}+#1#{} Фишек",
+					"{C:money}+$44444{} в начале {C:attention}Блайнда{}",
+				},
+			},
+			j_cry_test_cryptid_in_2025 = {
+				name = "Тестовый Джокер",
+				text = {
+					"{C:chips}+#1#{} Фишек",
+					"{C:money}+$44444{} в начале {C:attention}Блайнда{}",
+				},
+			},
 			j_cry_altgoogol = {
 				name = "Ностальгическая Карта Googol Play",
 				text = {
 					"Продайте эту карту, чтобы создать",
-					"{C:attention}2{} копии крайнего левого {C:attention}Джокера{}",
+					"{C:attention}#1#{} копи#<ю,й>1# крайнего левого {C:attention}Джокера{}",
 					"{C:inactive,s:0.8}Не копирует Ностальгические Гугол Игровые Карты{}",
+					"{C:inactive}(Должно быть место){}",
+				},
+			},
+			j_cry_altgoogol_balanced = {
+				name = "Ностальгическая Карта Googol Play",
+				text = {
+					"Продайте эту карту, чтобы создать",
+					"{C:attention}#1#{} копи#<ю,й>1# крайнего левого {C:attention}Джокера{}",
+					"{C:inactive,s:0.8}Не копирует Ностальгические Гугол Игровые Карты{}",
+					"{C:inactive}(Должно быть место){}",
 				},
 			},
 			j_cry_antennastoheaven = {
@@ -1042,6 +1117,25 @@ return {
 					"{C:attention}Перезапускает{} ВСЕХ {C:attention}Джокеров{} слева",
 					"за {C:attention}каждого{} не-{C:blue}Обычного{C:attention} Джокера{}",
 					"справа этого джокера",
+				},
+				unlock = {
+					"Перезапустить {C:attention}Джокера",
+					"{C:attention}114{} раз",
+					"за одну руку",
+				},
+			},
+			j_cry_canvas_balanced = {
+				name = "Холст",
+				text = {
+					"{C:attention}Перезапускает{} ВСЕХ {C:attention}Джокеров{} слева",
+					"за {C:attention}каждого{} не-{C:blue}Обычного{C:attention} Джокера{}",
+					"справа этого джокера",
+					"{C:inactive}(До 2 перезапусков)",
+				},
+				unlock = {
+					"Перезапустить {C:attention}Джокера",
+					"{C:attention}114{} раз",
+					"за одну руку",
 				},
 			},
 			j_cry_caramel = {
@@ -1435,6 +1529,14 @@ return {
 					"Все карты с {C:attention}лицом{} ослаблены",
 				},
 			},
+			j_cry_eyeofhagane = {
+				name = "Око Хаганэ",
+				text = {
+					"Все сыгранные {C:attention}лицевые{} карты",
+					"становятся {C:attention}Стальными{}",
+					"при подсчёте очков",
+				},
+			},
 			j_cry_mask = {
 				name = "Маска",
 				text = {
@@ -1736,6 +1838,15 @@ return {
 					"самой правой засчитанной карте",
 				},
 			},
+			j_cry_cat_owl = {
+				name = "Кот-сова",
+				text = {
+					"{C:attention}Везучие карты{} также",
+					"считаются {C:attention}Эхо-картами",
+					"{C:attention}Эхо-карты{} также",
+					"считаются {C:attention}Везучими картами",
+				},
+			},
 			j_cry_fading_joker = {
 				name = "Угасающий Джокер",
 				text = {
@@ -1856,6 +1967,14 @@ return {
 					"{C:inactive,s:0.8}(растёт на +1, +2, +3)",
 				},
 			},
+			["j_cry_Double Scale_modest"] = {
+				name = "Двойное масштабирование",
+				text = {
+					"Растущие {C:attention}джокеры{}",
+					"растут в {C:attention}два{} раза быстрее",
+					'{C:inactive,s:0.8}"Это же двойное, а не квадратичное масштабирование!"',
+				},
+			},
 			j_cry_rnjoker = {
 				name = "РНДжокер",
 				text = {
@@ -1892,6 +2011,20 @@ return {
 					"{C:attention}+#1#{} размер руки",
 					"{C:attention}+#1#{} слот расходника",
 					"{C:attention}+#1#{} карта в магазине",
+				},
+				unlock = {
+					"Победите используя",
+					"только {C:attention}Старшую карту",
+				},
+			},
+			j_cry_soccer_balanced = {
+				name = "Один за всех",
+				text = {
+					"{C:attention}+#1#{} слот бустерного набора",
+					"{C:attention}+#1#{} размер руки",
+					"{C:attention}+#1#{} слот расходника",
+					"{C:attention}+#1#{} карта в магазине",
+					"{C:attention}+#1#{} слот ваучера",
 				},
 				unlock = {
 					"Победите используя",
@@ -2011,6 +2144,16 @@ return {
 					"{C:attention}Удвоить{} все значения",
 					"крайнего левого {C:attention}Джокера",
 					"в конце раунда",
+				},
+			},
+			j_cry_ghost = {
+				name = "Призрак",
+				text = {
+					"В конце раунда:",
+					"{C:green}#1# из #3#{} шанс",
+					"{C:attention}одержимости{} случайного {C:attention}Джокера",
+					"{C:green}#2# из #4#{} шанс",
+					"{E:2,C:red}самоуничтожиться",
 				},
 			},
 			j_cry_goldjoker = {
@@ -2239,6 +2382,15 @@ return {
 				name = "Старый членский билет",
 				text = {
 					"{C:chips}+#1#{} Фишек за каждого участника",
+					"в {C:attention}Cryptid Discord{}",
+					"{C:inactive}(Сейчас {C:chips}+#2#{C:inactive} Фишек)",
+					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+				},
+			},
+			j_cry_membershipcardtwo_balanced = {
+				name = "Старый членский билет",
+				text = {
+					"{C:chips}+#1#{} Фишек за каждых {C:attention}8{} участников",
 					"в {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Сейчас {C:chips}+#2#{C:inactive} Фишек)",
 					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
@@ -2558,6 +2710,23 @@ return {
 					"{C:inactive}(Сейчас {X:dark_edition,C:white} ^#2# {C:inactive} Множ.)",
 				},
 			},
+			j_cry_pumpkin = {
+				name = "Тыква",
+				text = {
+					"Предотвращает смерть если количество",
+					"фишек не менее {C:attention}50%{} от требуемого",
+					"{C:attention}Превращается в Резную Тыкву",
+					"{C:attention}при{} {C:red}уничтожении",
+				},
+			},
+			j_cry_carved_pumpkin = {
+				name = "Резная тыква",
+				text = {
+					"Следующие {C:attention}#1#{} Босс-блайндов",
+					"будут иметь свои способности",
+					"{C:attention}отключены",
+				},
+			},
 			j_cry_python = {
 				name = "Питон",
 				text = {
@@ -2581,6 +2750,15 @@ return {
 				text = {
 					"Получите {C:money}$#1#{} через {C:attention}#2#{} раунда#3#",
 					"{C:red,E:2}самоуничтожается{}",
+				},
+			},
+			j_cry_rescribere = {
+				name = "Rescribere",
+				text = {
+					"Когда {C:attention}Джокер{} продан,",
+					"добавьте его эффекты",
+					"к каждому другому Джокеру",
+					"{C:inactive,s:0.8}Не влияет на других Rescribere{}",
 				},
 			},
 			j_cry_redeo = {
@@ -2611,6 +2789,13 @@ return {
 					"{C:inactive,s:0.8}Не копирует других Speculo{}",
 				},
 			},
+			j_cry_spy = {
+				name = "Шпион",
+				text = {
+					"{X:mult,C:white} X#2# {} Множ., {C:dark_edition}+1{C:attention} слот{} Джокера",
+					"{C:inactive}Это #1# шпион!",
+				},
+			},
 			j_cry_stardust = {
 				name = "Звездная пыль",
 				text = {
@@ -2632,6 +2817,13 @@ return {
 				name = "Supercell",
 				text = {
 					"{C:chips}+#1#{} Фишек, {C:mult}+#1#{} Множ.,",
+					"{X:chips,C:white}X#2#{} Фишек, {X:mult,C:white}X#2#{} Множ.",
+					"Получите {C:money}$#3#{} в конце раунда",
+				},
+			},
+			j_cry_supercell_balanced = {
+				name = "Supercell",
+				text = {
 					"{X:chips,C:white}X#2#{} Фишек, {X:mult,C:white}X#2#{} Множ.",
 					"Получите {C:money}$#3#{} в конце раунда",
 				},
@@ -2763,6 +2955,16 @@ return {
 		Planet = {
 			-- Объекты с одинаковым шаблоном
 			c_cry_asteroidbelt = { name = "Пояс астероидов", text = SPACE_OBJECT_TEXT },
+			c_cry_sunplanet2 = {
+				name = "Солнце",
+				text = {
+					"{S:0.8}({S:0.8,V:1}ур.#1#{S:0.8}){}",
+					"Повышение фактора вознесения",
+					"{C:attention}Вознесённых{} рук на {X:gold,C:white}#2#{}",
+					"{C:inactive}(Сейчас {X:gold,C:white}+#3#{C:inactive} {C:chips}Ф{}+{C:mult}M{C:inactive} Множ.",
+					"{C:inactive}За {C:attention}1{C:inactive} силу Вознесения)",
+				},
+			},
 			c_cry_void = { name = "Вакуум", text = SPACE_OBJECT_TEXT },
 			c_cry_marsmoons = { name = "Фобос и Деймос", text = SPACE_OBJECT_TEXT },
 			c_cry_nibiru = { name = "Нибиру", text = SPACE_OBJECT_TEXT },
@@ -2905,6 +3107,88 @@ return {
 					"{C:attention}-2{} Слота джокера",
 				},
 			},
+			sleeve_cry_beige_sleeve = {
+				name = "Бежевый рукав",
+				text = {
+					"{C:attention}Обычные{} Джокеры имеют",
+					"{C:attention}учетверённые{} значения",
+				},
+			},
+			sleeve_cry_beige_sleeve_alt = {
+				name = "Бежевый рукав",
+				text = {
+					"{C:green}Необычные{} Джокеры имеют",
+					"{C:attention}учетверённые{} значения",
+				},
+			},
+			sleeve_cry_beta_sleeve = {
+				name = "Ностальгический рукав",
+				text = {
+					"Слоты {C:attention}Джокеров{} и {C:attention}Расходников{}",
+					"{C:attention}объединены{}",
+					"{C:attention}Ностальгические{} блайнды заменяют",
+					"их обновлённые версии",
+				},
+			},
+			sleeve_cry_bountiful_sleeve = {
+				name = "Изобильный рукав",
+				text = {
+					"После {C:blue}Игры{} или {C:red}Сброса{},",
+					"всегда тянете {C:attention}5{} карт",
+				},
+			},
+			sleeve_cry_glowing_sleeve = {
+				name = "Светящийся рукав",
+				text = {
+					"Умножает значения всех",
+					"Джокеров на {X:dark_edition,C:white} X1.25 {}",
+					"после победы над босс-блайндом",
+					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person",
+				},
+			},
+			sleeve_cry_spooky_sleeve = {
+				name = "Жуткий рукав",
+				text = {
+					"Начните с {C:eternal}вечным{} {C:attention,T:j_cry_chocolate_dice}Шоколадным кубиком",
+					"после каждого {C:attention}Анте{}, создайте",
+					"{C:cry_candy}Конфету{} или {X:cry_cursed,C:white}Проклятого{} Джокера",
+				},
+			},
+			sleeve_cry_very_fair_sleeve = {
+				name = "Очень честный рукав",
+				text = {
+					"{C:blue}-2{} руки, {C:red}-2{} сброса",
+					"каждый раунд",
+					"{C:attention}Ваучеры{} больше не",
+					"появляются в магазине",
+				},
+			},
+			sleeve_cry_legendary_sleeve = {
+				name = "Легендарный рукав",
+				text = {
+					"Начните с {C:legendary}Легендарным{C:legendary} Джокером",
+					"{C:green}1 к 5{} шанс создать ещё одного",
+					"при победе над Босс-блайндом {C:inactive}(должно быть место){}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Рукав антиматерии",
+				text = {
+					"Применяет {C:attention}эффекты{}",
+					"и {C:attention}особые эффекты{}",
+					"всех рукавов колод",
+					"{C:red}В разработке",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Рукав антиматерии",
+				text = {
+					"Применяет {C:attention}эффекты{}",
+					"и {C:attention}особые эффекты{}",
+					"{C:attention}каждого{} рукава, с которым",
+					"победили на {C:gold}Золотой Ставке{}",
+				},
+			},
 		},
 
 		-- ── СПЕКТРАЛЬНЫЕ КАРТЫ ───────────────────────────────
@@ -2988,6 +3272,14 @@ return {
 				text = {
 					"Обменяйте {C:attention}выпуски{}",
 					"{C:attention}2{} выбраных игральных карт или {C:attention}джокеров{}",
+				},
+			},
+			c_cry_white_hole = {
+				name = "Белая дыра",
+				text = {
+					"Повышает {C:legendary,E:1}наиболее сыгранную{}",
+					"покерную руку на {C:attention}4{}",
+					"{C:attention}Удаляет{} все остальные уровни рук",
 				},
 			},
 			c_cry_white_hole2 = {
@@ -3637,8 +3929,9 @@ return {
 			cry_rigged = {
 				name = "Подкручено",
 				text = {
-					"Все {C:cry_code}указанные{} вероятности",
-					"{C:cry_code}гарантированы",
+					"Удваивает все",
+					"{C:cry_code}указанные{} вероятности",
+					"на этой карте",
 				},
 			},
 			cry_function_sticker = {
@@ -3685,7 +3978,7 @@ return {
 			cry_https_disabled = {
 				name = "M",
 				text = {
-					"{C:attention,s:0.7}Updating{s:0.7} is disabled by default ({C:attention,s:0.7}HTTPS Module{s:0.7})",
+					"{C:attention,s:0.7}Обновление{s:0.7} отключено по умолчанию ({C:attention,s:0.7}HTTPS Модуль{s:0.7})",
 				},
 			},
 
@@ -3816,8 +4109,230 @@ return {
 					"{C:inactive}Количество использований: ({C:cry_code}#1#{C:inactive} осталось)",
 				},
 			},
-		},
-		Unique = {
+			asc_misc = {
+				name = "Инфо о вознесённой руке",
+				text = {
+					"{C:gold}#1#{} сила Вознесения",
+					"{X:gold,C:white}X#2#{C:chips} Фишек{} и {C:mult}Множ.",
+					"{C:inactive}({C:gold}#3#{C:inactive} ^ {C:gold}#1#{C:inactive})",
+				},
+			},
+			asc_misc2 = {
+				name = "Инфо о вознесённой руке",
+				text = {
+					"{C:gold}#1#{} сила Вознесения",
+					"{X:gold,C:white}X#2#{C:chips} Фишек{} и {C:mult}Множ.",
+					"{C:inactive}({C:gold}#3#{C:inactive} X {C:gold}#1#{C:inactive})",
+				},
+			},
+			disabled = {
+				name = "Отключено",
+				text = {
+					"Больше не появляется",
+					"во время забега",
+				},
+			},
+			disabled_card_dependency = {
+				name = "Отключено",
+				text = {
+					"Требуется {C:attention}#1#",
+				},
+			},
+			disabled_mod_dependency = {
+				name = "Отключено",
+				text = {
+					"Требуется мод:",
+					"{C:attention}#1#",
+				},
+			},
+			disabled_mod_conflict = {
+				name = "Отключено",
+				text = {
+					"Несовместимо с модом:",
+					"{C:attention}#1#",
+				},
+			},
+			cry_hooked = {
+				name = "Зацеплено",
+				text = {
+					"Когда этот Джокер {C:cry_code}срабатывает{},",
+					"запускает {C:cry_code}#1#",
+					"{C:inactive}Не все карты могут быть активированы таким образом{}",
+					"{C:inactive}но все джокеры могут активировать других{}",
+					"Удаляется в конце раунда",
+				},
+			},
+			cry_flickering_desc = {
+				name = "Мерцающий",
+				text = {
+					"Будет уничтожен после",
+					"{C:attention}#1#{} срабатыван#<ия,ий>1#",
+				},
+			},
+			cry_possessed = {
+				name = "Одержимый",
+				text = {
+					"{C:attention}Отключает{} и {C:attention}меняет на обратный{}",
+					"эффекты, если возможно",
+					"Уничтожается вместе с {C:attention}Призраком",
+				},
+			},
+			ev_cry_choco0 = {
+				name = "Возможные события",
+				text = {
+					"{T:ev_cry_choco1}1{} {T:ev_cry_choco2}2{} {T:ev_cry_choco3}3{} {T:ev_cry_choco4}4{} {T:ev_cry_choco5}5{}",
+					"{T:ev_cry_choco6}6{} {T:ev_cry_choco7}7{} {T:ev_cry_choco8}8{} {T:ev_cry_choco9}9{} {T:ev_cry_choco10}10{}",
+					"{C:inactive}(Наведите для инфо)",
+				},
+			},
+			ev_cry_choco1 = {
+				name = "1: Одержимость",
+				text = {
+					"{C:attention}Джокеры{} и игральные карты имеют",
+					"{C:green}1 к 3{} шанс получить Мерцание",
+					"Создаёт {C:attention}Призрака",
+					"{C:inactive,s:0.7}Тобой овладел призрак, и твоё",
+					"{C:inactive,s:0.7}сознание мерцает.",
+				},
+			},
+			ev_cry_choco2 = {
+				name = "2: Дом с привидениями",
+				text = {
+					"Запрещает пропуск {C:attention}Блайнда{}",
+					"Разрешён {C:attention}один переброс{} в магазине",
+					"Цены {C:attention}Ваучеров{} удвоены",
+					"{C:inactive,s:0.7}Жуткие духи захватили всё! Не трогай",
+					"{C:inactive,s:0.7}ничего и убирайся как можно скорее!",
+				},
+			},
+			ev_cry_choco3 = {
+				name = "3: Ведьмины зелья",
+				text = {
+					"Создаёт 3 {C:attention}Зелья",
+					"Используй одно до конца {C:attention}Малого Блайнда{},",
+					"или {C:attention}все{} штрафы будут применены в это {C:attention}Анте",
+					"{C:inactive,s:0.7}Ты похищен ведьмой!",
+					"{C:inactive,s:0.7}Она предлагает три зелья, пристально следя за тобой.",
+					"{C:inactive,s:0.7}Выбери одно, иначе она решит за тебя.",
+				},
+			},
+			ev_cry_choco4 = {
+				name = "4: Лунная бездна",
+				text = {
+					"Сыгранные карты имеют {C:green}1 к 4{} шанс",
+					"превратиться в случайную {C:club}Трефовую{} лицевую карту",
+					"Делит {C:attention}Множ.{} на кол-во сыгранных лицевых карт",
+					"{C:inactive,s:0.7}Даже тот, кто чист душой",
+					"{C:inactive,s:0.7}и читает молитвы на ночь...",
+				},
+			},
+			ev_cry_choco5 = {
+				name = "5: Кровосос",
+				text = {
+					"Убирает {C:attention}Улучшения{} со всех сыгранных карт",
+					"{C:green}1 к 3{} шанс уничтожить",
+					"{C:heart}Черви{} и {C:diamond}Бубны{}",
+					"{C:inactive,s:0.7}Бойся в глухую ночь, ибо",
+					"{C:inactive,s:0.7,E:1}те, кто в тени{C:inactive,s:0.7}, жаждут утолить свою жажду...",
+				},
+			},
+			ev_cry_choco6 = {
+				name = "6: Возьмите одну",
+				text = {
+					"В {C:attention}конце раунда{}, откройте",
+					"случайный {C:attention}Бустерный{} набор",
+					"{C:inactive,s:0.7}Гуляя по улицам, ты замечаешь",
+					"{C:inactive,s:0.7}коробку с разными бустерами. Почему бы не взять одну!",
+				},
+			},
+			ev_cry_choco7 = {
+				name = "7: Праздничная атмосфера",
+				text = {
+					"Создаёт 3 {C:attention}Кошелёк или Жизнь{} и 1 {C:attention}Корзину конфет",
+					"В магазинах каждый раунд есть {C:attention}Кошелёк или Жизнь",
+					"{C:cry_candy}Конфеты{} дают {C:money}$3{} при получении",
+					"{C:inactive,s:0.7}Весь район украшен для жутких приключений,",
+					"{C:inactive,s:0.7}приди и насладись праздничной атмосферой!",
+				},
+			},
+			ev_cry_choco8 = {
+				name = "8: Конфетный дождь",
+				text = {
+					"При победе над {C:attention}Блайндом{}, получи {C:cry_candy}1 Конфету{}",
+					"за каждую оставшуюся руку; Получи {C:attention}Джокера-Еду{}",
+					"при генерации {C:cry_candy}Конфеты{}",
+					"{C:inactive,s:0.7}Конфеты падают с неба! Быстрее,",
+					"{C:inactive,s:0.7,E:1}хватай сколько сможешь!",
+				},
+			},
+			ev_cry_choco9 = {
+				name = "9: Призрачные богатства",
+				text = {
+					"Получите {C:money}$20",
+				 "Весь заработанный {C:money}доход{} {C:attention}удвоен",
+					"{C:inactive,s:0.7}Призрак давно ушедшего родственника",
+					"{C:inactive,s:0.7}навещает тебя среди ночи!",
+					"{C:inactive,s:0.7}Молча, они кладут мешок денег в твои руки,",
+					"{C:inactive,s:0.7}тепло улыбаются и машут, исчезая в воздухе.",
+				},
+			},
+			ev_cry_choco10 = {
+				name = "10: Почитаемая реликвия",
+				text = {
+					"{C:legendary}Легендарный{} {C:attention}Джокер{} появляется",
+					"в слоте {C:attention}Ваучера{} за {C:money}$50",
+					"Доступен к покупке только как {C:attention}последний{} предмет в магазине",
+					"{C:inactive,s:0.7}Ты привлёк внимание духа реликвии,",
+					"{C:inactive,s:0.7}но успокоить его будет непросто.",
+				},
+			},
+			o_nstar = {
+				name = "Эффект обсерватории",
+				text = {
+					"{X:mult,C:white}X#1#{} Множ. за каждую",
+					"{C:attention}Нейтронную звезду{} использованную",
+					"в этом забеге",
+					"{C:inactive}(Сейчас {X:mult,C:white}X#2#{C:inactive} Множ.)",
+				},
+			},
+			o_planetlua = {
+				name = "Эффект обсерватории",
+				text = { "" },
+			},
+			o_sunplanet = {
+				name = "Эффект обсерватории",
+				text = {
+					"Держа {C:attention}Sol{} и {C:attention}Perkele{} Карты",
+					"увеличивает {C:attention}силу Вознесения",
+					"{C:inactive}(Сейчас {X:gold,C:white}+#1#{C:inactive})",
+				},
+			},
+			o_perkele = {
+				name = "Эффект обсерватории",
+				text = {
+					"{X:dark_edition,C:white}^#2#{} множ. если сыгранная рука это",
+					"{C:attention}#4#{}",
+					"{X:mult,C:white}X#2#{} множ. если сыгранная рука это {C:attention}#3#{}",
+					"Держа {C:attention}Sol{} и {C:attention}Perkele{} Карты",
+					"увеличивает {C:attention}силу Вознесения",
+					"{C:inactive}(Сейчас {X:gold,C:white}+#1#{C:inactive})",
+				},
+			},
+			undiscovered_unique = {
+				name = "Не обнаружено",
+				text = {
+					"Купите или используйте",
+					"эту карту в",
+					"забеге без сида,",
+					"чтобы узнать что она делает",
+				},
+			},
+			blurred_sdm0 = {
+				name = "а",
+				text = {
+					'{C:inactive,s:0.8}"Ненавижу эту карту" - SDM_0, 2024{}',
+				},
+			},
 			c_cry_potion = {
 				name = "Зелье",
 				text = {
@@ -4298,9 +4813,9 @@ return {
 			ch_c_cry_all_pinned = { "Все джокеры {C:eternal}закреплены{}" },
 			ch_c_cry_all_banana = { "Все джокеры {C:eternal}Banana{}" },
 			ch_c_all_rnj = { "Все джокеры {C:attention}RNJoker{}" },
-			ch_c_cry_sticker_sheet_plus = { "All purchasable items have all stickers" },
-			ch_c_cry_rush_hour = { "All Boss Blinds are {C:attention}The Clock{} or {C:attention}Lavender Loop" },
-			ch_c_cry_rush_hour_ii = { "All Blinds are {C:attention}Boss Blinds{}" },
+			ch_c_cry_sticker_sheet_plus = { "Все покупаемые предметы имеют все наклейки" },
+			ch_c_cry_rush_hour = { "Все Босс-блайнды — это {C:attention}Часы{} или {C:attention}Lavender Loop" },
+			ch_c_cry_rush_hour_ii = { "Все блайнды — это {C:attention}Босс-блайнды{}" },
 			ch_c_cry_rush_hour_iii = {
 				"{C:attention}Часы{} и {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast",
 			},
