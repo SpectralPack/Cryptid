@@ -1095,7 +1095,7 @@ return {
 				},
 			},
 			j_cry_blender = {
-				name = "Блендер",
+				name = "Blender",
 				text = {
 					"Создать {C:attention}случайный{}",
 					"Расходник когда",
@@ -2810,7 +2810,7 @@ return {
 				},
 			},
 			j_cry_python = {
-				name = "Питон",
+				name = "Python",
 				text = {
 					"Этот джокер получает",
 					"{X:mult,C:white} X#1# {} Множ. когда",
