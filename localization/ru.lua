@@ -76,7 +76,7 @@ return {
 				name = "Колода антиматерии",
 				text = {
 					"Применяет {C:legendary,E:1}плюсы{}",
-					"{C:attention}каждой{} колоды",
+					"почти {C:attention}каждой{} колоды",
 				},
 				unlock = {
 					"Победите с",
@@ -118,6 +118,10 @@ return {
 					"{C:attention}Ностальгические{} блайнды заменяют",
 					"их обновлённые блайнды",
 				},
+				unlock = {
+					"Победите на",
+					"{C:attention}Розовой Ставке",
+				},
 			},
 			b_cry_blank = {
 				name = "Пустая колода",
@@ -129,6 +133,9 @@ return {
 					"Каждая карта это ещё и",
 					"{C:attention}случайный{} расходник",
 				},
+				unlock = {
+					"Используйте {C:spectral}Пространство молотка",
+				},
 			},
 			b_cry_conveyor = {
 				name = "Конвейерная колода",
@@ -138,6 +145,9 @@ return {
 					"{C:attention}дублирует{} самого правого джокера",
 					"и {C:attention}уничтожает{} самого левого джокера",
 				},
+				unlock = {
+					"Используйте {C:spectral}Аналог",
+				},
 			},
 			b_cry_critical = {
 				name = "Критическая колода",
@@ -146,6 +156,9 @@ return {
 					"{C:green}#1# к #2#{} шанс для {X:dark_edition,C:white} ^2 {} Множ",
 					"{C:green}#1# к #3#{} шанс для {X:dark_edition,C:white} ^0.5 {} Множ",
 				},
+				unlock = {
+					"Получите {C:attention}Подкрученного Джокера",
+				},
 			},
 			b_cry_encoded = {
 				name = "Закодированная колода",
@@ -153,6 +166,9 @@ return {
 					"Начинаете партию с {C:cry_code,T:j_cry_CodeJoker}Код Джокером{}",
 					"и {C:cry_code,T:j_cry_copypaste}Копировать/Вставить{}",
 					"Только {C:cry_code}Карты кода{} появляются в магазине",
+				},
+				unlock = {
+					"Используйте {C:spectral}POINTER://",
 				},
 			},
 			b_cry_equilibrium = {
@@ -164,6 +180,10 @@ return {
 					"Начинаете партию с",
 					"{C:attention,T:v_overstock_plus}Изобилие перебросов",
 				},
+				unlock = {
+					"Имейте {C:attention}100 Джокеров",
+					"одновременно",
+				},
 			},
 			b_cry_glowing = {
 				name = "Светящаяся колода",
@@ -173,6 +193,10 @@ return {
 					"после победы над босс-блайндом",
 					"{X:cry_jolly,C:white,s:0.8} Jolly#1#Open#1#Winner#1#-#1#wawa#1#person",
 				},
+				unlock = {
+					"Победите с",
+					"{C:attention}Бежевой Колодой",
+				},
 			},
 			b_cry_infinite = {
 				name = "Бесконечная колода",
@@ -180,6 +204,10 @@ return {
 					"Вы можете выбрать{C:attention}любое",
 					"количество карт",
 					"{C:attention}+1{} размер руки",
+				},
+				unlock = {
+					"Сыграйте руку",
+					"с {C:attention}6{} или более картами",
 				},
 			},
 			b_cry_misprint = {
@@ -189,12 +217,19 @@ return {
 					"и покерных рук",
 					"{C:attention}случайны",
 				},
+				unlock = {
+					"Получите {C:dark_edition}Глючного{C:attention} Джокера",
+				},
 			},
 			b_cry_redeemed = {
 				name = "Погашенная колода",
 				text = {
 					"Когда {C:attention}Ваучер{} куплен,",
 					"получаешь {C:attention}все улучш. версии",
+				},
+				unlock = {
+					"Откройте все",
+					"{C:attention}Ваучеры",
 				},
 			},
 			b_cry_very_fair = {
@@ -205,6 +240,10 @@ return {
 					"{C:attention}Ваучеры{} не появляются",
 					"в магазине",
 				},
+				unlock = {
+					"Победите с",
+					"{C:attention}Пустой Колодой",
+				},
 			},
 			b_cry_wormhole = {
 				name = "Колода червоточины",
@@ -213,6 +252,9 @@ return {
 					"Джокеры в {C:attention}20X{} чаще",
 					"появляются {C:dark_edition}Негативными",
 					"{C:attention}-2{} Слота джокера",
+				},
+				unlock = {
+					"Получите {C:cry_exotic}Экзотического{C:attention} Джокера",
 				},
 			},
 			b_cry_bountiful = {
