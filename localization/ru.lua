@@ -4139,8 +4139,8 @@ return {
 				name = "Скоропортящийся",
 				text = {
 					"Ослаблен после",
-					"{C:attention}#1#{} rounds",
-					"{C:inactive}({C:attention}#2#{C:inactive} remaining)",
+					"{C:attention}#1#{} раунд(ов)",
+					"{C:inactive}({C:attention}#2#{C:inactive} осталось)",
 				},
 			},
 			cry_rental_voucher = {
@@ -4171,8 +4171,8 @@ return {
 			cry_pinned_consumeable = {
 				name = "Закреплённый",
 				text = {
-					"Нельзя использовать другие",
-					"не-{C:attention}Закреплённые{} расходники",
+					"{C:inactive}Пока ничего не делает...",
+					"{C:inactive}пока что",
 				},
 			},
 			cry_banana_consumeable = {
@@ -4953,16 +4953,16 @@ return {
 		},
 
 		v_text = {
-			ch_c_cry_all_perishable = { "Все джокеры {C:eternal}Perishable{}" },
-			ch_c_cry_all_rental = { "Все джокеры {C:eternal}Rental{}" },
+			ch_c_cry_all_perishable = { "Все джокеры {C:eternal}Скоропортящиеся{}" },
+			ch_c_cry_all_rental = { "Все джокеры {C:eternal}Арендованные{}" },
 			ch_c_cry_all_pinned = { "Все джокеры {C:eternal}закреплены{}" },
-			ch_c_cry_all_banana = { "Все джокеры {C:eternal}Banana{}" },
+			ch_c_cry_all_banana = { "Все джокеры {C:eternal}Банан{}" },
 			ch_c_all_rnj = { "Все джокеры {C:attention}RNJoker{}" },
 			ch_c_cry_sticker_sheet_plus = { "Все покупаемые предметы имеют все наклейки" },
 			ch_c_cry_rush_hour = { "Все Босс-блайнды — это {C:attention}Часы{} или {C:attention}Lavender Loop" },
 			ch_c_cry_rush_hour_ii = { "Все блайнды — это {C:attention}Босс-блайнды{}" },
 			ch_c_cry_rush_hour_iii = {
-				"{C:attention}Часы{} и {C:attention}Lavender Loop{} scale {C:attention}twice{} as fast",
+				"{C:attention}Часы{} и {C:attention}Lavender Loop{} масштабируются {C:attention}вдвое{} быстрее",
 			},
 
 			ch_c_cry_no_tags = { "Пропуски {C:attention}отключены{}" },
