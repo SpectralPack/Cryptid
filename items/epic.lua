@@ -401,26 +401,25 @@ local canvas = {
 		return { key = Cryptid.gameset_loc(self, { modest = "balanced" }) }
 	end,
 	calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.retrigger_joker then
+		if context.retrigger_joker_check and card.area and card.rank and not context.retrigger_joker then
 			local num_retriggers = 0
-			for i = 1, #G.jokers.cards do
+			for i, v in ipairs(card.area.cards) do
 				if
-					card.T.x + card.T.w / 2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w / 2
-					and G.jokers.cards[i].config.center.rarity ~= 1
-					and (G.jokers.cards[i].config.center.rarity ~= "cry_candy" or Card.get_gameset(card) ~= "modest")
+					card.rank < i
+					and v.is_rarity
+					and not v:is_rarity(1)
+					and (not v:is_rarity("cry_candy") or Card.get_gameset(card) ~= "modest")
 				then
 					num_retriggers = num_retriggers + 1
 				end
 			end
 			if
-				card.T
-				and context.other_card.T
-				and (card.T.x + card.T.w / 2 > context.other_card.T.x + context.other_card.T.w / 2)
+				card.area == context.other_card.area
+				and context.other_card.rank
+				and card.rank > context.other_card.rank
 			then
 				return {
-					message = localize("k_again_ex"),
 					repetitions = Card.get_gameset(card) ~= "modest" and num_retriggers or math.min(2, num_retriggers),
-					card = card,
 				}
 			end
 		end

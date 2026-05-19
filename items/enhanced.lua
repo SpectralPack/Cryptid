@@ -245,14 +245,10 @@ local st_deck = {
 	end,
 	apply = function(self)
 		local aaa, bbb, ccc, ddd = Cryptid.enhanced_deck_info(self)
-		if ddd == "Spades" then
-			G.GAME.bosses_used["bl_goad"] = 1e308
-		elseif ddd == "Hearts" then
-			G.GAME.bosses_used["bl_head"] = 1e308
-		elseif ddd == "Clubs" then
-			G.GAME.bosses_used["bl_club"] = 1e308
-		elseif ddd == "Diamonds" then
-			G.GAME.bosses_used["bl_window"] = 1e308
+		for _, blind in pairs(G.P_BLINDS) do
+			if Cryptid.safe_get(blind,"debuff","suit") == ddd then --ban all blinds that debuff the selected suit (in the normal way)
+				G.GAME.banned_keys[blind.key] = true
+			end
 		end
 		G.GAME.modifiers.cry_force_suit = ddd
 		G.E_MANAGER:add_event(Event({
