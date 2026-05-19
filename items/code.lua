@@ -3081,18 +3081,18 @@ local declare = {
 			G.GAME.USING_DECLARE = false
 		end
 		G.FUNCS.declare_apply = function()
-			G.GAME.hands["cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)] =
-				Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD)
+			local hand = G.GAME.hands["cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)]
+			Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD, nil, hand)
 			G.GAME.DECLARE_USED = (G.GAME.DECLARE_USED or 0) + 1
 			G.FUNCS.declare_cancel()
 		end
 		G.FUNCS.declare_apply_suitless = function()
-			G.GAME.hands["cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)] =
-				Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD, true)
+			local hand = G.GAME.hands["cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)]
+			Cryptid.create_declare_hand(G.hand.highlighted, G.ENTERED_CARD, true, hand)
 			G.GAME.DECLARE_USED = (G.GAME.DECLARE_USED or 0) + 1
 			G.FUNCS.declare_cancel()
 		end
-		Cryptid.create_declare_hand = function(cards, name, suitless)
+		Cryptid.create_declare_hand = function(cards, name, suitless, hand)
 			if G.ENTERED_CARD == "" then
 				G.ENTERED_CARD = "cry_Declare" .. tostring(G.GAME.DECLARE_USED or 0)
 			end
@@ -3129,27 +3129,22 @@ local declare = {
 			for i, v in pairs(G.GAME.hands) do
 				v.order = (v.order or 0) + 1
 			end
-			return {
-				order = 1,
-				l_mult = l_mult,
-				l_chips = l_chips,
-				mult = mult,
-				chips = chips,
-				example = Cryptid.create_declare_example(cards, suitless),
-				visible = true,
-				played = 0,
-				_saved_d_v = true,
-				played_this_round = 0,
-				played_this_ante = 0,
-				s_mult = mult,
-				s_chips = chips,
-				from_declare = true,
-				declare_cards = declare_cards,
-				declare_name = G.ENTERED_CARD,
-				level = 1,
-				index = G.GAME.DECLARE_USED or 0,
-				suitless = suitless,
-			}
+			--avoid overriding the entire hand table for literally no reason
+			hand.order = 1
+			hand.l_mult = l_mult
+			hand.l_chips = l_chips
+			hand.mult = mult
+			hand.s_mult = mult
+			hand.chips = chips
+			hand.s_chips = chips
+			hand.example = Cryptid.create_declare_example(cards, suitless)
+			hand.visible = true
+			hand.from_declare = true
+			hand.declare_cards = declare_cards
+			hand.declare_name = G.ENTERED_CARD
+			hand.level = 1
+			hand.index = G.GAME.DECLARE_USED or 0
+			hand.suitless = suitless
 		end
 		local localize_ref = localize
 		function localize(first, second, ...)
