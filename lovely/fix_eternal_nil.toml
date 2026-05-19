@@ -1,0 +1,15 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+
+# Guard against nil card in SMODS.is_eternal
+# Prevents crash: "attempt to index local 'card' (a nil value)"
+# when SMODS.is_eternal is called with a nil card (e.g. from
+# stake/eternal checks on highlighted hand with empty slots)
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = "function SMODS.is_eternal(card, trigger)"
+position = "after"
+payload = "    if not card then return false end"
+match_indent = true
