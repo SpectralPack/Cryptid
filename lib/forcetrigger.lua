@@ -519,7 +519,6 @@ function Cryptid.forcetrigger(card, context)
 			if context.scoring_hand and #context.scoring_hand > 0 then
 				for k, v in ipairs(context.scoring_hand) do
 					if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then
-						enhanced[#enhanced + 1] = v
 						v.vampired = true
 						v:set_ability(G.P_CENTERS.c_base, nil, true)
 					end
@@ -528,7 +527,6 @@ function Cryptid.forcetrigger(card, context)
 			elseif G and G.hand and #G.hand.highlighted > 0 then
 				for k, v in ipairs(G.hand.highlighted) do
 					if v.config.center ~= G.P_CENTERS.c_base and not v.debuff and not v.vampired then
-						enhanced[#enhanced + 1] = v
 						v.vampired = true
 						v:set_ability(G.P_CENTERS.c_base, nil, true)
 					end
