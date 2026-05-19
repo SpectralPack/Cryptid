@@ -948,8 +948,8 @@ local sunplanet = {
 			}
 		end
 		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
-			local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet")
-				+ #find_joker("cry-Perkele")
+			local super_entropic_local_variable_that_stores_the_amount_of_suns = #SMODS.find_card("c_cry_sunplanet")
+				+ #SMODS.find_card("c_cry_perkele")
 			local observatory_power = 0
 
 			if super_entropic_local_variable_that_stores_the_amount_of_suns == 1 then
@@ -1509,8 +1509,8 @@ local perkele = {
 			}
 		end
 		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
-			local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet")
-				+ #find_joker("cry-Perkele")
+			local super_entropic_local_variable_that_stores_the_amount_of_suns = #SMODS.find_card("c_cry_sunplanet")
+				+ #SMODS.find_card("c_cry_perkele")
 			local observatory_power = 0
 
 			if super_entropic_local_variable_that_stores_the_amount_of_suns == 1 then

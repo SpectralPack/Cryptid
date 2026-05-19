@@ -11,7 +11,7 @@ hand[self.key] = math.max(hand['s_'..self.key] + hand['l_'..self.key]*(hand.leve
 '''
 position = "at"
 payload = '''
-if not next(find_joker('cry-Universum')) then
+if not next(SMODS.find_card('j_cry_universum')) then
     hand[self.key] = math.max(hand['s_'..self.key] + hand['l_'..self.key]*(hand.level - 1), 0)
 else
     universum_mod = 1

@@ -264,13 +264,15 @@ local maximized = {
 			if id == nil then
 				id = 10
 			end
-			if next(find_joker("cry-Maximized")) and not override_maximized then
+			if next(SMODS.find_card("j_cry_maximized")) and not override_maximized then
+				override_maximized = true --prevent is_face from running recursively
 				if id >= 2 and id <= 10 then
 					id = 10
 				end
-				if id >= 11 and id <= 13 or next(find_joker("Pareidolia")) then
+				if self:is_face() then
 					id = 13
 				end
+				override_maximized = false
 			end
 			return id
 		end
@@ -1362,7 +1364,7 @@ local big_cube = {
 		end
 	end,
 	in_pool = function(self)
-		return #find_joker("cry-Cube", true) ~= 0
+		return #SMODS.find_card("j_cry_cube", true) ~= 0
 	end,
 	cry_credits = {
 		idea = {
@@ -1554,7 +1556,7 @@ local seal_the_deal = {
 	calculate = function(self, card, context)
 		if
 			context.after
-			and (G.GAME.current_round.hands_left == 0 or next(find_joker("cry-panopticon")))
+			and (G.GAME.current_round.hands_left == 0 or next(SMODS.find_card("j_cry_panopticon")))
 			and context.scoring_hand
 			and not context.blueprint
 			and not context.retrigger_joker
@@ -8009,7 +8011,7 @@ local night = {
 				juice_card_until(card, eval, true)
 			end
 		elseif context.first_hand_drawn and not context.blueprint and not context.retrigger_joker then
-			if next(find_joker("cry-panopticon")) then
+			if next(SMODS.find_card("j_cry_panopticon")) then
 				local eval = function(card)
 					return G.GAME.current_round.hands_played == 0 and not G.RESET_JIGGLES
 				end

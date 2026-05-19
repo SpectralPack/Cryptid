@@ -536,7 +536,7 @@ SMODS.Sound({
 	sync = false,
 	pitch = 1,
 	select_music_track = function()
-		return next(find_joker("cry-Jimball"))
+		return next(SMODS.find_card("j_cry_jimball"))
 			and Cryptid_config.Cryptid
 			and Cryptid_config.Cryptid.jimball_music
 			-- Lowering priority for edition Jimballs later

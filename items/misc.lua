@@ -497,7 +497,7 @@ local meme1 = {
 	create_card = function(self, card)
 		if
 			Cryptid.enabled("j_cry_waluigi")
-			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
+			and not (G.GAME.used_jokers["j_cry_waluigi"] and not SMODS.showman("j_cry_waluigi"))
 		then
 			if pseudorandom("meme1_" .. G.GAME.round_resets.ante) > 0.997 then
 				return create_card("Meme", G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
@@ -555,13 +555,13 @@ local meme2 = {
 	create_card = function(self, card)
 		if
 			Cryptid.enabled("j_cry_waluigi")
-			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
+			and not (G.GAME.used_jokers["j_cry_waluigi"] and not SMODS.showman("j_cry_waluigi"))
 		then
-			if pseudorandom("memetwo_" .. G.GAME.round_resets.ante) > 0.997 then
+			if pseudorandom("meme1_" .. G.GAME.round_resets.ante) > 0.997 then
 				return create_card("Meme", G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
-		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memetwo")
+		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_meme")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -613,13 +613,13 @@ local meme3 = {
 	create_card = function(self, card)
 		if
 			Cryptid.enabled("j_cry_waluigi")
-			and not (G.GAME.used_jokers["j_cry_waluigi"] and not next(find_joker("Showman")))
+			and not (G.GAME.used_jokers["j_cry_waluigi"] and not SMODS.showman("j_cry_waluigi"))
 		then
-			if pseudorandom("memethree_" .. G.GAME.round_resets.ante) > 0.997 then
+			if pseudorandom("meme1_" .. G.GAME.round_resets.ante) > 0.997 then
 				return create_card("Meme", G.pack_cards, nil, nil, true, true, "j_cry_waluigi", nil)
 			end
 		end
-		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_memethree")
+		return create_card("Meme", G.pack_cards, nil, nil, true, true, nil, "cry_meme")
 	end,
 	ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.CRY_ASCENDANT)
@@ -2154,7 +2154,7 @@ local double_sided = {
 			end
 			if card.ability.immutable.other_side then
 				if type(card.ability.immutable.other_side) == "string" then
-					if next(find_joker("cry-Flip Side")) then
+					if next(SMODS.find_card("j_cry_flip_side")) then
 						if card:get_other_side_dummy() then
 							local dummy = card:get_other_side_dummy()
 							dummy.added_to_deck = true
@@ -2195,7 +2195,7 @@ local double_sided = {
 					card.ability.immutable.other_side.playing_card = curr_pc
 					card.ability.immutable.other_side.key = key
 					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
-					if next(find_joker("cry-Flip Side")) then
+					if next(SMODS.find_card("j_cry_flip_side")) then
 						if card:get_other_side_dummy() then
 							Card.add_to_deck(card:get_other_side_dummy(), true)
 						end
@@ -2204,7 +2204,7 @@ local double_sided = {
 					end
 					card.ability.immutable.other_side.base = base
 				else
-					if next(find_joker("cry-Flip Side")) then
+					if next(SMODS.find_card("j_cry_flip_side")) then
 						local dummy = card:get_other_side_dummy()
 						dummy.added_to_deck = true
 						Card.remove_from_deck(dummy, true)
@@ -2245,7 +2245,7 @@ local double_sided = {
 					card.ability.immutable.other_side.playing_card = curr_pc
 					card.ability.immutable.other_side.key = key
 					card.ability.immutable.other_side.seal = G.P_SEALS[seal] and seal or nil
-					if next(find_joker("cry-Flip Side")) then
+					if next(SMODS.find_card("j_cry_flip_side")) then
 						Card.add_to_deck(card:get_other_side_dummy(), true)
 					else
 						card:add_to_deck(true)
@@ -2468,7 +2468,7 @@ G.FUNCS.merge_ds = function(e)
 		card.ability.immutable.other_side.base = copy_table(other.base)
 	end
 	other:start_dissolve()
-	if next(find_joker("cry-Flip Side")) then
+	if next(SMODS.find_card("j_cry_flip_side")) then
 		card:remove_from_deck(true)
 		Card.add_to_deck(card:get_other_side_dummy(), true)
 	end

@@ -844,7 +844,7 @@ end
 function calculate_reroll_cost(skip_increment)
 	local limit = G.GAME.reroll_limit_buffer or nil
 	if not limit then
-		if next(find_joker("cry-candybuttons")) then
+		if next(SMODS.find_card("j_cry_candy_buttons")) then
 			limit = 1
 		elseif G.GAME.used_vouchers.v_cry_rerollexchange then
 			limit = 2
@@ -853,7 +853,7 @@ function calculate_reroll_cost(skip_increment)
 	if not G.GAME.current_round.free_rerolls or G.GAME.current_round.free_rerolls < 0 then
 		G.GAME.current_round.free_rerolls = 0
 	end
-	if next(find_joker("cry-crustulum")) or G.GAME.current_round.free_rerolls > 0 then
+	if next(SMODS.find_card("j_cry_crustulum")) or G.GAME.current_round.free_rerolls > 0 then
 		G.GAME.current_round.reroll_cost = 0
 		return
 	end
@@ -901,7 +901,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			G.GAME.aequilibriumkey = 1
 		end
 		local aeqactive = nil
-		if next(find_joker("Ace Aequilibrium")) and not forced_key then
+		if next(SMODS.find_card("j_cry_equilib")) and not forced_key then
 			while not aeqactive or not aeqviable(G.P_CENTER_POOLS.Joker[aeqactive]) do
 				if math.ceil(G.GAME.aequilibriumkey) > #G.P_CENTER_POOLS["Joker"] then
 					G.GAME.aequilibriumkey = 1
@@ -1917,7 +1917,7 @@ local discard_ref = G.FUNCS.discard_cards_from_highlighted
 G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 	--Labyrinth: set current_round_discards_used to 0 for effects
 	G.GAME.current_round.discards_used2 = G.GAME.current_round.discards_used
-	if next(find_joker("cry-maze")) then
+	if next(SMODS.find_card("j_cry_maze")) then
 		G.GAME.current_round.discards_used = 0
 	end
 	discard_ref(e, hook)
@@ -1965,7 +1965,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
 		trigger = "immediate",
 		func = function()
 			G.GAME.current_round.hands_played2 = G.GAME.current_round.hands_played
-			if next(find_joker("cry-maze")) then
+			if next(SMODS.find_card("j_cry_maze")) then
 				G.GAME.current_round.hands_played = 0
 			end
 			return true

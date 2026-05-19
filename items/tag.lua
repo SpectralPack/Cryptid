@@ -130,7 +130,7 @@ local schematic = {
 		end
 	end,
 	in_pool = function()
-		if G.GAME.used_jokers["j_brainstorm"] and not next(find_joker("Showman")) then
+		if G.GAME.used_jokers["j_brainstorm"] and not SMODS.showman("j_brainstorm") then
 			return false
 		end
 		if G.GAME.banned_keys["j_brainstorm"] then
@@ -198,11 +198,11 @@ local empoweredPack = {
 			i % 2 == 1
 			and Cryptid.enabled("c_cry_gateway") == true
 			and not G.GAME.banned_keys["c_cry_gateway"]
-			and not (G.GAME.used_jokers["c_cry_gateway"] and not next(find_joker("Showman")))
+			and not (G.GAME.used_jokers["c_cry_gateway"] and not SMODS.showman("c_cry_gateway"))
 		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		elseif
-			not (G.GAME.used_jokers["c_soul"] and not next(find_joker("Showman"))) and not G.GAME.banned_keys["c_soul"]
+			not (G.GAME.used_jokers["c_soul"] and not SMODS.showman("c_cry_gateway")) and not G.GAME.banned_keys["c_soul"]
 		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
 		else

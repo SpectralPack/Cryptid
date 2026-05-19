@@ -137,7 +137,7 @@ target = "card.lua"
 pattern = "if self.ability.rental then self.cost = 1 end"
 position = "at"
 payload = '''
-if self.ability.rental and (not (self.ability.set == "Planet" and #find_joker('Astronomer') > 0) and self.ability.set ~= "Booster") then self.cost = 1 end
+if self.ability.rental and (not (self.ability.set == "Planet" and next(SMODS.find_card("j_astronomer"))) and self.ability.set ~= "Booster") then self.cost = 1 end
 '''
 match_indent = true
 

@@ -245,11 +245,11 @@ function Cryptid.calculate_ascension_power(hand_name, hand_cards, hand_scoring_c
 	end
 	-- Get Ascension Power From Sol/Perkele (Observatory effect)
 	if
-		G.GAME.used_vouchers.v_observatory and (next(find_joker("cry-sunplanet")) or next(find_joker("cry-Perkele")))
+		G.GAME.used_vouchers.v_observatory and (next(SMODS.find_card("c_cry_sunplanet")) or next(SMODS.find_card("c_cry_perkele")))
 	then
 		-- switch this to not use find_joker eventually please for the love of god
-		local super_entropic_local_variable_that_stores_the_amount_of_suns = #find_joker("cry-sunplanet")
-			+ #find_joker("cry-Perkele")
+		local super_entropic_local_variable_that_stores_the_amount_of_suns = #SMODS.find_card("c_cry_sunplanet")
+			+ #SMODS.find_card("c_cry_perkele")
 
 		if super_entropic_local_variable_that_stores_the_amount_of_suns == 1 then
 			bonus = bonus + 1
