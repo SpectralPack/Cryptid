@@ -2274,31 +2274,21 @@ end
 
 local smods_calculate_round_score_stuff = SMODS.calculate_round_score
 function SMODS.calculate_round_score(flames)
-	if not G.GAME.current_scoring_calculation then
-		return 0
-	end
-	if Cryptid.safe_get(G, "GAME", "chromatic_mod") then
-		if G.GAME.chromatic_mod % 2 == 1 then
-			return G.GAME.current_scoring_calculation:func(
-				SMODS.get_scoring_parameter("chips", flames),
-				SMODS.get_scoring_parameter("mult", flames),
-				flames
-			) * -1
-		end
-	end
+	local base = smods_calculate_round_score_stuff(flames)
 	if G.GAME.tax_mod then
-		return math.floor(
+		base = math.floor(
 			math.min(
 				G.GAME.tax_mod * G.GAME.blind.chips,
-				G.GAME.current_scoring_calculation:func(
-					SMODS.get_scoring_parameter("chips", flames),
-					SMODS.get_scoring_parameter("mult", flames),
-					flames
-				)
+				base
 			) + 0.5
 		)
 	end
-	return smods_calculate_round_score_stuff(flames)
+	if Cryptid.safe_get(G, "GAME", "chromatic_mod") then
+		if G.GAME.chromatic_mod % 2 == 1 then
+			base = base * -1
+		end
+	end
+	return base
 end
 
 local smods_shatters_ref = SMODS.shatters
