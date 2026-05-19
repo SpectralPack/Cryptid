@@ -2482,14 +2482,14 @@ local demicolon = {
 								sound = "cry_demitrigger",
 							}
 						else
-							Spectrallib.forcetrigger{
-								card = G.jokers.cards[i+1],
+							Spectrallib.forcetrigger({
+								card = G.jokers.cards[i + 1],
 								message = localize("k_dcry_demitrigger_ex"),
 								colour = G.C.RARITY.cry_epic,
 								message_card = card,
 								context = context,
 								silent = context.forcetrigger,
-							}
+							})
 						end
 					end
 				end

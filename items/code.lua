@@ -2329,9 +2329,9 @@ local hooked = {
 							return results.jokers
 						end
 					else
-						Spectrallib.forcetrigger{
+						Spectrallib.forcetrigger({
 							card = G.jokers.cards[i],
-						}
+						})
 					end
 				end
 			end
