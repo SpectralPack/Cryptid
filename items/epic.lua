@@ -894,7 +894,8 @@ local boredom = {
 		if
 			context.retrigger_joker_check
 			and not context.retrigger_joker
-			and not (context.other_card.ability and context.other_card.ability.name == "cry-Boredom")
+			and context.other_card.ability
+			and not (context.other_card.config and context.other_card.config.center_key == self.key)
 		then
 			if SMODS.pseudorandom_probability(card, "cry_boredom_joker", 1, card.ability.extra.odds, "Boredom") then
 				return {
