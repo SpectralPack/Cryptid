@@ -1137,16 +1137,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
 		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0
 	end
-	if next(find_joker("Cry-topGear")) and card.config.center.rarity == 1 then
-		if
-			card.ability.name ~= "cry-meteor"
-			and card.ability.name ~= "cry-exoplanet"
-			and card.ability.name ~= "cry-stardust"
-			and card.ability.name ~= "cry-universe"
-		then
-			card:set_edition("e_polychrome", true, nil, true)
-		end
-	end
 	if card.ability.name == "cry-meteor" then
 		card:set_edition("e_foil", true, nil, true)
 	end
