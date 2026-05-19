@@ -230,3 +230,29 @@ pattern = "self.full_path = (self.mod and self.mod.path or SMODS.path) .."
 position = "at"
 payload = "self.full_path = (self.mod_path or self.mod and self.mod.path or SMODS.path) .."
 match_indent = true
+
+# plural handler for SMODS.localize_box (main text path)
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+'''
+position = "at"
+payload = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or (Cryptid.pluralize and Cryptid.pluralize(subpart[1], args.vars)) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+'''
+match_indent = true
+
+# plural handler for SMODS.localize_box (name path with double format_ui_value)
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+assembled_string_part = assembled_string_part..(type(subpart) == 'string' and subpart or format_ui_value(format_ui_value(args.vars[tonumber(subpart[1])])) or 'ERROR')
+'''
+position = "at"
+payload = '''
+assembled_string_part = assembled_string_part..(type(subpart) == 'string' and subpart or (Cryptid.pluralize and Cryptid.pluralize(subpart[1], args.vars)) or format_ui_value(format_ui_value(args.vars[tonumber(subpart[1])])) or 'ERROR')
+'''
+match_indent = true
