@@ -11091,7 +11091,7 @@ local emergencychips = {
 	order = 145,
 	demicoloncompat = false,
 	blueprint_compat = true,
-
+	eternal_compat = false,
 	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
