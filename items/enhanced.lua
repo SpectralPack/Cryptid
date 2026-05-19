@@ -246,7 +246,7 @@ local st_deck = {
 	apply = function(self)
 		local aaa, bbb, ccc, ddd = Cryptid.enhanced_deck_info(self)
 		for _, blind in pairs(G.P_BLINDS) do
-			if Cryptid.safe_get(blind,"debuff","suit") == ddd then --ban all blinds that debuff the selected suit (in the normal way)
+			if Cryptid.safe_get(blind, "debuff", "suit") == ddd then --ban all blinds that debuff the selected suit (in the normal way)
 				G.GAME.banned_keys[blind.key] = true
 			end
 		end
