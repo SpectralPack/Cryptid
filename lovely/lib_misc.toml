@@ -184,6 +184,19 @@ assembled_string = assembled_string..(type(subpart) == 'string' and subpart or (
 '''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+'''
+position = "at"
+payload = '''
+assembled_string = assembled_string..(type(subpart) == 'string' and subpart or (Cryptid.pluralize and Cryptid.pluralize(subpart[1], args.vars)) or format_ui_value(args.vars[tonumber(subpart[1])]) or 'ERROR')
+'''
+match_indent = true
+
+
 # prevent misprint crashing when big
 [[patches]]
 [patches.pattern]
