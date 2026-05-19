@@ -202,7 +202,8 @@ local empoweredPack = {
 		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		elseif
-			not (G.GAME.used_jokers["c_soul"] and not SMODS.showman("c_cry_gateway")) and not G.GAME.banned_keys["c_soul"]
+			not (G.GAME.used_jokers["c_soul"] and not SMODS.showman("c_cry_gateway"))
+			and not G.GAME.banned_keys["c_soul"]
 		then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
 		else
