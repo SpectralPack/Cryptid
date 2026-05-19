@@ -2323,9 +2323,15 @@ local hooked = {
 		then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].sort_id == card.ability.cry_hook_id then
-					local results = Cryptid.forcetrigger(G.jokers.cards[i], context)
-					if results and results.jokers then
-						return results.jokers
+					if not Spectrallib then
+						local results = Cryptid.forcetrigger(G.jokers.cards[i], context)
+						if results and results.jokers then
+							return results.jokers
+						end
+					else
+						Spectrallib.forcetrigger{
+							card = G.jokers.cards[i],
+						}
 					end
 				end
 			end

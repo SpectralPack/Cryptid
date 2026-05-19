@@ -2468,18 +2468,29 @@ local demicolon = {
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i] == card then
 					if Cryptid.demicolonGetTriggerable(G.jokers.cards[i + 1])[1] then
-						local results = Cryptid.forcetrigger(G.jokers.cards[i + 1], context)
-						if results and results.jokers then
-							results.jokers.message = localize("cry_demicolon")
-							results.jokers.colour = G.C.RARITY.cry_epic
-							results.jokers.sound = "cry_demitrigger"
-							return results.jokers
+						if not Spectrallib then
+							local results = Cryptid.forcetrigger(G.jokers.cards[i + 1], context)
+							if results and results.jokers then
+								results.jokers.message = localize("cry_demicolon")
+								results.jokers.colour = G.C.RARITY.cry_epic
+								results.jokers.sound = "cry_demitrigger"
+								return results.jokers
+							end
+							return {
+								message = localize("cry_demicolon"),
+								colour = G.C.RARITY.cry_epic,
+								sound = "cry_demitrigger",
+							}
+						else
+							Spectrallib.forcetrigger{
+								card = G.jokers.cards[i+1],
+								message = localize("k_dcry_demitrigger_ex"),
+								colour = G.C.RARITY.cry_epic,
+								message_card = card,
+								context = context,
+								silent = context.forcetrigger,
+							}
 						end
-						return {
-							message = localize("cry_demicolon"),
-							colour = G.C.RARITY.cry_epic,
-							sound = "cry_demitrigger",
-						}
 					end
 				end
 			end
