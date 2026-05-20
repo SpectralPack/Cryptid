@@ -647,3 +647,16 @@ local safe_seal = type(other.ability.seal) == "table" and other.ability.seal or 
 for k, v in pairs(safe_seal) do
 '''
 match_indent = true
+
+#Adds additional tooltip to banned cards in the collection
+[[patches]]
+[patches.pattern]
+match_indent = true
+pattern = "for _, v in ipairs(info_queue) do"
+position = 'before'
+target = 'functions/common_events.lua'
+payload = '''
+    if card and card.config and G.GAME.cry_banished_keys[card.config.center_key] and card.area and card.area.config.collection then
+        info_queue[#info_queue+1] = { set = "Other", key = "cry_banned_card", }
+    end
+'''

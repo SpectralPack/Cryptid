@@ -4936,6 +4936,13 @@ return {
 					"{C:inactive}Multiuse: ({C:cry_code}#1#{C:inactive} remaining)",
 				},
 			},
+			cry_banned_card = {
+				name = "Banished",
+				text = {
+					"This card has been",
+					"{C:red}banished"
+				}
+			},
 		},
 		Unique = {
 			c_cry_potion = {
