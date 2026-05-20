@@ -485,7 +485,7 @@ local redeo = {
 			return nil, true
 		end
 		if context.forcetrigger then
-			ease_ante(card.ability.extra.ante_reduction)
+			ease_ante(-card.ability.extra.ante_reduction)
 		end
 	end,
 	cry_credits = {
