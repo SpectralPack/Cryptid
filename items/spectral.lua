@@ -667,7 +667,9 @@ local analog = {
 				end,
 			}))
 		end
-		ease_ante(math.min(card.ability.ante, card.ability.immutable.max_ante))
+		local ante_mod = math.min(card.ability.ante, card.ability.immutable.max_ante)
+		ease_ante(ante_mod)
+		G.GAME.round_resets.blind_ante = G.GAME.round_resets.ante
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)

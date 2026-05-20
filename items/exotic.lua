@@ -481,11 +481,13 @@ local redeo = {
 			end
 			if ante_mod < 0 then
 				ease_ante(ante_mod)
+				G.GAME.round_resets.blind_ante = G.GAME.round_resets.ante
 			end
 			return nil, true
 		end
 		if context.forcetrigger then
 			ease_ante(-card.ability.extra.ante_reduction)
+			G.GAME.round_resets.blind_ante = G.GAME.round_resets.ante
 		end
 	end,
 	cry_credits = {

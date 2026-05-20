@@ -953,6 +953,7 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	redeem = function(self)
 		local mod = -G.GAME.round_resets.ante + Cryptid.asteroglyph_ante()
 		ease_ante(mod)
+		G.GAME.round_resets.blind_ante = G.GAME.round_resets.ante
 		G.GAME.modifiers.cry_astero_ante = (G.GAME.modifiers.cry_astero_ante or 0) > 0
 				and math.min(math.ceil(G.GAME.modifiers.cry_astero_ante ^ 1.13), 1e300)
 			or 1
