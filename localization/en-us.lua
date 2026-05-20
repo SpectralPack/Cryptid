@@ -4940,8 +4940,8 @@ return {
 				name = "Banished",
 				text = {
 					"This card has been",
-					"{C:red}banished"
-				}
+					"{C:red}banished",
+				},
 			},
 		},
 		Unique = {

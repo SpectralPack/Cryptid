@@ -245,15 +245,15 @@ SMODS.DrawStep({
 })
 
 --Banished cards drawstep (thank you bandisplay :pray:)
-SMODS.DrawStep{
+SMODS.DrawStep({
 	key = "banished_card",
 	order = 69,
-	func = function (card, layer)
+	func = function(card, layer)
 		if card.area and card.area.config.collection and G.GAME.cry_banished_keys[card.config.center_key] then
-			card.children.center:draw_shader('debuff', nil, card.ARGS.send_to_shader)
+			card.children.center:draw_shader("debuff", nil, card.ARGS.send_to_shader)
 		end
-	end
-}
+	end,
+})
 
 -- Make hover UI collidable - so we can detect collision and display tooltips
 local m = Card.move
