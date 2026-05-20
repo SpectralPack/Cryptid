@@ -2177,7 +2177,7 @@ local buttercup = {
 	end,
 }
 
-items = {
+local items = {
 	cotton_candy,
 	wrapped,
 	choco_dice,
