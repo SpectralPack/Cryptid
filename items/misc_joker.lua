@@ -9473,6 +9473,7 @@ local oil_lamp = { --You want it? It's yours my friend
 	order = 127,
 	atlas = "atlastwo",
 	demicoloncompat = true,
+	blueprint_compat = false,
 	loc_vars = function(self, info_queue, card)
 		card.ability.blueprint_compat_ui = card.ability.blueprint_compat_ui or ""
 		card.ability.blueprint_compat_check = nil
