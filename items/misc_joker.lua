@@ -10061,13 +10061,8 @@ local lebaron_james = {
 					}
 				end
 			end
-		elseif
-			context.end_of_round
-			and not context.repetition
-			and not context.individual
-			and not context.blueprint
-			and not context.retrigger_joker
-		then
+		end
+		if context.end_of_round and context.main_eval then
 			card.ability.immutable.added_h = 0
 		end
 	end,
@@ -10078,29 +10073,24 @@ local lebaron_james = {
 		},
 		code = {
 			"AlexZGreat",
+			"Eris",
 		},
 		art = {
 			"lamborghiniofficial",
 		},
 	},
 	init = function(self)
-		-- Calculate enhancements for kings as if held in hand
-		-- Note that for enhancements that work when played and held in hand, this will fail
-		-- Not tested since no enhancements use this yet (Steel is weird, and Gold won't work)
-		local cce = Card.calculate_enhancement
-		function Card:calculate_enhancement(context)
-			local ret = cce(self, context)
-			if
-				not ret
-				and next(SMODS.find_card("j_cry_lebaron_james"))
-				and (SMODS.Ranks[self.base.value] or {}).key == "King"
-				and context.cardarea == G.play
-			then
+		-- Calculate effects for kings as if held in hand
+		local score_card = SMODS.score_card
+		function SMODS.score_card(card, context)
+			if context.cardarea == G.play and next(SMODS.find_card("j_cry_lebaron_james")) and card:get_id() == 13 and not G.scorehand then
+				G.scorehand = true
 				context.cardarea = G.hand
-				local ret = cce(self, context)
+				SMODS.score_card(card, context)
+				G.scorehand = nil
 				context.cardarea = G.play
 			end
-			return ret
+			return score_card(card, context)
 		end
 	end,
 }
