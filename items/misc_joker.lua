@@ -10083,7 +10083,12 @@ local lebaron_james = {
 		-- Calculate effects for kings as if held in hand
 		local score_card = SMODS.score_card
 		function SMODS.score_card(card, context)
-			if context.cardarea == G.play and next(SMODS.find_card("j_cry_lebaron_james")) and card:get_id() == 13 and not G.scorehand then
+			if
+				context.cardarea == G.play
+				and next(SMODS.find_card("j_cry_lebaron_james"))
+				and card:get_id() == 13
+				and not G.scorehand
+			then
 				G.scorehand = true
 				context.cardarea = G.hand
 				SMODS.score_card(card, context)
