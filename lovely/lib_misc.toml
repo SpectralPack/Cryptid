@@ -29,19 +29,6 @@ payload = '''
 '''
 match_indent = true
 
-# Show Glitched Edition to confirm Cryptid is Active if custom main menu is enabled
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "replace_card.states.visible = false"
-position = "before"
-payload = '''
-if ((Cryptid_config and Cryptid_config.menu) or false) then
-	replace_card:set_edition(G.P_CENTERS.e_cry_glitched and 'e_cry_glitched' or 'e_negative',true,true)
-end
-'''
-match_indent = true
-
 # Draw midground layer
 [[patches]]
 [patches.pattern]

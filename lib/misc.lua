@@ -410,25 +410,6 @@ if Cryptid_config.menu then
 	local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)
 		local ret = oldfunc(change_context)
-		-- adds a Cryptid spectral to the main menu
-		local newcard = Card(
-			G.title_top.T.x,
-			G.title_top.T.y,
-			G.CARD_W,
-			G.CARD_H,
-			G.P_CARDS.empty,
-			G.P_CENTERS.c_cryptid,
-			{ bypass_discovery_center = true }
-		)
-		-- recenter the title
-		G.title_top.T.w = G.title_top.T.w * 1.7675
-		G.title_top.T.x = G.title_top.T.x - 0.8
-		G.title_top:emplace(newcard)
-		-- make the card look the same way as the title screen Ace of Spades
-		newcard.T.w = newcard.T.w * 1.1 * 1.2
-		newcard.T.h = newcard.T.h * 1.1 * 1.2
-		newcard.no_ui = true
-		newcard.states.visible = false
 
 		-- make the title screen use different background colors
 		G.SPLASH_BACK:define_draw_steps({
@@ -443,24 +424,15 @@ if Cryptid_config.menu then
 			},
 		})
 
-		G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0,
-			blockable = false,
-			blocking = false,
-			func = function()
-				if change_context == "splash" then
-					newcard.states.visible = true
-					newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, true, 2.5)
-				else
-					newcard.states.visible = true
-					newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, nil, 1.2)
-				end
-				return true
-			end,
-		}))
-
 		return ret
+	end
+	SMODS.current_mod.menu_cards = function ()
+		return {
+			{key = "c_cryptid"},
+			func = function ()
+				G.title_top.cards[1]:set_edition("e_cry_glitched", true, true)
+			end
+		}
 	end
 end
 
