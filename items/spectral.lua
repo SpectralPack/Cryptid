@@ -1158,7 +1158,8 @@ local white_hole = {
 		if modest then
 			level_up_hand(used_consumable, _hand, false, 4)
 		else
-			level_up_hand(used_consumable, _hand, false, math.min((3 * removed_levels), 1e300))
+			local boost = tonumber(tostring(math.min((3 * removed_levels), 1e300)))
+			level_up_hand(used_consumable, _hand, false, boost)
 		end
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
