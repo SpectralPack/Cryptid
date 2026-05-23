@@ -426,12 +426,12 @@ if Cryptid_config.menu then
 
 		return ret
 	end
-	SMODS.current_mod.menu_cards = function ()
+	SMODS.current_mod.menu_cards = function()
 		return {
-			{key = "c_cryptid"},
-			func = function ()
+			{ key = "c_cryptid" },
+			func = function()
 				G.title_top.cards[1]:set_edition("e_cry_glitched", true, true)
-			end
+			end,
 		}
 	end
 end
