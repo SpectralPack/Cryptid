@@ -902,7 +902,7 @@ function Cryptid.enabled(key, iter)
 		end
 		if card.dependencies.mods then
 			for i = 1, #card.dependencies.mods do
-				if not (SMODS.Mods[card.dependencies.mods[i]] or {}).can_load then
+				if not next(SMODS.find_mod(card.dependencies.mods[i])) then
 					return { type = "mod_dependency", key = card.dependencies.mods[i] }
 				end
 			end
@@ -911,7 +911,7 @@ function Cryptid.enabled(key, iter)
 	if card.conflicts then
 		if card.conflicts.mods then
 			for i = 1, #card.conflicts.mods do
-				if (SMODS.Mods[card.conflicts.mods[i]] or {}).can_load then
+				if next(SMODS.find_mod(card.conflicts.mods[i])) then
 					return { type = "mod_conflict", key = card.conflicts.mods[i] }
 				end
 			end

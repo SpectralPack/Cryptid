@@ -505,7 +505,7 @@ function Game:update(dt)
 				--Update UI
 				--todo: in blinds screen, too
 				if G.blind_select_opts then
-					if (SMODS.Mods["StrangeLib"] or {}).can_load then
+					if next(SMODS.find_mod("StrangeLib")) then
 						StrangeLib.dynablind.blind_choice_scores[c] = get_blind_amount(G.GAME.round_resets.blind_ante)
 							* G.GAME.starting_params.ante_scaling
 							* G.GAME.CRY_BLINDS[c]
