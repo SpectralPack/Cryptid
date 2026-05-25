@@ -35,15 +35,12 @@ for _, file in ipairs(files) do
 	if string.match(file, "%.lua$") then -- fix the index local ret thing cuz its annoying when other files exist and cryptid tries to read em
 		print("[CRYPTID] Loading library file " .. file)
 		local f, err = SMODS.load_file("lib/" .. file)
-		if err then
-			error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
-		end
-		f()
+		assert(f, err)()
 	end
 end
 local function process_items(f, mod)
 	local ret = f()
-	if not ret.disabled then
+	if ret and not ret.disabled then
 		if ret.init and type(ret.init) == "function" then
 			ret:init()
 		end
