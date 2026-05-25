@@ -139,21 +139,6 @@ position = "at"
 payload = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and not SMODS.is_eternal(context.full_hand[1]) and G.GAME.current_round.hands_played == 0 then"
 match_indent = true
 
-
-# Yellow Stake - enhancement tarots don't remove stickers
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "perma_bonus = self.ability and self.ability.perma_bonus or 0,"
-position = "after"
-payload = '''
-eternal = self.ability and self.ability.eternal,
-perishable = self.ability and self.ability.perishable,
-perish_tally = self.ability and self.ability.perish_tally,
-rental = self.ability and self.ability.rental,
-'''
-match_indent = true
-
 # Crimson Stake - Disable restocks on even antes
 [[patches]]
 [patches.pattern]
