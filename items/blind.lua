@@ -686,25 +686,18 @@ local scorch = {
 	},
 	calculate = function(self, blind, context)
 		if
-			context.full_hand
-			and context.destroy_card
+			context.destroy_card
 			and (context.cardarea == G.play or context.cardarea == "unscored")
 			and not G.GAME.blind.disabled
 		then
 			return { remove = not SMODS.is_eternal(context.destroy_card) }
 		end
 		if context.discard and not G.GAME.blind.disabled then
-			for i, card in ipairs(G.hand.highlighted) do
-				return { remove = not SMODS.is_eternal(card) }
-			end
+			return { remove = not SMODS.is_eternal(context.other_card) } --is this check even needed?
 		end
 	end,
 	in_pool = function(self) -- only appears in endless
-		if G.GAME.round_resets.blind_ante > G.GAME.win_ante then
-			return true
-		else
-			return false
-		end
+		return G.GAME.won
 	end,
 }
 -- +0.25X blind requirements
