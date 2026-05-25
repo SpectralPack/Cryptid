@@ -46,5 +46,5 @@ Amulet may not be configured to be on **Omeganum** mode, which has a maximum lim
 
 > *I've experienced a crash/bug!*
 
-Be sure to give us as much information about the bug/crash as possible. A way to reproduce the bug/crash is also especially useful information to help us fix it.
+Be sure to give us as much information about the bug/crash as possible in our [Discord](https://discord.com/invite/eUf9Ur6RyB). A way to reproduce the bug/crash is also especially useful information to help us fix it.
 Remember; just saying you're crashing doesn't tell us anything. We need to know the details!

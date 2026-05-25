@@ -1,10 +1,10 @@
 -- Welcome to the Cryptid source code!
 -- This is the main file for the mod, where everything is loaded and initialized.
--- If you're looking for a specific feature, browse the items folder to see how it is implemented.
--- If you're looking for a specific function, check the lib folder to see if it is there.
+-- If you're looking for a specific feature (like jokers or consumables), browse the items folder to see how it is implemented.
+-- If you're looking for a specific function (like ascended hands or https), check the lib folder to see if it is there.
 
 if not Cryptid then
-	Cryptid = {}
+	Cryptid = {} -- if it works it works
 end
 local mod_path = "" .. SMODS.current_mod.path -- this path changes when each mod is loaded, but the local variable will retain Cryptid's path
 Cryptid.path = mod_path
@@ -32,12 +32,14 @@ SMODS.current_mod.optional_features = {
 --Load Library Files
 local files = NFS.getDirectoryItems(mod_path .. "lib")
 for _, file in ipairs(files) do
-	print("[CRYPTID] Loading library file " .. file)
-	local f, err = SMODS.load_file("lib/" .. file)
-	if err then
-		error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+	if string.match(file, "%.lua$") then -- fix the index local ret thing cuz its annoying when other files exist and cryptid tries to read em
+		print("[CRYPTID] Loading library file " .. file)
+		local f, err = SMODS.load_file("lib/" .. file)
+		if err then
+			error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+		end
+		f()
 	end
-	f()
 end
 local function process_items(f, mod)
 	local ret = f()
@@ -110,12 +112,14 @@ Cryptid.object_registry = {}
 Cryptid.object_buffer = {}
 local files = NFS.getDirectoryItems(mod_path .. "items")
 for _, file in ipairs(files) do
-	print("[CRYPTID] Loading file " .. file)
-	local f, err = SMODS.load_file("items/" .. file)
-	if err then
-		error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+	if string.match(file, "%.lua$") then -- fix the index local ret thing cuz its annoying when other files exist and cryptid tries to read em
+		print("[CRYPTID] Loading file " .. file)
+		local f, err = SMODS.load_file("items/" .. file)
+		if err then
+			error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+		end
+		process_items(f)
 	end
-	process_items(f)
 end
 
 -- Check for files in other mods
@@ -137,12 +141,14 @@ for _, mod in pairs(SMODS.Mods) do
 			if file == "Cryptid" and path .. "Cryptid/" ~= Cryptid.path then
 				local files = NFS.getDirectoryItems(path .. "Cryptid")
 				for _, file in ipairs(files) do
-					print("[CRYPTID] Loading file " .. file .. " from " .. mod.id)
-					local f, err = SMODS.load_file("Cryptid/" .. file, mod.id)
-					if err then
-						error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+					if string.match(file, "%.lua$") then
+						print("[CRYPTID] Loading file " .. file .. " from " .. mod.id)
+						local f, err = SMODS.load_file("Cryptid/" .. file, mod.id)
+						if err then
+							error(err) --Steamodded actually does a really good job of displaying this info! So we don't need to do anything else.
+						end
+						process_items(f, mod)
 					end
-					process_items(f, mod)
 				end
 			end
 		end
