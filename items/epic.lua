@@ -360,10 +360,10 @@ local negative = {
 		if card.ability.extra.slots > card.ability.immutable.max_slots then
 			card.ability.extra.slots = card.ability.immutable.max_slots
 		end
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.slots))
+		G.jokers:change_size(lenient_bignum(to_big(card.ability.extra.slots)))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - to_big(card.ability.extra.slots))
+		G.jokers:change_size(lenient_bignum(-to_big(card.ability.extra.slots)))
 	end,
 	cry_credits = {
 		idea = {
@@ -1532,17 +1532,16 @@ local bonusjoker = {
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.jokers.config.card_limit = lenient_bignum(
-							G.jokers.config.card_limit + math.min(card.ability.extra.add, card.ability.immutable.max)
-						)
+						G.jokers:change_size(lenient_bignum(
+							to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
+						))
 					else
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.consumeables.config.card_limit = lenient_bignum(
-							G.consumeables.config.card_limit
-								+ to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
-						)
+						G.consumeables:change_size(lenient_bignum(
+							to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
+						))
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1572,17 +1571,16 @@ local bonusjoker = {
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.jokers.config.card_limit = lenient_bignum(
-					G.jokers.config.card_limit + math.min(card.ability.extra.add, card.ability.immutable.max)
-				)
+				G.jokers:change_size(lenient_bignum(
+					to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
+				))
 			else
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.consumeables.config.card_limit = lenient_bignum(
-					G.consumeables.config.card_limit
-						+ to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
-				)
+				G.consumeables:change_size(lenient_bignum(
+					to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
+				))
 			end
 			return {
 				extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1899,8 +1897,8 @@ local soccer = {
 	add_to_deck = function(self, card, from_debuff)
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
 		local mod = card.ability.extra.holygrail
-		G.jokers.config.card_limit = G.jokers.config.card_limit + ((Card.get_gameset(card) == "modest") and 0 or mod)
-		G.consumeables.config.card_limit = G.consumeables.config.card_limit + mod
+		G.jokers:change_size((Card.get_gameset(card) == "modest") and 0 or mod)
+		G.consumeables:change_size(mod)
 		G.hand:change_size(mod)
 		SMODS.change_booster_limit(mod)
 		SMODS.change_voucher_limit(mod)
@@ -1908,8 +1906,8 @@ local soccer = {
 	remove_from_deck = function(self, card, from_debuff)
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
 		local mod = card.ability.extra.holygrail
-		G.jokers.config.card_limit = G.jokers.config.card_limit + ((Card.get_gameset(card) == "modest") and 0 or -mod)
-		G.consumeables.config.card_limit = G.consumeables.config.card_limit - mod
+		G.jokers:change_size((Card.get_gameset(card) == "modest") and 0 or -mod)
+		G.consumeables:change_size(-mod)
 		G.hand:change_size(-mod)
 		SMODS.change_booster_limit(-mod)
 		SMODS.change_voucher_limit(-mod)

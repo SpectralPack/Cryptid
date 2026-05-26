@@ -579,7 +579,7 @@ local notebook = {
 					card.ability.extra.add = 0
 				end
 
-				G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.add))
+				G.jokers:change_size(lenient_bignum(to_big(card.ability.extra.add)))
 				card.ability.extra.check = false
 				card.ability.extra.active = localize("cry_inactive")
 				return {
@@ -612,14 +612,14 @@ local notebook = {
 				card.ability.extra.add = 0
 			end
 
-			G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.add))
+			G.jokers:change_size(lenient_bignum(to_big(card.ability.extra.add)))
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.immutable.slots))
+		G.jokers:change_size(lenient_bignum(to_big(card.ability.immutable.slots)))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - to_big(card.ability.immutable.slots))
+		G.jokers:change_size(lenient_bignum(-to_big(card.ability.immutable.slots)))
 	end,
 	cry_credits = {
 		idea = {
