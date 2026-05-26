@@ -551,14 +551,14 @@ local tenebris = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(
-			G.jokers.config.card_limit + math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
-		)
+		G.jokers:change_size(
+			lenient_bignum(math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
+		))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(
-			G.jokers.config.card_limit - math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
-		)
+		G.jokers:change_size(
+			lenient_bignum(- math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
+		))
 	end,
 	cry_credits = {
 		idea = { "Gold" },
