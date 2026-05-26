@@ -2647,6 +2647,7 @@ local cryfunction = {
 		},
 		code = {
 			"Nova",
+			"Eris",
 		},
 	},
 	dependencies = {
@@ -2663,7 +2664,7 @@ local cryfunction = {
 	cost = 4,
 	order = 419,
 	loc_vars = function(self, info_queue, card)
-		lclze = function(index)
+		local lclze = function(index)
 			local func_card = (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[index]
 			if not func_card then
 				return "None"
@@ -2690,56 +2691,39 @@ local cryfunction = {
 		}
 	end,
 	can_use = function(self, card)
-		return true
+		if type(G.GAME.cry_function_cards)=="table" and next(G.GAME.cry_function_cards) then
+			return #G.consumeables.cards<=G.consumeables.config.card_limit
+		else
+			return #G.GAME.cry_last_used_consumeables >= 3
+		end
 	end,
 	use = function(self, card, area, copier)
-		if #G.consumeables.cards < G.consumeables.config.card_limit then
-			if not G.GAME.cry_function_cards and #G.GAME.cry_last_used_consumeables == 0 then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local new_card = create_card(
-							"Code",
-							G.consumeables,
-							nil,
-							nil,
-							nil,
-							nil,
-							"c_cry_cryfunction",
-							"cry_cryfunction"
-						)
-						new_card:add_to_deck()
-						G.consumeables:emplace(new_card)
-						G.GAME.consumeable_buffer = 0
-						return true
-					end,
-				}))
-			elseif not G.GAME.cry_function_cards then
-				G.GAME.cry_function_cards = {}
-				for i = 1, #G.GAME.cry_function_stupid_workaround do
-					G.GAME.cry_function_cards[i] = G.GAME.cry_function_stupid_workaround[i]
-				end
-			else
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local new_card = create_card(
-							"Consumeables",
-							G.consumeables,
-							nil,
-							nil,
-							nil,
-							nil,
-							G.GAME.cry_function_cards[1],
-							"cry_cryfunction"
-						)
-						new_card:add_to_deck()
-						new_card.ability.cry_function_sticker = true
-						new_card.ability.cry_function_counter = 1
-						G.consumeables:emplace(new_card)
-						G.GAME.consumeable_buffer = 0
-						return true
-					end,
-				}))
+		if not G.GAME.cry_function_cards then
+			G.GAME.cry_function_cards = {}
+			for i = 1, #G.GAME.cry_function_stupid_workaround do
+				G.GAME.cry_function_cards[i] = G.GAME.cry_function_stupid_workaround[i]
 			end
+		else
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					local new_card = create_card(
+						"Consumeables",
+						G.consumeables,
+						nil,
+						nil,
+						nil,
+						nil,
+						G.GAME.cry_function_cards[1],
+						"cry_cryfunction"
+					)
+					new_card:add_to_deck()
+					new_card.ability.cry_function_sticker = true
+					new_card.ability.cry_function_counter = 1
+					G.consumeables:emplace(new_card)
+					G.GAME.consumeable_buffer = 0
+					return true
+				end,
+			}))
 		end
 	end,
 	demicoloncompat = true,
@@ -2784,32 +2768,55 @@ local function_sticker = {
 	-- 	}
 	-- end,
 	loc_vars = function(self, info_queue, card)
-		lclze = function(index)
-			local func_card = (G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[index]
+		local lclze = function(index)
+			local func_card = (G.GAME.cry_function_cards or {})[index]
 			if not func_card then
-				return "None"
+				return card.area and card.area.config.collection and localize("k_none") or "???"
+			else
+				return localize{ type = "name_text", set = G.P_CENTERS[func_card].set, key = func_card }
 			end
-			for _, group in pairs(G.localization.descriptions) do
-				if _ ~= "Back" then
-					for key, card in pairs(group) do
-						if key == func_card then
-							return card.name
-						end
-					end
-				end
-			end
-			return "None"
 		end
+		local ind = card.ability.cry_function_counter
 		return {
 			key = "cry_function_sticker",
 			set = "Other",
 			vars = {
-				lclze(1),
-				lclze(2),
-				lclze(3),
+				lclze(ind and ind+1 or nil),
 			},
 		}
 	end,
+	init = function (self)
+		local use_ref = G.FUNCS.use_card
+		function G.FUNCS.use_card(e, mute, nosave)
+			local card = e.config.ref_table
+			use_ref(e, mute, nosave)
+			if card.ability and card.ability.cry_function_sticker then
+				local c = card.ability.cry_function_counter
+				local key = nil
+				if c then
+					key = G.GAME.cry_function_cards and G.GAME.cry_function_cards[c+1] or nil
+				end
+				G.E_MANAGER:add_event(Event{
+					func = function (n)
+						local card = SMODS.add_card{
+							key = key,
+							set = "Consumeables",
+							key_append = "cry_cryfunction",
+							area = G.consumeables,
+						}
+						if c and c < 2 then
+							card.ability.cry_function_sticker = true
+							card.ability.cry_function_counter = c+1
+						else --I DEFY YOU, STICKER DECK!
+							card.ability.cry_function_sticker = nil
+							card.ability.cry_function_counter = nil
+						end
+						return true
+					end
+				})
+			end
+		end
+	end
 }
 -- ://Run
 -- visit a shop mid-blind

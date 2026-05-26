@@ -5328,6 +5328,7 @@ return {
 			cry_global_sticker = "Global",
 			cry_flickering = "Flickering",
 			cry_possessed = "Possessed",
+			cry_function_sticker = "Function",
 
 			cry_green_seal = "Green Seal",
 			cry_azure_seal = "Azure Seal",
