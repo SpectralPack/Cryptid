@@ -360,10 +360,10 @@ local negative = {
 		if card.ability.extra.slots > card.ability.immutable.max_slots then
 			card.ability.extra.slots = card.ability.immutable.max_slots
 		end
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.slots))
+		G.jokers:change_size(lenient_bignum(to_big(card.ability.extra.slots)))
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - to_big(card.ability.extra.slots))
+		G.jokers:change_size(lenient_bignum(-to_big(card.ability.extra.slots)))
 	end,
 	cry_credits = {
 		idea = {
