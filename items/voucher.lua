@@ -875,8 +875,7 @@ local fabric = { -- Blank Voucher T3; +2 Joker slots
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					G.jokers.config.card_limit = G.jokers.config.card_limit
-						+ (card and card.ability.extra or self.config.extra)
+					G.jokers:change_size(card and card.ability.extra or self.config.extra)
 				end
 				return true
 			end,
@@ -886,8 +885,7 @@ local fabric = { -- Blank Voucher T3; +2 Joker slots
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					G.jokers.config.card_limit = G.jokers.config.card_limit
-						- (card and card.ability.extra or self.config.extra)
+					G.jokers:change_size(-(card and card.ability.extra or self.config.extra))
 				end
 				return true
 			end,
@@ -1034,7 +1032,7 @@ local blankcanvas = { -- Paint Brush T3; +2 hand size
 		G.hand:change_size((card and card.ability.extra or self.config.extra))
 	end,
 	unredeem = function(self, card)
-		G.hand:change_size(-1 * (card and card.ability.extra or self.config.extra))
+		G.hand:change_size(-(card and card.ability.extra or self.config.extra))
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
