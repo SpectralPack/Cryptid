@@ -2691,8 +2691,8 @@ local cryfunction = {
 		}
 	end,
 	can_use = function(self, card)
-		if type(G.GAME.cry_function_cards)=="table" and next(G.GAME.cry_function_cards) then
-			return #G.consumeables.cards<=G.consumeables.config.card_limit
+		if type(G.GAME.cry_function_cards) == "table" and next(G.GAME.cry_function_cards) then
+			return #G.consumeables.cards <= G.consumeables.config.card_limit
 		else
 			return #G.GAME.cry_last_used_consumeables >= 3
 		end
@@ -2773,7 +2773,7 @@ local function_sticker = {
 			if not func_card then
 				return card.area and card.area.config.collection and localize("k_none") or "???"
 			else
-				return localize{ type = "name_text", set = G.P_CENTERS[func_card].set, key = func_card }
+				return localize({ type = "name_text", set = G.P_CENTERS[func_card].set, key = func_card })
 			end
 		end
 		local ind = card.ability.cry_function_counter
@@ -2781,11 +2781,11 @@ local function_sticker = {
 			key = "cry_function_sticker",
 			set = "Other",
 			vars = {
-				lclze(ind and ind+1 or nil),
+				lclze(ind and ind + 1 or nil),
 			},
 		}
 	end,
-	init = function (self)
+	init = function(self)
 		local use_ref = G.FUNCS.use_card
 		function G.FUNCS.use_card(e, mute, nosave)
 			local card = e.config.ref_table
@@ -2794,29 +2794,29 @@ local function_sticker = {
 				local c = card.ability.cry_function_counter
 				local key = nil
 				if c then
-					key = G.GAME.cry_function_cards and G.GAME.cry_function_cards[c+1] or nil
+					key = G.GAME.cry_function_cards and G.GAME.cry_function_cards[c + 1] or nil
 				end
-				G.E_MANAGER:add_event(Event{
-					func = function (n)
-						local card = SMODS.add_card{
+				G.E_MANAGER:add_event(Event({
+					func = function(n)
+						local card = SMODS.add_card({
 							key = key,
 							set = "Consumeables",
 							key_append = "cry_cryfunction",
 							area = G.consumeables,
-						}
+						})
 						if c and c < 2 then
 							card.ability.cry_function_sticker = true
-							card.ability.cry_function_counter = c+1
+							card.ability.cry_function_counter = c + 1
 						else --I DEFY YOU, STICKER DECK!
 							card.ability.cry_function_sticker = nil
 							card.ability.cry_function_counter = nil
 						end
 						return true
-					end
-				})
+					end,
+				}))
 			end
 		end
-	end
+	end,
 }
 -- ://Run
 -- visit a shop mid-blind
