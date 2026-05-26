@@ -1532,16 +1532,16 @@ local bonusjoker = {
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.jokers:change_size(lenient_bignum(
-							to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
-						))
+						G.jokers:change_size(
+							lenient_bignum(to_big(math.min(card.ability.extra.add, card.ability.immutable.max)))
+						)
 					else
 						if not context.blueprint then
 							card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 						end
-						G.consumeables:change_size(lenient_bignum(
-							to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
-						))
+						G.consumeables:change_size(
+							lenient_bignum(to_big(math.min(card.ability.extra.add, card.ability.immutable.max)))
+						)
 					end
 					return {
 						extra = { focus = card, message = localize("k_upgrade_ex") },
@@ -1571,16 +1571,16 @@ local bonusjoker = {
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.jokers:change_size(lenient_bignum(
-					to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
-				))
+				G.jokers:change_size(
+					lenient_bignum(to_big(math.min(card.ability.extra.add, card.ability.immutable.max)))
+				)
 			else
 				if not context.blueprint then
 					card.ability.immutable.check = lenient_bignum(card.ability.immutable.check + 1)
 				end
-				G.consumeables:change_size(lenient_bignum(
-					to_big(math.min(card.ability.extra.add, card.ability.immutable.max))
-				))
+				G.consumeables:change_size(
+					lenient_bignum(to_big(math.min(card.ability.extra.add, card.ability.immutable.max)))
+				)
 			end
 			return {
 				extra = { focus = card, message = localize("k_upgrade_ex") },

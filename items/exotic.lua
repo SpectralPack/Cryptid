@@ -552,13 +552,13 @@ local tenebris = {
 	end,
 	add_to_deck = function(self, card, from_debuff)
 		G.jokers:change_size(
-			lenient_bignum(math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
-		))
+			lenient_bignum(math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots)))
+		)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		G.jokers:change_size(
-			lenient_bignum(- math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
-		))
+			lenient_bignum(-math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots)))
+		)
 	end,
 	cry_credits = {
 		idea = { "Gold" },
