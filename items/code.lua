@@ -4060,6 +4060,7 @@ local quantify = {
 						if to_big(G.GAME.dollars - G.GAME.bankrupt_at) < to_big(highlighted.cost) then
 							return
 						end
+						highlighted.add_to_deck(highlighted, nil, false)
 						ease_dollars(-highlighted.cost)
 						highlighted.children.price:remove()
 					end
