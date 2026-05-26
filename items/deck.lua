@@ -310,7 +310,9 @@ local redeemed = {
 								end
 								if not G.cry_redeemed_buffer[v.key] and v.unlocked then
 									for _, a in ipairs(G.I.CARDAREA) do --nested in here so it only does this when actually necessary
-										if a.handle_card_limit then a:handle_card_limit() end
+										if a.handle_card_limit then
+											a:handle_card_limit()
+										end
 									end
 									local card = create_card("Voucher", area, nil, nil, nil, nil, v.key)
 									G.cry_redeemed_buffer[v.key] = true
