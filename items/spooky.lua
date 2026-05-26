@@ -650,7 +650,7 @@ local spy = {
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+		G.jokers:change_size(1)
 		card.ability.perishable = true
 		card.ability.perish_tally = G.GAME.perishable_rounds
 		card.config.center.rarity = "cry_cursed"
@@ -658,7 +658,7 @@ local spy = {
 		card.ability.extra.revealed = true
 	end,
 	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+		G.jokers:change_size(-1)
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main then
