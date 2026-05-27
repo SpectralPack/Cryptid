@@ -2296,11 +2296,11 @@ function SMODS.upgrade_poker_hands(args)
 		for i = 1, #effects do
 			universum_mod = universum_mod * (effects[i] and effects[i].jokers and effects[i].jokers.mod or 1)
 		end
-		args.func = function (base, hand, param, level_up)
+		args.func = function(base, hand, param, level_up)
 			local lv_amt = (type(level_up) == "number" or is_big(level_up)) and level_up or 1
-			return base * (universum_mod^lv_amt)
+			return base * (universum_mod ^ lv_amt)
 		end
-		args.StatusText = "X"..number_format(universum_mod^lvl_amt)
+		args.StatusText = "X" .. number_format(universum_mod ^ lvl_amt)
 	end
 	smup(args)
 end
