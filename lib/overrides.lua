@@ -572,17 +572,9 @@ function Game:update(dt)
 end
 
 -- All the scattered set_cost hooks from all the pre refactor files moved into one hook
-local sc = Card.set_cost
-function Card:set_cost()
-	-- Makes the edition cost increase usually present not apply if this variable is true
-	if self.edition and G.GAME.modifiers.cry_no_edition_price then
-		local m = Cryptid.deep_copy(self.edition)
-		self.edition = nil
-		sc(self)
-		self.edition = m
-	else
-		sc(self)
-	end
+local sc = Card.set_cost_value
+function Card:set_cost_value()
+	sc(self)
 	--Makes cube and Big Cube always cost a set amount
 	if self.ability.name == "cry-Cube" then
 		if Card.get_gameset(self) ~= "modest" then
@@ -617,7 +609,6 @@ function Card:set_cost()
 	end
 
 	--Update related costs
-	self.sell_cost = math.max(1, math.floor(self.cost / 2)) + (self.ability.extra_value or 0)
 	if
 		self.area
 		and self.ability.couponed
@@ -626,9 +617,16 @@ function Card:set_cost()
 	then
 		self.cost = 0
 	end
+end
+
+local ssc = Card.set_sell_value
+function Card:set_sell_value()
+	ssc(self)
 	--Makes Cursed Jokers always sell for $0
 	if self.config and self.config.center and self.config.center.rarity == "cry_cursed" then
 		self.sell_cost = 0
+	elseif self.ability and self.ability.cry_no_sell_value then
+		self.sell_cost = 0 + (self.ability.extra_value or 0)
 	--Rotten Egg
 	elseif G.GAME.cry_rotten_amount then
 		self.sell_cost = G.GAME.cry_rotten_amount

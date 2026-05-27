@@ -660,3 +660,12 @@ payload = '''
         info_queue[#info_queue+1] = { set = "Other", key = "cry_banned_card", }
     end
 '''
+
+#No additional edition cost patch (less janky than whatever that hook was doing)
+[[patches]]
+[patches.pattern]
+match_indent = true
+pattern = "for k, v in pairs(G.P_CENTER_POOLS.Edition) do"
+position = "after"
+target = "card.lua"
+payload = "if G.GAME.modifiers.cry_no_edition_price then break end" #seems hacky but is definitely the least invasive option

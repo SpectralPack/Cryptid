@@ -128,13 +128,17 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
-pattern = '''if card.area and (not nc or card.area == G.pack_cards) then card.area:remove_card(card) end'''
+pattern = '''
+if obj.keep_on_use and type(obj.keep_on_use) == 'function' then
+    nc = obj:keep_on_use(card)
+end
+'''
 position = "before"
 payload = '''
-local cry_muse = false
-if card.ability.cry_multiuse and not (card.ability.cry_multiuse <= 1) and (card.area ~= G.pack_cards) then
-	cry_muse = true
-	dont_dissolve = true
+if not nc and card.ability.cry_multiuse and (card.ability.cry_multiuse > 1) then
+	card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+	nc = true
+	G.cry_muse = true
 end
 '''
 match_indent = true
@@ -146,9 +150,9 @@ target = "functions/button_callbacks.lua"
 pattern = '''if (prev_state == G.STATES.TAROT_PACK or prev_state == G.STATES.PLANET_PACK or'''
 position = "before"
 payload = '''
-if cry_muse then
-	card.ability.cry_multiuse = card.ability.cry_multiuse - 1
-	card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
+if G.cry_muse then
+	G.cry_muse = nil
+	card.ability.cry_no_sell_value = true
 	card:set_cost()
 	delay(0.4)
 
@@ -167,19 +171,6 @@ if cry_muse then
 	})
 
 	delay(0.8)
- 	if card.playing_card then
-		draw_card(G.play, G.hand, 1, 'up', true, card, nil, true)
- 	elseif not G.GAME.modifiers.cry_beta then
-		if to_big(#G.consumeables.cards) < to_big(G.consumeables.config.card_limit) then
-			draw_card(G.play, G.consumeables, 1, 'up', true, card, nil, true)
-		else card:start_dissolve()
-		end
-  	else
-		if to_big(#G.jokers.cards) < to_big(G.jokers.config.card_limit) then
-			draw_card(G.play, G.jokers, 1, 'up', true, card, nil, true)
-		else card:start_dissolve()
-		end
-    end
 end
 '''
 match_indent = true

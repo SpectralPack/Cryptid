@@ -9439,7 +9439,8 @@ local necromancer = {
 				nil,
 				G.GAME.jokers_sold[pseudorandom("cry_necromancer", 1, #G.GAME.jokers_sold)]
 			)
-			new_card.sell_cost = card.ability.immutable.sell_cost_min
+			new_card.ability.cry_no_sell_value = true --i dont see a reason to even use a config value for this, its always going to be 0 anyway????
+			new_card:set_cost()
 			new_card:add_to_deck()
 			G.jokers:emplace(new_card)
 			new_card:start_materialize()
