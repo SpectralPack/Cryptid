@@ -2278,3 +2278,29 @@ local smods_shatters_ref = SMODS.shatters
 function SMODS.shatters(card)
 	return card.cry_glass_trigger or smods_shatters_ref(card)
 end
+
+local level_up_ref = level_up_hand
+function level_up_hand(card, hand, instant, amount, statustext)
+	G._CRY_DEFAULT_LEVELUP = true
+	level_up_ref(card, hand, instant, amount, statustext)
+	G._CRY_DEFAULT_LEVELUP = nil
+end
+
+local smup = SMODS.upgrade_poker_hands
+function SMODS.upgrade_poker_hands(args)
+	if (not args.func or G._CRY_DEFAULT_LEVELUP) and next(SMODS.find_card("j_cry_universum")) then --basically just whenever level_up_hand was called directly or upgrade_poker_hands would do so
+		local universum_mod = 1
+		local lvl_amt = (type(args.level_up) == "number" or is_big(args.level_up)) and args.level_up or 1
+		local effects = {}
+		SMODS.calculate_context({ cry_universum = true }, effects)
+		for i = 1, #effects do
+			universum_mod = universum_mod * (effects[i] and effects[i].jokers and effects[i].jokers.mod or 1)
+		end
+		args.func = function (base, hand, param, level_up)
+			local lv_amt = (type(level_up) == "number" or is_big(level_up)) and level_up or 1
+			return base * (universum_mod^lv_amt)
+		end
+		args.StatusText = "X"..number_format(universum_mod^lvl_amt)
+	end
+	smup(args)
+end
