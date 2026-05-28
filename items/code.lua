@@ -4254,7 +4254,7 @@ local delete = {
 		return { vars = { Cryptid.safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
 	end,
 	can_use = function(self, card)
-		return G.STATE == G.STATES.SHOP
+		local ret = G.STATE == G.STATES.SHOP
 			and card.area == (G.GAME.modifiers.cry_beta and G.jokers or G.consumeables)
 			and #G.shop_jokers.highlighted + #G.shop_booster.highlighted + #G.shop_vouchers.highlighted == 1
 			and (G.shop_jokers.highlighted[1] ~= card and not Cryptid.safe_get(
@@ -4277,15 +4277,23 @@ local delete = {
 				G.shop_vouchers.highlighted[1] ~= card
 				and not Cryptid.safe_get(G, "shop_vouchers", "highlighted", 1, "ability", "eternal")
 			)
+		if ret then
+			card.cry_target_card = G.shop_jokers.highlighted[1] or G.shop_booster.highlighted[1] or G.shop_vouchers.highlighted[1]
+		end
+		return ret
 	end,
 	use = function(self, card, area, copier)
 		if not G.GAME.cry_banned_pcards then
 			G.GAME.cry_banned_pcards = {}
 		end
 
-		local c = G.shop_jokers.highlighted[1] or G.shop_booster.highlighted[1] or G.shop_vouchers.highlighted[1]
+		local c = G.shop_jokers.highlighted[1] or G.shop_booster.highlighted[1] or G.shop_vouchers.highlighted[1] or card.cry_target_card
 
-		if G.shop_vouchers.highlighted[1] and c.shop_voucher then
+		if not c then
+			return
+		end
+
+		if c.shop_voucher then
 			G.GAME.current_round.voucher.spawn[c.config.center.key] = nil
 			G.GAME.current_round.cry_voucher_edition = nil
 			G.GAME.current_round.cry_voucher_stickers =
