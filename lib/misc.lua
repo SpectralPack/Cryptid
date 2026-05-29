@@ -1139,7 +1139,7 @@ function create_UIBox_exploit()
 	})
 end
 
-G.FUNCS.cancel_overlay_menu_code = function (e)
+G.FUNCS.cancel_overlay_menu_code = function(e)
 	G.FUNCS.exit_overlay_menu(e)
 	G.GAME.USING_CLASS = nil
 	G.GAME.USING_CODE = nil
@@ -1165,12 +1165,7 @@ G.FUNCS.exit_overlay_menu_code = function(e)
 	G.GAME.POINTER_PLAYING = nil
 	G.GAME.POINTER_COLLECTION = nil
 	local card = G.GAME.CODE_DESTROY_CARD
-	if
-		card
-		and card.ability
-		and card.ability.cry_multiuse
-		and to_big(card.ability.cry_multiuse) > to_big(1)
-	then
+	if card and card.ability and card.ability.cry_multiuse and to_big(card.ability.cry_multiuse) > to_big(1) then
 		card.ability.cry_multiuse = card.ability.cry_multiuse - 1
 	elseif card then
 		card:start_dissolve()

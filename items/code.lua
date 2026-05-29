@@ -1087,7 +1087,9 @@ local exploit = {
 	set_ability = function(self, center)
 		center.ability.cry_multiuse = math.ceil(2 + (G.GAME.extra_multiuse or 0))
 	end,
-	keep_on_use = function() return true end
+	keep_on_use = function()
+		return true
+	end,
 }
 -- ://Malware
 -- Apply Glitched edition to held in hand cards
