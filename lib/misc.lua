@@ -1091,7 +1091,7 @@ function create_UIBox_class()
 		h_mod = 1.03,
 		--infotip = localize('ml_edition_seal_enhancement_explanation'),
 		hide_single_page = true,
-		back_func = "cancel_overlay_menu_code",
+		back_func = "exit_overlay_menu_code",
 	})
 end
 
@@ -1111,7 +1111,7 @@ function create_UIBox_variable_code()
 		h_mod = 1.03,
 		--infotip = localize('ml_edition_seal_enhancement_explanation'),
 		hide_single_page = true,
-		back_func = "cancel_overlay_menu_code",
+		back_func = "exit_overlay_menu_code",
 		modify_card = function(card, center, i, j)
 			SMODS.change_base(card, "Spades", ranks[(j - 1) * 5 + i])
 		end,
