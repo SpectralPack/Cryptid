@@ -133,7 +133,7 @@ if obj.keep_on_use and type(obj.keep_on_use) == 'function' then
     nc = obj:keep_on_use(card)
 end
 '''
-position = "before"
+position = "after"
 payload = '''
 if not nc and card.ability.cry_multiuse and (card.ability.cry_multiuse > 1) then
 	card.ability.cry_multiuse = card.ability.cry_multiuse - 1

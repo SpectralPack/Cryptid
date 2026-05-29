@@ -1070,7 +1070,7 @@ local exploit = {
 	end,
 	use = function(self, card, area, copier)
 		-- Un-use the card (re-use code is in lib/misc.lua)
-		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
+		--[[if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
 			G.GAME.CODE_DESTROY_CARD = copy_card(card)
 			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
 			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
@@ -1078,7 +1078,7 @@ local exploit = {
 		if card.ability.cry_multiuse then
 			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
 		end
-
+		]]
 		G.GAME.USING_CODE = true
 		G.GAME.USING_EXPLOIT = true
 		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
@@ -1087,6 +1087,7 @@ local exploit = {
 	set_ability = function(self, center)
 		center.ability.cry_multiuse = math.ceil(2 + (G.GAME.extra_multiuse or 0))
 	end,
+	keep_on_use = function() return true end
 }
 -- ://Malware
 -- Apply Glitched edition to held in hand cards
@@ -3080,7 +3081,7 @@ local declare = {
 			})
 			return t
 		end
-		G.FUNCS.declare_cancel = function()
+		G.FUNCS.declare_cancel = function(e) --check if e exists to see if it was actually called from the button... wanted to use this to not use the consumable when cancelling but idk how :<
 			if G.CHOOSE_CARD then
 				G.CHOOSE_CARD:remove()
 			end

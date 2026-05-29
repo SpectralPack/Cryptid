@@ -1091,7 +1091,7 @@ function create_UIBox_class()
 		h_mod = 1.03,
 		--infotip = localize('ml_edition_seal_enhancement_explanation'),
 		hide_single_page = true,
-		back_func = "exit_overlay_menu_code",
+		back_func = "cancel_overlay_menu_code",
 	})
 end
 
@@ -1111,7 +1111,7 @@ function create_UIBox_variable_code()
 		h_mod = 1.03,
 		--infotip = localize('ml_edition_seal_enhancement_explanation'),
 		hide_single_page = true,
-		back_func = "exit_overlay_menu_code",
+		back_func = "cancel_overlay_menu_code",
 		modify_card = function(card, center, i, j)
 			SMODS.change_base(card, "Spades", ranks[(j - 1) * 5 + i])
 		end,
@@ -1139,6 +1139,20 @@ function create_UIBox_exploit()
 	})
 end
 
+G.FUNCS.cancel_overlay_menu_code = function (e)
+	G.FUNCS.exit_overlay_menu(e)
+	G.GAME.USING_CLASS = nil
+	G.GAME.USING_CODE = nil
+	G.GAME.USING_VARIABLE = nil
+	G.GAME.USING_EXPLOIT_HAND = nil
+	G.GAME.USING_EXPLOIT = nil
+	G.GAME.USING_POINTER = nil
+	G.GAME.POINTER_SUBMENU = nil
+	G.GAME.POINTER_PLAYING = nil
+	G.GAME.POINTER_COLLECTION = nil
+	G.GAME.CODE_DESTROY_CARD = nil
+end
+
 G.FUNCS.exit_overlay_menu_code = function(e)
 	G.FUNCS.exit_overlay_menu(e)
 	G.GAME.USING_CLASS = nil
@@ -1150,15 +1164,16 @@ G.FUNCS.exit_overlay_menu_code = function(e)
 	G.GAME.POINTER_SUBMENU = nil
 	G.GAME.POINTER_PLAYING = nil
 	G.GAME.POINTER_COLLECTION = nil
+	local card = G.GAME.CODE_DESTROY_CARD
 	if
-		G.GAME.CODE_DESTROY_CARD
-		and G.GAME.CODE_DESTROY_CARD.ability
-		and G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse
+		card
+		and card.ability
+		and card.ability.cry_multiuse
+		and to_big(card.ability.cry_multiuse) > to_big(1)
 	then
-		G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse - 1
-	elseif G.GAME.CODE_DESTROY_CARD then
-		G.GAME.CODE_DESTROY_CARD:start_dissolve()
-		G.GAME.CODE_DESTROY_CARD = nil
+		card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+	elseif card then
+		card:start_dissolve()
 	end
 	G.GAME.CODE_DESTROY_CARD = nil
 end
