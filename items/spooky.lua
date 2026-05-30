@@ -1940,7 +1940,7 @@ local candy_sticks = {
 	config = {
 		extra = { hands = 1 },
 		immutable = {
-			boss = {},
+			boss = nil,
 			clockscore = 0,
 		},
 	},
@@ -1971,14 +1971,14 @@ local candy_sticks = {
 				end,
 			}))
 		end
-		if context.after and G.GAME.blind:get_type() == "Boss" then
+		if context.after and G.GAME.blind:get_type() == "Boss" and card.ability.immutable.boss then
 			card.ability.extra.hands = lenient_bignum(to_big(card.ability.extra.hands) - 1)
 		end
 		if
 			(
 				(context.selling_self and G.GAME.blind and G.GAME.blind:get_type() == "Boss")
 				or to_big(card.ability.extra.hands) <= to_big(0)
-			) and G.GAME.blind.disabled
+			) and G.GAME.blind.disabled and card.ability.immutable.boss
 		then
 			G.GAME.blind:load(card.ability.immutable.boss)
 			if not context.selling_self then
@@ -2009,7 +2009,7 @@ local candy_sticks = {
 				}
 			end
 		end
-		if context.end_of_round and G.GAME.blind:get_type() == "Boss" then
+		if context.end_of_round and G.GAME.blind:get_type() == "Boss" and card.ability.immutable.boss then
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound("tarot1")
