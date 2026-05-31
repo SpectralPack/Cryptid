@@ -1278,6 +1278,7 @@ local compound_interest = {
 	rarity = 3,
 	order = 9,
 	cost = 10,
+	blueprint_compat = false,
 	perishable_compat = false,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
@@ -9581,6 +9582,7 @@ local tax_fraud = {
 	cost = 10,
 	order = 128,
 	atlas = "atlastwo",
+	blueprint_compat = false,
 	demicoloncompat = true,
 	in_pool = function(self)
 		if not G.GAME.modifiers.enable_rentals_in_shop then
