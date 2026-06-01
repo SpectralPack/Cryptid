@@ -1981,7 +1981,9 @@ local candy_sticks = {
 			(
 				(context.selling_self and G.GAME.blind and G.GAME.blind:get_type() == "Boss")
 				or to_big(card.ability.extra.hands) <= to_big(0)
-			) and G.GAME.blind.disabled and card.ability.immutable.boss
+			)
+			and G.GAME.blind.disabled
+			and card.ability.immutable.boss
 		then
 			G.GAME.blind:load(card.ability.immutable.boss)
 			if not context.selling_self then
