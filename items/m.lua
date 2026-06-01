@@ -475,11 +475,18 @@ local mneon = {
 					jollycount = jollycount + 1
 				end
 			end
-			card.ability.extra.money = lenient_bignum(
-				to_big(card.ability.extra.money) + math.max(1, to_big(card.ability.extra.bonus)) * (jollycount or 1)
-			)
-			-- currently can't use SMODS.scale_card unless a for loop is used to trigger scaling once for every jolly joker
-
+			if jollycount ~= 0 then
+				SMODS.scale_card(card, {
+					ref_table = card.ability.extra,
+					ref_value = "money",
+					scalar_value = "bonus",
+					operation = function(ref_table, ref_value, initial, change)
+						ref_table[ref_table] = initial + change * jollycount
+					end,
+					no_message = true
+				})
+			end
+			-- currently CAN use SMODS.scale_card even if a for loop isn't used to trigger scaling once for every jolly joker
 			return { message = localize("cry_m_ex") }
 		end
 		if context.forcetrigger then
@@ -1303,12 +1310,10 @@ local virgo = {
 				scalar_value = "bonus",
 			})
 			card:set_cost()
-			if not msg or type(msg) == "string" then
-				card_eval_status_text(card, "extra", nil, nil, nil, {
-					message = msg or localize("k_val_up"),
-					colour = G.C.MONEY,
-				})
-			end
+			return {
+				message = localize("k_val_up"),
+				colour = G.C.MONEY,
+			}
 		elseif context.selling_self and not context.blueprint and not context.retrigger_joker then
 			virgoJollies(card)
 			return nil, true

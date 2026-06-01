@@ -5204,15 +5204,6 @@ local cut = {
 						return true
 					end,
 				}))
-				if not (context.blueprint_card or self).getting_sliced and (not msg or type(msg) == "string") then
-					card_eval_status_text((context.blueprint_card or card), "extra", nil, nil, nil, {
-						message = msg or localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(to_big(card.ability.extra.Xmult)) },
-						}),
-					})
-				end
 				return nil, true
 			end
 		end
