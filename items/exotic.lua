@@ -831,7 +831,9 @@ local stella_mortis = {
 					scalar_value = "Emult_mod",
 					message_key = "a_powmult",
 				})
-				if not context.forcetrigger then return nil, true end
+				if not context.forcetrigger then
+					return nil, true
+				end
 			end
 		end
 		if (context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1))) or context.forcetrigger then
