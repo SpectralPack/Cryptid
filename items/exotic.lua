@@ -810,30 +810,27 @@ local stella_mortis = {
 				or nil
 
 			if planet_to_destroy then
-				if Incantation then
-					quota = planet_to_destroy:getEvalQty()
+				if Incantation and planet_to_destroy:getEvalQty() > 1 then
+					planet_to_destroy:subQty(1) --incantation should handle this itself but just to be safe?
+				elseif Overflow and card.ability.immutable and (card.ability.immutable.overflow_amount or 0) > 1 then
+					planet_to_destroy.ability.overflow_amount = planet_to_destroy.ability.overflow_amount - 1
+				else
+					planet_to_destroy.getting_sliced = true
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							(context.blueprint_card or card):juice_up(0.8, 0.8)
+							planet_to_destroy:start_dissolve({ G.C.RED }, nil, 1.6)
+							return true
+						end,
+					}))
+					planet_to_destroy.dissolve = 0 --timing issues related to crossmod stuff; Genuinely what does this actually do? -Eris
 				end
-				if Overflow then
-					quaota = planet_to_destroy.ability.immutable and planet_to_destroy.ability.immutable.overflow_amount
-				end
-				planet_to_destroy.getting_sliced = true
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "Emult",
 					scalar_value = "Emult_mod",
-					operation = function(ref_table, ref_value, initial, change)
-						ref_table[ref_value] = initial + change * quota
-					end,
 					message_key = "a_powmult",
 				})
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						(context.blueprint_card or card):juice_up(0.8, 0.8)
-						planet_to_destroy:start_dissolve({ G.C.RED }, nil, 1.6)
-						return true
-					end,
-				}))
-				planet_to_destroy.dissolve = 0 --timing issues related to crossmod stuff
 				return nil, true
 			end
 		end
