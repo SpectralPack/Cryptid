@@ -239,15 +239,7 @@ local abstract = {
 		end
 		if context.cardarea == G.play and context.main_scoring then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.extra.Emult),
-					},
-				}),
-				Emult_mod = card.ability.extra.Emult,
-				colour = G.C.DARK_EDITION,
+				emult = card.ability.extra.Emult,
 			}
 		end
 

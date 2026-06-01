@@ -663,9 +663,7 @@ local spy = {
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
-				Xmult_mod = card.ability.x_mult,
-				colour = G.C.MULT,
+				xmult = card.ability.x_mult,
 			}
 		end
 	end,

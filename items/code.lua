@@ -5209,15 +5209,7 @@ local cut = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = {
-						number_format(card.ability.extra.Xmult),
-					},
-				}),
-				Xmult_mod = card.ability.extra.Xmult,
-				colour = G.C.MULT,
+				Xmult = card.ability.extra.Xmult,
 			}
 		end
 		if context.forcetrigger then
@@ -5229,8 +5221,7 @@ local cut = {
 				colour = G.C.RED,
 			})
 			return {
-				Xmult_mod = card.ability.extra.Xmult,
-				colour = G.C.MULT,
+				Xmult = card.ability.extra.Xmult,
 			}
 		end
 	end,
@@ -5342,40 +5333,30 @@ local python = {
 			and not context.consumeable.beginning_end
 			and not context.blueprint
 		then
-			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(card.ability.extra.Xmult) },
-						}),
-					})
-					return true
-				end,
-			}))
-			return
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "Xmult",
+				scalar_value = "Xmult_mod",
+				message_colour = G.C.MULT,
+				message_key = "a_xmult"
+			})
+			return nil, true
 		end
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				Xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 		if context.forcetrigger then
-			card.ability.extra.Xmult = lenient_bignum(to_big(card.ability.extra.Xmult) + card.ability.extra.Xmult_mod)
+			SMODS.scale_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "Xmult",
+				scalar_value = "Xmult_mod",
+				message_colour = G.C.MULT,
+				message_key = "a_xmult"
+			})
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				Xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,

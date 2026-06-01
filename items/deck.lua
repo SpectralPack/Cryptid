@@ -506,7 +506,7 @@ local critical = {
 			delay(0.6)
 			if check then
 				return {
-					Emult_mod = check,
+					emult = check,
 					colour = G.C.DARK_EDITION,
 				}
 			end

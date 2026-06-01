@@ -56,16 +56,16 @@ local supercell = {
 				if Card.get_gameset(card) ~= "modest" then
 					return {
 						message = localize("cry_gaming_ex"),
-						chip_mod = lenient_bignum(card.ability.extra.stat1),
-						mult_mod = lenient_bignum(card.ability.extra.stat1),
-						Xchip_mod = lenient_bignum(card.ability.extra.stat2),
-						Xmult_mod = lenient_bignum(card.ability.extra.stat2),
+						chips = lenient_bignum(card.ability.extra.stat1),
+						mult = lenient_bignum(card.ability.extra.stat1),
+						xchips = lenient_bignum(card.ability.extra.stat2),
+						xmult = lenient_bignum(card.ability.extra.stat2),
 					}
 				else
 					return {
 						message = localize("cry_gaming_ex"),
-						Xchip_mod = lenient_bignum(card.ability.extra.stat2),
-						Xmult_mod = lenient_bignum(card.ability.extra.stat2),
+						xchips = lenient_bignum(card.ability.extra.stat2),
+						xmult = lenient_bignum(card.ability.extra.stat2),
 					}
 				end
 			end
@@ -74,10 +74,10 @@ local supercell = {
 			ease_dollars(lenient_bignum(card.ability.extra.money))
 			return {
 				message = localize("cry_gaming_ex"),
-				chip_mod = lenient_bignum(card.ability.extra.stat1),
-				mult_mod = lenient_bignum(card.ability.extra.stat1),
-				Xchip_mod = lenient_bignum(card.ability.extra.stat2),
-				Xmult_mod = lenient_bignum(card.ability.extra.stat2),
+				chip = lenient_bignum(card.ability.extra.stat1),
+				mult = lenient_bignum(card.ability.extra.stat1),
+				xchips = lenient_bignum(card.ability.extra.stat2),
+				xmult = lenient_bignum(card.ability.extra.stat2),
 			}
 		end
 	end,
@@ -159,19 +159,7 @@ local membershipcardtwo = {
 	calculate = function(self, card, context)
 		if (context.joker_main and to_big(card.ability.extra.chips) > to_big(0)) or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = {
-						number_format(
-							lenient_bignum(
-								to_big(card.ability.extra.chips)
-									* math.floor(Cryptid.member_count / card.ability.immutable.chips_mod)
-							)
-						),
-					},
-				}),
-				chip_mod = lenient_bignum(
+				chips = lenient_bignum(
 					to_big(card.ability.extra.chips)
 						* math.floor(Cryptid.member_count / card.ability.immutable.chips_mod)
 				),
@@ -235,22 +223,12 @@ local googol_play = {
 			and SMODS.pseudorandom_probability(card, "cry_googol_play", 1, card.ability.extra.odds, "Googol Play Card")
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -761,12 +739,7 @@ local m = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = card.ability.extra.x_mult,
+				xmult = card.ability.extra.x_mult,
 			}
 		end
 		if context.selling_card and context.card:is_jolly() and not context.blueprint then
@@ -788,7 +761,7 @@ local m = {
 				message_colour = G.C.RED,
 			})
 			return {
-				Xmult_mod = card.ability.extra.x_mult,
+				Xmult = card.ability.extra.x_mult,
 			}
 		end
 	end,
@@ -1215,12 +1188,7 @@ local circus = {
 				end
 				local xmult = card.ability.extra[mod_key]
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(xmult) },
-					}),
-					Xmult_mod = xmult,
+					xmult = xmult,
 				}
 			end
 		end
@@ -1232,7 +1200,7 @@ local circus = {
 				end
 			end
 			return {
-				Xmult_mod = total,
+				xmult = total,
 			}
 		end
 	end,
@@ -1347,9 +1315,7 @@ local caramel = {
 			card.ability.extra.rounds_remaining = lenient_bignum(to_big(card.ability.extra.rounds_remaining) - 1)
 			card.ability.extra.rounds_remaining = math.max(card.ability.extra.rounds_remaining, 0)
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
-				colour = G.C.RED,
-				card = card,
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 	end,
@@ -2150,28 +2116,12 @@ local jtron = {
 			lenient_bignum(1 + to_big(card.ability.extra.bonus) * #SMODS.find_card("j_joker"))
 		if context.cardarea == G.jokers and context.joker_main then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.immutable.current),
-					},
-				}),
-				Emult_mod = lenient_bignum(card.ability.immutable.current),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.immutable.current),
 			}
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(1 + to_big(card.ability.extra.bonus)),
-					},
-				}),
-				Emult_mod = lenient_bignum(1 + to_big(card.ability.extra.bonus)),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(1 + to_big(card.ability.extra.bonus)),
 			}
 		end
 	end,
@@ -2515,15 +2465,7 @@ local starfruit = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.emult),
-					},
-				}),
-				Emult_mod = lenient_bignum(card.ability.emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.emult),
 			}
 		end
 		if context.reroll_shop or context.forcetrigger then

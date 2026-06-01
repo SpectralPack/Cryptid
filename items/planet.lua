@@ -336,15 +336,7 @@ local universe = {
 			end
 
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(context.cry_observatory.ability.extra),
-					},
-				}),
-				Emult_mod = lenient_bignum(context.cry_observatory.ability.extra),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(context.cry_observatory.ability.extra),
 			}
 		end
 	end,
@@ -837,12 +829,7 @@ local nstar = {
 				value = value ^ to_big(card:getQty())
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { 1 + (0.10 * value) },
-				}),
-				Xmult_mod = 1 + (0.10 * value),
+				xmult = 1 + (0.10 * value),
 			}
 		end
 	end,
@@ -1561,15 +1548,7 @@ local perkele = {
 				return { xmult = value }
 			elseif context.scoring_name == "cry_WholeDeck" then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_powmult",
-						vars = {
-							number_format(value),
-						},
-					}),
-					Emult_mod = lenient_bignum(value),
-					colour = G.C.DARK_EDITION,
+					emult = lenient_bignum(value),
 				}
 			end
 		end

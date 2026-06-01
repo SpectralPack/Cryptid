@@ -90,8 +90,7 @@ local dropshot = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
-				Xmult_mod = card.ability.extra.x_mult,
+				xmult = card.ability.extra.x_mult,
 			}
 		end
 		if context.forcetrigger then
@@ -102,8 +101,7 @@ local dropshot = {
 				no_message = true,
 			})
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.x_mult } }),
-				Xmult_mod = card.ability.extra.x_mult,
+				xmult = card.ability.extra.x_mult,
 			}
 		end
 	end,
@@ -195,26 +193,12 @@ local happyhouse = {
 			and to_big(card.ability.immutable.check) > to_big(card.ability.immutable.trigger)
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.immutable.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.immutable.mult),
-				colour = G.C.DARK_EDITION,
-				card = card,
+				emult = lenient_bignum(card.ability.immutable.mult),
 			}
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.immutable.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.immutable.mult),
-				colour = G.C.DARK_EDITION,
-				card = card,
+				emult = lenient_bignum(card.ability.immutable.mult),
 			}
 		end
 	end,
@@ -531,13 +515,7 @@ local wee_fib = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				mult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.MULT,
+				mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 		if context.forcetrigger then
@@ -667,12 +645,7 @@ local whip = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = card.ability.extra.x_mult,
+				xmult = card.ability.extra.x_mult,
 			}
 		end
 		if context.force_trigger then
@@ -808,12 +781,7 @@ local cursor = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.chips) > to_big(0)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.chips) },
-				}),
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 		if context.forcetrigger then
@@ -825,7 +793,7 @@ local cursor = {
 				message_colour = G.C.CHIPS,
 			})
 			return {
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 	end,
@@ -992,12 +960,7 @@ local cube = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.chips) },
-				}),
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 	end,
@@ -1044,23 +1007,13 @@ local triplet_rhythm = {
 			end
 			if threes == 3 then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -1166,12 +1119,7 @@ local chili_pepper = {
 	calculate = function(self, card, context)
 		if context.joker_main and to_big(card.ability.extra.Xmult) > to_big(1) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 		if
@@ -1238,7 +1186,7 @@ local chili_pepper = {
 				message_colour = G.C.MULT,
 			})
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -1350,13 +1298,7 @@ local big_cube = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
-				colour = G.C.CHIPS,
+				xchips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 	end,
@@ -1410,12 +1352,7 @@ local eternalflame = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		elseif
 			context.selling_card
@@ -1440,7 +1377,7 @@ local eternalflame = {
 				message_colour = G.C.MULT,
 			})
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 	end,
@@ -1502,23 +1439,13 @@ local nice = {
 			end
 			if aaa and bbb then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_chips",
-						vars = { number_format(card.ability.extra.chips) },
-					}),
-					chip_mod = lenient_bignum(card.ability.extra.chips),
+					chips = lenient_bignum(card.ability.extra.chips),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.chips) },
-				}),
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 	end,
@@ -1724,12 +1651,7 @@ local jimball = {
 		--Adding actual scoring because that is missing
 		if context.joker_main and to_big(card.ability.extra.x_mult) > to_big(1) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 		if context.forcetrigger then
@@ -1741,7 +1663,7 @@ local jimball = {
 				message_colour = G.C.MULT,
 			})
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 	end,
@@ -1966,12 +1888,7 @@ local fspinner = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.chips) > to_big(0)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.chips) },
-				}),
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 		if context.forcetrigger then
@@ -1983,7 +1900,7 @@ local fspinner = {
 				message_colour = G.C.CHIPS,
 			})
 			return {
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 	end,
@@ -2031,22 +1948,12 @@ local waluigi = {
 				}))
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -2158,12 +2065,7 @@ local krustytheclown = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 		if context.cardarea == G.play and context.individual and not context.blueprint then
@@ -2183,7 +2085,7 @@ local krustytheclown = {
 				message_colour = G.C.RED,
 			})
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 	end,
@@ -2459,13 +2361,7 @@ local antennastoheaven = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_chips) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
-				colour = G.C.CHIPS,
+				xchips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 		if context.cardarea == G.play and context.individual and not context.blueprint then
@@ -2488,7 +2384,7 @@ local antennastoheaven = {
 				message_colour = G.C.CHIPS,
 			})
 			return {
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				xchips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 	end,
@@ -2741,12 +2637,7 @@ local apjoker = {
 	calculate = function(self, card, context)
 		if (context.joker_main and G.GAME.blind.boss) or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 	end,
@@ -2926,12 +2817,7 @@ local unjust_dagger = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 		local my_pos = nil
@@ -3020,7 +2906,7 @@ local unjust_dagger = {
 				})
 			end
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 	end,
@@ -3060,12 +2946,7 @@ local monkey_dagger = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.chips) > to_big(0)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.chips) },
-				}),
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 		local my_pos = nil
@@ -3161,7 +3042,7 @@ local monkey_dagger = {
 				})
 			end
 			return {
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 	end,
@@ -3201,12 +3082,7 @@ local pirate_dagger = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_chips) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				xchips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 		local my_pos = nil
@@ -3302,12 +3178,7 @@ local pirate_dagger = {
 				})
 			end
 			return {
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
+				xchips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 	end,
@@ -3357,12 +3228,7 @@ local mondrian = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 		if
@@ -3388,7 +3254,7 @@ local mondrian = {
 				message_colour = G.C.RED,
 			})
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 	end,
@@ -3589,13 +3455,7 @@ local spaceglobe = {
 		end
 		if context.joker_main and (to_big(card.ability.extra.x_chips) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xchips",
-					vars = { number_format(card.ability.extra.x_chips) },
-				}),
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
-				colour = G.C.CHIPS,
+				xchips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 		if context.forcetrigger then
@@ -3607,7 +3467,7 @@ local spaceglobe = {
 				message_colour = G.C.CHIPS,
 			})
 			return {
-				Xchip_mod = lenient_bignum(card.ability.extra.x_chips),
+				xchips = lenient_bignum(card.ability.extra.x_chips),
 			}
 		end
 	end,
@@ -3769,12 +3629,7 @@ local meteor = {
 				}))
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.chips) },
-				}),
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 		if context.individual and context.cardarea == G.play then
@@ -3865,12 +3720,7 @@ local exoplanet = {
 				}))
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				mult_mod = lenient_bignum(card.ability.extra.mult),
+				mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 		if context.individual and context.cardarea == G.play then
@@ -3961,12 +3811,7 @@ local stardust = {
 				}))
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
+				xmult = lenient_bignum(card.ability.extra.xmult),
 			}
 		end
 		if context.individual and context.cardarea == G.play then
@@ -5357,13 +5202,7 @@ local filler = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -5418,25 +5257,13 @@ local duos = {
 				or context.poker_hands ~= nil and next(context.poker_hands["Full House"])
 			then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -5488,25 +5315,13 @@ local home = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -5558,25 +5373,13 @@ local nuts = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -5628,25 +5431,13 @@ local quintet = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = number_format(card.ability.extra.Xmult),
+					xmult = number_format(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = number_format(card.ability.extra.Xmult),
+				xmult = number_format(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -5708,25 +5499,13 @@ local unity = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -5788,25 +5567,13 @@ local swarm = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -5869,25 +5636,13 @@ local stronghold = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -5946,13 +5701,7 @@ local wtf = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
@@ -6005,25 +5754,13 @@ local clash = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -6076,25 +5813,13 @@ local the = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.scoring_name == "cry_None" then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { number_format(card.ability.extra.Xmult) },
-					}),
-					colour = G.C.RED,
-					Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+					xmult = lenient_bignum(card.ability.extra.Xmult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				colour = G.C.RED,
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -6158,25 +5883,13 @@ local annihalation = {
 		if context.joker_main and (to_big(card.ability.extra.emult) > to_big(1)) then
 			if next(context.poker_hands["cry_WholeDeck"]) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_powmult",
-						vars = { number_format(card.ability.extra.emult) },
-					}),
-					Emult_mod = lenient_bignum(card.ability.extra.emult),
-					colour = G.C.DARK_EDITION,
+					emult = lenient_bignum(card.ability.extra.emult),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.emult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.emult),
 			}
 		end
 	end,
@@ -6225,9 +5938,7 @@ local filler = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.x_mult } }),
-				colour = G.C.RED,
-				Xmult_mod = card.ability.x_mult,
+				xmult = card.ability.x_mult,
 			}
 		end
 	end,
@@ -6282,13 +5993,7 @@ local giggly = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6341,13 +6046,7 @@ local nutty = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6400,13 +6099,7 @@ local manic = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6459,13 +6152,7 @@ local silly = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6518,13 +6205,7 @@ local delirious = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6583,13 +6264,7 @@ local wacky = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6648,13 +6323,7 @@ local kooky = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6714,13 +6383,7 @@ local bonkers = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6769,13 +6432,7 @@ local fuckedup = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6824,13 +6481,7 @@ local foolhardy = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6877,13 +6528,7 @@ local undefined = {
 	calculate = function(self, card, context)
 		if (context.joker_main and context.scoring_name == "cry_None") or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.t_mult) },
-				}),
-				colour = G.C.RED,
-				mult_mod = lenient_bignum(card.ability.extra.t_mult),
+				mult = lenient_bignum(card.ability.extra.t_mult),
 			}
 		end
 	end,
@@ -6988,13 +6633,7 @@ local dubious = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7047,13 +6686,7 @@ local shrewd = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7106,13 +6739,7 @@ local tricksy = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7165,13 +6792,7 @@ local foxy = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7224,13 +6845,7 @@ local savvy = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7289,13 +6904,7 @@ local subtle = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7354,13 +6963,7 @@ local discreet = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7420,13 +7023,7 @@ local adroit = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7475,13 +7072,7 @@ local penetrating = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7530,13 +7121,7 @@ local treacherous = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7582,13 +7167,7 @@ local nebulous = {
 	calculate = function(self, card, context)
 		if (context.joker_main and context.scoring_name == "cry_None") or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.t_chips) },
-				}),
-				colour = G.C.BLUE,
-				chip_mod = lenient_bignum(card.ability.extra.t_chips),
+				chips = lenient_bignum(card.ability.extra.t_chips),
 			}
 		end
 	end,
@@ -7755,12 +7334,7 @@ local wheelhope = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.x_mult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 		if context.pseudorandom_result and not context.result then
@@ -7784,7 +7358,7 @@ local wheelhope = {
 				message_colour = G.C.RED,
 			})
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 	end,
@@ -7958,13 +7532,7 @@ local night = {
 		if context.joker_main and G.GAME.current_round.hands_left == 0 then
 			if to_big(card.ability.extra.mult) > to_big(1) then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_powmult",
-						vars = { number_format(card.ability.extra.mult) },
-					}),
-					Emult_mod = lenient_bignum(card.ability.extra.mult),
-					colour = G.C.DARK_EDITION,
+					emult = lenient_bignum(card.ability.extra.mult),
 				}
 			end
 		elseif
@@ -8036,13 +7604,7 @@ local night = {
 				end,
 			}))
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,
@@ -8096,35 +7658,17 @@ local busdriver = {
 					- (1 / (cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) * oddy))
 			then
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_mult",
-						vars = { number_format(card.ability.extra.mult) },
-					}),
-					mult_mod = lenient_bignum(card.ability.extra.mult),
-					colour = G.C.MULT,
+					mult = lenient_bignum(card.ability.extra.mult),
 				}
 			else
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_mult_minus",
-						vars = { number_format(card.ability.extra.mult) },
-					}),
-					mult_mod = lenient_bignum(to_big(card.ability.extra.mult) * -1),
-					colour = G.C.MULT,
+					mult = lenient_bignum(to_big(card.ability.extra.mult) * -1),
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				mult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.MULT,
+				mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,
@@ -8352,14 +7896,7 @@ local membershipcard = {
 			or context.forcetrigger
 		then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = {
-						number_format(lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count)),
-					},
-				}),
-				Xmult_mod = lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count),
+				xmult = lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count),
 			}
 		end
 	end,
@@ -8738,13 +8275,7 @@ local universe = {
 				}))
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.emult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.emult),
 			}
 		end
 		if context.individual and context.cardarea == G.play then
@@ -8885,12 +8416,7 @@ local kittyprinter = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.Xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -9330,11 +8856,7 @@ local cookie = {
 	calculate = function(self, card, context)
 		if context.joker_main or context.forcetrigger then
 			return {
-				card = card,
-				chip_mod = lenient_bignum(card.ability.extra.chips),
-				message = "+" .. number_format(card.ability.extra.chips),
-				colour = G.C.CHIPS,
-				operation = "-",
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 		if context.cry_press then
@@ -9976,12 +9498,7 @@ local zooble = {
 		end
 		if context.joker_main and to_big(card.ability.extra.mult) > to_big(0) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				mult_mod = lenient_bignum(card.ability.extra.mult),
+				mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 		if context.forcetrigger then
@@ -9993,7 +9510,7 @@ local zooble = {
 				message_colour = G.C.RED,
 			})
 			return {
-				mult_mod = lenient_bignum(card.ability.extra.mult),
+				mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,
@@ -10470,8 +9987,7 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 	calculate = function(self, card, context)
 		if context.joker_main then
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
-				Xmult_mod = card.ability.extra.Xmult,
+				xmult = card.ability.extra.Xmult,
 			}
 		end
 		if context.end_of_round and context.game_over == false and not context.repetition and not context.blueprint then
@@ -10533,8 +10049,7 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 				}))
 			end
 			return {
-				message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.extra.Xmult } }),
-				Xmult_mod = card.ability.extra.Xmult,
+				xmult = card.ability.extra.Xmult,
 			}
 		end
 	end,
@@ -10728,7 +10243,7 @@ local pizza_slice = {
 		end
 		if context.joker_main or context.forcetrigger then
 			return {
-				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
+				xmult = lenient_bignum(card.ability.extra.xmult),
 			}
 		end
 	end,
@@ -10812,12 +10327,7 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 		end
 		if context.joker_main or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.xmult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.xmult),
+				xmult = lenient_bignum(card.ability.extra.xmult),
 			}
 		end
 	end,
@@ -10886,12 +10396,7 @@ local poor_joker = { -- +1 to all listed probabilities for the highest cat tag l
 		end
 		if context.joker_main or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				mult_mod = lenient_bignum(card.ability.extra.mult),
+				mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,

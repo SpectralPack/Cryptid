@@ -242,13 +242,7 @@ local foodm = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				mult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.MULT,
+				mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 		if
@@ -312,13 +306,7 @@ local foodm = {
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_mult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				mult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.MULT,
+				mult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,
@@ -701,14 +689,7 @@ local bonk = {
 					}))
 				end
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_chips",
-						vars = {
-							number_format(lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips)),
-						},
-					}),
-					chip_mod = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
+					chips = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
 				}
 			else
 				if not Talisman.config_file.disable_anims then
@@ -720,12 +701,7 @@ local bonk = {
 					}))
 				end
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_chips",
-						vars = { number_format(card.ability.extra.chips) },
-					}),
-					chip_mod = lenient_bignum(card.ability.extra.chips),
+					chips = lenient_bignum(card.ability.extra.chips),
 				}
 			end
 		end
@@ -738,7 +714,7 @@ local bonk = {
 				message_colour = G.C.CHIPS,
 			})
 			return {
-				chip_mod = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
+				chips = lenient_bignum(to_big(card.ability.extra.chips) * card.ability.extra.xchips),
 			}
 		end
 	end,
@@ -1445,13 +1421,7 @@ local biggestm = {
 	calculate = function(self, card, context)
 		if (context.joker_main and card.ability.extra.check) or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.x_mult) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.x_mult),
-				colour = G.C.MULT,
+				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
 		end
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
@@ -1577,14 +1547,7 @@ local mprime = {
 					}))
 				end
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_powmult",
-						vars = { number_format(card.ability.extra.mult) },
-					}),
-					Emult_mod = lenient_bignum(card.ability.extra.mult),
-					colour = G.C.DARK_EDITION,
-					card = card,
+					emult = lenient_bignum(card.ability.extra.mult),
 				}
 			end
 		end
@@ -1609,13 +1572,7 @@ local mprime = {
 				end,
 			}))
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.mult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.mult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.mult),
 			}
 		end
 	end,
@@ -1862,12 +1819,7 @@ local longboi = {
 			return nil, true
 		elseif context.joker_main and to_big(card.ability.extra.monster) > to_big(1) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.monster) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.monster),
+				xmult = lenient_bignum(card.ability.extra.monster),
 			}
 		end
 		if context.forcetrigger then
@@ -1880,12 +1832,7 @@ local longboi = {
 				no_message = true,
 			})
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = { number_format(card.ability.extra.monster) },
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.monster),
+				xmult = lenient_bignum(card.ability.extra.monster),
 			}
 		end
 	end,

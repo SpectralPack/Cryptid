@@ -190,15 +190,7 @@ local exponentia = {
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.extra.Emult),
-					},
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.Emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 		if context.forcetrigger then
@@ -210,7 +202,7 @@ local exponentia = {
 				message_colour = G.C.DARK_EDITION,
 			})
 			return {
-				Emult_mod = lenient_bignum(card.ability.extra.Emult),
+				emult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
@@ -551,12 +543,7 @@ local crustulum = {
 		end
 		if context.joker_main and to_big(card.ability.extra.chips) > to_big(0) then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_chips",
-					vars = { number_format(card.ability.extra.chips) },
-				}),
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 		if context.forcetrigger then
@@ -567,7 +554,7 @@ local crustulum = {
 				message_colour = G.C.CHIPS,
 			})
 			return {
-				chip_mod = lenient_bignum(card.ability.extra.chips),
+				chips = lenient_bignum(card.ability.extra.chips),
 			}
 		end
 	end,
@@ -635,15 +622,7 @@ local primus = {
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
 			card.children.floating_sprite:set_sprite_pos({ x = 8, y = 6 })
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.extra.Emult),
-					},
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.Emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 		if context.end_of_round then
@@ -657,8 +636,7 @@ local primus = {
 				message_colour = G.C.DARK_EDITION,
 			})
 			return {
-				Emult_mod = lenient_bignum(card.ability.extra.Emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
@@ -838,15 +816,7 @@ local stella_mortis = {
 		end
 		if (context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1))) or context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.extra.Emult),
-					},
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.Emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
@@ -913,14 +883,15 @@ local circulus_pistoris = {
 				pi = 2 * pi
 			end
 			return {
-				Echip_mod = pi,
-				Emult_mod = pi,
+				echips = pi,
+				emult = pi,
 				message = localize({
 					type = "variable",
 					key = "a_powmultchips",
 					vars = { (Cryptid.safe_get(card, "edition", "cry_oversat") and "tau" or "pi") },
 				}),
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
+				remove_default_message = true,
 			}
 		end
 	end,
@@ -1035,13 +1006,7 @@ local facile = {
 			if to_big(card.ability.immutable.check2) <= to_big(card.ability.extra.check) then
 				card.ability.immutable.check2 = 0
 				return {
-					message = localize({
-						type = "variable",
-						key = "a_powmult",
-						vars = { number_format(card.ability.extra.Emult) },
-					}),
-					Emult_mod = lenient_bignum(card.ability.extra.Emult),
-					colour = G.C.DARK_EDITION,
+					emult = lenient_bignum(card.ability.extra.Emult),
 				}
 			else
 				card.ability.immutable.check2 = 0
@@ -1049,13 +1014,7 @@ local facile = {
 		end
 		if context.forcetrigger then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = { number_format(card.ability.extra.Emult) },
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.Emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
@@ -1130,7 +1089,7 @@ local gemino = {
 	end,
 	update = function(self, card, front)
 		if G.STAGE == G.STAGES.RUN then
-			other_joker = G.jokers.cards[1]
+			local other_joker = G.jokers.cards[1]
 			if other_joker and other_joker ~= card and not (Card.no(other_joker, "immutable", true)) then
 				card.ability.blueprint_compat = "compatible"
 			else
@@ -1366,15 +1325,7 @@ local duplicare = {
 				})
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_xmult",
-					vars = {
-						number_format(card.ability.extra.Xmult),
-					},
-				}),
-				Xmult_mod = lenient_bignum(card.ability.extra.Xmult),
-				colour = G.C.MULT,
+				xmult = lenient_bignum(card.ability.extra.Xmult),
 			}
 		end
 	end,
@@ -1518,15 +1469,7 @@ local formidiulosus = {
 		end
 		if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and context.joker_main then
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.extra.Emult),
-					},
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.Emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 		if context.forcetrigger then
@@ -1537,15 +1480,7 @@ local formidiulosus = {
 				G.jokers:emplace(card)
 			end
 			return {
-				message = localize({
-					type = "variable",
-					key = "a_powmult",
-					vars = {
-						number_format(card.ability.extra.Emult),
-					},
-				}),
-				Emult_mod = lenient_bignum(card.ability.extra.Emult),
-				colour = G.C.DARK_EDITION,
+				emult = lenient_bignum(card.ability.extra.Emult),
 			}
 		end
 	end,
