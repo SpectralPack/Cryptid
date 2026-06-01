@@ -483,7 +483,7 @@ local mneon = {
 					operation = function(ref_table, ref_value, initial, change)
 						ref_table[ref_table] = initial + change * jollycount
 					end,
-					no_message = true
+					no_message = true,
 				})
 			end
 			-- currently CAN use SMODS.scale_card even if a for loop isn't used to trigger scaling once for every jolly joker
