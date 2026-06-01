@@ -5338,7 +5338,7 @@ local python = {
 				ref_value = "Xmult",
 				scalar_value = "Xmult_mod",
 				message_colour = G.C.MULT,
-				message_key = "a_xmult"
+				message_key = "a_xmult",
 			})
 			return nil, true
 		end
@@ -5353,7 +5353,7 @@ local python = {
 				ref_value = "Xmult",
 				scalar_value = "Xmult_mod",
 				message_colour = G.C.MULT,
-				message_key = "a_xmult"
+				message_key = "a_xmult",
 			})
 			return {
 				Xmult = lenient_bignum(card.ability.extra.Xmult),
