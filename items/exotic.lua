@@ -1220,6 +1220,7 @@ local energia = {
 					colour = G.C.DARK_EDITION,
 				},
 			})
+			return nil, true
 		elseif context.forcetrigger then
 			SMODS.scale_card(card, {
 				ref_table = card.ability.extra,
@@ -1227,6 +1228,7 @@ local energia = {
 				scalar_value = "tag_mod",
 				no_message = true,
 			})
+			return nil, true
 		end
 	end,
 	cry_credits = {
@@ -1352,6 +1354,7 @@ local duplicare = {
 				ref_value = "Xmult",
 				scalar_value = "Xmult_mod",
 			})
+			return nil, true
 		end
 		if (context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1))) or context.forcetrigger then
 			if context.forcetrigger then

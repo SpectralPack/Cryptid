@@ -1434,6 +1434,7 @@ function Cryptid.isNonRollProbabilityContext(context)
 			return context.from_roll
 		end
 	end
+	if context.check_enhancement then return false end --unintuitive to players and gets called outside of actual "triggers" a lot
 
 	return true
 end
