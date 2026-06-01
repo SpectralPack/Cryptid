@@ -2298,7 +2298,7 @@ function SMODS.upgrade_poker_hands(args)
 		end
 		args.func = function(base, hand, param, level_up)
 			local lv_amt = (type(level_up) == "number" or is_big(level_up)) and level_up or 1
-			return math.min(base * (universum_mod ^ lv_amt), G.GAME.hands[hand]["s_"..param] or 0)
+			return math.min(base * (universum_mod ^ lv_amt), G.GAME.hands[hand]["s_" .. param] or 0)
 		end
 		args.StatusText = "X" .. number_format(universum_mod ^ lvl_amt)
 	end
