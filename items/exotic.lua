@@ -616,13 +616,7 @@ local primus = {
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_hand then
 				for k, v in ipairs(context.full_hand) do
-					if
-						v:get_id() == 2
-						or v:get_id() == 3
-						or v:get_id() == 5
-						or v:get_id() == 7
-						or v:get_id() == 14
-					then
+					if v:get_id() == 2 or v:get_id() == 3 or v:get_id() == 5 or v:get_id() == 7 or v:get_id() == 14 then
 						check = true
 					end
 				end
