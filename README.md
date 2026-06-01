@@ -29,7 +29,7 @@ It could also be that Steamodded is out of date, sometimes mods may use features
 > *I can't see any new jokers/content!*
 
 If you've installed everything correctly, but no new jokers, blinds, etc. are ingame, check the Mods list by clicking on [MODS] in the main menu, and look for Cryptid/Amulet.
-If they show up red, that means there's a problem. Hover over the mod icon (which should be an exclamation mark) to see what said problem is. It could be an outdated dependency in most cases.
+If they show up red, that means there's a problem. Hover over the mod icon (which should be an exclamation mark) to see what said problem is. It could be an outdated dependency in most cases. However If the mod button doesn't show up, it means steamodded hasn't been downloaded correctly.  
 
 > *What's up with all the "M" jokers/references to Jolly Joker?*
 
