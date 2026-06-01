@@ -1890,6 +1890,9 @@ local longboi = {
 		end
 	end,
 	set_ability = function(self, card, initial, delay_sprites)
+		if card.cry_flipping then
+			return
+		end
 		local aaa = lenient_bignum(G.GAME and G.GAME.monstermult or 1)
 		if (Cryptid.safe_get(card, "area", "config", "type") or "") == "title" then
 			card.ability.extra.monster = aaa

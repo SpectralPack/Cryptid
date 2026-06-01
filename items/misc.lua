@@ -2149,6 +2149,7 @@ local double_sided = {
 		end
 		function Card:flip_side()
 			local card = self
+			card.cry_flipping = true
 			if not card.ability.immutable then
 				card.ability.immutable = {}
 			end
@@ -2253,6 +2254,7 @@ local double_sided = {
 					card.ability.immutable.other_side.base = base
 				end
 			end
+			card.cry_flipping = nil
 		end
 		function Card:get_other_side_dummy(added_to_deck)
 			if self.ability.immutable and type(self.ability.immutable.other_side) == "table" then
