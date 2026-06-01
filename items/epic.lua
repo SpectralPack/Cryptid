@@ -1709,6 +1709,7 @@ local goldjoker = {
 	order = 81,
 	enhancement_gate = "m_gold",
 	perishable_compat = false,
+	blueprint_compat = false,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_gold
@@ -1727,15 +1728,7 @@ local goldjoker = {
 					ref_value = "percent",
 					scalar_value = "percent_mod",
 				})
-			end
-		end
-		if context.individual and context.cardarea == G.play then
-			if SMODS.has_enhancement(context.other_card, "m_gold") then
-				SMODS.scale_card(card, {
-					ref_table = card.ability.extra,
-					ref_value = "percent",
-					scalar_value = "percent_mod",
-				})
+				return nil, true
 			end
 		end
 	end,
