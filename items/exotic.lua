@@ -612,21 +612,18 @@ local primus = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
 	calculate = function(self, card, context)
-		local check = true
+		local check = false
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
 			if context.scoring_hand then
 				for k, v in ipairs(context.full_hand) do
 					if
-						v:get_id() == 4
-						or v:get_id() == 6
-						or v:get_id() == 8
-						or v:get_id() == 9
-						or v:get_id() == 10
-						or v:get_id() == 11
-						or v:get_id() == 12
-						or v:get_id() == 13
+						v:get_id() == 2
+						or v:get_id() == 3
+						or v:get_id() == 5
+						or v:get_id() == 7
+						or v:get_id() == 14
 					then
-						check = false
+						check = true
 					end
 				end
 			end
@@ -638,6 +635,7 @@ local primus = {
 					message_colour = G.C.DARK_EDITION,
 				})
 				card.children.floating_sprite:set_sprite_pos({ x = 8, y = 6 })
+				return nil, true
 			end
 		end
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
