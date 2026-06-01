@@ -2636,7 +2636,7 @@ local sundial = {
 	eternal_compat = false,
 	atlas = "atlasepic",
 	pos = { x = 5, y = 5 },
-	config = { extra = { handleft = 12, handloss = -1 } },
+	config = { extra = { handleft = 12 } },
 	cry_credits = {
 		art = { "Tatturedlurker" },
 		code = { "candycanearter" },
@@ -2664,11 +2664,8 @@ local sundial = {
 			and not context.repetition
 			and card.ability.extra.handleft > 0
 		then
-			SMODS.scale_card(card, {
-				ref_table = card.ability.extra,
-				ref_value = "handleft",
-				scalar_value = "handloss",
-			})
+			card.ability.extra.handleft = card.ability.extra.handleft - 1
+			return { message = card.ability.extra.handleft }
 		end
 
 		if context.selling_self and not context.retrigger_joker and not context.blueprint then
