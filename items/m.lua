@@ -1538,6 +1538,7 @@ local mprime = {
 						colour = G.C.DARK_EDITION,
 					},
 				})
+				return nil, true
 			end
 		elseif
 			context.end_of_round
@@ -1800,6 +1801,7 @@ local megg = {
 				jolly_card:add_to_deck()
 				G.jokers:emplace(jolly_card)
 			end
+			return nil, true --?
 		end
 	end,
 	cry_credits = {
@@ -1826,7 +1828,6 @@ local longboi = {
 		extra = {
 			monster = 1,
 			bonus = 0.75,
-			secret_variable_so_smods_scale_works_correctly = 1,
 		},
 		immutable = { max_bonus = 0.75 }, -- this is technically a minimum but i didn't name the variable
 	},
@@ -1849,7 +1850,7 @@ local longboi = {
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.individual and not context.repetition then
 			card.ability.extra.bonus = math.max(card.ability.extra.bonus, card.ability.immutable.max_bonus) -- maybe remove this entirely
-			local msg = SMODS.scale_card(card, {
+			SMODS.scale_card(card, {
 				ref_table = G.GAME,
 				ref_value = "monstermult",
 				scalar_table = card.ability.extra,
@@ -1858,6 +1859,7 @@ local longboi = {
 					message = localize("cry_m_ex"),
 				},
 			})
+			return nil, true
 		elseif context.joker_main and to_big(card.ability.extra.monster) > to_big(1) then
 			return {
 				message = localize({

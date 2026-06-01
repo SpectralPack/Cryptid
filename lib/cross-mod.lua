@@ -25,6 +25,7 @@ SMODS.Joker:take_ownership("green_joker", {
 					message_key = "a_mult_minus",
 					message_colour = G.C.RED,
 				})
+				return nil, true
 			end
 		end
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
@@ -35,6 +36,7 @@ SMODS.Joker:take_ownership("green_joker", {
 				message_key = "a_mult",
 				message_colour = G.C.RED,
 			})
+			return nil, true
 		end
 		if context.joker_main then
 			return {

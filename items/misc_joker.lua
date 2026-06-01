@@ -324,7 +324,7 @@ local potofjokes = {
 	end,
 	calculate = function(self, card, context)
 		if
-			(context.end_of_round and not context.individual and not context.repetition and not context.blueprint)
+			(context.end_of_round and context.main_eval and not context.blueprint)
 			or context.forcetrigger
 		then
 			if
@@ -361,6 +361,7 @@ local potofjokes = {
 				scalar_value = "h_mod",
 				message_key = "a_handsize",
 			})
+			return nil, true
 		end
 	end,
 	add_to_deck = function(self, card, from_debuff)
@@ -528,6 +529,7 @@ local wee_fib = {
 					scalar_value = "mult_mod",
 					message_colour = G.C.MULT,
 				})
+				return nil, true
 			end
 		end
 		if context.joker_main and (to_big(card.ability.extra.mult) > to_big(0)) then
@@ -917,17 +919,14 @@ local pickle = {
 				no_message = true,
 			})
 			if to_big(card.ability.extra.tags) > to_big(0) then
-				if not msg or type(msg) == "string" then
-					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = msg or localize({
-							type = "variable",
-							key = card.ability.extra.tags_mod == 1 and "a_tag_minus" or "a_tags_minus",
-							vars = { number_format(card.ability.extra.tags_mod) },
-						})[1],
-						colour = G.C.FILTER,
-					})
-				end
-				return nil, true
+				return {
+					message = localize({
+						type = "variable",
+						key = card.ability.extra.tags_mod == 1 and "a_tag_minus" or "a_tags_minus",
+						vars = { number_format(card.ability.extra.tags_mod) },
+					}),
+					colour = G.C.FILTER,
+				}
 			else
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -1964,6 +1963,7 @@ local fspinner = {
 					scalar_value = "chip_mod",
 					message_colour = G.C.CHIPS,
 				})
+				return nil, true
 			end
 		end
 		if context.joker_main and (to_big(card.ability.extra.chips) > to_big(0)) then
@@ -2174,6 +2174,7 @@ local krustytheclown = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 			})
+			return nil, true
 		end
 		if context.forcetrigger then
 			SMODS.scale_card(card, {
@@ -2477,6 +2478,7 @@ local antennastoheaven = {
 					ref_value = "x_chips",
 					scalar_value = "bonus",
 				})
+				return nil, true
 			end
 		end
 		if context.forcetrigger then
@@ -2973,15 +2975,8 @@ local unjust_dagger = {
 				operation = function(ref_table, ref_value, initial, scaling)
 					ref_table[ref_value] = initial + 0.2 * scaling
 				end,
-				scaling_message = {
-					message = localize({
-						type = "variable",
-						key = "a_xmult",
-						vars = { card.ability.extra.x_mult + 0.2 * sliced_card.sell_cost },
-					}),
-					colour = G.C.MULT,
-					no_juice = true,
-				},
+				message_key = "a_xmult",
+				message_colour = G.C.MULT,
 			})
 			return nil, true
 		end
@@ -3384,6 +3379,7 @@ local mondrian = {
 				ref_value = "x_mult",
 				scalar_value = "extra",
 			})
+			return nil, true
 		end
 		if context.forcetrigger then
 			SMODS.scale_card(card, {
@@ -3590,6 +3586,7 @@ local spaceglobe = {
 					scalar_value = "Xchipmod",
 					message_colour = G.C.CHIPS,
 				})
+				return nil, true
 			end
 		end
 		if context.joker_main and (to_big(card.ability.extra.x_chips) > to_big(1)) then
@@ -8287,6 +8284,7 @@ local morse = {
 				ref_value = "money",
 				scalar_value = "bonus",
 			})
+			return nil, true
 		end
 		if context.forcetrigger then
 			SMODS.scale_card(card, {
@@ -9383,6 +9381,7 @@ local cookie = {
 						colour = G.C.CHIPS,
 					},
 				})
+				return nil, true
 			end
 		end
 	end,
@@ -9948,7 +9947,7 @@ local zooble = {
 	end,
 	calculate = function(self, card, context)
 		if context.before and context.cardarea == G.jokers and not context.blueprint then
-			if not (next(context.poker_hands["Straight"]) or next(context.poker_hands["Straight Flush"])) then
+			if not next(context.poker_hands["Straight"]) then --straight flush already contains a straight????
 				local unique_ranks = {}
 				for i, v in pairs(context.scoring_hand) do
 					if not (SMODS.has_no_rank(v) and not v.vampired) then
@@ -9972,6 +9971,7 @@ local zooble = {
 							ref_table[ref_value] = initial + scaling * #unique_ranks
 						end,
 					})
+					return nil, true
 				end
 			end
 		end
@@ -10722,6 +10722,7 @@ local pizza_slice = {
 					message_colour = G.C.RED,
 					no_message = context.forcetrigger,
 				})
+				if not context.forcetrigger then return nil, true end
 			end
 		end
 		if context.joker_main or context.forcetrigger then
@@ -10804,6 +10805,7 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 				message_colour = G.C.RED,
 				no_message = context.forcetrigger,
 			})
+			if not context.forcetrigger then return nil, true end
 		end
 		if context.joker_main or context.forcetrigger then
 			return {
@@ -10875,6 +10877,7 @@ local poor_joker = { -- +1 to all listed probabilities for the highest cat tag l
 				message_colour = G.C.RED,
 				no_message = context.forcetrigger,
 			})
+			if not context.forcetrigger then return nil, true end
 		end
 		if context.joker_main or context.forcetrigger then
 			return {
@@ -11052,6 +11055,7 @@ local keychange = {
 				ref_value = "xm",
 				scalar_value = "xmgain",
 			})
+			return nil, true
 		end
 
 		if context.joker_main or context.force_trigger then

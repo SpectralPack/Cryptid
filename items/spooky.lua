@@ -951,6 +951,7 @@ local candy_basket = {
 					end,
 					no_message = true,
 				})
+				return nil, true
 			end
 			if card.ability.immutable.current_win_count >= card.ability.immutable.wins_needed then
 				card.ability.immutable.current_win_count = 0
@@ -959,6 +960,7 @@ local candy_basket = {
 					ref_value = "candies",
 					scalar_value = "candy_mod",
 				})
+				return nil, true
 			end
 		end
 		if context.forcetrigger then
@@ -981,6 +983,7 @@ local candy_basket = {
 				card:add_to_deck()
 				G.jokers:emplace(card)
 			end
+			return nil, true
 		end
 	end,
 	loc_vars = function(self, info_queue, center)
