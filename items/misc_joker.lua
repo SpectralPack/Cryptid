@@ -323,10 +323,7 @@ local potofjokes = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if
-			(context.end_of_round and context.main_eval and not context.blueprint)
-			or context.forcetrigger
-		then
+		if (context.end_of_round and context.main_eval and not context.blueprint) or context.forcetrigger then
 			if
 				to_big(card.ability.extra.h_size) + to_big(card.ability.extra.h_mod)
 				>= to_big(card.ability.immutable.h_mod_max)
@@ -10722,7 +10719,9 @@ local pizza_slice = {
 					message_colour = G.C.RED,
 					no_message = context.forcetrigger,
 				})
-				if not context.forcetrigger then return nil, true end
+				if not context.forcetrigger then
+					return nil, true
+				end
 			end
 		end
 		if context.joker_main or context.forcetrigger then
@@ -10805,7 +10804,9 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 				message_colour = G.C.RED,
 				no_message = context.forcetrigger,
 			})
-			if not context.forcetrigger then return nil, true end
+			if not context.forcetrigger then
+				return nil, true
+			end
 		end
 		if context.joker_main or context.forcetrigger then
 			return {
@@ -10877,7 +10878,9 @@ local poor_joker = { -- +1 to all listed probabilities for the highest cat tag l
 				message_colour = G.C.RED,
 				no_message = context.forcetrigger,
 			})
-			if not context.forcetrigger then return nil, true end
+			if not context.forcetrigger then
+				return nil, true
+			end
 		end
 		if context.joker_main or context.forcetrigger then
 			return {
