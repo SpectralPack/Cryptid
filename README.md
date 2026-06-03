@@ -48,3 +48,7 @@ Amulet may not be configured to be on **Omeganum** mode, which has a maximum lim
 
 Be sure to give us as much information about the bug/crash as possible in our [Discord](https://discord.com/invite/eUf9Ur6RyB). A way to reproduce the bug/crash is also especially useful information to help us fix it.
 Remember; just saying you're crashing doesn't tell us anything. We need to know the details!
+
+> *I don't know how to manually install mods!*
+
+Cryptid is also available on the [Balatro Mod Manager](https://balatro-mod-manager.dasguney.com/), when installing you might be prompted to install steamoddded/talisman or both, make sure to install both of them so cryptid works correctly!
