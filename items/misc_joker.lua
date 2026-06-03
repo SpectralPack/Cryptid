@@ -5057,6 +5057,7 @@ local rnjoker = {
 							assembled_string = assembled_string
 								.. (
 									type(subpart) == "string" and subpart
+									or (Cryptid.pluralize and Cryptid.pluralize(subpart[1], args.vars))
 									or format_ui_value(args.vars[tonumber(subpart[1])])
 									or "ERROR"
 								)
