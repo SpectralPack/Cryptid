@@ -12,8 +12,11 @@ Cryptid currently adds:
 
 
 ### [Official Discord](https://discord.gg/eUf9Ur6RyB)
-### [Mac Video Installation Guide](https://youtu.be/l5ni7fHgwTE?si=GAN5t5-y_IuEv8uA)
-### [Not Mac Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
+### [Balatro Modding Guide](https://github.com/Steamodded/smods/wiki)
+(Cryptid and any other mods are installed identically to steamodded)
+### Outdated guides (will be removed here at some point)
+[Mac Video Installation Guide](https://youtu.be/l5ni7fHgwTE?si=GAN5t5-y_IuEv8uA)
+[Not Mac Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
 
 ### Frequently asked questions
 * Credit to @jenwalter666 for creating this FAQ (forwarded from Cryptid Discord)
