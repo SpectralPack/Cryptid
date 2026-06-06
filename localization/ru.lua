@@ -1904,7 +1904,7 @@ return {
 					"Этот джокер набирает {X:mult,C:white}X#2#{} множитель",
 					"когда {C:attention}Джокер{}",
 					"или играющая карта засчитывается",
-					"{C:inactive}(Сейчас {X:mult,C:white}X#1#{C:inactive} множитель)"
+					"{C:inactive}(Сейчас {X:mult,C:white}X#1#{C:inactive} множитель)",
 				},
 			},
 			j_cry_effarcire = {
