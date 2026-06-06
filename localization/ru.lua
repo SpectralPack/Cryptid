@@ -1901,8 +1901,10 @@ return {
 			j_cry_duplicare = {
 				name = "Duplicare",
 				text = {
-					"Каждый {C:attention}Джокер{} даёт",
-					"{X:dark_edition,C:white}^#1#{} Множ.",
+					"Этот джокер набирает {X:mult,C:white}X#2#{} множитель",
+					"когда {C:attention}Джокер{}",
+					"или играющая карта засчитывается",
+					"{C:inactive}(Сейчас {X:mult,C:white}X#1#{C:inactive} множитель)"
 				},
 			},
 			j_cry_effarcire = {
