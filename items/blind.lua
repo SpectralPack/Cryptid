@@ -1033,12 +1033,13 @@ local lavender_loop = {
 	cry_round_base_mod = function(self, dt)
 		local aaa = 4 * (G.GAME.modifiers.cry_rush_hour_iii or 1)
 		if
+			G.GAME.cry_ach_conditions.patience_virtue_timer	and
 			G.GAME.cry_ach_conditions.patience_virtue_timer > 0
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
 				- dt * (G.SETTINGS.paused and 0 or 1) * G.SETTINGS.GAMESPEED
-		elseif G.GAME.current_round.hands_played == 0 then
+		elseif G.GAME.current_round.hands_played == 0 and G.GAME.cry_ach_conditions.patience_virtue_timer then
 			G.GAME.cry_ach_conditions.patience_virtue_earnable = true
 		end
 		if G.SETTINGS.paused or G.STATE == G.STATES.HAND_PLAYED then
