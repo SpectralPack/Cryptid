@@ -491,6 +491,7 @@ local trade = {
 			end
 			Card.apply_to_run(nil, G.P_CENTERS[center])
 		end
+		--[[
 		print(localize({
 			type = "variable",
 			key = "cry_trade_remove",
@@ -506,6 +507,7 @@ local trade = {
 			key = "cry_trade_add",
 			vars = { localize({ type = "name_text", set = "Voucher", key = loc_name[3] }) },
 		}))
+		]]
 	end,
 }
 local replica = {

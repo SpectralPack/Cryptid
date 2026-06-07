@@ -580,7 +580,7 @@ if CardSleeves then
 					then
 						local is_spectral_pack = is_booster_pack and (card.ability.name:find("Spectral"))
 						if is_spectral_pack then
-							print("is spectral pack!")
+							--print("is spectral pack!")
 							card.ability.extra = card.ability.extra + 2
 						end
 					end

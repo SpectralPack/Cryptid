@@ -1155,7 +1155,7 @@ local energia = {
 			-- Don't add tags if there are more then 40 (lag)
 			local added_tags =
 				math.max(math.min(card.ability.immutable.max_tags - #G.GAME.tags, card.ability.extra.tags), 0)
-			print(added_tags)
+			--print(added_tags)
 			if added_tags > 0 then
 				for i = 1, added_tags do
 					local ab = copy_table(context.tag_added.ability)
