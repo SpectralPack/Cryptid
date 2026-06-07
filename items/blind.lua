@@ -1033,8 +1033,8 @@ local lavender_loop = {
 	cry_round_base_mod = function(self, dt)
 		local aaa = 4 * (G.GAME.modifiers.cry_rush_hour_iii or 1)
 		if
-			G.GAME.cry_ach_conditions.patience_virtue_timer	and
-			G.GAME.cry_ach_conditions.patience_virtue_timer > 0
+			G.GAME.cry_ach_conditions.patience_virtue_timer
+			and G.GAME.cry_ach_conditions.patience_virtue_timer > 0
 			and G.GAME.cry_ach_conditions.patience_virtue_earnable ~= true
 		then
 			G.GAME.cry_ach_conditions.patience_virtue_timer = G.GAME.cry_ach_conditions.patience_virtue_timer
