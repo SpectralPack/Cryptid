@@ -549,6 +549,7 @@ function Game:update(dt)
 			and G.GAME.blind
 			and not G.GAME.blind.disabled
 			and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)
+			and G.GAME.current_round.hands_left >= 1
 		then
 			G.GAME.blind.chips = G.GAME.blind.chips
 				* (G.GAME.blind.cry_round_base_mod and G.GAME.blind:cry_round_base_mod(dt) or 1)
