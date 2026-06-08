@@ -4244,10 +4244,11 @@ local delete = {
 		return { vars = { Cryptid.safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
 	end,
 	can_use = function(self, card)
-		local blacklist = function (c)
+		local blacklist = function(c)
 			return not c.ability.eternal
 		end
-		local cards = Cryptid.get_highlighted_cards({ G.shop_jokers, G.shop_booster, G.shop_vouchers }, card, 1, 1, blacklist)
+		local cards =
+			Cryptid.get_highlighted_cards({ G.shop_jokers, G.shop_booster, G.shop_vouchers }, card, 1, 1, blacklist)
 		return #cards == 1
 	end,
 	use = function(self, card, area, copier)
@@ -4255,10 +4256,11 @@ local delete = {
 			G.GAME.cry_banned_pcards = {}
 		end
 
-		local blacklist = function (c)
+		local blacklist = function(c)
 			return not c.ability.eternal
 		end
-		local cards = Cryptid.get_highlighted_cards({ G.shop_jokers, G.shop_booster, G.shop_vouchers }, card, 1, 1, blacklist)
+		local cards =
+			Cryptid.get_highlighted_cards({ G.shop_jokers, G.shop_booster, G.shop_vouchers }, card, 1, 1, blacklist)
 		local c = cards[1]
 
 		if c.area == G.shop_vouchers then
