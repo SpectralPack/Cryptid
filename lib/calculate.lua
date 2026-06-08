@@ -108,6 +108,7 @@ end
 
 function Card:calculate_joker(context)
 	local active_side = self
+	--[[ (rip double sided you won't be missed)
 	if
 		next(SMODS.find_card("j_cry_flip_side"))
 		and not context.dbl_side
@@ -128,13 +129,14 @@ function Card:calculate_joker(context)
 			return
 		end
 	end
+	]]
 	if not active_side or active_side.will_shatter then
 		return
 	end
 	if not G.GAME.cry_double_scale then
 		G.GAME.cry_double_scale = { double_scale = true } --doesn't really matter what's in here as long as there's something
 	end
-	local orig_ability = copy_table(active_side.ability)
+	--local orig_ability = copy_table(active_side.ability)
 	local in_context_scaling = false
 	local callback = context.callback
 	if active_side.ability.cry_possessed then

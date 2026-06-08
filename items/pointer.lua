@@ -602,7 +602,7 @@ local pointer = {
 						["e_cry_glass"] = { "fragile" },
 						["e_cry_m"] = { "jolly" },
 						["e_cry_noisy"] = { "noisy" },
-						["e_cry_double_sided"] = { "double-sided", "double_sided", "double" }, -- uhhh sure
+						--["e_cry_double_sided"] = { "double-sided", "double_sided", "double" }, (unused but still removing this)
 					}
 					for k, v in pairs(G.P_CENTER_POOLS.Edition) do
 						local index = v.key

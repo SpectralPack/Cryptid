@@ -966,6 +966,7 @@ local conduit = {
 	order = 460,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
+		--[[ (rip double sided you won't be missed)
 		local combinedTable = {}
 		dbl = false
 		no_dbl = false
@@ -992,6 +993,9 @@ local conduit = {
 			end
 		end
 		return (#combinedTable == 2 and not (dbl and no_dbl))
+		]]
+		local cards = Cryptid.get_highlighted_cards({ G.hand, G.jokers }, card, 2, 2)
+		return #cards == 2
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
@@ -1012,12 +1016,9 @@ local conduit = {
 			trigger = "after",
 			delay = 0.15,
 			func = function()
-				if not highlighted_1.edition or not highlighted_1.edition.cry_double_sided then
-					highlighted_1:flip()
-				end
-				if not highlighted_2.edition or not highlighted_2.edition.cry_double_sided then
-					highlighted_2:flip()
-				end
+				highlighted_1:flip()
+				highlighted_2:flip()
+				--[[
 				if highlighted_1.children.flip then
 					highlighted_1.children.flip:remove()
 					highlighted_1.children.flip = nil
@@ -1031,11 +1032,12 @@ local conduit = {
 					highlighted_2.children.flip:remove()
 					highlighted_2.children.flip = nil
 				end
-
+				
 				if highlighted_2.children.merge_ds then
 					highlighted_2.children.merge_ds:remove()
 					highlighted_2.children.merge_ds = nil
 				end
+				]]
 				play_sound("card1", percent)
 				highlighted_1:juice_up(0.3, 0.3)
 				highlighted_2:juice_up(0.3, 0.3)
@@ -1048,14 +1050,11 @@ local conduit = {
 			trigger = "after",
 			delay = 0.15,
 			func = function()
-				local one_edition = highlighted_1.edition
-				if not highlighted_1.edition or not highlighted_1.edition.cry_double_sided then
-					highlighted_1:flip()
-				end
-				highlighted_1:set_edition(highlighted_2.edition)
-				if not highlighted_2.edition or not highlighted_2.edition.cry_double_sided then
-					highlighted_2:flip()
-				end
+				local one_edition = (highlighted_1.edition or {}).key
+				local two_edition = (highlighted_2.edition or {}).key
+				highlighted_1:flip()
+				highlighted_1:set_edition(two_edition)
+				highlighted_2:flip()
 				highlighted_2:set_edition(one_edition)
 				play_sound("card1", percent)
 				highlighted_1:juice_up(0.3, 0.3)
@@ -1447,7 +1446,7 @@ local spectrals = {
 	adversary,
 	chambered,
 	conduit,
-	meld,
+	--meld, (rip double sided you won't be missed)
 	summoning, -- to be moved to epic.lua
 	typhoon, -- to be moved to misc.lua
 	white_hole,

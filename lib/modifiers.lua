@@ -305,7 +305,7 @@ function Card:set_ability(center, initial, delay_sprites)
 		end
 	end
 end
-
+--[[ (rip double sided you won't be missed)
 local updateref = Card.update
 function Card:update(dt)
 	updateref(self, dt)
@@ -329,7 +329,7 @@ function Card:update(dt)
 		self.ability.pinned = true
 	end
 end
-
+]]
 local setdebuffref = Card.set_debuff
 function Card:set_debuff(should_debuff)
 	local is_debuffed = self.debuff

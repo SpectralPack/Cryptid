@@ -2536,7 +2536,7 @@ local miscitems = {
 	eclipse,
 	blessing,
 	azure_seal,
-	double_sided,
+	--double_sided, (rip double sided you won't be missed) (short for rest in piss in this context)
 	abstract,
 	instability,
 	absolute,
