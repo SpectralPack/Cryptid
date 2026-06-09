@@ -305,7 +305,7 @@ function Card:set_ability(center, initial, delay_sprites)
 		end
 	end
 end
---[[ (rip double sided you won't be missed)
+--[[
 local updateref = Card.update
 function Card:update(dt)
 	updateref(self, dt)

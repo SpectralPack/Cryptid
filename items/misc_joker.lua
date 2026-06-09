@@ -10745,7 +10745,7 @@ local miscitems = {
 	digitalhallucinations,
 	arsonist,
 	zooble,
-	--flipside, (rip double sided you won't be missed)
+	--flipside,
 	universe,
 	astral_bottle,
 	stronghold,

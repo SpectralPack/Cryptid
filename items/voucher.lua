@@ -1448,7 +1448,7 @@ local voucheritems = {
 	tag_printer,
 	pairing,
 	repair_man,
-	--double_vision, (rip double sided you won't be missed)
+	--double_vision,
 	--double_slit,
 	stickyhand,
 	grapplinghook,
@@ -1474,7 +1474,7 @@ local voucheritems = {
 	-- Cryptid T3s
 	clone_machine,
 	pairamount_plus,
-	--double_down, (rip double sided you won't be missed)
+	--double_down,
 	hyperspacetether,
 	quantum_computing,
 

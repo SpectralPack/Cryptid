@@ -108,7 +108,7 @@ end
 
 function Card:calculate_joker(context)
 	local active_side = self
-	--[[ (rip double sided you won't be missed)
+	--[[
 	if
 		next(SMODS.find_card("j_cry_flip_side"))
 		and not context.dbl_side

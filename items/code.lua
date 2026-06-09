@@ -2396,6 +2396,7 @@ local assemble = {
 		},
 		code = {
 			"Nova",
+			"Eris",
 		},
 	},
 	dependencies = {
@@ -2411,55 +2412,60 @@ local assemble = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	order = 416,
-	can_use = function(self, card)
-		local aaa = 0
-		if Cryptid.enabled("set_cry_poker_hand_stuff") == true and G.PROFILES[G.SETTINGS.profile].cry_none then
-			aaa = -1
-		end
-		local cards = Cryptid.get_highlighted_cards({ G.hand }, card, aaa + 1, 999)
-		return (#cards > aaa and #G.jokers.cards > 1)
-	end,
-	use = function(self, card, area, copier)
-		local upgrade_hand
-		local num = 0
-		if G.PROFILES[G.SETTINGS.profile].cry_none then
-			num = -1
-		end
-		local hand = Cryptid.get_highlighted_cards({ G.hand }, card, num + 1, G.hand.config.highlighted_limit)
-		if #hand > num and not G.cry_force_use then
-			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(hand)]
-		else
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				func = function()
-					local text = G.FUNCS.get_poker_hand_info(G.play.cards)
-					upgrade_hand = G.GAME.hands[text]
-						or (G.PROFILES[G.SETTINGS.profile].cry_none and G.GAME.hands["cry_None"])
-					upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
-					return true
-				end,
-			}))
-		end
-		if upgrade_hand then
-			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards
-			G.hand:unhighlight_all()
-		end
-	end,
+	can_use = function (self, card)
+        local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
+        local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+        return #hand >= min and #G.jokers.cards > 0
+    end,
+    use = function (self, card, area, copier)
+        local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
+        local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+        local hand_type
+        if #hand >= min then
+            hand_type = G.GAME.hands[G.FUNCS.get_poker_hand_info(hand)] or G.GAME.hands.cry_None
+        end
+        if hand_type then
+            SMODS.upgrade_poker_hands{
+                amount = 0,
+                hands = hand_type.key,
+                from = card,
+                parameters = {"mult"},
+                func = function (base, hand, param)
+                    return base + #G.jokers.cards
+                end
+            }
+            G.E_MANAGER:add_event(Event{
+                func = function (n)
+                    G.hand:unhighlight_all()
+                    return true
+                end
+            })
+        end
+    end,
 	bulk_use = function(self, card, area, copier, number)
-		local upgrade_hand
-		local num = 0
-		if G.PROFILES[G.SETTINGS.profile].cry_none then
-			num = -1
-		end
-		if #G.hand.highlighted > num then
-			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)]
-		elseif #G.play.cards > num then
-			upgrade_hand = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.play.cards)]
-		end
-		if upgrade_hand then
-			upgrade_hand.mult = upgrade_hand.mult + #G.jokers.cards * number
-			G.hand:unhighlight_all()
-		end
+		local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
+        local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+        local hand_type
+        if #hand >= min then
+            hand_type = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)] or G.GAME.hands.cry_None
+        end
+        if hand_type then
+            SMODS.upgrade_poker_hands{
+                amount = 0,
+                hands = hand_type.key,
+                from = card,
+                parameters = {"mult"},
+                func = function (base, hand, param)
+                    return base + (#G.jokers.cards * number)
+                end
+            }
+            G.E_MANAGER:add_event(Event{
+                func = function (n)
+                    G.hand:unhighlight_all()
+                    return true
+                end
+            })
+        end
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)

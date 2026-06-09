@@ -937,6 +937,7 @@ function Card:is_food()
 end
 
 function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)
+	ignore = ignore or {} --easiest fix lmao
 	ignore.checked = true
 	blacklist = blacklist or function()
 		return true

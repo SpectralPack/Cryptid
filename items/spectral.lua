@@ -966,7 +966,7 @@ local conduit = {
 	order = 460,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
-		--[[ (rip double sided you won't be missed)
+		--[[
 		local combinedTable = {}
 		dbl = false
 		no_dbl = false
@@ -1446,7 +1446,7 @@ local spectrals = {
 	adversary,
 	chambered,
 	conduit,
-	--meld, (rip double sided you won't be missed)
+	--meld,
 	summoning, -- to be moved to epic.lua
 	typhoon, -- to be moved to misc.lua
 	white_hole,
