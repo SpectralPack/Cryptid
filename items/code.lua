@@ -2412,60 +2412,60 @@ local assemble = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	order = 416,
-	can_use = function (self, card)
-        local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
-        local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
-        return #hand >= min and #G.jokers.cards > 0
-    end,
-    use = function (self, card, area, copier)
-        local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
-        local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
-        local hand_type
-        if #hand >= min then
-            hand_type = G.GAME.hands[G.FUNCS.get_poker_hand_info(hand)] or G.GAME.hands.cry_None
-        end
-        if hand_type then
-            SMODS.upgrade_poker_hands{
-                amount = 0,
-                hands = hand_type.key,
-                from = card,
-                parameters = {"mult"},
-                func = function (base, hand, param)
-                    return base + #G.jokers.cards
-                end
-            }
-            G.E_MANAGER:add_event(Event{
-                func = function (n)
-                    G.hand:unhighlight_all()
-                    return true
-                end
-            })
-        end
-    end,
+	can_use = function(self, card)
+		local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
+		local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+		return #hand >= min and #G.jokers.cards > 0
+	end,
+	use = function(self, card, area, copier)
+		local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
+		local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+		local hand_type
+		if #hand >= min then
+			hand_type = G.GAME.hands[G.FUNCS.get_poker_hand_info(hand)] or G.GAME.hands.cry_None
+		end
+		if hand_type then
+			SMODS.upgrade_poker_hands({
+				amount = 0,
+				hands = hand_type.key,
+				from = card,
+				parameters = { "mult" },
+				func = function(base, hand, param)
+					return base + #G.jokers.cards
+				end,
+			})
+			G.E_MANAGER:add_event(Event({
+				func = function(n)
+					G.hand:unhighlight_all()
+					return true
+				end,
+			}))
+		end
+	end,
 	bulk_use = function(self, card, area, copier, number)
 		local min = (G.PROFILES[G.SETTINGS.profile].cry_none and 0 or 1)
-        local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
-        local hand_type
-        if #hand >= min then
-            hand_type = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)] or G.GAME.hands.cry_None
-        end
-        if hand_type then
-            SMODS.upgrade_poker_hands{
-                amount = 0,
-                hands = hand_type.key,
-                from = card,
-                parameters = {"mult"},
-                func = function (base, hand, param)
-                    return base + (#G.jokers.cards * number)
-                end
-            }
-            G.E_MANAGER:add_event(Event{
-                func = function (n)
-                    G.hand:unhighlight_all()
-                    return true
-                end
-            })
-        end
+		local hand = Cryptid.get_highlighted_cards({ G.hand }, nil, min, G.hand.config.highlighted_limit)
+		local hand_type
+		if #hand >= min then
+			hand_type = G.GAME.hands[G.FUNCS.get_poker_hand_info(G.hand.highlighted)] or G.GAME.hands.cry_None
+		end
+		if hand_type then
+			SMODS.upgrade_poker_hands({
+				amount = 0,
+				hands = hand_type.key,
+				from = card,
+				parameters = { "mult" },
+				func = function(base, hand, param)
+					return base + (#G.jokers.cards * number)
+				end,
+			})
+			G.E_MANAGER:add_event(Event({
+				func = function(n)
+					G.hand:unhighlight_all()
+					return true
+				end,
+			}))
+		end
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
