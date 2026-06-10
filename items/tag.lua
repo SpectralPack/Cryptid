@@ -1038,14 +1038,14 @@ local banana = {
 			banana = localize({
 				type = "name_text",
 				set = "Joker",
-				key = G.P_CENTER_POOLS["Joker"][61].key,
+				key = "j_cavendish",
 			})
 			info_queue[#info_queue + 1] = G.P_CENTERS.j_cavendish
 		else
 			banana = localize({
 				type = "name_text",
 				set = "Joker",
-				key = G.P_CENTER_POOLS["Joker"][38].key,
+				key = "j_gros_michel",
 			})
 			info_queue[#info_queue + 1] = G.P_CENTERS.j_gros_michel
 		end
