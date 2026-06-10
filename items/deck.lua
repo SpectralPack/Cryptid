@@ -944,8 +944,8 @@ local antimatter = {
 				G.GAME.modifiers.cry_force_seal = seal
 			end
 			if ed_deck or et_deck or sl_deck then
-				G.E_MANAGER:add_event(Event{
-					func = function (n)
+				G.E_MANAGER:add_event(Event({
+					func = function(n)
 						for _, c in ipairs(G.playing_cards) do
 							if ed_deck then
 								c:set_edition(ed, true, true)
@@ -958,8 +958,8 @@ local antimatter = {
 							end
 						end
 						return true
-					end
-				})
+					end,
+				}))
 			end
 			--Mod Compat
 			for _, v in ipairs(G.P_CENTER_POOLS.Back) do
