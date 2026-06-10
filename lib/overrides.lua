@@ -2187,8 +2187,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		local chip_mod = chips.current * amount
 		local mult_mod = mult.current * amount
 
-		chips:modify(mult_mod - chip_mod)
-		mult:modify(chip_mod - mult_mod)
+		chips:modify(-chip_mod)
+		chips:modify(mult_mod)
+		mult:modify(-mult_mod)
+		mult:modify(chip_mod)
 
 		if key == "cry_broken_swap" and not Cryptid.safe_get(Talisman, "config_file", "disable_anims") then
 			G.E_MANAGER:add_event(Event({
