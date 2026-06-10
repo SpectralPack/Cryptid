@@ -748,6 +748,9 @@ SMODS.Sticker({
 						"Banana Sticker"
 					)
 				then
+					if card.display_only then
+						return
+					end
 					local area
 					if G.STATE == G.STATES.HAND_PLAYED then
 						if not G.redeemed_vouchers_during_hand then
@@ -765,6 +768,7 @@ SMODS.Sticker({
 					end
 
 					local _card = copy_card(card)
+					_card.display_only = true
 					_card.ability.extra = copy_table(card.ability.extra)
 					if _card.facing == "back" then
 						_card:flip()
