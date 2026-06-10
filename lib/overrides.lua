@@ -2187,6 +2187,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		local chip_mod = chips.current * amount
 		local mult_mod = mult.current * amount
 
+		-- modifications are done in two steps to avoid rounding errors
 		chips:modify(-chip_mod)
 		chips:modify(mult_mod)
 		mult:modify(-mult_mod)
