@@ -738,7 +738,7 @@ SMODS.Sticker({
 			and not context.playing_card_end_of_round
 			and not context.individual
 		then
-			if card.ability.set == "Voucher" then
+			if card.ability.set == "Voucher" and not card.display_only then
 				if
 					SMODS.pseudorandom_probability(
 						card,
@@ -748,9 +748,6 @@ SMODS.Sticker({
 						"Banana Sticker"
 					)
 				then
-					if card.display_only then
-						return
-					end
 					local area
 					if G.STATE == G.STATES.HAND_PLAYED then
 						if not G.redeemed_vouchers_during_hand then
