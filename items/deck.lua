@@ -931,6 +931,36 @@ local antimatter = {
 			if check("b_cry_beige") then
 				G.GAME.modifiers.cry_common_value_quad = true
 			end
+			--Modifier Decks
+			local ed_deck, et_deck, sl_deck = check("b_cry_e_deck"), check("b_cry_et_deck"), check("b_cry_sl_deck")
+			local ed, enh, _, _, seal = Cryptid.enhanced_deck_info({})
+			if ed_deck then
+				G.GAME.modifiers.cry_force_edition = ed
+			end
+			if et_deck then
+				G.GAME.modifiers.cry_force_enhancement = enh
+			end
+			if sl_deck then
+				G.GAME.modifiers.cry_force_seal = seal
+			end
+			if ed_deck or et_deck or sl_deck then
+				G.E_MANAGER:add_event(Event{
+					func = function (n)
+						for _, c in ipairs(G.playing_cards) do
+							if ed_deck then
+								c:set_edition(ed, true, true)
+							end
+							if et_deck then
+								c:set_ability(enh)
+							end
+							if sl_deck then
+								c:set_seal(seal, true, true)
+							end
+						end
+						return true
+					end
+				})
+			end
 			--Mod Compat
 			for _, v in ipairs(G.P_CENTER_POOLS.Back) do
 				if v.cry_antimatter_apply and check(v.key) then

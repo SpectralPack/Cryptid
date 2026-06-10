@@ -201,10 +201,8 @@ local sk_deck = {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-					G.playing_cards[c].config.center.eternal_compat = true
-					G.playing_cards[c].config.center.perishable_compat = true
-					if SMODS.Stickers[ccc] and SMODS.Stickers[ccc].apply then
-						SMODS.Stickers[ccc]:apply(G.playing_cards[c], true)
+					if SMODS.Stickers[ccc] then
+						G.playing_cards[c]:add_sticker(ccc, true)
 					else
 						G.playing_cards[c]["set_" .. ccc](G.playing_cards[c], true)
 					end
