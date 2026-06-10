@@ -957,64 +957,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	if front and G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
 	end
-	if
-		G.GAME.modifiers.cry_force_sticker == "eternal"
-		or (
-			G.GAME.modifiers.cry_sticker_sheet_plus
-			and not (
-				(_type == "Base" or _type == "Enhanced") and not ((area == G.shop_jokers) or (area == G.pack_cards))
-			)
-		)
-	then -- wow that is long
-		card:set_eternal(true)
-		card.ability.eternal = true
-	end
-	if
-		G.GAME.modifiers.cry_force_sticker == "perishable"
-		or (
-			G.GAME.modifiers.cry_sticker_sheet_plus
-			and not (
-				(_type == "Base" or _type == "Enhanced") and not ((area == G.shop_jokers) or (area == G.pack_cards))
-			)
-		)
-	then
-		card:set_perishable(true)
-		card.ability.perish_tally = G.GAME.perishable_rounds -- set_perishable should be doing this? whatever
-		card.ability.perishable = true
-	end
-	if
-		G.GAME.modifiers.cry_force_sticker == "rental"
-		or (
-			G.GAME.modifiers.cry_sticker_sheet_plus
-			and not (
-				(_type == "Base" or _type == "Enhanced") and not ((area == G.shop_jokers) or (area == G.pack_cards))
-			)
-		)
-	then
-		card:set_rental(true)
-		card.ability.rental = true
-	end
-	if
-		G.GAME.modifiers.cry_force_sticker == "pinned"
-		or (
-			G.GAME.modifiers.cry_sticker_sheet_plus
-			and not (
-				(_type == "Base" or _type == "Enhanced") and not ((area == G.shop_jokers) or (area == G.pack_cards))
-			)
-		)
-	then
-		card.pinned = true
-	end
-	if
-		G.GAME.modifiers.cry_force_sticker == "banana"
-		or (
-			G.GAME.modifiers.cry_sticker_sheet_plus
-			and not (
-				(_type == "Base" or _type == "Enhanced") and not ((area == G.shop_jokers) or (area == G.pack_cards))
-			)
-		)
-	then
-		card.ability.banana = true
+	if G.GAME.modifiers.cry_force_sticker then
+		card:add_sticker(G.GAME.modifiers.cry_force_sticker, true)
 	end
 	if G.GAME.modifiers.cry_sticker_sheet_plus and not (_type == "Base" or _type == "Enhanced") then
 		for k, v in pairs(SMODS.Stickers) do
@@ -1151,6 +1095,25 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	-- during the update function. Cryptid can create jokers mid-scoring, meaning
 	-- those values will be unset during scoring unless update() is manually called.
 	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
+	return card
+end
+
+local create_pcard = create_playing_card
+function create_playing_card(card_init, area, skip_materialize, silent, colours, skip_emplace)
+	local card = create_pcard(card_init, area, skip_materialize, silent, colours, skip_emplace)
+	if G.GAME.modifiers.cry_force_suit then card:change_suit(G.GAME.modifiers.cry_force_suit) end
+	if G.GAME.modifiers.cry_force_enhancement then
+		card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement])
+	end
+	if G.GAME.modifiers.cry_force_edition then
+		card:set_edition({ [G.GAME.modifiers.cry_force_edition] = true }, true, true)
+	end
+	if G.GAME.modifiers.cry_force_seal then
+		card:set_seal(G.GAME.modifiers.cry_force_seal)
+	end
+	if G.GAME.modifiers.cry_force_sticker then
+		card:add_sticker(G.GAME.modifiers.cry_force_sticker)
+	end
 	return card
 end
 

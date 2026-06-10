@@ -222,7 +222,7 @@ return {
 			b_cry_sl_deck = {
 				name = "Seal Deck",
 				text = {
-					"All playing cards have a {C:dark_edition}#1#{}",
+					"All playing cards have a {V:1}#1#{}",
 					"Cards cannot change seals",
 					"{C:inactive}(Click to edit)",
 				},
@@ -244,8 +244,10 @@ return {
 			b_cry_st_deck = {
 				name = "Suit Deck",
 				text = {
-					"All playing cards are {C:dark_edition}#1#",
+					"All playing cards are {V:1}#1#",
 					"and cannot change suits",
+					"{C:attention}Boss Blind{} for this suit",
+					"will not appear",
 					"{C:inactive}(Click to edit)",
 				},
 				unlock = {
