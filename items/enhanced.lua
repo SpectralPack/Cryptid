@@ -288,7 +288,12 @@ local sl_deck = {
 	edeck_type = "seal",
 	loc_vars = function(self, info_queue, center)
 		local _, _, _, _, eee = Cryptid.enhanced_deck_info(self)
-		return { vars = { localize({ type = "name_text", set = "Other", key = eee:lower() .. "_seal" }), colours = { G.P_SEALS[eee].badge_colour } } }
+		return {
+			vars = {
+				localize({ type = "name_text", set = "Other", key = eee:lower() .. "_seal" }),
+				colours = { G.P_SEALS[eee].badge_colour },
+			},
+		}
 	end,
 	apply = function(self)
 		local aaa, bbb, ccc, ddd, eee = Cryptid.enhanced_deck_info(self)

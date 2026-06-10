@@ -1101,7 +1101,9 @@ end
 local create_pcard = create_playing_card
 function create_playing_card(card_init, area, skip_materialize, silent, colours, skip_emplace)
 	local card = create_pcard(card_init, area, skip_materialize, silent, colours, skip_emplace)
-	if G.GAME.modifiers.cry_force_suit then card:change_suit(G.GAME.modifiers.cry_force_suit) end
+	if G.GAME.modifiers.cry_force_suit then
+		card:change_suit(G.GAME.modifiers.cry_force_suit)
+	end
 	if G.GAME.modifiers.cry_force_enhancement then
 		card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement])
 	end
