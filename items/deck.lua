@@ -964,12 +964,12 @@ local antimatter = {
 							"Antimatter Deck"
 						)
 					then
-						rets[#rets+1] = { emult = 2 }
+						rets[#rets + 1] = { emult = 2 }
 					end
 				end
 				--Plasma Deck
 				if check("b_plasma") then
-					rets[#rets+1] = { balance = true }
+					rets[#rets + 1] = { balance = true }
 				end
 			end
 			if context.round_eval and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
@@ -1032,7 +1032,7 @@ local antimatter = {
 			--Mod Compat
 			for _, v in ipairs(G.P_CENTER_POOLS.Back) do
 				if v.cry_antimatter_calculate and check(v.key) then
-					rets[#rets+1] = v:cry_antimatter_calculate(context)
+					rets[#rets + 1] = v:cry_antimatter_calculate(context)
 				end
 			end
 			if next(rets) then
