@@ -2188,9 +2188,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
 		local mult_mod = mult.current * amount
 
 		-- modifications are done in two steps to avoid rounding errors
-		chips:modify(-chip_mod)
+		chips.current = chips.current * (1 - amount)
 		chips:modify(mult_mod)
-		mult:modify(-mult_mod)
+		mult.current = mult.current * (1 - amount)
 		mult:modify(chip_mod)
 
 		if key == "cry_broken_swap" and not Cryptid.safe_get(Talisman, "config_file", "disable_anims") then
