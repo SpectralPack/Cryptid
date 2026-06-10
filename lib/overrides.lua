@@ -1915,7 +1915,7 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
 			return a.T.x < b.T.x
 		end)
 		check_for_unlock({ type = "discard_custom", cards = {} })
-		SMODS.calculate_context({pre_discard = true, full_hand = G.hand.highlighted, hook = hook})
+		SMODS.calculate_context({ pre_discard = true, full_hand = G.hand.highlighted, hook = hook })
 		if not hook then
 			if G.GAME.modifiers.discard_cost then
 				ease_dollars(-G.GAME.modifiers.discard_cost)
