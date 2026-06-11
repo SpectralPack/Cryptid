@@ -308,12 +308,19 @@ local horizon = {
 	pos = { x = 0, y = 4 },
 	atlas = "stake",
 	applied_stakes = { "cry_dawn" },
-	modifiers = function()
-		G.GAME.modifiers.cry_card_each_round = true
-	end,
 	shiny = true,
 	order = 29,
 	colour = G.C.CRY_HORIZON,
+	calculate = function (self, context)
+		if context.setting_blind then
+			local card = SMODS.add_card{
+				area = G.deck,
+				set = "Base",
+				key_append = "cry_horizon"
+			}
+			SMODS.calculate_context{ playing_card_added = true, cards = {card} }
+		end
+	end
 }
 local blossom = {
 	object_type = "Stake",

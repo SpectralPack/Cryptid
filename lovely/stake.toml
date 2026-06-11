@@ -253,16 +253,6 @@ payload = "elseif G.GAME.blind_on_deck == 'Big' then"
 match_indent = true
 
 
-# Sapphire Stake - ante tax
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "delay(0.4); SMODS.ante_end = true; ease_ante(1); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
-position = "at"
-payload = "delay(0.4); SMODS.ante_end = true; ease_ante(1); Cryptid.apply_ante_tax(); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})"
-match_indent = true
-
-
 # Emerald Stake - Permanently flipped cards
 [[patches]]
 [patches.pattern]
@@ -303,20 +293,10 @@ match_indent = true
 # Platinum Stake - start with big blind ready to be selected
 [[patches]]
 [patches.pattern]
-target = "functions/common_events.lua"
+target = ["functions/common_events.lua", "functions/UI_definitions.lua"] #thank you cg223 for this goated lovely feature
 pattern = "G.GAME.blind_on_deck = 'Small'"
-position = "at"
-payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
-match_indent = true
-
-
-# Platinum Stake - start with big blind ready to be selected
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = "G.GAME.blind_on_deck = 'Small'"
-position = "at"
-payload = "G.GAME.blind_on_deck = G.GAME.modifiers.cry_no_small_blind and 'Big' or 'Small'"
+position = "after"
+payload = "if G.GAME.modifiers.cry_no_small_blind then G.GAME.blind_on_deck = 'Big' end"
 match_indent = true
 
 
@@ -325,8 +305,8 @@ match_indent = true
 [patches.pattern]
 target = "functions/common_events.lua"
 pattern = "G.GAME.round_resets.blind_states.Small = 'Upcoming'"
-position = "at"
-payload = "G.GAME.round_resets.blind_states.Small = G.GAME.modifiers.cry_no_small_blind and 'Hide' or 'Upcoming'"
+position = "after"
+payload = "if G.GAME.modifiers.cry_no_small_blind then G.GAME.round_resets.blind_states.Small = 'Hide' end"
 match_indent = true
 
 # Ember Stake - give no money for selling
@@ -374,6 +354,7 @@ payload = '''self.sell_cost_label = (self.facing == 'back' and '?') or (G.GAME.m
 match_indent = true
 
 # Dawn Stake - change maximum allowed highlights (i have no idea what this code is meant to be doing?? whatever it is, it doesn't seem to be working -toneblock)
+#TODO: fix this somehow -Eris
 [[patches]]
 [patches.pattern]
 target = "functions/common_events.lua"
@@ -389,38 +370,6 @@ payload = '''if cfg and G.GAME.modifiers.cry_consumable_reduce and cfg.max_highl
 end'''
 match_indent = true
 
-# Horizon Stake - create random card at start of blind
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = '''G.GAME.blind:set_blind(G.GAME.round_resets.blind)'''
-position = "after"
-payload = '''if G.GAME.modifiers.cry_card_each_round then
-    G.E_MANAGER:add_event(Event({
-        func = function()
-            local front = pseudorandom_element(G.P_CARDS, pseudoseed('cry_horizon'))
-            G.playing_card = (G.playing_card and G.playing_card + 1) or 1
-            local edition = G.P_CENTERS.c_base
-            local card = Card(G.play.T.x + G.play.T.w/2, G.play.T.y, G.CARD_W, G.CARD_H, front, G.P_CENTERS.c_base, {playing_card = G.playing_card})
-            card:start_materialize()
-            if G.GAME.selected_back.effect.config.cry_force_edition and G.GAME.selected_back.effect.config.cry_force_edition ~= "random" then
-                local edition = {}
-                edition[G.GAME.selected_back.effect.config.cry_force_edition] = true
-                card:set_edition(edition, true, true);
-            end
-            G.play:emplace(card)
-            table.insert(G.playing_cards, card)
-            playing_card_joker_effects({true})
-            return true
-        end}))
-    G.E_MANAGER:add_event(Event({
-        func = function()
-            G.deck.config.card_limit = G.deck.config.card_limit + 1
-            return true
-        end}))
-    draw_card(G.play,G.deck, 90,'up', nil)
-end'''
-match_indent = true
 
 # Blossom Stake - showdown blinds before the winning ante
 [[patches]]

@@ -6,6 +6,9 @@ SMODS.current_mod.calculate = function(self, context)
 		G.GAME.blind.chips = G.GAME.blind.chips * (1 - (G.GAME.sundial_amount / 100))
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end
+	if context.ante_change and SMODS.ante_end then
+		Cryptid.apply_ante_tax()
+	end
 end
 
 -- deal with Rigged and Fragile when scoring a playing card
