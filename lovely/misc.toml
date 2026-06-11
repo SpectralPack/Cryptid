@@ -669,3 +669,12 @@ pattern = "for k, v in pairs(G.P_CENTER_POOLS.Edition) do"
 position = "after"
 target = "card.lua"
 payload = "if G.GAME.modifiers.cry_no_edition_price then break end" #seems hacky but is definitely the least invasive option
+
+#Patch that prevents ://DELETE from crashing with full joker slots or when negative because chara made thunk write some random clause that does nothing
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "(#G.jokers.cards >= G.jokers.config.card_limit or (self.edition and self.edition.negative)) then"
+position = "before"
+payload = "self.config.center_key ~= 'c_cry_delete' and"
+match_indent = true
