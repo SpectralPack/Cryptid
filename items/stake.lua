@@ -311,16 +311,16 @@ local horizon = {
 	shiny = true,
 	order = 29,
 	colour = G.C.CRY_HORIZON,
-	calculate = function (self, context)
+	calculate = function(self, context)
 		if context.setting_blind then
-			local card = SMODS.add_card{
+			local card = SMODS.add_card({
 				area = G.deck,
 				set = "Base",
-				key_append = "cry_horizon"
-			}
-			SMODS.calculate_context{ playing_card_added = true, cards = {card} }
+				key_append = "cry_horizon",
+			})
+			SMODS.calculate_context({ playing_card_added = true, cards = { card } })
 		end
-	end
+	end,
 }
 local blossom = {
 	object_type = "Stake",
