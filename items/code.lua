@@ -4251,7 +4251,7 @@ local delete = {
 	end,
 	can_use = function(self, card)
 		local blacklist = function(c)
-			return not c.ability.eternal
+			return not SMODS.is_eternal(c, card)
 		end
 		local cards =
 			Cryptid.get_highlighted_cards({ G.shop_jokers, G.shop_booster, G.shop_vouchers }, card, 1, 1, blacklist)
@@ -4263,7 +4263,7 @@ local delete = {
 		end
 
 		local blacklist = function(c)
-			return not c.ability.eternal
+			return not SMODS.is_eternal(c, card)
 		end
 		local cards =
 			Cryptid.get_highlighted_cards({ G.shop_jokers, G.shop_booster, G.shop_vouchers }, card, 1, 1, blacklist)
