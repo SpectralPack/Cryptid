@@ -3705,7 +3705,7 @@ return {
 				name = "Jade Stake",
 				colour = "Jade",
 				text = {
-					"Cards can be drawn {C:attention}face down{}",
+					"{C:green}#1# in #2#{} cards are drawn {C:attention}face down{}",
 				},
 			},
 			stake_cry_cyan = {
@@ -3771,7 +3771,7 @@ return {
 				name = "Glass Stake",
 				colour = "Glass",
 				text = {
-					"Cards can {C:attention}shatter{} when scored",
+					"{C:green}#1# in #2#{} cards {C:attention}shatter{} when scored",
 				},
 			},
 			stake_cry_sapphire = {

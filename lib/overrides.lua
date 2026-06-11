@@ -334,35 +334,6 @@ end
 --Game:update hook
 local upd = Game.update
 
---init colors so they have references
-G.C.CRY_TWILIGHT = { 0, 0, 0, 0 }
-G.C.CRY_VERDANT = { 0, 0, 0, 0 }
-G.C.CRY_EMBER = { 0, 0, 0, 0 }
-G.C.CRY_DAWN = { 0, 0, 0, 0 }
-G.C.CRY_HORIZON = { 0, 0, 0, 0 }
-G.C.CRY_BLOSSOM = { 0, 0, 0, 0 }
-G.C.CRY_AZURE = { 0, 0, 0, 0 }
-G.C.CRY_ASCENDANT = { 0, 0, 0, 0 }
-G.C.CRY_JOLLY = { 0, 0, 0, 0 }
-G.C.CRY_GREENGRADIENT = { 0, 0, 0, 0 }
-G.C.CRY_ALTGREENGRADIENT = { 0, 0, 0, 0 }
-Cryptid.C = {
-	EXOTIC = { HEX("708b91"), HEX("1e9eba") },
-	TWILIGHT = { HEX("0800ff"), HEX("aa00ff") },
-	VERDANT = { HEX("00ff22"), HEX("f4ff57") },
-	EMBER = { HEX("ff0000"), HEX("ffae00") },
-	DAWN = { HEX("00aaff"), HEX("ff00e3") },
-	HORIZON = { HEX("c8fd09"), HEX("1ee7d9") },
-	BLOSSOM = { HEX("ff09da"), HEX("ffd121") },
-	AZURE = { HEX("0409ff"), HEX("63dcff") },
-	ASCENDANT = { HEX("2e00f5"), HEX("e5001d") },
-	JOLLY = { HEX("6ec1f5"), HEX("456b84") },
-	SELECTED = { HEX("e38039"), HEX("ccdd1b") },
-	GREENGRADIENT = { HEX("51e099"), HEX("1e523a") },
-	ALTGREENGRADIENT = { HEX("6bb565"), HEX("bd28bf") },
-	TAX_MULT = { HEX("FE5F55"), HEX("40ff40") },
-	TAX_CHIPS = { HEX("009dff"), HEX("40ff40") },
-}
 cry_pointer_dt = 0
 cry_jimball_dt = 0
 cry_glowing_dt = 0
@@ -381,19 +352,6 @@ function Game:update(dt)
 	else
 		Cryptid.member_count_delay = Cryptid.member_count_delay + dt
 	end
-	--Gradients based on Balatrostuck code
-	local anim_timer = self.TIMERS.REAL * 1.5
-	local p = 0.5 * (math.sin(anim_timer) + 1)
-	for k, c in pairs(Cryptid.C) do
-		if not G.C["CRY_" .. k] then
-			G.C["CRY_" .. k] = { 0, 0, 0, 0 }
-		end
-		for i = 1, 4 do
-			G.C["CRY_" .. k][i] = c[1][i] * p + c[2][i] * (1 - p)
-		end
-	end
-	G.C.RARITY["cry_exotic"] = G.C.CRY_EXOTIC
-	G.C.SECONDARY_SET["Content Set"] = G.C.CRY_ASCENDANT
 	-- Idk what this is for
 	if Incantation and not CryptidIncanCompat then
 		AllowStacking("Code")
@@ -745,16 +703,8 @@ function SMODS.create_mod_badges(obj, badges)
 					},
 				},
 			}
-			local function eq_col(x, y)
-				for i = 1, 4 do
-					if x[i] ~= y[i] then
-						return false
-					end
-				end
-				return true
-			end
 			for i = 1, #badges do
-				if eq_col(badges[i].nodes[1].config.colour, HEX("708b91")) then
+				if badges[i].nodes[1].config.colour == SMODS.Mods.Cryptid.badge_colour then
 					badges[i].nodes[1].nodes[2].config.object:remove()
 					badges[i] = cry_badge
 					break

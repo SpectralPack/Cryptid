@@ -386,7 +386,7 @@ local azure_seal = {
 	},
 	name = "cry-Azure-Seal",
 	key = "azure",
-	badge_colour = HEX("1d4fd7"),
+	badge_colour = G.C.CRY_AZURE,
 	config = { planets_amount = 3 },
 	loc_vars = function(self, info_queue)
 		return { vars = { self.config.planets_amount } }

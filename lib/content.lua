@@ -332,7 +332,7 @@ SMODS.PokerHand({
 SMODS.Rarity({
 	key = "exotic",
 	loc_txt = {},
-	badge_colour = HEX("708b91"),
+	badge_colour = G.C.CRY_EXOTIC,
 })
 
 SMODS.Rarity({
