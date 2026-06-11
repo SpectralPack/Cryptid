@@ -47,16 +47,19 @@ local jade = {
 	pos = { x = 3, y = 0 },
 	atlas = "stake",
 	applied_stakes = { "cry_yellow" },
-	calculate = function (self, context)
-		if context.stay_flipped and context.to_area == G.hand and
-            SMODS.pseudorandom_probability(self, 'cry_jade_stake', 1, 20) then
-            return {
-                stay_flipped = true
-            }
-        end
+	calculate = function(self, context)
+		if
+			context.stay_flipped
+			and context.to_area == G.hand
+			and SMODS.pseudorandom_probability(self, "cry_jade_stake", 1, 20)
+		then
+			return {
+				stay_flipped = true,
+			}
+		end
 	end,
-	loc_vars = function (self)
-		return { vars = { SMODS.get_probability_vars(self, 1, 20, "cry_jade_stake") }}
+	loc_vars = function(self)
+		return { vars = { SMODS.get_probability_vars(self, 1, 20, "cry_jade_stake") } }
 	end,
 	shiny = true,
 	order = 12,
@@ -126,12 +129,12 @@ local amber = {
 	atlas = "stake",
 	applied_stakes = { "cry_diamond" },
 	modifiers = function()
-		G.E_MANAGER:add_event(Event{
-			func = function (n)
+		G.E_MANAGER:add_event(Event({
+			func = function(n)
 				SMODS.change_booster_limit(-1)
 				return true
-			end
-		})
+			end,
+		}))
 	end,
 	shiny = true,
 	order = 17,
@@ -200,9 +203,9 @@ local glass = {
 			return { remove = true }
 		end
 	end,
-	loc_vars = function (self)
-		return { vars = { SMODS.get_probability_vars(self, 1, 30, "cry_shatter") }}
-	end
+	loc_vars = function(self)
+		return { vars = { SMODS.get_probability_vars(self, 1, 30, "cry_shatter") } }
+	end,
 }
 local sapphire = {
 	object_type = "Stake",

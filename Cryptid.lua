@@ -32,81 +32,81 @@ SMODS.current_mod.optional_features = {
 }
 
 --Create gradients used by Cryptid
-local exotic = SMODS.Gradient{
+local exotic = SMODS.Gradient({
 	key = "exotic",
 	colours = { HEX("708b91"), HEX("1e9eba") },
 	cycle = 5,
-}
-local twilight = SMODS.Gradient{
+})
+local twilight = SMODS.Gradient({
 	key = "twilight",
 	colours = { HEX("0800ff"), HEX("aa00ff") },
 	cycle = 5,
-}
-local verdant = SMODS.Gradient{
+})
+local verdant = SMODS.Gradient({
 	key = "verdant",
 	colours = { HEX("00ff22"), HEX("f4ff57") },
 	cycle = 5,
-}
-local ember = SMODS.Gradient{
+})
+local ember = SMODS.Gradient({
 	key = "ember",
 	colours = { HEX("ff0000"), HEX("ffae00") },
 	cycle = 5,
-}
-local dawn = SMODS.Gradient{
+})
+local dawn = SMODS.Gradient({
 	key = "dawn",
 	colours = { HEX("00aaff"), HEX("ff00e3") },
 	cycle = 5,
-}
-local horizon = SMODS.Gradient{
+})
+local horizon = SMODS.Gradient({
 	key = "horizon",
 	colours = { HEX("c8fd09"), HEX("1ee7d9") },
 	cycle = 5,
-}
-local blossom = SMODS.Gradient{
+})
+local blossom = SMODS.Gradient({
 	key = "blossom",
 	colours = { HEX("ff09da"), HEX("ffd121") },
 	cycle = 5,
-}
-local azure = SMODS.Gradient{
+})
+local azure = SMODS.Gradient({
 	key = "azure",
 	colours = { HEX("0409ff"), HEX("63dcff") },
 	cycle = 5,
-}
-local ascendant = SMODS.Gradient{
+})
+local ascendant = SMODS.Gradient({
 	key = "ascendant",
 	colours = { HEX("2e00f5"), HEX("e5001d") },
 	cycle = 5,
-}
-local jolly = SMODS.Gradient{
+})
+local jolly = SMODS.Gradient({
 	key = "jolly",
 	colours = { HEX("6ec1f5"), HEX("456b84") },
 	cycle = 5,
-}
-local selected = SMODS.Gradient{
+})
+local selected = SMODS.Gradient({
 	key = "selected",
 	colours = { HEX("e38039"), HEX("ccdd1b") },
 	cycle = 5,
-}
-local greengradient = SMODS.Gradient{
+})
+local greengradient = SMODS.Gradient({
 	key = "greengradient",
 	colours = { HEX("51e099"), HEX("1e523a") },
 	cycle = 5,
-}
-local altgreengradient = SMODS.Gradient{
+})
+local altgreengradient = SMODS.Gradient({
 	key = "altgreengradient",
 	colours = { HEX("6bb565"), HEX("bd28bf") },
 	cycle = 5,
-}
-local tax_mult = SMODS.Gradient{
+})
+local tax_mult = SMODS.Gradient({
 	key = "tax_mult",
 	colours = { HEX("FE5F55"), HEX("40ff40") },
 	cycle = 5,
-}
-local tax_chips = SMODS.Gradient{
+})
+local tax_chips = SMODS.Gradient({
 	key = "tax_chips",
 	colours = { HEX("009dff"), HEX("40ff40") },
 	cycle = 5,
-}
+})
 Cryptid.C = {
 	EXOTIC = exotic,
 	TWILIGHT = twilight,
@@ -126,7 +126,7 @@ Cryptid.C = {
 }
 G.C.SECONDARY_SET["Content Set"] = Cryptid.C.ASCENDANT
 for k, c in pairs(Cryptid.C) do --this is for back compat mostly
-	G.C["CRY_"..k] = c
+	G.C["CRY_" .. k] = c
 end
 
 --Load Library Files
