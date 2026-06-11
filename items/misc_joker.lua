@@ -10333,7 +10333,7 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 	end,
 	in_pool = function()
 		for i, v in pairs(G.I.CARD) do
-			if v.ability and v.ability.perishable and v.ability.perish_tally and to_big(v.perish_tally) > to_big(0) then
+			if v.ability and v.ability.perishable and v.ability.perish_tally and to_big(v.ability.perish_tally) > to_big(0) then
 				return true
 			end
 		end
