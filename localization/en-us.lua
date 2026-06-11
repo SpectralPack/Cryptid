@@ -117,7 +117,7 @@ return {
 			b_cry_e_deck = {
 				name = "Edition Deck",
 				text = {
-					"All cards are {C:dark_edition}#1#{}",
+					"All cards are {V:1}#1#{}",
 					"Cards cannot change editions",
 					"{C:inactive}(Click to edit)",
 				},
@@ -155,7 +155,7 @@ return {
 				name = "Enhancement Deck",
 				text = {
 					"All {C:attention}playing cards{}",
-					"are {C:attention}#1#{}(s)",
+					"are {V:1}#1#{}(s)",
 					"{C:inactive}(Click to edit)",
 				},
 				unlock = {
@@ -212,7 +212,7 @@ return {
 			b_cry_sk_deck = {
 				name = "Sticker Deck",
 				text = {
-					"All cards are {C:attention}#1#{}",
+					"All cards are {V:1}#1#{}",
 					"{C:inactive}(Click to edit)",
 				},
 				unlock = {

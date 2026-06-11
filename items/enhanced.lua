@@ -95,7 +95,8 @@ local e_deck = {
 	pos = { x = 5, y = 2 },
 	loc_vars = function(self, info_queue, center)
 		local aaa = Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {})
-		return { vars = { localize({ type = "name_text", set = "Edition", key = "e_" .. aaa }) } }
+		local real = "e_"..aaa
+		return { vars = { localize({ type = "name_text", set = "Edition", key = real }), colours = { G.P_CENTERS[real].badge_colour or G.C.DARK_EDITION } } }
 	end,
 	edeck_type = "edition",
 	config = { cry_no_edition_price = true },
@@ -147,7 +148,7 @@ local et_deck = {
 	config = {},
 	loc_vars = function(self, info_queue, center)
 		local _, bbb = Cryptid.enhanced_deck_info(self)
-		return { vars = { localize({ type = "name_text", set = "Enhanced", key = bbb }) } }
+		return { vars = { localize({ type = "name_text", set = "Enhanced", key = bbb }), colours = { G.P_CENTERS[bbb].badge_colour or G.C.FILTER } } }
 	end,
 	apply = function(self)
 		local aaa, bbb = Cryptid.enhanced_deck_info(self)
@@ -193,7 +194,7 @@ local sk_deck = {
 		if ccc == "pinned" then
 			ccc = "pinned_left"
 		end
-		return { vars = { localize({ type = "name_text", set = "Other", key = ccc }) } }
+		return { vars = { localize({ type = "name_text", set = "Other", key = ccc }), colours = { SMODS.Stickers[ccc].badge_colour or G.C.FILTER } } }
 	end,
 	apply = function(self)
 		local aaa, bbb, ccc = Cryptid.enhanced_deck_info(self)
