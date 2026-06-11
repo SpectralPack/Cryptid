@@ -176,22 +176,6 @@ position = "at"
 payload = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*((a.pinned and not a.ignore_pinned) and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*((b.pinned and not b.ignore_pinned) and b.sort_id or 0) end)"
 match_indent = true
 
-# Quartz Stake - render pinned sticker
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "elseif self.sprite_facing == 'back' then"
-position = "before"
-payload = '''
-if self.pinned then
-    G.shared_stickers['pinned'].role.draw_major = self
-    G.shared_stickers['pinned']:draw_shader('dissolve', nil, nil, nil, self.children.center)
-    G.shared_stickers['pinned']:draw_shader('voucher', nil, self.ARGS.send_to_shader, nil, self.children.center)
-end
-'''
-match_indent = true
-
-
 # Ruby Stake - big blind bosses
 [[patches]]
 [patches.pattern]
