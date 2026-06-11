@@ -256,18 +256,18 @@ SMODS.DrawStep({
 })
 
 --Quartz Stake - Draw Pinned sticker
-SMODS.DrawStep{
+SMODS.DrawStep({
 	key = "pinned_draw",
 	order = 41,
-	func = function (card, layer)
+	func = function(card, layer)
 		if card.pinned and G.shared_stickers.pinned then
 			G.shared_stickers.pinned.role.draw_major = card
-			G.shared_stickers['pinned']:draw_shader('dissolve', nil, nil, nil, card.children.center)
-			G.shared_stickers['pinned']:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
+			G.shared_stickers["pinned"]:draw_shader("dissolve", nil, nil, nil, card.children.center)
+			G.shared_stickers["pinned"]:draw_shader("voucher", nil, card.ARGS.send_to_shader, nil, card.children.center)
 		end
 	end,
 	conditions = { vortex = false, facing = "front" },
-}
+})
 
 -- Make hover UI collidable - so we can detect collision and display tooltips
 local m = Card.move
