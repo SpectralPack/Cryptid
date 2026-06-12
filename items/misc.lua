@@ -1839,7 +1839,7 @@ local glass_edition = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.edition and context.cardarea == G.jokers and card.config.trigger then
+		if context.post_joker and context.cardarea == G.jokers then
 			return { x_mult = card and card.edition and card.edition.x_mult or self.config.x_mult }
 		end
 
@@ -1850,74 +1850,23 @@ local glass_edition = {
 		then
 			if
 				not SMODS.is_eternal(card)
-				and not (
-					pseudorandom(pseudoseed("cry_fragile"))
-					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
-				)
+				and not SMODS.pseudorandom_probability(card, "cry_fragile", card.edition.shatter_chance-1, card.edition.shatter_chance, nil, true)
 			then
-				-- this event call might need to be pushed later to make more sense
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("glass" .. math.random(1, 6), math.random() * 0.2 + 0.9, 0.5)
-						card.states.drag.is = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
-								card = nil
-								return true
-							end,
-						}))
-						return true
-					end,
-				}))
+				card.getting_sliced = true
+				SMODS.destroy_cards(card)
 			end
 		end
 		if context.main_scoring and context.cardarea == G.play then
 			if
 				not SMODS.is_eternal(card)
-				and (
-					pseudorandom(pseudoseed("cry_fragile"))
-					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
-				)
+				and SMODS.pseudorandom_probability(card, "cry_fragile", card.edition.shatter_chance-1, card.edition.shatter_chance, nil, true)
 			then
 				card.config.will_shatter = true
 			end
 			return { x_mult = self.config.x_mult }
 		end
 
-		if context.joker_main then
-			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
-		end
-
-		if context.after then
-			card.config.trigger = nil
-		end
-
-		if context.destroying_card and card.config.will_shatter then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					play_sound("glass" .. math.random(1, 6), math.random() * 0.2 + 0.9, 0.5)
-					card.states.drag.is = true
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 0.3,
-						blockable = false,
-						func = function()
-							G.jokers:remove_card(card)
-							card:remove()
-							card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
-							card = nil
-							return true
-						end,
-					}))
-					return true
-				end,
-			}))
+		if context.destroy_card and context.destroy_card == card and card.config.will_shatter then
 			return { remove = true }
 		end
 	end,

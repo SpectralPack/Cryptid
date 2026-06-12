@@ -2192,7 +2192,7 @@ end
 
 local smods_shatters_ref = SMODS.shatters
 function SMODS.shatters(card)
-	return card.cry_glass_trigger or smods_shatters_ref(card)
+	return card.cry_glass_trigger or (card.edition and card.edition.cry_glass) or smods_shatters_ref(card)
 end
 
 local level_up_ref = level_up_hand
