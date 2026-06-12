@@ -1850,7 +1850,14 @@ local glass_edition = {
 		then
 			if
 				not SMODS.is_eternal(card)
-				and not SMODS.pseudorandom_probability(card, "cry_fragile", card.edition.shatter_chance-1, card.edition.shatter_chance, nil, true)
+				and not SMODS.pseudorandom_probability(
+					card,
+					"cry_fragile",
+					card.edition.shatter_chance - 1,
+					card.edition.shatter_chance,
+					nil,
+					true
+				)
 			then
 				card.getting_sliced = true
 				SMODS.destroy_cards(card)
@@ -1859,7 +1866,14 @@ local glass_edition = {
 		if context.main_scoring and context.cardarea == G.play then
 			if
 				not SMODS.is_eternal(card)
-				and SMODS.pseudorandom_probability(card, "cry_fragile", card.edition.shatter_chance-1, card.edition.shatter_chance, nil, true)
+				and SMODS.pseudorandom_probability(
+					card,
+					"cry_fragile",
+					card.edition.shatter_chance - 1,
+					card.edition.shatter_chance,
+					nil,
+					true
+				)
 			then
 				card.config.will_shatter = true
 			end
