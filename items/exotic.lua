@@ -1052,27 +1052,44 @@ local gemino = {
 	order = 515,
 	atlas = "atlasexotic",
 	loc_vars = function(self, info_queue, card)
-        if card.area and card.area.config.type == "joker" then
-            local compatible = card.area.cards[1] and card.area.cards[1] ~= card and
-                not G.jokers.cards[1].config.center.immutable
-            local main_end = {
-                {
-                    n = G.UIT.C,
-                    config = { align = "bm", minh = 0.4 },
-                    nodes = {
-                        {
-                            n = G.UIT.C,
-                            config = { ref_table = card, align = "m", colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8) or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8), r = 0.05, padding = 0.06 },
-                            nodes = {
-                                { n = G.UIT.T, config = { text = ' ' .. localize('k_' .. (compatible and 'compatible' or 'incompatible')) .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 } },
-                            }
-                        }
-                    }
-                }
-            }
-            return { main_end = main_end }
-        end
-    end,
+		if card.area and card.area.config.type == "joker" then
+			local compatible = card.area.cards[1]
+				and card.area.cards[1] ~= card
+				and not G.jokers.cards[1].config.center.immutable
+			local main_end = {
+				{
+					n = G.UIT.C,
+					config = { align = "bm", minh = 0.4 },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = {
+								ref_table = card,
+								align = "m",
+								colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+									or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
+								r = 0.05,
+								padding = 0.06,
+							},
+							nodes = {
+								{
+									n = G.UIT.T,
+									config = {
+										text = " "
+											.. localize("k_" .. (compatible and "compatible" or "incompatible"))
+											.. " ",
+										colour = G.C.UI.TEXT_LIGHT,
+										scale = 0.32 * 0.8,
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+			return { main_end = main_end }
+		end
+	end,
 	calculate = function(self, card, context)
 		if (context.end_of_round and context.main_eval) or context.forcetrigger then
 			local check = false
