@@ -977,19 +977,19 @@ return {
 				text = {
 					"Earn {C:money}$#1#{} when used",
 					"or scored",
-				}
+				},
 			},
 			e_cry_gold_playing_card = { --description while on regular playing cards
 				name = "Golden",
 				text = {
 					"Earn {C:money}$#1#{} when scored",
-				}
+				},
 			},
 			e_cry_gold_consumable = { --description while on consumables
 				name = "Golden",
 				text = {
 					"Earn {C:money}$#1#{} when used",
-				}
+				},
 			},
 			e_cry_m = {
 				name = "Jolly",

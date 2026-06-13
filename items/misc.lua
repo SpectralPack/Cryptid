@@ -1924,11 +1924,11 @@ local gold_edition = {
 	loc_vars = function(self, info_queue, card)
 		local key = self.key
 		if card.playing_card and card.ability.consumeable then
-			key = key.."_ccd"
+			key = key .. "_ccd"
 		elseif card.playing_card then
-			key = key.."_playing_card"
+			key = key .. "_playing_card"
 		elseif card.ability.consumeable then
-			key = key.."_consumable"
+			key = key .. "_consumable"
 		end
 		return { vars = { card and card.edition and card.edition.dollars or self.config.dollars }, key = key }
 	end,
