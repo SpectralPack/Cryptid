@@ -949,7 +949,6 @@ return {
 			},
 			e_cry_glass = {
 				name = "Fragile",
-				label = "Fragile",
 				text = {
 					"{C:white,X:mult} X#3# {} Mult",
 					"{C:green}#1# in #2#{} chance this",
@@ -967,13 +966,30 @@ return {
 					"{C:inactive}(If possible){}",
 				},
 			},
-			e_cry_gold = {
+			e_cry_gold = { --description while on jokers
 				name = "Golden",
-				label = "Golden",
+				text = {
+					"Earn {C:money}$#1#{} when triggered",
+				},
+			},
+			e_cry_gold_ccd = { --description while on ccds
+				name = "Golden",
 				text = {
 					"Earn {C:money}$#1#{} when used",
-					"or triggered",
-				},
+					"or scored",
+				}
+			},
+			e_cry_gold_playing_card = { --description while on regular playing cards
+				name = "Golden",
+				text = {
+					"Earn {C:money}$#1#{} when scored",
+				}
+			},
+			e_cry_gold_consumable = { --description while on consumables
+				name = "Golden",
+				text = {
+					"Earn {C:money}$#1#{} when used",
+				}
 			},
 			e_cry_m = {
 				name = "Jolly",
