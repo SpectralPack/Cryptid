@@ -955,12 +955,6 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 		G.GAME.modifiers.cry_astero_ante = (G.GAME.modifiers.cry_astero_ante or 0) > 0
 				and math.min(math.ceil(G.GAME.modifiers.cry_astero_ante ^ 1.13), 1e300)
 			or 1
-		G.E_MANAGER:add_event(Event({
-			func = function()
-				G.GAME.round_resets.blind_ante = mod
-				return true
-			end,
-		}))
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
