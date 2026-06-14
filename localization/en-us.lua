@@ -2292,6 +2292,8 @@ return {
 					"in the {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult)",
 					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:inactive,s:0.7}Can be updated without relaunching",
+					"{C:inactive,s:0.7}via the Cryptid config",
 				},
 			},
 			j_cry_membershipcardtwo = {
@@ -2301,6 +2303,8 @@ return {
 					"in the {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chip#<s>2#)",
 					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:inactive,s:0.7}Can be updated without relaunching",
+					"{C:inactive,s:0.7}via the Cryptid config",
 				},
 			},
 			j_cry_membershipcardtwo_balanced = {
@@ -2310,6 +2314,8 @@ return {
 					"in the {C:attention}Cryptid Discord{}",
 					"{C:inactive}(Currently {C:chips}+#2#{C:inactive} Chip#<s>2#)",
 					"{C:blue,s:0.7}https://discord.gg/eUf9Ur6RyB{}",
+					"{C:inactive,s:0.7}Can be updated without relaunching",
+					"{C:inactive,s:0.7}via the Cryptid config",
 				},
 			},
 			j_cry_meteor = {
