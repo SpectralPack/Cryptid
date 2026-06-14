@@ -5332,6 +5332,8 @@ return {
 			b_reset_gameset_mainline = "Reset Gameset Config (Mainline)",
 			b_reset_gameset_madness = "Reset Gameset Config (Madness)",
 
+			b_update_membership_cards = "Update Membership Card jokers",
+
 			cry_circus_generic = "{V:#1#}#2#{} Jokers each give {X:mult,C:white} X#3# {} Mult",
 		},
 		labels = {

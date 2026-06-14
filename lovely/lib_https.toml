@@ -3,18 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = -1
 
-# call Cryptid.update_member_count() whenever the collection is opened to ensure it updates properly on title collection if it can (better than running it on loc_vars)
-# it's not computationally intense at all, so whatever
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = '''G.FUNCS.your_collection = function(e)'''
-position = "after"
-payload = '''
-if Cryptid.update_member_count then Cryptid.update_member_count() end
-'''
-match_indent = true
-
 # test
 [[patches]]
 [patches.pattern]

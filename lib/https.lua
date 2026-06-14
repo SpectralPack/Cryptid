@@ -25,3 +25,4 @@ function Cryptid.update_member_count()
 		end
 	end --you all are awesome :)
 end
+Cryptid.update_member_count() --is there a point of doing this during runtime?

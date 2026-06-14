@@ -341,6 +341,7 @@ cry_glowing_dt2 = 0
 local none_eval = 0
 function Game:update(dt)
 	upd(self, dt)
+	--[[
 	if not Cryptid.member_count_delay then
 		Cryptid.member_count_delay = 0
 	end
@@ -351,7 +352,7 @@ function Game:update(dt)
 		Cryptid.member_count_delay = 0
 	else
 		Cryptid.member_count_delay = Cryptid.member_count_delay + dt
-	end
+	end]]
 	-- Idk what this is for
 	if Incantation and not CryptidIncanCompat then
 		AllowStacking("Code")
