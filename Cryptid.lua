@@ -354,7 +354,7 @@ SMODS.calculate_repetitions = function(card, context, reps)
 	return reps
 end
 
-G.FUNCS.update_cry_members = function (...)
+G.FUNCS.update_cry_members = function(...)
 	Cryptid.update_member_count()
 end
 
@@ -430,7 +430,7 @@ local cryptidConfigTab = function()
 		label = { localize("b_reset_gameset_" .. (G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline")) },
 		minw = 5,
 	})
-	cry_nodes[#cry_nodes+1] = UIBox_button({
+	cry_nodes[#cry_nodes + 1] = UIBox_button({
 		colour = G.C.CRY_JOLLY,
 		button = "update_cry_members",
 		label = { localize("b_update_membership_cards") },
