@@ -310,9 +310,6 @@ local crash = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 	init = function(self)
 		function create_UIBox_crash(card)
 			G.E_MANAGER:add_event(Event({
@@ -956,9 +953,6 @@ local keygen = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Payload
 -- Triple interest gained on next cash out, stacks exponentially (multiplicative on modest)
@@ -1008,9 +1002,6 @@ local payload = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Exploit
 -- Choose a hand, next hand is forced to that hand regardless of cards played, +1 asc power for that hand, multi-use 2
@@ -1039,7 +1030,7 @@ local exploit = {
 	pos = { x = 8, y = 3 },
 	cost = 4,
 	order = 403,
-	config = { extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
+	config = { cry_multiuse = 2, extra = { enteredhand = "" } }, -- i don't think this ever uses config...?
 	loc_vars = function(self, info_queue, card)
 		if G.STAGE == G.STAGES.RUN and Cryptid.enabled("set_cry_poker_hand_stuff") == true then
 			local modest = Cryptid.gameset(G.P_CENTERS.c_cry_sunplanet) == "modest"
@@ -1073,9 +1064,6 @@ local exploit = {
 		G.GAME.USING_CODE = true
 		G.GAME.USING_EXPLOIT = true
 		G.FUNCS.overlay_menu({ definition = G.UIDEF.exploit_menu() })
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(2 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- ://Malware
@@ -1155,9 +1143,6 @@ local malware = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://NPERROR
 -- Add last played hand back to your hand, multi-use 2
@@ -1186,6 +1171,7 @@ local crynperror = {
 	cost = 4,
 	atlas = "atlasnotjokers",
 	order = 405,
+	config = { cry_multiuse = 2 },
 	can_use = function(self, card)
 		return G.GAME.last_hand_played_cards
 			and (Cryptid.safe_get(G.GAME, "blind", "in_blind") and not G.GAME.USING_RUN) -- TODO: work in boosters
@@ -1213,9 +1199,6 @@ local crynperror = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(2 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- ://Rework
@@ -1302,9 +1285,6 @@ local rework = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- Rework Tag
@@ -1490,9 +1470,6 @@ local merge = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Commit
 -- Destroys a selected joker and creates a different joker of the same rarity
@@ -1577,9 +1554,6 @@ local commit = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- ://MACHINECODE
@@ -1856,9 +1830,6 @@ local machinecode = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Spaghetti
 -- Creates a random Glitched food joker
@@ -1905,9 +1876,6 @@ local spaghetti = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- ://Seed
@@ -1967,9 +1935,6 @@ local seed = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- Rigged sticker, guarantees listed odds (most of the time)
@@ -2132,9 +2097,6 @@ local patch = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Update, TBD, missing art
 local cryupdate = {
@@ -2259,9 +2221,6 @@ local hook = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- Hooked Sticker
 -- When a joker is naturally triggered, Force-Trigger the hooked joker
@@ -2380,9 +2339,6 @@ local oboe = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Assemble
 -- Add the number of jokers to selected hand's +mult
@@ -2471,9 +2427,6 @@ local assemble = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Instantiate
 -- Draw 2 cards; one with selected card's rank and the other with selected card's suit (if possible)
@@ -2553,9 +2506,6 @@ local inst = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Revert
 -- Loads the game state from the end of the last boss blind, at cash out
@@ -2626,9 +2576,6 @@ local revert = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- Function://
@@ -2725,9 +2672,6 @@ local cryfunction = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- Function:// Sticker
@@ -2930,9 +2874,6 @@ local run = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 
@@ -3196,9 +3137,6 @@ local declare = {
 			return c
 		end
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 
 -- ://Class
@@ -3337,9 +3275,6 @@ local class = {
 			v:set_ability(pseudorandom_element(choices, pseudoseed("forceclass")))
 		end
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Global
 -- Gives a selected card the Global sticker
@@ -3388,9 +3323,6 @@ local global = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- Global sticker
@@ -3576,9 +3508,6 @@ local variable = {
 		for i, v in pairs(Cryptid.get_highlighted_cards({ G.hand }, {}, 1, card.ability.max_highlighted or 2)) do
 			SMODS.change_base(v, v.base.suit, pseudorandom_element(choices, pseudoseed("forcevariable")))
 		end
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- ://Log
@@ -3893,9 +3822,6 @@ local log = {
 			G.GAME.USING_CODE = false
 		end
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
@@ -4079,9 +4005,6 @@ local quantify = {
 			end
 		end
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Divide,
 -- Halves item costs in shop
@@ -4148,9 +4071,6 @@ local divide = {
 			c:set_cost()
 		end
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Multiply
 -- Doubles a joker's values until the end of the round (exponentially)
@@ -4213,9 +4133,6 @@ local multiply = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 
 -- ://Delete
@@ -4246,9 +4163,7 @@ local delete = {
 	order = 428,
 	pos = { x = 11, y = 2 },
 	cost = 4,
-	loc_vars = function(self, info_queue, card)
-		return { vars = { Cryptid.safe_get(card, "ability", "cry_multiuse") or self.config.cry_multiuse } }
-	end,
+	config = { cry_multiuse = 3 },
 	can_use = function(self, card)
 		local blacklist = function(c)
 			return not SMODS.is_eternal(c, card)
@@ -4291,9 +4206,6 @@ local delete = {
 			end
 		end
 		c:start_dissolve()
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(3 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- ://Alt-Tab
@@ -4403,9 +4315,6 @@ local alttab = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 -- ://Ctrl-V
@@ -4566,9 +4475,6 @@ local ctrl_v = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://Reboot
 -- Shuffle all cards into deck, then reset Hands and Discards to default values
@@ -4628,9 +4534,6 @@ local reboot = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
-	end,
 }
 -- ://;
 -- Ends the current non-boss blind, skips cash out
@@ -4684,9 +4587,6 @@ local semicolon = {
 	demicoloncompat = true,
 	force_use = function(self, card, area)
 		self:use(card, area)
-	end,
-	set_ability = function(self, center)
-		center.ability.cry_multiuse = math.ceil(1 + (G.GAME.extra_multiuse or 0))
 	end,
 }
 
