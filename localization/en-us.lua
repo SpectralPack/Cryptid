@@ -3612,7 +3612,7 @@ return {
 				name = "POINTER://",
 				text = {
 					"Create a card",
-					"of {C:cry_code}your choice",
+					"of {C:cry_code,E:1}your choice",
 					"{C:inactive,s:0.8}(Exotic Jokers excluded)",
 				},
 			},
