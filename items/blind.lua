@@ -929,11 +929,11 @@ local chromatic = {
 	atlas = "blinds_two",
 	order = 25,
 	boss_colour = HEX("a34f98"),
-	calculate = function (self, blind, context)
-		if context.final_scoring_step and G.GAME.current_round.hands_played%2 == 0 then
+	calculate = function(self, blind, context)
+		if context.final_scoring_step and G.GAME.current_round.hands_played % 2 == 0 then
 			return { xmult = -1 }
 		end
-	end
+	end,
 }
 
 local landlord = {
