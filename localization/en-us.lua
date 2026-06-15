@@ -436,9 +436,8 @@ return {
 			bl_cry_chromatic = {
 				name = "The Chromatic",
 				text = {
-					"Hand score is",
-					"subtracted on",
-					"odd numbered hands",
+					"X-1 Mult on every",
+					"odd numbered hand",
 				},
 			},
 			bl_cry_landlord = {

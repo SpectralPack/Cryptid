@@ -929,32 +929,11 @@ local chromatic = {
 	atlas = "blinds_two",
 	order = 25,
 	boss_colour = HEX("a34f98"),
-	set_blind = function(self, reset, silent)
-		G.GAME.chromatic_mod = 0
-		--SMODS.set_scoring_calculation("cry_chromatic")
-	end,
-	defeat = function(self, silent)
-		G.GAME.chromatic_mod = nil
-		--SMODS.set_scoring_calculation("multiply")
-	end,
-	disable = function(self, silent)
-		G.GAME.chromatic_mod = nil
-		--SMODS.set_scoring_calculation("multiply")
-	end,
-	press_play = function(self)
-		if not G.GAME.blind.disabled then
-			G.GAME.blind.prepped = true
+	calculate = function (self, blind, context)
+		if context.final_scoring_step and G.GAME.current_round.hands_played%2 == 0 then
+			return { xmult = -1 }
 		end
-	end,
-	in_pool = function()
-		return math.floor(G.GAME.round_resets.hands) > 1
-	end,
-	drawn_to_hand = function(self)
-		if G.GAME.blind.prepped and not G.GAME.blind.disabled then
-			G.GAME.chromatic_mod = G.GAME.chromatic_mod + 1
-		end
-		G.GAME.blind.prepped = nil
-	end,
+	end
 }
 
 local landlord = {

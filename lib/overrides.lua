@@ -2186,11 +2186,6 @@ function SMODS.calculate_round_score(flames)
 	if G.GAME.tax_mod then
 		base = math.floor(math.min(G.GAME.tax_mod * G.GAME.blind.chips, base) + 0.5)
 	end
-	if Cryptid.safe_get(G, "GAME", "chromatic_mod") then
-		if G.GAME.chromatic_mod % 2 == 1 then
-			base = base * -1
-		end
-	end
 	return base
 end
 
