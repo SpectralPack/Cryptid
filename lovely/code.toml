@@ -311,7 +311,7 @@ target = '''functions/common_events.lua'''
 pattern = '''if main_end then'''
 position = "before"
 payload = '''
-if cfg and cfg.cry_multiuse not next(SMODS.find_mod("Spectrallib")) then
+if cfg and cfg.cry_multiuse and not next(SMODS.find_mod("Spectrallib")) then
 	local loc = {}
 	localize{type = 'other', key = 'cry_multiuse', nodes = loc, vars = {cfg.cry_multiuse}}
 	desc_nodes[#desc_nodes+1] = loc[1]
