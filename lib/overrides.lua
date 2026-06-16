@@ -2220,7 +2220,6 @@ function SMODS.upgrade_poker_hands(args)
 		else
 			args.StatusText = "X" .. number_format(universum_mod ^ lvl_amt)
 		end
-		
 	end
 	smup(args)
 end
