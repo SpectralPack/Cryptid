@@ -1135,8 +1135,8 @@ local white_hole = {
 		local removed_levels = 0
 		for k, v in ipairs(G.handlist) do
 			if to_big(G.GAME.hands[v].level) > to_big(1) then
-				-- coercing to string first is necessary because coercing directly to number returns nil for some reason
-				local this_removed_levels = tonumber(tostring((G.GAME.hands[v].level - 1)))
+				-- to_number vs tonumber lmao
+				local this_removed_levels = to_number((G.GAME.hands[v].level - 1))
 				if
 					-- Due to how these poker hands are loaded they still techically exist even if Poker Hand Stuff is disabled
 					-- Because they still exist, While Hole needs to ignore levels from these if disabled (via Black Hole, Planet.lua, etc...)
