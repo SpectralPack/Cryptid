@@ -201,12 +201,9 @@ local sk_deck = {
 	config = {},
 	loc_vars = function(self, info_queue, center)
 		local _, _, ccc = Cryptid.enhanced_deck_info(self)
-		if ccc == "pinned" then
-			ccc = "pinned_left"
-		end
 		return {
 			vars = {
-				localize({ type = "name_text", set = "Other", key = ccc }),
+				localize({ type = "name_text", set = "Other", key = ccc == "pinned" and "pinned_left" or ccc }),
 				colours = { SMODS.Stickers[ccc].badge_colour or G.C.FILTER },
 			},
 		}
