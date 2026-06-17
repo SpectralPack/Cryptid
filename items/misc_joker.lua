@@ -5431,13 +5431,13 @@ local quintet = {
 		if context.joker_main and (to_big(card.ability.extra.Xmult) > to_big(1)) then
 			if context.poker_hands ~= nil and next(context.poker_hands[card.ability.extra.type]) then
 				return {
-					xmult = number_format(card.ability.extra.Xmult),
+					xmult = card.ability.extra.Xmult,
 				}
 			end
 		end
 		if context.forcetrigger then
 			return {
-				xmult = number_format(card.ability.extra.Xmult),
+				xmult = card.ability.extra.Xmult,
 			}
 		end
 	end,
