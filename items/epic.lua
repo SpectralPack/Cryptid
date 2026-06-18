@@ -2425,7 +2425,7 @@ local demicolon = {
 						else
 							Spectrallib.forcetrigger({
 								card = G.jokers.cards[i + 1],
-								message = localize("k_dcry_demitrigger_ex"),
+								message = localize("cry_demicolon"),
 								colour = G.C.RARITY.cry_epic,
 								message_card = card,
 								context = context,

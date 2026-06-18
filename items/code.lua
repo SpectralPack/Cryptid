@@ -2280,6 +2280,7 @@ local hooked = {
 					else
 						Spectrallib.forcetrigger({
 							card = G.jokers.cards[i],
+							context = context,
 						})
 					end
 				end

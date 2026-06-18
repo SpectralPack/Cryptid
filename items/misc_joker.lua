@@ -7273,16 +7273,18 @@ local coin = {
 					* (Card.get_gameset(card) ~= "modest" and card.ability.immutable.money_mod or 4)
 			) + 1
 			local option = lenient_bignum(to_big(card.ability.extra.money) * mod)
-			ease_dollars(option)
-			card_eval_status_text(
-				context.blueprint_card or card,
-				"extra",
-				nil,
-				nil,
-				nil,
-				{ message = localize("$") .. number_format(option), colour = G.C.MONEY, delay = 0.45 }
-			)
-			return nil, true
+			G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + option
+			return {
+				dollars = option,
+				func = function ()
+					G.E_MANAGER:add_event(Event{
+						func = function (n)
+							G.GAME.dollar_buffer = 0
+							return true
+						end
+					})
+				end
+			}
 		end
 	end,
 	cry_credits = {

@@ -1420,19 +1420,21 @@ local candy_dagger = {
 					return true
 				end,
 			}))
-			card_eval_status_text(card, "extra", nil, nil, nil, {
+			SMODS.add_card{
+				set = "Joker",
+				rarity = "cry_candy",
+				area = G.jokers,
+				key_append = "cry_candy_dagger",
+			}
+			return {
 				message = localize({
 					type = "variable",
 					key = "a_candy",
-					vars = { 1 },
+					vars = {1},
 				}),
-				colour = G.C.RARITY["cry_candy"],
+				colour = G.C.RARITY.cry_candy,
 				no_juice = true,
-			})
-			local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_candy_dagger")
-			card:add_to_deck()
-			G.jokers:emplace(card)
-			return nil, true
+			}
 		end
 		if context.forcetrigger and my_pos and G.jokers.cards[my_pos + 1] then
 			local sliced_card = G.jokers.cards[my_pos + 1]
