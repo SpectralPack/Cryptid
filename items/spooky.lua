@@ -1420,17 +1420,17 @@ local candy_dagger = {
 					return true
 				end,
 			}))
-			SMODS.add_card{
+			SMODS.add_card({
 				set = "Joker",
 				rarity = "cry_candy",
 				area = G.jokers,
 				key_append = "cry_candy_dagger",
-			}
+			})
 			return {
 				message = localize({
 					type = "variable",
 					key = "a_candy",
-					vars = {1},
+					vars = { 1 },
 				}),
 				colour = G.C.RARITY.cry_candy,
 				no_juice = true,

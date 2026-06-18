@@ -7276,14 +7276,14 @@ local coin = {
 			G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + option
 			return {
 				dollars = option,
-				func = function ()
-					G.E_MANAGER:add_event(Event{
-						func = function (n)
+				func = function()
+					G.E_MANAGER:add_event(Event({
+						func = function(n)
 							G.GAME.dollar_buffer = 0
 							return true
-						end
-					})
-				end
+						end,
+					}))
+				end,
 			}
 		end
 	end,
