@@ -469,7 +469,7 @@ local mneon = {
 					ref_value = "money",
 					scalar_value = "bonus",
 					operation = function(ref_table, ref_value, initial, change)
-						ref_table[ref_table] = initial + change * jollycount
+						ref_table[ref_value] = initial + change * jollycount
 					end,
 					no_message = true,
 				})
