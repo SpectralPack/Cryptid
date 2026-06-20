@@ -127,6 +127,7 @@ local lock = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "joker", "modify_card", "sticker" }
 }
 local vacuum = {
 	cry_credits = {
@@ -219,6 +220,7 @@ local vacuum = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "modify_card", "economy" }
 }
 local hammerspace = {
 	cry_credits = {
@@ -295,6 +297,7 @@ local hammerspace = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "modify_card", "ccd" }
 }
 local trade = {
 	cry_credits = {
@@ -509,6 +512,7 @@ local trade = {
 		}))
 		]]
 	end,
+	attributes = { "voucher", "generation" }
 }
 local replica = {
 	cry_credits = {
@@ -594,6 +598,7 @@ local replica = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "modify_card" }
 }
 local analog = {
 	cry_credits = {
@@ -677,6 +682,7 @@ local analog = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "ante", "generation", "joker", "destroy_card" }
 }
 local ritual = {
 	cry_credits = {
@@ -772,6 +778,7 @@ local ritual = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "editions", "modify_card" }
 }
 local adversary = {
 	cry_credits = {
@@ -870,6 +877,7 @@ local adversary = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "editions", "modify_card", "joker", "lose_economy" }
 }
 local chambered = {
 	cry_credits = {
@@ -944,6 +952,7 @@ local chambered = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "consumable", "generation" }
 }
 local conduit = {
 	cry_credits = {
@@ -1086,6 +1095,7 @@ local conduit = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "modify_card", "editions" }
 }
 
 local white_hole = {
@@ -1211,6 +1221,7 @@ local white_hole = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "hand_level", "hand_type", "space" }
 }
 
 local typhoon = {
@@ -1290,6 +1301,7 @@ local typhoon = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "modify_card", "seals" }
 }
 
 local meld = {
@@ -1433,6 +1445,7 @@ local summoning = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
+	attributes = { "rarity", "destroy_card", "generation", "joker" }
 }
 
 local spectrals = {

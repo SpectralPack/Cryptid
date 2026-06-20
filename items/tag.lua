@@ -80,6 +80,7 @@ local epic_tag = {
 			return card
 		end
 	end,
+	attributes = { "rarity", "shop", "joker", "generation" }
 }
 local schematic = {
 	cry_credits = {
@@ -138,6 +139,7 @@ local schematic = {
 		end
 		return true
 	end,
+	attributes = { "shop", "joker", "generation" }
 }
 local empoweredPack = {
 	cry_credits = {
@@ -229,6 +231,7 @@ local empoweredPack = {
 	in_pool = function()
 		return false
 	end,
+	attributes = { "spectral" }
 }
 local empowered = {
 	cry_credits = {
@@ -300,6 +303,7 @@ local empowered = {
 	in_pool = function()
 		return false
 	end,
+	attributes = { "booster" }
 }
 local gambler = {
 	cry_credits = {
@@ -362,6 +366,7 @@ local gambler = {
 			return true
 		end
 	end,
+	attributes = { "chance", "tag", "generation" }
 }
 local bundle = {
 	cry_credits = {
@@ -417,6 +422,7 @@ local bundle = {
 			return true
 		end
 	end,
+	attributes = { "tag", "generation" }
 }
 local memory = {
 	cry_credits = {
@@ -512,6 +518,7 @@ local memory = {
 			return ret
 		end
 	end,
+	attributes = { "tag", "generation" }
 }
 local glitched_tag = {
 	cry_credits = {
@@ -567,6 +574,7 @@ local glitched_tag = {
 			end
 		end
 	end,
+	attributes = { "joker", "editions", "shop" }
 }
 local oversat_tag = {
 	cry_credits = {
@@ -622,6 +630,7 @@ local oversat_tag = {
 			end
 		end
 	end,
+	attributes = { "joker", "editions", "shop" }
 }
 local mosaic_tag = {
 	cry_credits = {
@@ -677,6 +686,7 @@ local mosaic_tag = {
 			end
 		end
 	end,
+	attributes = { "joker", "editions", "shop" }
 }
 local gold_tag = {
 	cry_credits = {
@@ -732,6 +742,7 @@ local gold_tag = {
 			end
 		end
 	end,
+	attributes = { "joker", "editions", "shop" }
 }
 local glass_tag = {
 	cry_credits = {
@@ -787,6 +798,7 @@ local glass_tag = {
 			end
 		end
 	end,
+	attributes = { "joker", "editions", "shop" }
 }
 local blur_tag = {
 	cry_credits = {
@@ -842,6 +854,7 @@ local blur_tag = {
 			end
 		end
 	end,
+	attributes = { "joker", "editions", "shop" }
 }
 --order 8 reserved for Noisy tag (if it ever has a shader / comes into existence)
 local astral_tag = {
@@ -898,6 +911,7 @@ local astral_tag = {
 			end
 		end
 	end,
+	attributes = { "joker", "editions", "shop" }
 }
 local m_tag = {
 	cry_credits = {
@@ -953,6 +967,7 @@ local m_tag = {
 			end
 		end
 	end,
+	attributes = { "joker", "editions", "shop" }
 }
 local double_m_tag = {
 	cry_credits = {
@@ -1007,6 +1022,7 @@ local double_m_tag = {
 	in_pool = function()
 		return false
 	end,
+	attributes = { "joker", "editions", "shop", "generation" }
 }
 local banana = {
 	cry_credits = {
@@ -1079,6 +1095,7 @@ local banana = {
 			return true
 		end
 	end,
+	attributes = { "generation", "joker" }
 }
 local scope = {
 	cry_credits = {
@@ -1119,6 +1136,7 @@ local scope = {
 			return true
 		end
 	end,
+	attributes = { "hands", "discard" }
 }
 local loss = {
 	cry_credits = {
@@ -1182,6 +1200,7 @@ local loss = {
 			return true
 		end
 	end,
+	attributes = { "booster" }
 }
 local gourmand = {
 	cry_credits = {
@@ -1226,6 +1245,7 @@ local gourmand = {
 			return card
 		end
 	end,
+	attributes = { "generation", "shop", "joker" }
 }
 local better_top_up = {
 	cry_credits = {
@@ -1278,6 +1298,7 @@ local better_top_up = {
 			return true
 		end
 	end,
+	attributes = { "generation", "joker", "rarity" }
 }
 local better_voucher = {
 	cry_credits = {
@@ -1366,6 +1387,7 @@ local better_voucher = {
 			tag.triggered = true
 		end
 	end,
+	attributes = { "voucher", "shop" }
 }
 local booster = {
 	cry_credits = {
@@ -1408,6 +1430,7 @@ local booster = {
 			return true
 		end
 	end,
+	attributes = { "booster" }
 }
 
 local clone = {
@@ -1479,6 +1502,7 @@ local clone = {
 			return r
 		end
 	end,
+	attributes = { "generation", "lose_economy" }
 }
 
 local lens = {
@@ -1546,6 +1570,7 @@ local lens = {
 			return true
 		end
 	end,
+	attributes = { "consumable", "modify_card", "editions" }
 }
 
 local palette_cleanser = {
@@ -1645,6 +1670,7 @@ local palette_cleanser = {
 		end
 		return #c > 0
 	end,
+	attributes = { "sticker", "modify_card" }
 }
 
 local tagitems = {

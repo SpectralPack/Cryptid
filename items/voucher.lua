@@ -57,6 +57,7 @@ local copies = { -- DTag T1; Double tags become Triple Tags and are 2X as common
 			return tinit(self, tag, for_collection, _blind_type)
 		end
 	end,
+	attributes = { "tag" }
 }
 local tag_printer = { --DTag T2; Double tags become Quadruple Tags and are 3X as common
 	cry_credits = {
@@ -89,6 +90,7 @@ local tag_printer = { --DTag T2; Double tags become Quadruple Tags and are 3X as
 		return { vars = {} }
 	end,
 	requires = { "v_cry_copies" },
+	attributes = { "tag" }
 }
 local pairing = { -- M T1; Retrigger all M Jokers if played hand is a Pair
 	object_type = "Voucher",
@@ -121,6 +123,7 @@ local pairing = { -- M T1; Retrigger all M Jokers if played hand is a Pair
 		end
 		return false
 	end,
+	attributes = { "retrigger", "joker", "hand_type" }
 }
 local repair_man = { -- M T2; Retrigger all M Jokers if played hand contains a pair
 	object_type = "Voucher",
@@ -155,6 +158,7 @@ local repair_man = { -- M T2; Retrigger all M Jokers if played hand contains a p
 		end
 		return false
 	end,
+	attributes = { "retrigger", "joker", "hand_type" }
 }
 local double_vision = { -- DSide T1; Double-Sided cards appear 4x more frequently
 	object_type = "Voucher",
@@ -252,6 +256,7 @@ local stickyhand = { -- CSL T1; +1 card selection limit
 			G.hand:unhighlight_all()
 		end
 	end,
+	attributes = { "play_limit", "discard_limit" }
 }
 local grapplinghook = { -- CSL T2; +2 card selection limit
 	cry_credits = {
@@ -292,6 +297,7 @@ local grapplinghook = { -- CSL T2; +2 card selection limit
 			G.hand:unhighlight_all()
 		end
 	end,
+	attributes = { "play_limit", "discard_limit" }
 }
 local command_prompt = { -- Code T1; Code cards can appear in the shop
 	cry_credits = {
@@ -335,6 +341,7 @@ local command_prompt = { -- Code T1; Code cards can appear in the shop
 			end,
 		}))
 	end,
+	attributes = { "code", "consumable" }
 }
 local satellite_uplink = { -- Code T2; Code cards may appear in any of the Celestial Packs
 	cry_credits = {
@@ -364,6 +371,7 @@ local satellite_uplink = { -- Code T2; Code cards may appear in any of the Celes
 		return { vars = {} }
 	end,
 	requires = { "v_cry_command_prompt" },
+	attributes = { "code", "booster" }
 }
 
 --i removed the patch as it didnt do anything and its not needed
@@ -468,6 +476,7 @@ local overstock_multi = { -- Overstock T3; +1 card slot, +1 booster pack slot an
 		}))
 		SMODS.change_voucher_limit(-mod)
 	end,
+	attributes = { "shop", "voucher", "booster" }
 }
 local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost $1
 	cry_credits = {
@@ -520,6 +529,7 @@ local massproduct = { -- Clearance Sale T3; All cards and packs in the shop cost
 			end,
 		}))
 	end,
+	attributes = { "economy" }
 }
 local curate = { -- Hone T3; All cards appear with an Edition
 	cry_credits = {
@@ -555,6 +565,7 @@ local curate = { -- Hone T3; All cards appear with an Edition
 			return ed
 		end
 	end,
+	attributes = { "editions" }
 }
 local rerollexchange = { -- Reroll Surplus T3; All rerolls cost $2
 	cry_credits = {
@@ -599,6 +610,7 @@ local rerollexchange = { -- Reroll Surplus T3; All rerolls cost $2
 			end,
 		}))
 	end,
+	attributes = { "shop", "reroll", "economy" }
 }
 local CBALLT3PLACEHOLDER = { -- RESERVED FOR CRYSTAL BALL T3
 	object_type = "Voucher",
@@ -664,6 +676,7 @@ local dexterity = { -- Grabber T3; Permanently gain +2 hands each round
 		G.GAME.round_resets.hands = G.GAME.round_resets.hands - (card and card.ability.extra or self.config.extra)
 		ease_hands_played(-1 * (card and card.ability.extra or self.config.extra))
 	end,
+	attributes = { "hands" }
 }
 local threers = { -- Wasteful T3; Permanently gain +2 discards each round
 	cry_credits = {
@@ -701,6 +714,7 @@ local threers = { -- Wasteful T3; Permanently gain +2 discards each round
 		G.GAME.round_resets.discards = G.GAME.round_resets.discards - (card and card.ability.extra or self.config.extra)
 		ease_discard(-1 * (card and card.ability.extra or self.config.extra))
 	end,
+	attributes = { "discard" }
 }
 local tacclimator = { -- Tarot Merchant T3; Tarots are free, spawn rate controllable in run info
 	cry_credits = {
@@ -747,6 +761,7 @@ local tacclimator = { -- Tarot Merchant T3; Tarots are free, spawn rate controll
 			end,
 		}))
 	end,
+	attributes = { "tarot", "consumable", "shop" }
 }
 local pacclimator = { -- Planet Merchant T3; Planets are free, spawn rate controllable in run info
 	cry_credits = {
@@ -793,6 +808,7 @@ local pacclimator = { -- Planet Merchant T3; Planets are free, spawn rate contro
 			end,
 		}))
 	end,
+	attributes = { "planet", "consumable", "shop" }
 }
 local moneybean = { -- Seed Money T3; Raise the cap on interest earned in each round to $2.0e299
 	cry_credits = {
@@ -842,6 +858,7 @@ local moneybean = { -- Seed Money T3; Raise the cap on interest earned in each r
 			end,
 		}))
 	end,
+	attributes = { "economy" }
 }
 local fabric = { -- Blank Voucher T3; +2 Joker slots
 	cry_credits = {
@@ -906,6 +923,7 @@ local fabric = { -- Blank Voucher T3; +2 Joker slots
 			unlock_card(self)
 		end
 	end,
+	attributes = { "joker_slot" }
 }
 local MTRICKT3PLACEHOLDER = { -- RESERVED FOR MAGIC TRICK T3
 	object_type = "Voucher",
@@ -979,6 +997,7 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 			return G.GAME.modifiers.cry_astero_ante
 		end
 	end,
+	attributes = { "ante" }
 }
 local DCUTT3PLACEHOLDER = { -- RESERVED FOR DIRECTOR'S CUT T3
 	object_type = "Voucher",
@@ -1040,6 +1059,7 @@ local blankcanvas = { -- Paint Brush T3; +2 hand size
 			unlock_card(self)
 		end
 	end,
+	attributes = { "hand_size" }
 }
 local clone_machine = { -- DTag Voucher T3; Double tags become Quintuple Tags and are 4X as common
 	cry_credits = {
@@ -1074,6 +1094,7 @@ local clone_machine = { -- DTag Voucher T3; Double tags become Quintuple Tags an
 		return { vars = {} }
 	end,
 	requires = { "v_cry_tag_printer" },
+	attributes = { "tag" }
 }
 local pairamount_plus = { -- M T3; Retrigger all M Jokers once for every pair contained in played hand
 	object_type = "Voucher",
@@ -1110,6 +1131,7 @@ local pairamount_plus = { -- M T3; Retrigger all M Jokers once for every pair co
 		end
 		return false
 	end,
+	attributes = { "hand_type", "retrigger", "joker" }
 }
 local double_down = { -- DSide T3; After every round, X1.5 to all values on the back of Double-Sided Cards
 	object_type = "Voucher",
@@ -1185,6 +1207,7 @@ local hyperspacetether = { -- CSL T3; +2 card selection limit, all* selected car
 			G.hand:unhighlight_all()
 		end
 	end,
+	attributes = { "play_limit", "discard_limit" }
 }
 local quantum_computing = { -- Code T3; Code cards spawn with +1 use
 	cry_credits = {
@@ -1223,6 +1246,7 @@ local quantum_computing = { -- Code T3; Code cards spawn with +1 use
 	unredeem = function(self, card)
 		G.GAME.extra_multiuse = (G.GAME.extra_multiuse or 0) - card.ability.extra
 	end,
+	attributes = { "code", "consumable" }
 }
 
 -- Triple+ tag tags
@@ -1289,6 +1313,7 @@ local triple = { --Copies voucher triple tag
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_copies
 	end,
+	attributes = { "tag", "generation" }
 }
 local quadruple = { --Tag printer voucher quadruple tag
 	cry_credits = {
@@ -1353,6 +1378,7 @@ local quadruple = { --Tag printer voucher quadruple tag
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_tag_printer
 	end,
+	attributes = { "tag", "generation" }
 }
 local quintuple = { --Clone machine voucher quintuple tag
 	cry_credits = {
@@ -1417,6 +1443,7 @@ local quintuple = { --Clone machine voucher quintuple tag
 	in_pool = function()
 		return G.GAME.used_vouchers.v_cry_clone_machine
 	end,
+	attributes = { "tag", "generation" }
 }
 -- If Tier 3 Vouchers is loaded, make Cryptid function as Tier 4 Vouchers
 if SMODS.Mods["Tier3Sub"] then

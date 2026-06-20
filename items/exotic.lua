@@ -578,7 +578,7 @@ local crustulum = {
 		art = { "lolxddj" },
 		code = { "Jevonn" },
 	},
-	attributes = { "scaling", "chips", "shop", "food" }, --this can have the food attribute because unlike objecttypes they dont ignore rarity when created from
+	attributes = { "scaling", "chips", "shop", "food", "reroll", "economy" }, --this can have the food attribute because unlike objecttypes they dont ignore rarity when created from
 }
 --todo: make the Emult always prime
 local primus = {
