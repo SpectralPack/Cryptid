@@ -38,6 +38,7 @@ local very_fair = {
 			unlock_card(self)
 		end
 	end,
+	attributes = {"discard", "hands", "voucher"}
 }
 local equilibrium = {
 	object_type = "Back",
@@ -73,6 +74,7 @@ local equilibrium = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "shop", "voucher" }
 }
 local misprint = {
 	object_type = "Back",
@@ -108,6 +110,7 @@ local misprint = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "value_manip" }
 }
 local infinite = {
 	object_type = "Back",
@@ -148,6 +151,7 @@ local infinite = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "hand_size", "play_limit", "discard_limit" }
 }
 local conveyor = {
 	object_type = "Back",
@@ -176,6 +180,7 @@ local conveyor = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "generation", "destroy_card", "joker", "position" }
 }
 local CCD = {
 	object_type = "Back",
@@ -205,6 +210,7 @@ local CCD = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "ccd" }
 }
 local wormhole = {
 	object_type = "Back",
@@ -257,6 +263,7 @@ local wormhole = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "joker_slot", "joker", "edition", "rarity" }
 }
 local redeemed = {
 	object_type = "Back",
@@ -353,6 +360,7 @@ local redeemed = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "voucher", "generation" }
 }
 local legendary = {
 	object_type = "Back",
@@ -444,6 +452,7 @@ local legendary = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "chance", "generation", "joker", "rarity" }
 }
 local critical = {
 	object_type = "Back",
@@ -529,6 +538,7 @@ local critical = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "emult", "chance" }
 }
 local glowing = {
 	object_type = "Back",
@@ -570,6 +580,7 @@ local glowing = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "modify_card", "jokers", "value_manip" }
 }
 local beta = {
 	object_type = "Back",
@@ -601,6 +612,7 @@ local beta = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "joker_slot", "consumable_slot", "boss_blind"}
 }
 local bountiful = {
 	object_type = "Back",
@@ -665,6 +677,7 @@ local beige = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "joker", "value_manip", "rarity" }
 }
 local blank = {
 	object_type = "Back",
@@ -1177,6 +1190,7 @@ local antimatter = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "copying" }
 }
 
 --[[

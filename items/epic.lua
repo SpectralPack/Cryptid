@@ -102,6 +102,7 @@ local supercell = {
 			"Jevonn",
 		},
 	},
+	attributes = { "chips", "mult", "xchips", "xmult", "economy" }
 }
 
 -- Old Membership Card
@@ -177,6 +178,7 @@ local membershipcardtwo = {
 			"Jevonn",
 		},
 	},
+	attributes = {"chips"}
 }
 
 -- Googol Play Card
@@ -255,6 +257,7 @@ local googol_play = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "xmult", "chance" }
 }
 
 -- Sync Catalyst
@@ -302,6 +305,7 @@ local sync_catalyst = {
 		},
 	},
 	unlocked = true,
+	attributes = { "balance" }
 }
 
 -- Negative Joker
@@ -354,6 +358,7 @@ local negative = {
 			"Math",
 		},
 	},
+	attributes = { "passive", "joker_slot" }
 }
 
 -- Canvas
@@ -413,6 +418,7 @@ local canvas = {
 			"Math",
 		},
 	},
+	attributes = { "retrigger", "joker", "rarity", "position" }
 }
 
 -- ERROR
@@ -687,6 +693,7 @@ local error_joker = {
 			end
 		end
 	end,
+	attributes = { "generation", "joker", "edition", "modify_card" }
 }
 
 -- m
@@ -776,6 +783,7 @@ local m = {
 			"Math",
 		},
 	},
+	attributes = { "xmult", "scaling" }
 }
 
 -- M
@@ -828,6 +836,7 @@ local M = {
 			"Math",
 		},
 	},
+	attributes = { "joker", "generation" }
 }
 
 -- Boredom
@@ -903,6 +912,7 @@ local boredom = {
 			"Math",
 		},
 	},
+	attributes = { "chance", "retrigger", "joker" }
 }
 
 -- Number Blocks
@@ -978,6 +988,7 @@ local number_blocks = {
 			"Math",
 		},
 	},
+	attributes = { "economy", "scaling", "rank" }
 }
 
 -- Double Scale
@@ -1045,6 +1056,7 @@ local double_scale = {
 			"Mathguy",
 		},
 	},
+	attributes = { "modify_card", } --does this count as value manip???
 }
 
 -- Nostalgic Candy
@@ -1106,6 +1118,7 @@ local oldcandy = {
 			"Jevonn",
 		},
 	},
+	attributes = { "on_sell", "hand_size", "food" }
 }
 
 -- Circus
@@ -1216,6 +1229,7 @@ local circus = {
 			"BobJoe400",
 		},
 	},
+	attributes = { "joker", "xmult", "rarity" }
 }
 
 -- Caramel
@@ -1330,6 +1344,7 @@ local caramel = {
 			"Jevonn",
 		},
 	},
+	attributes = { "xmult", "food" }
 }
 
 -- Sob
@@ -1444,6 +1459,7 @@ local curse_sob = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "generation", "joker" }
 }
 
 -- Bonus Joker
@@ -1566,6 +1582,7 @@ local bonusjoker = {
 			"Jevonn",
 		},
 	},
+	attributes = { "joker_slot", "consumable_slot", "chance", "enhancements" }
 }
 
 -- Mult Joker
@@ -1650,6 +1667,7 @@ local multjoker = {
 			"Jevonn",
 		},
 	},
+	attributes = { "generation", "chance", "spectral", "enhancements" }
 }
 
 -- Gold Joker
@@ -1716,6 +1734,7 @@ local goldjoker = {
 			"Jevonn",
 		},
 	},
+	attributes = { "scaling", "economy", "enhancements" }
 }
 
 -- Nostalgic Googol Play Card
@@ -1830,6 +1849,7 @@ local altgoogol = {
 			"Jevonn",
 		},
 	},
+	attributes = { "on_sell", "generation", "joker", "position" }
 }
 
 -- One For All
@@ -1900,6 +1920,7 @@ local soccer = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "joker_slot", "booster", "hand_size", "consumable_slot", "voucher", "shop", "passive" }
 }
 
 -- Flesh Panopticon
@@ -2017,6 +2038,7 @@ local fleshpanopticon = {
 			"notmario",
 		},
 	},
+	attributes = { "boss_blind", "generation", "spectral", "consumable" }
 }
 -- Spectrogram
 -- Retrigger rightmost Joker once for every Echo Card played and scored
@@ -2079,6 +2101,7 @@ local spectrogram = {
 			"AlexZGreat",
 		},
 	},
+	attributes = { "retrigger", "joker", "enhancements" }
 }
 local jtron = {
 	object_type = "Joker",
@@ -2130,6 +2153,7 @@ local jtron = {
 		art = { "Darren_The_Frog" },
 		code = { "candycanearter" },
 	},
+	attributes = { "emult", "joker" }
 }
 -- Retriggers steels every 2nd hand, scaling xmult every 3rd hand, first card to steel every 5th hand, stronger steels every 7th hand
 local clockwork = { -- Steel Support: The Joker
@@ -2316,6 +2340,7 @@ local clockwork = { -- Steel Support: The Joker
 			"unexian",
 		},
 	},
+	attributes = { "enhancements", "scaling", "xmult", "retrigger", "modify_card", "generation" }
 }
 -- Force-triggers the rightmost joker during context.joker_main
 local demicolon = {
@@ -2442,6 +2467,7 @@ local demicolon = {
 		art = { "HexaCryonic" },
 		code = { "Nova" },
 	},
+	attributes = { "forcetrigger", "position" }
 }
 
 local starfruit = {
@@ -2559,6 +2585,7 @@ local starfruit = {
 			return card_remove_ref(self, ...)
 		end
 	end,
+	attributes = { "emult", "scaling", "food", "shop" }
 }
 
 local sundial = {
@@ -2620,6 +2647,7 @@ local sundial = {
 			end
 		end
 	end,
+	attributes = { "on_sell" }
 }
 
 return {

@@ -104,6 +104,7 @@ local jollysus = {
 			"Jevonn",
 		},
 	},
+	attributes = { "generation", "joker" }
 }
 --TODO
 --Fix Incompatiblity with Brainstorm (the joker not the mod)
@@ -205,6 +206,7 @@ local bubblem = {
 			"Jevonn",
 		},
 	},
+	attributes = { "hand_type", "generation", "joker" }
 }
 local foodm = {
 	object_type = "Joker",
@@ -321,6 +323,7 @@ local foodm = {
 			"Jevonn",
 		},
 	},
+	attributes = { "mult", "food" }
 }
 local mstack = {
 	object_type = "Joker",
@@ -419,6 +422,7 @@ local mstack = {
 			"Jevonn",
 		},
 	},
+	attributes = { "retrigger", "scaling" }
 }
 local mneon = {
 	dependencies = {
@@ -504,6 +508,7 @@ local mneon = {
 			"Jevonn",
 		},
 	},
+	attributes = { "scaling", "economy" }
 }
 local notebook = {
 	dependencies = {
@@ -627,6 +632,7 @@ local notebook = {
 			"Jevonn",
 		},
 	},
+	attributes = { "chance", "joker_slot", "scaling" }
 }
 local bonk = {
 	dependencies = {
@@ -732,6 +738,7 @@ local bonk = {
 			"Jevonn",
 		},
 	},
+	attributes = { "joker", "chips", "scaling", "hand_type" }
 }
 local loopy = {
 	dependencies = {
@@ -793,6 +800,7 @@ local loopy = {
 			"Jevonn",
 		},
 	},
+	attributes = { "scaling", "reset", "retrigger" } --why does this reset in a patch lmao
 }
 local scrabble = {
 	dependencies = {
@@ -862,6 +870,7 @@ local scrabble = {
 			"Jevonn",
 		},
 	},
+	attributes = { "chance", "generation", "joker" }
 }
 local sacrifice = {
 	object_type = "Joker",
@@ -988,6 +997,7 @@ local sacrifice = {
 			"Jevonn",
 		},
 	},
+	attributes = { "spectral", "consumable", "joker", "generation" }
 }
 --TODO: Fix Brainstorm incompatibility (the joker not the mod)
 local reverse = {
@@ -1119,6 +1129,7 @@ local reverse = {
 			"Jevonn",
 		},
 	},
+	attributes = { "discard", "hand_type", "joker", "generation" }
 }
 local doodlem = {
 	object_type = "Joker",
@@ -1194,6 +1205,7 @@ local doodlem = {
 			"Jevonn",
 		},
 	},
+	attributes = { "generation", "consumable", "joker" }
 }
 -- To organize virgo's code a little better
 local function virgoJollies(card)
@@ -1315,6 +1327,7 @@ local virgo = {
 			"Jevonn",
 		},
 	},
+	attributes = { "economy", "generation", "joker", "on_sell", "hand_type", "sell_value" }
 }
 local smallestm = {
 	object_type = "Joker",
@@ -1381,6 +1394,7 @@ local smallestm = {
 			"Jevonn",
 		},
 	},
+	attributes = { "tag", "generation", "hand_type" }
 }
 local biggestm = {
 	object_type = "Joker",
@@ -1461,6 +1475,7 @@ local biggestm = {
 			"Kailen",
 		},
 	},
+	attributes = { "xmult", "hand_type" }
 }
 local mprime = {
 	dependencies = {
@@ -1587,6 +1602,7 @@ local mprime = {
 			"Jevonn",
 		},
 	},
+	attributes = { "emult", "joker", "scaling", "generation" }
 }
 local macabre = {
 	dependencies = {
@@ -1676,6 +1692,7 @@ local macabre = {
 			"SDM_0",
 		},
 	},
+	attributes = { "destroy_card", "generation", "joker" }
 }
 local megg = {
 	dependencies = {
@@ -1772,6 +1789,7 @@ local megg = {
 			"SDM_0",
 		},
 	},
+	attributes = { "on_sell", "scaling" }
 }
 local longboi = {
 	dependencies = {
@@ -1868,6 +1886,7 @@ local longboi = {
 			"Jevonn",
 		},
 	},
+	attributes = { "scaling", "xmult" } -- unsure
 }
 local ret_items = {
 	jollysus,

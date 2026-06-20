@@ -137,6 +137,7 @@ local e_deck = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "edition", }
 }
 local et_deck = {
 	object_type = "Back",
@@ -185,6 +186,7 @@ local et_deck = {
 			unlock_card(self)
 		end
 	end,
+	attributes = {"enhancements", }
 }
 local sk_deck = {
 	object_type = "Back",
@@ -236,6 +238,7 @@ local sk_deck = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "sticker", }
 }
 local st_deck = {
 	object_type = "Back",
@@ -283,6 +286,7 @@ local st_deck = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "suit", }
 }
 local sl_deck = {
 	object_type = "Back",
@@ -330,6 +334,7 @@ local sl_deck = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "seals", }
 }
 
 return {

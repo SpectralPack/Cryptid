@@ -117,6 +117,7 @@ local dropshot = {
 			"Math",
 		},
 	},
+	attributes = { "scaling", "xmult", "suit" }
 }
 local happyhouse = {
 	object_type = "Joker",
@@ -213,6 +214,7 @@ local happyhouse = {
 			"Jevonn",
 		},
 	},
+	attributes = { "hands", "emult" }
 }
 local maximized = {
 	object_type = "Joker",
@@ -269,6 +271,7 @@ local maximized = {
 			return ret_value
 		end
 	end,
+	attributes = { "ten", "king", "rank", "face" }
 }
 local potofjokes = {
 	object_type = "Joker",
@@ -375,6 +378,7 @@ local potofjokes = {
 			unlock_card(self)
 		end
 	end,
+	attributes = { "hand_size", "scaling" }
 }
 local queensgambit = {
 	object_type = "Joker",
@@ -460,6 +464,7 @@ local queensgambit = {
 			"Thedrunkenbrick",
 		},
 	},
+	attributes = { "hand_type", "destroy_card", "generation", "joker", "rarity" }
 }
 local wee_fib = {
 	object_type = "Joker",
@@ -542,6 +547,7 @@ local wee_fib = {
 			"Math",
 		},
 	},
+	attributes = { "mult", "scaling", "ace", "two", "three", "five", "eight" }
 }
 local whip = {
 	object_type = "Joker",
@@ -671,6 +677,7 @@ local whip = {
 			"Math",
 		},
 	},
+	attributes = { "xmult", "scaling", "two", "seven", "rank", "suit" }
 }
 local lucky_joker = {
 	object_type = "Joker",
@@ -733,6 +740,7 @@ local lucky_joker = {
 			"WilsontheWolf",
 		},
 	},
+	attributes = { "enhancements", "economy" }
 }
 local cursor = {
 	object_type = "Joker",
@@ -808,6 +816,7 @@ local cursor = {
 			"Math",
 		},
 	},
+	attributes = { "shop", "scaling", "chips" }
 }
 local pickle = {
 	object_type = "Joker",
@@ -933,6 +942,7 @@ local pickle = {
 			"Math",
 		},
 	},
+	attributes = { "scaling", "tag", "generation", "food" }
 }
 local cube = {
 	object_type = "Joker",
@@ -976,6 +986,7 @@ local cube = {
 			"Math",
 		},
 	},
+	attributes = { "chips" }
 }
 local triplet_rhythm = {
 	object_type = "Joker",
@@ -1028,6 +1039,7 @@ local triplet_rhythm = {
 			"Math",
 		},
 	},
+	attributes = { "three", "rank", "xmult" }
 }
 local booster = {
 	object_type = "Joker",
@@ -1071,6 +1083,7 @@ local booster = {
 			"Math",
 		},
 	},
+	attributes = {"shop", "booster"}
 }
 local chili_pepper = {
 	object_type = "Joker",
@@ -1202,6 +1215,7 @@ local chili_pepper = {
 			"Math",
 		},
 	},
+	attributes = { "xmult", "scaling", "food" }
 }
 local compound_interest = {
 	object_type = "Joker",
@@ -1265,6 +1279,7 @@ local compound_interest = {
 			"Math",
 		},
 	},
+	attributes = { "economy", "scaling" }
 }
 local big_cube = {
 	object_type = "Joker",
@@ -1316,6 +1331,7 @@ local big_cube = {
 			"Math",
 		},
 	},
+	attributes = { "xchips" }
 }
 local eternalflame = {
 	object_type = "Joker",
@@ -1393,6 +1409,7 @@ local eternalflame = {
 			"Jevonn",
 		},
 	},
+	attributes = { "xmult", "scaling" }
 }
 local nice = {
 	object_type = "Joker",
@@ -1460,6 +1477,7 @@ local nice = {
 			"AlexZGreat",
 		},
 	},
+	attributes = { "chips", "six", "nine", "rank" }
 }
 local seal_the_deal = {
 	object_type = "Joker",
@@ -1537,6 +1555,7 @@ local seal_the_deal = {
 			"AlexZGreat",
 		},
 	},
+	attributes = { "seals", "modify_card" }
 }
 local chad = {
 	object_type = "Joker",
@@ -1587,6 +1606,7 @@ local chad = {
 			"Math",
 		},
 	},
+	attributes = { "retrigger", "joker" }
 }
 local jimball = {
 	object_type = "Joker",
@@ -1715,6 +1735,7 @@ local jimball = {
 			-- todo: autosave settings (Not sure if this autosaves it)
 		end
 	end,
+	attributes = { "xmult", "scaling", "hand_type", "reset" }
 }
 local jimball_sprite = { --left this one on it's own atlas for obvious reasons
 	object_type = "Atlas",
@@ -1837,6 +1858,7 @@ local sus = {
 			"Math",
 		},
 	},
+	attributes = { "playing_card", "generation", "destroy_card", "king", "hearts", "rank", "suit" }
 }
 local fspinner = {
 	object_type = "Joker",
@@ -1916,6 +1938,7 @@ local fspinner = {
 			"Jevonn",
 		},
 	},
+	attributes = { "hand_type", "chips", "scaling" }
 }
 local waluigi = {
 	object_type = "Joker",
@@ -1970,6 +1993,7 @@ local waluigi = {
 			"Math",
 		},
 	},
+	attributes = { "joker", "xmult" }
 }
 local wario = {
 	object_type = "Joker",
@@ -2029,6 +2053,7 @@ local wario = {
 			"Auto Watto",
 		},
 	},
+	attributes = { "economy", "joker" }
 }
 local krustytheclown = {
 	object_type = "Joker",
@@ -2100,6 +2125,7 @@ local krustytheclown = {
 			"Jevonn",
 		},
 	},
+	attributes = { "xmult", "scaling" }
 }
 local blurred = {
 	object_type = "Joker",
@@ -2168,6 +2194,7 @@ local blurred = {
 			"Jevonn",
 		},
 	},
+	attributes = { "hands" }
 }
 local gardenfork = {
 	object_type = "Joker",
@@ -2221,6 +2248,7 @@ local gardenfork = {
 			"Jevonn",
 		},
 	},
+	attributes = { "ace", "seven", "rank", "economy" }
 }
 local lightupthenight = {
 	object_type = "Joker",
@@ -2277,6 +2305,7 @@ local lightupthenight = {
 			"Jevonn",
 		},
 	},
+	attributes = { "two", "seven", "rank", "xmult" }
 }
 local nosound = {
 	object_type = "Joker",
@@ -2326,6 +2355,7 @@ local nosound = {
 			"Jevonn",
 		},
 	},
+	attributes = { "three", "seven", "rank", "retrigger" }
 }
 local antennastoheaven = {
 	object_type = "Joker",
@@ -2399,6 +2429,7 @@ local antennastoheaven = {
 			"Jevonn",
 		},
 	},
+	attributes = { "xchips", "scaling", "seven", "four", "rank"}
 }
 local hunger = {
 	object_type = "Joker",
@@ -2439,6 +2470,7 @@ local hunger = {
 			"Jevonn",
 		},
 	},
+	attributes = { "economy", "consumable" }
 }
 local weegaming = {
 	object_type = "Joker",
@@ -2488,6 +2520,7 @@ local weegaming = {
 			"Jevonn",
 		},
 	},
+	attributes = { "two", "rank", "retrigger" }
 }
 local redbloon = {
 	object_type = "Joker",
@@ -2612,6 +2645,7 @@ local redbloon = {
 			"Jevonn",
 		},
 	},
+	attributes = { "economy" }
 }
 local apjoker = {
 	object_type = "Joker",
@@ -2652,6 +2686,7 @@ local apjoker = {
 			"Jevonn",
 		},
 	},
+	attributes = { "xmult", "boss_blind" }
 }
 local maze = {
 	object_type = "Joker",
@@ -2679,6 +2714,7 @@ local maze = {
 			"Jevonn",
 		},
 	},
+	attributes = { "hands", "discard" }
 }
 --Fixed Jank for the most part. Other modded jokers may still be jank depending on how they are implemented
 --funny side effect of this fix causes trading card and dna to juice up like craaazy lol
@@ -2726,6 +2762,7 @@ local panopticon = {
 			"Toneblock",
 		},
 	},
+	attributes = { "hands", "discard" }
 }
 local magnet = {
 	object_type = "Joker",
@@ -2792,6 +2829,7 @@ local magnet = {
 			"Jevonn",
 		},
 	},
+	attributes = { "joker", "economy" }
 }
 local unjust_dagger = {
 	object_type = "Joker",
@@ -2921,6 +2959,7 @@ local unjust_dagger = {
 			"Mystic Misclick",
 		},
 	},
+	attributes = { "xmult", "scaling", "destroy_card", "sell_value", "position" }
 }
 local monkey_dagger = {
 	object_type = "Joker",
@@ -3057,6 +3096,7 @@ local monkey_dagger = {
 			"Mystic Misclick",
 		},
 	},
+	attributes = { "chips", "scaling", "destroy_card", "sell_value", "position" }
 }
 local pirate_dagger = {
 	object_type = "Joker",
@@ -3193,6 +3233,7 @@ local pirate_dagger = {
 			"Mystic Misclick",
 		},
 	},
+	attributes = { "xchips", "scaling", "destroy_card", "sell_value", "position" }
 }
 local mondrian = {
 	object_type = "Joker",
@@ -3269,6 +3310,7 @@ local mondrian = {
 			"Jevonn",
 		},
 	},
+	attributes = { "xmult", "scaling", "discard" }
 }
 local sapling = {
 	object_type = "Joker",
@@ -3381,6 +3423,7 @@ local sapling = {
 			"Jevonn",
 		},
 	},
+	attributes = { "joker", "generation", "rarity" }
 }
 local spaceglobe = {
 	object_type = "Joker",
@@ -3482,6 +3525,7 @@ local spaceglobe = {
 			"Jevonn",
 		},
 	},
+	attributes = { "xchips", "scaling", "hand_type" }
 }
 local happy = {
 	object_type = "Joker",
@@ -3590,6 +3634,7 @@ local happy = {
 			"Jevonn",
 		},
 	},
+	attributes = { "on_sell", "generation", "joker" }
 }
 local meteor = {
 	object_type = "Joker",
@@ -3681,6 +3726,7 @@ local meteor = {
 			"Jevonn",
 		},
 	},
+	attributes = { "editions", "chips" }
 }
 local exoplanet = {
 	object_type = "Joker",
@@ -3772,6 +3818,7 @@ local exoplanet = {
 			"Jevonn",
 		},
 	},
+	attributes = { "editions", "mult" }
 }
 local stardust = {
 	object_type = "Joker",
@@ -3863,6 +3910,7 @@ local stardust = {
 			"Jevonn",
 		},
 	},
+	attributes = { "xmult", "editions" }
 }
 local rnjoker = {
 	object_type = "Joker",
@@ -5164,6 +5212,7 @@ local rnjoker = {
 			end
 		end
 	end,
+	--attributes = fuck no
 }
 local filler = {
 	object_type = "Joker",
@@ -5280,6 +5329,7 @@ local duos = {
 	},
 	unlocked = false,
 	unlock_condition = { type = "win_no_hand", extra = "Two Pair" },
+	attributes = { "hand_type", "xmult" }
 }
 local home = {
 	object_type = "Joker",
@@ -5338,6 +5388,7 @@ local home = {
 	},
 	unlocked = false,
 	unlock_condition = { type = "win_no_hand", extra = "Full House" },
+	attributes = { "hand_type", "xmult" }
 }
 local nuts = {
 	object_type = "Joker",
@@ -5396,6 +5447,7 @@ local nuts = {
 	},
 	unlocked = false,
 	unlock_condition = { type = "win_no_hand", extra = "Straight Flush" },
+	attributes = { "hand_type", "xmult" }
 }
 local quintet = {
 	object_type = "Joker",
@@ -5464,6 +5516,7 @@ local quintet = {
 		},
 	},
 	unlocked = false,
+	attributes = { "hand_type", "xmult" }
 }
 local unity = {
 	object_type = "Joker",
@@ -5532,6 +5585,7 @@ local unity = {
 		},
 	},
 	unlocked = false,
+	attributes = { "hand_type", "xmult" }
 }
 local swarm = {
 	object_type = "Joker",
@@ -5600,6 +5654,7 @@ local swarm = {
 		},
 	},
 	unlocked = false,
+	attributes = { "hand_type", "xmult" }
 }
 local stronghold = {
 	object_type = "Joker",
@@ -5658,6 +5713,7 @@ local stronghold = {
 		end
 	end,
 	unlocked = false,
+	attributes = { "hand_type", "xmult" }
 }
 local wtf = {
 	object_type = "Joker",
@@ -5718,6 +5774,7 @@ local wtf = {
 		end
 	end,
 	unlocked = false,
+	attributes = { "hand_type", "xmult" }
 }
 local clash = {
 	object_type = "Joker",
@@ -5776,6 +5833,7 @@ local clash = {
 		end
 	end,
 	unlocked = false,
+	attributes = { "hand_type", "xmult" }
 }
 
 local the = {
@@ -5839,6 +5897,7 @@ local the = {
 		art = { "MarioFan597" },
 		code = { "lord-ruby" },
 	},
+	attributes = { "hand_type", "xmult" }
 }
 
 local annihalation = {
@@ -5909,6 +5968,7 @@ local annihalation = {
 		art = { "luigicat11" },
 		code = { "lord-ruby" },
 	},
+	attributes = { "hand_type", "emult" }
 }
 
 local filler = {
@@ -5955,6 +6015,7 @@ local filler = {
 	},
 	unlocked = false,
 	unlock_condition = { type = "win_no_hand", extra = "High Card" },
+	attributes = { "hand_type", "xmult" }
 }
 local giggly = {
 	object_type = "Joker",
@@ -6008,6 +6069,7 @@ local giggly = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "mult" }
 }
 local nutty = {
 	object_type = "Joker",
@@ -6061,6 +6123,7 @@ local nutty = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "mult" }
 }
 local manic = {
 	object_type = "Joker",
@@ -6114,6 +6177,7 @@ local manic = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "mult" }
 }
 local silly = {
 	object_type = "Joker",
@@ -6167,6 +6231,7 @@ local silly = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "mult" }
 }
 local delirious = {
 	object_type = "Joker",
@@ -6226,6 +6291,7 @@ local delirious = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "mult" }
 }
 local wacky = {
 	object_type = "Joker",
@@ -6285,6 +6351,7 @@ local wacky = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "mult" }
 }
 local kooky = {
 	object_type = "Joker",
@@ -6344,6 +6411,7 @@ local kooky = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "mult" }
 }
 local bonkers = {
 	object_type = "Joker",
@@ -6393,6 +6461,7 @@ local bonkers = {
 		end
 		return false
 	end,
+	attributes = { "hand_type", "mult" }
 }
 local fuckedup = {
 	object_type = "Joker",
@@ -6442,6 +6511,7 @@ local fuckedup = {
 		end
 		return false
 	end,
+	attributes = { "hand_type", "mult" }
 }
 local foolhardy = {
 	object_type = "Joker",
@@ -6491,6 +6561,7 @@ local foolhardy = {
 		end
 		return false
 	end,
+	attributes = { "hand_type", "mult" }
 }
 
 local undefined = {
@@ -6542,6 +6613,7 @@ local undefined = {
 		art = { "unexian" },
 		code = { "lord-ruby" },
 	},
+	attributes = { "hand_type", "mult" }
 }
 
 local wordscanteven = {
@@ -6594,6 +6666,7 @@ local wordscanteven = {
 		art = { "luigicat11" },
 		code = { "lord-ruby" },
 	},
+	attributes = { "hand_type", "xmult" }
 }
 
 local dubious = {
@@ -6648,6 +6721,7 @@ local dubious = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "chips" }
 }
 local shrewd = {
 	object_type = "Joker",
@@ -6701,6 +6775,7 @@ local shrewd = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "chips" }
 }
 local tricksy = {
 	object_type = "Joker",
@@ -6754,6 +6829,7 @@ local tricksy = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "chips" }
 }
 local foxy = {
 	object_type = "Joker",
@@ -6807,6 +6883,7 @@ local foxy = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "chips" }
 }
 local savvy = {
 	object_type = "Joker",
@@ -6866,6 +6943,7 @@ local savvy = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "chips" }
 }
 local subtle = {
 	object_type = "Joker",
@@ -6925,6 +7003,7 @@ local subtle = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "chips" }
 }
 local discreet = {
 	object_type = "Joker",
@@ -6984,6 +7063,7 @@ local discreet = {
 			"Math",
 		},
 	},
+	attributes = { "hand_type", "chips" }
 }
 local adroit = {
 	object_type = "Joker",
@@ -7033,6 +7113,7 @@ local adroit = {
 		end
 		return false
 	end,
+	attributes = { "hand_type", "chips" }
 }
 local penetrating = {
 	object_type = "Joker",
@@ -7082,6 +7163,7 @@ local penetrating = {
 		end
 		return false
 	end,
+	attributes = { "hand_type", "chips" }
 }
 local treacherous = {
 	object_type = "Joker",
@@ -7131,6 +7213,7 @@ local treacherous = {
 		end
 		return false
 	end,
+	attributes = { "hand_type", "chips" }
 }
 local nebulous = {
 	object_type = "Joker",
@@ -7181,6 +7264,7 @@ local nebulous = {
 		art = { "unexian" },
 		code = { "lord-ruby" },
 	},
+	attributes = { "hand_type", "chips" }
 }
 
 local manylostminds = {
@@ -7233,6 +7317,7 @@ local manylostminds = {
 		art = { "luigicat11" },
 		code = { "lord-ruby" },
 	},
+	attributes = { "hand_type", "chips" }
 }
 
 local coin = {
@@ -7299,6 +7384,7 @@ local coin = {
 			"Jevonn",
 		},
 	},
+	attributes = { "economy" }
 }
 local wheelhope = {
 	object_type = "Joker",
@@ -7375,6 +7461,7 @@ local wheelhope = {
 			"Toneblock",
 		},
 	},
+	attributes = { "tarot", "consumable", "xmult" }
 }
 local oldblueprint = {
 	object_type = "Joker",
@@ -7501,6 +7588,7 @@ local oldblueprint = {
 			"NaoRiley", --rewrite
 		},
 	},
+	attributes = { "copying", "position", "chance" }
 }
 local night = {
 	object_type = "Joker",
@@ -7621,6 +7709,7 @@ local night = {
 			"Jevonn",
 		},
 	},
+	attributes = { "emult", "hands" }
 }
 local busdriver = {
 	object_type = "Joker",
@@ -7685,6 +7774,7 @@ local busdriver = {
 			"Jevonn",
 		},
 	},
+	attributes = { "mult", "chance" }
 }
 local translucent = {
 	object_type = "Joker",
@@ -7781,6 +7871,7 @@ local translucent = {
 			"SDM_0",
 		},
 	},
+	attributes = { "generation", "joker", "sticker", "on_sell" }
 }
 local morse = {
 	object_type = "Joker",
@@ -7856,6 +7947,7 @@ local morse = {
 			"Jevonn",
 		},
 	},
+	attributes = { "edition", "scaling", "economy" }
 }
 local membershipcard = {
 	object_type = "Joker",
@@ -7913,6 +8005,7 @@ local membershipcard = {
 			"Toneblock",
 		},
 	},
+	attributes = { "xmult" }
 }
 local kscope = {
 	object_type = "Joker",
@@ -7970,6 +8063,7 @@ local kscope = {
 			"Jevonn",
 		},
 	},
+	attributes = { "editions", "joker", "modify_card", "boss_blind" }
 }
 local cryptidmoment = {
 	object_type = "Joker",
@@ -8025,6 +8119,7 @@ local cryptidmoment = {
 			"Jevonn",
 		},
 	},
+	attributes = { "on_sell", "sell_value" }
 }
 local flipside = {
 	object_type = "Joker",
@@ -8189,6 +8284,7 @@ local oldinvisible = {
 			"Jevonn",
 		},
 	},
+	attributes = { "generation", "joker" }
 }
 local fractal = {
 	object_type = "Joker",
@@ -8231,6 +8327,7 @@ local fractal = {
 			"HexaCryonic",
 		},
 	},
+	attributes = { "play_limit", "discard_limit" }
 }
 local universe = {
 	cry_credits = {
@@ -8318,6 +8415,7 @@ local universe = {
 			}
 		end
 	end,
+	attributes = { "editions", "emult" }
 }
 local astral_bottle = {
 	cry_credits = {
@@ -8394,6 +8492,7 @@ local astral_bottle = {
 			end
 		end
 	end,
+	attributes = { "on_sell", "modify_card", "sticker", "editions", "joker" }
 }
 local kittyprinter = {
 	dependencies = {
@@ -8422,6 +8521,7 @@ local kittyprinter = {
 			}
 		end
 	end,
+	attributes = { "tag", "xmult" }
 }
 local kidnap = {
 	dependencies = {
@@ -8545,6 +8645,7 @@ local kidnap = {
 			"Jevonn",
 		},
 	},
+	attributes = { "economy" }
 }
 local exposed = {
 	object_type = "Joker",
@@ -8597,6 +8698,7 @@ local exposed = {
 			end
 		end
 	end,
+	attributes = { "face", "debuff", "retrigger" }
 }
 local mask = {
 	object_type = "Joker",
@@ -8649,6 +8751,7 @@ local mask = {
 			end
 		end
 	end,
+	attributes = { "face", "debuff", "retrigger" }
 }
 local tropical_smoothie = {
 	object_type = "Joker",
@@ -8699,6 +8802,7 @@ local tropical_smoothie = {
 			"Ori",
 		},
 	},
+	attributes = { "food", "on_sell", "value_manip" }
 }
 local pumpkin = {
 	object_type = "Joker",
@@ -8918,6 +9022,7 @@ local cookie = {
 			"wawa person",
 		},
 	},
+	attributes = { "food", "chips", "scaling" }
 }
 local necromancer = {
 	object_type = "Joker",
@@ -8978,6 +9083,7 @@ local necromancer = {
 			"Foegro",
 		},
 	},
+	attributes = { "generation", "joker", "sell_value" }
 }
 local oil_lamp = { --You want it? It's yours my friend
 	object_type = "Joker",
@@ -9070,6 +9176,7 @@ local oil_lamp = { --You want it? It's yours my friend
 			"Foegro",
 		},
 	},
+	attributes = { "value_manip", "position", "modify_card", "joker" }
 }
 local tax_fraud = {
 	object_type = "Joker",
@@ -9124,6 +9231,7 @@ local tax_fraud = {
 			"Foegro",
 		},
 	},
+	attributes = { "economy", "sticker", "joker" }
 }
 
 local pity_prize = {
@@ -9220,6 +9328,7 @@ local pity_prize = {
 			"Foegro",
 		},
 	},
+	attributes = { "booster", "tag", "generation" }
 }
 local digitalhallucinations = {
 	object_type = "Joker",
@@ -9383,6 +9492,7 @@ local digitalhallucinations = {
 			"toneblock",
 		},
 	},
+	attributes = { "booster", "consumable", "joker", "playing_card", "generation" }
 }
 local arsonist = {
 	object_type = "Joker",
@@ -9421,6 +9531,7 @@ local arsonist = {
 			"AlexZGreat",
 		},
 	},
+	attributes = { "hand_type", "destroy_card" }
 }
 local zooble = {
 	object_type = "Joker",
@@ -9511,6 +9622,7 @@ local zooble = {
 			"AlexZGreat",
 		},
 	},
+	attributes = { "rank", "mult", "scaling", "hand_type" }
 }
 local lebaron_james = {
 	object_type = "Joker",
@@ -9601,6 +9713,7 @@ local lebaron_james = {
 			return score_card(card, context)
 		end
 	end,
+	attributes = { "king", "rank", "hand_size" }
 }
 local huntingseason = { -- If played hand contains three cards, destroy the middle card after scoring
 	object_type = "Joker",
@@ -9640,6 +9753,7 @@ local huntingseason = { -- If played hand contains three cards, destroy the midd
 			"Nova",
 		},
 	},
+	attributes = { "position", "destroy_card" }
 }
 local cat_owl = { -- Lucky Cards are considered Echo Cards and vice versa
 	object_type = "Joker",
@@ -9805,6 +9919,7 @@ local familiar_currency = {
 			"Gud Username",
 		},
 	},
+	attributes = { "generation", "joker", "lose_economy" }
 }
 local highfive = {
 	object_type = "Joker",
@@ -9874,6 +9989,7 @@ local highfive = {
 		art = { "MarioFan597" },
 		code = { "astrapboy" },
 	},
+	attributes = { "modify_card", "rank", "five" }
 }
 local sock_and_sock = {
 	cry_credits = {
@@ -9924,6 +10040,7 @@ local sock_and_sock = {
 			end
 		end
 	end,
+	attributes = { "enhancements", "retrigger" }
 }
 local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of round
 	cry_credits = {
@@ -10039,6 +10156,7 @@ local brokenhome = { -- X11.4 Mult, 1 in 4 chance to self-destruct at end of rou
 			}
 		end
 	end,
+	attributes = { "xmult", "chance" }
 }
 
 local yarnball = { -- +1 to all listed probabilities for the highest cat tag level
@@ -10096,6 +10214,7 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 			}
 		end
 	end,
+	attributes = { "mod_chance", "tag" }
 }
 
 local pizza = {
@@ -10174,6 +10293,7 @@ local pizza = {
 			end
 		end
 	end,
+	attributes = { "on_sell", "generation", "joker" }
 }
 
 local pizza_slice = {
@@ -10233,6 +10353,7 @@ local pizza_slice = {
 			}
 		end
 	end,
+	attributes = { "xmult", "scaling" }
 }
 
 local paved_joker = { -- +1 to all listed probabilities for the highest cat tag level
@@ -10264,6 +10385,7 @@ local paved_joker = { -- +1 to all listed probabilities for the highest cat tag 
 	loc_vars = function(self, info_queue, card)
 		return { vars = { number_format(math.floor(card.ability.extra)) } }
 	end,
+	attributes = { "enhancement", "hand_type" }
 }
 
 local fading_joker = { -- +1 to all listed probabilities for the highest cat tag level
@@ -10338,6 +10460,7 @@ local fading_joker = { -- +1 to all listed probabilities for the highest cat tag
 			return calcuate_parishable_ref(self, ...)
 		end
 	end,
+	attributes = { "xmult", "scaling", "sticker" }
 }
 
 local poor_joker = { -- +1 to all listed probabilities for the highest cat tag level
@@ -10406,6 +10529,7 @@ local poor_joker = { -- +1 to all listed probabilities for the highest cat tag l
 			return ret
 		end
 	end,
+	attributes = { "mult", "scaling", "sticker" }
 }
 
 -- Broken Sync Catalyst
@@ -10448,6 +10572,7 @@ local broken_sync = {
 			}
 		end
 	end,
+	attributes = { "swap" }
 }
 
 local thal = {
@@ -10515,6 +10640,7 @@ local thal = {
 			return { xmult = self:calc_xmult(card) }
 		end
 	end,
+	attributes = { "rarity", "joker", "xmult" }
 }
 
 local keychange = {
@@ -10568,6 +10694,7 @@ local keychange = {
 			return { message = localize("k_reset") }
 		end
 	end,
+	attributes = { "scaling", "xmult", "reset" }
 }
 
 local emergencychips = {
@@ -10636,6 +10763,7 @@ local emergencychips = {
 			end
 		end
 	end,
+	attributes = { "on_sell" }
 }
 
 local miscitems = {
