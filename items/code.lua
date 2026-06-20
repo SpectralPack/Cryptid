@@ -67,7 +67,7 @@ local pack1 = {
 	end,
 	group_key = "k_cry_program_pack",
 	cry_digital_hallucinations = code_digital_hallucinations_compat,
-	attributes = { "code", "consumable" }
+	attributes = { "code", "consumable" },
 }
 -- Program Pack Alt, 1/2
 local pack2 = {
@@ -113,7 +113,7 @@ local pack2 = {
 	end,
 	group_key = "k_cry_program_pack",
 	cry_digital_hallucinations = code_digital_hallucinations_compat,
-	attributes = { "code", "consumable" }
+	attributes = { "code", "consumable" },
 }
 -- Jumbo Program Pack, 1/4
 local packJ = {
@@ -159,7 +159,7 @@ local packJ = {
 	end,
 	group_key = "k_cry_program_pack",
 	cry_digital_hallucinations = code_digital_hallucinations_compat,
-	attributes = { "code", "consumable" }
+	attributes = { "code", "consumable" },
 }
 -- Mega Program Pack, 2/4
 local packM = {
@@ -205,7 +205,7 @@ local packM = {
 	end,
 	group_key = "k_cry_program_pack",
 	cry_digital_hallucinations = code_digital_hallucinations_compat,
-	attributes = { "code", "consumable" }
+	attributes = { "code", "consumable" },
 }
 -- Console Tag
 -- Gives a free Program Pack
@@ -268,7 +268,7 @@ local console = {
 			return true
 		end
 	end,
-	attributes = { "booster" }
+	attributes = { "booster" },
 }
 -- ://Crash
 -- 1/6 to ACE, otherwise crash; determined by run seed rather than current seed
@@ -958,7 +958,7 @@ local keygen = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "voucher", "generation", "sticker" }
+	attributes = { "voucher", "generation", "sticker" },
 }
 -- ://Payload
 -- Triple interest gained on next cash out, stacks exponentially (multiplicative on modest)
@@ -1008,7 +1008,7 @@ local payload = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "economy" }
+	attributes = { "economy" },
 }
 -- ://Exploit
 -- Choose a hand, next hand is forced to that hand regardless of cards played, +1 asc power for that hand, multi-use 2
@@ -1072,7 +1072,7 @@ local exploit = {
 		G.GAME.USING_EXPLOIT = true
 		G.FUNCS.overlay_menu({ definition = G.UIDEF.exploit_menu() })
 	end,
-	attributes = { "asc_power", "hand_type" }
+	attributes = { "asc_power", "hand_type" },
 }
 -- ://Malware
 -- Apply Glitched edition to held in hand cards
@@ -1151,7 +1151,7 @@ local malware = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "modify_card", "edition" }
+	attributes = { "modify_card", "edition" },
 }
 -- ://NPERROR
 -- Add last played hand back to your hand, multi-use 2
@@ -1295,7 +1295,7 @@ local rework = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "destroy_card", "tag", "generation", "edition", "joker", }
+	attributes = { "destroy_card", "tag", "generation", "edition", "joker" },
 }
 -- Rework Tag
 -- Upgraded edition refers to the next edition along in the collection; base -> foil -> holo -> poly -> negative -> etc
@@ -1374,7 +1374,7 @@ local rework_tag = {
 	in_pool = function()
 		return false
 	end,
-	attributes = { "generation", "edition", "joker", "shop", }
+	attributes = { "generation", "edition", "joker", "shop" },
 }
 -- ://Merge
 -- Merges a selected consumable and playing card, destroying the consumable and turning the playing card into a CCD of that consumable
@@ -1481,7 +1481,7 @@ local merge = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "consumable", "modify_card", "ccd", }
+	attributes = { "consumable", "modify_card", "ccd" },
 }
 -- ://Commit
 -- Destroys a selected joker and creates a different joker of the same rarity
@@ -1567,7 +1567,7 @@ local commit = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "destroy_card", "generation", "joker", "rarity" }
+	attributes = { "destroy_card", "generation", "joker", "rarity" },
 }
 -- ://MACHINECODE
 -- Creates a random Glitched consumable
@@ -1843,7 +1843,7 @@ local machinecode = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "generation", "consumable" }
+	attributes = { "generation", "consumable" },
 }
 -- ://Spaghetti
 -- Creates a random Glitched food joker
@@ -1891,7 +1891,7 @@ local spaghetti = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = {"generation", "joker"}
+	attributes = { "generation", "joker" },
 }
 -- ://Seed
 -- Gives any card Rigged
@@ -1951,7 +1951,7 @@ local seed = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "modify_card", "sticker", "mod_chance" }
+	attributes = { "modify_card", "sticker", "mod_chance" },
 }
 -- Rigged sticker, guarantees listed odds (most of the time)
 local rigged = {
@@ -2237,7 +2237,7 @@ local hook = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "joker", "modify_card", "forcetrigger" }
+	attributes = { "joker", "modify_card", "forcetrigger" },
 }
 -- Hooked Sticker
 -- When a joker is naturally triggered, Force-Trigger the hooked joker
@@ -2357,7 +2357,7 @@ local oboe = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "booster" }
+	attributes = { "booster" },
 }
 -- ://Assemble
 -- Add the number of jokers to selected hand's +mult
@@ -2446,7 +2446,7 @@ local assemble = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "joker" }
+	attributes = { "joker" },
 }
 -- ://Instantiate
 -- Draw 2 cards; one with selected card's rank and the other with selected card's suit (if possible)
@@ -2526,7 +2526,7 @@ local inst = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "rank", "suit" }
+	attributes = { "rank", "suit" },
 }
 -- ://Revert
 -- Loads the game state from the end of the last boss blind, at cash out
@@ -2694,7 +2694,7 @@ local cryfunction = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "generation", "consumable", "sticker" }
+	attributes = { "generation", "consumable", "sticker" },
 }
 -- Function:// Sticker
 -- When used, creates the next saved Function:// card
@@ -2897,7 +2897,7 @@ local run = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "shop" }
+	attributes = { "shop" },
 }
 
 -- ://Declare
@@ -3160,7 +3160,7 @@ local declare = {
 			return c
 		end
 	end,
-	attributes = { "hand_type" } -- i guess?????????????????
+	attributes = { "hand_type" }, -- i guess?????????????????
 }
 
 -- ://Class
@@ -3299,7 +3299,7 @@ local class = {
 			v:set_ability(pseudorandom_element(choices, pseudoseed("forceclass")))
 		end
 	end,
-	attributes = { "enhancement", "modify_card" }
+	attributes = { "enhancement", "modify_card" },
 }
 -- ://Global
 -- Gives a selected card the Global sticker
@@ -3349,7 +3349,7 @@ local global = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "modify_card", "sticker" }
+	attributes = { "modify_card", "sticker" },
 }
 -- Global sticker
 -- Always drawn on blind start or when booster pack opened
@@ -3535,7 +3535,7 @@ local variable = {
 			SMODS.change_base(v, v.base.suit, pseudorandom_element(choices, pseudoseed("forcevariable")))
 		end
 	end,
-	attributes = { "modify_card", "rank" }
+	attributes = { "modify_card", "rank" },
 }
 -- ://Log
 -- View one of:
@@ -3849,7 +3849,7 @@ local log = {
 			G.GAME.USING_CODE = false
 		end
 	end,
-	attributes = { "shop" } --reveals shop cards
+	attributes = { "shop" }, --reveals shop cards
 	-- bulk_use = function(self, card, area, copier, number)
 
 	-- end,
@@ -4033,7 +4033,7 @@ local quantify = {
 			end
 		end
 	end,
-	attributes = { "joker_slot" } --adds something to said joker slots
+	attributes = { "joker_slot" }, --adds something to said joker slots
 }
 -- ://Divide,
 -- Halves item costs in shop
@@ -4100,7 +4100,7 @@ local divide = {
 			c:set_cost()
 		end
 	end,
-	attributes = { "economy" }
+	attributes = { "economy" },
 }
 -- ://Multiply
 -- Doubles a joker's values until the end of the round (exponentially)
@@ -4163,7 +4163,7 @@ local multiply = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "modify_card", "value_manip", "joker" }
+	attributes = { "modify_card", "value_manip", "joker" },
 }
 
 -- ://Delete
@@ -4238,7 +4238,7 @@ local delete = {
 		end
 		c:start_dissolve()
 	end,
-	attributes = { "shop", "destroy_card", "banish" }
+	attributes = { "shop", "destroy_card", "banish" },
 }
 -- ://Alt-Tab
 -- Creates the current blind's Tag
@@ -4348,7 +4348,7 @@ local alttab = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = {"tag", "generation"}
+	attributes = { "tag", "generation" },
 }
 -- ://Ctrl-V
 -- Creates a copy of a selected playing card or consumable
@@ -4508,7 +4508,7 @@ local ctrl_v = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "generation", "consumable" }
+	attributes = { "generation", "consumable" },
 }
 -- ://Reboot
 -- Shuffle all cards into deck, then reset Hands and Discards to default values
@@ -4682,7 +4682,7 @@ local automaton = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "generation", "code", "consumable" }
+	attributes = { "generation", "code", "consumable" },
 }
 -- Source (Spectral)
 -- Gives a selected playing card Green Seal
@@ -4764,7 +4764,7 @@ local source = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "modify_card", "seals" }
+	attributes = { "modify_card", "seals" },
 }
 -- Green Seal
 -- Creates a Code card when played and unscoring
@@ -4796,7 +4796,7 @@ local green_seal = {
 			}))
 		end
 	end,
-	attributes = { "generation", "code", "consumable" }
+	attributes = { "generation", "code", "consumable" },
 }
 -- Encoded Deck
 -- Start with Code Joker and Copy/Paste, all cards in shop are Code cards
@@ -4868,7 +4868,7 @@ local encoded = {
 			unlock_card(self)
 		end
 	end,
-	attributes = { "joker", "code", "consumable" }
+	attributes = { "joker", "code", "consumable" },
 }
 -- Code Joker
 -- Creates a Negative Code card when starting blind
@@ -4956,7 +4956,7 @@ local CodeJoker = {
 			unlock_card(self)
 		end
 	end,
-	attributes = { "generation", "code", "consumable" }
+	attributes = { "generation", "code", "consumable" },
 }
 -- Copy/Paste
 -- When a Code card is used, create a copy (once/round modest/mainline)
@@ -5079,7 +5079,7 @@ local copypaste = {
 			"Auto Watto",
 		},
 	},
-	attributes = { "generation", "code", "consumable" }
+	attributes = { "generation", "code", "consumable" },
 }
 -- Cut
 -- Destroys a Code card and gains 0.5 Xmult when leaving shop
@@ -5178,7 +5178,7 @@ local cut = {
 			"Auto Watto",
 		},
 	},
-	attributes = { "destroy_card", "code", "consumable", "scaling", "xmult" }
+	attributes = { "destroy_card", "code", "consumable", "scaling", "xmult" },
 }
 -- Blender
 -- Creates a random Consumeable when Code card used
@@ -5227,7 +5227,7 @@ local blender = {
 			"Kailen",
 		},
 	},
-	attributes = { "generation", "code", "consumable" }
+	attributes = { "generation", "code", "consumable" },
 }
 -- Python
 -- Gains 0.15 Xmult when Code card used
@@ -5307,7 +5307,7 @@ local python = {
 			"Kailen",
 		},
 	},
-	attributes = { "consumable", "code", "xmult", "scaling" }
+	attributes = { "consumable", "code", "xmult", "scaling" },
 }
 local code_cards = {
 	code,

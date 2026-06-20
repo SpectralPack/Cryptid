@@ -60,7 +60,7 @@ local gateway = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "generation", "joker", "rarity" }
+	attributes = { "generation", "joker", "rarity" },
 }
 local iterum = {
 	dependencies = {
@@ -131,7 +131,7 @@ local iterum = {
 		art = { "Ein13" },
 		code = { "Math" },
 	},
-	attributes = { "xmult", "retrigger" }
+	attributes = { "xmult", "retrigger" },
 }
 local universum = {
 	dependencies = {
@@ -168,7 +168,7 @@ local universum = {
 		art = { "Ein13", "hydro" },
 		code = { "Eris" }, --didnt have code credits before? lol
 	},
-	attributes = { "hand_level", "space" }
+	attributes = { "hand_level", "space" },
 }
 local exponentia = {
 	dependencies = {
@@ -254,7 +254,7 @@ local exponentia = {
 			return ret
 		end
 	end,
-	attributes = { "emult", "scaling" }
+	attributes = { "emult", "scaling" },
 }
 local speculo = {
 	dependencies = {
@@ -316,7 +316,7 @@ local speculo = {
 		art = { "Mystic" },
 		code = { "Math" },
 	},
-	attributes = { "generation", "joker" }
+	attributes = { "generation", "joker" },
 }
 local redeo = {
 	dependencies = {
@@ -384,7 +384,7 @@ local redeo = {
 			end
 		end
 	end,
-	attributes = { "ante" }
+	attributes = { "ante" },
 }
 local tenebris = {
 	dependencies = {
@@ -446,7 +446,7 @@ local tenebris = {
 		art = { "Mystic" },
 		code = { "jenwalter666" },
 	},
-	attributes = { "passive", "joker_slot", "economy" }
+	attributes = { "passive", "joker_slot", "economy" },
 }
 local effarcire = {
 	dependencies = {
@@ -578,7 +578,7 @@ local crustulum = {
 		art = { "lolxddj" },
 		code = { "Jevonn" },
 	},
-	attributes = { "scaling", "chips", "shop", "food", } --this can have the food attribute because unlike objecttypes they dont ignore rarity when created from
+	attributes = { "scaling", "chips", "shop", "food" }, --this can have the food attribute because unlike objecttypes they dont ignore rarity when created from
 }
 --todo: make the Emult always prime
 local primus = {
@@ -661,7 +661,7 @@ local primus = {
 		art = { "George the Rat" },
 		code = { "Jevonn" },
 	},
-	attributes = { "emult", "rank", "two", "three", "five", "seven", "ace", "scaling" }
+	attributes = { "emult", "rank", "two", "three", "five", "seven", "ace", "scaling" },
 }
 local scalae = {
 	dependencies = {
@@ -753,7 +753,7 @@ local scalae = {
 		art = { "Mathguy" },
 		code = { "Mathguy" },
 	},
-	attributes = { "scaling", "modify_card", } --ditto with comment on double scale
+	attributes = { "scaling", "modify_card" }, --ditto with comment on double scale
 }
 local stella_mortis = {
 	dependencies = {
@@ -843,7 +843,7 @@ local stella_mortis = {
 		art = { "SMG9000", "George the Rat", "patchy", "lolxDdj" },
 		code = { "SMG9000" },
 	},
-	attributes = { "planet", "consumable", "emult", "destroy_card", "scaling", "space" }
+	attributes = { "planet", "consumable", "emult", "destroy_card", "scaling", "space" },
 }
 local circulus_pistoris = {
 	dependencies = {
@@ -911,7 +911,7 @@ local circulus_pistoris = {
 		art = { "HexaCryonic", "ori" },
 		code = { "SMG9000", "Math" },
 	},
-	attributes = { "hands", "echips", "emult" }
+	attributes = { "hands", "echips", "emult" },
 }
 local aequilibrium = {
 	dependencies = {
@@ -972,7 +972,7 @@ local aequilibrium = {
 		art = { "Elial2", "unexian", "hydro" },
 		code = { "Elial2" },
 	},
-	attributes = { "generation", "joker" }
+	attributes = { "generation", "joker" },
 }
 local facile = {
 	dependencies = {
@@ -1036,7 +1036,7 @@ local facile = {
 		art = { "Kailen", "hydro" },
 		code = { "Jevonn" },
 	},
-	attributes = { "emult" }
+	attributes = { "emult" },
 }
 local gemino = {
 	dependencies = {
@@ -1120,7 +1120,7 @@ local gemino = {
 			end
 		end
 	end,
-	attributes = { "value_manip", "modify_card", "position" }
+	attributes = { "value_manip", "modify_card", "position" },
 }
 local energia = {
 	dependencies = {
@@ -1198,7 +1198,7 @@ local energia = {
 		art = { "unexian" },
 		code = { "Math" },
 	},
-	attributes = { "scaling", "tag", "generation" }
+	attributes = { "scaling", "tag", "generation" },
 }
 --why is this an exotic??? because it fucking peak
 local verisimile = {
@@ -1273,7 +1273,7 @@ local verisimile = {
 		art = { "Tatteredlurker" },
 		code = { "Jevonn", "invalidOS" },
 	},
-	attributes = { "xmult", "scaling" }
+	attributes = { "xmult", "scaling" },
 }
 local duplicare = {
 	dependencies = {
@@ -1339,7 +1339,7 @@ local duplicare = {
 		art = { "Shellular" },
 		code = { "elial2" },
 	},
-	attributes = { "xmult", "scaling" }
+	attributes = { "xmult", "scaling" },
 }
 -- to be honest, this needs a refactor because
 -- rescribed jokers are forgotten on save reload
@@ -1495,7 +1495,7 @@ local formidiulosus = {
 		art = { "Foegro", "hydro" },
 		code = { "Foegro" },
 	},
-	attributes = { "generation", "joker", "emult", "rarity" }
+	attributes = { "generation", "joker", "emult", "rarity" },
 }
 local caeruleum = {
 	dependencies = {
