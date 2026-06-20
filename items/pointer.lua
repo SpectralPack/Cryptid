@@ -765,7 +765,7 @@ local pointer = {
 			end
 		end
 	end,
-	attributes = { "generation" }
+	attributes = { "generation" },
 }
 
 local aliases = {

@@ -40,7 +40,7 @@ local echo = {
 			}
 		end
 	end,
-	attributes = { "chance", "retrigger" }
+	attributes = { "chance", "retrigger" },
 }
 -- Eclipse (Tarot)
 -- Makes a selected playing card Echo
@@ -76,7 +76,7 @@ local eclipse = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	demicoloncompat = true,
-	attributes = { "enhancements", "modify_card" }
+	attributes = { "enhancements", "modify_card" },
 }
 -- Light (Enhancement)
 -- When triggered with 5 other cards, gain 0.2 Xmult
@@ -133,7 +133,7 @@ local light = {
 			end
 		end
 	end,
-	attributes = { "xmult", "scaling" }
+	attributes = { "xmult", "scaling" },
 }
 -- Seraph (Tarot)
 -- Makes 2 selected playing cards Light
@@ -169,7 +169,7 @@ local seraph = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	demicoloncompat = true,
-	attributes = { "enhancements", "modify_card" }
+	attributes = { "enhancements", "modify_card" },
 }
 -- Abstract (Enhancement)
 -- Has its own rank/suit
@@ -266,7 +266,7 @@ local abstract = {
 		end
 		card.ability.extra.survive = false
 	end,
-	attributes = { "emult", "chance", "destroy_card" }
+	attributes = { "emult", "chance", "destroy_card" },
 }
 -- Instability (Tarot)
 -- Makes a selected playing card Abstract
@@ -302,7 +302,7 @@ local instability = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 	demicoloncompat = true,
-	attributes = { "enhancements", "modify_card" }
+	attributes = { "enhancements", "modify_card" },
 }
 
 -- Blessing
@@ -369,7 +369,7 @@ local blessing = {
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
-	attributes = { "generation", "consumable" }
+	attributes = { "generation", "consumable" },
 }
 
 -- insert typhoon here (why is it in spectral.lua)
@@ -442,7 +442,7 @@ local azure_seal = {
 			return { remove = true }
 		end
 	end,
-	attributes = { "generation", "planet", "consumable" }
+	attributes = { "generation", "planet", "consumable" },
 }
 
 -- Packs
@@ -524,7 +524,7 @@ local meme1 = {
 	end,
 	group_key = "k_cry_meme_pack",
 	cry_digital_hallucinations = meme_digital_hallucinations_compat,
-	attributes = { "joker" }
+	attributes = { "joker" },
 }
 -- Meme Pack 2 (2/5 Meme Jokers)
 local meme2 = {
@@ -583,7 +583,7 @@ local meme2 = {
 	end,
 	group_key = "k_cry_meme_pack",
 	cry_digital_hallucinations = meme_digital_hallucinations_compat,
-	attributes = { "joker" }
+	attributes = { "joker" },
 }
 -- Meme Pack 3 (2/5 Meme Jokers)
 local meme3 = {
@@ -642,7 +642,7 @@ local meme3 = {
 	end,
 	group_key = "k_cry_meme_pack",
 	cry_digital_hallucinations = meme_digital_hallucinations_compat,
-	attributes = { "joker" }
+	attributes = { "joker" },
 }
 -- 804 in case of meme pack 4
 -- 805-808 for program packs
@@ -715,7 +715,7 @@ local baneful1 = {
 	end,
 	group_key = "k_cry_baneful_pack",
 	cry_digital_hallucinations = cursed_digital_hallucinations_compat,
-	attributes = { "joker" }
+	attributes = { "joker" },
 }
 -- 810-812 reserved for more Baneful packs if they come
 
@@ -789,7 +789,7 @@ local mosaic = {
 			card.config.trigger = nil
 		end
 	end,
-	attributes = { "xchips" }
+	attributes = { "xchips" },
 }
 
 local oversat_shader = {
@@ -906,7 +906,7 @@ local oversat = {
 			end
 		end
 	end,
-	attributes = { "value_manip" }
+	attributes = { "value_manip" },
 }
 
 local glitched_shader = {
@@ -1152,7 +1152,7 @@ local glitched = {
 			end
 		end
 	end,
-	attributes = { "value_manip" }
+	attributes = { "value_manip" },
 }
 
 local astral_shader = {
@@ -1219,7 +1219,7 @@ local astral = {
 			card.config.trigger = nil
 		end
 	end,
-	attributes = { "emult" }
+	attributes = { "emult" },
 }
 
 local blurred_shader = {
@@ -1288,7 +1288,7 @@ local blurred = {
 			}
 		end
 	end,
-	attributes = { "retrigger", "chance" }
+	attributes = { "retrigger", "chance" },
 }
 
 local noisy_shader = {
@@ -1665,7 +1665,7 @@ local noisy = {
 			end
 		end
 	end,
-	attributes = { "chips", "mult" }
+	attributes = { "chips", "mult" },
 }
 
 local jollyeditionshader = {
@@ -1799,7 +1799,7 @@ local jollyedition = {
 			return full_UI_table
 		end
 	end,
-	attributes = { "mult" }
+	attributes = { "mult" },
 }
 
 local glass_shader = {
@@ -1903,7 +1903,7 @@ local glass_edition = {
 			return { remove = true }
 		end
 	end,
-	attributes = { "chance", "destroy_card", "xmult" }
+	attributes = { "chance", "destroy_card", "xmult" },
 }
 
 local gold_shader = {
@@ -1980,7 +1980,7 @@ local gold_edition = {
 			return { p_dollars = card and card.edition and card.edition.dollars or self.config.dollars } -- updated value
 		end
 	end,
-	attributes = { "economy" }
+	attributes = { "economy" },
 }
 
 local double_sided = {

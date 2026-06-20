@@ -59,7 +59,7 @@ local abelt = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 -- Void
 -- Upgrades Clusterfuck (+40/+4)
@@ -122,7 +122,7 @@ local void = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 -- Phobos & Deimos
 -- Upgrades Ultimate Pair (+40/+4)
@@ -190,7 +190,7 @@ local marsmoons = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 
 -- Order 4 reserved for possible None planet
@@ -266,7 +266,7 @@ local nibiru = {
 		art = { "cassknows" },
 		code = { "lord-ruby" },
 	},
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 
 -- The Universe In Its Fucking Entirety
@@ -348,7 +348,7 @@ local universe = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 
 -- Planet.lua
@@ -729,7 +729,7 @@ local planetlua = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "space", "chance", }
+	attributes = { "hand_level", "space", "chance" },
 }
 -- Neutron Star
 -- Upgrades a random hand by 1 per Neutron Star used this run
@@ -869,7 +869,7 @@ local nstar = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 -- Sol
 -- Upgrades Ascended Hand Power
@@ -988,7 +988,7 @@ local sunplanet = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "asc_power", "space" }
+	attributes = { "asc_power", "space" },
 }
 -- Ruutu
 -- Upgrades High Card, Pair and Two Pair
@@ -1074,7 +1074,7 @@ local ruutu = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 -- Risti
 -- Upgrades Three Of A Kind, Straight and Flush
@@ -1160,7 +1160,7 @@ local risti = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 -- Hertta
 -- Upgrades Full House, Four Of A Kind and Straight Flush
@@ -1246,7 +1246,7 @@ local hertta = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 -- Pata
 -- Upgrades Five Of A Kind, Flush House and Flush Five
@@ -1332,7 +1332,7 @@ local pata = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 -- Kaikki
 -- Upgrades Bulwark, Clusterfuck and Ultimate Pair
@@ -1426,7 +1426,7 @@ local kaikki = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 
 -- Perkele
@@ -1575,7 +1575,7 @@ local perkele = {
 			or SMODS.is_poker_hand_visible("cry_WholeDeck")
 			or SMODS.is_poker_hand_visible("cry_None")
 	end,
-	attributes = { "hand_level", "hand_type", "space", "asc_power" }
+	attributes = { "hand_level", "hand_type", "space", "asc_power" },
 }
 
 local voxel = {
@@ -1701,7 +1701,7 @@ local voxel = {
 	force_use = function(self, card, area)
 		card:use_consumeable(area)
 	end,
-	attributes = { "hand_level", "hand_type", "space" }
+	attributes = { "hand_level", "hand_type", "space" },
 }
 
 function Cryptid.asc_level_up(card, copier, number, message)

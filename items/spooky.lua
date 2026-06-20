@@ -32,7 +32,7 @@ local cotton_candy = {
 			end
 		end
 	end,
-	attributes = { "on_sell", "editions", "joker", "modify_card", "food", "position" }
+	attributes = { "on_sell", "editions", "joker", "modify_card", "food", "position" },
 }
 local wrapped = {
 	object_type = "Joker",
@@ -108,7 +108,7 @@ local wrapped = {
 			G.jokers:emplace(card)
 		end
 	end,
-	attributes = { "generation", "joker", "food" }
+	attributes = { "generation", "joker", "food" },
 }
 local choco_dice = {
 	object_type = "Joker",
@@ -376,7 +376,7 @@ local potion = {
 		end
 		delay(12 / G.SETTINGS.GAMESPEED)
 	end,
-	attributes = { "hands", "discard", "hand_level" }
+	attributes = { "hands", "discard", "hand_level" },
 }
 local choco4 = { --lunar abyss
 	object_type = "Event",
@@ -901,7 +901,7 @@ local trick_or_treat = {
 			},
 		}
 	end,
-	attributes = { "on_sell", "chance", "generation", "rarity" }
+	attributes = { "on_sell", "chance", "generation", "rarity" },
 }
 local candy_basket = {
 	object_type = "Joker",
@@ -1000,7 +1000,7 @@ local candy_basket = {
 			},
 		}
 	end,
-	attributes = {"on_sell", "boss_blind", "scaling", "rarity", "generation", "joker"}
+	attributes = { "on_sell", "boss_blind", "scaling", "rarity", "generation", "joker" },
 }
 local blacklist = {
 	object_type = "Joker",
@@ -1095,7 +1095,7 @@ local blacklist = {
 			},
 		}
 	end,
-	attributes = { "rank" }
+	attributes = { "rank" },
 }
 local ghost = {
 	object_type = "Joker",
@@ -1315,7 +1315,7 @@ local rotten_egg = {
 			},
 		}
 	end,
-	attributes = { "lose_economy", "sell_value" }
+	attributes = { "lose_economy", "sell_value" },
 }
 
 local spookydeck = {
@@ -1378,7 +1378,7 @@ local spookydeck = {
 			unlock_card(self)
 		end
 	end,
-	attributes = { "joker", "rarity", "generation" }
+	attributes = { "joker", "rarity", "generation" },
 }
 local candy_dagger = {
 	object_type = "Joker",
@@ -1474,7 +1474,7 @@ local candy_dagger = {
 			G.jokers:emplace(card)
 		end
 	end,
-	attributes = { "destroy_card", "generation", "rarity", "joker" }
+	attributes = { "destroy_card", "generation", "rarity", "joker" },
 }
 local candy_cane = {
 	object_type = "Joker",
@@ -1596,7 +1596,7 @@ local candy_cane = {
 			end
 		end
 	end,
-	attributes = { "economy", "food" }
+	attributes = { "economy", "food" },
 }
 local candy_buttons = {
 	object_type = "Joker",
@@ -1660,7 +1660,7 @@ local candy_buttons = {
 	remove_from_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)
 	end,
-	attributes = { "shop", "food", "reroll", "economy" }
+	attributes = { "shop", "food", "reroll", "economy" },
 }
 local jawbreaker = {
 	object_type = "Joker",
@@ -1750,7 +1750,7 @@ local jawbreaker = {
 	remove_from_deck = function(self, card, from_debuff)
 		calculate_reroll_cost(true)
 	end,
-	attributes = { "food", "boss_blind", "value_manip", "position" }
+	attributes = { "food", "boss_blind", "value_manip", "position" },
 }
 local mellowcreme = {
 	object_type = "Joker",
@@ -1787,7 +1787,7 @@ local mellowcreme = {
 			end
 		end
 	end,
-	attributes = {"on_sell", "sell_value"}
+	attributes = { "on_sell", "sell_value" },
 }
 local brittle = {
 	object_type = "Joker",
@@ -1864,7 +1864,7 @@ local brittle = {
 			end
 		end
 	end,
-	attributes = { "modify_card", "enhancements", "food" }
+	attributes = { "modify_card", "enhancements", "food" },
 }
 local monopoly_money = {
 	object_type = "Joker",
@@ -1942,7 +1942,7 @@ local monopoly_money = {
 			},
 		}
 	end,
-	attributes = { "lose_economy", "on_sell", "destroy_card" }
+	attributes = { "lose_economy", "on_sell", "destroy_card" },
 }
 local candy_sticks = {
 	object_type = "Joker",
@@ -2067,7 +2067,7 @@ local candy_sticks = {
 			"Foegro",
 		},
 	},
-	attributes = { "food", "boss_blind", "hands" }
+	attributes = { "food", "boss_blind", "hands" },
 }
 -- Wonka Bar
 -- Sell this card to permanently gain +1 card selection limit
@@ -2109,7 +2109,7 @@ local wonka_bar = {
 			"Glitchkat10",
 		},
 	},
-	attributes = { "on_sell", "play_limit", "discard_limit", "food" }
+	attributes = { "on_sell", "play_limit", "discard_limit", "food" },
 }
 
 -- Buttercup
@@ -2197,7 +2197,7 @@ local buttercup = {
 			end
 		end
 	end,
-	attributes = { "food", "on_sell", "shop" }
+	attributes = { "food", "on_sell", "shop" },
 }
 
 local items = {

@@ -26,7 +26,7 @@ if CardSleeves then
 				return avts(...)
 			end
 		end,
-		attributes = { "hands", "discard", "voucher" }
+		attributes = { "hands", "discard", "voucher" },
 	})
 
 	local infinitesleeve = CardSleeves.Sleeve({
@@ -53,7 +53,7 @@ if CardSleeves then
 				end,
 			}))
 		end,
-		attributes = { "hand_size", "play_limit", "discard_limit" }
+		attributes = { "hand_size", "play_limit", "discard_limit" },
 	})
 
 	local equilibriumsleeve = CardSleeves.Sleeve({
@@ -91,7 +91,7 @@ if CardSleeves then
 				G.GAME.modifiers.cry_misprint_min = 1
 			end
 		end,
-		attributes = { "value_manip" }
+		attributes = { "value_manip" },
 	})
 
 	local CCDsleeve = CardSleeves.Sleeve({
@@ -109,7 +109,7 @@ if CardSleeves then
 		apply = function(self)
 			G.GAME.modifiers.cry_ccd = true
 		end,
-		attributes = { "ccd" }
+		attributes = { "ccd" },
 	})
 
 	local wormholesleeve = CardSleeves.Sleeve({
@@ -140,7 +140,7 @@ if CardSleeves then
 				* self.config.cry_negative_rate
 			G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + self.config.joker_slot
 		end,
-		attributes = { "rarity", "joker", "joker_slot", "edition" }
+		attributes = { "rarity", "joker", "joker_slot", "edition" },
 	})
 
 	local conveyorsleeve = CardSleeves.Sleeve({
@@ -158,7 +158,7 @@ if CardSleeves then
 		apply = function(self)
 			G.GAME.modifiers.cry_conveyor = true
 		end,
-		attributes = { "position", "generation", "destroy_card", "joker" }
+		attributes = { "position", "generation", "destroy_card", "joker" },
 	})
 
 	local redeemedsleeve = CardSleeves.Sleeve({
@@ -175,7 +175,7 @@ if CardSleeves then
 		apply = function(self)
 			G.GAME.modifiers.cry_redeemed = true
 		end,
-		attributes = { "voucher" }
+		attributes = { "voucher" },
 	})
 
 	local glowingsleeve = CardSleeves.Sleeve({
@@ -198,7 +198,7 @@ if CardSleeves then
 				end
 			end
 		end,
-		attributes = { "value_manip", "modify_card", "joker" }
+		attributes = { "value_manip", "modify_card", "joker" },
 	})
 
 	local criticalsleeve = CardSleeves.Sleeve({
@@ -268,7 +268,7 @@ if CardSleeves then
 				return args.chips, args.mult
 			end
 		end,
-		attributes = { "emult", "chance" }
+		attributes = { "emult", "chance" },
 	})
 
 	local encodedsleeve = CardSleeves.Sleeve({
@@ -319,7 +319,7 @@ if CardSleeves then
 			G.GAME.tarot_rate = 0
 			G.GAME.code_rate = 1e100
 		end,
-		attributes = { "joker", "code", "consumable" }
+		attributes = { "joker", "code", "consumable" },
 	})
 
 	local nostalgicsleeve = CardSleeves.Sleeve({
@@ -338,7 +338,7 @@ if CardSleeves then
 		apply = function(self)
 			G.GAME.modifiers.cry_beta = true
 		end,
-		attributes = { "joker_slot", "consumable_slot", "boss_blind" }
+		attributes = { "joker_slot", "consumable_slot", "boss_blind" },
 	})
 
 	local bountifulsleeve = CardSleeves.Sleeve({
@@ -383,7 +383,7 @@ if CardSleeves then
 				G.GAME.modifiers.cry_uncommon_value_quad = true
 			end
 		end,
-		attributes = { "value_manip" }
+		attributes = { "value_manip" },
 	})
 
 	local legendarysleeve = CardSleeves.Sleeve({
@@ -451,7 +451,7 @@ if CardSleeves then
 				end,
 			}))
 		end,
-		attributes = { "rarity", "joker", "generation", "chance" }
+		attributes = { "rarity", "joker", "generation", "chance" },
 	})
 	local spookysleeve = CardSleeves.Sleeve({
 		key = "spooky_sleeve",
@@ -482,7 +482,7 @@ if CardSleeves then
 				end,
 			}))
 		end,
-		attributes = { "joker", "rarity", "generation" }
+		attributes = { "joker", "rarity", "generation" },
 	})
 	local antimattersleeve = CardSleeves.Sleeve({
 		key = "antimatter_sleeve",
@@ -1595,7 +1595,7 @@ if CardSleeves then
 				end
 			end
 		end,
-		attributes = { "copying" }
+		attributes = { "copying" },
 	})
 	function Cryptid.antimattersleeve_apply(self, skip)
 		G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
