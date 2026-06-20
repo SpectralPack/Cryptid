@@ -1011,6 +1011,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		local edition = Cryptid.poll_random_edition()
 		card:set_edition(edition, true)
 	end
+	if card.ability.set == "Code" and G.GAME.extra_multiuse and G.GAME.extra_multiuse ~= 0 then
+		card.ability.cry_multiuse = math.ceil((card.ability.cry_multiuse or 1) + G.GAME.extra_multiuse)
+	end
 	if not (card.edition and (card.edition.cry_oversat or card.edition.cry_glitched)) then
 		Cryptid.manipulate(card)
 	end
@@ -1041,9 +1044,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
 	if card.ability.name == "cry-universe" then
 		card:set_edition("e_cry_astral", true, nil, true)
-	end
-	if card.ability.set == "Code" and G.GAME.extra_multiuse and G.GAME.extra_multiuse ~= 0 then
-		card.ability.cry_multiuse = math.ceil((card.ability.cry_multiuse or 1) + G.GAME.extra_multiuse)
 	end
 	-- Certain jokers such as Steel Joker and Driver's License depend on values set
 	-- during the update function. Cryptid can create jokers mid-scoring, meaning
