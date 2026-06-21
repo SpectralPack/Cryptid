@@ -735,6 +735,10 @@ local antimatter = {
 	init = function(self)
 		function Cryptid.antimatter_apply(skip, custom)
 			local function check(back)
+				--never apply disabled content
+				if Cryptid.enabled(back) ~= true then
+					return false
+				end
 				-- Check if deck was won on Gold stake or if gameset is madness
 				if
 					(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", back, "wins", 8) or 0 ~= 0) or skip
@@ -983,6 +987,10 @@ local antimatter = {
 		end
 		function Cryptid.antimatter_trigger(self, context, skip, custom)
 			local function check(back)
+				--never apply disabled content
+				if Cryptid.enabled(back) ~= true then
+					return false
+				end
 				-- Check if deck was won on Gold stake or if gameset is madness
 				if
 					(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", back, "wins", 8) or 0 ~= 0) or skip
@@ -1103,6 +1111,10 @@ local antimatter = {
 				end
 			end
 			local function check(back)
+				--never apply disabled content
+				if Cryptid.enabled(back) ~= true then
+					return false
+				end
 				-- Check if deck was won on Gold stake or if gameset is madness
 				if
 					(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", back, "wins", 8) or 0 ~= 0) or skip
@@ -1147,6 +1159,10 @@ local antimatter = {
 		--Does this even need to be a function idk
 		function Cryptid.get_antimatter_consumables(consumable_table, skip, custom)
 			local function check(back)
+				--never apply disabled content
+				if Cryptid.enabled(back) ~= true then
+					return false
+				end
 				-- Check if deck was won on Gold stake or if gameset is madness
 				if
 					(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", back, "wins", 8) or 0 ~= 0) or skip
