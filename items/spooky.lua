@@ -2200,7 +2200,7 @@ local buttercup = {
 	attributes = { "food", "on_sell", "shop" },
 }
 
-local items = {
+items = {
 	cotton_candy,
 	wrapped,
 	choco_dice,
