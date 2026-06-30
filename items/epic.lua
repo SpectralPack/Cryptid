@@ -1881,6 +1881,7 @@ local soccer = {
 		G.hand:change_size(mod)
 		SMODS.change_booster_limit(mod)
 		SMODS.change_voucher_limit(mod)
+		change_shop_size(mod)
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		card.ability.extra.holygrail = math.floor(card.ability.extra.holygrail)
@@ -1890,6 +1891,7 @@ local soccer = {
 		G.hand:change_size(-mod)
 		SMODS.change_booster_limit(-mod)
 		SMODS.change_voucher_limit(-mod)
+		change_shop_size(-mod)
 	end,
 	cry_credits = {
 		idea = {
