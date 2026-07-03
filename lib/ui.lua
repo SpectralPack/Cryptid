@@ -249,7 +249,12 @@ SMODS.DrawStep({
 	key = "banished_card",
 	order = 69,
 	func = function(card, layer)
-		if not G.GAME.USING_POINTER and card.area and card.area.config.collection and G.GAME.cry_banished_keys[card.config.center_key] then
+		if
+			not G.GAME.USING_POINTER
+			and card.area
+			and card.area.config.collection
+			and G.GAME.cry_banished_keys[card.config.center_key]
+		then
 			card.children.center:draw_shader("debuff", nil, card.ARGS.send_to_shader)
 		end
 	end,
