@@ -53,29 +53,110 @@ local pointer = {
 		G.GAME.POINTER_SUBMENU = nil
 	end,
 	init = function(self)
+		--function for creating a card through pointer. Should be hooked for center types that need custom creation logic
+		function Cryptid.pointer_create_card(card)
+			local center = card.config.center
+			local obj_key = center.key
+			if not center then
+				return nil
+			end
+			if card.config.blind and G.P_BLINDS[card.config.blind.key] then
+				G.CONTROLLER.locks.boss_reroll = true
+				G.E_MANAGER:add_event(Event({
+					trigger = 'immediate',
+					func = function()
+						play_sound('other1')
+						G.blind_select_opts.boss:set_role({ xy_bond = 'Weak' })
+						G.blind_select_opts.boss.alignment.offset.y = 20
+						return true
+					end
+				}))
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.3,
+					func = (function()
+						local par = G.blind_select_opts.boss.parent
+						G.GAME.round_resets.blind_choices.Boss = card.config.blind.key
+
+						G.blind_select_opts.boss:remove()
+						G.blind_select_opts.boss = UIBox {
+							T = { par.T.x, 0, 0, 0, },
+							definition =
+							{ n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {
+								UIBox_dyn_container({ create_UIBox_blind_choice('Boss') }, false, get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))
+							} },
+							config = { align = "bmi",
+								offset = { x = 0, y = G.ROOM.T.y + 9 },
+								major = par,
+								xy_bond = 'Weak'
+							}
+						}
+						par.config.object = G.blind_select_opts.boss
+						par.config.object:recalculate()
+						G.blind_select_opts.boss.parent = par
+						G.blind_select_opts.boss.alignment.offset.y = 0
+
+						G.E_MANAGER:add_event(Event({
+							blocking = false,
+							trigger = 'after',
+							delay = 0.5,
+							func = function()
+								G.CONTROLLER.locks.boss_reroll = nil
+								return true
+							end
+						}))
+
+						save_run()
+						return true
+					end)
+				}))
+				return true
+			elseif center.set == "Booster" then
+				local booster = SMODS.create_card { key = obj_key, set = center.set, area = G.play, key_append = "cry_pointer", }
+				booster.T.x = G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2
+                booster.T.y = G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2
+                booster.T.w = G.CARD_W * 1.27
+                booster.T.h = G.CARD_H * 1.27
+                booster.cost = 0
+                booster.from_tag = true
+                G.FUNCS.use_card({ config = { ref_table = booster } })
+                booster:start_materialize()
+				return true
+			elseif center.set == "Voucher" then --this animation is extremely slow but i have no idea why
+				local voucher = SMODS.create_card { area = G.play, set = center.set, key = obj_key, key_append = "cry_pointer", }
+				voucher:start_materialize()
+				voucher.cost = 0
+				G.play:emplace(voucher)
+				delay(0.2)
+				G.FUNCS.use_card({ config = { ref_table = voucher } })
+
+				G.E_MANAGER:add_event(Event({
+					trigger = 'after',
+					delay = 0.5,
+					func = function()
+						voucher:start_dissolve()
+						return true
+					end
+				}))
+				return true
+			elseif center.consumeable or center.set == "Joker" then
+				SMODS.add_card{
+					key = obj_key,
+					set = center.set,
+					key_append = "cry_pointer",
+				}
+				return true
+			end
+			return nil
+		end
 		local ccl = Card.click
 		function Card:click()
 			if G.GAME.USING_POINTER then
 				if not self.debuff then
-					if self.config.center.consumeable then
-						local copy = copy_card(self)
-						copy:add_to_deck()
-						G.consumeables:emplace(copy)
-						G.FUNCS.exit_overlay_menu_code()
-						ccl(self)
-					elseif self.config.center.set == "Booster" then
-						G.FUNCS.exit_overlay_menu_code()
-						local card = copy_card(self)
-						card.cost = 0
-						card.from_tag = true
-						G.FUNCS.use_card({ config = { ref_table = card } })
-						card:start_materialize()
-						created = true
-						ccl(self)
-					elseif
+					if
 						self.config.center.key == "c_base"
 						or self.config.center.set == "Enhanced"
-						or self.edition
+						or self.config.center.set == "Edition"
 						or G.GAME.POINTER_SUBMENU == "Edition"
 					then
 						--submenu stuff
@@ -125,15 +206,21 @@ local pointer = {
 							G.GAME.POINTER_PLAYING = nil
 						end
 					else
-						G.ENTERED_CARD = self.config.center.key
-						local ret = G.FUNCS.pointer_apply()
-						G.FUNCS.pointer_cancel()
-						if ret then
+						local res = Cryptid.pointer_create_card(self)
+						if res then
 							G.FUNCS.exit_overlay_menu_code()
 							ccl(self)
 						else
-							G.GAME.USING_CODE = true
-							G.GAME.USING_POINTER = true
+							G.ENTERED_CARD = self.config.center.key
+							local ret = G.FUNCS.pointer_apply()
+							G.FUNCS.pointer_cancel()
+							if ret then
+								G.FUNCS.exit_overlay_menu_code()
+								ccl(self)
+							else
+								G.GAME.USING_CODE = true
+								G.GAME.USING_POINTER = true
+							end
 						end
 					end
 				end
