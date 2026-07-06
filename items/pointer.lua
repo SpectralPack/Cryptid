@@ -63,34 +63,43 @@ local pointer = {
 			if card.config.blind and G.P_BLINDS[card.config.blind.key] then
 				G.CONTROLLER.locks.boss_reroll = true
 				G.E_MANAGER:add_event(Event({
-					trigger = 'immediate',
+					trigger = "immediate",
 					func = function()
-						play_sound('other1')
-						G.blind_select_opts.boss:set_role({ xy_bond = 'Weak' })
+						play_sound("other1")
+						G.blind_select_opts.boss:set_role({ xy_bond = "Weak" })
 						G.blind_select_opts.boss.alignment.offset.y = 20
 						return true
-					end
+					end,
 				}))
 				G.E_MANAGER:add_event(Event({
-					trigger = 'after',
+					trigger = "after",
 					delay = 0.3,
-					func = (function()
+					func = function()
 						local par = G.blind_select_opts.boss.parent
 						G.GAME.round_resets.blind_choices.Boss = card.config.blind.key
 
 						G.blind_select_opts.boss:remove()
-						G.blind_select_opts.boss = UIBox {
-							T = { par.T.x, 0, 0, 0, },
-							definition =
-							{ n = G.UIT.ROOT, config = { align = "cm", colour = G.C.CLEAR }, nodes = {
-								UIBox_dyn_container({ create_UIBox_blind_choice('Boss') }, false, get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))
-							} },
-							config = { align = "bmi",
+						G.blind_select_opts.boss = UIBox({
+							T = { par.T.x, 0, 0, 0 },
+							definition = {
+								n = G.UIT.ROOT,
+								config = { align = "cm", colour = G.C.CLEAR },
+								nodes = {
+									UIBox_dyn_container(
+										{ create_UIBox_blind_choice("Boss") },
+										false,
+										get_blind_main_colour("Boss"),
+										mix_colours(G.C.BLACK, get_blind_main_colour("Boss"), 0.8)
+									),
+								},
+							},
+							config = {
+								align = "bmi",
 								offset = { x = 0, y = G.ROOM.T.y + 9 },
 								major = par,
-								xy_bond = 'Weak'
-							}
-						}
+								xy_bond = "Weak",
+							},
+						})
 						par.config.object = G.blind_select_opts.boss
 						par.config.object:recalculate()
 						G.blind_select_opts.boss.parent = par
@@ -98,32 +107,34 @@ local pointer = {
 
 						G.E_MANAGER:add_event(Event({
 							blocking = false,
-							trigger = 'after',
+							trigger = "after",
 							delay = 0.5,
 							func = function()
 								G.CONTROLLER.locks.boss_reroll = nil
 								return true
-							end
+							end,
 						}))
 
 						save_run()
 						return true
-					end)
+					end,
 				}))
 				return true
 			elseif center.set == "Booster" then
-				local booster = SMODS.create_card { key = obj_key, set = center.set, area = G.play, key_append = "cry_pointer", }
+				local booster =
+					SMODS.create_card({ key = obj_key, set = center.set, area = G.play, key_append = "cry_pointer" })
 				booster.T.x = G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2
-                booster.T.y = G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2
-                booster.T.w = G.CARD_W * 1.27
-                booster.T.h = G.CARD_H * 1.27
-                booster.cost = 0
-                booster.from_tag = true
-                G.FUNCS.use_card({ config = { ref_table = booster } })
-                booster:start_materialize()
+				booster.T.y = G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2
+				booster.T.w = G.CARD_W * 1.27
+				booster.T.h = G.CARD_H * 1.27
+				booster.cost = 0
+				booster.from_tag = true
+				G.FUNCS.use_card({ config = { ref_table = booster } })
+				booster:start_materialize()
 				return true
 			elseif center.set == "Voucher" then --this animation is extremely slow but i have no idea why
-				local voucher = SMODS.create_card { area = G.play, set = center.set, key = obj_key, key_append = "cry_pointer", }
+				local voucher =
+					SMODS.create_card({ area = G.play, set = center.set, key = obj_key, key_append = "cry_pointer" })
 				voucher:start_materialize()
 				voucher.cost = 0
 				G.play:emplace(voucher)
@@ -131,20 +142,20 @@ local pointer = {
 				G.FUNCS.use_card({ config = { ref_table = voucher } })
 
 				G.E_MANAGER:add_event(Event({
-					trigger = 'after',
+					trigger = "after",
 					delay = 0.5,
 					func = function()
 						voucher:start_dissolve()
 						return true
-					end
+					end,
 				}))
 				return true
 			elseif center.consumeable or center.set == "Joker" then
-				SMODS.add_card{
+				SMODS.add_card({
 					key = obj_key,
 					set = center.set,
 					key_append = "cry_pointer",
-				}
+				})
 				return true
 			end
 			return nil
