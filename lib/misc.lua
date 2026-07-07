@@ -685,9 +685,7 @@ function Cryptid.enhanced_deck_info(deck)
 		SMODS.RunSelect.Setup.choices.cry_edeck_st
 			or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st
 			or "Spades",
-		SMODS.RunSelect.Setup.choices.cry_edeck_sl
-			or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl
-			or "Gold"
+		SMODS.RunSelect.Setup.choices.cry_edeck_sl or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl or "Gold"
 	-- Do Stuff
 	edition = (Cryptid.safe_get(G.P_CENTERS, edition) and edition or "e_foil")
 	enhancement = Cryptid.safe_get(G.P_CENTERS, enhancement) and enhancement or "m_bonus"
