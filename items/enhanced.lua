@@ -95,7 +95,7 @@ local e_deck = {
 	pos = { x = 5, y = 2 },
 	loc_vars = function(self, info_queue, center)
 		local aaa = Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {})
-		local real = "e_" .. aaa
+		local real = aaa
 		return {
 			vars = {
 				localize({ type = "name_text", set = "Edition", key = real }),
@@ -153,6 +153,11 @@ local et_deck = {
 	edeck_type = "enhancement",
 	config = {},
 	loc_vars = function(self, info_queue, center)
+		if SMODS.RunSelect.Internals.preview_area and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_enh.page then
+			return {
+				key = self.key .. "_preview"
+			}
+		end
 		local _, bbb = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {

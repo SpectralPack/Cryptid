@@ -156,7 +156,17 @@ return {
 				text = {
 					"All {C:attention}playing cards{}",
 					"are {V:1}#1#{}(s)",
-					"{C:inactive}(Click to edit)",
+				},
+				unlock = {
+					"Use {C:spectral}Vacuum",
+				},
+			},
+			b_cry_et_deck_preview = {
+				name = "Enhancement Deck",
+				text = {
+					"All {C:attention}playing cards{}",
+					"will have an {C:attention}enhancement",
+					"of your choice",
 				},
 				unlock = {
 					"Use {C:spectral}Vacuum",
@@ -5340,6 +5350,9 @@ return {
 			b_update_membership_cards = "Update Membership Card jokers",
 
 			cry_circus_generic = "{V:#1#}#2#{} Jokers each give {X:mult,C:white} X#3# {} Mult",
+
+			run_select_cry_edeck_enh = "Select Enhancement",
+			run_select_cry_edeck_enh_random = "Random Enhancement",
 		},
 		labels = {
 			food_jokers = "Food Jokers",

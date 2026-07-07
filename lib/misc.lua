@@ -671,17 +671,15 @@ function Blind:cry_calc_ante_gain()
 end
 
 function Cryptid.enhanced_deck_info(deck)
-	if SMODS.RunSelectPage then
-	end
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
-		"e_" .. (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"),
-		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_enhancement") or "m_bonus",
+		(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "e_foil"),
+		SMODS.RunSelect.Setup.choices.cry_edeck_enh or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh or "m_bonus",
 		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
 		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
 		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
 	-- Do Stuff
-	edition = (Cryptid.safe_get(G.P_CENTERS, edition) and edition or "e_foil"):sub(3)
+	edition = (Cryptid.safe_get(G.P_CENTERS, edition) and edition or "e_foil")
 	enhancement = Cryptid.safe_get(G.P_CENTERS, enhancement) and enhancement or "m_bonus"
 	sticker = Cryptid.safe_get(SMODS.Stickers, sticker) and sticker or "eternal"
 	suit = Cryptid.safe_get(SMODS.Suits, suit) and suit or "Spades"
