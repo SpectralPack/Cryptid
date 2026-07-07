@@ -831,34 +831,42 @@ for k, v in pairs({
 	}, true)
 end
 
-if not SMODS.RunSelectPage then return end
+if not SMODS.RunSelectPage then
+	return
+end
 
-SMODS.RunSelectPage{
+SMODS.RunSelectPage({
 	key = "edeck_enh",
 	include_deck_preview = true,
 	area_type = "deck",
 	random_select = true,
 	page = 2,
-	generate_pool = function (self)
+	generate_pool = function(self)
 		local pool = {}
 		for _, c in ipairs(G.P_CENTER_POOLS.Enhanced) do
 			if not c.no_edeck then
-				pool[#pool+1] = c
+				pool[#pool + 1] = c
 			end
 		end
 		return pool
 	end,
 	quick_start_text = function()
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh
-        if Cryptid.safe_get(G.P_CENTERS, curr, "set") ~= "Enhanced" then G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh = 'm_bonus' end
-        return localize({type = 'name_text', set = 'Enhanced', key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh})
-    end,
-	set_default = function (self, choice)
+		if Cryptid.safe_get(G.P_CENTERS, curr, "set") ~= "Enhanced" then
+			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh = "m_bonus"
+		end
+		return localize({
+			type = "name_text",
+			set = "Enhanced",
+			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh,
+		})
+	end,
+	set_default = function(self, choice)
 		return Cryptid.safe_get(G.P_CENTERS, choice, "set") == "Enhanced" and choice or "m_bonus"
 	end,
-	create_selection_card = function (self, card_key, card_number, area)
+	create_selection_card = function(self, card_key, card_number, area)
 		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.m_bonus)
 		stick(card)
 		return card
 	end,
-}
+})

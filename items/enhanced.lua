@@ -360,9 +360,7 @@ return {
 			if not force and not G.SETTINGS.paused then
 				return se(
 					self,
-					(not self.no_forced_edition)
-							and G.GAME.modifiers.cry_force_edition
-						or edition,
+					(not self.no_forced_edition) and G.GAME.modifiers.cry_force_edition or edition,
 					y,
 					z,
 					force

@@ -672,7 +672,6 @@ end
 
 function Cryptid.enhanced_deck_info(deck)
 	if SMODS.RunSelectPage then
-		
 	end
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
