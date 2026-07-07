@@ -82,6 +82,16 @@ Cryptid.edeck_atlas_update = function(self)
 	return sprite
 end
 
+function Cryptid.update_edeck_sprite(card, type, key)
+	local sprites = Cryptid.edeck_sprites[type]
+	if not sprites then return end
+	local sprite = sprites[key]
+	if not sprite then sprite = sprites.default end
+	if not card then return end
+	card.children.back.atlas = sprite.atlas
+	card.children.back:set_sprite_pos(sprite.pos)
+end
+
 local e_deck = {
 	object_type = "Back",
 	dependencies = {
