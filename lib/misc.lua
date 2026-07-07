@@ -700,8 +700,8 @@ function Cryptid.enhanced_deck_info(deck)
 		seal = seal,
 	}
 	for k, _ in pairs(ret) do
-		if G.GAME.modifiers["cry_force_" .. k] and not G.GAME.viewed_back then
-			ret[k] = G.GAME.modifiers["cry_force_" .. k]
+		if G.GAME["cry_selected_" .. k] and not G.GAME.viewed_back and not SMODS.RunSelect.Internals.preview_area then
+			ret[k] = G.GAME["cry_selected_" .. k]
 		elseif Cryptid.safe_get(deck, "config", "cry_force_" .. k) then
 			ret[k] = deck.config["cry_force_" .. k]
 		end

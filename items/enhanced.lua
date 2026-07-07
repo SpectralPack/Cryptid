@@ -94,7 +94,7 @@ function Cryptid.update_edeck_sprite(card, type, key)
 	if not card then
 		return
 	end
-	card.children.back.atlas = sprite.atlas
+	card.children.back.atlas = G.ASSET_ATLAS[sprite.atlas]
 	card.children.back:set_sprite_pos(sprite.pos)
 end
 
@@ -119,11 +119,10 @@ local e_deck = {
 			}
 		end
 		local aaa = Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {})
-		local real = aaa
 		return {
 			vars = {
-				localize({ type = "name_text", set = "Edition", key = real }),
-				colours = { G.P_CENTERS[real].badge_colour or G.C.DARK_EDITION },
+				localize({ type = "name_text", set = "Edition", key = aaa }),
+				colours = { G.P_CENTERS[aaa].badge_colour or G.C.DARK_EDITION },
 			},
 		}
 	end,

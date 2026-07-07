@@ -909,15 +909,16 @@ SMODS.RunSelectPage({
 			else
 				SMODS.RunSelect.Setup.choices[self.key] = choice.config.center.key
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
 				SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = nil
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		end
+	end,
+	start_run = function (self, choice)
+		G.GAME.cry_selected_edition = choice
 	end,
 })
 
@@ -986,15 +987,16 @@ SMODS.RunSelectPage({
 			else
 				SMODS.RunSelect.Setup.choices[self.key] = choice.config.center.key
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
 				SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = nil
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		end
+	end,
+	start_run = function (self, choice)
+		G.GAME.cry_selected_enhancement = choice
 	end,
 })
 
@@ -1065,15 +1067,16 @@ SMODS.RunSelectPage({
 			else
 				SMODS.RunSelect.Setup.choices[self.key] = choice.ability._cry_sticker_choice
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
 				SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_sticker_choice] = nil
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		end
+	end,
+	start_run = function (self, choice)
+		G.GAME.cry_selected_sticker = choice
 	end,
 })
 
@@ -1142,15 +1145,16 @@ SMODS.RunSelectPage({
 			else
 				SMODS.RunSelect.Setup.choices[self.key] = choice.ability._cry_suit_choice
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
 				SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_suit_choice] = nil
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		end
+	end,
+	start_run = function (self, choice)
+		G.GAME.cry_selected_suit = choice
 	end,
 })
 
@@ -1178,7 +1182,7 @@ SMODS.RunSelectPage({
 		return localize({
 			type = "name_text",
 			set = "Other",
-			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl .. "_seal",
+			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl:lower() .. "_seal",
 		})
 	end,
 	set_default = function(self, choice)
@@ -1220,14 +1224,15 @@ SMODS.RunSelectPage({
 			else
 				SMODS.RunSelect.Setup.choices[self.key] = choice.seal
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
 				SMODS.RunSelect.Setup.choices[self.key][choice.seal] = nil
 			end
-			-- DO SPRITE UPDATING HERE LATER
 		end
+	end,
+	start_run = function (self, choice)
+		G.GAME.cry_selected_seal = choice
 	end,
 })

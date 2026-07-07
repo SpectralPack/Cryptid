@@ -3,107 +3,78 @@
 -- Add/modify Steamodded Draw Steps to work with Cryptid
 
 -- Edition Decks
+
+--gets sprite key to use for the given type
+local function get_edeck_sprite_key(run_setup, type)
+	local sprite = nil
+	if run_setup then
+		local r = ({
+			edition = "ed",
+			enhancement = "enh",
+			sticker = "sk",
+			suit = "st",
+			seal = "sl",
+		})[type]
+		if (SMODS.RunSelect.Internals.current_page or 0) >= (SMODS.RunSelect.Pages["cry_edeck_"..r].page or 9999) then
+			sprite = SMODS.RunSelect.Setup.choices["cry_edeck_"..r]
+		end
+	else
+		sprite = G.GAME["cry_selected_"..type]
+	end
+	return sprite or "default"
+end
+
 SMODS.DrawStep({
 	key = "back_edition",
 	order = 5,
 	func = function(self)
-		if Cryptid.safe_get(self, "area", "config", "type") == "deck" then
-			-- following here is a horrendous mod compatability line
-			local currentBack = not self.params.galdur_selector
-					and ((Galdur and Galdur.config.use and type(self.params.galdur_back) == "table" and self.params.galdur_back) or type(
-						self.params.viewed_back
-					) == "table" and self.params.viewed_back or (self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back))
-				or Back(G.P_CENTERS["b_red"])
-			if
-				currentBack.effect.config.cry_force_seal
-				and not currentBack.effect.config.hide_seal
-				and not currentBack.effect.config.cry_antimatter
-			then
-				G.shared_seals[currentBack.effect.config.cry_force_seal]:draw_shader(
-					"dissolve",
-					nil,
-					nil,
-					true,
-					self.children.center
-				)
-				if currentBack.effect.config.cry_force_seal == "Gold" then
-					G.shared_seals[currentBack.effect.config.cry_force_seal]:draw_shader(
-						"voucher",
-						nil,
-						self.ARGS.send_to_shader,
-						true,
-						self.children.center
-					)
-				end
-			end
-			if currentBack.effect.config.cry_force_sticker and not currentBack.effect.config.cry_antimatter then
-				for k, v in pairs(SMODS.Stickers) do
-					if currentBack.effect.config.cry_force_sticker == v.key then
-						if v and v.draw and type(v.draw) == "function" then
-							v:draw(self)
-						else
-							G.shared_stickers[v.key].role.draw_major = self
-							G.shared_stickers[v.key]:draw_shader("dissolve", nil, nil, true, self.children.center)
-							G.shared_stickers[v.key]:draw_shader(
-								"voucher",
-								nil,
-								self.ARGS.send_to_shader,
-								true,
-								self.children.center
-							)
-						end
-					end
-				end
-			end
-			if
-				currentBack.effect.config.cry_antimatter
-				or currentBack.effect.config.cry_force_edition == "negative"
-			then
+		local in_run_setup = self.area and (self.area.config.run_select or self.area.config.run_select_deck_preview) and true or false
+		local back = self.ability.set == "Back" and in_run_setup and self.config.center or G.GAME.selected_back_key
+		if back and (self.config.center == back or not in_run_setup) then
+			if back.key == "b_cry_antimatter" then
 				self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
-				self.children.center:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
+				self.children.back:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
 			end
-			if currentBack.effect.center.edeck_type then
-				local edition, enhancement, sticker, suit, seal = Cryptid.enhanced_deck_info(currentBack)
-				local sprite = Cryptid.edeck_atlas_update(currentBack.effect.center)
-				self.children.back.atlas = G.ASSET_ATLAS[sprite.atlas] or self.children.back.atlas
-				self.children.back.sprite_pos = sprite.pos
-				self.children.back:reset()
-				if currentBack.effect.center.edeck_type == "edition" then
-					self.children.back:draw_shader(edition:sub(3), nil, self.ARGS.send_to_shader, true)
-					if edition == "negative" then
-						self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
-						self.children.center:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
+			if back.key == "b_cry_e_deck" then
+				local ed = get_edeck_sprite_key(in_run_setup, "edition")
+				Cryptid.update_edeck_sprite(self, "edition", ed)
+				if ed == "e_negative" then
+					self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
+					self.children.back:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
+				elseif ed ~= "default" then
+					local shader = G.SHADERS[ed:sub(3)] and ed:sub(3) or Cryptid.safe_get(G.P_CENTERS, ed, "shader") or nil
+					self.children.back:draw_shader(shader, nil, self.ARGS.send_to_shader, true)
+				end
+			end
+			if back.key == "b_cry_et_deck" then
+				local enh = get_edeck_sprite_key(in_run_setup, "enhancement")
+				Cryptid.update_edeck_sprite(self, "enhancement", enh)
+			end
+			if back.key == "b_cry_sk_deck" then
+				local sk = get_edeck_sprite_key(in_run_setup, "sticker")
+				Cryptid.update_edeck_sprite(self, "sticker", sk)
+				if sk ~= "default" then
+					if type(SMODS.Stickers[sk].draw) == "function" then
+						SMODS.Stickers[sk]:draw(self)
+					else
+						G.shared_stickers[sk].role.draw_major = self
+						G.shared_stickers[sk]:draw_shader("dissolve", nil, nil, true, self.children.center)
+						G.shared_stickers[sk]:draw_shader("voucher", nil, self.ARGS.send_to_shader, true, self.children.center)
 					end
 				end
-				if currentBack.effect.center.edeck_type == "seal" then
-					G.shared_seals[seal]:draw_shader("dissolve", nil, nil, true, self.children.center)
-					if seal == "Gold" then
-						G.shared_seals[seal]:draw_shader(
-							"voucher",
-							nil,
-							self.ARGS.send_to_shader,
-							true,
-							self.children.center
-						)
-					end
-				end
-				if currentBack.effect.center.edeck_type == "sticker" then
-					for k, v in pairs(SMODS.Stickers) do
-						if sticker == v.key then
-							if v and v.draw and type(v.draw) == "function" then
-								v:draw(self)
-							else
-								G.shared_stickers[v.key].role.draw_major = self
-								G.shared_stickers[v.key]:draw_shader("dissolve", nil, nil, true, self.children.center)
-								G.shared_stickers[v.key]:draw_shader(
-									"voucher",
-									nil,
-									self.ARGS.send_to_shader,
-									true,
-									self.children.center
-								)
-							end
-						end
+			end
+			if back.key == "b_cry_st_deck" then
+				local st = get_edeck_sprite_key(in_run_setup, "suit")
+				Cryptid.update_edeck_sprite(self, "suit", st)
+			end
+			if back.key == "b_cry_sl_deck" then
+				local sl = get_edeck_sprite_key(in_run_setup, "seal")
+				Cryptid.update_edeck_sprite(self, "seal", sl)
+				if sl ~= "default" then
+					G.shared_seals[sl].role.draw_major = self
+					G.shared_seals[sl]:draw_shader("dissolve", nil, nil, true, self.children.center)
+					if sl == "Gold" then --figure out handling shader `draw` funcs later
+						G.shared_seals[sl]:draw_shader("voucher", nil, self.ARGS.send_to_shader, true, self.children.center)
 					end
 				end
 			end
