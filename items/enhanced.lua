@@ -84,10 +84,16 @@ end
 
 function Cryptid.update_edeck_sprite(card, type, key)
 	local sprites = Cryptid.edeck_sprites[type]
-	if not sprites then return end
+	if not sprites then
+		return
+	end
 	local sprite = sprites[key]
-	if not sprite then sprite = sprites.default end
-	if not card then return end
+	if not sprite then
+		sprite = sprites.default
+	end
+	if not card then
+		return
+	end
 	card.children.back.atlas = sprite.atlas
 	card.children.back:set_sprite_pos(sprite.pos)
 end
