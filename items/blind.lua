@@ -616,7 +616,7 @@ local shackle = {
 	order = 18,
 	boss_colour = HEX("010466"),
 	in_pool = function()
-		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "negative" then
+		if G.GAME.modifiers.cry_force_edition and G.GAME.modifiers.cry_force_edition == "e_negative" then
 			return false
 		end
 		return #Cryptid.advanced_find_joker(nil, nil, "e_negative", nil, true, "j") ~= 0

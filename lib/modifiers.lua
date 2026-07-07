@@ -289,7 +289,7 @@ function Card:set_ability(center, initial, delay_sprites)
 			or self.ability.consumeable
 		then
 			if edition and not random then
-				self:set_edition({ [edition] = true }, true, true)
+				self:set_edition(edition, true, true)
 			elseif random then
 				self:set_edition(Cryptid.poll_random_edition(), true, true)
 			end

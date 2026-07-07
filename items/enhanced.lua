@@ -360,11 +360,12 @@ return {
 			if not force and not G.SETTINGS.paused then
 				return se(
 					self,
-					(not self.no_forced_edition and G.GAME.modifiers.cry_force_edition)
-							and { [G.GAME.modifiers.cry_force_edition] = true }
+					(not self.no_forced_edition)
+							and G.GAME.modifiers.cry_force_edition
 						or edition,
 					y,
-					z
+					z,
+					force
 				)
 			end
 			return se(self, edition, y, z)

@@ -671,6 +671,9 @@ function Blind:cry_calc_ante_gain()
 end
 
 function Cryptid.enhanced_deck_info(deck)
+	if SMODS.RunSelectPage then
+		
+	end
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
 		"e_" .. (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "foil"),

@@ -11,7 +11,7 @@ pattern = "self.children.back:draw_shader('dissolve')"
 position = "at"
 payload = '''
 local currentBack = self.params.viewed_back and G.GAME.viewed_back or G.GAME.selected_back
-if currentBack and currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_force_edition == 'negative' then
+if currentBack and currentBack.effect.config.cry_antimatter or currentBack.effect.config.cry_force_edition == 'e_negative' then
     self.children.back:draw_shader('negative', nil, self.ARGS.send_to_shader)
     self.children.center:draw_shader('negative_shine', nil, self.ARGS.send_to_shader)
 else

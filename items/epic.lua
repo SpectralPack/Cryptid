@@ -513,9 +513,9 @@ local error_joker = {
 			G.GAME.modifiers.cry_force_edition_from_deck = G.GAME.modifiers.cry_force_edition
 		elseif not G.GAME.modifiers.cry_force_edition_from_deck then
 			if G.P_CENTERS.e_cry_glitched then
-				G.GAME.modifiers.cry_force_edition = "cry_glitched"
+				G.GAME.modifiers.cry_force_edition = "e_cry_glitched"
 			else
-				G.GAME.modifiers.cry_force_edition = "foil"
+				G.GAME.modifiers.cry_force_edition = "e_foil"
 			end
 			G.GAME.modifiers.cry_force_edition_from_deck = "Nope!"
 		end

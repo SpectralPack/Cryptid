@@ -902,7 +902,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement])
 	end
 	if front and G.GAME.modifiers.cry_force_edition then
-		card:set_edition({ [G.GAME.modifiers.cry_force_edition] = true }, true, true)
+		card:set_edition(G.GAME.modifiers.cry_force_edition, true, true)
 		card:add_to_deck()
 	end
 	if front and G.GAME.modifiers.cry_force_seal then
@@ -1062,7 +1062,7 @@ function create_playing_card(card_init, area, skip_materialize, silent, colours,
 		card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement])
 	end
 	if G.GAME.modifiers.cry_force_edition then
-		card:set_edition({ [G.GAME.modifiers.cry_force_edition] = true }, true, true)
+		card:set_edition(G.GAME.modifiers.cry_force_edition, true, true)
 	end
 	if G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
