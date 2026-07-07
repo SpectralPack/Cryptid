@@ -28,11 +28,14 @@ SMODS.DrawStep({
 	key = "back_edition",
 	order = 5,
 	func = function(self)
+		if self.area and self.area == SMODS.RunSelect.Internals.stake_tower then --why is this even an issue ???????
+			return
+		end
 		local in_run_setup = self.area
 				and (self.area.config.run_select or self.area.config.run_select_deck_preview)
 				and true
 			or false
-		local back = self.ability.set == "Back" and in_run_setup and self.config.center or G.GAME.selected_back_key
+		local back = self.ability.set == "Back" and in_run_setup and self.config.center or G.GAME.selected_back_key or Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center")
 		if back and (self.config.center == back or not in_run_setup) then
 			if back.key == "b_cry_antimatter" then
 				self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
