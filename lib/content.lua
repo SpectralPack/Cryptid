@@ -849,7 +849,14 @@ function Cryptid.antimatter_compat(key, on_load)
 		not back
 		or back.set ~= "Back"
 		or (SMODS.Centers[key] and Cryptid.enabled(key) ~= true)
-		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter)=="madness" or (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", back, "wins", 8) or 0 ~= 0) or on_load)
+		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" or (Cryptid.safe_get(
+			G.PROFILES,
+			G.SETTINGS.profile,
+			"deck_usage",
+			back,
+			"wins",
+			8
+		) or 0 ~= 0) or on_load)
 		or not (back.unlocked or on_load)
 	then
 		return false
@@ -1292,25 +1299,27 @@ SMODS.RunSelectPage({
 })
 
 --Antimatter Deck selection
-SMODS.RunSelectPage{
+SMODS.RunSelectPage({
 	key = "antimatter",
 	include_deck_preview = true,
 	page = 2,
 	area_type = "deck",
-	generate_pool = function (self)
+	generate_pool = function(self)
 		local pool = {}
 		for _, c in ipairs(G.P_CENTER_POOLS.Back) do
 			if c.key ~= "b_cry_antimatter" and Cryptid.antimatter_compat(c.key, true) then
-				pool[#pool+1] = c
+				pool[#pool + 1] = c
 			end
 		end
 		return pool
 	end,
-	set_default = function (self, choice)
+	set_default = function(self, choice)
 		local selected = {}
 		if choice then
 			for k in pairs(choice) do
-				if Cryptid.antimatter_compat(k) then selected[k] = true end
+				if Cryptid.antimatter_compat(k) then
+					selected[k] = true
+				end
 			end
 		else
 			for _, c in ipairs(G.P_CENTER_POOLS.Back) do
@@ -1321,9 +1330,9 @@ SMODS.RunSelectPage{
 		end
 		return selected
 	end,
-	quick_start_text = function ()
+	quick_start_text = function()
 		if G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice == "b_cry_antimatter" then
-			local curr = (G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter)
+			local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter
 			local deck_total = 0
 			for k in pairs(curr or {}) do
 				if Cryptid.antimatter_compat(k) then
@@ -1339,12 +1348,17 @@ SMODS.RunSelectPage{
 		local unlocked = Cryptid.antimatter_compat(card_key)
 		card.cry_antimatter_card = true --figure out how to make this actually display a different description
 		card.cry_antimatter_locked = not unlocked
-		card.sprite_facing = 'back'
-		card.facing = 'back'
+		card.sprite_facing = "back"
+		card.facing = "back"
 		card.children.back:remove()
-		card.children.back = SMODS.create_sprite(card.T.x, card.T.y, card.T.w, card.T.h,
-			G.ASSET_ATLAS[unlocked and card.config.center.atlas or 'centers'],
-			unlocked and card.config.center.pos or { x = 4, y = 0 })
+		card.children.back = SMODS.create_sprite(
+			card.T.x,
+			card.T.y,
+			card.T.w,
+			card.T.h,
+			G.ASSET_ATLAS[unlocked and card.config.center.atlas or "centers"],
+			unlocked and card.config.center.pos or { x = 4, y = 0 }
+		)
 		stick(card)
 		return card
 	end,
@@ -1355,10 +1369,10 @@ SMODS.RunSelectPage{
 			choices[choice.config.center.key] = not choices[choice.config.center.key]
 		end
 	end,
-	start_run = function (self, choice)
+	start_run = function(self, choice)
 		G.GAME.cry_antimatter_decks = SMODS.shallow_copy(choice)
 	end,
-	optional = function (self)
+	optional = function(self)
 		return SMODS.RunSelect.Setup.choices.deck_choice == "b_cry_antimatter"
-	end
-}
+	end,
+})

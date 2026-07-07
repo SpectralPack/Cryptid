@@ -354,7 +354,10 @@ if CardSleeves then
 		end,
 
 		calculate = function(self, back, context)
-			if context.drawing_cards and (G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0) then
+			if
+				context.drawing_cards
+				and (G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0)
+			then
 				return { cards_to_draw = 5 }
 			end
 		end,

@@ -1347,7 +1347,7 @@ local spookydeck = {
 			end,
 		}))
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		if Cryptid.enabled("j_cry_chocolate_dice") == true then
 			G.E_MANAGER:add_event(Event({
 				func = function()
@@ -1375,7 +1375,7 @@ local spookydeck = {
 			G.jokers:emplace(card)
 		end
 	end,
-	cry_antimatter_calculate = function (self, context)
+	cry_antimatter_calculate = function(self, context)
 		if context.modify_ante and SMODS.ante_end then
 			local card = create_card("Joker", G.jokers, nil, "cry_cursed", nil, nil, nil, "cry_spooky")
 			card:add_to_deck()

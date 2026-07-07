@@ -56,12 +56,12 @@ local equilibrium = {
 	apply = function(self)
 		G.GAME.modifiers.cry_equilibrium = true
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		self:apply()
 	end,
-	cry_antimatter_vouchers = function (self, voucher_table)
+	cry_antimatter_vouchers = function(self, voucher_table)
 		for _, v in ipairs(self.config.vouchers) do
-			voucher_table[#voucher_table+1] = v
+			voucher_table[#voucher_table + 1] = v
 		end
 	end,
 	unlocked = false,
@@ -101,7 +101,7 @@ local misprint = {
 		G.GAME.modifiers.cry_misprint_min = (G.GAME.modifiers.cry_misprint_min or 1) * self.config.cry_misprint_min
 		G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * self.config.cry_misprint_max
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * self.config.cry_misprint_max
 	end,
 	unlocked = false,
@@ -149,7 +149,7 @@ local infinite = {
 			end,
 		}))
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + self.config.hand_size
 		self:apply()
 	end,
@@ -183,7 +183,7 @@ local conveyor = {
 	apply = function(self)
 		G.GAME.modifiers.cry_conveyor = true
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		G.GAME.modifiers.cry_antimatter_conveyor = true
 	end,
 	unlocked = false,
@@ -216,7 +216,7 @@ local CCD = {
 	apply = function(self)
 		G.GAME.modifiers.cry_ccd = true
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		self:apply()
 	end,
 	unlocked = false,
@@ -261,7 +261,7 @@ local wormhole = {
 			end,
 		}))
 	end,
-	cry_antimatter_apply = function (self) --joker slots are handled via the default functionality, so this doesnt need to do anything
+	cry_antimatter_apply = function(self) --joker slots are handled via the default functionality, so this doesnt need to do anything
 		self:apply()
 	end,
 	init = function(self)
@@ -304,7 +304,7 @@ local redeemed = {
 	apply = function(self)
 		G.GAME.modifiers.cry_redeemed = true
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		self:apply()
 	end,
 	init = function(self)
@@ -446,7 +446,7 @@ local legendary = {
 			end
 		end
 	end,
-	cry_antimatter_calculate = function (self, context)
+	cry_antimatter_calculate = function(self, context)
 		return self:calculate(nil, context)
 	end,
 	apply = function(self)
@@ -462,7 +462,7 @@ local legendary = {
 			end,
 		}))
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		self:apply()
 	end,
 	unlocked = false,
@@ -554,9 +554,10 @@ local critical = {
 			end
 		end
 	end,
-	cry_antimatter_calculate = function (self, context)
+	cry_antimatter_calculate = function(self, context)
 		if context.final_scoring_step then
-			local aaa = SMODS.pseudorandom_probability(self, "cry_critical", 1, self.config.cry_crit_rate, "Critical Deck")
+			local aaa =
+				SMODS.pseudorandom_probability(self, "cry_critical", 1, self.config.cry_crit_rate, "Critical Deck")
 			if aaa then
 				return {
 					emult = 2,
@@ -609,7 +610,7 @@ local glowing = {
 			end
 		end
 	end,
-	cry_antimatter_calculate = function (self, context)
+	cry_antimatter_calculate = function(self, context)
 		self:calculate(nil, context)
 	end,
 	unlocked = false,
@@ -644,7 +645,7 @@ local beta = {
 	apply = function(self)
 		G.GAME.modifiers.cry_beta = true
 	end,
-	cry_antimatter_apply = function (self) --nostalgic deck but without the -1 slot and without the blinds
+	cry_antimatter_apply = function(self) --nostalgic deck but without the -1 slot and without the blinds
 		G.GAME.modifiers.cry_antimatter_beta = true
 	end,
 	unlocked = false,
@@ -675,13 +676,20 @@ local bountiful = {
 	pos = { x = 2, y = 6 },
 	order = 14,
 	atlas = "atlasdeck",
-	calculate = function (self, back, context)
-		if context.drawing_cards and (G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0) then
+	calculate = function(self, back, context)
+		if
+			context.drawing_cards
+			and (G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0)
+		then
 			return { cards_to_draw = 5 }
 		end
 	end,
-	cry_antimatter_calculate = function (self, context)
-		if context.drawing_cards and (G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0) and context.amount < 5 then
+	cry_antimatter_calculate = function(self, context)
+		if
+			context.drawing_cards
+			and (G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0)
+			and context.amount < 5
+		then
 			return { cards_to_draw = 5 }
 		end
 	end,
@@ -718,7 +726,7 @@ local beige = {
 	apply = function(self)
 		G.GAME.modifiers.cry_common_value_quad = true
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		self:apply()
 	end,
 	unlocked = false,

@@ -34,10 +34,9 @@ SMODS.DrawStep({
 		local in_run_setup = self.area
 				and (self.area.config.run_select or self.area.config.run_select_deck_preview)
 				and true
-			or false;
-		local back = self.ability.set == "Back" and in_run_setup and self.config.center
-			or G.GAME.selected_back_key
-			--or Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center"); fix later
+			or false
+		local back = self.ability.set == "Back" and in_run_setup and self.config.center or G.GAME.selected_back_key
+		--or Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center"); fix later
 		if back and (self.config.center == back or not in_run_setup) then
 			if back.key == "b_cry_antimatter" then
 				self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)

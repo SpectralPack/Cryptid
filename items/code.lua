@@ -4856,7 +4856,7 @@ local encoded = {
 			end,
 		}))
 	end,
-	cry_antimatter_apply = function (self)
+	cry_antimatter_apply = function(self)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
