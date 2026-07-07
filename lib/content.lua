@@ -843,6 +843,102 @@ local function stick(card)
 	card.children.back:set_role({ major = card, role_type = "Glued", draw_major = card })
 end
 
+function Cryptid.antimatter_compat(key, on_load)
+	local back = G.P_CENTERS[key]
+	if
+		not back
+		or back.set ~= "Back"
+		or (SMODS.Centers[key] and Cryptid.enabled(key) ~= true)
+		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter)=="madness" or (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", back, "wins", 8) or 0 ~= 0) or on_load)
+		or not (back.unlocked or on_load)
+	then
+		return false
+	end
+	if
+		back.cry_antimatter_apply
+		or back.cry_antimatter_calculate
+		or back.cry_antimatter_consumables
+		or back.cry_antimatter_vouchers
+		or back.cry_antimatter_compat --this is so you can mark a deck as antimatter compat even if it doesnt use the above functions for that
+		or not back.original_mod
+	then
+		return true
+	end
+	return false
+end
+
+--Antimatter Deck selection
+SMODS.RunSelectPage{
+	key = "antimatter",
+	include_deck_preview = true,
+	page = 2,
+	area_type = "deck",
+	generate_pool = function (self)
+		local pool = {}
+		for _, c in ipairs(G.P_CENTER_POOLS.Back) do
+			if c.key ~= "b_cry_antimatter" and Cryptid.antimatter_compat(c.key, true) then
+				pool[#pool+1] = c
+			end
+		end
+		return pool
+	end,
+	set_default = function (self, choice)
+		local selected = {}
+		if choice then
+			for k in pairs(choice) do
+				if Cryptid.antimatter_compat(k) then selected[k] = true end
+			end
+		else
+			for _, c in ipairs(G.P_CENTER_POOLS.Back) do
+				if Cryptid.antimatter_compat(c.key) then
+					selected[c.key] = true
+				end
+			end
+		end
+		return selected
+	end,
+	quick_start_text = function ()
+		if G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice == "b_cry_antimatter" then
+			local curr = (G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter)
+			local deck_total = 0
+			for k in pairs(curr or {}) do
+				if Cryptid.antimatter_compat(k) then
+					deck_total = deck_total + 1
+				else
+					curr[k] = nil
+				end
+			end
+		end
+	end,
+	create_selection_card = function(self, card_key, card_number, area)
+		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.b_red)
+		local unlocked = Cryptid.antimatter_compat(card_key)
+		card.cry_antimatter_card = true --figure out how to make this actually display a different description
+		card.cry_antimatter_locked = not unlocked
+		card.sprite_facing = 'back'
+		card.facing = 'back'
+		card.children.back:remove()
+		card.children.back = SMODS.create_sprite(card.T.x, card.T.y, card.T.w, card.T.h,
+			G.ASSET_ATLAS[unlocked and card.config.center.atlas or 'centers'],
+			unlocked and card.config.center.pos or { x = 4, y = 0 })
+		stick(card)
+		return card
+	end,
+	handle_choice = function(self, choice, remove)
+		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		local choices = SMODS.RunSelect.Setup.choices[self.key]
+		if Cryptid.antimatter_compat(choice.config.center.key) then
+			choices[choice.config.center.key] = not choices[choice.config.center.key]
+		end
+	end,
+	start_run = function (self, choice)
+		G.GAME.cry_antimatter_decks = SMODS.shallow_copy(choice)
+	end,
+	optional = function (self)
+		return SMODS.RunSelect.Setup.choices.deck_choice == "b_cry_antimatter"
+	end
+}
+
 --Edition Deck Selection
 SMODS.RunSelectPage({
 	key = "edeck_ed",
@@ -860,6 +956,11 @@ SMODS.RunSelectPage({
 		return pool
 	end,
 	quick_start_text = function()
+		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
+		local antimatter = G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter or {}
+		if back ~= "b_cry_e_deck" and not (back == "b_cry_antimatter" and antimatter.b_cry_e_deck) then
+			return
+		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_ed
 		if Cryptid.safe_get(G.P_CENTERS, curr, "set") ~= "Edition" then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_ed = "e_foil"
@@ -939,6 +1040,11 @@ SMODS.RunSelectPage({
 		return pool
 	end,
 	quick_start_text = function()
+		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
+		local antimatter = G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter or {}
+		if back ~= "b_cry_et_deck" and not (back == "b_cry_antimatter" and antimatter.b_cry_et_deck) then
+			return
+		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh
 		if Cryptid.safe_get(G.P_CENTERS, curr, "set") ~= "Enhanced" then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh = "m_bonus"
@@ -1017,6 +1123,11 @@ SMODS.RunSelectPage({
 		return pool
 	end,
 	quick_start_text = function()
+		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
+		local antimatter = G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter or {}
+		if back ~= "b_cry_sk_deck" and not (back == "b_cry_antimatter" and antimatter.b_cry_sk_deck) then
+			return
+		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk
 		if not SMODS.Stickers[curr] then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk = "eternal"
@@ -1097,6 +1208,11 @@ SMODS.RunSelectPage({
 		return pool
 	end,
 	quick_start_text = function()
+		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
+		local antimatter = G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter or {}
+		if back ~= "b_cry_st_deck" and not (back == "b_cry_antimatter" and antimatter.b_cry_st_deck) then
+			return
+		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st
 		if not SMODS.Suits[curr] then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st = "Spades"
@@ -1175,6 +1291,11 @@ SMODS.RunSelectPage({
 		return pool
 	end,
 	quick_start_text = function()
+		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
+		local antimatter = G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter or {}
+		if back ~= "b_cry_sl_deck" and not (back == "b_cry_antimatter" and antimatter.b_cry_sl_deck) then
+			return
+		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl
 		if not G.P_SEALS[curr] then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl = "Gold"

@@ -24,6 +24,10 @@ if G.GAME.modifiers.cry_conveyor and #G.jokers.cards>0 then
     duplicated_joker:add_to_deck()
     G.jokers:emplace(duplicated_joker)
     G.jokers.cards[1]:start_dissolve()
+elseif G.GAME.modifiers.cry_antimatter_conveyor and #G.jokers.cards > 0 then
+    local duplicated_joker = copy_card(G.jokers.cards[#G.jokers.cards])
+    duplicated_joker:add_to_deck()
+    G.jokers:emplace(duplicated_joker)
 end
 '''
 match_indent = true

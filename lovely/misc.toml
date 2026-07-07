@@ -255,7 +255,7 @@ match_indent = true
 target = "game.lua"
 pattern = '''self.consumeables = CardArea('''
 position = "before"
-payload = '''if not G.GAME.modifiers.cry_beta then'''
+payload = '''if not G.GAME.modifiers.cry_beta and not G.GAME.modifiers.cry_antimatter_beta then'''
 match_indent = true
 
 [[patches]]
@@ -268,7 +268,7 @@ self.jokers = CardArea(
     0, 0,
     CAI.joker_W+CAI.consumeable_W,
     CAI.joker_H,
-    {card_limit = self.GAME.starting_params.joker_slots+self.GAME.starting_params.consumable_slots-1, type = 'joker', highlight_limit = 1e100})
+    {card_limit = self.GAME.starting_params.joker_slots+self.GAME.starting_params.consumable_slots-(G.GAME.modifiers.cry_beta and 1 or 0), type = 'joker', highlight_limit = 1e100})
 self.consumeables = self.jokers
 end'''
 match_indent = true
@@ -322,19 +322,6 @@ target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = '''if eff.retrigger_flag then SMODS.calculate_effect(eff, eff.card); j = j+1; _, eff = next(reps[j]) end'''
 position = "at"
 payload = '''if eff.retrigger_flag and reps[j+1] ~= nil then SMODS.calculate_effect(eff, eff.card); j = j+1; _, eff = next(reps[j]) end'''
-match_indent = true
-
-# Adds G.GAME.modifiers.cry_forced_draw_amount
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "if G.GAME.blind.name == 'The Serpent' and"
-position = "before"
-payload = '''
-if G.GAME.modifiers.cry_forced_draw_amount and (G.GAME.current_round.hands_played > 0 or G.GAME.current_round.discards_used > 0) then
-	hand_space = math.min(#G.deck.cards, G.GAME.modifiers.cry_forced_draw_amount)
-end
-'''
 match_indent = true
 
 # adds oldbp blueprint corruption

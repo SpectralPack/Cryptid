@@ -5405,6 +5405,7 @@ return {
 			run_select_cry_edeck_st_random = "Random Suit",
 			run_select_cry_edeck_sl = "Select Seal",
 			run_select_cry_edeck_sl_random = "Random Seal",
+			run_select_cry_antimatter = "Antimatter Decks",
 		},
 		labels = {
 			food_jokers = "Food Jokers",

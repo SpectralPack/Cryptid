@@ -353,9 +353,10 @@ if CardSleeves then
 			return { vars = {} }
 		end,
 
-		trigger_effect = function(self, args) end,
-		apply = function(self)
-			G.GAME.modifiers.cry_forced_draw_amount = self.config.cry_forced_draw_amount
+		calculate = function(self, back, context)
+			if context.drawing_cards and (G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0) then
+				return { cards_to_draw = 5 }
+			end
 		end,
 	})
 
