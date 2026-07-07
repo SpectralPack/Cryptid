@@ -917,7 +917,7 @@ SMODS.RunSelectPage({
 			end
 		end
 	end,
-	start_run = function (self, choice)
+	start_run = function(self, choice)
 		G.GAME.cry_selected_edition = choice
 	end,
 })
@@ -995,7 +995,7 @@ SMODS.RunSelectPage({
 			end
 		end
 	end,
-	start_run = function (self, choice)
+	start_run = function(self, choice)
 		G.GAME.cry_selected_enhancement = choice
 	end,
 })
@@ -1075,7 +1075,7 @@ SMODS.RunSelectPage({
 			end
 		end
 	end,
-	start_run = function (self, choice)
+	start_run = function(self, choice)
 		G.GAME.cry_selected_sticker = choice
 	end,
 })
@@ -1153,7 +1153,7 @@ SMODS.RunSelectPage({
 			end
 		end
 	end,
-	start_run = function (self, choice)
+	start_run = function(self, choice)
 		G.GAME.cry_selected_suit = choice
 	end,
 })
@@ -1232,7 +1232,7 @@ SMODS.RunSelectPage({
 			end
 		end
 	end,
-	start_run = function (self, choice)
+	start_run = function(self, choice)
 		G.GAME.cry_selected_seal = choice
 	end,
 })
