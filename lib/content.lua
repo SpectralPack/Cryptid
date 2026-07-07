@@ -836,11 +836,11 @@ if not SMODS.RunSelectPage then
 end
 
 local function stick(card)
-    card.children.back.states.hover = card.states.hover
-    card.children.back.states.click = card.states.click
-    card.children.back.states.drag = card.states.drag
-    card.children.back.states.collide.can = false
-    card.children.back:set_role({major = card, role_type = 'Glued', draw_major = card})
+	card.children.back.states.hover = card.states.hover
+	card.children.back.states.click = card.states.click
+	card.children.back.states.drag = card.states.drag
+	card.children.back.states.collide.can = false
+	card.children.back:set_role({ major = card, role_type = "Glued", draw_major = card })
 end
 
 --Enhancement Deck selection
@@ -883,7 +883,7 @@ SMODS.RunSelectPage({
 		stick(card)
 		return card
 	end,
-	optional = function (self)
+	optional = function(self)
 		local back = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice")
 		if back == "b_cry_et_deck" then
 			return true
@@ -891,26 +891,31 @@ SMODS.RunSelectPage({
 		return false
 	end,
 	handle_choice = function(self, choice, remove)
-        SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
-        if not remove then
-            if self.selection_limit > 1 then
-                if SMODS.table_size(SMODS.RunSelect.Setup.choices[self.key]) < self.selection_limit and not SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] then
-                    SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = true
-                else
-                    if choice.juice_up then choice:juice_up() end
-                    return
-                end
-            else
-                SMODS.RunSelect.Setup.choices[self.key] = choice.config.center.key
-            end
-            -- DO SPRITE UPDATING HERE LATER
-        else
-            if self.selection_limit == 1 then
-                SMODS.RunSelect.Setup.choices[self.key] = nil
-            else
-                SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = nil
-            end
-            -- DO SPRITE UPDATING HERE LATER
-        end
-    end,
+		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		if not remove then
+			if self.selection_limit > 1 then
+				if
+					SMODS.table_size(SMODS.RunSelect.Setup.choices[self.key]) < self.selection_limit
+					and not SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key]
+				then
+					SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = true
+				else
+					if choice.juice_up then
+						choice:juice_up()
+					end
+					return
+				end
+			else
+				SMODS.RunSelect.Setup.choices[self.key] = choice.config.center.key
+			end
+			-- DO SPRITE UPDATING HERE LATER
+		else
+			if self.selection_limit == 1 then
+				SMODS.RunSelect.Setup.choices[self.key] = nil
+			else
+				SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = nil
+			end
+			-- DO SPRITE UPDATING HERE LATER
+		end
+	end,
 })

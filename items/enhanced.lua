@@ -153,9 +153,12 @@ local et_deck = {
 	edeck_type = "enhancement",
 	config = {},
 	loc_vars = function(self, info_queue, center)
-		if SMODS.RunSelect.Internals.preview_area and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_enh.page then
+		if
+			SMODS.RunSelect.Internals.preview_area
+			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_enh.page
+		then
 			return {
-				key = self.key .. "_preview"
+				key = self.key .. "_preview",
 			}
 		end
 		local _, bbb = Cryptid.enhanced_deck_info(self)

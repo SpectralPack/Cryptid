@@ -674,7 +674,9 @@ function Cryptid.enhanced_deck_info(deck)
 	--only accounts for vanilla stuff at the moment (WIP)
 	local edition, enhancement, sticker, suit, seal =
 		(Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_edition") or "e_foil"),
-		SMODS.RunSelect.Setup.choices.cry_edeck_enh or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh or "m_bonus",
+		SMODS.RunSelect.Setup.choices.cry_edeck_enh
+			or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh
+			or "m_bonus",
 		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
 		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
 		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
