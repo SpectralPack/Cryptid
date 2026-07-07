@@ -350,6 +350,14 @@ local sl_deck = {
 	config = {},
 	edeck_type = "seal",
 	loc_vars = function(self, info_queue, center)
+		if
+			SMODS.RunSelect.Internals.preview_area
+			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_st.page
+		then
+			return {
+				key = self.key .. "_preview",
+			}
+		end
 		local _, _, _, _, eee = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {

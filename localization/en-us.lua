@@ -256,7 +256,17 @@ return {
 				text = {
 					"All playing cards have a {V:1}#1#{}",
 					"Cards cannot change seals",
-					"{C:inactive}(Click to edit)",
+				},
+				unlock = {
+					"Use {C:spectral}Typhoon",
+				},
+			},
+			b_cry_sl_deck_preview = {
+				name = "Seal Deck",
+				text = {
+					"All playing cards have",
+					"a {C:attention}Seal{} of your choice",
+					"Cards cannot change seals",
 				},
 				unlock = {
 					"Use {C:spectral}Typhoon",
@@ -5393,6 +5403,8 @@ return {
 			run_select_cry_edeck_sk_random = "Random Sticker",
 			run_select_cry_edeck_st = "Select Suit",
 			run_select_cry_edeck_st_random = "Random Suit",
+			run_select_cry_edeck_sl = "Select Seal",
+			run_select_cry_edeck_sl_random = "Random Seal",
 		},
 		labels = {
 			food_jokers = "Food Jokers",
