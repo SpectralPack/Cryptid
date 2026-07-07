@@ -1178,7 +1178,7 @@ SMODS.RunSelectPage({
 		return localize({
 			type = "name_text",
 			set = "Other",
-			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl.."_seal",
+			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl .. "_seal",
 		})
 	end,
 	set_default = function(self, choice)
