@@ -1076,3 +1076,80 @@ SMODS.RunSelectPage({
 		end
 	end,
 })
+
+-- Suit Deck selection
+SMODS.RunSelectPage({
+	key = "edeck_st",
+	include_deck_preview = true,
+	page = 2,
+	area_type = "deck",
+	random_select = true,
+	generate_pool = function(self)
+		local pool = {}
+		for _, c in ipairs(SMODS.Suit.obj_buffer) do
+			if not SMODS.Suits[c].no_edeck then
+				pool[#pool + 1] = SMODS.Suits[c]
+			end
+		end
+		return pool
+	end,
+	quick_start_text = function()
+		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st
+		if not SMODS.Suits[curr] then
+			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st = "Spades"
+		end
+		return localize(G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk, "suits_plural")
+	end,
+	set_default = function(self, choice)
+		return SMODS.Suits[choice] and choice or "Spades"
+	end,
+	create_selection_card = function(self, card_key, card_number, area)
+		local sprites = Cryptid.edeck_sprites.suit
+		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.c_base)
+		card.no_ui = true
+		card.ability._cry_suit_choice = card_key
+		if sprites[card_key] then
+			card.children.center.atlas = G.ASSET_ATLAS[sprites[card_key].atlas]
+			card.children.center:set_sprite_pos(sprites[card_key].pos)
+		else
+			assert(SMODS.change_base(card, card_key, "Ace"))
+		end
+		stick(card)
+		return card
+	end,
+	optional = function(self)
+		local back = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice")
+		if back == "b_cry_st_deck" then
+			return true
+		end
+		return false
+	end,
+	handle_choice = function(self, choice, remove)
+		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		if not remove then
+			if self.selection_limit > 1 then
+				if
+					SMODS.table_size(SMODS.RunSelect.Setup.choices[self.key]) < self.selection_limit
+					and not SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_suit_choice]
+				then
+					SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_suit_choice] = true
+				else
+					if choice.juice_up then
+						choice:juice_up()
+					end
+					return
+				end
+			else
+				SMODS.RunSelect.Setup.choices[self.key] = choice.ability._cry_suit_choice
+			end
+			-- DO SPRITE UPDATING HERE LATER
+		else
+			if self.selection_limit == 1 then
+				SMODS.RunSelect.Setup.choices[self.key] = nil
+			else
+				SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_suit_choice] = nil
+			end
+			-- DO SPRITE UPDATING HERE LATER
+		end
+	end,
+})

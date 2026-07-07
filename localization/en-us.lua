@@ -280,7 +280,19 @@ return {
 					"and cannot change suits",
 					"{C:attention}Boss Blind{} for this suit",
 					"will not appear",
-					"{C:inactive}(Click to edit)",
+				},
+				unlock = {
+					"Use {C:spectral}Replica",
+				},
+			},
+			b_cry_st_deck_preview = {
+				name = "Suit Deck",
+				text = {
+					"All playing cards will be",
+					"a suit of your choice",
+					"and cannot change suits",
+					"{C:attention}Boss Blind{} for this suit",
+					"will not appear",
 				},
 				unlock = {
 					"Use {C:spectral}Replica",
@@ -5379,6 +5391,8 @@ return {
 			run_select_cry_edeck_ed_random = "Random Edition",
 			run_select_cry_edeck_sk = "Select Sticker",
 			run_select_cry_edeck_sk_random = "Random Sticker",
+			run_select_cry_edeck_st = "Select Suit",
+			run_select_cry_edeck_st_random = "Random Suit",
 		},
 		labels = {
 			food_jokers = "Food Jokers",
