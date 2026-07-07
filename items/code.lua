@@ -4856,6 +4856,33 @@ local encoded = {
 			end,
 		}))
 	end,
+	cry_antimatter_apply = function (self)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				if G.jokers then
+					if
+						G.P_CENTERS["j_cry_CodeJoker"]
+						and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_CodeJoker"])
+					then
+						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+					end
+					if
+						G.P_CENTERS["j_cry_copypaste"]
+						and (G.GAME.banned_keys and not G.GAME.banned_keys["j_cry_copypaste"])
+					then
+						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+					end
+					return true
+				end
+			end,
+		}))
+	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
 		if args.cry_used_consumable == "c_cry_pointer" then

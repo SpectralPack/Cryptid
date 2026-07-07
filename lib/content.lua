@@ -867,78 +867,6 @@ function Cryptid.antimatter_compat(key, on_load)
 	return false
 end
 
---Antimatter Deck selection
-SMODS.RunSelectPage{
-	key = "antimatter",
-	include_deck_preview = true,
-	page = 2,
-	area_type = "deck",
-	generate_pool = function (self)
-		local pool = {}
-		for _, c in ipairs(G.P_CENTER_POOLS.Back) do
-			if c.key ~= "b_cry_antimatter" and Cryptid.antimatter_compat(c.key, true) then
-				pool[#pool+1] = c
-			end
-		end
-		return pool
-	end,
-	set_default = function (self, choice)
-		local selected = {}
-		if choice then
-			for k in pairs(choice) do
-				if Cryptid.antimatter_compat(k) then selected[k] = true end
-			end
-		else
-			for _, c in ipairs(G.P_CENTER_POOLS.Back) do
-				if Cryptid.antimatter_compat(c.key) then
-					selected[c.key] = true
-				end
-			end
-		end
-		return selected
-	end,
-	quick_start_text = function ()
-		if G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice == "b_cry_antimatter" then
-			local curr = (G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter)
-			local deck_total = 0
-			for k in pairs(curr or {}) do
-				if Cryptid.antimatter_compat(k) then
-					deck_total = deck_total + 1
-				else
-					curr[k] = nil
-				end
-			end
-		end
-	end,
-	create_selection_card = function(self, card_key, card_number, area)
-		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.b_red)
-		local unlocked = Cryptid.antimatter_compat(card_key)
-		card.cry_antimatter_card = true --figure out how to make this actually display a different description
-		card.cry_antimatter_locked = not unlocked
-		card.sprite_facing = 'back'
-		card.facing = 'back'
-		card.children.back:remove()
-		card.children.back = SMODS.create_sprite(card.T.x, card.T.y, card.T.w, card.T.h,
-			G.ASSET_ATLAS[unlocked and card.config.center.atlas or 'centers'],
-			unlocked and card.config.center.pos or { x = 4, y = 0 })
-		stick(card)
-		return card
-	end,
-	handle_choice = function(self, choice, remove)
-		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
-		local choices = SMODS.RunSelect.Setup.choices[self.key]
-		if Cryptid.antimatter_compat(choice.config.center.key) then
-			choices[choice.config.center.key] = not choices[choice.config.center.key]
-		end
-	end,
-	start_run = function (self, choice)
-		G.GAME.cry_antimatter_decks = SMODS.shallow_copy(choice)
-	end,
-	optional = function (self)
-		return SMODS.RunSelect.Setup.choices.deck_choice == "b_cry_antimatter"
-	end
-}
-
 --Edition Deck Selection
 SMODS.RunSelectPage({
 	key = "edeck_ed",
@@ -987,7 +915,8 @@ SMODS.RunSelectPage({
 	end,
 	optional = function(self)
 		local back = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice")
-		if back == "b_cry_e_deck" then
+		local antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "cry_antimatter") or {}
+		if back == "b_cry_e_deck" or (back == "b_cry_antimatter" and antimatter.b_cry_e_deck) then
 			return true
 		end
 		return false
@@ -1070,7 +999,8 @@ SMODS.RunSelectPage({
 	end,
 	optional = function(self)
 		local back = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice")
-		if back == "b_cry_et_deck" then
+		local antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "cry_antimatter") or {}
+		if back == "b_cry_et_deck" or (back == "b_cry_antimatter" and antimatter.b_cry_et_deck) then
 			return true
 		end
 		return false
@@ -1155,7 +1085,8 @@ SMODS.RunSelectPage({
 	end,
 	optional = function(self)
 		local back = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice")
-		if back == "b_cry_sk_deck" then
+		local antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "cry_antimatter") or {}
+		if back == "b_cry_sk_deck" or (back == "b_cry_antimatter" and antimatter.b_cry_sk_deck) then
 			return true
 		end
 		return false
@@ -1238,7 +1169,8 @@ SMODS.RunSelectPage({
 	end,
 	optional = function(self)
 		local back = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice")
-		if back == "b_cry_st_deck" then
+		local antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "cry_antimatter") or {}
+		if back == "b_cry_st_deck" or (back == "b_cry_antimatter" and antimatter.b_cry_st_deck) then
 			return true
 		end
 		return false
@@ -1322,7 +1254,8 @@ SMODS.RunSelectPage({
 	end,
 	optional = function(self)
 		local back = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice")
-		if back == "b_cry_sl_deck" then
+		local antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "cry_antimatter") or {}
+		if back == "b_cry_sl_deck" or (back == "b_cry_antimatter" and antimatter.b_cry_sl_deck) then
 			return true
 		end
 		return false
@@ -1357,3 +1290,75 @@ SMODS.RunSelectPage({
 		G.GAME.cry_selected_seal = choice
 	end,
 })
+
+--Antimatter Deck selection
+SMODS.RunSelectPage{
+	key = "antimatter",
+	include_deck_preview = true,
+	page = 2,
+	area_type = "deck",
+	generate_pool = function (self)
+		local pool = {}
+		for _, c in ipairs(G.P_CENTER_POOLS.Back) do
+			if c.key ~= "b_cry_antimatter" and Cryptid.antimatter_compat(c.key, true) then
+				pool[#pool+1] = c
+			end
+		end
+		return pool
+	end,
+	set_default = function (self, choice)
+		local selected = {}
+		if choice then
+			for k in pairs(choice) do
+				if Cryptid.antimatter_compat(k) then selected[k] = true end
+			end
+		else
+			for _, c in ipairs(G.P_CENTER_POOLS.Back) do
+				if Cryptid.antimatter_compat(c.key) then
+					selected[c.key] = true
+				end
+			end
+		end
+		return selected
+	end,
+	quick_start_text = function ()
+		if G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice == "b_cry_antimatter" then
+			local curr = (G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter)
+			local deck_total = 0
+			for k in pairs(curr or {}) do
+				if Cryptid.antimatter_compat(k) then
+					deck_total = deck_total + 1
+				else
+					curr[k] = nil
+				end
+			end
+		end
+	end,
+	create_selection_card = function(self, card_key, card_number, area)
+		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.b_red)
+		local unlocked = Cryptid.antimatter_compat(card_key)
+		card.cry_antimatter_card = true --figure out how to make this actually display a different description
+		card.cry_antimatter_locked = not unlocked
+		card.sprite_facing = 'back'
+		card.facing = 'back'
+		card.children.back:remove()
+		card.children.back = SMODS.create_sprite(card.T.x, card.T.y, card.T.w, card.T.h,
+			G.ASSET_ATLAS[unlocked and card.config.center.atlas or 'centers'],
+			unlocked and card.config.center.pos or { x = 4, y = 0 })
+		stick(card)
+		return card
+	end,
+	handle_choice = function(self, choice, remove)
+		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		local choices = SMODS.RunSelect.Setup.choices[self.key]
+		if Cryptid.antimatter_compat(choice.config.center.key) then
+			choices[choice.config.center.key] = not choices[choice.config.center.key]
+		end
+	end,
+	start_run = function (self, choice)
+		G.GAME.cry_antimatter_decks = SMODS.shallow_copy(choice)
+	end,
+	optional = function (self)
+		return SMODS.RunSelect.Setup.choices.deck_choice == "b_cry_antimatter"
+	end
+}

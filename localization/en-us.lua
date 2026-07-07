@@ -5,7 +5,7 @@ return {
 				name = "Antimatter Deck",
 				text = {
 					"Applies the {C:legendary,E:1}upsides{}",
-					"of {C:attention}almost every{} deck",
+					"of {C:attention}all selected decks",
 				},
 				unlock = {
 					"Win a run",
@@ -17,20 +17,7 @@ return {
 				name = "Antimatter Deck",
 				text = {
 					"Applies the {C:legendary,E:1}upsides{}",
-					"of {C:attention}almost every{} deck won",
-					"with {C:gold}Gold Stake{}",
-				},
-				unlock = {
-					"Win a run",
-					"with {C:attention}Blank Deck",
-					"on {C:attention}Gold Stake",
-				},
-			},
-			b_cry_antimatter_custom = {
-				name = "Antimatter Deck",
-				text = {
-					"Applies the {C:legendary,E:1}upsides{}",
-					"of {C:attention}some{} decks won",
+					"{C:attention}all selected decks{} won",
 					"with {C:gold}Gold Stake{}",
 				},
 				unlock = {

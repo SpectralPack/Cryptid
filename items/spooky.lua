@@ -1334,8 +1334,6 @@ local spookydeck = {
 	order = 16,
 	atlas = "atlasspooky",
 	apply = function(self)
-		G.GAME.modifiers.cry_spooky = true
-		G.GAME.modifiers.cry_curse_rate = self.config.cry_curse_rate or 0.25
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
@@ -1349,14 +1347,37 @@ local spookydeck = {
 			end,
 		}))
 	end,
+	cry_antimatter_apply = function (self)
+		if Cryptid.enabled("j_cry_chocolate_dice") == true then
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					if G.jokers then
+						local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_chocolate_dice")
+						card:add_to_deck()
+						card:start_materialize()
+						G.jokers:emplace(card)
+						return true
+					end
+				end,
+			}))
+		end
+	end,
 	calculate = function(self, blind, context)
 		if context.modify_ante and context.ante_end then
 			local card
-			if pseudorandom(pseudoseed("cry_spooky_curse")) < G.GAME.modifiers.cry_curse_rate then
+			if pseudorandom(pseudoseed("cry_spooky_curse")) < self.config.curse_rate then
 				card = create_card("Joker", G.jokers, nil, "cry_cursed", nil, nil, nil, "cry_spooky")
 			else
 				card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_spooky")
 			end
+			card:add_to_deck()
+			card:start_materialize()
+			G.jokers:emplace(card)
+		end
+	end,
+	cry_antimatter_calculate = function (self, context)
+		if context.modify_ante and SMODS.ante_end then
+			local card = create_card("Joker", G.jokers, nil, "cry_cursed", nil, nil, nil, "cry_spooky")
 			card:add_to_deck()
 			card:start_materialize()
 			G.jokers:emplace(card)

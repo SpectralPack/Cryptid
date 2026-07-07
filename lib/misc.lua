@@ -650,6 +650,7 @@ function Blind:cry_before_cash()
 end
 
 function Blind:cry_calc_ante_gain()
+	--[[ this doesnt even do anything?
 	if G.GAME.modifiers.cry_spooky then --here is the best place to check when spooky should apply
 		local card
 		if pseudorandom(pseudoseed("cry_spooky_curse")) < G.GAME.modifiers.cry_curse_rate then
@@ -660,7 +661,7 @@ function Blind:cry_calc_ante_gain()
 		card:add_to_deck()
 		card:start_materialize()
 		G.jokers:emplace(card)
-	end
+	end]]
 	if not self.disabled then
 		local obj = self.config.blind
 		if obj.cry_calc_ante_gain and type(obj.cry_calc_ante_gain) == "function" then

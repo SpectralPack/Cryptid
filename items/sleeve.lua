@@ -459,17 +459,27 @@ if CardSleeves then
 		name = "Spooky Sleeve",
 		atlas = "atlasSleeves",
 		pos = { x = 2, y = 1 },
-		config = { cry_spooky = true, cry_curse_rate = 0.25 },
+		config = { cry_curse_rate = 0.25 },
 		unlocked = true,
 		unlock_condition = { deck = "Spooky Deck", stake = 1 },
 		loc_vars = function(self)
 			return { vars = {} }
 		end,
 
-		trigger_effect = function(self, args) end,
+		calculate = function(self, blind, context)
+			if context.modify_ante and context.ante_end then
+				local card
+				if pseudorandom(pseudoseed("cry_spooky_curse")) < self.config.curse_rate then
+					card = create_card("Joker", G.jokers, nil, "cry_cursed", nil, nil, nil, "cry_spooky")
+				else
+					card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_spooky")
+				end
+				card:add_to_deck()
+				card:start_materialize()
+				G.jokers:emplace(card)
+			end
+		end,
 		apply = function(self)
-			G.GAME.modifiers.cry_spooky = true
-			G.GAME.modifiers.cry_curse_rate = self.config.cry_curse_rate or 0.25
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					if G.jokers then
