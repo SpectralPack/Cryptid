@@ -1098,7 +1098,7 @@ SMODS.RunSelectPage({
 		if not SMODS.Suits[curr] then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st = "Spades"
 		end
-		return localize(G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk, "suits_plural")
+		return localize(G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st, "suits_plural")
 	end,
 	set_default = function(self, choice)
 		return SMODS.Suits[choice] and choice or "Spades"
@@ -1178,7 +1178,7 @@ SMODS.RunSelectPage({
 		return localize({
 			type = "name_text",
 			set = "Other",
-			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk,
+			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl.."_seal",
 		})
 	end,
 	set_default = function(self, choice)
