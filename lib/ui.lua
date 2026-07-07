@@ -69,7 +69,7 @@ SMODS.DrawStep({
 				self.children.back.sprite_pos = sprite.pos
 				self.children.back:reset()
 				if currentBack.effect.center.edeck_type == "edition" then
-					self.children.back:draw_shader(edition, nil, self.ARGS.send_to_shader, true)
+					self.children.back:draw_shader(edition:sub(3), nil, self.ARGS.send_to_shader, true)
 					if edition == "negative" then
 						self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
 						self.children.center:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)

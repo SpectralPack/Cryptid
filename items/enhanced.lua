@@ -10,19 +10,19 @@ Cryptid.edeck_sprites = {
 	edition = {
 		order = 1,
 		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
-		foil = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 0 } },
-		holo = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 0 } },
-		polychrome = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 0 } },
-		negative = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 0 } },
-		cry_glitched = { atlas = "cry_atlaseditiondeck", pos = { x = 4, y = 0 } },
-		cry_mosaic = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 1 } },
-		cry_oversat = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 1 } },
-		cry_glass = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 1 } },
-		cry_gold = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 1 } },
-		cry_blur = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 2 } },
-		cry_noisy = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 2 } },
-		cry_astral = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 2 } },
-		cry_m = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 2 } },
+		e_foil = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 0 } },
+		e_holo = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 0 } },
+		e_polychrome = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 0 } },
+		e_negative = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 0 } },
+		e_cry_glitched = { atlas = "cry_atlaseditiondeck", pos = { x = 4, y = 0 } },
+		e_cry_mosaic = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 1 } },
+		e_cry_oversat = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 1 } },
+		e_cry_glass = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 1 } },
+		e_cry_gold = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 1 } },
+		e_cry_blur = { atlas = "cry_atlaseditiondeck", pos = { x = 0, y = 2 } },
+		e_cry_noisy = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 2 } },
+		e_cry_astral = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 2 } },
+		e_cry_m = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 2 } },
 	},
 	enhancement = {
 		order = 2,
@@ -110,6 +110,14 @@ local e_deck = {
 	order = 17,
 	pos = { x = 5, y = 2 },
 	loc_vars = function(self, info_queue, center)
+		if
+			SMODS.RunSelect.Internals.preview_area
+			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_enh.page
+		then
+			return {
+				key = self.key .. "_preview",
+			}
+		end
 		local aaa = Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {})
 		local real = aaa
 		return {

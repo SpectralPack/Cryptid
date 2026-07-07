@@ -126,6 +126,17 @@ return {
 					"{C:dark_edition}Edition",
 				},
 			},
+			b_cry_e_deck_preview = {
+				name = "Edition Deck",
+				text = {
+					"All cards will have an",
+					"{C:dark_edition}Edition{} of your choice",
+				},
+				unlock = {
+					"Discover every",
+					"{C:dark_edition}Edition",
+				},
+			},
 			b_cry_encoded = {
 				name = "Encoded Deck",
 				text = {
@@ -5353,6 +5364,8 @@ return {
 
 			run_select_cry_edeck_enh = "Select Enhancement",
 			run_select_cry_edeck_enh_random = "Random Enhancement",
+			run_select_cry_edeck_ed = "Select Edition",
+			run_select_cry_edeck_ed_random = "Random Edition",
 		},
 		labels = {
 			food_jokers = "Food Jokers",
