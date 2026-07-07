@@ -112,7 +112,7 @@ local e_deck = {
 	loc_vars = function(self, info_queue, center)
 		if
 			SMODS.RunSelect.Internals.preview_area
-			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_enh.page
+			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_ed.page
 		then
 			return {
 				key = self.key .. "_preview",
@@ -234,6 +234,14 @@ local sk_deck = {
 	edeck_type = "sticker",
 	config = {},
 	loc_vars = function(self, info_queue, center)
+		if
+			SMODS.RunSelect.Internals.preview_area
+			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_sk.page
+		then
+			return {
+				key = self.key .. "_preview",
+			}
+		end
 		local _, _, ccc = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {

@@ -679,7 +679,9 @@ function Cryptid.enhanced_deck_info(deck)
 		SMODS.RunSelect.Setup.choices.cry_edeck_enh
 			or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh
 			or "m_bonus",
-		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_sticker") or "eternal",
+		SMODS.RunSelect.Setup.choices.cry_edeck_sk
+			or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk
+			or "eternal",
 		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_suit") or "Spades",
 		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "cry_edeck_seal") or "Gold"
 	-- Do Stuff

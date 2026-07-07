@@ -119,7 +119,6 @@ return {
 				text = {
 					"All cards are {V:1}#1#{}",
 					"Cards cannot change editions",
-					"{C:inactive}(Click to edit)",
 				},
 				unlock = {
 					"Discover every",
@@ -131,6 +130,7 @@ return {
 				text = {
 					"All cards will have an",
 					"{C:dark_edition}Edition{} of your choice",
+					"Cards cannot change editions",
 				},
 				unlock = {
 					"Discover every",
@@ -167,6 +167,7 @@ return {
 				text = {
 					"All {C:attention}playing cards{}",
 					"are {V:1}#1#{}(s)",
+					"Cards cannot change enhancement",
 				},
 				unlock = {
 					"Use {C:spectral}Vacuum",
@@ -178,6 +179,7 @@ return {
 					"All {C:attention}playing cards{}",
 					"will have an {C:attention}enhancement",
 					"of your choice",
+					"Cards cannot change enhancement",
 				},
 				unlock = {
 					"Use {C:spectral}Vacuum",
@@ -234,7 +236,16 @@ return {
 				name = "Sticker Deck",
 				text = {
 					"All cards are {V:1}#1#{}",
-					"{C:inactive}(Click to edit)",
+				},
+				unlock = {
+					"Use {C:spectral}Lock",
+				},
+			},
+			b_cry_sk_deck_preview = {
+				name = "Sticker Deck",
+				text = {
+					"All cards will have a",
+					"{C:attention}Sticker{} of your choice"
 				},
 				unlock = {
 					"Use {C:spectral}Lock",
@@ -5366,6 +5377,8 @@ return {
 			run_select_cry_edeck_enh_random = "Random Enhancement",
 			run_select_cry_edeck_ed = "Select Edition",
 			run_select_cry_edeck_ed_random = "Random Edition",
+			run_select_cry_edeck_sk = "Select Sticker",
+			run_select_cry_edeck_sk_random = "Random Sticker",
 		},
 		labels = {
 			food_jokers = "Food Jokers",
