@@ -245,7 +245,7 @@ return {
 				name = "Sticker Deck",
 				text = {
 					"All cards will have a",
-					"{C:attention}Sticker{} of your choice"
+					"{C:attention}Sticker{} of your choice",
 				},
 				unlock = {
 					"Use {C:spectral}Lock",
