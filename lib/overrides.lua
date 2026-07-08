@@ -2209,7 +2209,7 @@ function SMODS.upgrade_poker_hands(args)
 		local effects = {}
 		SMODS.calculate_context({ cry_universum = true }, effects)
 		for i = 1, #effects do
-			universum_mod = universum_mod * (effects[i] and effects[i].jokers and effects[i].jokers.mod or 1)
+			universum_mod = to_big(universum_mod) * (effects[i] and effects[i].jokers and effects[i].jokers.mod or 1)
 		end
 		args.func = function(base, hand, param, level_up)
 			local lv_amt = (type(level_up) == "number" or is_big(level_up)) and level_up or 1
