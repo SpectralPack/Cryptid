@@ -415,10 +415,7 @@ return {
 			if not G.SETTINGS.paused and Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
 				return sa(
 					self,
-					(
-						not self.no_forced_enhancement
-						and G.GAME.modifiers.cry_force_enhancement
-					)
+					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement)
 							and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]
 						or center,
 					y,
@@ -433,9 +430,7 @@ return {
 			if not force and not G.SETTINGS.paused then
 				return se(
 					self,
-					not self.no_forced_edition
-							and G.GAME.modifiers.cry_force_edition
-						or edition,
+					not self.no_forced_edition and G.GAME.modifiers.cry_force_edition or edition,
 					y,
 					z,
 					force
@@ -447,10 +442,7 @@ return {
 		function Card:set_seal(seal, y, z)
 			return ss(
 				self,
-				not self.no_forced_seal
-						and not G.SETTINGS.paused
-						and G.GAME.modifiers.cry_force_seal
-					or seal,
+				not self.no_forced_seal and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_seal or seal,
 				y,
 				z
 			)
@@ -459,10 +451,7 @@ return {
 		function Card:change_suit(new_suit)
 			return cs(
 				self,
-				not self.no_forced_suit
-						and not G.SETTINGS.paused
-						and G.GAME.modifiers.cry_force_suit
-					or new_suit
+				not self.no_forced_suit and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_suit or new_suit
 			)
 		end
 		local ccl = Card.click
