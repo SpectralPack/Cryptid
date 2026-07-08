@@ -130,7 +130,6 @@ local e_deck = {
 	config = { cry_no_edition_price = true },
 	apply = function(self)
 		local aaa = Cryptid.enhanced_deck_info({})
-		G.GAME.cry_lock_edition = true
 		G.GAME.modifiers.cry_force_edition = aaa
 		--Ban Edition tags (They will never redeem)
 		for k, v in pairs(G.P_TAGS) do
@@ -149,7 +148,6 @@ local e_deck = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
-		G.GAME.cry_lock_edition = nil
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -199,7 +197,6 @@ local et_deck = {
 	end,
 	apply = function(self)
 		local aaa, bbb = Cryptid.enhanced_deck_info(self)
-		G.GAME.cry_lock_enhancement = true
 		G.GAME.modifiers.cry_force_enhancement = bbb
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -212,7 +209,6 @@ local et_deck = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
-		G.GAME.cry_lock_enhancement = nil
 	end,
 	draw = cry_edeck_draw,
 	unlocked = false,
@@ -319,7 +315,6 @@ local st_deck = {
 	end,
 	apply = function(self)
 		local aaa, bbb, ccc, ddd = Cryptid.enhanced_deck_info(self)
-		G.GAME.cry_lock_suit = true
 		for _, blind in pairs(G.P_BLINDS) do
 			if Cryptid.safe_get(blind, "debuff", "suit") == ddd then --ban all blinds that debuff the selected suit (in the normal way)
 				G.GAME.banned_keys[blind.key] = true
@@ -337,7 +332,6 @@ local st_deck = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
-		G.GAME.cry_lock_suit = nil
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -385,7 +379,6 @@ local sl_deck = {
 	end,
 	apply = function(self)
 		local aaa, bbb, ccc, ddd, eee = Cryptid.enhanced_deck_info(self)
-		G.GAME.cry_lock_seal = true
 		G.GAME.modifiers.cry_force_seal = eee
 		G.E_MANAGER:add_event(Event({
 			func = function()
@@ -398,7 +391,6 @@ local sl_deck = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
-		G.GAME.cry_lock_seal = nil
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -425,7 +417,6 @@ return {
 					self,
 					(
 						not self.no_forced_enhancement
-						and G.GAME.cry_lock_enhancement
 						and G.GAME.modifiers.cry_force_enhancement
 					)
 							and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]
@@ -443,7 +434,6 @@ return {
 				return se(
 					self,
 					not self.no_forced_edition
-							and G.GAME.modifiers.cry_lock_edition
 							and G.GAME.modifiers.cry_force_edition
 						or edition,
 					y,
@@ -459,7 +449,6 @@ return {
 				self,
 				not self.no_forced_seal
 						and not G.SETTINGS.paused
-						and G.GAME.modifiers.cry_lock_seal
 						and G.GAME.modifiers.cry_force_seal
 					or seal,
 				y,
@@ -472,7 +461,6 @@ return {
 				self,
 				not self.no_forced_suit
 						and not G.SETTINGS.paused
-						and G.GAME.modifiers.cry_lock_suit
 						and G.GAME.modifiers.cry_force_suit
 					or new_suit
 			)

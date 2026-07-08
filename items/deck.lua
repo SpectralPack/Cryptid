@@ -807,23 +807,6 @@ local antimatter = {
 			if check("b_blue") then
 				G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
 			end
-			--All Consumables (see Cryptid.get_antimatter_consumables)
-			local querty = Cryptid.get_antimatter_consumables(nil, skip, custom)
-			if #querty > 0 then
-				delay(0.4)
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						for k, v in ipairs(querty) do
-							if G.P_CENTERS[v] then
-								local card = create_card("Tarot", G.consumeables, nil, nil, nil, nil, v, "deck")
-								card:add_to_deck()
-								G.consumeables:emplace(card)
-							end
-						end
-						return true
-					end,
-				}))
-			end
 			--Yellow Deck
 			if check("b_yellow") then
 				G.GAME.starting_params.dollars = G.GAME.starting_params.dollars + 10
@@ -839,22 +822,6 @@ local antimatter = {
 			-- Red Deck
 			if check("b_red") then
 				G.GAME.starting_params.discards = G.GAME.starting_params.discards + 1
-			end
-			-- All Decks with Vouchers (see Cryptid.get_antimatter_vouchers)
-			local vouchers = Cryptid.get_antimatter_vouchers(nil, skip, custom)
-			if #vouchers > 0 then
-				for k, v in pairs(vouchers) do
-					if G.P_CENTERS[v] then
-						G.GAME.used_vouchers[v] = true
-						G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								Card.apply_to_run(nil, G.P_CENTERS[v])
-								return true
-							end,
-						}))
-					end
-				end
 			end
 			-- Checkered Deck
 			if check("b_checkered") then
@@ -893,6 +860,39 @@ local antimatter = {
 			for _, v in ipairs(G.P_CENTER_POOLS.Back) do
 				if v.cry_antimatter_apply and check(v.key) then
 					v:cry_antimatter_apply()
+				end
+			end
+			--All Consumables (see Cryptid.get_antimatter_consumables)
+			local querty = Cryptid.get_antimatter_consumables(nil, skip, custom)
+			if #querty > 0 then
+				delay(0.4)
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for k, v in ipairs(querty) do
+							if G.P_CENTERS[v] then
+								local card = create_card("Tarot", G.consumeables, nil, nil, nil, nil, v, "deck")
+								card:add_to_deck()
+								G.consumeables:emplace(card)
+							end
+						end
+						return true
+					end,
+				}))
+			end
+			-- All Decks with Vouchers (see Cryptid.get_antimatter_vouchers)
+			local vouchers = Cryptid.get_antimatter_vouchers(nil, skip, custom)
+			if #vouchers > 0 then
+				for k, v in pairs(vouchers) do
+					if G.P_CENTERS[v] then
+						G.GAME.used_vouchers[v] = true
+						G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
+						G.E_MANAGER:add_event(Event({
+							func = function()
+								Card.apply_to_run(nil, G.P_CENTERS[v])
+								return true
+							end,
+						}))
+					end
 				end
 			end
 		end
