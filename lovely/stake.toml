@@ -291,9 +291,10 @@ match_indent = true
 
 
 # Platinum Stake - start with big blind ready to be selected
+#thank you cg223 for this goated lovely feature
 [[patches]]
 [patches.pattern]
-target = ["functions/common_events.lua", "functions/UI_definitions.lua"] #thank you cg223 for this goated lovely feature
+target = ["functions/common_events.lua", "functions/UI_definitions.lua"]
 pattern = "G.GAME.blind_on_deck = 'Small'"
 position = "after"
 payload = "if G.GAME.modifiers.cry_no_small_blind then G.GAME.blind_on_deck = 'Big' end"
