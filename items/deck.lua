@@ -757,6 +757,7 @@ local blank = {
 	order = 75,
 	pos = { x = 1, y = 0 },
 	atlas = "atlasdeck",
+	discovered = true,
 }
 local antimatter = {
 	object_type = "Back",
