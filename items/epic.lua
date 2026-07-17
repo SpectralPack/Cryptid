@@ -2636,7 +2636,7 @@ local sundial = {
 			and card.ability.extra.handleft > 0
 		then
 			card.ability.extra.handleft = card.ability.extra.handleft - 1
-			return { message = card.ability.extra.handleft }
+			return { message = number_format(card.ability.extra.handleft) }
 		end
 
 		if context.selling_self and not context.retrigger_joker and not context.blueprint then
