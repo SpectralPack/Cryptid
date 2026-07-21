@@ -776,7 +776,7 @@ local flickering = {
 			card.ability.flick_tally = 5
 		end
 		if card.ability.set == "Joker" then
-			if context.post_trigger and context.other_joker == card then
+			if context.post_trigger and context.other_card == card then
 				card.ability.flick_tally = card.ability.flick_tally - 1
 				if card.ability.flick_tally > 0 then
 					card_eval_status_text(card, "extra", nil, nil, nil, {
