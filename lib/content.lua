@@ -849,14 +849,14 @@ function Cryptid.antimatter_compat(key, on_load)
 		not back
 		or back.set ~= "Back"
 		or (SMODS.Centers[key] and Cryptid.enabled(key) ~= true)
-		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" or (Cryptid.safe_get(
+		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" or ((Cryptid.safe_get(
 			G.PROFILES,
 			G.SETTINGS.profile,
 			"deck_usage",
-			back,
+			key,
 			"wins",
 			8
-		) or 0 ~= 0) or on_load)
+		) or 0) ~= 0) or on_load)
 		or not (back.unlocked or on_load)
 	then
 		return false
