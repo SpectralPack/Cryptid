@@ -491,10 +491,6 @@ payload = '''
 						G.GAME.blind:set_blind(G.P_BLINDS[b.key])
 					end
 					G.FUNCS.exit_overlay_menu_code()
-					if G.GAME.CODE_DESTROY_CARD then
-						G.GAME.CODE_DESTROY_CARD:start_dissolve()
-						G.GAME.CODE_DESTROY_CARD = nil
-					end
 				end
 			end
 		end

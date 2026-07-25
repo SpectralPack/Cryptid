@@ -415,9 +415,6 @@ function Game:update(dt)
 			v.children.back:set_sprite_pos(G.P_CENTERS.b_cry_glowing.pos or G.P_CENTERS["b_red"].pos)
 		end
 	end
-	if not G.OVERLAY_MENU and G.GAME.CODE_DESTROY_CARD and not G.OVERLAY_MENU_POINTER then
-		G.FUNCS.exit_overlay_menu_code()
-	end
 
 	if not G.OVERLAY_MENU then
 		G.GAME.USING_POINTER = nil

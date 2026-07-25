@@ -3214,18 +3214,8 @@ local class = {
 		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
-		-- Un-use the card
-		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
-			G.GAME.CODE_DESTROY_CARD = copy_card(card)
-			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
-		end
-		if card.ability.cry_multiuse then
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
-		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_CLASS = card.ability.max_highlighted
-		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
 		G.FUNCS.overlay_menu({ definition = create_UIBox_class() })
 	end,
 	init = function(self)
@@ -3249,19 +3239,6 @@ local class = {
 					end
 					G.hand:unhighlight_all()
 					ccl(self)
-					-- Re-use the card
-					if G.GAME.ACTIVE_CODE_CARD then
-						if
-							not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse
-							or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1)
-						then
-							G.GAME.ACTIVE_CODE_CARD:start_dissolve()
-						else
-							G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse =
-								lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
-						end
-					end
-					G.GAME.ACTIVE_CODE_CARD = nil
 				end
 			else
 				ccl(self)
@@ -3455,18 +3432,8 @@ local variable = {
 		return { vars = { Cryptid.safe_get(card, "ability", "max_highlighted") or self.config.max_highlighted } }
 	end,
 	use = function(self, card, area, copier)
-		-- Un-use the card
-		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
-			G.GAME.CODE_DESTROY_CARD = copy_card(card)
-			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-			G.GAME.CODE_DESTROY_CARD.ability.cry_multiuse = nil
-		end
-		if card.ability.cry_multiuse then
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
-		end
 		G.GAME.USING_CODE = true
 		G.GAME.USING_VARIABLE = card.ability.max_highlighted
-		G.GAME.ACTIVE_CODE_CARD = G.GAME.CODE_DESTROY_CARD or card
 		G.FUNCS.overlay_menu({ definition = create_UIBox_variable_code() })
 	end,
 	init = function(self)
@@ -3490,19 +3457,6 @@ local variable = {
 					end
 					G.hand:unhighlight_all()
 					ccl(self)
-					-- Re-use the card
-					if G.GAME.ACTIVE_CODE_CARD then
-						if
-							not G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse
-							or to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) <= to_big(1)
-						then
-							G.GAME.ACTIVE_CODE_CARD:start_dissolve()
-						else
-							G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse =
-								lenient_bignum(to_big(G.GAME.ACTIVE_CODE_CARD.ability.cry_multiuse) - to_big(1))
-						end
-					end
-					G.GAME.ACTIVE_CODE_CARD = nil
 				end
 			else
 				ccl(self)
@@ -5060,10 +5014,6 @@ local copypaste = {
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							local cards = copy_card(context.consumeable)
-							if G.GAME.ACTIVE_CODE_CARD then
-								-- don't copy the temporary multiuse increase for code cards that summon a UI
-								cards.ability.cry_multiuse = (cards.ability.cry_multiuse or 2) - 1
-							end
 							cards:add_to_deck()
 							G.consumeables:emplace(cards)
 							return true

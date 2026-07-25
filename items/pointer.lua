@@ -29,12 +29,6 @@ local pointer = {
 		return true
 	end,
 	use = function(self, card, area, copier)
-		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
-			G.GAME.CODE_DESTROY_CARD = copy_card(card)
-			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-		else
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
-		end
 		G.GAME.USING_CODE = true
 		G.OVERLAY_MENU_POINTER = true
 		G.E_MANAGER:add_event(Event({
