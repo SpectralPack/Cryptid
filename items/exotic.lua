@@ -607,12 +607,13 @@ local primus = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
 	calculate = function(self, card, context)
-		local check = false
 		if context.cardarea == G.jokers and context.before and not context.blueprint then
+			local check = true
 			if context.scoring_hand then
 				for k, v in ipairs(context.full_hand) do
-					if v:get_id() == 2 or v:get_id() == 3 or v:get_id() == 5 or v:get_id() == 7 or v:get_id() == 14 then
-						check = true
+					local id = v:get_id()
+					if id ~= 2 or id ~= 3 or id ~= 5 or id ~= 7 or id ~= 14 then
+						check = false
 					end
 				end
 			end
