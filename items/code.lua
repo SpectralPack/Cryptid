@@ -324,56 +324,6 @@ local crash = {
 					return true
 				end,
 			}))
-
-			-- Split G.ENTERED_ACE string into separate lines for multiline text rendering
-			G.ENTERED_ACE = G.ENTERED_ACE or ""
-			local is_active = G.CONTROLLER and G.CONTROLLER.ace_input_active
-
-			local lines = {}
-			for line in (G.ENTERED_ACE .. "\n"):gmatch("(.-)\n") do
-				lines[#lines + 1] = line
-			end
-			if #lines == 0 then lines = { "" } end
-
-			-- Build UI row nodes for each line of text
-			local line_nodes = {}
-			for i, l in ipairs(lines) do
-				local display_text = l
-				-- Append flashing cursor "|" to the last line when typing mode is active
-				if i == #lines and is_active then
-					display_text = display_text .. "|"
-				end
-
-				local text_content = display_text
-				local text_colour = G.C.UI.TEXT_LIGHT
-				-- Render "???" in soft light green when text is empty and input is inactive
-				if G.ENTERED_ACE == "" and i == 1 and not is_active then
-					text_content = "???"
-					text_colour = lighten(copy_table(G.C.SET.Code), 0.4)
-				elseif text_content == "" then
-					text_content = " "
-				end
-
-				line_nodes[#line_nodes + 1] = {
-					n = G.UIT.R,
-					config = { align = "left", minw = 4.5, padding = 0.01 },
-					nodes = {
-						{
-							n = G.UIT.T,
-							config = {
-								text = text_content,
-								scale = 0.35,
-								align = "left",
-								colour = text_colour,
-							},
-						},
-					},
-				}
-			end
-
-			-- Dark green background when active/typing, bright green background when inactive/default
-			local box_colour = is_active and darken(copy_table(G.C.SET.Code), 0.3) or G.C.SET.Code
-
 			local t = create_UIBox_generic_options({
 				no_back = true,
 				colour = HEX("04200c"),
@@ -381,24 +331,19 @@ local crash = {
 				contents = {
 					{
 						n = G.UIT.R,
-						config = { align = "cm" },
 						nodes = {
-							{
-								n = G.UIT.C,
-								config = {
-									align = "cm",
-									colour = box_colour,
-									r = 0.1,
-									padding = 0.1,
-									minw = 4.5,
-									minh = 1,
-									button = "select_ace_input",
-									id = "ace_input_box",
-									hover = true,
-									shadow = true,
-								},
-								nodes = line_nodes,
-							},
+							create_text_input({
+								colour = G.C.SET.Code,
+								hooked_colour = darken(copy_table(G.C.SET.Code), 0.3),
+								w = 4.5,
+								h = 1,
+								max_length = 2500,
+								extended_corpus = true,
+								prompt_text = "???",
+								ref_table = G,
+								ref_value = "ENTERED_ACE",
+								keyboard_offset = 1,
+							}),
 						},
 					},
 					{
@@ -418,35 +363,13 @@ local crash = {
 			})
 			return t
 		end
-
-		-- Callback when clicking input box: activates ace_input_active and hooks text_input_hook to route keyboard events
-		G.FUNCS.select_ace_input = function(e)
-			G.CONTROLLER.ace_input_active = true
-			if G.CHOOSE_ACE then
-				G.CHOOSE_ACE:remove()
-				G.CHOOSE_ACE = UIBox({
-					definition = create_UIBox_crash(),
-					config = {
-						align = "bmi",
-						offset = { x = 0, y = G.ROOM.T.y + 29 },
-						major = G.jokers,
-						bond = "Weak",
-						instance_type = "POPUP",
-					},
-				})
-				G.CONTROLLER.text_input_hook = G.CHOOSE_ACE:get_UIE_by_ID("ace_input_box")
-			end
-		end
-
-		-- Callback for Execute button: runs entered Lua code, cleans up UIBox, and resets ACE controller state
 		G.FUNCS.ca = function()
 			G.GAME.USING_CODE = false
-			loadstring(G.ENTERED_ACE or "")() --Scary!
+			loadstring(G.ENTERED_ACE)() --Scary!
 			glitched_intensity = 0
 			G.SETTINGS.GRAPHICS.crt = 0
 			check_for_unlock({ type = "ach_cry_used_crash" })
-			if G.CHOOSE_ACE then G.CHOOSE_ACE:remove() end
-			G.CONTROLLER.ace_input_active = nil
+			G.CHOOSE_ACE:remove()
 			G.ENTERED_ACE = nil
 		end
 
@@ -5424,102 +5347,8 @@ local code_cards = {
 return {
 	name = "Code Cards",
 	init = function()
-		-- Intercept keyboard events while ACE typing mode is active
+		--some code to make typing more characters better
 		G.FUNCS.text_input_key = function(args)
-			args = args or {}
-			if G.CONTROLLER and G.CONTROLLER.ace_input_active then
-				local is_ctrl = false
-				if G.CONTROLLER.held_keys then
-					is_ctrl = G.CONTROLLER.held_keys["lctrl"]
-						or G.CONTROLLER.held_keys["rctrl"]
-						or G.CONTROLLER.held_keys["lgui"]
-						or G.CONTROLLER.held_keys["rgui"]
-				end
-				if not is_ctrl and love.keyboard then
-					is_ctrl = love.keyboard.isDown("lctrl", "rctrl", "lgui", "rgui")
-				end
-
-				local key = args.key
-				-- Ctrl+V clipboard paste support
-				if key == "v" or key == "V" then
-					if is_ctrl then
-						local clipboard = (
-							G.F_LOCAL_CLIPBOARD and G.CLIPBOARD or (love.system and love.system.getClipboardText())
-						) or ""
-						if type(clipboard) == "string" and clipboard ~= "" then
-							G.ENTERED_ACE = (G.ENTERED_ACE or "") .. clipboard
-						end
-						key = nil
-					end
-				end
-
-				if key == "return" or key == "RETURN" then
-					local is_shift = false
-					if G.CONTROLLER and G.CONTROLLER.held_keys then
-						is_shift = G.CONTROLLER.held_keys["lshift"]
-							or G.CONTROLLER.held_keys["rshift"]
-					end
-					if not is_shift and love.keyboard then
-						is_shift = love.keyboard.isDown("lshift", "rshift")
-					end
-
-					if is_shift then
-						-- Shift+Enter: Insert newline character \n for multiline editing
-						G.ENTERED_ACE = (G.ENTERED_ACE or "") .. "\n"
-					else
-						-- Standard Enter: Release input hook (make uneditable), play tap sound, and trigger native ease_colour white-flash animation
-						G.CONTROLLER.ace_input_active = nil
-						G.CONTROLLER.text_input_hook = nil
-						if G.CHOOSE_ACE then
-							G.CHOOSE_ACE:remove()
-							G.CHOOSE_ACE = UIBox({
-								definition = create_UIBox_crash(),
-								config = {
-									align = "bmi",
-									offset = { x = 0, y = G.ROOM.T.y + 29 },
-									major = G.jokers,
-									bond = "Weak",
-									instance_type = "POPUP",
-								},
-							})
-							local box = G.CHOOSE_ACE:get_UIE_by_ID("ace_input_box")
-							if box then
-								local orig_colour = copy_table(box.config.colour)
-								box.config.colour = copy_table(G.C.WHITE)
-								ease_colour(box.config.colour, orig_colour)
-							end
-							play_sound("card1", 0.8, 0.6)
-						end
-						return
-					end
-				elseif key == "backspace" or key == "BACKSPACE" then
-					-- Single tap Backspace deletion
-					if G.ENTERED_ACE and #G.ENTERED_ACE > 0 then
-						G.ENTERED_ACE = string.sub(G.ENTERED_ACE, 1, #G.ENTERED_ACE - 1)
-					end
-				elseif key == "space" or key == "SPACE" then
-					G.ENTERED_ACE = (G.ENTERED_ACE or "") .. " "
-				elseif key and #key == 1 then
-					G.ENTERED_ACE = (G.ENTERED_ACE or "") .. key
-				end
-
-				-- Re-render UIBox with updated text string and preserve text_input_hook
-				if G.CHOOSE_ACE then
-					G.CHOOSE_ACE:remove()
-					G.CHOOSE_ACE = UIBox({
-						definition = create_UIBox_crash(),
-						config = {
-							align = "bmi",
-							offset = { x = 0, y = G.ROOM.T.y + 29 },
-							major = G.jokers,
-							bond = "Weak",
-							instance_type = "POPUP",
-						},
-					})
-					G.CONTROLLER.text_input_hook = G.CHOOSE_ACE:get_UIE_by_ID("ace_input_box")
-				end
-				return
-			end
 			local pasting_clipboard = G.CONTROLLER.pasting_clipboard or false
 			args = args or {}
 			if pasting_clipboard == false then
@@ -5634,34 +5463,16 @@ return {
 				})
 				TRANSPOSE_TEXT_INPUT(0)
 			elseif args.key == "RETURN" then --Release the hook
-				local is_shift = false
-				if G.CONTROLLER and G.CONTROLLER.held_keys then
-					is_shift = G.CONTROLLER.held_keys["lshift"]
-						or G.CONTROLLER.held_keys["rshift"]
+				if hook.config.ref_table.callback then
+					hook.config.ref_table.callback()
 				end
-				if not is_shift and love.keyboard then
-					is_shift = love.keyboard.isDown("lshift", "rshift")
-				end
-
-				if is_shift and hook and hook.config and hook.config.ref_table and hook.config.ref_table.ref_value == "ENTERED_ACE" then
-					MODIFY_TEXT_INPUT({
-						letter = "\n",
-						text_table = text,
-						pos = text.current_position + 1,
-					})
-					TRANSPOSE_TEXT_INPUT(1)
-				else
-					if hook.config.ref_table.callback then
-						hook.config.ref_table.callback()
-					end
-					hook.parent.parent.config.colour = hook_config.colour
-					local temp_colour = copy_table(hook_config.orig_colour)
-					hook_config.colour[1] = G.C.WHITE[1]
-					hook_config.colour[2] = G.C.WHITE[2]
-					hook_config.colour[3] = G.C.WHITE[3]
-					ease_colour(hook_config.colour, temp_colour)
-					G.CONTROLLER.text_input_hook = nil
-				end
+				hook.parent.parent.config.colour = hook_config.colour
+				local temp_colour = copy_table(hook_config.orig_colour)
+				hook_config.colour[1] = G.C.WHITE[1]
+				hook_config.colour[2] = G.C.WHITE[2]
+				hook_config.colour[3] = G.C.WHITE[3]
+				ease_colour(hook_config.colour, temp_colour)
+				G.CONTROLLER.text_input_hook = nil
 			elseif args.key == "LEFT" then --Move cursor position to the left
 				TRANSPOSE_TEXT_INPUT(-1)
 			elseif args.key == "RIGHT" then --Move cursor position to the right
@@ -5677,24 +5488,6 @@ return {
 					pos = text.current_position + 1,
 				})
 				TRANSPOSE_TEXT_INPUT(1)
-			end
-
-			if hook_config.ref_value == "ENTERED_ACE" and G.CHOOSE_ACE then
-				local text_str = G.ENTERED_ACE or ""
-				local _, num_newlines = string.gsub(text_str, "\n", "")
-				local num_lines = num_newlines + 1
-				local old_lines = hook_config.last_num_lines or 1
-
-				if num_lines ~= old_lines then
-					hook_config.last_num_lines = num_lines
-					local new_h = math.max(1, num_lines * 0.4 + 0.6)
-					local input_node = G.CHOOSE_ACE:get_UIE_by_ID("text_input_ENTERED_ACE")
-					if input_node then
-						input_node.config.minh = new_h
-						input_node.config.h = new_h
-					end
-					G.CHOOSE_ACE:recalculate()
-				end
 			end
 		end
 		local yc = G.FUNCS.your_collection
