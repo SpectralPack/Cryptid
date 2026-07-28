@@ -359,6 +359,40 @@ function Game:update(dt)
 		AllowDividing("Code")
 		CryptidIncanCompat = true
 	end
+	-- Rapid hold-to-delete loop for ACE prompt when Backspace is held down (>0.35s delay, 0.035s repeat interval)
+	if G.CONTROLLER and G.CONTROLLER.ace_input_active then
+		local is_backspace_held = love.keyboard and love.keyboard.isDown("backspace")
+		if is_backspace_held then
+			G.ACE_DELETE_TIMER = (G.ACE_DELETE_TIMER or 0) + dt
+			if G.ACE_DELETE_TIMER >= 0.35 then
+				G.ACE_DELETE_SUBTIMER = (G.ACE_DELETE_SUBTIMER or 0) + dt
+				if G.ACE_DELETE_SUBTIMER >= 0.035 then
+					G.ACE_DELETE_SUBTIMER = 0
+					if G.ENTERED_ACE and #G.ENTERED_ACE > 0 then
+						G.ENTERED_ACE = string.sub(G.ENTERED_ACE, 1, #G.ENTERED_ACE - 1)
+						if G.CHOOSE_ACE then
+							G.CHOOSE_ACE:remove()
+							G.CHOOSE_ACE = UIBox({
+								definition = create_UIBox_crash(),
+								config = {
+									align = "bmi",
+									offset = { x = 0, y = G.ROOM.T.y + 29 },
+									major = G.jokers,
+									bond = "Weak",
+									instance_type = "POPUP",
+								},
+							})
+							G.CONTROLLER.text_input_hook = G.CHOOSE_ACE:get_UIE_by_ID("ace_input_box")
+						end
+					end
+				end
+			end
+		else
+			G.ACE_DELETE_TIMER = 0
+			G.ACE_DELETE_SUBTIMER = 0
+		end
+	end
+
 	if Cryptid.enabled("set_cry_timer") == true then
 		cry_pointer_dt = cry_pointer_dt + dt
 		cry_jimball_dt = cry_jimball_dt + dt
