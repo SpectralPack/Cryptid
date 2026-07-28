@@ -333,9 +333,7 @@ local crash = {
 			for line in (G.ENTERED_ACE .. "\n"):gmatch("(.-)\n") do
 				lines[#lines + 1] = line
 			end
-			if #lines == 0 then
-				lines = { "" }
-			end
+			if #lines == 0 then lines = { "" } end
 
 			-- Build UI row nodes for each line of text
 			local line_nodes = {}
@@ -447,9 +445,7 @@ local crash = {
 			glitched_intensity = 0
 			G.SETTINGS.GRAPHICS.crt = 0
 			check_for_unlock({ type = "ach_cry_used_crash" })
-			if G.CHOOSE_ACE then
-				G.CHOOSE_ACE:remove()
-			end
+			if G.CHOOSE_ACE then G.CHOOSE_ACE:remove() end
 			G.CONTROLLER.ace_input_active = nil
 			G.ENTERED_ACE = nil
 		end
@@ -5460,7 +5456,8 @@ return {
 				if key == "return" or key == "RETURN" then
 					local is_shift = false
 					if G.CONTROLLER and G.CONTROLLER.held_keys then
-						is_shift = G.CONTROLLER.held_keys["lshift"] or G.CONTROLLER.held_keys["rshift"]
+						is_shift = G.CONTROLLER.held_keys["lshift"]
+							or G.CONTROLLER.held_keys["rshift"]
 					end
 					if not is_shift and love.keyboard then
 						is_shift = love.keyboard.isDown("lshift", "rshift")
@@ -5639,19 +5636,14 @@ return {
 			elseif args.key == "RETURN" then --Release the hook
 				local is_shift = false
 				if G.CONTROLLER and G.CONTROLLER.held_keys then
-					is_shift = G.CONTROLLER.held_keys["lshift"] or G.CONTROLLER.held_keys["rshift"]
+					is_shift = G.CONTROLLER.held_keys["lshift"]
+						or G.CONTROLLER.held_keys["rshift"]
 				end
 				if not is_shift and love.keyboard then
 					is_shift = love.keyboard.isDown("lshift", "rshift")
 				end
 
-				if
-					is_shift
-					and hook
-					and hook.config
-					and hook.config.ref_table
-					and hook.config.ref_table.ref_value == "ENTERED_ACE"
-				then
+				if is_shift and hook and hook.config and hook.config.ref_table and hook.config.ref_table.ref_value == "ENTERED_ACE" then
 					MODIFY_TEXT_INPUT({
 						letter = "\n",
 						text_table = text,
