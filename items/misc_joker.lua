@@ -1651,11 +1651,12 @@ local jimball = {
 			end
 			if reset then
 				if to_big(card.ability.extra.x_mult) > to_big(1) then
-					card.ability.extra.x_mult = 1
-					return {
-						card = self,
-						message = localize("k_reset"),
-					}
+					SMODS.reset_card(card, {
+						ref_table = card.ability.extra,
+						ref_value = "x_mult",
+						reset_value = 1,
+					})
+					return nil, true
 				end
 			else
 				SMODS.scale_card(card, {
@@ -10690,8 +10691,12 @@ local keychange = {
 		end
 
 		if context.end_of_round and context.main_eval and not context.blueprint then
-			card.ability.extra.xm = 1
-			return { message = localize("k_reset") }
+			SMODS.reset_card(card, {
+				ref_table = card.ability.extra,
+				ref_value = "xm",
+				reset_value = 1,
+			})
+			return nil, true
 		end
 	end,
 	attributes = { "scaling", "xmult", "reset" },
