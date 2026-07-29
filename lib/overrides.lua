@@ -359,12 +359,10 @@ function Game:update(dt)
 		AllowDividing("Code")
 		CryptidIncanCompat = true
 	end
-	if Cryptid.enabled("set_cry_timer") == true then
-		cry_pointer_dt = cry_pointer_dt + dt
-		cry_jimball_dt = cry_jimball_dt + dt
-		cry_glowing_dt = cry_glowing_dt + dt
-		cry_glowing_dt2 = cry_glowing_dt2 + dt
-	end
+	cry_pointer_dt = cry_pointer_dt + dt
+	cry_jimball_dt = cry_jimball_dt + dt
+	cry_glowing_dt = cry_glowing_dt + dt
+	cry_glowing_dt2 = cry_glowing_dt2 + dt
 	--Update sprite positions each frame on certain cards to give the illusion of an animated card
 	if G.P_CENTERS and G.P_CENTERS.c_cry_pointer and cry_pointer_dt > 0.5 then
 		cry_pointer_dt = 0
