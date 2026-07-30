@@ -13,7 +13,7 @@ function Cryptid.can_spawn_equilibrium(center)
 	if Cryptid.no(center, "doe") then
 		return false
 	end
-	if not center.unlocked and center.set ~= "Booster" then
+	if center.unlocked == false and center.set ~= "Booster" then
 		return false
 	end
 	return true
@@ -23,14 +23,23 @@ end
 function Cryptid.poll_equilibrium_key(seed_override)
 	local pool = {}
 	local all_unavailable = true
-	local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
+	local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster", "Default", "Enhanced" }
 	for _, id in ipairs(valid_pools) do
-		for k, v in pairs(G.P_CENTER_POOLS[id]) do
-			if Cryptid.can_spawn_equilibrium(v) then
-				pool[#pool + 1] = v.key
-				all_unavailable = false
-			else
-				pool[#pool + 1] = "UNAVAILABLE"
+		if id == "Default" and G.P_CARDS then
+			for k, v in pairs(G.P_CARDS) do
+				if Cryptid.can_spawn_equilibrium(G.P_CENTERS.c_base) then
+					pool[#pool + 1] = "c_base"
+					all_unavailable = false
+				end
+			end
+		elseif G.P_CENTER_POOLS[id] then
+			for k, v in pairs(G.P_CENTER_POOLS[id]) do
+				if Cryptid.can_spawn_equilibrium(v) then
+					pool[#pool + 1] = v.key
+					all_unavailable = false
+				else
+					pool[#pool + 1] = "UNAVAILABLE"
+				end
 			end
 		end
 	end
@@ -1624,12 +1633,49 @@ function create_card_for_shop(area)
 		end
 		local key = Cryptid.poll_equilibrium_key("cry_equilibrium")
 		local center = G.P_CENTERS[key]
-		local args = { set = center.set, area = area, key_append = "sho", front = false, key = center.key }
-		local flags = SMODS.calculate_context({ create_shop_card = true, set = center.set, cardarea = area })
+		local set = center.set
+		local create_set = center.set
+		local enhancement = nil
+
+		if center.set == "Default" or center.key == "c_base" then
+			create_set = "Base"
+			if pseudorandom(pseudoseed("cry_eq_illusion_enhance")) > 0.6 or G.GAME.used_vouchers["v_illusion"] then
+				enhancement = SMODS.poll_enhancement({ key = "cry_eq_illusion_enhance", guaranteed = true })
+			end
+		elseif center.set == "Enhanced" then
+			create_set = "Enhanced"
+			enhancement = center.key
+		end
+
+		local args = {
+			set = create_set,
+			area = area,
+			key_append = "sho",
+			front = false,
+			key = not enhancement and (create_set == "Base" and "c_base" or center.key) or nil,
+			enhancement = enhancement,
+		}
+		local flags = SMODS.calculate_context({ create_shop_card = true, set = create_set, cardarea = area })
 		local create_flags = SMODS.merge_defaults(flags.shop_create_flags or {}, args)
 		local card = SMODS.create_card(create_flags)
+
+		if create_set == "Base" or create_set == "Enhanced" then
+			if not card.edition and (pseudorandom(pseudoseed("cry_eq_illusion_edition")) > 0.8 or G.GAME.used_vouchers["v_illusion"]) then
+				local edition = poll_edition("illusion", nil, false, true)
+				if edition then
+					card:set_edition(edition)
+				end
+			end
+			if not card.seal then
+				local seal = SMODS.poll_seal({ key = "cry_eq_illusion_seal", mod = 10 })
+				if seal then
+					card:set_seal(seal, true)
+				end
+			end
+		end
+
 		SMODS.calculate_context({ modify_shop_card = true, card = card })
-		create_shop_card_ui(card, center.set, area)
+		create_shop_card_ui(card, set, area)
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for k, v in ipairs(G.GAME.tags) do
