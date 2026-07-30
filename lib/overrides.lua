@@ -4,7 +4,10 @@
 
 -- essentially in_pool for equilibrium spawning
 function Cryptid.can_spawn_equilibrium(center)
-	if (Cryptid.enabled(center.key) ~= true or (Spectrallib and Spectrallib.enabled(center.key) ~= true)) and center.original_mod then
+	if
+		(Cryptid.enabled(center.key) ~= true or (Spectrallib and Spectrallib.enabled(center.key) ~= true))
+		and center.original_mod
+	then
 		return false
 	end
 	if Cryptid.no(center, "doe") then
@@ -27,7 +30,7 @@ function Cryptid.poll_equilibrium_key(seed_override)
 				pool[#pool + 1] = v.key
 				all_unavailable = false
 			else
-				pool[#pool+1] = "UNAVAILABLE"
+				pool[#pool + 1] = "UNAVAILABLE"
 			end
 		end
 	end
@@ -37,7 +40,7 @@ function Cryptid.poll_equilibrium_key(seed_override)
 	local res = pseudorandom_element(pool, seed_override or "cry_equilibrium")
 	local i = 1
 	while res == "UNAVAILABLE" do
-		res = pseudorandom_element(pool, (seed_override or "cry_equilibrium").."_resample"..i)
+		res = pseudorandom_element(pool, (seed_override or "cry_equilibrium") .. "_resample" .. i)
 		i = i + 1
 	end
 	return res
@@ -66,9 +69,9 @@ local smods_get_voucher_key = SMODS.get_next_vouchers
 function SMODS.get_next_vouchers(vouchers)
 	if G.GAME.modifiers.cry_equilibrium then
 		vouchers = vouchers or { spawn = {} }
-		for i = #vouchers+1, G.GAME.starting_params.vouchers_in_shop + (G.GAME.modifiers.extra_vouchers or 0) do
+		for i = #vouchers + 1, G.GAME.starting_params.vouchers_in_shop + (G.GAME.modifiers.extra_vouchers or 0) do
 			local key = Cryptid.poll_equilibrium_key("cry_equivoucherium")
-			vouchers[#vouchers+1] = key or "j_joker"
+			vouchers[#vouchers + 1] = key or "j_joker"
 			vouchers.spawn[key or "j_joker"] = true
 		end
 		return vouchers
@@ -1606,31 +1609,36 @@ function create_card_for_shop(area)
 	end
 	if G.GAME.modifiers.cry_equilibrium and area == G.shop_jokers then
 		local forced_tag = nil
-        for k, v in ipairs(G.GAME.tags) do
-          if not forced_tag then
-            forced_tag = v:apply_to_run({type = 'store_joker_create', area = area})
-            if forced_tag then
-              for kk, vv in ipairs(G.GAME.tags) do
-                if vv:apply_to_run({type = 'store_joker_modify', card = forced_tag}) then break end
-              end
-              return forced_tag end
-          end
-        end
+		for k, v in ipairs(G.GAME.tags) do
+			if not forced_tag then
+				forced_tag = v:apply_to_run({ type = "store_joker_create", area = area })
+				if forced_tag then
+					for kk, vv in ipairs(G.GAME.tags) do
+						if vv:apply_to_run({ type = "store_joker_modify", card = forced_tag }) then
+							break
+						end
+					end
+					return forced_tag
+				end
+			end
+		end
 		local key = Cryptid.poll_equilibrium_key("cry_equilibrium")
 		local center = G.P_CENTERS[key]
-		local args = { set = center.set, area = area, key_append = 'sho', front = false, key = center.key }
+		local args = { set = center.set, area = area, key_append = "sho", front = false, key = center.key }
 		local flags = SMODS.calculate_context({ create_shop_card = true, set = center.set, cardarea = area })
 		local create_flags = SMODS.merge_defaults(flags.shop_create_flags or {}, args)
 		local card = SMODS.create_card(create_flags)
 		SMODS.calculate_context({ modify_shop_card = true, card = card })
 		create_shop_card_ui(card, center.set, area)
 		G.E_MANAGER:add_event(Event({
-			func = (function()
+			func = function()
 				for k, v in ipairs(G.GAME.tags) do
-					if v:apply_to_run({ type = 'store_joker_modify', card = card }) then break end
+					if v:apply_to_run({ type = "store_joker_modify", card = card }) then
+						break
+					end
 				end
 				return true
-			end)
+			end,
 		}))
 		return card
 	end
