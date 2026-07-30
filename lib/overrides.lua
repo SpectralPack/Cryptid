@@ -76,7 +76,7 @@ function SMODS.get_next_vouchers(vouchers)
 		end
 		return vouchers
 	else
-		smods_get_voucher_key(vouchers)
+		return smods_get_voucher_key(vouchers)
 	end
 end
 
