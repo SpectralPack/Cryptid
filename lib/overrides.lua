@@ -2,11 +2,55 @@
 
 --Get Pack hooks
 
+-- essentially in_pool for equilibrium spawning
+function Cryptid.can_spawn_equilibrium(center)
+	if (Cryptid.enabled(center.key) ~= true or (Spectrallib and Spectrallib.enabled(center.key) ~= true)) and center.original_mod then
+		return false
+	end
+	if Cryptid.no(center, "doe") then
+		return false
+	end
+	if not center.unlocked and center.set ~= "Booster" then
+		return false
+	end
+	return true
+end
+
+-- polls a random card for deck of equilibrium
+function Cryptid.poll_equilibrium_key(seed_override)
+	local pool = {}
+	local all_unavailable = true
+	local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
+	for _, id in ipairs(valid_pools) do
+		for k, v in pairs(G.P_CENTER_POOLS[id]) do
+			if Cryptid.can_spawn_equilibrium(v) then
+				pool[#pool + 1] = v.key
+				all_unavailable = false
+			else
+				pool[#pool+1] = "UNAVAILABLE"
+			end
+		end
+	end
+	if all_unavailable then
+		return "j_joker" --fallback
+	end
+	local res = pseudorandom_element(pool, seed_override or "cry_equilibrium")
+	local i = 1
+	while res == "UNAVAILABLE" do
+		res = pseudorandom_element(pool, (seed_override or "cry_equilibrium").."_resample"..i)
+		i = i + 1
+	end
+	return res
+end
+
 -- dumb hook because i don't feel like aggressively patching get_pack to do stuff
 -- very inefficient
 -- maybe smods should overwrite the function and make it more targetable?
 local getpackref = get_pack
 function get_pack(_key, _type)
+	if G.GAME.modifiers.cry_equilibrium then
+		return G.P_CENTERS[Cryptid.poll_equilibrium_key("cry_equipackbrium")]
+	end
 	local temp_banned = copy_table(G.GAME.banned_keys)
 	--Add banished keys (via DELETE) to banned_keys so they don't appear in shop
 	for k, v in pairs(G.GAME.cry_banished_keys) do
@@ -15,34 +59,28 @@ function get_pack(_key, _type)
 	local abc = getpackref(_key, _type)
 	--Convert banned keys back to what it was originally
 	G.GAME.banned_keys = copy_table(temp_banned)
-	if G.GAME.modifiers.cry_equilibrium then
-		if not P_CRY_ITEMS then
-			P_CRY_ITEMS = {}
-			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
-			for _, id in ipairs(valid_pools) do
-				for k, v in pairs(G.P_CENTER_POOLS[id]) do
-					if not Cryptid.no(v, "doe", k) then
-						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-					end
-				end
-			end
-			for k, v in pairs(G.P_CARDS) do
-				if not Cryptid.no(v, "doe", k) then
-					P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-				end
-			end
-		end
-		return G.P_CENTERS[pseudorandom_element(
-			P_CRY_ITEMS,
-			pseudoseed("cry_equipackbrium" .. G.GAME.round_resets.ante)
-		)]
-	end
 	return abc
 end
 
+local smods_get_voucher_key = SMODS.get_next_vouchers
+function SMODS.get_next_vouchers(vouchers)
+	if G.GAME.modifiers.cry_equilibrium then
+		vouchers = vouchers or { spawn = {} }
+		for i = #vouchers+1, G.GAME.starting_params.vouchers_in_shop + (G.GAME.modifiers.extra_vouchers or 0) do
+			local key = Cryptid.poll_equilibrium_key("cry_equivoucherium")
+			vouchers[#vouchers+1] = key or "j_joker"
+			vouchers.spawn[key or "j_joker"] = true
+		end
+		return vouchers
+	else
+		smods_get_voucher_key(vouchers)
+	end
+end
+
 -- get_currrent_pool hook for Deck of Equilibrium and Copies
+--[[ not needed anymore (first block never ran to begin with and equilibrium is refactored)
 local gcp = get_current_pool
-function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
+function get_current_pool(_type, _rarity, _legendary, _append)
 	if type == "Tag" then
 		for i = 1, #pool do
 			-- Copies: Turn Double tags into Triple Tags
@@ -97,7 +135,7 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
 	end
 	return gcp(_type, _rarity, _legendary, _append)
 end
-
+]]
 local gnb = get_new_boss
 function get_new_boss()
 	local bl = gnb()
@@ -1565,6 +1603,36 @@ function create_card_for_shop(area)
 		return guaranteed_card
 	else
 		guaranteed_card:remove()
+	end
+	if G.GAME.modifiers.cry_equilibrium and area == G.shop_jokers then
+		local forced_tag = nil
+        for k, v in ipairs(G.GAME.tags) do
+          if not forced_tag then
+            forced_tag = v:apply_to_run({type = 'store_joker_create', area = area})
+            if forced_tag then
+              for kk, vv in ipairs(G.GAME.tags) do
+                if vv:apply_to_run({type = 'store_joker_modify', card = forced_tag}) then break end
+              end
+              return forced_tag end
+          end
+        end
+		local key = Cryptid.poll_equilibrium_key("cry_equilibrium")
+		local center = G.P_CENTERS[key]
+		local args = { set = center.set, area = area, key_append = 'sho', front = false, key = center.key }
+		local flags = SMODS.calculate_context({ create_shop_card = true, set = center.set, cardarea = area })
+		local create_flags = SMODS.merge_defaults(flags.shop_create_flags or {}, args)
+		local card = SMODS.create_card(create_flags)
+		SMODS.calculate_context({ modify_shop_card = true, card = card })
+		create_shop_card_ui(card, center.set, area)
+		G.E_MANAGER:add_event(Event({
+			func = (function()
+				for k, v in ipairs(G.GAME.tags) do
+					if v:apply_to_run({ type = 'store_joker_modify', card = card }) then break end
+				end
+				return true
+			end)
+		}))
+		return card
 	end
 	return ccfs(area)
 end
