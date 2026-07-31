@@ -24,7 +24,7 @@ function Cryptid.poll_equilibrium_key(seed_override)
 	local pool = {}
 	local all_unavailable = true
 	local pcard = false
-	local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster", "Default", }
+	local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster", "Default" }
 	for _, id in ipairs(valid_pools) do
 		if id == "Default" then
 			for k, v in pairs(G.P_CARDS) do
@@ -58,7 +58,7 @@ function Cryptid.poll_equilibrium_key(seed_override)
 		local new_p = { "c_base" }
 		for _, v in ipairs(G.P_CENTER_POOLS.Enhanced) do
 			if Cryptid.can_spawn_equilibrium(v) then
-				new_p[#new_p+1] = v.key
+				new_p[#new_p + 1] = v.key
 			end
 		end
 		res = pseudorandom_element(new_p, seed_override or "cry_equilibrium2")
@@ -1668,8 +1668,8 @@ function create_card_for_shop(area)
 			key = not enhancement and (create_set == "Base" and "c_base" or center.key) or nil,
 			enhancement = enhancement,
 			--modifier generation copied from standard packs
-			edition = pcard and poll_edition('cry_equiplaying_edition' .. G.GAME.round_resets.ante, 2, true) or nil,
-			seal = pcard and SMODS.poll_seal({mod = 10}) or nil,
+			edition = pcard and poll_edition("cry_equiplaying_edition" .. G.GAME.round_resets.ante, 2, true) or nil,
+			seal = pcard and SMODS.poll_seal({ mod = 10 }) or nil,
 			silent = true,
 		}
 		local flags = SMODS.calculate_context({ create_shop_card = true, set = create_set, cardarea = area })
