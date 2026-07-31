@@ -1667,30 +1667,14 @@ function create_card_for_shop(area)
 			front = pcard and pseudorandom_element(G.P_CARDS, "cry_equifrontbrium") or nil,
 			key = not enhancement and (create_set == "Base" and "c_base" or center.key) or nil,
 			enhancement = enhancement,
+			--modifier generation copied from standard packs
+			edition = pcard and poll_edition('cry_equiplaying_edition' .. G.GAME.round_resets.ante, 2, true) or nil,
+			seal = pcard and SMODS.poll_seal({mod = 10}) or nil,
+			silent = true,
 		}
 		local flags = SMODS.calculate_context({ create_shop_card = true, set = create_set, cardarea = area })
 		local create_flags = SMODS.merge_defaults(flags.shop_create_flags or {}, args)
 		local card = SMODS.create_card(create_flags)
-
-		if (create_set == "Base" or create_set == "Enhanced") and G.GAME.used_vouchers["v_illusion"] then
-			if
-				not card.edition
-				and (pseudorandom(pseudoseed("illusion")) > 0.8)
-			then
-				local edition = poll_edition("illusion", nil, false, true)
-				if edition then
-					card:set_edition(edition)
-				end
-			end
-			--[[ vanilla doesnt get it either :P
-			if not card.seal then
-				local seal = SMODS.poll_seal({ key = "cry_eq_illusion_seal", mod = 10 })
-				if seal then
-					card:set_seal(seal, true)
-				end
-			end
-			]]
-		end
 
 		SMODS.calculate_context({ modify_shop_card = true, card = card })
 		create_shop_card_ui(card, set, area)
