@@ -1660,7 +1660,10 @@ function create_card_for_shop(area)
 		local card = SMODS.create_card(create_flags)
 
 		if create_set == "Base" or create_set == "Enhanced" then
-			if not card.edition and (pseudorandom(pseudoseed("cry_eq_illusion_edition")) > 0.8 or G.GAME.used_vouchers["v_illusion"]) then
+			if
+				not card.edition
+				and (pseudorandom(pseudoseed("cry_eq_illusion_edition")) > 0.8 or G.GAME.used_vouchers["v_illusion"])
+			then
 				local edition = poll_edition("illusion", nil, false, true)
 				if edition then
 					card:set_edition(edition)
