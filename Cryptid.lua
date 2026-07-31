@@ -23,12 +23,9 @@ SMODS.current_mod.optional_features = {
 	-- Might already be useful for sticker calc
 
 	-- Cryptid uses cardarea deck now
-	--[[ no the fuck is doesnt?
 	cardareas = {
 		deck = true,
-		discard = true, -- used by scorch
 	},
-	]]
 }
 
 --Create gradients used by Cryptid
