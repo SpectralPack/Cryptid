@@ -457,7 +457,7 @@ function Cryptid.bonus_voucher_mod(mod)
 					G.shop_vouchers.T.y,
 					G.CARD_W,
 					G.CARD_H,
-					G.P_CARDS.empty,
+					(G.P_CENTERS[curr_bonus[#curr_bonus]].set == "Default" or G.P_CENTERS[curr_bonus[#curr_bonus]].set == "Enhanced" or G.P_CENTERS[curr_bonus[#curr_bonus]].key == "c_base") and pseudorandom_element(G.P_CARDS, "cry_equifrontbrium") or G.P_CARDS.empty,
 					G.P_CENTERS[curr_bonus[#curr_bonus]],
 					{ bypass_discovery_center = true, bypass_discovery_ui = true }
 				)
@@ -473,7 +473,7 @@ function Cryptid.bonus_voucher_mod(mod)
 				then
 					card.cry_flipped = true
 				end
-				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
+				create_shop_card_ui(card, (card.config.center.set == "Default" or card.config.center.set == "Enhanced" or card.config.center.key == "c_base") and "Base" or card.config.center.set, G.shop_vouchers)
 				card:start_materialize()
 				if G.GAME.current_round.cry_voucher_edition then
 					card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
