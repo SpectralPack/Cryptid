@@ -894,9 +894,16 @@ local circulus_pistoris = {
 			if Cryptid.safe_get(card, "edition", "cry_oversat") then
 				pi = 2 * pi
 			end
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound("talisman_emult", 1)
+					return true
+				end,
+			}))
 			return {
 				echips = pi,
 				emult = pi,
+				sound = "talisman_echip",
 				message = localize({
 					type = "variable",
 					key = "a_powmultchips",
