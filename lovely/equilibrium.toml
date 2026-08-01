@@ -3,7 +3,27 @@ version = "1.0.0"
 dump_lua = true
 priority = -1
 
-# non-pack scaling in pack slots
+# per-index voucher slot loading for Deck of Equilibrium (game.lua)
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+    if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+        SMODS.add_voucher_to_shop(key)
+    end
+end'''
+position = "at"
+payload = '''for i, key in ipairs(G.GAME.current_round.voucher or {}) do
+    if G.P_CENTERS[key] and (G.GAME.current_round.voucher.spawn[key] ~= false) and (G.GAME.current_round.voucher.spawn[i] ~= false) then
+        G.shop_vouchers_vidx = i
+        local _vcard = SMODS.add_voucher_to_shop(key)
+        if _vcard then _vcard.shop_voucher_idx = i end
+        G.shop_vouchers_vidx = nil
+    end
+end'''
+match_indent = true
+
+# non-pack scaling in pack slots (game.lua)
 [[patches]]
 [patches.pattern]
 target = "game.lua"
@@ -12,13 +32,41 @@ position = "at"
 payload = "G.shop_booster.T.y, G.CARD_W*(G.P_CENTERS[G.GAME.current_round.used_packs[i]].set == 'Booster' and 1.27 or 1), G.CARD_H*(G.P_CENTERS[G.GAME.current_round.used_packs[i]].set == 'Booster' and 1.27 or 1), (G.P_CENTERS[G.GAME.current_round.used_packs[i]].set == 'Default' or G.P_CENTERS[G.GAME.current_round.used_packs[i]].set == 'Enhanced' or G.P_CENTERS[G.GAME.current_round.used_packs[i]].key == 'c_base') and pseudorandom_element(G.P_CARDS, 'cry_equifrontbrium') or G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.used_packs[i]], {bypass_discovery_center = true, bypass_discovery_ui = true})"
 match_indent = true
 
-# non-pack type in pack slots
+# non-pack type in pack slots (game.lua)
 [[patches]]
 [patches.pattern]
 target = "game.lua"
 pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "at"
-payload = "create_shop_card_ui(card, (card.config.center.set == 'Default' or card.config.center.set == 'Enhanced' or card.config.center.key == 'c_base') and 'Base' or card.config.center.set, G.shop_booster)"
+payload = '''create_shop_card_ui(card, (card.config.center.set == 'Default' or card.config.center.set == 'Enhanced' or card.config.center.key == 'c_base') and 'Base' or card.config.center.set, G.shop_booster)
+if card.config.center.key == 'j_cry_universe' or card.ability.name == 'cry-universe' then card:set_edition('e_cry_astral', true, nil, true) end
+if card.config.center.key == 'j_cry_meteor' or card.ability.name == 'cry-meteor' then card:set_edition('e_foil', true, nil, true) end
+if card.config.center.key == 'j_cry_exoplanet' or card.ability.name == 'cry-exoplanet' then card:set_edition('e_holo', true, nil, true) end
+if card.config.center.key == 'j_cry_stardust' or card.ability.name == 'cry-stardust' then card:set_edition('e_polychrome', true, nil, true) end
+if Cryptid and Cryptid.manipulate then Cryptid.manipulate(card) end'''
+match_indent = true
+
+# non-pack scaling in SMODS pack slots
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})"
+position = "at"
+payload = "G.shop_booster.T.y, G.CARD_W*(G.P_CENTERS[key].set == 'Booster' and 1.27 or 1), G.CARD_H*(G.P_CENTERS[key].set == 'Booster' and 1.27 or 1), (G.P_CENTERS[key].set == 'Default' or G.P_CENTERS[key].set == 'Enhanced' or G.P_CENTERS[key].key == 'c_base') and pseudorandom_element(G.P_CARDS, 'cry_equifrontbrium') or G.P_CARDS.empty, G.P_CENTERS[key], {bypass_discovery_center = true, bypass_discovery_ui = true})"
+match_indent = true
+
+# non-pack type in SMODS pack slots
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
+position = "at"
+payload = '''create_shop_card_ui(card, (card.config.center.set == 'Default' or card.config.center.set == 'Enhanced' or card.config.center.key == 'c_base') and 'Base' or card.config.center.set, G.shop_booster)
+if card.config.center.key == 'j_cry_universe' or card.ability.name == 'cry-universe' then card:set_edition('e_cry_astral', true, nil, true) end
+if card.config.center.key == 'j_cry_meteor' or card.ability.name == 'cry-meteor' then card:set_edition('e_foil', true, nil, true) end
+if card.config.center.key == 'j_cry_exoplanet' or card.ability.name == 'cry-exoplanet' then card:set_edition('e_holo', true, nil, true) end
+if card.config.center.key == 'j_cry_stardust' or card.ability.name == 'cry-stardust' then card:set_edition('e_polychrome', true, nil, true) end
+if Cryptid and Cryptid.manipulate then Cryptid.manipulate(card) end'''
 match_indent = true
 
 # non-voucher front card in SMODS voucher shop slots
@@ -27,7 +75,7 @@ match_indent = true
 target = '=[SMODS _ "src/utils.lua"]'
 pattern = "G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[key],{bypass_discovery_center = true, bypass_discovery_ui = true})"
 position = "at"
-payload = "G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, (G.P_CENTERS[key].set == 'Default' or G.P_CENTERS[key].set == 'Enhanced' or G.P_CENTERS[key].key == 'c_base') and pseudorandom_element(G.P_CARDS, 'cry_equifrontbrium') or G.P_CARDS.empty, G.P_CENTERS[key],{bypass_discovery_center = true, bypass_discovery_ui = true})"
+payload = "G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, (G.P_CENTERS[key].set == 'Default' or G.P_CENTERS[key].set == 'Enhanced' or G.P_CENTERS[key].key == 'c_base') and pseudorandom_element(G.P_CARDS, pseudoseed('cry_equifrontbrium'..(G.GAME.round_resets.ante or 1)..(key or '')..(G.shop_vouchers_vidx or 1), G.GAME.pseudorandom.seed)) or G.P_CARDS.empty, G.P_CENTERS[key],{bypass_discovery_center = true, bypass_discovery_ui = true})"
 match_indent = true
 
 # non-voucher type in SMODS voucher shop slots
@@ -36,7 +84,12 @@ match_indent = true
 target = '=[SMODS _ "src/utils.lua"]'
 pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
 position = "at"
-payload = "create_shop_card_ui(card, (card.config.center.set == 'Default' or card.config.center.set == 'Enhanced' or card.config.center.key == 'c_base') and 'Base' or card.config.center.set, G.shop_vouchers)"
+payload = '''create_shop_card_ui(card, (card.config.center.set == 'Default' or card.config.center.set == 'Enhanced' or card.config.center.key == 'c_base') and 'Base' or card.config.center.set, G.shop_vouchers)
+if card.config.center.key == 'j_cry_universe' or card.ability.name == 'cry-universe' then card:set_edition('e_cry_astral', true, nil, true) end
+if card.config.center.key == 'j_cry_meteor' or card.ability.name == 'cry-meteor' then card:set_edition('e_foil', true, nil, true) end
+if card.config.center.key == 'j_cry_exoplanet' or card.ability.name == 'cry-exoplanet' then card:set_edition('e_holo', true, nil, true) end
+if card.config.center.key == 'j_cry_stardust' or card.ability.name == 'cry-stardust' then card:set_edition('e_polychrome', true, nil, true) end
+if Cryptid and Cryptid.manipulate then Cryptid.manipulate(card) end'''
 match_indent = true
 
 # non-voucher front card in bonus voucher shop slots (game.lua)
@@ -45,5 +98,34 @@ match_indent = true
 target = "game.lua"
 pattern = "G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]],{bypass_discovery_center = true, bypass_discovery_ui = true})"
 position = "at"
-payload = "G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, (G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]].set == 'Default' or G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]].set == 'Enhanced' or G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]].key == 'c_base') and pseudorandom_element(G.P_CARDS, 'cry_equifrontbrium') or G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]],{bypass_discovery_center = true, bypass_discovery_ui = true})"
+payload = "G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, (G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]].set == 'Default' or G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]].set == 'Enhanced' or G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]].key == 'c_base') and pseudorandom_element(G.P_CARDS, pseudoseed('cry_equifrontbrium'..(G.GAME.round_resets.ante or 1)..(G.GAME.current_round.cry_bonusvouchers[i] or '')..i, G.GAME.pseudorandom.seed)) or G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]],{bypass_discovery_center = true, bypass_discovery_ui = true})"
+match_indent = true
+
+# slot tracking for non-booster and non-voucher items purchased from shop slots
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if c1.children.buy_button then c1.children.buy_button:remove() end"
+position = "after"
+payload = '''
+    if c1.shop_voucher or c1.from_area == G.shop_vouchers or c1.area == G.shop_vouchers then
+        if G.GAME.current_round.voucher and type(G.GAME.current_round.voucher) == 'table' and G.GAME.current_round.voucher.spawn then
+            if c1.shop_voucher_idx then
+                G.GAME.current_round.voucher.spawn[c1.shop_voucher_idx] = false
+            end
+            local key = c1.config.center_key or (c1.config.center and c1.config.center.key)
+            if key then
+                local count = 0
+                for _, v in ipairs(G.GAME.current_round.voucher) do
+                    if v == key then count = count + 1 end
+                end
+                if count <= 1 then
+                    G.GAME.current_round.voucher.spawn[key] = false
+                end
+            end
+        end
+    end
+    if c1.shop_cry_bonusvoucher then G.GAME.cry_bonusvouchersused[c1.shop_cry_bonusvoucher] = true end
+    if c1.ability and c1.ability.booster_pos then G.GAME.current_round.used_packs[c1.ability.booster_pos] = 'USED' end
+'''
 match_indent = true
