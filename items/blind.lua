@@ -942,14 +942,14 @@ local chromatic = {
 	pos = { x = 0, y = 1 },
 	dollars = 5,
 	boss = {
-		min = 1,
+		min = 2,
 		max = 666666,
 	},
 	atlas = "blinds_two",
 	order = 25,
 	boss_colour = HEX("a34f98"),
 	calculate = function(self, blind, context)
-		if context.final_scoring_step and G.GAME.current_round.hands_played % 2 == 0 then
+		if not blind.disabled and context.final_scoring_step and G.GAME.current_round.hands_played % 2 == 0 then
 			return { xmult = -1 }
 		end
 	end,
