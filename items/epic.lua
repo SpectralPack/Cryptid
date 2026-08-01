@@ -1020,6 +1020,9 @@ local double_scale = {
 	immutable = true,
 	atlas = "atlasepic",
 	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		if card.debuffed then
+			return
+		end
 		-- store original scaling rate
 		if not other.ability.cry_scaling_info then
 			other.ability.cry_scaling_info = {

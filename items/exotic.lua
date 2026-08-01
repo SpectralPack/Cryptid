@@ -697,6 +697,9 @@ local scalae = {
 		end
 	end,
 	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		if card.debuffed then
+			return
+		end
 		-- checks if the scaled joker is also a scalae
 		-- if so, return nothing
 		if other.config.center.key == self.key then
