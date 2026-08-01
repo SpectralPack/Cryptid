@@ -9145,6 +9145,7 @@ local oil_lamp = { --You want it? It's yours my friend
 			}
 			return { main_end = main_end, vars = { card.ability.extra.increase } }
 		end
+		return { vars = { card.ability.extra.increase } }
 	end,
 	calculate = function(self, card, context)
 		if (context.end_of_round and context.main_eval and not context.blueprint) or context.forcetrigger then
