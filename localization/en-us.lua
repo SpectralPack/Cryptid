@@ -562,8 +562,8 @@ return {
 			bl_cry_decision = {
 				name = "The Decision",
 				text = {
-					"Fasten Jokers on play or discard",
-					"Open a Baneful Buffoon",
+					"Must take a Cursed Joker",
+					"from Baneful Buffoon",
 					"Pack after round",
 				},
 			},
@@ -4949,8 +4949,6 @@ return {
 				text = {
 					"Choose {C:attention}#1#{} of",
 					"up to {C:attention}#2# {X:cry_cursed,C:white}Cursed{} Joker#<s>2#{}",
-					"{C:attention}Skipping{} will {C:red}banish{}",
-					"{C:attention}rightmost{} owned Joker",
 				},
 			},
 			undiscovered_code = {

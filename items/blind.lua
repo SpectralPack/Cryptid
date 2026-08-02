@@ -784,11 +784,7 @@ local greed = {
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
 }
---Fasten all jokers after hand or discard
---After defeat, open a baneful buffoon pack containing:
----4 cursed jokers (can overflow)
----a "unique consumeable" that will banish the rightmost joker
---Only after that, are jokers unfastened
+--After defeat, open a baneful buffoon pack containing 4 cursed jokers (can overflow)
 local decision = {
 	dependencies = {
 		items = {
@@ -813,35 +809,7 @@ local decision = {
 	get_loc_debuff_text = function(self)
 		return localize("cry_blind_baneful_pack")
 	end,
-	calculate = function(self, blind, context)
-		if context.discard and not G.GAME.blind.disabled and not G.GAME.cry_fastened then
-			--visual cue to wiggle all jokers
-			G.GAME.cry_fastened = true
-			if G.jokers.cards then
-				G.GAME.blind:wiggle()
-				G.GAME.blind.triggered = true
-				for i, v in pairs(G.jokers.cards) do
-					v:juice_up(0, 0.25)
-				end
-			end
-		end
-	end,
-	cry_before_play = function(self)
-		if not G.GAME.blind.disabled and not G.GAME.cry_fastened then
-			--visual cue to wiggle all jokers
-			G.GAME.cry_fastened = true
-			if G.jokers.cards then
-				G.GAME.blind:wiggle()
-				G.GAME.blind.triggered = true
-				for i, v in pairs(G.jokers.cards) do
-					v:juice_up(0, 0.25)
-				end
-			end
-		end
-	end,
 	cry_before_cash = function(self)
-		--Always fasten if before cash context (gaming chair, debug mode)
-		G.GAME.cry_fastened = true
 		G.GAME.blind:wiggle()
 		G.GAME.blind.triggered = true
 		G.GAME.cry_make_a_decision = true
@@ -867,13 +835,7 @@ local decision = {
 			end,
 		}))
 	end,
-	disable = function(self, silent)
-		G.GAME.cry_fastened = nil
-	end,
-	defeat = function(self, silent)
-		G.GAME.cry_fastened = nil
-	end,
-	attributes = { "joker", "booster", "destroy_card", "banish" }, --destruction is technically the pack but you only ever see the pack in this blind
+	attributes = { "joker", "booster" },
 }
 
 local repulsor = {

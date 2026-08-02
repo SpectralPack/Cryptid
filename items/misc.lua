@@ -670,24 +670,9 @@ local baneful1 = {
 	atlas = "pack",
 	order = 809,
 	pos = { x = 0, y = 2 },
-	cry_baneful_punishment = true,
 	no_music = true, --prevent override of music, such as in boss blinds
 	no_doe = true,
 	unskippable = function(self)
-		--Only be unskippable if no VALID jokers are owned (if rightmost is eternal/cursed, the next)
-		if G.jokers and (#G.jokers.cards == 0 or not G.jokers.cards) then
-			return true
-		end
-		--For loop that iterates from right to left, breaking and returning false if finding the rightmost valid noneternal or cursed Joker
-		if G.jokers and G.jokers.cards then
-			for i = #G.jokers.cards, 1, -1 do
-				if
-					not (SMODS.is_eternal(G.jokers.cards[i]) or G.jokers.cards[i].config.center.rarity == "cry_cursed")
-				then
-					return false
-				end
-			end
-		end
 		return true
 	end,
 	config = { extra = 4, choose = 1 },

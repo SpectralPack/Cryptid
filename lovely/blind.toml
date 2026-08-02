@@ -226,29 +226,5 @@ end
 '''
 match_indent = true
 
-## Baneful warning
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS _ "src/game_object.lua"]'''
-pattern = '''G.CONTROLLER.interrupt.focus = true'''
-position = "after"
-payload = '''
-if SMODS.OPENED_BOOSTER.config.center.cry_baneful_punishment then
-G.E_MANAGER:add_event(Event({
-      trigger = 'before',
-      func = function()
-            attention_text({
-                  scale = 0.8,
-                  text = localize("cry_baneful_warning"),
-                  hold = 12,
-                  align = "cm",
-                  offset = { x = 0, y = -2.7 },
-                  major = G.play,
-            })
-            return true
-      end,
-}))
-end
-'''
-match_indent = true
+
 

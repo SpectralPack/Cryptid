@@ -1259,6 +1259,12 @@ G.FUNCS.can_select_card = function(e)
 		(e.config.ref_table.ability.name == "cry-Negative Joker" and e.config.ref_table.ability.extra.slots >= 1)
 		or (e.config.ref_table.ability.name == "cry-soccer" and e.config.ref_table.ability.extra.holygrail >= 1)
 		or (e.config.ref_table.ability.name == "cry-Tenebris" and e.config.ref_table.ability.extra.slots >= 1)
+		or (
+			e.config.ref_table
+			and e.config.ref_table.config
+			and e.config.ref_table.config.center
+			and e.config.ref_table.config.center.rarity == "cry_cursed"
+		)
 	then
 		e.config.colour = G.C.GREEN
 		e.config.button = "use_card"

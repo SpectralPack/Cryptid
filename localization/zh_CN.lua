@@ -511,9 +511,9 @@ return {
 			bl_cry_decision = {
 				name = "抉择",
 				text = {
-					"出牌或弃牌时固定小丑位置",
-					"回合结束后打开一个",
-					"诅咒小丑包",
+					"回合结束后必须从",
+					"诅咒小丑包中",
+					"选择一张诅咒小丑",
 				},
 			},
 		},
@@ -4786,8 +4786,6 @@ return {
 				text = {
 					"从最多 {C:attention}#2#{} 张{X:cry_cursed,C:white}诅咒{}小丑中",
 					"选择 {C:attention}#1#{} 张",
-					"{C:attention}跳过{}将会{C:red}放逐{}",
-					"你最右侧拥有的小丑",
 				},
 			},
 			undiscovered_code = {

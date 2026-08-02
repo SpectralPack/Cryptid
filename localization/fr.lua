@@ -526,9 +526,8 @@ return {
 			bl_cry_decision = {
 				name = "La Décision",
 				text = {
-					"Attache les Jokers après qu'une main",
-					"soit jouée ou défaussée",
-					"Ouvre un Paquet Bouffon Maléfique",
+					"Doit choisir un Joker Maudit",
+					"du Paquet Bouffon Maléfique",
 					"après la manche",
 				},
 			},
@@ -4793,8 +4792,6 @@ return {
 				text = {
 					"Jusqu'à {C:attention}#1#{} Joker#<s>1#",
 					"parmi {C:attention}#2#{} Joker#<s>2# {X:cry_cursed,C:white}Maudit#<s>2#{}",
-					"{C:attention}Skipping{} will {C:red}banish{}",
-					"{C:attention}rightmost{} owned Joker",
 				},
 			},
 			undiscovered_code = {
