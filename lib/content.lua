@@ -228,7 +228,11 @@ SMODS.PokerHand({
 				if
 					not (
 						card.config.center_key == "m_stone"
-						or (card.config.center.no_rank and card.config.center.no_suit and not card.config.center.not_stoned)
+						or (
+							card.config.center.no_rank
+							and card.config.center.no_suit
+							and not card.config.center.not_stoned
+						)
 					)
 				then
 					local rank = card:get_id()
