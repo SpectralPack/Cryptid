@@ -102,6 +102,7 @@ local misprint = {
 		G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * self.config.cry_misprint_max
 	end,
 	cry_antimatter_apply = function(self)
+		G.GAME.modifiers.cry_misprint_min = G.GAME.modifiers.cry_misprint_min or 1
 		G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * self.config.cry_misprint_max
 	end,
 	unlocked = false,
