@@ -218,43 +218,61 @@ SMODS.PokerHand({
 			local deck_booleans = {}
 			local scored_cards = {}
 			for i = 1, 52 do
-				table.insert(deck_booleans, false) -- i could write this out but nobody wants to see that
+				table.insert(deck_booleans, false)
 			end
-			local wilds = {}
-			for i, card in ipairs(hand) do
+
+			local suit_table = { "Spades", "Hearts", "Clubs", "Diamonds" }
+			local valid_cards = {}
+
+			for _, card in ipairs(hand) do
 				if
-					(card.config.center_key ~= "m_wild" and not card.config.center.any_suit)
-					and (card.config.center_key ~= "m_stone" and not card.config.center.no_rank)
-				then -- i don't know if these are different... this could be completely redundant but redundant is better than broken
+					not (
+						card.config.center_key == "m_stone"
+						or (card.config.center.no_rank and card.config.center.no_suit and not card.config.center.not_stoned)
+					)
+				then
 					local rank = card:get_id()
-					local suit = card.base.suit
-					local suit_int = 0
-					suit_table = { "Spades", "Hearts", "Clubs", "Diamonds" }
-					for i = 1, 4 do
-						if suit == suit_table[i] then
-							suit_int = i
+					if rank and rank >= 2 and rank <= 14 then
+						local matching_suits = {}
+						for s_idx, suit_name in ipairs(suit_table) do
+							if card:is_suit(suit_name, true) then
+								table.insert(matching_suits, s_idx)
+							end
+						end
+						if #matching_suits > 0 then
+							table.insert(valid_cards, {
+								card = card,
+								rank = rank,
+								matching_suits = matching_suits,
+							})
 						end
 					end
-					if suit_int > 0 then -- check for custom rank here to prevent breakage?
-						deck_booleans[suit_int + ((rank - 2) * 4)] = true
-						table.insert(scored_cards, card)
-					end
-				elseif card.config.center_key == "m_wild" or card.config.center.any_suit then
-					table.insert(wilds, card)
 				end
 			end
-			for i, card in ipairs(wilds) do -- this 100% breaks with custom ranks
-				local rank = card:get_id()
-				for i = 1, 4 do
-					if not deck_booleans[i + ((rank - 2) * 4)] then
-						deck_booleans[i + ((rank - 2) * 4)] = true
+
+			table.sort(valid_cards, function(a, b)
+				return #a.matching_suits < #b.matching_suits
+			end)
+
+			for _, entry in ipairs(valid_cards) do
+				local rank = entry.rank
+				local card_assigned = false
+				for _, s_idx in ipairs(entry.matching_suits) do
+					local slot_index = s_idx + ((rank - 2) * 4)
+					if not deck_booleans[slot_index] then
+						deck_booleans[slot_index] = true
+						card_assigned = true
+						table.insert(scored_cards, entry.card)
 						break
 					end
 				end
-				table.insert(scored_cards, card)
+				if not card_assigned then
+					table.insert(scored_cards, entry.card)
+				end
 			end
+
 			local entire_fucking_deck = true
-			for i = 1, #deck_booleans do
+			for i = 1, 52 do
 				if deck_booleans[i] == false then
 					entire_fucking_deck = false
 					break
