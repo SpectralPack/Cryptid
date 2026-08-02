@@ -2304,7 +2304,7 @@ return {
 				text = {
 					"{C:green}#1# chance#<s>1# sur #2#{} de",
 					"{C:attention}détruire{} les objets achetés",
-					"Divise l'argent par 2 si {C:attention}vendu",
+					"Retire tout l'argent si {C:attention}vendu",
 				},
 			},
 			j_cry_morse = {

@@ -2287,7 +2287,7 @@ return {
 				text = {
 					"구매한 아이템을",
 					"{C:green}#2#분의 #1#{} 확률로 {C:attention}파괴{}",
-					"{C:attention}판매{} 시 소지금 절반",
+					"{C:attention}판매{} 시 소지금 모두 상실",
 				},
 			},
 			j_cry_morse = {

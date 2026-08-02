@@ -2356,7 +2356,7 @@ return {
 				text = {
 					"{C:green}#2#分の#1#{} の確率で",
 					"購入したアイテムを{C:attention}破壊{}する",
-					"このカードを売ると 所持金を{C:attention}半分{}にする",
+					"このカードを売ると 所持金を{C:attention}$0{}にする",
 				},
 			},
 			j_cry_morse = {

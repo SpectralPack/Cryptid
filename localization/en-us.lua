@@ -2399,7 +2399,7 @@ return {
 				text = {
 					"{C:green}#1# in #2#{} chance to",
 					"{C:attention}destroy{} purchased items",
-					"Halves money when {C:attention}sold",
+					"Removes all money when {C:attention}sold",
 				},
 			},
 			j_cry_morse = {

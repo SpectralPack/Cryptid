@@ -2270,7 +2270,7 @@ return {
 				text = {
 					"Chance von {C:green}#1# zu #2#{} gekaufte",
 					"Gegenstände zu {C:attention}zerstören{},",
-					"halbiert Geld wenn {C:attention}verkauft",
+					"entfernt alles Geld wenn {C:attention}verkauft",
 				},
 			},
 			j_cry_morse = {

@@ -2299,7 +2299,7 @@ return {
 				text = {
 					"有 {C:green}#1# / #2#{} 几率",
 					"{C:attention}摧毁{}购买的物品",
-					"在{C:attention}出售{}时金钱减半",
+					"在{C:attention}出售{}时失去所有金钱",
 				},
 			},
 			j_cry_morse = {
