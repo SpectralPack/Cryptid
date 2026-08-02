@@ -646,7 +646,7 @@ local meme3 = {
 }
 -- 804 in case of meme pack 4
 -- 805-808 for program packs
--- Baneful Buffoon Pack 1 (1/4 Cursed jokers)
+-- Baneful Buffoon Pack 1 (1/2 Cursed jokers)
 local baneful1 = {
 	cry_credits = {
 		idea = {
@@ -675,7 +675,7 @@ local baneful1 = {
 	unskippable = function(self)
 		return true
 	end,
-	config = { extra = 4, choose = 1 },
+	config = { extra = 2, choose = 1 },
 	cost = 1,
 	immutable = true,
 	weight = 0, --never spawn naturally

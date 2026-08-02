@@ -784,7 +784,7 @@ local greed = {
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 	end,
 }
---After defeat, open a baneful buffoon pack containing 4 cursed jokers (can overflow)
+--After defeat, open a baneful buffoon pack containing 2 cursed jokers (can overflow)
 local decision = {
 	dependencies = {
 		items = {
