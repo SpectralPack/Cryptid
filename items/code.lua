@@ -5368,13 +5368,60 @@ return {
 						G.F_LOCAL_CLIPBOARD and G.CLIPBOARD or (love.system and love.system.getClipboardText())
 					) or ""
 					if type(clipboard) == "string" and clipboard ~= "" and G.CONTROLLER.text_input_hook then
-						G.CONTROLLER.pasting_clipboard = true
-						for i = 1, #clipboard do
-							local c = clipboard:sub(i, i)
-							G.FUNCS.text_input_key({ key = c })
+						local hook = G.CONTROLLER.text_input_hook
+						local hook_config = hook.config.ref_table
+						local text = hook_config and hook_config.text
+						if text then
+							-- Align current cursor position
+							TRANSPOSE_TEXT_INPUT(0)
+
+							local max_len = hook_config.max_length or 16
+							local current_len = string.len(text.ref_table[text.ref_value] or "")
+							local remaining = max_len - current_len
+
+							if remaining > 0 then
+								G.CONTROLLER.pasting_clipboard = true
+
+								local corpus = "123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+									.. (hook_config.extended_corpus and " 0!$&()<>?:{}+-=,.[]_" or "")
+
+								local valid_chars = {}
+								for i = 1, #clipboard do
+									local c = clipboard:sub(i, i)
+									if hook_config.extended_corpus and string.byte(c, 1) >= 128 then
+										c = "?"
+									end
+									if c == "\r" or c == "\n" or c == "\t" then
+										if hook_config.extended_corpus then
+											c = " "
+										else
+											c = nil
+										end
+									end
+									if c and (string.find(corpus, c, 1, true) or hook_config.extended_corpus) then
+										table.insert(valid_chars, c)
+										if #valid_chars >= remaining then
+											break
+										end
+									end
+								end
+
+								if #valid_chars > 0 then
+									local start_pos = text.current_position
+									for i = 1, #valid_chars do
+										MODIFY_TEXT_INPUT({
+											letter = valid_chars[i],
+											text_table = text,
+											pos = start_pos + i,
+										})
+									end
+									TRANSPOSE_TEXT_INPUT(#valid_chars)
+								end
+
+								G.CONTROLLER.pasting_clipboard = false
+								return
+							end
 						end
-						G.CONTROLLER.pasting_clipboard = false
-						return
 					end
 				end
 				-- Ctrl+V supported
