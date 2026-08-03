@@ -449,9 +449,6 @@ local crash = {
 				function love.draw() end
 			end,
 			function()
-				G:save_settings()
-				G:save_progress()
-				if love and love.timer and love.timer.sleep then love.timer.sleep(0.5) end
 				--by WilsonTheWolf and MathIsFun_, funky error screen with random funny message
 				messages = {
 					"Oops.",
