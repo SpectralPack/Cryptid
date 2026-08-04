@@ -15,9 +15,8 @@ local function get_edeck_sprite_key(run_setup, type)
 			suit = "st",
 			seal = "sl",
 		})[type]
-		if (SMODS.RunSelect.Internals.current_page or 0) >= (SMODS.RunSelect.Pages["cry_edeck_" .. r].page or 9999) then
-			sprite = SMODS.RunSelect.Setup.choices["cry_edeck_" .. r]
-		end
+		sprite = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "cry_edeck_" .. r)
+			or Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "last_choices", "cry_edeck_" .. r)
 	else
 		sprite = G.GAME["cry_selected_" .. type]
 	end
@@ -36,11 +35,26 @@ SMODS.DrawStep({
 				and true
 			or false
 		local back = self.ability.set == "Back" and in_run_setup and self.config.center or G.GAME.selected_back_key
-		--or Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center"); fix later
+		if in_run_setup then
+			local cp = Cryptid.safe_get(SMODS.RunSelect, "Internals", "current_page")
+			if cp then
+				if Cryptid.safe_get(SMODS.RunSelect, "Pages", "cry_edeck_ed", "page") == cp then
+					back = G.P_CENTERS.b_cry_e_deck
+				elseif Cryptid.safe_get(SMODS.RunSelect, "Pages", "cry_edeck_enh", "page") == cp then
+					back = G.P_CENTERS.b_cry_et_deck
+				elseif Cryptid.safe_get(SMODS.RunSelect, "Pages", "cry_edeck_sk", "page") == cp then
+					back = G.P_CENTERS.b_cry_sk_deck
+				elseif Cryptid.safe_get(SMODS.RunSelect, "Pages", "cry_edeck_st", "page") == cp then
+					back = G.P_CENTERS.b_cry_st_deck
+				elseif Cryptid.safe_get(SMODS.RunSelect, "Pages", "cry_edeck_sl", "page") == cp then
+					back = G.P_CENTERS.b_cry_sl_deck
+				end
+			end
+		end
 		if
 			not self.cry_antimatter_locked
 			and back
-			and (self.config.center == back and back.unlocked or not in_run_setup)
+			and ((type(back) == "table" and back.unlocked) or not in_run_setup)
 		then
 			if back.key == "b_cry_antimatter" then
 				self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
