@@ -616,7 +616,14 @@ function Card:set_ability(center, y, z)
 				if k == "cost" then
 					self.base_cost = v
 				else
-					self.ability[k] = v
+					if type(v) == "table" and type(self.ability[k]) == "table" then
+						self.ability[k] = copy_table(self.ability[k])
+						for k2, v2 in pairs(v) do
+							self.ability[k][k2] = type(v2) == "table" and copy_table(v2) or v2
+						end
+					else
+						self.ability[k] = type(v) == "table" and copy_table(v) or v
+					end
 				end
 			end
 		end
