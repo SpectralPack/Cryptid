@@ -2332,7 +2332,7 @@ function SMODS.upgrade_poker_hands(args)
 		end
 		args.func = function(base, hand, param, level_up)
 			local lv_amt = (type(level_up) == "number" or is_big(level_up)) and level_up or 1
-			return to_big(math.max(base * (universum_mod ^ lv_amt), G.GAME.hands[hand]["s_" .. param] or 0)) --i have no fucking clue how to make this not infinity
+			return to_big(math.max(to_big(base) * (universum_mod ^ lv_amt), G.GAME.hands[hand]["s_" .. param] or 0)) --i have no fucking clue how to make this not infinity
 		end
 		if lvl_amt < 0 then
 			args.StatusText = "/" .. number_format(universum_mod ^ math.abs(lvl_amt))
