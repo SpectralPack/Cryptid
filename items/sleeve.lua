@@ -402,7 +402,7 @@ if CardSleeves then
 			return { vars = {} }
 		end,
 		trigger_effect = function(self, args)
-			if args.context == "eval" and G.GAME.last_blind and G.GAME.last_blind.boss then
+			if args.context == "eval" and G.GAME.last_blind and Cryptid.is_boss_blind(G.GAME.last_blind) then
 				if G.jokers then
 					if #G.jokers.cards < G.jokers.config.card_limit then
 						if
