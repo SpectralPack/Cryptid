@@ -2387,3 +2387,17 @@ function SMODS.upgrade_poker_hands(args)
 	end
 	smup(args)
 end
+
+local set_abil_ref = Card.set_ability
+function Card:set_ability(center, initial, delay_sprites)
+	set_abil_ref(self, center, initial, delay_sprites)
+	if self.config.center_key == "j_cry_meteor" then
+		self:set_edition("e_foil", true, G.SETTINGS.paused)
+	elseif self.config.center_key == "j_cry_exoplanet" then
+		self:set_edition("e_holo", true, G.SETTINGS.paused)
+	elseif self.config.center_key == "j_cry_stardust" then
+		self:set_edition("e_polychome", true, G.SETTINGS.paused)
+	elseif self.config.center_key == "j_cry_universe" then
+		self:set_edition("e_cry_astral", true, G.SETTINGS.paused)
+	end
+end
