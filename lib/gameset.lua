@@ -1032,6 +1032,14 @@ SMODS.Joker.set_rarity = function(self, rarity)
 	if vanilla_rarities[self.rarity] then
 		SMODS.insert_pool(G.P_JOKER_RARITY_POOLS[vanilla_rarities[self.rarity]], self)
 	end
+	if self.rarity == 4 or self.rarity == "Legendary" then
+		if G.P_CENTER_POOLS.Joker then
+			SMODS.remove_pool(G.P_CENTER_POOLS.Joker, self.key)
+		end
+		if G.P_CENTER_POOLS.Legendary then
+			SMODS.insert_pool(G.P_CENTER_POOLS.Legendary, self)
+		end
+	end
 end
 
 ---@type fun(self: SMODS.Consumable|table)?
