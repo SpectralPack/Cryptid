@@ -2059,8 +2059,8 @@ function CardArea:shuffle(_seed)
 end
 
 local smods_four_fingers = SMODS.four_fingers
-function SMODS.four_fingers()
-	return smods_four_fingers() - Cryptid.get_paved_joker()
+function SMODS.four_fingers(...)
+	return smods_four_fingers(...) - Cryptid.get_paved_joker()
 end
 
 function Cryptid.create_dummy_from_stone(rank)
