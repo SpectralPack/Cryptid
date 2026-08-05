@@ -214,6 +214,28 @@ function get_new_boss()
 	return bl
 end
 
+if SMODS and SMODS.get_new_blind then
+	local gnb_smods = SMODS.get_new_blind
+	function SMODS.get_new_blind(blind_type)
+		if G.GAME and G.GAME.modifiers and G.GAME.modifiers.cry_rush_hour then
+			if (Cryptid.enabled("bl_cry_clock") == true) and (Cryptid.enabled("bl_cry_lavender_loop") == true) then
+				if blind_type == "boss" or G.GAME.modifiers.cry_rush_hour_ii then
+					local ret_boss = (
+						(G.GAME.round_resets.ante % G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2)
+							and "bl_cry_lavender_loop"
+						or "bl_cry_clock"
+					)
+					if SMODS.add_boss_to_used_table then
+						SMODS.add_boss_to_used_table(ret_boss, "boss")
+					end
+					return ret_boss
+				end
+			end
+		end
+		return gnb_smods(blind_type)
+	end
+end
+
 --Add context for after cards are played
 local gfep = G.FUNCS.evaluate_play
 function G.FUNCS.evaluate_play(e)

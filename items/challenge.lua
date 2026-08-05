@@ -73,6 +73,11 @@ local ballin = {
 	},
 }
 local rush_hour = {
+	dependencies = {
+		items = {
+			"set_cry_timer",
+		},
+	},
 	object_type = "Challenge",
 	key = "rush_hour",
 	order = 3,
@@ -94,6 +99,11 @@ local rush_hour = {
 	},
 }
 local rush_hour_ii = {
+	dependencies = {
+		items = {
+			"set_cry_timer",
+		},
+	},
 	object_type = "Challenge",
 	key = "rush_hour_ii",
 	order = 6,
@@ -122,6 +132,11 @@ local rush_hour_ii = {
 }
 
 local rush_hour_iii = {
+	dependencies = {
+		items = {
+			"set_cry_timer",
+		},
+	},
 	object_type = "Challenge",
 	key = "rush_hour_iii",
 	order = 8,
