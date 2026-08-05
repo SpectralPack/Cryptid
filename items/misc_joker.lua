@@ -4102,7 +4102,10 @@ local rnjoker = {
 									end
 								end
 							elseif j.cond == "boss" then
-								if Cryptid.is_boss_blind(context.blind) and not (context.blind.config and context.blind.config.bonus) then
+								if
+									Cryptid.is_boss_blind(context.blind)
+									and not (context.blind.config and context.blind.config.bonus)
+								then
 									cond_passed = true
 								end
 							elseif j.cond == "non_boss" then

@@ -1990,7 +1990,12 @@ local candy_sticks = {
 	eternal_compat = false,
 	no_dbl = true,
 	calculate = function(self, card, context)
-		if context.setting_blind and not self.getting_sliced and not context.blueprint and Cryptid.is_boss_blind(context.blind) then
+		if
+			context.setting_blind
+			and not self.getting_sliced
+			and not context.blueprint
+			and Cryptid.is_boss_blind(context.blind)
+		then
 			card.ability.immutable.boss = G.GAME.blind:save()
 			if G.GAME.blind.name == "The Clock" then
 				card.ability.immutable.clockscore = G.GAME.blind.chips

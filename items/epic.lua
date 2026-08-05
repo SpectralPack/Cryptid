@@ -1952,7 +1952,12 @@ local fleshpanopticon = {
 		return { vars = { center.ability.extra.boss_size } }
 	end,
 	calculate = function(self, card, context)
-		if context.setting_blind and not context.blueprint and Cryptid.is_boss_blind(context.blind) and not card.getting_sliced then
+		if
+			context.setting_blind
+			and not context.blueprint
+			and Cryptid.is_boss_blind(context.blind)
+			and not card.getting_sliced
+		then
 			local eval = function(card)
 				return not card.REMOVED and not G.RESET_JIGGLES
 			end
