@@ -3,8 +3,7 @@
 -- this seems like a good spot to put the mod calc
 SMODS.current_mod.calculate = function(self, context)
 	if context.setting_blind and G.GAME.sundial then
-		G.GAME.blind.chips = G.GAME.blind.chips * (1 - (G.GAME.sundial_amount / 100))
-		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+		return { xblindsize = (1 - (G.GAME.sundial_amount / 100)) }
 	end
 	if context.ante_change and SMODS.ante_end then
 		Cryptid.apply_ante_tax()
