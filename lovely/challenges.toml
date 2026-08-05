@@ -29,3 +29,23 @@ pattern = "elseif not run_info then"
 position = "at"
 payload = "elseif type == 'Boss' and not run_info then"
 match_indent = true
+
+# Disabled challenge check in challenge list
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''local challenge_unlocked = SMODS.challenge_is_unlocked(v, k)'''
+position = "after"
+payload = '''
+local challenge_disabled = Cryptid.get_center(v.key or v.id) and (Cryptid.enabled(v.key or v.id) ~= true)
+'''
+match_indent = true
+
+# Disabled challenge UI button in challenge list
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''UIBox_button({id = k, col = true, label = {challenge_unlocked and localize(v.id, 'challenge_names') or localize('k_locked'),}, button = challenge_unlocked and 'change_challenge_description' or 'nil', text_colour = v.text_colour, colour = challenge_unlocked and (v.button_colour or G.C.RED) or G.C.GREY, minw = 4, scale = 0.4, minh = 0.6, focus_args = {snap_to = not snapped}}),'''
+position = "at"
+payload = '''UIBox_button({id = k, col = true, label = {challenge_disabled and (localize(v.id, 'challenge_names') .. ' (' .. localize('cry_gameset_disabled') .. ')') or (challenge_unlocked and localize(v.id, 'challenge_names') or localize('k_locked')),}, button = (challenge_unlocked and not challenge_disabled) and 'change_challenge_description' or 'nil', text_colour = v.text_colour, colour = (challenge_unlocked and not challenge_disabled) and (v.button_colour or G.C.RED) or G.C.GREY, minw = 4, scale = 0.4, minh = 0.6, focus_args = {snap_to = not snapped}}),'''
+match_indent = true
