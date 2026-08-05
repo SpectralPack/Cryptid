@@ -1258,7 +1258,7 @@ if JokerDisplay then
 			},
 		},
 		calc_function = function(card)
-			local is_boss = G.GAME and G.GAME.blind and G.GAME.blind.get_type and G.GAME.blind:get_type() == "Boss"
+			local is_boss = Cryptid.is_boss_blind and Cryptid.is_boss_blind(G.GAME.blind) or (G.GAME and G.GAME.blind and G.GAME.blind.get_type and G.GAME.blind:get_type() == "Boss")
 			card.joker_display_values.x_mult = is_boss and card.ability.extra.x_mult or 1
 		end,
 	}

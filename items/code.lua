@@ -4552,7 +4552,7 @@ local semicolon = {
 	atlas = "atlasnotjokers",
 	order = 432,
 	can_use = function(self, card)
-		return G.STATE == G.STATES.SELECTING_HAND and not G.GAME.blind.boss
+		return G.STATE == G.STATES.SELECTING_HAND and not Cryptid.is_boss_blind(G.GAME.blind)
 	end,
 	use = function(self, card, area, copier)
 		G.E_MANAGER:add_event(
@@ -4879,7 +4879,7 @@ local CodeJoker = {
 		if
 			context.setting_blind
 			and not (context.blueprint_card or self).getting_sliced
-			and (G.GAME.blind:get_type() == "Boss" or Cryptid.gameset(card) ~= "exp_modest")
+			and (Cryptid.is_boss_blind(G.GAME.blind) or Cryptid.gameset(card) ~= "exp_modest")
 		then
 			play_sound("timpani")
 			local card = create_card("Code", G.consumeables, nil, nil, nil, nil)

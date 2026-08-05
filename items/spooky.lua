@@ -142,7 +142,7 @@ local choco_dice = {
 			and not context.repetition
 			and not context.blueprint
 			and not context.retrigger_joker
-			and G.GAME.blind.boss
+			and Cryptid.is_boss_blind(G.GAME.blind)
 		then
 			--todo: check if duplicates of event are already started/finished
 			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
@@ -943,7 +943,7 @@ local candy_basket = {
 		if context.end_of_round and not context.individual and not context.repetition then
 			card.ability.immutable.current_win_count = card.ability.immutable.current_win_count + 1
 
-			if G.GAME.blind.boss then
+			if Cryptid.is_boss_blind(G.GAME.blind) then
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "candies",
@@ -1704,7 +1704,7 @@ local jawbreaker = {
 			context.end_of_round
 			and not context.individual
 			and not context.repetition
-			and G.GAME.blind.boss
+			and Cryptid.is_boss_blind(G.GAME.blind)
 			and not context.blueprint_card
 			and not context.retrigger_joker
 		then
@@ -1990,7 +1990,7 @@ local candy_sticks = {
 	eternal_compat = false,
 	no_dbl = true,
 	calculate = function(self, card, context)
-		if context.setting_blind and not self.getting_sliced and not context.blueprint and context.blind.boss then
+		if context.setting_blind and not self.getting_sliced and not context.blueprint and Cryptid.is_boss_blind(context.blind) then
 			card.ability.immutable.boss = G.GAME.blind:save()
 			if G.GAME.blind.name == "The Clock" then
 				card.ability.immutable.clockscore = G.GAME.blind.chips
@@ -2010,12 +2010,12 @@ local candy_sticks = {
 				end,
 			}))
 		end
-		if context.after and G.GAME.blind:get_type() == "Boss" and card.ability.immutable.boss then
+		if context.after and Cryptid.is_boss_blind(G.GAME.blind) and card.ability.immutable.boss then
 			card.ability.extra.hands = lenient_bignum(to_big(card.ability.extra.hands) - 1)
 		end
 		if
 			(
-				(context.selling_self and G.GAME.blind and G.GAME.blind:get_type() == "Boss")
+				(context.selling_self and G.GAME.blind and Cryptid.is_boss_blind(G.GAME.blind))
 				or to_big(card.ability.extra.hands) <= to_big(0)
 			)
 			and G.GAME.blind.disabled
@@ -2050,7 +2050,7 @@ local candy_sticks = {
 				}
 			end
 		end
-		if context.end_of_round and G.GAME.blind:get_type() == "Boss" and card.ability.immutable.boss then
+		if context.end_of_round and Cryptid.is_boss_blind(G.GAME.blind) and card.ability.immutable.boss then
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					play_sound("tarot1")

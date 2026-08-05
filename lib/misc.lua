@@ -31,6 +31,14 @@ function Cryptid.is_number(v)
 	return type(v) == "number" or Cryptid.is_big(v)
 end
 
+function Cryptid.is_boss_blind(blind)
+	blind = blind or (G.GAME and G.GAME.blind)
+	if not blind then
+		return false
+	end
+	return not not (blind.boss or (blind.config and blind.config.blind and blind.config.blind.boss))
+end
+
 -- More advanced version of find joker for things that need to find very specific things
 function Cryptid.advanced_find_joker(name, rarity, edition, ability, non_debuff, area)
 	local jokers = {}

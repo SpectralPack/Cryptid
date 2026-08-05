@@ -34,7 +34,7 @@ target = "card.lua"
 pattern = "if self.ability.name == 'Campfire' and G.GAME.blind.boss and self.ability.x_mult > 1 then"
 position = "at"
 payload = '''
-if self.ability.name == 'Campfire' and G.GAME.blind.boss and not (G.GAME.blind.config and G.GAME.blind.config.bonus) and to_big(self.ability.x_mult) > to_big(1) then
+if self.ability.name == 'Campfire' and Cryptid.is_boss_blind(G.GAME.blind) and not (G.GAME.blind.config and G.GAME.blind.config.bonus) and to_big(self.ability.x_mult) > to_big(1) then
 '''
 match_indent = true
 

@@ -2670,7 +2670,7 @@ local apjoker = {
 		return { vars = { number_format(center.ability.extra.x_mult) } }
 	end,
 	calculate = function(self, card, context)
-		if (context.joker_main and G.GAME.blind.boss) or context.forcetrigger then
+		if (context.joker_main and Cryptid.is_boss_blind(G.GAME.blind)) or context.forcetrigger then
 			return {
 				xmult = lenient_bignum(card.ability.extra.x_mult),
 			}
@@ -4102,11 +4102,11 @@ local rnjoker = {
 									end
 								end
 							elseif j.cond == "boss" then
-								if context.blind.boss and not (context.blind.config and context.blind.config.bonus) then
+								if Cryptid.is_boss_blind(context.blind) and not (context.blind.config and context.blind.config.bonus) then
 									cond_passed = true
 								end
 							elseif j.cond == "non_boss" then
-								if context.blind and not G.GAME.blind.boss then
+								if context.blind and not Cryptid.is_boss_blind(context.blind) then
 									cond_passed = true
 								end
 							elseif j.cond == "small" then
@@ -4612,7 +4612,7 @@ local rnjoker = {
 			and not card.debuff
 			and context.end_of_round
 			and not context.blueprint
-			and G.GAME.blind.boss
+			and Cryptid.is_boss_blind(G.GAME.blind)
 			and not (G.GAME.blind.config and G.GAME.blind.config.bonus)
 		then
 			local hand_size = 0
@@ -8028,7 +8028,7 @@ local kscope = {
 		if
 			(
 				context.end_of_round
-				and G.GAME.blind.boss
+				and Cryptid.is_boss_blind(G.GAME.blind)
 				and not context.individual
 				and not context.repetition
 				and not context.blueprint
@@ -8894,7 +8894,7 @@ local carved_pumpkin = {
 	end,
 	calculate = function(self, card, context)
 		if context.end_of_round and not context.blueprint and not context.individual and not context.repetition then
-			if G.GAME.blind:get_type() == "Boss" then
+			if Cryptid.is_boss_blind(G.GAME.blind) then
 				card.ability.extra.disables = lenient_bignum(to_big(card.ability.extra.disables) - 1)
 				card:juice_up()
 				if card.ability.extra.disables <= 0 then
@@ -8902,7 +8902,7 @@ local carved_pumpkin = {
 				end
 			end
 		end
-		if context.setting_blind and G.GAME.blind:get_type() == "Boss" and not G.GAME.blind.disabled then
+		if context.setting_blind and Cryptid.is_boss_blind(G.GAME.blind) and not G.GAME.blind.disabled then
 			card_eval_status_text(
 				context.blueprint_card or card,
 				"extra",
