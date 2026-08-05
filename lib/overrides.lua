@@ -221,10 +221,16 @@ if SMODS and SMODS.get_new_blind then
 		if G.GAME and G.GAME.modifiers then
 			local is_boss = (btype == "boss")
 				or (G.GAME.modifiers.cry_rush_hour_ii and true)
-				or (btype == "big" and G.GAME.modifiers.cry_big_boss_rate and pseudorandom("cry_big_boss") < G.GAME.modifiers.cry_big_boss_rate)
+				or (
+					btype == "big"
+					and G.GAME.modifiers.cry_big_boss_rate
+					and pseudorandom("cry_big_boss") < G.GAME.modifiers.cry_big_boss_rate
+				)
 			if is_boss then
 				if G.GAME.modifiers.cry_rush_hour then
-					if (Cryptid.enabled("bl_cry_clock") == true) and (Cryptid.enabled("bl_cry_lavender_loop") == true) then
+					if
+						(Cryptid.enabled("bl_cry_clock") == true) and (Cryptid.enabled("bl_cry_lavender_loop") == true)
+					then
 						local ret_boss = (
 							(G.GAME.round_resets.ante % G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2)
 								and "bl_cry_lavender_loop"
