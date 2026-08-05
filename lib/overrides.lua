@@ -243,6 +243,16 @@ if SMODS and SMODS.get_new_blind then
 	end
 end
 
+if SMODS and SMODS.add_booster_to_shop then
+	local abts = SMODS.add_booster_to_shop
+	function SMODS.add_booster_to_shop(...)
+		if G.GAME and G.GAME.modifiers and G.GAME.modifiers.cry_no_boosters then
+			return
+		end
+		return abts(...)
+	end
+end
+
 --Add context for after cards are played
 local gfep = G.FUNCS.evaluate_play
 function G.FUNCS.evaluate_play(e)

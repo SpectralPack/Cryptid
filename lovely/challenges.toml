@@ -49,3 +49,12 @@ pattern = '''UIBox_button({id = k, col = true, label = {challenge_unlocked and l
 position = "at"
 payload = '''UIBox_button({id = k, col = true, label = {challenge_disabled and (localize(v.id, 'challenge_names') .. ' (' .. localize('cry_gameset_disabled') .. ')') or (challenge_unlocked and localize(v.id, 'challenge_names') or localize('k_locked')),}, button = (challenge_unlocked and not challenge_disabled) and 'change_challenge_description' or 'nil', text_colour = v.text_colour, colour = (challenge_unlocked and not challenge_disabled) and (v.button_colour or G.C.RED) or G.C.GREY, minw = 4, scale = 0.4, minh = 0.6, focus_args = {snap_to = not snapped}}),'''
 match_indent = true
+
+# cry_no_boosters - disable boosters in shop
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if G.GAME.current_round.used_packs[i] ~= 'USED' then"
+position = "at"
+payload = "if G.GAME.current_round.used_packs[i] ~= 'USED' and not G.GAME.modifiers.cry_no_boosters then"
+match_indent = true
