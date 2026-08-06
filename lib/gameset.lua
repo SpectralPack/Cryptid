@@ -592,6 +592,21 @@ function Cryptid.gameset(card, center)
 	end
 	return gameset
 end
+function Cryptid.merge_table(target, source)
+	for k, v in pairs(source) do
+		if k ~= "cost" then
+			if type(v) == "table" and type(target[k]) == "table" then
+				target[k] = copy_table(target[k])
+				for k2, v2 in pairs(v) do
+					target[k][k2] = type(v2) == "table" and copy_table(v2) or v2
+				end
+			else
+				target[k] = type(v) == "table" and copy_table(v) or v
+			end
+		end
+	end
+end
+
 function Cryptid.get_gameset_config(center, gameset)
 	if not center then
 		return {}
@@ -610,24 +625,12 @@ function Cryptid.get_gameset_config(center, gameset)
 		for k, v in pairs(gs_cfg) do
 			if k ~= "disabled" and k ~= "center" then
 				if k == "config" and type(v) == "table" then
-					for ck, cv in pairs(v) do
-						if type(cv) == "table" and type(cfg[ck]) == "table" then
-							cfg[ck] = copy_table(cfg[ck])
-							for k2, v2 in pairs(cv) do
-								cfg[ck][k2] = type(v2) == "table" and copy_table(v2) or v2
-							end
-						else
-							cfg[ck] = type(cv) == "table" and copy_table(cv) or cv
-						end
-					end
+					Cryptid.merge_table(cfg, v)
 				elseif k == "cost" then
 					cfg.cost = v
 				else
 					if type(v) == "table" and type(cfg[k]) == "table" then
-						cfg[k] = copy_table(cfg[k])
-						for k2, v2 in pairs(v) do
-							cfg[k][k2] = type(v2) == "table" and copy_table(v2) or v2
-						end
+						Cryptid.merge_table(cfg[k], v)
 					else
 						cfg[k] = type(v) == "table" and copy_table(v) or v
 					end
@@ -668,19 +671,7 @@ function Card:set_ability(center, y, z)
 
 	-- Update center.config to effective_config so tooltips and functions reading center.config get current gameset values
 	center.config = copy_table(effective_config)
-
-	for k, v in pairs(effective_config) do
-		if k ~= "cost" then
-			if type(v) == "table" and type(self.ability[k]) == "table" then
-				self.ability[k] = copy_table(self.ability[k])
-				for k2, v2 in pairs(v) do
-					self.ability[k][k2] = type(v2) == "table" and copy_table(v2) or v2
-				end
-			else
-				self.ability[k] = type(v) == "table" and copy_table(v) or v
-			end
-		end
-	end
+	Cryptid.merge_table(self.ability, effective_config)
 
 	if effective_config.cost then
 		self.base_cost = effective_config.cost
