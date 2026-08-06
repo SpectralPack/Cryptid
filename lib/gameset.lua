@@ -610,11 +610,28 @@ function Card:set_ability(center, y, z)
 		center.config = {} --crashproofing
 	end
 	csa(self, center, y, z)
-	if center.gameset_config and center.gameset_config[self:get_gameset(center)] then
-		for k, v in pairs(center.gameset_config[self:get_gameset(center)]) do
+	self.ability = self.ability or {}
+	local cur_gameset = self:get_gameset(center)
+	if cur_gameset and center.gameset_config and center.gameset_config[cur_gameset] then
+		local gs_cfg = center.gameset_config[cur_gameset]
+		for k, v in pairs(gs_cfg) do
 			if k ~= "disabled" and k ~= "center" then
 				if k == "cost" then
 					self.base_cost = v
+					if self.set_cost then
+						self:set_cost()
+					end
+				elseif k == "config" and type(v) == "table" then
+					for ck, cv in pairs(v) do
+						if type(cv) == "table" and type(self.ability[ck]) == "table" then
+							self.ability[ck] = copy_table(self.ability[ck])
+							for k2, v2 in pairs(cv) do
+								self.ability[ck][k2] = type(v2) == "table" and copy_table(v2) or v2
+							end
+						else
+							self.ability[ck] = type(cv) == "table" and copy_table(cv) or cv
+						end
+					end
 				else
 					if type(v) == "table" and type(self.ability[k]) == "table" then
 						self.ability[k] = copy_table(self.ability[k])
@@ -627,11 +644,11 @@ function Card:set_ability(center, y, z)
 				end
 			end
 		end
-		if center.gameset_config[self:get_gameset(center)].disabled then
+		if gs_cfg.disabled then
 			self.cry_disabled = true
 		end
-		if center.gameset_config[self:get_gameset(center)].center and not self.gameset_select then
-			for k, v in pairs(center.gameset_config[self:get_gameset(center)].center) do
+		if gs_cfg.center and not self.gameset_select then
+			for k, v in pairs(gs_cfg.center) do
 				center[k] = v
 				self[k] = v
 				if k == "rarity" then
