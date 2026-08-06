@@ -592,6 +592,55 @@ function Cryptid.gameset(card, center)
 	end
 	return gameset
 end
+function Cryptid.merge_table(target, source)
+	for k, v in pairs(source) do
+		if k ~= "cost" then
+			if type(v) == "table" and type(target[k]) == "table" then
+				target[k] = copy_table(target[k])
+				for k2, v2 in pairs(v) do
+					target[k][k2] = type(v2) == "table" and copy_table(v2) or v2
+				end
+			else
+				target[k] = type(v) == "table" and copy_table(v) or v
+			end
+		end
+	end
+end
+
+function Cryptid.get_gameset_config(center, gameset)
+	if not center then
+		return {}
+	end
+	if type(center) == "string" then
+		center = G.P_CENTERS[center]
+	end
+	if not center then
+		return {}
+	end
+	local base_config = center.cry_original_config or center.config or {}
+	local cfg = copy_table(base_config)
+	gameset = gameset or Cryptid.gameset(nil, center)
+	if gameset and center.gameset_config and center.gameset_config[gameset] then
+		local gs_cfg = center.gameset_config[gameset]
+		for k, v in pairs(gs_cfg) do
+			if k ~= "disabled" and k ~= "center" then
+				if k == "config" and type(v) == "table" then
+					Cryptid.merge_table(cfg, v)
+				elseif k == "cost" then
+					cfg.cost = v
+				else
+					if type(v) == "table" and type(cfg[k]) == "table" then
+						Cryptid.merge_table(cfg[k], v)
+					else
+						cfg[k] = type(v) == "table" and copy_table(v) or v
+					end
+				end
+			end
+		end
+	end
+	return cfg
+end
+
 -- set_ability accounts for gamesets
 function Card:get_gameset(center)
 	return Cryptid.gameset(self, center)
@@ -609,52 +658,41 @@ function Card:set_ability(center, y, z)
 	if not center.config then
 		center.config = {} --crashproofing
 	end
+
+	-- Preserve pristine original center config before any gameset mutations
+	if not center.cry_original_config then
+		center.cry_original_config = copy_table(center.config)
+	end
+
 	csa(self, center, y, z)
 	self.ability = self.ability or {}
 	local cur_gameset = self:get_gameset(center)
+	local effective_config = Cryptid.get_gameset_config(center, cur_gameset)
+
+	-- Update center.config to effective_config so tooltips and functions reading center.config get current gameset values
+	center.config = copy_table(effective_config)
+	Cryptid.merge_table(self.ability, effective_config)
+
+	if effective_config.cost then
+		self.base_cost = effective_config.cost
+		if self.set_cost then
+			self:set_cost()
+		end
+	end
+
 	if cur_gameset and center.gameset_config and center.gameset_config[cur_gameset] then
 		local gs_cfg = center.gameset_config[cur_gameset]
-		for k, v in pairs(gs_cfg) do
-			if k ~= "disabled" and k ~= "center" then
-				if k == "cost" then
-					self.base_cost = v
-					if self.set_cost then
-						self:set_cost()
-					end
-				elseif k == "config" and type(v) == "table" then
-					for ck, cv in pairs(v) do
-						if type(cv) == "table" and type(self.ability[ck]) == "table" then
-							self.ability[ck] = copy_table(self.ability[ck])
-							for k2, v2 in pairs(cv) do
-								self.ability[ck][k2] = type(v2) == "table" and copy_table(v2) or v2
-							end
-						else
-							self.ability[ck] = type(cv) == "table" and copy_table(cv) or cv
-						end
-					end
-				else
-					if type(v) == "table" and type(self.ability[k]) == "table" then
-						self.ability[k] = copy_table(self.ability[k])
-						for k2, v2 in pairs(v) do
-							self.ability[k][k2] = type(v2) == "table" and copy_table(v2) or v2
-						end
-					else
-						self.ability[k] = type(v) == "table" and copy_table(v) or v
-					end
-				end
-			end
-		end
 		if gs_cfg.disabled then
 			self.cry_disabled = true
 		end
 		if gs_cfg.center and not self.gameset_select then
 			for k, v in pairs(gs_cfg.center) do
-				center[k] = v
 				self[k] = v
+				if self.config and self.config.center then
+					self.config.center[k] = v
+				end
 				if k == "rarity" then
 					center:set_rarity(v)
-				else
-					self.config.center[k] = v
 				end
 			end
 		end
