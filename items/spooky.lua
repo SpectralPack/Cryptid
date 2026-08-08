@@ -801,11 +801,9 @@ local flickering = {
 				end
 			end
 		elseif
-			(context.main_scoring or context.individual)
+			(context.main_scoring)
 			and context.cardarea == G.play
-			and card.area == G.play
 			and not card.debuff
-			and not context.repetition_only
 		then
 			card.ability.flick_tally = card.ability.flick_tally - 1
 			if card.ability.flick_tally > 0 then
