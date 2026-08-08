@@ -547,10 +547,11 @@ function Game:update(dt)
 				and G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult_ante ~= G.GAME.round_resets.ante
 			then
 				if G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].name == "cry-Obsidian Orb" then
-					for i = 1, #G.GAME.defeated_blinds do
-						G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult
-							* G.P_BLINDS[G.GAME.defeated_blinds[i]]
-							/ 2
+					for k, _ in pairs(G.GAME.defeated_blinds) do
+						if G.P_BLINDS[k] and G.P_BLINDS[k].mult then
+							G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult
+								* (G.P_BLINDS[k].mult / 2)
+						end
 					end
 				else
 					G.P_BLINDS[G.GAME.round_resets.blind_choices[c]].mult = 0
