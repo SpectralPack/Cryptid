@@ -4094,11 +4094,13 @@ local multiply = {
 		local cards = Cryptid.get_highlighted_cards({ G.jokers }, card, 1, 1, function(card)
 			return not Card.no(card, "immutable", true)
 		end)
-		if cards[1] and not cards[1].config.cry_multiply then
-			cards[1].config.cry_multiply = 1
+		if cards[1] then
+			if not cards[1].config.cry_multiply then
+				cards[1].config.cry_multiply = 1
+			end
+			cards[1].config.cry_multiply = cards[1].config.cry_multiply * 2
+			Cryptid.manipulate(cards[1], { value = 2 })
 		end
-		cards[1].config.cry_multiply = cards[1].config.cry_multiply * 2
-		Cryptid.manipulate(cards[1], { value = 2 })
 	end,
 	init = function(self)
 		--reset Jokers at end of round
