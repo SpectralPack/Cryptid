@@ -3066,18 +3066,19 @@ local declare = {
 			local complexity = #cards
 			local ranks = {}
 			local suits = {}
+			local s, r = -1, -1
 			for i, v in pairs(cards) do
-				if not ranks[v.base.value] then
-					ranks[v.base.value] = true
+				local val = SMODS.has_no_rank(v) and "rankless" or v.base.value
+				local suit = SMODS.has_no_suit(v) and "suitless" or v.base.suit
+				if not ranks[val] then
+					r = r + 1
+					ranks[val] = true
+				end
+				if not suits[suit] and not suitless then
+					s = s + 1
+					suits[suit] = true
 				end
 			end
-			for i, v in pairs(cards) do
-				if not suits[v.base.suit] and not suitless then
-					suits[v.base.suit] = true
-				end
-			end
-			local s = #suits - 1
-			local r = #ranks - 1
 			local mult = math.floor((complexity / 1.41428) ^ 2.25 + s + r)
 			if mult < 1 then
 				mult = 1
@@ -3088,7 +3089,7 @@ local declare = {
 			local declare_cards = {}
 			for i, v in pairs(cards) do
 				local card = {
-					rank = v:get_id() > 0 and v:get_id() or "rankless",
+					rank = SMODS.has_no_rank(v) and "rankless" or v:get_id(),
 					suit = not suitless and (SMODS.has_no_suit(v) and "suitless" or v.base.suit),
 				}
 				declare_cards[#declare_cards + 1] = card
