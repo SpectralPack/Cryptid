@@ -3487,7 +3487,7 @@ local variable = {
 	force_use = function(self, card, area)
 		local choices = { "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A" }
 		for i, v in pairs(Cryptid.get_highlighted_cards({ G.hand }, {}, 1, card.ability.max_highlighted or 2)) do
-			SMODS.change_base(v, v.base.suit, pseudorandom_element(choices, pseudoseed("forcevariable")))
+			assert(SMODS.change_base(v, nil, pseudorandom_element(choices, pseudoseed("forcevariable"))))
 		end
 	end,
 	attributes = { "modify_card", "rank" },
