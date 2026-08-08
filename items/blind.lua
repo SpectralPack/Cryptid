@@ -1586,42 +1586,52 @@ local obsidian_orb = {
 			end
 		end
 	end,
+	recalc_debuff = function(self, card, from_blind)
+		return self:debuff_card(card, from_blind)
+	end,
 	debuff_card = function(self, card, from_blind)
 		if card and type(card) == "table" and card.area then
 			for k, _ in pairs(G.GAME.defeated_blinds) do
 				local s = G.P_BLINDS[k]
-				if s.debuff_card then
-					s:debuff_card(card, from_blind)
-				end
-				if s.debuff and not G.GAME.blind.disabled and card.area ~= G.jokers then
-					--this part is buggy for some reason
-					if s.debuff.suit and Card.is_suit(card, s.debuff.suit, true) then
-						card:set_debuff(true)
+				if s then
+					if s.debuff_card then
+						s:debuff_card(card, from_blind)
+					end
+					if s.recalc_debuff and not G.GAME.blind.disabled and card.area ~= G.jokers then
+						if s:recalc_debuff(card, from_blind) then
+							card:set_debuff(true)
+							return true
+						end
+					end
+					if s.debuff and not G.GAME.blind.disabled and card.area ~= G.jokers then
+						if s.debuff.suit and card:is_suit(s.debuff.suit, nil, true) then
+							card:set_debuff(true)
+							return true
+						end
+						if s.debuff.is_face and card:is_face(true) then
+							card:set_debuff(true)
+							return true
+						end
+						if s.name == "The Pillar" and card.ability.played_this_ante then
+							card:set_debuff(true)
+							return true
+						end
+						if card.base and s.debuff.value and s.debuff.value == card.base.value then
+							card:set_debuff(true)
+							return true
+						end
+						if card.base and s.debuff.nominal and s.debuff.nominal == card.base.nominal then
+							card:set_debuff(true)
+							return true
+						end
+					end
+					if s.name == "Crimson Heart" and not G.GAME.blind.disabled and card.area == G.jokers then
 						return
 					end
-					if s.debuff.is_face == "face" and Card.is_face(card, true) then
+					if s.name == "Verdant Leaf" and not G.GAME.blind.disabled and card.area ~= G.jokers then
 						card:set_debuff(true)
-						return
+						return true
 					end
-					if s.name == "The Pillar" and card.ability.played_this_ante then
-						card:set_debuff(true)
-						return
-					end
-					if s.debuff.value and s.debuff.value == card.base.value then
-						card:set_debuff(true)
-						return
-					end
-					if s.debuff.nominal and s.debuff.nominal == card.base.nominal then
-						card:set_debuff(true)
-						return
-					end
-				end
-				if s.name == "Crimson Heart" and not G.GAME.blind.disabled and card.area == G.jokers then
-					return
-				end
-				if s.name == "Verdant Leaf" and not G.GAME.blind.disabled and card.area ~= G.jokers then
-					card:set_debuff(true)
-					return
 				end
 			end
 		end
