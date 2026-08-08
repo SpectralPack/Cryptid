@@ -611,8 +611,15 @@ local primus = {
 			local check = true
 			if context.scoring_hand then
 				for k, v in ipairs(context.full_hand) do
-					local id = v:get_id()
-					if id ~= 2 or id ~= 3 or id ~= 5 or id ~= 7 or id ~= 14 then
+					if
+						not ({
+							[2] = true,
+							[3] = true,
+							[5] = true,
+							[7] = true,
+							[14] = true,
+						})[v:get_id()]
+					then
 						check = false
 					end
 				end
