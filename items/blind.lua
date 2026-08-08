@@ -490,15 +490,11 @@ local hammer = {
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
-				not SMODS.has_no_rank(card)
-				and not SMODS.has_enhancement(card, "m_cry_abstract")
-				and (
-					card.base.value == "3"
-					or card.base.value == "5"
-					or card.base.value == "7"
-					or card.base.value == "9"
-					or card.base.value == "Ace"
-				)
+				({
+					[3] = true, [5] = true,
+					[7] = true, [9] = true,
+					[14] = true,
+				})[card:get_id()]
 			then
 				return true
 			end
@@ -528,15 +524,11 @@ local magic = {
 	recalc_debuff = function(self, card, from_blind)
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
-				not SMODS.has_no_rank(card)
-				and not SMODS.has_enhancement(card, "m_cry_abstract")
-				and (
-					card.base.value == "2"
-					or card.base.value == "4"
-					or card.base.value == "6"
-					or card.base.value == "8"
-					or card.base.value == "10"
-				)
+				({
+					[2] = true, [4] = true,
+					[6] = true, [8] = true,
+					[10] = true,
+				})[card:get_id()]
 			then
 				return true
 			end
