@@ -491,8 +491,10 @@ local hammer = {
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
 				({
-					[3] = true, [5] = true,
-					[7] = true, [9] = true,
+					[3] = true,
+					[5] = true,
+					[7] = true,
+					[9] = true,
 					[14] = true,
 				})[card:get_id()]
 			then
@@ -525,8 +527,10 @@ local magic = {
 		if card.area ~= G.jokers and not G.GAME.blind.disabled then
 			if
 				({
-					[2] = true, [4] = true,
-					[6] = true, [8] = true,
+					[2] = true,
+					[4] = true,
+					[6] = true,
+					[8] = true,
 					[10] = true,
 				})[card:get_id()]
 			then
