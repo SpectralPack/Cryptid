@@ -776,7 +776,7 @@ local flickering = {
 			card.ability.flick_tally = 5
 		end
 		if card.ability.set == "Joker" then
-			if context.post_trigger and context.other_joker == card then
+			if context.post_trigger and context.other_card == card then
 				card.ability.flick_tally = card.ability.flick_tally - 1
 				if card.ability.flick_tally > 0 then
 					card_eval_status_text(card, "extra", nil, nil, nil, {
@@ -800,29 +800,31 @@ local flickering = {
 					}))
 				end
 			end
-		elseif context.from_playing_card and not card.debuff and not context.repetition_only and context.ret then
-			context.ret.jokers = nil
-			if next(context.ret) ~= nil then
-				card.ability.flick_tally = card.ability.flick_tally - 1
-				if card.ability.flick_tally > 0 then
-					card_eval_status_text(card, "extra", nil, nil, nil, {
-						message = localize({
-							type = "variable",
-							key = "a_remaining",
-							vars = { card.ability.flick_tally },
-						}),
-						colour = G.C.FILTER,
-						delay = 0.45,
-					})
-				else
-					card.will_shatter = true
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							card:start_dissolve()
-							return true
-						end,
-					}))
-				end
+		elseif
+			(context.main_scoring or context.individual)
+			and context.cardarea == G.play
+			and not card.debuff
+			and not context.repetition_only
+		then
+			card.ability.flick_tally = card.ability.flick_tally - 1
+			if card.ability.flick_tally > 0 then
+				card_eval_status_text(card, "extra", nil, nil, nil, {
+					message = localize({
+						type = "variable",
+						key = "a_remaining",
+						vars = { card.ability.flick_tally },
+					}),
+					colour = G.C.FILTER,
+					delay = 0.45,
+				})
+			else
+				card.will_shatter = true
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						card:start_dissolve()
+						return true
+					end,
+				}))
 			end
 		end
 	end,
