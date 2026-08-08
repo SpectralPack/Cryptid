@@ -1228,7 +1228,7 @@ local obsidian_orb = {
 	boss_colour = HEX("290759"),
 	set_blind = function(self, reset, silent)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.set_blind then
 				s:set_blind(reset, silent)
 			end
@@ -1328,7 +1328,7 @@ local obsidian_orb = {
 	end,
 	disable = function(self, silent)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.disable then
 				s:disable(silent)
 			end
@@ -1370,7 +1370,7 @@ local obsidian_orb = {
 	end,
 	press_play = function(self)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.press_play then
 				s:press_play()
 			end
@@ -1436,7 +1436,7 @@ local obsidian_orb = {
 		local new_chips = hand_chips
 		local trigger = false
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.modify_hand then
 				local this_trigger = false
 				new_mult, new_chips, this_trigger = s:modify_hand(cards, poker_hands, text, new_mult, new_chips)
@@ -1454,7 +1454,7 @@ local obsidian_orb = {
 	debuff_hand = function(self, cards, hand, handname, check)
 		G.GAME.blind.debuff_boss = nil
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.debuff_hand and s:debuff_hand(cards, hand, handname, check) then
 				G.GAME.blind.debuff_boss = s
 				return true
@@ -1522,7 +1522,7 @@ local obsidian_orb = {
 	end,
 	drawn_to_hand = function(self)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.drawn_to_hand then
 				s:drawn_to_hand()
 			end
@@ -1559,7 +1559,7 @@ local obsidian_orb = {
 	end,
 	stay_flipped = function(self, area, card)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.stay_flipped and s:stay_flipped(area, card) then
 				return true
 			end
@@ -1589,7 +1589,7 @@ local obsidian_orb = {
 	debuff_card = function(self, card, from_blind)
 		if card and type(card) == "table" and card.area then
 			for k, _ in pairs(G.GAME.defeated_blinds) do
-				s = G.P_BLINDS[k]
+				local s = G.P_BLINDS[k]
 				if s.debuff_card then
 					s:debuff_card(card, from_blind)
 				end
@@ -1629,7 +1629,7 @@ local obsidian_orb = {
 	cry_ante_base_mod = function(self, dt)
 		local mod = 0
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.cry_ante_base_mod then
 				mod = mod + s:cry_ante_base_mod(dt)
 			end
@@ -1639,7 +1639,7 @@ local obsidian_orb = {
 	cry_round_base_mod = function(self, dt)
 		local mod = 1
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.cry_round_base_mod then
 				mod = mod * s:cry_round_base_mod(dt)
 			end
@@ -1648,7 +1648,7 @@ local obsidian_orb = {
 	end,
 	cry_cap_score = function(self, score)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.cry_cap_score then
 				score = s:cry_cap_score(score)
 			end
@@ -1658,7 +1658,7 @@ local obsidian_orb = {
 	cry_calc_ante_gain = function(self)
 		local ante = 1
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.cry_calc_ante_gain then
 				ante = math.max(ante, s:cry_calc_ante_gain())
 			end
@@ -1667,7 +1667,7 @@ local obsidian_orb = {
 	end,
 	cry_before_play = function(self)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.cry_before_play then
 				s:cry_before_play()
 			end
@@ -1675,7 +1675,7 @@ local obsidian_orb = {
 	end,
 	cry_after_play = function(self)
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.cry_after_play then
 				s:cry_after_play()
 			end
@@ -1684,7 +1684,7 @@ local obsidian_orb = {
 	cry_before_cash = function(self)
 		local decision_made = false
 		for k, _ in pairs(G.GAME.defeated_blinds) do
-			s = G.P_BLINDS[k]
+			local s = G.P_BLINDS[k]
 			if s.cry_before_cash then
 				decision_made = true
 				s:cry_before_cash()
