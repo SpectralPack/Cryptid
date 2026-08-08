@@ -98,6 +98,7 @@ function SMODS.get_next_vouchers(vouchers)
 			local key = Cryptid.poll_equilibrium_key("cry_equivoucherium")
 			vouchers[#vouchers + 1] = key or "j_joker"
 			vouchers.spawn[key or "j_joker"] = true
+			vouchers.spawn[#vouchers] = true
 		end
 		return vouchers
 	else
