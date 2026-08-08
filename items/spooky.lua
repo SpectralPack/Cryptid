@@ -803,6 +803,7 @@ local flickering = {
 		elseif
 			(context.main_scoring or context.individual)
 			and context.cardarea == G.play
+			and card.area == G.play
 			and not card.debuff
 			and not context.repetition_only
 		then
