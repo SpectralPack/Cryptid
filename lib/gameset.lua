@@ -1186,6 +1186,23 @@ function Cryptid.update_obj_registry(m, force_enable)
 	if m.obj_table then
 		for k, v in pairs(m.obj_table) do
 			if v.mod and (v.mod.id == "Cryptid" or Cryptid.mod_gameset_whitelist[v.mod.id]) then
+				if v.set == "Joker" then
+					v.cry_original_rarity = v.cry_original_rarity or v.rarity
+					local set_gameset = Cryptid.gameset(v)
+					local target_rarity = v.cry_original_rarity
+					if v.gameset_config and v.gameset_config[set_gameset] and v.gameset_config[set_gameset].center then
+						for ck, cv in pairs(v.gameset_config[set_gameset].center) do
+							if ck == "rarity" then
+								target_rarity = cv
+							else
+								v[ck] = cv
+							end
+						end
+					end
+					if v.set_rarity and v.rarity ~= target_rarity then
+						v:set_rarity(target_rarity)
+					end
+				end
 				local en = force_enable or Cryptid.enabled(k)
 				if en == true then
 					if v.cry_disabled then
