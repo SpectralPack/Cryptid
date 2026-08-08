@@ -800,11 +800,7 @@ local flickering = {
 					}))
 				end
 			end
-		elseif
-			(context.main_scoring)
-			and context.cardarea == G.play
-			and not card.debuff
-		then
+		elseif context.main_scoring and context.cardarea == G.play and not card.debuff then
 			card.ability.flick_tally = card.ability.flick_tally - 1
 			if card.ability.flick_tally > 0 then
 				card_eval_status_text(card, "extra", nil, nil, nil, {
