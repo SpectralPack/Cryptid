@@ -403,7 +403,7 @@ local azure_seal = {
 	pos = { x = 0, y = 2 },
 	-- This is still quite jank
 	calculate = function(self, card, context)
-		if context.destroying_card and context.cardarea == G.play and context.destroy_card == card then
+		if context.destroy_card and context.cardarea == G.play and context.destroy_card == card then
 			card.will_shatter = true
 			G.E_MANAGER:add_event(Event({
 				trigger = "before",

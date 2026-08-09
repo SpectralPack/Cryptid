@@ -3,33 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = -1
 
-# Remove voucher at start of run (also for Crimson Stake)
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "self.GAME.current_round.voucher = forced_voucher and {forced_voucher, spawn = {[forced_voucher] = true }} or SMODS.get_next_vouchers()"
-position = "after"
-payload = '''
-if self.GAME.modifiers.cry_no_vouchers then
-    very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
-end
-'''
-match_indent = true
-
-
-# Remove voucher when defeating boss (also for Crimson Stake)
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "G.GAME.current_round.voucher = SMODS.get_next_vouchers()"
-position = "after"
-payload = '''
-if G.GAME.modifiers.cry_no_vouchers then
-    very_fair_quip = pseudorandom_element(G.localization.misc.very_fair_quips, pseudoseed("cry_very_fair"))
-end
-'''
-match_indent = true
-
 # Change empty voucher text on Very Fair Deck
 # This ain't localized, but that's a vanilla issue anyway
 [[patches]]

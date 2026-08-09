@@ -25,48 +25,6 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = "functions/state_events.lua"
-pattern = '''
-func = (function()  update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});play_sound('button', 0.9, 0.6);return true end)
-'''
-position = "at"
-payload = '''
-func = (function()
-
-if G.GAME.hands["cry_None"].visible then
-update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});
-    G.reset_to_none = true
-
-else
-    update_hand_text({delay = 0, immediate = true}, {mult = 0, chips = 0, chip_total = G.GAME.blind.cry_cap_score and G.GAME.blind:cry_cap_score(math.floor(hand_chips*mult)) or math.floor(hand_chips*mult), level = '', handname = ''});
-end
-play_sound('button', 0.9, 0.6);return true end)
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = '''
-level_up_hand(context.blueprint_card or self, text, nil, 1)
-update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-return nil, true
-'''
-position = "at"
-payload = '''
-                level_up_hand(context.blueprint_card or self, text, nil, 1)
-                if G.GAME.hands["cry_None"].visible then
-                    Cryptid.reset_to_none()
-
-                else
-                    update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-                end
-                return nil, true
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
 target = "card.lua"
 pattern = '''
 level_up_hand(used_tarot, self.ability.consumeable.hand_type)
@@ -153,7 +111,7 @@ G.E_MANAGER:add_event(Event({
     }))
 '''
 match_indent = true
-
+# TODO: what are we doing here????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
@@ -202,22 +160,6 @@ if not hand then text = "cry_None"; disp_text = localize("cry_None", "poker_hand
 hand = G.GAME.hands[text]
 if text == "cry_None" then G.GAME.hands["cry_None"].visible = true end
 hand.played = hand.played + 1
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/common_events.lua"
-pattern = '''
-G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
-G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult*amount, 1)
-G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips*amount, 1)
-'''
-position = "at"
-payload = '''
-G.GAME.hands[hand].level = math.max(0, G.GAME.hands[hand].level + amount)
-G.GAME.hands[hand].mult = G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult*amount
-G.GAME.hands[hand].chips = G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips*amount
 '''
 match_indent = true
 
