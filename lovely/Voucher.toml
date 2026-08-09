@@ -41,6 +41,29 @@ if self.shop_cry_bonusvoucher then G.GAME.cry_bonusvouchersused[self.shop_cry_bo
 '''
 match_indent = true
 
+# clear spawn tracking when purchasing non-voucher items from voucher/booster slots
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if c1.children.buy_button then c1.children.buy_button:remove() end"
+position = "after"
+payload = '''
+    if c1.shop_voucher or c1.from_area == G.shop_vouchers or c1.area == G.shop_vouchers then
+        if G.GAME.current_round.voucher and type(G.GAME.current_round.voucher) == 'table' and G.GAME.current_round.voucher.spawn then
+            if c1.shop_voucher_idx then
+                G.GAME.current_round.voucher.spawn[c1.shop_voucher_idx] = false
+            end
+            local key = c1.config.center_key or (c1.config.center and c1.config.center.key)
+            if key then
+                G.GAME.current_round.voucher.spawn[key] = false
+            end
+        end
+    end
+    if c1.shop_cry_bonusvoucher then G.GAME.cry_bonusvouchersused[c1.shop_cry_bonusvoucher] = true end
+    if c1.ability and c1.ability.booster_pos then G.GAME.current_round.used_packs[c1.ability.booster_pos] = 'USED' end
+'''
+match_indent = true
+
 # create the table
 [[patches]]
 [patches.pattern]
