@@ -15,7 +15,6 @@ cry_voucher_rental_rate = 2,
 cry_consumeable_rental_rate = 2,
 cry_voucher_banana_odds = 12,
 cry_consumeable_banana_odds = 4,
-cry_pinned_consumeables = 0,
 cry_shop_joker_price_modifier = 1,
 '''
 match_indent = true
@@ -111,24 +110,21 @@ target = "card.lua"
 pattern = "if G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT or any_state then"
 position = "before"
 payload = '''
-if G.GAME.cry_pinned_consumeables > 0 and not self.pinned then
-	return false
+if not self.pinned then
+	local areas = { G.jokers, G.consumeables, G.hand, }
+    areas[#areas+1] = G.shop_joker
+    areas[#areas+1] = G.shop_voucher
+    areas[#areas+1] = G.shop_booster
+    areas[#areas+1] = G.pack_cards
+    for _, area in ipairs(areas) do
+        for _, c in ipairs(area.cards or {}) do
+            if c.ability.consumeable and c.pinned then return false end
+        end
+    end
 end
 '''
 match_indent = true
 
-# pinned consumeable remove, counterpart is in cryptid's create_card
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if self.joker_added_to_deck_but_debuffed then"
-position = "before"
-payload = '''
-if self.ability.consumeable and self.pinned and (G.GAME.cry_pinned_consumeables > 0) then
-	G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables - 1
-end
-'''
-match_indent = true
 
 # rental jank
 [[patches]]

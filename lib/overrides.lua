@@ -1137,9 +1137,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			Cryptid.manipulate(card, { value = 4 })
 		end
 	end
-	if card.ability.consumeable and card.pinned then -- counterpart is in Sticker.toml
-		G.GAME.cry_pinned_consumeables = G.GAME.cry_pinned_consumeables + 0
-	end
 	if card.ability.name == "cry-meteor" then
 		card:set_edition("e_foil", true, nil, true)
 	end
