@@ -315,7 +315,7 @@ local crash = {
 		-- Execute the selected crash
 		f(self, card, area, copier)
 	end,
-	demicoloncompat = true,
+	demicoloncompat = false,
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
