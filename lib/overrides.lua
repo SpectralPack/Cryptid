@@ -21,7 +21,7 @@ end
 
 -- Helper: checks if a P_CENTER is a playing card (Default, Enhanced, or base consumable)
 function Cryptid.is_playing_card_center(center)
-	return center.set == 'Default' or center.set == 'Enhanced' or center.key == 'c_base'
+	return center.set == "Default" or center.set == "Enhanced" or center.key == "c_base"
 end
 
 -- polls a random card for deck of equilibrium
@@ -266,16 +266,26 @@ if SMODS and SMODS.add_booster_to_shop then
 			return abts(key, ...)
 		end
 		-- Equilibrium: handle non-booster items with correct scale, front card, and type
-		if key then assert(G.P_CENTERS[key], "Invalid booster key: "..key) else key = get_pack('shop_pack').key end
+		if key then
+			assert(G.P_CENTERS[key], "Invalid booster key: " .. key)
+		else
+			key = get_pack("shop_pack").key
+		end
 		local center = G.P_CENTERS[key]
-		local is_booster = center.set == 'Booster'
+		local is_booster = center.set == "Booster"
 		local is_playing = Cryptid.is_playing_card_center(center)
 		local scale = is_booster and 1.27 or 1
-		local front = is_playing and pseudorandom_element(G.P_CARDS, 'cry_equifrontbrium') or G.P_CARDS.empty
-		local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
-			G.shop_booster.T.y, G.CARD_W * scale, G.CARD_H * scale, front, center,
-			{bypass_discovery_center = true, bypass_discovery_ui = true})
-		local card_type = is_playing and 'Base' or center.set
+		local front = is_playing and pseudorandom_element(G.P_CARDS, "cry_equifrontbrium") or G.P_CARDS.empty
+		local card = Card(
+			G.shop_booster.T.x + G.shop_booster.T.w / 2,
+			G.shop_booster.T.y,
+			G.CARD_W * scale,
+			G.CARD_H * scale,
+			front,
+			center,
+			{ bypass_discovery_center = true, bypass_discovery_ui = true }
+		)
+		local card_type = is_playing and "Base" or center.set
 		create_shop_card_ui(card, card_type, G.shop_booster)
 		card.ability.booster_pos = #G.shop_booster.cards + 1
 		card:start_materialize()
@@ -292,7 +302,9 @@ if SMODS and SMODS.add_voucher_to_shop then
 			return avts(key, dont_save, ...)
 		end
 		-- Equilibrium: handle non-voucher items with correct front card and type
-		if key then assert(G.P_CENTERS[key], "Invalid voucher key: "..key) else
+		if key then
+			assert(G.P_CENTERS[key], "Invalid voucher key: " .. key)
+		else
 			key = get_next_voucher_key()
 			if not dont_save then
 				G.GAME.current_round.voucher.spawn[key] = true
@@ -302,13 +314,25 @@ if SMODS and SMODS.add_voucher_to_shop then
 		local center = G.P_CENTERS[key]
 		local is_playing = Cryptid.is_playing_card_center(center)
 		local front = is_playing
-			and pseudorandom_element(G.P_CARDS, pseudoseed('cry_equifrontbrium'..(G.GAME.round_resets.ante or 1)..(key or ''), G.GAME.pseudorandom.seed))
+				and pseudorandom_element(
+					G.P_CARDS,
+					pseudoseed(
+						"cry_equifrontbrium" .. (G.GAME.round_resets.ante or 1) .. (key or ""),
+						G.GAME.pseudorandom.seed
+					)
+				)
 			or G.P_CARDS.empty
-		local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
-			G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, front, center,
-			{bypass_discovery_center = true, bypass_discovery_ui = true})
+		local card = Card(
+			G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
+			G.shop_vouchers.T.y,
+			G.CARD_W,
+			G.CARD_H,
+			front,
+			center,
+			{ bypass_discovery_center = true, bypass_discovery_ui = true }
+		)
 		card.shop_voucher = true
-		local card_type = is_playing and 'Base' or center.set
+		local card_type = is_playing and "Base" or center.set
 		create_shop_card_ui(card, card_type, G.shop_vouchers)
 		card:start_materialize()
 		G.shop_vouchers:emplace(card)
