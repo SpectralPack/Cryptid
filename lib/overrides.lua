@@ -2433,11 +2433,6 @@ function SMODS.calculate_round_score(flames)
 	return base
 end
 
-local smods_shatters_ref = SMODS.shatters
-function SMODS.shatters(card)
-	return card.cry_glass_trigger or (card.edition and card.edition.cry_glass) or smods_shatters_ref(card)
-end
-
 local level_up_ref = level_up_hand
 function level_up_hand(card, hand, instant, amount, statustext)
 	G._CRY_DEFAULT_LEVELUP = true

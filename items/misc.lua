@@ -1836,6 +1836,7 @@ local glass_edition = {
 	in_shop = true,
 	disable_base_shader = true,
 	disable_shadow = true,
+	shatters = true,
 	on_apply = function(card)
 		-- Randomize offset to -1..1
 		card.edition.cry_glass_seed = pseudorandom("e_cry_glass") * 2 - 1
