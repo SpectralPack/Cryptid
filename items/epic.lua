@@ -1019,29 +1019,32 @@ local double_scale = {
 	cost = 18,
 	immutable = true,
 	atlas = "atlasepic",
-	calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
-		-- store original scaling rate
-		if not other.ability.cry_scaling_info then
-			other.ability.cry_scaling_info = {
-				[args.scalar_value] = current_scalar,
-			}
-		elseif not other.ability.cry_scaling_info[args.scalar_value] then
-			other.ability.cry_scaling_info[args.scalar_value] = current_scalar
-		end
+	calculate = function(self, card, context)
+		if context.scaling_card then
+			local other = context.card
+			-- store original scaling rate
+			if not other.ability.cry_scaling_info then
+				other.ability.cry_scaling_info = {
+					[context.scalar_value] = context.scalar,
+				}
+			elseif not other.ability.cry_scaling_info[context.scalar_value] then
+				other.ability.cry_scaling_info[context.scalar_value] = context.scalar
+			end
 
-		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
+			local original_scalar = other.ability.cry_scaling_info[context.scalar_value]
 
-		-- joker scaling stuff
-		if Cryptid.gameset(self) == "exp_modest" then
-			return {
-				scalar_value = lenient_bignum(to_big(original_scalar) * 2),
-				message = localize("k_upgrade_ex"),
-			}
-		else
-			args.scalar_table[args.scalar_value] = current_scalar + original_scalar
-			return {
-				message = localize("k_upgrade_ex"),
-			}
+			-- joker scaling stuff
+			if Cryptid.gameset(self) == "exp_modest" then
+				return {
+					override_scalar_value = lenient_bignum(to_big(original_scalar) * 2),
+					message = localize("k_upgrade_ex"),
+				}
+			else
+				context.scalar_table[context.scalar_value] = context.scalar + original_scalar
+				return {
+					message = localize("k_upgrade_ex"),
+				}
+			end
 		end
 	end,
 	cry_credits = {
