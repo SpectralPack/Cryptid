@@ -302,78 +302,17 @@ local crash = {
 		return true
 	end,
 	use = function(self, card, area, copier)
-		-- Record consumable usage in profile statistics if not already logged
 		if not G.PROFILES[G.SETTINGS.profile].consumeable_usage["c_cry_crash"] then
 			set_consumeable_usage(card)
 		end
 
-		-- Detach and mark the used card as removed so save_run omits it from the save file
-		local used_tarot = copier or card
-		if used_tarot then
-			used_tarot.REMOVED = true
-			if used_tarot.area then
-				used_tarot.area:remove_card(used_tarot)
-			end
-			used_tarot:remove()
-		end
-
-		-- Select random crash function from crashes pool and advance cry_crash RNG seed
+		-- Advance RNG before saving so seed state is preserved
 		local f = pseudorandom_element(crashes, pseudoseed("cry_crash"))
 
-		-- Save current user profile settings
-		G:save_settings()
+		-- Force a synchronous save of the full run state
+		Cryptid.force_save_before_crash(copier or card)
 
-		-- Resolve canonical resting game state (SHOP, BLIND_SELECT, ROUND_EVAL, or SELECTING_HAND)
-		local resting_state = G.STATES.SELECTING_HAND
-		if G.shop or G.STATE == G.STATES.SHOP or (G.GAME and G.GAME.pack_interrupt == G.STATES.SHOP) then
-			resting_state = G.STATES.SHOP
-		elseif G.blind_select or G.STATE == G.STATES.BLIND_SELECT or (G.GAME and G.GAME.pack_interrupt == G.STATES.BLIND_SELECT) then
-			resting_state = G.STATES.BLIND_SELECT
-		elseif G.STATE == G.STATES.ROUND_EVAL or (G.GAME and G.GAME.pack_interrupt == G.STATES.ROUND_EVAL) then
-			resting_state = G.STATES.ROUND_EVAL
-		end
-
-		-- Return any cards temporarily drawn to hand back to deck if resting in shop or blind select
-		if (resting_state == G.STATES.SHOP or resting_state == G.STATES.BLIND_SELECT) and G.hand and G.hand.cards and #G.hand.cards > 0 then
-			local target_area = G.deck or G.discard
-			if target_area then
-				for i = #G.hand.cards, 1, -1 do
-					local card_to_move = G.hand.cards[i]
-					if card_to_move then
-						G.hand:remove_card(card_to_move)
-						target_area:emplace(card_to_move)
-					end
-				end
-			end
-		end
-
-		-- Remove open booster pack cards to prevent lingering pack entities on reload
-		if G.pack_cards and G.pack_cards.cards and #G.pack_cards.cards > 0 then
-			for i = #G.pack_cards.cards, 1, -1 do
-				G.pack_cards.cards[i]:remove()
-			end
-		end
-
-		-- Temporarily set G.STATE to resting_state and enable saving
-		local old_state = G.STATE
-		local old_no_save = G.F_NO_SAVING
-		G.STATE = resting_state
-		G.F_NO_SAVING = false
-
-		-- Generate save table via save_run
-		save_run()
-
-		-- Restore original G.STATE and G.F_NO_SAVING flags
-		G.F_NO_SAVING = old_no_save
-		G.STATE = old_state
-
-		-- Synchronously write compressed save data directly to save.jkr before crashing
-		local save_data = (G.ARGS and G.ARGS.save_run) or G.culled_table
-		if save_data and G.SETTINGS and G.SETTINGS.profile then
-			compress_and_save(G.SETTINGS.profile .. "/save.jkr", STR_PACK(save_data))
-		end
-
-		-- Execute the selected crash function
+		-- Execute the selected crash
 		f(self, card, area, copier)
 	end,
 	demicoloncompat = true,
