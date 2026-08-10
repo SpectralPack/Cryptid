@@ -266,9 +266,9 @@ match_indent = true
 
 # Emerald Stake - flipped packs
 [[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
+[patches.regex]
+target = ["game.lua", '=[SMODS _ "src/utils.lua"]']
+pattern = '''create_shop_card_ui\(card, .*, G\.shop_booster\)'''
 position = "before"
 payload = '''
 if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_pack'..G.GAME.round_resets.ante) > 0.7 then
@@ -279,9 +279,9 @@ match_indent = true
 
 # Emerald Stake - flipped vouchers
 [[patches]]
-[patches.pattern]
+[patches.regex]
 target = """=[SMODS _ "src/utils.lua"]"""
-pattern = "create_shop_card_ui(card, 'Voucher', G.shop_vouchers)"
+pattern = '''create_shop_card_ui\(card, .*, G\.shop_vouchers\)'''
 position = "before"
 payload = '''
 if G.GAME.modifiers.cry_enable_flipped_in_shop and pseudorandom('cry_flip_vouch'..G.GAME.round_resets.ante) > 0.7 then
