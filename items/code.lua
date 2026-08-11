@@ -375,6 +375,8 @@ local crash = {
 			check_for_unlock({ type = "ach_cry_used_crash" })
 			G.CHOOSE_ACE:remove()
 			G.ENTERED_ACE = nil
+			-- Re-save after ACE code runs so spawned cards/changes persist
+			save_run()
 		end
 
 		crashes = {
