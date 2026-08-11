@@ -8566,17 +8566,19 @@ local kidnap = {
 		local value = 0
 		if G.GAME and G.GAME.jokers_sold then
 			for _, v in ipairs(G.GAME.jokers_sold) do
+				local center = G.P_CENTERS[v]
 				if
-					G.P_CENTERS[v].effect == "Type Mult"
-					or G.P_CENTERS[v].effect == "Cry Type Mult"
-					or G.P_CENTERS[v].effect == "Cry Type Chips"
-					or G.P_CENTERS[v].effect == "Boost Kidnapping"
-					or (
-						G.P_CENTERS[v].name == "Sly Joker"
-						or G.P_CENTERS[v].name == "Wily Joker"
-						or G.P_CENTERS[v].name == "Clever Joker"
-						or G.P_CENTERS[v].name == "Devious Joker"
-						or G.P_CENTERS[v].name == "Crafty Joker"
+					center
+					and (
+						center.effect == "Type Mult"
+						or center.effect == "Cry Type Mult"
+						or center.effect == "Cry Type Chips"
+						or center.effect == "Boost Kidnapping"
+						or center.name == "Sly Joker"
+						or center.name == "Wily Joker"
+						or center.name == "Clever Joker"
+						or center.name == "Devious Joker"
+						or center.name == "Crafty Joker"
 					)
 				then
 					value = value + 1
@@ -8595,17 +8597,19 @@ local kidnap = {
 		if context.forcetrigger then
 			local value = 0
 			for _, v in ipairs(G.GAME.jokers_sold) do
+				local center = G.P_CENTERS[v]
 				if
-					G.P_CENTERS[v].effect == "Type Mult"
-					or G.P_CENTERS[v].effect == "Cry Type Mult"
-					or G.P_CENTERS[v].effect == "Cry Type Chips"
-					or G.P_CENTERS[v].effect == "Boost Kidnapping"
-					or (
-						G.P_CENTERS[v].name == "Sly Joker"
-						or G.P_CENTERS[v].name == "Wily Joker"
-						or G.P_CENTERS[v].name == "Clever Joker"
-						or G.P_CENTERS[v].name == "Devious Joker"
-						or G.P_CENTERS[v].name == "Crafty Joker"
+					center
+					and (
+						center.effect == "Type Mult"
+						or center.effect == "Cry Type Mult"
+						or center.effect == "Cry Type Chips"
+						or center.effect == "Boost Kidnapping"
+						or center.name == "Sly Joker"
+						or center.name == "Wily Joker"
+						or center.name == "Clever Joker"
+						or center.name == "Devious Joker"
+						or center.name == "Crafty Joker"
 					)
 				then
 					value = value + 1
@@ -8617,17 +8621,19 @@ local kidnap = {
 	calc_dollar_bonus = function(self, card)
 		local value = 0
 		for _, v in ipairs(G.GAME.jokers_sold) do
+			local center = G.P_CENTERS[v]
 			if
-				G.P_CENTERS[v].effect == "Type Mult"
-				or G.P_CENTERS[v].effect == "Cry Type Mult"
-				or G.P_CENTERS[v].effect == "Cry Type Chips"
-				or G.P_CENTERS[v].effect == "Boost Kidnapping"
-				or (
-					G.P_CENTERS[v].name == "Sly Joker"
-					or G.P_CENTERS[v].name == "Wily Joker"
-					or G.P_CENTERS[v].name == "Clever Joker"
-					or G.P_CENTERS[v].name == "Devious Joker"
-					or G.P_CENTERS[v].name == "Crafty Joker"
+				center
+				and (
+					center.effect == "Type Mult"
+					or center.effect == "Cry Type Mult"
+					or center.effect == "Cry Type Chips"
+					or center.effect == "Boost Kidnapping"
+					or center.name == "Sly Joker"
+					or center.name == "Wily Joker"
+					or center.name == "Clever Joker"
+					or center.name == "Devious Joker"
+					or center.name == "Crafty Joker"
 				)
 			then
 				value = value + 1
@@ -9060,20 +9066,22 @@ local necromancer = {
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			local new_card = create_card(
-				"Joker",
-				G.jokers,
-				nil,
-				nil,
-				nil,
-				nil,
-				G.GAME.jokers_sold[pseudorandom("cry_necromancer", 1, #G.GAME.jokers_sold)]
-			)
-			new_card.ability.cry_no_sell_value = true --i dont see a reason to even use a config value for this, its always going to be 0 anyway????
-			new_card:set_cost()
-			new_card:add_to_deck()
-			G.jokers:emplace(new_card)
-			new_card:start_materialize()
+			local sold_key = nil
+			for i = 1, math.min(#G.GAME.jokers_sold, 10) do
+				local k = G.GAME.jokers_sold[pseudorandom("cry_necromancer", 1, #G.GAME.jokers_sold)]
+				if G.P_CENTERS[k] then
+					sold_key = k
+					break
+				end
+			end
+			if sold_key then
+				local new_card = create_card("Joker", G.jokers, nil, nil, nil, nil, sold_key)
+				new_card.ability.cry_no_sell_value = true --i dont see a reason to even use a config value for this, its always going to be 0 anyway????
+				new_card:set_cost()
+				new_card:add_to_deck()
+				G.jokers:emplace(new_card)
+				new_card:start_materialize()
+			end
 		end
 	end,
 	cry_credits = {
