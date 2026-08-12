@@ -2946,7 +2946,7 @@ return {
 				text = {
 					"当{C:attention}#2#{} {C:inactive}[#1#]{} 张{C:attention}增强牌{}计分后",
 					"卖掉此牌",
-					"以获得#4#张{V:1}#3#{}{C:attention}小丑牌{}",
+					"生成#4#{V:1}#3#{}{C:attention}小丑牌{}",
 				},
 			},
 			j_cry_savvy = {
