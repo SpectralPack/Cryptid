@@ -234,17 +234,19 @@ if JokerDisplay then
 			local abc = 0
 			if G.GAME and G.GAME.jokers_sold then
 				for _, v in ipairs(G.GAME.jokers_sold) do
+					local center = G.P_CENTERS[v]
 					if
-						G.P_CENTERS[v].effect == "Type Mult"
-						or G.P_CENTERS[v].effect == "Cry Type Mult"
-						or G.P_CENTERS[v].effect == "Cry Type Chips"
-						or G.P_CENTERS[v].effect == "Boost Kidnapping"
-						or (
-							G.P_CENTERS[v].name == "Sly Joker"
-							or G.P_CENTERS[v].name == "Wily Joker"
-							or G.P_CENTERS[v].name == "Clever Joker"
-							or G.P_CENTERS[v].name == "Devious Joker"
-							or G.P_CENTERS[v].name == "Crafty Joker"
+						center
+						and (
+							center.effect == "Type Mult"
+							or center.effect == "Cry Type Mult"
+							or center.effect == "Cry Type Chips"
+							or center.effect == "Boost Kidnapping"
+							or center.name == "Sly Joker"
+							or center.name == "Wily Joker"
+							or center.name == "Clever Joker"
+							or center.name == "Devious Joker"
+							or center.name == "Crafty Joker"
 						)
 					then
 						abc = abc + 1
