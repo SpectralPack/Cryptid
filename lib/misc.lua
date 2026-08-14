@@ -954,14 +954,15 @@ function Cryptid.force_save_before_crash(used_card)
 
 	-- Determine what state the game should reload into
 	local resting_state = G.STATES.SELECTING_HAND
-	if G.shop or G.STATE == G.STATES.SHOP
-		or (G.GAME and G.GAME.pack_interrupt == G.STATES.SHOP) then
+	if G.shop or G.STATE == G.STATES.SHOP or (G.GAME and G.GAME.pack_interrupt == G.STATES.SHOP) then
 		resting_state = G.STATES.SHOP
-	elseif G.blind_select or G.STATE == G.STATES.BLIND_SELECT
-		or (G.GAME and G.GAME.pack_interrupt == G.STATES.BLIND_SELECT) then
+	elseif
+		G.blind_select
+		or G.STATE == G.STATES.BLIND_SELECT
+		or (G.GAME and G.GAME.pack_interrupt == G.STATES.BLIND_SELECT)
+	then
 		resting_state = G.STATES.BLIND_SELECT
-	elseif G.STATE == G.STATES.ROUND_EVAL
-		or (G.GAME and G.GAME.pack_interrupt == G.STATES.ROUND_EVAL) then
+	elseif G.STATE == G.STATES.ROUND_EVAL or (G.GAME and G.GAME.pack_interrupt == G.STATES.ROUND_EVAL) then
 		resting_state = G.STATES.ROUND_EVAL
 	end
 
