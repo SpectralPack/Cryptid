@@ -140,8 +140,6 @@
 --Adroit Joker
 --Penetrating Joker
 --Treacherous Joker
-
---[[
 if JokerDisplay then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
 
@@ -2044,6 +2042,5 @@ if JokerDisplay then
 
 	--end of Jokerdisplays
 end
-]]
---
+
 return { name = "JokerDisplay" }
