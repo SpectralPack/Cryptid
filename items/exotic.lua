@@ -1329,6 +1329,7 @@ local duplicare = {
 					and context.other_card.ability
 					and context.other_card.ability.set == "Joker"
 					and Cryptid.isNonRollProbabilityContext(context.other_context)
+					and Cryptid.isNonScalingContext(context.other_context)
 				) or (context.individual and context.cardarea == G.play)
 			)
 		then

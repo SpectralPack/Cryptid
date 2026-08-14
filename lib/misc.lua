@@ -1438,6 +1438,13 @@ function Cryptid.isNonRollProbabilityContext(context)
 	return true
 end
 
+function Cryptid.isNonScalingContext(context)
+	if not context then
+		return false
+	end
+	return not context.scaling_card
+end
+
 function Cryptid.nuke_decimals(number, surviving_decimals, round)
 	surviving_decimals = surviving_decimals or 0
 	--Set round to 0.5 to round or 0 to floor
