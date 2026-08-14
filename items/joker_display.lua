@@ -1,145 +1,265 @@
---=============== Page 1 ===============--
---SuperCell
---Dropshot
---Kidnapping
---Iterum
---Happy House
---Bubble M
---Fast Food M
---M Stack
---Exponentia
---Neon M
---Virgo
---Notebook
---Pot Of Jokes
---Bonk
---Loopy
---=============== Page 2 ===============--
---Old Membership Card
---Redeo
---Scrabble Tile
---Sacrifice
---Googol Play Card
---Weebonacci
---Reverse card
---Tiny
---Tenebris
---Huge
---Tredecim
---The WHIP
---Lucky Joker
---Canvas
---Megg
---=============== Page 3 ===============--
---Jolly Joker?
---Cursor
---Pickle
---ERROR
---Cube
---Triplet Rhythm
---Chili Pepper
---Compound Interest
---Crustulum
---Big Cube
---m
---Boredom
---Eternal Flame
---Nice
---Chad
---=============== Page 4 ===============--
---Jimball
---Fidget Spinner
---Number Blocks
---Luigi
---Waluigi
---Mario
---Nostalgic candy
---Wario
---Krusty the Clown
---Primus
---Garden of Forking Paths
---Light Up the Night
---No sound, No Memory
---...Like Antennas To heavem
---Caramel
---=============== Page 5 ===============--
---Sob
---Consume-able
---2D
---Red Bloon
---AP Joker
---Fridge Magnet
---Stella Mortis
---Unjust Dagger
---Monkey Dagger
---Bonus Joker
---Pirate Dagger
---Mondrian
---Sapling
---Celestial Globe
---:D
---=============== Page 6 ===============--
---Meteor Shower
---Exoplanet
---Stardust
---Mult Joker
---Gold Joker
---Nostalgic Googol play Card
---Circulus Pistoris
---The Duos
---The Home
---The Nuts
---The Quintet
---The Unity
---The Swarm
---The Filler
---Crypto Coin
---=============== Page 7 ===============--
---Wheel Of Hope
---Old Blueprint
---Night
---Bus Driver
---Morse Code
---Membership Card
---M Chain
---Copy/Paste
---Cut
---Python
---Monster
---Non-Verisimile
---Gemini
---Nostalgic Invisible Joker
---Facile
---=============== Page 8 ===============--
---Giggly Joker
---Nutty Joker
---Manic Joker
---Silly Joker
---Delirious Joker
---Wacky Joker
---Kooky Joker
---Dubious Joker
---Shrewd Joker
---Tricksy Joker
---Foxy Joker
---Savvy Joker
---Subtle Joker
---Discreet Joker
---Fractal
---=============== Page 9 ===============--
---Ace Aequilibrium
---Duplicare
---Queen's Gambit
---Formidiulosus
---The Stronghold
---The Fuck!?
---The Clash
---Bonkers Joker
---Fucked Up Joker
---Foolhardy Joker
---Adroit Joker
---Penetrating Joker
---Treacherous Joker
+--=============== Page 11 ===============--
+-- ------- Implemented -------
+--  m
+--  Dropshot
+--  Canvas
+--  Cursor
+--  Queen's Gambit
+--  Jimball
+--  Compound Interest
+--  Triplet Rhythm
+--  Cube
+--  Number Blocks
+--  Googol Play Card
+--  The WHIP
+-- ------ Unimplemented ------
+--  Double Scale
+--  Maximized
+-- ---------- Bugged ---------
+--  Happy House: crashes game on hover
+--=============== Page 12 ===============--
+-- ------- Implemented -------
+--  Giggly Joker
+--  Nutty Joker
+--  Manic Joker
+--  Silly Joker
+--  Delirious Joker
+--  Wacky Joker
+--  Kooky Joker
+--  Dubious Joker
+--  Shrewd Joker
+--  Tricksy Joker
+--  Foxy Joker
+--  Savvy Joker
+--  Subtle Joker
+--  Discreet Joker
+-- ---------- Bugged ---------
+--  Kidnapping: crashes game on hover
+--=============== Page 13 ===============--
+-- ------- Implemented -------
+--  Krusty the Clown
+--  Boredom
+--  Membership Card
+--  Lucky Joker
+--  AP Joker
+--  Meteor Shower
+--  Exoplanet
+--  Stardust
+--  Night
+--  Sapling
+--  Nostalgic Candy
+--  Mondrian
+--  Pickle
+-- ------ Unimplemented ------
+--  Circus
+--  Booster Joker
+--=============== Page 14 ===============--
+-- ------- Implemented -------
+--  Bus Driver
+--  Chili Pepper
+--  Monkey Dagger
+--  Old Membership Card
+--  Crypto Coin
+--  Morse Code
+--  Nostalgic Googol Play Card
+-- ------ Unimplemented ------
+--  Panopticon
+--  Blurred Joker
+--  Translucent Joker
+--  Sync Catalyst
+--  Kaleidoscope
+--  One for All
+--  RNJoker
+--  Labyrinth
+--=============== Page 15 ===============--
+-- ------- Implemented -------
+--  2D
+--  :D
+--  M Chain
+--  Garden of Forking Paths
+--  Light Up the Night
+--  No Sound, No Memory
+--  ...Like Antennas to Heaven
+--  Chad
+--  ERROR
+--  Celestial Globe
+--  Wheel of Hope
+--  Bonus Joker
+-- ------ Unimplemented ------
+--  Jimbo-tron 9000
+--  Negative Joker
+-- ---------- Bugged ---------
+--  Supercell: incorrect display for modest(shows +chips and +mult when shouldn't)
+--=============== Page 16 ===============--
+-- ------- Implemented -------
+--  Fractal Fingers
+--  Fidget Spinner
+--  Nostalgic Invisible Joker
+--  Consume-able
+--  Gold Joker
+--  Sob
+--  Old Blueprint
+--  Nice
+--  Waluigi
+--  Wario
+--  The Filler
+--  The Duos
+--  The Home
+--  The Nuts
+-- ------ Unimplemented ------
+--  SUS
+--=============== Page 17 ===============--
+-- ------- Implemented -------
+--  The Quintet
+--  The Unity
+--  The Swarm
+--  Fridge Magnet
+--  Red Bloon
+--  Weebonacci
+--  Mult Joker
+--  Eternal Flame
+--  Unjust Dagger
+--  Pirate Dagger
+--  Pot of Jokes
+--  Big Cube
+--  Caramel
+--  Bonkers Joker
+-- ------ Unimplemented ------
+--  Seal the Deal
+--=============== Page 18 ===============--
+-- ------- Implemented -------
+--  Fucked-Up Joker
+--  Foolhardy Joker
+--  Adroit Joker
+--  Penetrating Joker
+--  Treacherous Joker
+--  The Stronghold
+--  The Fuck!?
+--  The Clash
+-- ------ Unimplemented ------
+--  Undefined Joker
+--  Words Can't Even Begin to Describe This Joker
+--  Nebulous Joker
+--  Many Have Lost Their Minds Comprehending This Joker
+--  Universe
+--  The
+--  The Complete and Utter Annihilation of Everything That Makes Balatro Sacred
+--=============== Page 19 ===============--
+-- ------ Unimplemented ------
+--  Astral in a Bottle
+--  Exposed
+--  Mask
+--  Tropical Smoothie
+--  Necromancer
+--  Oil Lamp
+--  Tax Fraud
+--  Pity Prize
+--  Digital Hallucinations
+--  Cotton Candy
+--  Arsonist
+--  Wrapped Candy
+--  Zooble
+--  Chocolate Die
+--  Spectrogram
+--=============== Page 20 ===============--
+-- ------ Unimplemented ------
+--  Kitty Printer
+--  Clicked Cookie
+--  LeBaron James
+--  Hunting Season
+--  Trick-or-Treat
+--  Clockwork Joker
+--  Candy Basket
+--  Blacklist
+--  Rotten Egg
+--  Familiar Currency
+--  High Five
+--  Sock and Sock
+--  Candy Dagger
+--  Broken Home
+--  Candy Cane
+--=============== Page 21 ===============--
+-- ------ Unimplemented ------
+--  Yarn Ball
+--  Candy Buttons
+--  Pizza
+--  Pizza Slice
+--  Jawbreaker
+--  Paved Joker
+--  Mellowcreme
+--  Fading Joker
+--  Brittle Candy
+--  Poor Joker
+--  Monopoly Money
+--  Broken Sync Catalyst
+--  Thalia and Melpomeme
+--  Key Change
+--  Candy Sticks
+--=============== Page 22 ===============--
+-- ------- Implemented -------
+--  Bubble M
+--  Fast Food M
+--  M Stack
+--  Neon M
+--  Notebook
+--  Bonk
+--  Loopy
+--  Scrabble Tile
+--  Sacrifice
+--  Reverse Card
+-- ------ Unimplemented ------
+--  Emergency Chips
+--  Flesh Panopticon
+--  Wonka Bar
+--  Buttercup
+--  M
+--=============== Page 23 ===============--
+-- ------- Implemented -------
+--  Monster
+--  Megg
+--  Tiny
+--  Virgo
+--  Jolly Joker?
+--  Huge
+--  Copy/Paste
+--  Cut
+-- ------ Unimplemented ------
+--  Macabre Joker
+--  Doodle M
+--  Demicolon
+--  Starfruit
+--  Project Sundial
+--  Code Joker
+--  Blender
+--=============== Page 24 ===============--
+-- ------- Implemented -------
+--  Python
+--  Iterum
+--  Stella Mortis
+--  Exponentia
+--  Redeo
+--  Tenebris
+--  Crustulum
+--  Circulus Pistoris
+--  Primus
+--  Ace Aequilibrium
+--  Facile
+-- ------ Unimplemented ------
+--  Scalae
+--  Universum
+--  Speculo
+--  Effarcire
+--=============== Page 25 ===============--
+-- ------- Implemented -------
+--  Gemini
+--  Non Verisimile
+--  Duplicare
+--  Formidiulosus
+--  Tredecim
+-- ------ Unimplemented ------
+--  Energia
+--  Caeruleum
+
 if JokerDisplay then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
 
