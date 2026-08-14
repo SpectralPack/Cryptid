@@ -305,13 +305,17 @@ local crash = {
 		if not G.PROFILES[G.SETTINGS.profile].consumeable_usage["c_cry_crash"] then
 			set_consumeable_usage(card)
 		end
-		-- I'm being VERY safe here, game gets really weird and sometimes does and doesn't save ://CRASH use
-		G:save_settings()
-		G:save_progress()
+
+		-- Advance RNG before saving so seed state is preserved
 		local f = pseudorandom_element(crashes, pseudoseed("cry_crash"))
+
+		-- Force a synchronous save of the full run state
+		Cryptid.force_save_before_crash(copier or card)
+
+		-- Execute the selected crash
 		f(self, card, area, copier)
 	end,
-	demicoloncompat = true,
+	demicoloncompat = false,
 	force_use = function(self, card, area)
 		self:use(card, area)
 	end,
@@ -371,25 +375,21 @@ local crash = {
 			check_for_unlock({ type = "ach_cry_used_crash" })
 			G.CHOOSE_ACE:remove()
 			G.ENTERED_ACE = nil
+			-- Re-save after ACE code runs so spawned cards/changes persist
+			save_run()
 		end
 
 		crashes = {
 			function()
-				G:save_settings()
-				G:save_progress()
 				--instantly quit the game, no error log
 				function love.errorhandler() end
 				print(crash.crash.crash)
 			end,
 			function()
-				G:save_settings()
-				G:save_progress()
 				--removes draw loop, you're frozen and can still weirdly interact with the game a bit
 				function love.draw() end
 			end,
 			function()
-				G:save_settings()
-				G:save_progress()
 				--by WilsonTheWolf and MathIsFun_, funky error screen with random funny message
 				messages = {
 					"Oops.",
@@ -819,8 +819,6 @@ local crash = {
 				)
 			end,
 			function()
-				G:save_settings()
-				G:save_progress()
 				-- Fake lovely panic
 				love.window.showMessageBox(
 					"lovely-injector",

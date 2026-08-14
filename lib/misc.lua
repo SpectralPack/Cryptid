@@ -934,6 +934,60 @@ function Cryptid.reset_to_none()
 	})
 end
 
+-- Force a synchronous save of the full run state before ://CRASH kills the game loop.
+-- Balatro's save_run() only queues a FILE_HANDLER flag; the actual disk write happens
+-- asynchronously in Game:update(). Since crash functions kill the loop immediately,
+-- we need to flush the save through G.SAVE_MANAGER.channel ourselves.
+function Cryptid.force_save_before_crash(used_card)
+	-- Remove the consumed card so it doesn't appear in the save file
+	if used_card then
+		used_card.REMOVED = true
+		if used_card.area then
+			used_card.area:remove_card(used_card)
+		end
+		used_card:remove()
+	end
+
+	-- Save profile settings and progress
+	G:save_settings()
+	G:save_progress()
+
+	-- Determine what state the game should reload into
+	local resting_state = G.STATES.SELECTING_HAND
+	if G.shop or G.STATE == G.STATES.SHOP
+		or (G.GAME and G.GAME.pack_interrupt == G.STATES.SHOP) then
+		resting_state = G.STATES.SHOP
+	elseif G.blind_select or G.STATE == G.STATES.BLIND_SELECT
+		or (G.GAME and G.GAME.pack_interrupt == G.STATES.BLIND_SELECT) then
+		resting_state = G.STATES.BLIND_SELECT
+	elseif G.STATE == G.STATES.ROUND_EVAL
+		or (G.GAME and G.GAME.pack_interrupt == G.STATES.ROUND_EVAL) then
+		resting_state = G.STATES.ROUND_EVAL
+	end
+
+	-- Temporarily override state so save_run() doesn't bail out
+	local old_state = G.STATE
+	local old_no_save = G.F_NO_SAVING
+	G.STATE = resting_state
+	G.F_NO_SAVING = false
+
+	-- Build the save table
+	save_run()
+
+	-- Restore original state
+	G.F_NO_SAVING = old_no_save
+	G.STATE = old_state
+
+	-- Flush the save data synchronously through the save manager channel
+	if G.ARGS.save_run and G.SAVE_MANAGER and G.SAVE_MANAGER.channel then
+		G.SAVE_MANAGER.channel:push({
+			type = "save_run",
+			save_table = G.ARGS.save_run,
+			profile_num = G.SETTINGS.profile,
+		})
+	end
+end
+
 function Card:is_food()
 	--you cant really check if vanilla jokers are in a pool because its hardcoded
 	--so i have to hardcode it here too for the starfruit unlock
