@@ -108,7 +108,7 @@ local schematic = {
 	config = { type = "store_joker_create" },
 	key = "schematic",
 	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = { set = "Joker", key = "j_brainstorm" }
+		info_queue[#info_queue + 1] = G.P_CENTERS.j_brainstorm
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
