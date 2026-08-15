@@ -2958,7 +2958,7 @@ return {
 				name = "言语无法形容的小丑",
 				text = {
 					"如果打出的手牌包含",
-					"一个 {C:attention}#2#",
+					"{C:attention}#2#",
 					"获得 {X:mult,C:white}X#1#{} 倍率",
 				},
 			},
@@ -2974,13 +2974,13 @@ return {
 				name = "彻底摧毁 Balatro 神圣的终极小丑",
 				text = {
 					"如果打出的手牌包含",
-					"一个 {C:attention}#2#",
+					"{C:attention}#2#",
 					"获得 {X:dark_edition,C:white}^#1#{} 倍率",
 				},
 				unlock = {
 					"赢下一次游戏，且",
 					"你的最后一手牌是",
-					"一个 {E:1,C:attention}#1#",
+					"{E:1,C:attention}#1#",
 				},
 			},
 			j_cry_trick_or_treat = {

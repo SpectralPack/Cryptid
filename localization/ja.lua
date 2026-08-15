@@ -3051,9 +3051,9 @@ return {
 			j_cry_annihalation = {
 				name = "The Complete and Utter Annihilation of Everything That Makes Balatro Sacred",
 				text = {
-					"倍率 {X:dark_edition,C:white}#1#乗{} if played",
-					"hand contains",
-					"a {C:attention}#2#",
+					"プレイしたハンドが",
+					"{C:attention}#2#{}を含む場合",
+					"倍率 {X:dark_edition,C:white}#1#乗{}",
 				},
 				unlock = {
 					"最終ハンドに",

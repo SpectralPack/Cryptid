@@ -3060,7 +3060,7 @@ return {
 				text = {
 					"{X:mult,C:white}X#1#{} Mult if played",
 					"hand contains",
-					"a {C:attention}#2#",
+					"{C:attention}#2#",
 				},
 			},
 			j_cry_many_lost_minds = {
@@ -3077,12 +3077,12 @@ return {
 				text = {
 					"{X:talisman_emult,C:white}^#1#{} Mult if played",
 					"hand contains",
-					"a {C:attention}#2#",
+					"{C:attention}#2#",
 				},
 				unlock = {
 					"Win a run with",
 					"your final hand being",
-					"a {E:1,C:attention}#1#",
+					"{E:1,C:attention}#1#",
 				},
 			},
 			j_cry_trick_or_treat = {
