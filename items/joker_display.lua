@@ -2,9 +2,9 @@
 -- ------- Implemented -------
 --  m
 --  Dropshot
---  Canvas
+--  Canvas: needs rework (add "retriggers" below counter)
 --  Cursor
---  Queen's Gambit
+--  Queen's Gambit: needs rework (show counter like with Seance)
 --  Jimball
 --  Compound Interest
 --  Triplet Rhythm
@@ -13,8 +13,8 @@
 --  Googol Play Card
 --  The WHIP
 -- ------ Unimplemented ------
---  Double Scale
---  Maximized
+--  Double Scale(unnecessary)
+--  Maximized(unnecessary)
 -- ---------- Bugged ---------
 --  Happy House: crashes game on hover
 --=============== Page 12 ===============--
