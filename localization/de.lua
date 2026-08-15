@@ -2948,7 +2948,7 @@ return {
 				name = "Die Vollständige Und Totale Vernichtung Von Allem Was Balatro Ausmacht",
 				text = {
 					"{X:dark_edition,C:white}^#1#{} Mult, wenn",
-					"gespielte Hand ein",
+					"gespielte Hand",
 					"{C:attention}#2#{} enthält",
 				},
 				unlock = {
