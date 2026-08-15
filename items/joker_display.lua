@@ -2,24 +2,27 @@
 -- ------- Implemented -------
 --  m
 --  Dropshot
---  Canvas: needs rework (add "retriggers" below counter)
 --  Cursor
---  Queen's Gambit: needs rework (show counter like with Seance)
---  Jimball
 --  Compound Interest
 --  Triplet Rhythm
 --  Cube
 --  Number Blocks
 --  Googol Play Card
 --  The WHIP
--- ------ Unimplemented ------
---  Double Scale(unnecessary)
---  Maximized(unnecessary)
+--  Canvas
+-- ------ Need Rework --------
+--  Queen's Gambit: show counter like with Seance
+-- ------ Unnecessary ------
+--  Double Scale
+--  Maximized
 -- ---------- Bugged ---------
 --  Happy House: crashes game on hover
+--  Jimball: weird crash when selecting cards???
 --=============== Page 12 ===============--
--- ------- Implemented -------
---  Giggly Joker
+-- ---------- Bugged ---------
+--  Kidnapping: crashes game on hover
+--  # All below: incorrect display (show +0 ERROR at all times) #
+--  Absurd Joker
 --  Nutty Joker
 --  Manic Joker
 --  Silly Joker
@@ -33,8 +36,6 @@
 --  Savvy Joker
 --  Subtle Joker
 --  Discreet Joker
--- ---------- Bugged ---------
---  Kidnapping: crashes game on hover
 --=============== Page 13 ===============--
 -- ------- Implemented -------
 --  Krusty the Clown
@@ -42,77 +43,81 @@
 --  Membership Card
 --  Lucky Joker
 --  AP Joker
---  Meteor Shower
---  Exoplanet
---  Stardust
 --  Night
 --  Sapling
 --  Nostalgic Candy
 --  Mondrian
 --  Pickle
+--  Meteor Shower
+--  Stardust
+--  Exoplanet
 -- ------ Unimplemented ------
 --  Circus
 --  Booster Joker
 --=============== Page 14 ===============--
 -- ------- Implemented -------
---  Bus Driver
 --  Chili Pepper
 --  Monkey Dagger
---  Old Membership Card
---  Crypto Coin
 --  Morse Code
 --  Nostalgic Googol Play Card
+--  Old Membership Card
+-- ----- Need Rework ---------
+--  Bus Driver: show chances for each outcome
+--  Crypto Coin: add "sold Joker" or something like that below values
 -- ------ Unimplemented ------
---  Panopticon
 --  Blurred Joker
 --  Translucent Joker
 --  Sync Catalyst
---  Kaleidoscope
 --  One for All
 --  RNJoker
+-- ------ Unnecessary --------
+--  Panopticon
 --  Labyrinth
+--  Kaleidoscope
 --=============== Page 15 ===============--
 -- ------- Implemented -------
---  2D
---  :D
---  M Chain
 --  Garden of Forking Paths
 --  Light Up the Night
---  No Sound, No Memory
---  ...Like Antennas to Heaven
---  Chad
 --  ERROR
 --  Celestial Globe
 --  Wheel of Hope
---  Bonus Joker
+--  Chad
+--  2D
+--  No Sound, No Memory
+-- ----- Need Rework ---------
+--  :D: Need to add "+Joker" above "Round"
+--  M Chain: rework description 
 -- ------ Unimplemented ------
 --  Jimbo-tron 9000
+-- ----- Unnecessary ---------
 --  Negative Joker
 -- ---------- Bugged ---------
 --  Supercell: incorrect display for modest(shows +chips and +mult when shouldn't)
+--  ...Like Antennas to Heaven: stuck at X1, not updating
+--  Bonus Joker: crashes game (on spawning?)
 --=============== Page 16 ===============--
 -- ------- Implemented -------
 --  Fractal Fingers
 --  Fidget Spinner
 --  Nostalgic Invisible Joker
---  Consume-able
 --  Gold Joker
 --  Sob
---  Old Blueprint
 --  Nice
 --  Waluigi
 --  Wario
 --  The Filler
+-- ------ Need Rework --------
+--  Consume-able: add "Consumable" text
+-- ------- Bugged ------------
+--  Old Blueprint: loses probability text when copying a joker
+--  # All below: incorrect display (show x1 ERROR at all times) #
 --  The Duos
 --  The Home
 --  The Nuts
--- ------ Unimplemented ------
+-- ------ Unnecessary --------
 --  SUS
 --=============== Page 17 ===============--
 -- ------- Implemented -------
---  The Quintet
---  The Unity
---  The Swarm
 --  Fridge Magnet
 --  Red Bloon
 --  Weebonacci
@@ -123,11 +128,17 @@
 --  Pot of Jokes
 --  Big Cube
 --  Caramel
---  Bonkers Joker
 -- ------ Unimplemented ------
 --  Seal the Deal
+-- ------ Bugged -------------
+--  # All below: incorrect display (show +0/x1 ERROR at all times) #
+--  The Quintet
+--  The Unity
+--  The Swarm
+--  Bonkers Joker
 --=============== Page 18 ===============--
--- ------- Implemented -------
+-- ------- Bugged -------------
+--  # All below: incorrect display #
 --  Fucked-Up Joker
 --  Foolhardy Joker
 --  Adroit Joker
@@ -146,21 +157,22 @@
 --  The Complete and Utter Annihilation of Everything That Makes Balatro Sacred
 --=============== Page 19 ===============--
 -- ------ Unimplemented ------
---  Astral in a Bottle
 --  Exposed
 --  Mask
 --  Tropical Smoothie
---  Necromancer
 --  Oil Lamp
 --  Tax Fraud
 --  Pity Prize
 --  Digital Hallucinations
---  Cotton Candy
 --  Arsonist
 --  Wrapped Candy
 --  Zooble
 --  Chocolate Die
 --  Spectrogram
+-- ---- Unnecessary ---------
+--  Astral in a Bottle
+--  Necromancer
+--  Cotton Candy
 --=============== Page 20 ===============--
 -- ------ Unimplemented ------
 --  Kitty Printer
@@ -194,29 +206,32 @@
 --  Broken Sync Catalyst
 --  Thalia and Melpomeme
 --  Key Change
+-- ---- Unnecessary ---------
 --  Candy Sticks
 --=============== Page 22 ===============--
 -- ------- Implemented -------
---  Bubble M
 --  Fast Food M
 --  M Stack
 --  Neon M
---  Notebook
 --  Bonk
 --  Loopy
 --  Scrabble Tile
 --  Sacrifice
 --  Reverse Card
+-- ------ Need Rework --------
+--  Bubble M: add "+Jolly" text
 -- ------ Unimplemented ------
 --  Emergency Chips
 --  Flesh Panopticon
 --  Wonka Bar
+-- ---- Unnecessary ---------
 --  Buttercup
 --  M
+-- ------ Bugged -------------
+--  Notebook: shows "ERROR" and doesn't correctly update status 
 --=============== Page 23 ===============--
 -- ------- Implemented -------
 --  Monster
---  Megg
 --  Tiny
 --  Virgo
 --  Jolly Joker?
@@ -229,8 +244,11 @@
 --  Demicolon
 --  Starfruit
 --  Project Sundial
+-- ---- Unnecessary ----------
 --  Code Joker
 --  Blender
+-- ------ Bugged -------------
+--  Megg: no info shown
 --=============== Page 24 ===============--
 -- ------- Implemented -------
 --  Python
@@ -240,25 +258,29 @@
 --  Redeo
 --  Tenebris
 --  Crustulum
---  Circulus Pistoris
 --  Primus
 --  Ace Aequilibrium
 --  Facile
--- ------ Unimplemented ------
+-- ----- Need Rework --------
+--  Circulus Pistoris: incorrect echips/emult visual display and needs to add active/inactive text
+-- ------ Unimplemented -----
 --  Scalae
 --  Universum
+-- ---- Unnecessary ---------
 --  Speculo
 --  Effarcire
 --=============== Page 25 ===============--
 -- ------- Implemented -------
---  Gemini
 --  Non Verisimile
 --  Duplicare
 --  Formidiulosus
---  Tredecim
+-- ------ Need Rework --------
+--  Gemini: show what Joker it's doubling
 -- ------ Unimplemented ------
 --  Energia
 --  Caeruleum
+-- ----- Bugged ------------
+--  Tredecim: only shows emult for jolly jokers and not m jokers
 
 if JokerDisplay then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
