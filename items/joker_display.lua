@@ -19,9 +19,7 @@
 --  Happy House: crashes game on hover
 --  Jimball: weird crash when selecting cards???
 --=============== Page 12 ===============--
--- ---------- Bugged ---------
---  Kidnapping: crashes game on hover
---  # All below: incorrect display (show +0 ERROR at all times) #
+-- ------- Implemented -------
 --  Absurd Joker
 --  Nutty Joker
 --  Manic Joker
@@ -36,6 +34,8 @@
 --  Savvy Joker
 --  Subtle Joker
 --  Discreet Joker
+-- ---------- Bugged ---------
+--  Kidnapping: crashes game on hover
 --=============== Page 13 ===============--
 -- ------- Implemented -------
 --  Krusty the Clown
@@ -106,14 +106,13 @@
 --  Waluigi
 --  Wario
 --  The Filler
+--  The Duos
+--  The Home
+--  The Nuts
 -- ------ Need Rework --------
 --  Consume-able: add "Consumable" text
 -- ------- Bugged ------------
 --  Old Blueprint: loses probability text when copying a joker
---  # All below: incorrect display (show x1 ERROR at all times) #
---  The Duos
---  The Home
---  The Nuts
 -- ------ Unnecessary --------
 --  SUS
 --=============== Page 17 ===============--
@@ -128,33 +127,30 @@
 --  Pot of Jokes
 --  Big Cube
 --  Caramel
--- ------ Unimplemented ------
---  Seal the Deal
--- ------ Bugged -------------
---  # All below: incorrect display (show +0/x1 ERROR at all times) #
 --  The Quintet
 --  The Unity
 --  The Swarm
 --  Bonkers Joker
+-- ------ Unimplemented ------
+--  Seal the Deal
 --=============== Page 18 ===============--
--- ------- Bugged -------------
---  # All below: incorrect display #
+-- ------- Implemented -------
 --  Fucked-Up Joker
 --  Foolhardy Joker
+--  Undefined Joker
+--  Words Can't Even Begin to Describe This Joker
 --  Adroit Joker
 --  Penetrating Joker
 --  Treacherous Joker
+--  Nebulous Joker
+--  Many Have Lost Their Minds Comprehending This Joker
 --  The Stronghold
 --  The Fuck!?
 --  The Clash
--- ------ Unimplemented ------
---  Undefined Joker
---  Words Can't Even Begin to Describe This Joker
---  Nebulous Joker
---  Many Have Lost Their Minds Comprehending This Joker
---  Universe
 --  The
 --  The Complete and Utter Annihilation of Everything That Makes Balatro Sacred
+-- ------ Unimplemented ------
+--  Universe
 --=============== Page 19 ===============--
 -- ------ Unimplemented ------
 --  Exposed
@@ -1782,13 +1778,108 @@ if JokerDisplay then
 			{ text = ")" },
 		},
 		calc_function = function(card)
+			local hand_type = (card.ability.extra and card.ability.extra.type) or card.ability.type
+			local xmult_val = (card.ability.extra and (card.ability.extra.Xmult or card.ability.extra.x_mult or card.ability.extra.xmult)) or card.ability.Xmult or card.ability.x_mult or card.ability.xmult or 1
 			local x_mult = 1
 			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
-			if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
-				x_mult = card.ability.x_mult
+			if text ~= "Unknown" and hand_type then
+				local matches = (poker_hands[hand_type] and next(poker_hands[hand_type])) or text == hand_type
+				if card.config.center.key == "j_cry_duos" then
+					matches = matches or (poker_hands["Full House"] and next(poker_hands["Full House"])) or text == "Full House"
+				end
+				if matches then
+					x_mult = xmult_val
+				end
 			end
 			card.joker_display_values.x_mult = x_mult
-			card.joker_display_values.localized_text = localize(card.ability.type, "poker_hands")
+			card.joker_display_values.localized_text = hand_type and localize(hand_type, "poker_hands") or "-"
+		end,
+	}
+	local hand_tmult_jd = {
+		text = {
+			{ text = "+", colour = G.C.MULT },
+			{
+				ref_table = "card.joker_display_values",
+				ref_value = "t_mult",
+				colour = G.C.MULT,
+				retrigger_type = "mult",
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand_type = (card.ability.extra and card.ability.extra.type) or card.ability.type
+			local mult_val = (card.ability.extra and (card.ability.extra.t_mult or card.ability.extra.mult)) or card.ability.t_mult or card.ability.mult or 0
+			local t_mult = 0
+			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+			if text ~= "Unknown" and hand_type then
+				if (poker_hands[hand_type] and next(poker_hands[hand_type])) or text == hand_type then
+					t_mult = mult_val
+				end
+			end
+			card.joker_display_values.t_mult = t_mult
+			card.joker_display_values.localized_text = hand_type and localize(hand_type, "poker_hands") or "-"
+		end,
+	}
+	local hand_tchips_jd = {
+		text = {
+			{ text = "+", colour = G.C.CHIPS },
+			{
+				ref_table = "card.joker_display_values",
+				ref_value = "t_chips",
+				colour = G.C.CHIPS,
+				retrigger_type = "mult",
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand_type = (card.ability.extra and card.ability.extra.type) or card.ability.type
+			local chip_val = (card.ability.extra and (card.ability.extra.t_chips or card.ability.extra.chips)) or card.ability.t_chips or card.ability.chips or 0
+			local t_chips = 0
+			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+			if text ~= "Unknown" and hand_type then
+				if (poker_hands[hand_type] and next(poker_hands[hand_type])) or text == hand_type then
+					t_chips = chip_val
+				end
+			end
+			card.joker_display_values.t_chips = t_chips
+			card.joker_display_values.localized_text = hand_type and localize(hand_type, "poker_hands") or "-"
+		end,
+	}
+	local hand_emult_jd = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.joker_display_values", ref_value = "e_mult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand_type = (card.ability.extra and card.ability.extra.type) or card.ability.type
+			local emult_val = (card.ability.extra and (card.ability.extra.Emult or card.ability.extra.emult or card.ability.extra.e_mult)) or card.ability.Emult or card.ability.emult or card.ability.e_mult or 1
+			local e_mult = 1
+			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+			if text ~= "Unknown" and hand_type then
+				if (poker_hands[hand_type] and next(poker_hands[hand_type])) or text == hand_type then
+					e_mult = emult_val
+				end
+			end
+			card.joker_display_values.e_mult = e_mult
+			card.joker_display_values.localized_text = hand_type and localize(hand_type, "poker_hands") or "-"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_duos"] = hand_xmult_jd
@@ -2029,56 +2120,7 @@ if JokerDisplay then
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page8 = {}
 
-	local hand_tmult_jd = {
-		text = {
-			{ text = "+", colour = G.C.MULT },
-			{
-				ref_table = "card.joker_display_values",
-				ref_value = "t_mult",
-				colour = G.C.MULT,
-				retrigger_type = "mult",
-			},
-		},
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			local t_mult = 0
-			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
-			if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
-				t_mult = card.ability.t_mult
-			end
-			card.joker_display_values.t_mult = t_mult
-			card.joker_display_values.localized_text = localize(card.ability.type, "poker_hands")
-		end,
-	}
-	local hand_tchips_jd = {
-		text = {
-			{ text = "+", colour = G.C.CHIPS },
-			{
-				ref_table = "card.joker_display_values",
-				ref_value = "t_chips",
-				colour = G.C.CHIPS,
-				retrigger_type = "mult",
-			},
-		},
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			local t_chips = 0
-			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
-			if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
-				t_chips = card.ability.t_chips
-			end
-			card.joker_display_values.t_chips = t_chips
-			card.joker_display_values.localized_text = localize(card.ability.type, "poker_hands")
-		end,
-	}
+
 	JokerDisplay.Definitions["j_cry_giggly"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_nutty"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_manic"] = hand_tmult_jd
@@ -2175,12 +2217,18 @@ if JokerDisplay then
 	JokerDisplay.Definitions["j_cry_stronghold"] = hand_xmult_jd
 	JokerDisplay.Definitions["j_cry_wtf"] = hand_xmult_jd
 	JokerDisplay.Definitions["j_cry_clash"] = hand_xmult_jd
+	JokerDisplay.Definitions["j_cry_the"] = hand_xmult_jd
+	JokerDisplay.Definitions["j_cry_words_cant_even"] = hand_xmult_jd
 	JokerDisplay.Definitions["j_cry_bonkers"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_fuckedup"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_foolhardy"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_undefined"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_adroit"] = hand_tchips_jd
 	JokerDisplay.Definitions["j_cry_penetrating"] = hand_tchips_jd
 	JokerDisplay.Definitions["j_cry_treacherous"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_nebulous"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_many_lost_minds"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_annihalation"] = hand_emult_jd
 
 	--end of Jokerdisplays
 end
