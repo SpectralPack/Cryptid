@@ -10,14 +10,13 @@
 --  Googol Play Card
 --  The WHIP
 --  Canvas
+--  Happy House
+--  Jimball
 -- ------ Need Rework --------
 --  Queen's Gambit: show counter like with Seance
 -- ------ Unnecessary ------
 --  Double Scale
 --  Maximized
--- -- Critically Bugged ------
---  Happy House: crashes game on hover
---  Jimball: weird crash when selecting cards???
 --=============== Page 12 ===============--
 -- ------- Implemented -------
 --  Absurd Joker
@@ -34,8 +33,7 @@
 --  Savvy Joker
 --  Subtle Joker
 --  Discreet Joker
--- -- Critically Bugged ------
---  Kidnapping: crashes game on hover
+--  Kidnapping
 --=============== Page 13 ===============--
 -- ------- Implemented -------
 --  Krusty the Clown
@@ -84,6 +82,7 @@
 --  Chad
 --  2D
 --  No Sound, No Memory
+--  Bonus Joker
 -- ----- Need Rework ---------
 --  :D: Need to add "+Joker" above "Round"
 --  M Chain: rework description 
@@ -94,8 +93,6 @@
 -- ---------- Bugged ---------
 --  Supercell: incorrect display for modest(shows +chips and +mult when shouldn't)
 --  ...Like Antennas to Heaven: stuck at X1, not updating
--- -- Critically Bugged ------
---  Bonus Joker: crashes game (on spawning?)
 --=============== Page 16 ===============--
 -- ------- Implemented -------
 --  Fractal Fingers
@@ -361,7 +358,7 @@ if JokerDisplay then
 	JokerDisplay.Definitions["j_cry_kidnap"] = {
 		text = {
 			{ text = "+$" },
-			{ ref_table = "card.joker_display_values", ref_value = "extra" },
+			{ ref_table = "card.joker_display_values", ref_value = "dollars" },
 		},
 		text_config = { colour = G.C.GOLD },
 		reminder_text = {
@@ -390,7 +387,8 @@ if JokerDisplay then
 					end
 				end
 			end
-			card.joker_display_values.extra = card.ability.extra * count
+			local money_per = (card.ability and card.ability.extra and type(card.ability.extra) == "table" and card.ability.extra.money) or (type(card.ability.extra) == "number" and card.ability.extra) or 4
+			card.joker_display_values.dollars = money_per * count
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}
@@ -429,13 +427,7 @@ if JokerDisplay then
 					{
 						ref_table = "card.joker_display_values",
 						ref_value = "e_mult",
-						retrigger_type = function(number, triggers)
-							local num = number
-							for i = 1, triggers - 1 do
-								num = num ^ number
-							end
-							return num
-						end,
+						retrigger_type = "exp",
 					},
 				},
 				border_colour = G.C.DARK_EDITION,
@@ -443,11 +435,19 @@ if JokerDisplay then
 		},
 		reminder_text = {
 			{ text = "(" },
-			{ ref_table = "card.ability.extra", ref_value = "check" },
-			{ text = "/114)" },
+			{ ref_table = "card.joker_display_values", ref_value = "check" },
+			{ text = "/" },
+			{ ref_table = "card.joker_display_values", ref_value = "trigger" },
+			{ text = ")" },
 		},
 		calc_function = function(card)
-			card.joker_display_values.e_mult = card.ability.extra.check >= 114 and card.ability.extra.mult or 1
+			local immutable = (card.ability and card.ability.immutable) or {}
+			local check = immutable.check or 0
+			local trigger = immutable.trigger or 114
+			local mult = immutable.mult or 4
+			card.joker_display_values.e_mult = check >= trigger and mult or 1
+			card.joker_display_values.check = check
+			card.joker_display_values.trigger = trigger
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_bubblem"] = {
@@ -1088,22 +1088,23 @@ if JokerDisplay then
 			},
 		},
 		calc_function = function(card)
-			local hand = G.hand.highlighted
+			local cur_xmult = (card.ability and card.ability.extra and card.ability.extra.x_mult) or 1
+			local mod = (card.ability and card.ability.extra and card.ability.extra.x_mult_mod) or 0.15
+			local hand = G.hand and G.hand.highlighted
 			local text, _, _ = JokerDisplay.evaluate_hand(hand)
-			local play_more_than = 0
-			local hand_exists = text ~= "Unknown" and G.GAME.hands[text]
-			if hand_exists then
+			if text ~= "Unknown" and G.GAME.hands[text] then
+				local play_more_than = G.GAME.hands[text].played or 0
+				local will_reset = false
 				for k, v in pairs(G.GAME.hands) do
 					if text ~= k and v.played and v.played >= play_more_than and v.visible then
-						play_more_than = v.played
+						will_reset = true
+						break
 					end
 				end
+				card.joker_display_values.x_mult = will_reset and 1 or (cur_xmult + mod)
+			else
+				card.joker_display_values.x_mult = cur_xmult
 			end
-			card.joker_display_values.x_mult = (
-				hand_exists
-					and (G.GAME.hands[text].played < play_more_than and 1 or card.ability.x_mult + card.ability.extra)
-				or card.ability.x_mult
-			)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_fspinner"] = {
@@ -1468,24 +1469,28 @@ if JokerDisplay then
 				{ text = "(" },
 				{ ref_table = "card.joker_display_values", ref_value = "odds" },
 				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
+				{ ref_table = "card.joker_display_values", ref_value = "max_odds" },
 				{ text = ")" },
 			},
 		},
 		extra_config = { colour = G.C.GREEN, scale = 0.3 },
 		calc_function = function(card)
 			local count = 0
-			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local hand = (G.play and next(G.play.cards)) and G.play.cards or (G.hand and G.hand.highlighted)
 			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
-			if text ~= "Unknown" then
+			if text ~= "Unknown" and scoring_hand then
 				for _, scoring_card in pairs(scoring_hand) do
-					if scoring_card.ability.effect and scoring_card.ability.effect == "Bonus Card" then
+					if SMODS and SMODS.has_enhancement and SMODS.has_enhancement(scoring_card, "m_bonus") then
+						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					elseif scoring_card.ability and scoring_card.ability.effect == "Bonus Card" then
 						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
 					end
 				end
 			end
-			card.joker_display_values.count = math.min(count, 2 - card.ability.extra.check)
+			local check = (card.ability and card.ability.immutable and card.ability.immutable.check) or 0
+			card.joker_display_values.count = math.min(count, math.max(0, 2 - check))
 			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
+			card.joker_display_values.max_odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 8
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_pirate_dagger"] = {
