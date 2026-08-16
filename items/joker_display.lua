@@ -50,7 +50,6 @@
 --  Meteor Shower
 --  Stardust
 --  Exoplanet
--- ------ Unimplemented ------
 --  Circus
 --  Booster Joker
 
@@ -1226,6 +1225,60 @@ if JokerDisplay then
 				},
 			},
 		},
+	}
+	JokerDisplay.Definitions["j_cry_circus"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "count", colour = G.C.ORANGE },
+			{ text = " Jokers)" },
+		},
+		calc_function = function(card)
+			local count = 0
+			if G.jokers then
+				for _, joker_card in ipairs(G.jokers.cards) do
+					if joker_card ~= card and joker_card.config and joker_card.config.center then
+						local rarity = joker_card.config.center.rarity
+						local rarity_map = (card.ability and card.ability.immutable and card.ability.immutable.rarity_map)
+							or { [3] = "3_mult_mod", ["cry_epic"] = "cry_epic_mult_mod", [4] = "4_mult_mod", ["cry_exotic"] = "cry_exotic_mult_mod" }
+						local mod_key = rarity_map[rarity]
+						if mod_key and card.ability and card.ability.extra and card.ability.extra[mod_key] and to_big(card.ability.extra[mod_key]) > to_big(1) then
+							count = count + 1
+						end
+					end
+				end
+			end
+			card.joker_display_values.count = count
+		end,
+		mod_function = function(card, mod_joker)
+			if card ~= mod_joker and card.config and card.config.center then
+				local rarity = card.config.center.rarity
+				local rarity_map = (mod_joker.ability and mod_joker.ability.immutable and mod_joker.ability.immutable.rarity_map)
+					or { [3] = "3_mult_mod", ["cry_epic"] = "cry_epic_mult_mod", [4] = "4_mult_mod", ["cry_exotic"] = "cry_exotic_mult_mod" }
+				local mod_key = rarity_map[rarity]
+				if mod_key and mod_joker.ability and mod_joker.ability.extra and mod_joker.ability.extra[mod_key] then
+					local xmult = mod_joker.ability.extra[mod_key]
+					if to_big(xmult) > to_big(1) then
+						return { x_mult = xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) }
+					end
+				end
+			end
+			return {}
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_booster"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "slots" },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
+		reminder_text = {
+			{ text = "(Slots)" },
+		},
+		calc_function = function(card)
+			local max_slots = (card.ability and card.ability.immutable and card.ability.immutable.max_slots) or 25
+			local slots = (card.ability and card.ability.extra and card.ability.extra.booster_slots) or 1
+			card.joker_display_values.slots = math.min(max_slots, slots)
+		end,
 	}
 	JokerDisplay.Definitions["j_cry_primus"] = {
 		text = {
