@@ -438,7 +438,7 @@ if JokerDisplay then
 						retrigger_type = "exp",
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		reminder_text = {
@@ -528,7 +528,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 	}
@@ -1244,7 +1244,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		reminder_text = {
@@ -1493,7 +1493,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 	}
@@ -1816,7 +1816,7 @@ if JokerDisplay then
 					{ text = "^" },
 					{ ref_table = "card.joker_display_values", ref_value = "e_chips", retrigger_type = "exp" },
 				},
-				border_colour = G.C.CHIPS,
+				border_colour = G.C.echips or G.C.CHIPS,
 			},
 			{ text = " " },
 			{
@@ -1824,7 +1824,7 @@ if JokerDisplay then
 					{ text = "^" },
 					{ ref_table = "card.joker_display_values", ref_value = "e_mult", retrigger_type = "exp" },
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		reminder_text = {
@@ -1948,7 +1948,7 @@ if JokerDisplay then
 					{ text = "^" },
 					{ ref_table = "card.joker_display_values", ref_value = "e_mult", retrigger_type = "exp" },
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		reminder_text = {
@@ -2075,7 +2075,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		reminder_text = {
@@ -2247,7 +2247,7 @@ if JokerDisplay then
 					{ text = "^" },
 					{ ref_table = "card.joker_display_values", ref_value = "Emult", retrigger_type = "exp" },
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		calc_function = function(card)
@@ -2385,7 +2385,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 	}
