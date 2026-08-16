@@ -299,7 +299,15 @@ local crash = {
 	atlas = "atlasnotjokers",
 	order = 400,
 	can_use = function(self, card)
-		return true
+		return not (G.GAME and G.GAME.USING_CODE)
+	end,
+	keep_on_use = function(self, card)
+		if not card.cry_crash_choice then
+			card.cry_crash_choice = pseudorandom_element(crashes, pseudoseed("cry_crash"))
+		end
+		if crashes and card.cry_crash_choice == crashes[#crashes] then
+			return true
+		end
 	end,
 	use = function(self, card, area, copier)
 		if not G.PROFILES[G.SETTINGS.profile].consumeable_usage["c_cry_crash"] then
@@ -307,10 +315,13 @@ local crash = {
 		end
 
 		-- Advance RNG before saving so seed state is preserved
-		local f = pseudorandom_element(crashes, pseudoseed("cry_crash"))
+		local f = card.cry_crash_choice or pseudorandom_element(crashes, pseudoseed("cry_crash"))
+		card.cry_crash_choice = nil
 
-		-- Force a synchronous save of the full run state
-		Cryptid.force_save_before_crash(copier or card)
+		if crashes and f ~= crashes[#crashes] then
+			-- Force a synchronous save of the full run state before crash
+			Cryptid.force_save_before_crash(copier or card)
+		end
 
 		-- Execute the selected crash
 		f(self, card, area, copier)
@@ -369,12 +380,124 @@ local crash = {
 		end
 		G.FUNCS.ca = function()
 			G.GAME.USING_CODE = false
-			loadstring(G.ENTERED_ACE)() --Scary!
+			local ace_card = G.ACE_CARD
+			G.ACE_CARD = nil
+
+			local entered = G.ENTERED_ACE or ""
+			local is_empty = entered:match("^%s*$") ~= nil
+
+			local message_text = nil
+			local is_expr = false
+
+			if is_empty then
+				message_text = localize("k_nope_ex")
+			else
+				-- Try as expression first (e.g. "2+2"), then as statement
+				local fn, err = loadstring("return " .. entered)
+				if fn then
+					is_expr = true
+				else
+					fn, err = loadstring(entered)
+				end
+
+				if fn then
+					local ok, result = pcall(fn)
+					if ok then
+						if is_expr and result ~= nil then
+							message_text = tostring(result)
+						end
+					else
+						-- Runtime error in valid syntax
+						message_text = localize("k_nope_ex")
+					end
+				else
+					-- Syntax error
+					message_text = localize("k_nope_ex")
+				end
+			end
+
 			glitched_intensity = 0
 			G.SETTINGS.GRAPHICS.crt = 0
 			check_for_unlock({ type = "ach_cry_used_crash" })
-			G.CHOOSE_ACE:remove()
+			if G.CHOOSE_ACE then
+				G.CHOOSE_ACE:remove()
+				G.CHOOSE_ACE = nil
+			end
 			G.ENTERED_ACE = nil
+
+			-- Card animation & resolution lifecycle
+			if ace_card and not ace_card.REMOVED and not ace_card.removed then
+				-- Detach card from consumables bar and draw it to the center of the screen (G.play)
+				if ace_card.area then
+					ace_card.area:remove_card(ace_card)
+				end
+				draw_card(G.hand, G.play, 1, "up", true, ace_card, nil, false)
+				delay(0.2)
+
+				-- If an expression result or "Nope!" needs to be shown, display the floating attention text
+				if message_text then
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.4,
+						func = function()
+							-- Display floating message with rotating diamond backdrop
+							attention_text({
+								text = message_text,
+								scale = 1.3,
+								hold = 1.4,
+								major = ace_card,
+								backdrop_colour = G.C.SECONDARY_SET.Code,
+								align = (
+									G.STATE == G.STATES.TAROT_PACK
+									or G.STATE == G.STATES.SPECTRAL_PACK
+									or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+								)
+										and "tm"
+									or "cm",
+								offset = {
+									x = 0,
+									y = (
+										G.STATE == G.STATES.TAROT_PACK
+										or G.STATE == G.STATES.SPECTRAL_PACK
+										or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+									)
+											and -0.2
+										or 0,
+								},
+								silent = true,
+							})
+							-- Play delayed echo sound effect
+							G.E_MANAGER:add_event(Event({
+								trigger = "after",
+								delay = 0.06 * G.SETTINGS.GAMESPEED,
+								blockable = false,
+								blocking = false,
+								func = function()
+									play_sound("tarot2", 0.76, 0.4)
+									return true
+								end,
+							}))
+							-- Play primary tarot chime and juice up the card
+							play_sound("tarot2", 1, 0.4)
+							ace_card:juice_up(0.3, 0.5)
+							return true
+						end,
+					}))
+				end
+
+				-- Dissolve the used card in the center of the screen
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						if ace_card and not ace_card.REMOVED and not ace_card.removed then
+							ace_card:start_dissolve()
+						end
+						return true
+					end,
+				}))
+			end
+
 			-- Re-save after ACE code runs so spawned cards/changes persist
 			save_run()
 		end
@@ -835,12 +958,13 @@ local crash = {
 				function love.errorhandler() end
 				print(crash.crash.crash)
 			end,
-			function()
+			function(self, card, area, copier)
 				--Arbitrary Code Execution
 				glitched_intensity = 100
 				G.SETTINGS.GRAPHICS.crt = 100
 				G.GAME.USING_CODE = true
 				G.ENTERED_ACE = ""
+				G.ACE_CARD = copier or card
 				G.CHOOSE_ACE = UIBox({
 					definition = create_UIBox_crash(card),
 					config = {
