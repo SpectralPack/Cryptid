@@ -65,12 +65,12 @@
 --  Blurred Joker
 --  Sync Catalyst
 --  One for All
+--  Panopticon
+--  Labyrinth
 -- ------ Unimplemented ------
 --  RNJoker
 -- -------- Unnecessary ------
 --  Translucent Joker
---  Panopticon
---  Labyrinth
 --  Kaleidoscope
 
 --=============== Page 15 ===============--
@@ -88,7 +88,6 @@
 --  ...Like Antennas to Heaven
 --  :D
 --  M Chain
--- ------ Unimplemented ------
 --  Jimbo-tron 9000
 -- -------- Unnecessary ------
 --  Negative Joker
@@ -128,7 +127,6 @@
 --  The Unity
 --  The Swarm
 --  Bonkers Joker
--- ------ Unimplemented ------
 --  Seal the Deal
 
 --=============== Page 18 ===============--
@@ -279,6 +277,40 @@
 
 if JokerDisplay then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
+
+	-- Panopticon & Labyrinth calculation hooks
+	local orig_card_calc_jd = Card.calculate_joker_display
+	function Card:calculate_joker_display(...)
+		local temp_hands_played = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_played
+		local temp_discards_used = G.GAME and G.GAME.current_round and G.GAME.current_round.discards_used
+		local temp_hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left
+
+		local has_maze = G.jokers and SMODS.find_card and next(SMODS.find_card("j_cry_maze"))
+		local has_panopticon = G.jokers and SMODS.find_card and next(SMODS.find_card("j_cry_panopticon"))
+
+		if G.GAME and G.GAME.current_round then
+			if has_maze then
+				G.GAME.current_round.hands_played = 0
+				G.GAME.current_round.discards_used = 0
+			end
+			if has_panopticon then
+				G.GAME.current_round.hands_left = (G.play and G.play.cards and next(G.play.cards)) and 0 or 1
+			end
+		end
+
+		local res = orig_card_calc_jd(self, ...)
+
+		if G.GAME and G.GAME.current_round then
+			if temp_hands_played ~= nil then G.GAME.current_round.hands_played = temp_hands_played end
+			if temp_discards_used ~= nil then G.GAME.current_round.discards_used = temp_discards_used end
+			if temp_hands_left ~= nil then G.GAME.current_round.hands_left = temp_hands_left end
+		end
+
+		return res
+	end
+
+	JokerDisplay.Definitions["j_cry_panopticon"] = {}
+	JokerDisplay.Definitions["j_cry_maze"] = {}
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page1 = {}
@@ -1442,6 +1474,25 @@ if JokerDisplay then
 		end,
 	}
 	--]]
+	JokerDisplay.Definitions["j_cry_seal_the_deal"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left or 0
+			card.joker_display_values.is_active = (hands_left == 1 and not next(G.play.cards))
+				or (hands_left == 0 and next(G.play.cards))
+				or hands_left <= 0
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
 	JokerDisplay.Definitions["j_cry_primus"] = {
 		text = {
 			{
