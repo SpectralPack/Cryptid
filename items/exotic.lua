@@ -411,6 +411,7 @@ local tenebris = {
 	cost = 50,
 	order = 507,
 	atlas = "atlasexotic",
+	blueprint_compat = false,
 	demicoloncompat = true,
 	calc_dollar_bonus = function(self, card)
 		return lenient_bignum(card.ability.extra.money)
