@@ -83,6 +83,8 @@
 --  2D
 --  No Sound, No Memory
 --  Bonus Joker
+--  Supercell
+--  ...Like Antennas to Heaven
 -- ----- Need Rework ---------
 --  :D: Need to add "+Joker" above "Round"
 --  M Chain: rework description 
@@ -90,9 +92,6 @@
 --  Jimbo-tron 9000
 -- ----- Unnecessary ---------
 --  Negative Joker
--- ---------- Bugged ---------
---  Supercell: incorrect display for modest(shows +chips and +mult when shouldn't)
---  ...Like Antennas to Heaven: stuck at X1, not updating
 --=============== Page 16 ===============--
 -- ------- Implemented -------
 --  Fractal Fingers
@@ -107,10 +106,9 @@
 --  The Duos
 --  The Home
 --  The Nuts
+--  Old Blueprint
 -- ------ Need Rework --------
 --  Consume-able: add "Consumable" text
--- ------- Bugged ------------
---  Old Blueprint: loses probability text when copying a joker
 -- ------ Unnecessary --------
 --  SUS
 --=============== Page 17 ===============--
@@ -212,6 +210,7 @@
 --  Scrabble Tile
 --  Sacrifice
 --  Reverse Card
+--  Notebook
 -- ------ Need Rework --------
 --  Bubble M: add "+Jolly" text
 -- ------ Unimplemented ------
@@ -220,9 +219,7 @@
 --  Wonka Bar
 -- ---- Unnecessary ---------
 --  Buttercup
---  M
--- ------ Bugged -------------
---  Notebook: shows "ERROR" and doesn't correctly update status 
+--  M 
 --=============== Page 23 ===============--
 -- ------- Implemented -------
 --  Monster
@@ -232,6 +229,7 @@
 --  Huge
 --  Copy/Paste
 --  Cut
+--  Megg
 -- ------ Unimplemented ------
 --  Macabre Joker
 --  Doodle M
@@ -241,8 +239,6 @@
 -- ---- Unnecessary ----------
 --  Code Joker
 --  Blender
--- ------ Bugged -------------
---  Megg: no info shown
 --=============== Page 24 ===============--
 -- ------- Implemented -------
 --  Python
@@ -268,13 +264,12 @@
 --  Non Verisimile
 --  Duplicare
 --  Formidiulosus
+--  Tredecim
 -- ------ Need Rework --------
 --  Gemini: show what Joker it's doubling
 -- ------ Unimplemented ------
 --  Energia
 --  Caeruleum
--- ----- Bugged ------------
---  Tredecim: only shows emult for jolly jokers and not m jokers
 
 if JokerDisplay then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
@@ -284,10 +279,10 @@ if JokerDisplay then
 
 	JokerDisplay.Definitions["j_cry_supercell"] = {
 		text = {
-			{ text = "+", colour = G.C.CHIPS },
-			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS, retrigger_type = "mult" },
-			{ text = " +", colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT, retrigger_type = "mult" },
+			{ ref_table = "card.joker_display_values", ref_value = "plus_chips", colour = G.C.CHIPS },
+			{ ref_table = "card.joker_display_values", ref_value = "stat1_chips", colour = G.C.CHIPS, retrigger_type = "mult" },
+			{ ref_table = "card.joker_display_values", ref_value = "plus_mult", colour = G.C.MULT },
+			{ ref_table = "card.joker_display_values", ref_value = "stat1_mult", colour = G.C.MULT, retrigger_type = "mult" },
 		},
 		extra = {
 			{
@@ -318,6 +313,12 @@ if JokerDisplay then
 			},
 		},
 		calc_function = function(card)
+			local is_modest = Card.get_gameset and Card.get_gameset(card) == "modest"
+			local stat1 = (card.ability and card.ability.extra and card.ability.extra.stat1) or 15
+			card.joker_display_values.plus_chips = not is_modest and "+" or ""
+			card.joker_display_values.stat1_chips = not is_modest and stat1 or ""
+			card.joker_display_values.plus_mult = not is_modest and " +" or ""
+			card.joker_display_values.stat1_mult = not is_modest and stat1 or ""
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}
@@ -547,27 +548,34 @@ if JokerDisplay then
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_notebook"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "slots" },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
 		reminder_text = {
 			{ text = "(" },
-			{ ref_table = "card.ability.extra", ref_value = "slot" },
-			{ text = ") " },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text", colour = G.C.ORANGE },
+			{ text = ")" },
 		},
 		extra = {
 			{
 				{ text = "(" },
 				{ ref_table = "card.joker_display_values", ref_value = "odds" },
 				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
+				{ ref_table = "card.joker_display_values", ref_value = "max_odds" },
 				{ text = ")" },
 			},
 		},
 		extra_config = { colour = G.C.GREEN, scale = 0.3 },
 		calc_function = function(card)
-			card.joker_display_values.localized_text = "("
-				.. (card.ability.extra.check and localize("k_active_ex") or "Inactive")
-				.. ")"
+			local immutable = (card.ability and card.ability.immutable) or {}
+			local extra = (card.ability and card.ability.extra) or {}
+			card.joker_display_values.slots = immutable.slots or 0
+			local is_active = extra.check ~= false
+			card.joker_display_values.active_text = is_active and localize("cry_active") or localize("cry_inactive")
 			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.max_odds = extra.odds or 7
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_pot_of_jokes"] = {
@@ -735,15 +743,29 @@ if JokerDisplay then
 	}
 	JokerDisplay.Definitions["j_cry_mprime"] = {
 		mod_function = function(card, mod_joker)
+			local is_m_or_jolly = (card.is_jolly and card:is_jolly())
+				or card.ability.name == "Jolly Joker"
+				or (card.edition and card.edition.key == "e_cry_m")
+				or (card.config and card.config.center and Cryptid.safe_get(card.config.center, "pools", "M"))
 			return {
-				e_mult = (
-					card.ability.name == "Jolly Joker"
-					or card.edition and card.edition.key == "e_cry_m"
-					or Cryptid.safe_get(card, "pools", "M")
-				)
+				e_mult = (card ~= mod_joker and is_m_or_jolly)
 						and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker)
 					or nil,
 			}
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_megg"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "amount" },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
+		reminder_text = {
+			{ text = "(Sell)" },
+		},
+		calc_function = function(card)
+			local amount = (card.ability and card.ability.extra and card.ability.extra.amount) or 0
+			card.joker_display_values.amount = math.floor(amount)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_whip"] = {
@@ -1291,7 +1313,7 @@ if JokerDisplay then
 			{
 				border_nodes = {
 					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "x_chips", retrigger_type = "exp" },
+					{ ref_table = "card.joker_display_values", ref_value = "x_chips", retrigger_type = "exp" },
 				},
 				border_colour = G.C.CHIPS,
 			},
@@ -1299,6 +1321,25 @@ if JokerDisplay then
 		reminder_text = {
 			{ text = "(7,4)" },
 		},
+		calc_function = function(card)
+			local count = 0
+			local playing_hand = G.play and next(G.play.cards)
+			if not playing_hand then
+				local hand = G.hand and G.hand.highlighted
+				local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+				if text ~= "Unknown" and scoring_hand then
+					for _, scoring_card in pairs(scoring_hand) do
+						local rank = scoring_card:get_id()
+						if rank == 4 or rank == 7 then
+							count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+						end
+					end
+				end
+			end
+			local cur_xchips = (card.ability and card.ability.extra and card.ability.extra.x_chips) or 1
+			local bonus = (card.ability and card.ability.extra and card.ability.extra.bonus) or 0.1
+			card.joker_display_values.x_chips = cur_xchips + count * bonus
+		end,
 	}
 	JokerDisplay.Definitions["j_cry_caramel"] = {
 		text = {
@@ -1930,9 +1971,9 @@ if JokerDisplay then
 		extra = {
 			{
 				{ text = "(" },
-				{ ref_table = "G.GAME.probabilities", ref_value = "normal" }, --the usual thing doesn't work for some reason
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
 				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
+				{ ref_table = "card.joker_display_values", ref_value = "max_odds" },
 				{ text = ")" },
 			},
 		},
@@ -1940,7 +1981,26 @@ if JokerDisplay then
 		calc_function = function(card)
 			local copied_joker, copied_debuff = JokerDisplay.calculate_blueprint_copy(card)
 			card.joker_display_values.blueprint_compat = localize("k_incompatible")
+			local prev_loaded = card.joker_display_values.blueprint_ability_joker
 			JokerDisplay.copy_display(card, copied_joker, copied_debuff)
+			if copied_joker and card.children.joker_display and not card.joker_display_values.blueprint_debuff then
+				if not card.joker_display_values.oldblueprint_extra_added or prev_loaded ~= copied_joker then
+					card.children.joker_display:add_extra({
+						{
+							{ text = "(" },
+							{ ref_table = "card.joker_display_values", ref_value = "odds" },
+							{ text = " in " },
+							{ ref_table = "card.ability.extra", ref_value = "odds" },
+							{ text = ")" },
+						},
+					}, { colour = G.C.GREEN, scale = 0.3 }, card)
+					card.joker_display_values.oldblueprint_extra_added = true
+				end
+			else
+				card.joker_display_values.oldblueprint_extra_added = false
+			end
+			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.max_odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 4
 		end,
 		get_blueprint_joker = function(card)
 			for i = 1, #G.jokers.cards do
