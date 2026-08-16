@@ -15,7 +15,7 @@
 -- ------ Unnecessary ------
 --  Double Scale
 --  Maximized
--- ---------- Bugged ---------
+-- -- Critically Bugged ------
 --  Happy House: crashes game on hover
 --  Jimball: weird crash when selecting cards???
 --=============== Page 12 ===============--
@@ -34,7 +34,7 @@
 --  Savvy Joker
 --  Subtle Joker
 --  Discreet Joker
--- ---------- Bugged ---------
+-- -- Critically Bugged ------
 --  Kidnapping: crashes game on hover
 --=============== Page 13 ===============--
 -- ------- Implemented -------
@@ -94,6 +94,7 @@
 -- ---------- Bugged ---------
 --  Supercell: incorrect display for modest(shows +chips and +mult when shouldn't)
 --  ...Like Antennas to Heaven: stuck at X1, not updating
+-- -- Critically Bugged ------
 --  Bonus Joker: crashes game (on spawning?)
 --=============== Page 16 ===============--
 -- ------- Implemented -------
