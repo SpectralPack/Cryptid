@@ -936,6 +936,7 @@ local number_blocks = {
 	rarity = "cry_epic",
 	cost = 14,
 	order = 12,
+	blueprint_compat = false,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, center)
 		return {
