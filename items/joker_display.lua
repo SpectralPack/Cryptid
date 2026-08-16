@@ -145,7 +145,6 @@
 --  The Clash
 --  The
 --  The Complete and Utter Annihilation of Everything That Makes Balatro Sacred
--- ------ Unimplemented ------
 --  Universe
 
 --=============== Page 19 ===============--
@@ -311,6 +310,25 @@ if JokerDisplay then
 
 	JokerDisplay.Definitions["j_cry_panopticon"] = {}
 	JokerDisplay.Definitions["j_cry_maze"] = {}
+
+	-- Cryptid Edition Definitions
+	JokerDisplay.Edition_Definitions = JokerDisplay.Edition_Definitions or {}
+	JokerDisplay.Edition_Definitions["e_cry_astral"] = {
+		condition_function = function(card)
+			return not card.debuff and card.edition and (card.edition.cry_astral or card.edition.key == "e_cry_astral" or card.edition.key == "astral")
+		end,
+		mod_function = function(card)
+			return { e_mult = (card.edition and card.edition.e_mult) or 1.1 }
+		end,
+	}
+	JokerDisplay.Edition_Definitions["e_cry_mosaic"] = {
+		condition_function = function(card)
+			return not card.debuff and card.edition and (card.edition.cry_mosaic or card.edition.key == "e_cry_mosaic" or card.edition.key == "mosaic")
+		end,
+		mod_function = function(card)
+			return { x_chips = (card.edition and card.edition.x_chips) or 2.5 }
+		end,
+	}
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page1 = {}
@@ -2009,6 +2027,57 @@ if JokerDisplay then
 			return {
 				x_mult = (card ~= mod_joker and card.edition and card.edition.polychrome == true)
 						and mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker)
+					or nil,
+			}
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_universe"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.joker_display_values", ref_value = "emult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.emult or G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.DARK_EDITION },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local count = 0
+			local playing_hand = next(G.play.cards)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" then
+				for _, scoring_card in pairs(scoring_hand) do --Astral cards scored
+					if scoring_card.edition and scoring_card.edition.cry_astral == true then
+						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					end
+				end
+			end
+			for _, playing_card in ipairs(G.hand.cards) do --Astral cards held in hand
+				if playing_hand or not playing_card.highlighted then
+					if
+						not (playing_card.facing == "back")
+						and not playing_card.debuff
+						and playing_card.edition
+						and playing_card.edition.cry_astral == true
+					then
+						count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
+					end
+				end
+			end
+			card.joker_display_values.emult = (card.ability.extra.emult or 1.2) ^ count
+			card.joker_display_values.localized_text =
+				localize({ type = "name_text", set = "Edition", key = "e_cry_astral" })
+		end,
+		mod_function = function(card, mod_joker) --Astral Jokers
+			return {
+				e_mult = (card ~= mod_joker and card.edition and card.edition.cry_astral == true)
+						and (mod_joker.ability.extra.emult ^ JokerDisplay.calculate_joker_triggers(mod_joker))
 					or nil,
 			}
 		end,
