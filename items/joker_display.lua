@@ -1320,7 +1320,7 @@ if JokerDisplay then
 			{ text = "+" },
 			{ ref_table = "card.joker_display_values", ref_value = "slots" },
 		},
-		text_config = { colour = G.C.DARK_EDITION },
+		text_config = { colour = G.C.ORANGE },
 		reminder_text = {
 			{ text = "(Slots)" },
 		},
@@ -2176,7 +2176,7 @@ if JokerDisplay then
 	}
 	JokerDisplay.Definitions["j_cry_pity_prize"] = {
 		text = {
-			{ text = "+1", colour = G.C.DARK_EDITION },
+			{ text = "+1", colour = G.C.ORANGE },
 		},
 		reminder_text = {
 			{ text = "(" },
