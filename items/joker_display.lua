@@ -1,5 +1,4 @@
---=============== Page 11 ===============--
--- ------- Implemented -------
+--=============== Page 1 ===============--
 --  m
 --  Dropshot
 --  Cursor
@@ -13,12 +12,8 @@
 --  Happy House
 --  Jimball
 --  Queen's Gambit
--- -------- Unnecessary ------
---  Double Scale
---  Maximized
 
---=============== Page 12 ===============--
--- ------- Implemented -------
+--=============== Page 2 ===============--
 --  Absurd Joker
 --  Nutty Joker
 --  Manic Joker
@@ -35,8 +30,7 @@
 --  Discreet Joker
 --  Kidnapping
 
---=============== Page 13 ===============--
--- ------- Implemented -------
+--=============== Page 3 ===============--
 --  Krusty the Clown
 --  Boredom
 --  Membership Card
@@ -53,8 +47,7 @@
 --  Circus
 --  Booster Joker
 
---=============== Page 14 ===============--
--- ------- Implemented -------
+--=============== Page 4 ===============--
 --  Chili Pepper
 --  Monkey Dagger
 --  Morse Code
@@ -67,14 +60,8 @@
 --  One for All
 --  Panopticon
 --  Labyrinth
--- ------ Unimplemented ------
---  RNJoker
--- -------- Unnecessary ------
---  Translucent Joker
---  Kaleidoscope
 
---=============== Page 15 ===============--
--- ------- Implemented -------
+--=============== Page 5 ===============--
 --  Garden of Forking Paths
 --  Light Up the Night
 --  ERROR
@@ -89,11 +76,8 @@
 --  :D
 --  M Chain
 --  Jimbo-tron 9000
--- -------- Unnecessary ------
---  Negative Joker
 
---=============== Page 16 ===============--
--- ------- Implemented -------
+--=============== Page 6 ===============--
 --  Fractal Fingers
 --  Fidget Spinner
 --  Nostalgic Invisible Joker
@@ -108,11 +92,8 @@
 --  The Nuts
 --  Old Blueprint
 --  Consume-able
--- -------- Unnecessary ------
---  SUS
 
---=============== Page 17 ===============--
--- ------- Implemented -------
+--=============== Page 7 ===============--
 --  Fridge Magnet
 --  Red Bloon
 --  Weebonacci
@@ -129,8 +110,7 @@
 --  Bonkers Joker
 --  Seal the Deal
 
---=============== Page 18 ===============--
--- ------- Implemented -------
+--=============== Page 8 ===============--
 --  Fucked-Up Joker
 --  Foolhardy Joker
 --  Undefined Joker
@@ -147,8 +127,7 @@
 --  The Complete and Utter Annihilation of Everything That Makes Balatro Sacred
 --  Universe
 
---=============== Page 19 ===============--
--- ------- Implemented -------
+--=============== Page 9 ===============--
 --  Exposed
 --  Mask
 --  Tropical Smoothie
@@ -161,13 +140,8 @@
 --  Zooble
 --  Chocolate Die
 --  Spectrogram
--- -------- Unnecessary ------
---  Astral in a Bottle
---  Necromancer
---  Cotton Candy
 
---=============== Page 20 ===============--
--- ------- Implemented -------
+--=============== Page 10 ===============--
 --  Kitty Printer
 --  Clicked Cookie
 --  LeBaron James
@@ -184,8 +158,7 @@
 --  Broken Home
 --  Candy Cane
 
---=============== Page 21 ===============--
--- ------- Implemented -------
+--=============== Page 11 ===============--
 --  Yarn Ball
 --  Candy Buttons
 --  Pizza
@@ -200,11 +173,8 @@
 --  Broken Sync Catalyst
 --  Thalia and Melpomeme
 --  Key Change
--- -------- Unnecessary ------
---  Candy Sticks
 
---=============== Page 22 ===============--
--- ------- Implemented -------
+--=============== Page 12 ===============--
 --  Fast Food M
 --  M Stack
 --  Neon M
@@ -218,12 +188,8 @@
 --  Emergency Chips
 --  Flesh Panopticon
 --  Wonka Bar
--- -------- Unnecessary ------
---  Buttercup
---  M
 
---=============== Page 23 ===============--
--- ------- Implemented -------
+--=============== Page 13 ===============--
 --  Monster
 --  Tiny
 --  Virgo
@@ -237,12 +203,8 @@
 --  Demicolon
 --  Starfruit
 --  Project Sundial
--- -------- Unnecessary ------
---  Code Joker
---  Blender
 
---=============== Page 24 ===============--
--- ------- Implemented -------
+--=============== Page 14 ===============--
 --  Python
 --  Iterum
 --  Stella Mortis
@@ -256,12 +218,8 @@
 --  Circulus Pistoris
 --  Scalae
 --  Universum
--- -------- Unnecessary ------
---  Speculo
---  Effarcire
 
---=============== Page 25 ===============--
--- ------- Implemented -------
+--=============== Page 15 ===============--
 --  Non Verisimile
 --  Duplicare
 --  Formidiulosus
