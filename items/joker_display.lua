@@ -228,12 +228,15 @@
 --  Energia
 --  Caeruleum
 
-if JokerDisplay then
+if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker_display) then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
 
 	-- Panopticon & Labyrinth calculation hooks
 	local orig_card_calc_jd = Card.calculate_joker_display
 	function Card:calculate_joker_display(...)
+		if Cryptid_config and Cryptid_config.joker_display == false then
+			return orig_card_calc_jd(self, ...)
+		end
 		local temp_hands_played = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_played
 		local temp_discards_used = G.GAME and G.GAME.current_round and G.GAME.current_round.discards_used
 		local temp_hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left
@@ -3770,6 +3773,9 @@ if JokerDisplay then
 	-- Intercepts Card:initialize_joker_display to apply promoted chips text/badges when adjacent to Caeruleum
 	local card_init_jd_ref = Card.initialize_joker_display
 	function Card:initialize_joker_display(custom_parent, stop_calc)
+		if Cryptid_config and Cryptid_config.joker_display == false then
+			return card_init_jd_ref(self, custom_parent, stop_calc)
+		end
 		local is_adj = check_caeruleum_adjacent(self)
 		local orig_def = self.config and self.config.center and JokerDisplay.Definitions[self.config.center.key]
 		local modified = false
@@ -3816,6 +3822,7 @@ if JokerDisplay then
 	local card_update_ref = Card.update
 	function Card:update(dt)
 		card_update_ref(self, dt)
+		if Cryptid_config and Cryptid_config.joker_display == false then return end
 		if self.ability and self.children and (self.children.joker_display or self.children.joker_display_small) then
 			local is_adj = check_caeruleum_adjacent(self)
 			if is_adj ~= self._cry_caer_adj then
