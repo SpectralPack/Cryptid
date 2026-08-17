@@ -215,7 +215,6 @@
 --  Reverse Card
 --  Notebook
 --  Bubble M
--- ------ Unimplemented ------
 --  Emergency Chips
 --  Flesh Panopticon
 --  Wonka Bar
@@ -2878,6 +2877,52 @@ if JokerDisplay then
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_candy_sticks"] = {}
+	JokerDisplay.Definitions["j_cry_emergencychips"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "percent" },
+		},
+		text_config = { colour = G.C.CHIPS },
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+		calc_function = function(card)
+			local mult = (card.ability and card.ability.immutable and card.ability.immutable.blind_mult) or 0.2
+			card.joker_display_values.percent = math.floor(mult * 100 + 0.5) .. "%"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_fleshpanopticon"] = {
+		text = {
+			{ text = "+1 Gateway" },
+		},
+		text_config = { colour = G.C.SECONDARY_SET.Spectral },
+		reminder_text = {
+			{ text = "(On Boss Blind defeat)" },
+		},
+		extra = {
+			{
+				{ text = "X", colour = G.C.RED },
+				{ ref_table = "card.joker_display_values", ref_value = "blind_size", colour = G.C.RED },
+				{ text = " Blind" },
+			},
+		},
+		calc_function = function(card)
+			local is_boss = G.GAME and G.GAME.blind and Cryptid.is_boss_blind(G.GAME.blind)
+			local boss_size = (card.ability and card.ability.extra and card.ability.extra.boss_size) or 20
+			card.joker_display_values.blind_size = is_boss and boss_size or 1
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_wonka_bar"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability", ref_value = "extra" },
+			{ text = " Limit" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+	}
 	JokerDisplay.Definitions["j_cry_multjoker"] = {
 		text = {
 			{ text = "+" },
