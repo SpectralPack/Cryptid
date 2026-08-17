@@ -254,7 +254,6 @@
 --  Ace Aequilibrium
 --  Facile
 --  Circulus Pistoris
--- ------ Unimplemented ------
 --  Scalae
 --  Universum
 -- -------- Unnecessary ------
@@ -268,7 +267,6 @@
 --  Formidiulosus
 --  Tredecim
 --  Gemini
--- ------ Unimplemented ------
 --  Energia
 --  Caeruleum
 
@@ -3694,6 +3692,180 @@ if JokerDisplay then
 	JokerDisplay.Definitions["j_cry_nebulous"] = hand_tchips_jd
 	JokerDisplay.Definitions["j_cry_many_lost_minds"] = hand_tchips_jd
 	JokerDisplay.Definitions["j_cry_annihalation"] = hand_emult_jd
+
+	JokerDisplay.Definitions["j_cry_Scalae"] = {
+		text = {
+			{ text = "Degree-" },
+			{ ref_table = "card.ability.extra", ref_value = "scale", colour = G.C.ORANGE },
+		},
+		reminder_text = {
+			{ text = "(Scaling)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_scalae"] = JokerDisplay.Definitions["j_cry_Scalae"]
+	JokerDisplay.Definitions["j_cry_universum"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability", ref_value = "extra" },
+					{ text = " Levels" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+	}
+	JokerDisplay.Definitions["j_cry_energia"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "tags", colour = G.C.ORANGE },
+			{ text = " Tags" },
+		},
+		reminder_text = {
+			{ text = "(Tag Added)" },
+		},
+		calc_function = function(card)
+			local max_tags = (card.ability and card.ability.immutable and card.ability.immutable.max_tags) or 40
+			local tags = (card.ability and card.ability.extra and card.ability.extra.tags) or 1
+			card.joker_display_values.tags = math.min(max_tags, tags)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_caeruleum"] = {}
+
+	-- Caeruleum JokerDisplay Hooks:
+	-- Caeruleum has no text box of its own, but dynamically promotes adjacent Chips Jokers in real-time
+	-- (+Chips -> XChips border badge, XChips -> ^Chips E-Chips border badge).
+
+	-- Checks if a given card is directly adjacent to Caeruleum in G.jokers
+	local function check_caeruleum_adjacent(card)
+		if not G.jokers or not G.jokers.cards then return false end
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i] == card then
+				local left = G.jokers.cards[i - 1]
+				local right = G.jokers.cards[i + 1]
+				if (left and left.config and left.config.center and left.config.center.key == "j_cry_caeruleum")
+					or (right and right.config and right.config.center and right.config.center.key == "j_cry_caeruleum") then
+					return true
+				end
+				break
+			end
+		end
+		return false
+	end
+
+	-- Transforms flat/bordered chip definition nodes into their next hyperoperation tier
+	local function promote_chips_text(orig_text)
+		if not orig_text then return nil end
+		local new_text = copy_table(orig_text)
+
+		-- Check if orig_text contains border_nodes with X (promoting Xchips -> ^chips)
+		local has_border_x = false
+		for _, node in ipairs(new_text) do
+			if node.border_nodes then
+				for _, bn in ipairs(node.border_nodes) do
+					if bn.text == "X" then
+						has_border_x = true
+						bn.text = "^"
+					end
+				end
+				if has_border_x then
+					node.border_colour = G.C.echips or G.C.CHIPS
+				end
+			end
+		end
+
+		if has_border_x then
+			return new_text
+		end
+
+		-- Otherwise, promote flat +chips (or flat X) into a bordered badge
+		local val_nodes = {}
+		local is_plus = false
+		for _, node in ipairs(new_text) do
+			if node.text == "+" then
+				is_plus = true
+			elseif node.text == "X" then
+				is_plus = false
+			else
+				local n = copy_table(node)
+				n.retrigger_type = "exp"
+				val_nodes[#val_nodes + 1] = n
+			end
+		end
+
+		local border_col = is_plus and G.C.CHIPS or (G.C.echips or G.C.CHIPS)
+		local border_char = is_plus and "X" or "^"
+		local bordered = {
+			{
+				border_nodes = {
+					{ text = border_char },
+				},
+				border_colour = border_col,
+			}
+		}
+		for _, vn in ipairs(val_nodes) do
+			table.insert(bordered[1].border_nodes, vn)
+		end
+		return bordered
+	end
+
+	-- Intercepts Card:initialize_joker_display to apply promoted chips text/badges when adjacent to Caeruleum
+	local card_init_jd_ref = Card.initialize_joker_display
+	function Card:initialize_joker_display(custom_parent, stop_calc)
+		local is_adj = check_caeruleum_adjacent(self)
+		local orig_def = self.config and self.config.center and JokerDisplay.Definitions[self.config.center.key]
+		local modified = false
+		local saved_text = nil
+		local saved_text_config = nil
+
+		if is_adj and orig_def and orig_def.text then
+			local is_chips = (orig_def.text_config and orig_def.text_config.colour == G.C.CHIPS)
+			if not is_chips then
+				for _, node in ipairs(orig_def.text) do
+					if node.colour == G.C.CHIPS or node.border_colour == G.C.CHIPS then
+						is_chips = true
+						break
+					end
+					if node.border_nodes then
+						for _, bn in ipairs(node.border_nodes) do
+							if bn.colour == G.C.CHIPS or bn.border_colour == G.C.CHIPS then
+								is_chips = true
+								break
+							end
+						end
+					end
+				end
+			end
+
+			if is_chips then
+				saved_text = orig_def.text
+				saved_text_config = orig_def.text_config
+				orig_def.text = promote_chips_text(orig_def.text)
+				orig_def.text_config = nil
+				modified = true
+			end
+		end
+
+		card_init_jd_ref(self, custom_parent, stop_calc)
+
+		if modified and saved_text then
+			orig_def.text = saved_text
+			orig_def.text_config = saved_text_config
+		end
+	end
+
+	-- Intercepts Card:update to detect position changes next to Caeruleum and trigger reload
+	local card_update_ref = Card.update
+	function Card:update(dt)
+		card_update_ref(self, dt)
+		if self.ability and self.children and (self.children.joker_display or self.children.joker_display_small) then
+			local is_adj = check_caeruleum_adjacent(self)
+			if is_adj ~= self._cry_caer_adj then
+				self._cry_caer_adj = is_adj
+				self:update_joker_display(false, true, "Caeruleum")
+			end
+		end
+	end
 
 	--end of Jokerdisplays
 end
