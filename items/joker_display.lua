@@ -167,7 +167,7 @@
 --  Cotton Candy
 
 --=============== Page 20 ===============--
--- ------ Unimplemented ------
+-- ------- Implemented -------
 --  Kitty Printer
 --  Clicked Cookie
 --  LeBaron James
@@ -2342,6 +2342,312 @@ if JokerDisplay then
 		retrigger_joker_function = function(card, retrigger_joker)
 			local is_rightmost = G.jokers and G.jokers.cards and card == G.jokers.cards[#G.jokers.cards] and card ~= retrigger_joker
 			return is_rightmost and (retrigger_joker.joker_display_values.num_retriggers or 0) or 0
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_kittyprinter"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+	}
+	JokerDisplay.Definitions["j_cry_clicked_cookie"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "chips", retrigger_type = "mult" },
+		},
+		text_config = { colour = G.C.CHIPS },
+	}
+	JokerDisplay.Definitions["j_cry_lebaron_james"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.immutable", ref_value = "added_h" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(Kings)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_huntingseason"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			card.joker_display_values.is_active = (hand and #hand == 3)
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_trick_or_treat"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "num_candies" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = ")" },
+			},
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			local numerator, denominator = 3 * (G.GAME.probabilities.normal or 1), (card.ability and card.ability.extra and card.ability.extra.odds or 4)
+			if SMODS then
+				numerator, denominator = SMODS.get_probability_vars(card, 3, denominator, "Trick-or-Treat")
+			end
+			card.joker_display_values.odds = localize({ type = "variable", key = "jdis_odds", vars = { numerator, denominator } })
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_clockwork"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local is_active = false
+			if card.config and card.config.center and card.config.center.loc_vars then
+				local res = card.config.center:loc_vars({}, card)
+				if res and res.vars then
+					for i = 1, 4 do
+						if res.vars[i] == localize("k_active_ex") then
+							is_active = true
+							break
+						end
+					end
+				end
+			end
+			card.joker_display_values.is_active = is_active
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_candy_basket"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "candies" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_blacklist"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local blacklist = false
+			local target_id = (card.ability and card.ability.extra and card.ability.extra.blacklist) or 14
+			if G.play and G.play.cards then
+				for _, c in ipairs(G.play.cards) do
+					if c:get_id() == target_id then
+						blacklist = true
+						break
+					end
+				end
+			end
+			if not blacklist and G.hand and G.hand.cards then
+				for _, c in ipairs(G.hand.cards) do
+					if c:get_id() == target_id then
+						blacklist = true
+						break
+					end
+				end
+			end
+			card.joker_display_values.is_active = blacklist
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.RED or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_rotten_egg"] = {
+		text = {
+			{ text = "-$" },
+			{ ref_table = "card.ability.extra", ref_value = "lose_money" },
+		},
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+			{ ref_table = "card.joker_display_values", ref_value = "progress_text" },
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ") "
+			local left = (card.ability and card.ability.extra and card.ability.extra.left_money) or 10
+			local needed = (card.ability and card.ability.extra and card.ability.extra.needed_money) or 10
+			card.joker_display_values.progress_text = "(" .. math.max(0, needed - left) .. "/$" .. needed .. ")"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_familiar_currency"] = {
+		text = {
+			{ text = "+1", colour = G.C.ORANGE },
+			{ text = " (-$" },
+			{ ref_table = "card.ability", ref_value = "extra" },
+			{ text = ")" },
+		},
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = localize("k_round")
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_highfive"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			local active = false
+			if text ~= "Unknown" and scoring_hand and #scoring_hand > 0 then
+				local maximum = -1
+				local fives = 0
+				for _, v in ipairs(scoring_hand) do
+					if not (SMODS and SMODS.has_no_rank and SMODS.has_no_rank(v)) then
+						local id = v:get_id()
+						local rank_val = id == 14 and 1 or id
+						if rank_val == 5 then fives = fives + 1 end
+						if rank_val > maximum then maximum = rank_val end
+					end
+				end
+				if maximum == 5 and fives ~= #scoring_hand then
+					active = true
+				end
+			end
+			card.joker_display_values.is_active = active
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_sock_and_sock"] = {
+		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+			if held_in_hand or not (SMODS and SMODS.has_enhancement and SMODS.has_enhancement(playing_card, "m_cry_abstract")) then
+				return 0
+			end
+			return math.min((joker_card.ability and joker_card.ability.immutable and joker_card.ability.immutable.max_retriggers) or 40, (joker_card.ability and joker_card.ability.extra and joker_card.ability.extra.retriggers) or 1)
+				* JokerDisplay.calculate_joker_triggers(joker_card)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_candy_dagger"] = {
+		text = {
+			{ text = "+1", colour = G.C.ORANGE },
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "target_name" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local other_joker = nil
+			if card.area and card.area.cards then
+				for i = 1, #card.area.cards do
+					if card.area.cards[i] == card then
+						other_joker = card.area.cards[i + 1]
+						break
+					end
+				end
+			end
+			local compatible = other_joker and other_joker ~= card and not (SMODS and SMODS.is_eternal and SMODS.is_eternal(other_joker))
+			card.joker_display_values.compatible = compatible
+			local other_key = compatible and other_joker.config and other_joker.config.center and other_joker.config.center.key
+			card.joker_display_values.target_name = other_key and localize({ type = "name_text", key = other_key, set = "Joker" }) or localize("k_incompatible")
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.compatible and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_brokenhome"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = ")" },
+			},
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			local numerator, denominator = (G.GAME.probabilities.normal or 1), (card.ability and card.ability.extra and card.ability.extra.odds or 4)
+			if SMODS then
+				numerator, denominator = SMODS.get_probability_vars(card, 1, denominator, "Broken Home")
+			end
+			card.joker_display_values.odds = localize({ type = "variable", key = "jdis_odds", vars = { numerator, denominator } })
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_candy_cane"] = {
+		text = {
+			{ text = "+$" },
+			{ ref_table = "card.joker_display_values", ref_value = "dollars" },
+		},
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+		},
+		calc_function = function(card)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			local total_retriggers = 0
+			if text ~= "Unknown" and scoring_hand then
+				for _, scoring_card in ipairs(scoring_hand) do
+					local triggers = JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					total_retriggers = total_retriggers + math.max(0, triggers - 1)
+				end
+			end
+			local dollars_per = (card.ability and card.ability.extra and card.ability.extra.dollars) or 4
+			card.joker_display_values.dollars = total_retriggers * dollars_per * JokerDisplay.calculate_joker_triggers(card)
+			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds) or 11
+			card.joker_display_values.rounds_remaining = "(" .. rounds_left .. "/11)"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_multjoker"] = {
