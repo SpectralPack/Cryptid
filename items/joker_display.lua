@@ -232,7 +232,6 @@
 --  Copy/Paste
 --  Cut
 --  Megg
--- ------ Unimplemented ------
 --  Macabre Joker
 --  Doodle M
 --  Demicolon
@@ -2921,6 +2920,121 @@ if JokerDisplay then
 		text_config = { colour = G.C.ORANGE },
 		reminder_text = {
 			{ text = "(On Sell)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_macabre"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "count", colour = G.C.ORANGE },
+			{ text = " Jolly", colour = G.C.BLUE },
+		},
+		reminder_text = {
+			{ text = "(Setting Blind)" },
+		},
+		calc_function = function(card)
+			local count = 0
+			if G.jokers and G.jokers.cards then
+				for _, v in ipairs(G.jokers.cards) do
+					if
+						v ~= card
+						and not (v.is_jolly and v:is_jolly())
+						and v.config and v.config.center and v.config.center.key ~= "j_cry_mprime"
+						and not (
+							(SMODS and SMODS.is_eternal and SMODS.is_eternal(v))
+							or v.getting_sliced
+							or (Cryptid and Cryptid.safe_get and Cryptid.safe_get(v.config.center, "pools", "M"))
+						)
+					then
+						count = count + 1
+					end
+				end
+			end
+			local add = (card.ability and card.ability.extra and card.ability.extra.add) or 1
+			local max_spawn = (card.ability and card.ability.immutable and card.ability.immutable.max_spawn) or 15
+			card.joker_display_values.count = math.min(max_spawn, count * add)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_doodlem"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "count", colour = G.C.ORANGE },
+			{ text = " Consumables" },
+		},
+		reminder_text = {
+			{ text = "(Setting Blind)" },
+		},
+		calc_function = function(card)
+			local init = (card.ability and card.ability.extra and card.ability.extra.init) or 2
+			local add = (card.ability and card.ability.extra and card.ability.extra.add) or 1
+			local max_jollies = (card.ability and card.ability.immutable and card.ability.immutable.max_jollies) or 25
+			local jollycount = init
+			if G.jokers and G.jokers.cards then
+				for _, v in ipairs(G.jokers.cards) do
+					if v.is_jolly and v:is_jolly() then
+						jollycount = jollycount + add
+					end
+				end
+			end
+			card.joker_display_values.count = math.min(max_jollies, jollycount)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_demicolon"] = {
+		text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "target_name" },
+			{ text = ")" },
+		},
+		reminder_text = {
+			{ text = "(Force-trigger)" },
+		},
+		calc_function = function(card)
+			local other_joker = nil
+			if card.area and card.area.cards then
+				for i = 1, #card.area.cards do
+					if card.area.cards[i] == card then
+						other_joker = card.area.cards[i + 1]
+						break
+					end
+				end
+			end
+			local compatible = false
+			if other_joker and other_joker ~= card then
+				if Cryptid and Cryptid.demicolonGetTriggerable then
+					local m = Cryptid.demicolonGetTriggerable(other_joker)
+					compatible = m[1] and not m[2]
+				else
+					compatible = other_joker.config and other_joker.config.center and (other_joker.config.center.demicoloncompat == true or other_joker.config.center.demicoloncompat == nil)
+				end
+			end
+			card.joker_display_values.compatible = compatible
+			local other_key = other_joker and other_joker.config and other_joker.config.center and other_joker.config.center.key
+			card.joker_display_values.target_name = (compatible and other_key and localize({ type = "name_text", key = other_key, set = "Joker" })) or localize("k_incompatible")
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if text and text.children and text.children[2] then
+				text.children[2].config.colour = card.joker_display_values.compatible and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_starfruit"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.ability", ref_value = "emult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.emult or G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(-0.2/Reroll)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_sundial"] = {
+		reminder_text = {
+			{ text = "(On Sell) (" },
+			{ ref_table = "card.ability.extra", ref_value = "handleft" },
+			{ text = "/12)" },
 		},
 	}
 	JokerDisplay.Definitions["j_cry_multjoker"] = {
