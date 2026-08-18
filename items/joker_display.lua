@@ -636,7 +636,10 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		},
 		text_config = { colour = G.C.CHIPS },
 		calc_function = function(card)
-			card.joker_display_values.stat = card.ability.extra.chips * Cryptid.member_count
+			local chips_mod = (card.ability and card.ability.immutable and card.ability.immutable.chips_mod) or 1
+			local member_count = Cryptid.member_count or 0
+			local chips = (card.ability and card.ability.extra and card.ability.extra.chips) or 1
+			card.joker_display_values.stat = chips * math.floor(member_count / chips_mod)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_redeo"] = {
