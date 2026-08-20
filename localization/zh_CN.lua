@@ -34,7 +34,7 @@ return {
 				},
 			},
 			b_cry_beige = {
-				name = "四重卡组",
+				name = "四重牌组",
 				text = {
 					"{C:attention}普通{}小丑具有",
 					"{C:attention}四倍{}的效果",
@@ -1943,7 +1943,7 @@ return {
 				name = "数字幻觉",
 				text = {
 					"打开{C:attention}补充包{}时",
-					"有{C:green}#1#/#2#{}概率创建一张",
+					"有{C:green}#1#/#2#{}几率创建一张",
 					"与其{C:attention}类型{}对应的随机{C:dark_edition}负片{}牌",
 				},
 			},
