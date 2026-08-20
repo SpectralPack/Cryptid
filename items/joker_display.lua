@@ -1,159 +1,301 @@
 --=============== Page 1 ===============--
---SuperCell
---Dropshot
---Kidnapping
---Iterum
---Happy House
---Bubble M
---Fast Food M
---M Stack
---Exponentia
---Neon M
---Virgo
---Notebook
---Pot Of Jokes
---Bonk
---Loopy
---=============== Page 2 ===============--
---Old Membership Card
---Redeo
---Scrabble Tile
---Sacrifice
---Googol Play Card
---Weebonacci
---Reverse card
---Tiny
---Tenebris
---Huge
---Tredecim
---The WHIP
---Lucky Joker
---Canvas
---Megg
---=============== Page 3 ===============--
---Jolly Joker?
---Cursor
---Pickle
---ERROR
---Cube
---Triplet Rhythm
---Chili Pepper
---Compound Interest
---Crustulum
---Big Cube
---m
---Boredom
---Eternal Flame
---Nice
---Chad
---=============== Page 4 ===============--
---Jimball
---Fidget Spinner
---Number Blocks
---Luigi
---Waluigi
---Mario
---Nostalgic candy
---Wario
---Krusty the Clown
---Primus
---Garden of Forking Paths
---Light Up the Night
---No sound, No Memory
---...Like Antennas To heavem
---Caramel
---=============== Page 5 ===============--
---Sob
---Consume-able
---2D
---Red Bloon
---AP Joker
---Fridge Magnet
---Stella Mortis
---Unjust Dagger
---Monkey Dagger
---Bonus Joker
---Pirate Dagger
---Mondrian
---Sapling
---Celestial Globe
---:D
---=============== Page 6 ===============--
---Meteor Shower
---Exoplanet
---Stardust
---Mult Joker
---Gold Joker
---Nostalgic Googol play Card
---Circulus Pistoris
---The Duos
---The Home
---The Nuts
---The Quintet
---The Unity
---The Swarm
---The Filler
---Crypto Coin
---=============== Page 7 ===============--
---Wheel Of Hope
---Old Blueprint
---Night
---Bus Driver
---Morse Code
---Membership Card
---M Chain
---Copy/Paste
---Cut
---Python
---Monster
---Non-Verisimile
---Gemini
---Nostalgic Invisible Joker
---Facile
---=============== Page 8 ===============--
---Giggly Joker
---Nutty Joker
---Manic Joker
---Silly Joker
---Delirious Joker
---Wacky Joker
---Kooky Joker
---Dubious Joker
---Shrewd Joker
---Tricksy Joker
---Foxy Joker
---Savvy Joker
---Subtle Joker
---Discreet Joker
---Fractal
---=============== Page 9 ===============--
---Ace Aequilibrium
---Duplicare
---Queen's Gambit
---Formidiulosus
---The Stronghold
---The Fuck!?
---The Clash
---Bonkers Joker
---Fucked Up Joker
---Foolhardy Joker
---Adroit Joker
---Penetrating Joker
---Treacherous Joker
+--  m
+--  Dropshot
+--  Cursor
+--  Compound Interest
+--  Triplet Rhythm
+--  Cube
+--  Number Blocks
+--  Googol Play Card
+--  The WHIP
+--  Canvas
+--  Happy House
+--  Jimball
+--  Queen's Gambit
 
---[[
-if JokerDisplay then
+--=============== Page 2 ===============--
+--  Absurd Joker
+--  Nutty Joker
+--  Manic Joker
+--  Silly Joker
+--  Delirious Joker
+--  Wacky Joker
+--  Kooky Joker
+--  Dubious Joker
+--  Shrewd Joker
+--  Tricksy Joker
+--  Foxy Joker
+--  Savvy Joker
+--  Subtle Joker
+--  Discreet Joker
+--  Kidnapping
+
+--=============== Page 3 ===============--
+--  Krusty the Clown
+--  Boredom
+--  Membership Card
+--  Lucky Joker
+--  AP Joker
+--  Night
+--  Sapling
+--  Nostalgic Candy
+--  Mondrian
+--  Pickle
+--  Meteor Shower
+--  Stardust
+--  Exoplanet
+--  Circus
+--  Booster Joker
+
+--=============== Page 4 ===============--
+--  Chili Pepper
+--  Monkey Dagger
+--  Morse Code
+--  Nostalgic Googol Play Card
+--  Old Membership Card
+--  Bus Driver
+--  Crypto Coin
+--  Blurred Joker
+--  Sync Catalyst
+--  One for All
+--  Panopticon
+--  Labyrinth
+
+--=============== Page 5 ===============--
+--  Garden of Forking Paths
+--  Light Up the Night
+--  ERROR
+--  Celestial Globe
+--  Wheel of Hope
+--  Chad
+--  2D
+--  No Sound, No Memory
+--  Bonus Joker
+--  Supercell
+--  ...Like Antennas to Heaven
+--  :D
+--  M Chain
+--  Jimbo-tron 9000
+
+--=============== Page 6 ===============--
+--  Fractal Fingers
+--  Fidget Spinner
+--  Nostalgic Invisible Joker
+--  Gold Joker
+--  Sob
+--  Nice
+--  Waluigi
+--  Wario
+--  The Filler
+--  The Duos
+--  The Home
+--  The Nuts
+--  Old Blueprint
+--  Consume-able
+
+--=============== Page 7 ===============--
+--  Fridge Magnet
+--  Red Bloon
+--  Weebonacci
+--  Mult Joker
+--  Eternal Flame
+--  Unjust Dagger
+--  Pirate Dagger
+--  Pot of Jokes
+--  Big Cube
+--  Caramel
+--  The Quintet
+--  The Unity
+--  The Swarm
+--  Bonkers Joker
+--  Seal the Deal
+
+--=============== Page 8 ===============--
+--  Fucked-Up Joker
+--  Foolhardy Joker
+--  Undefined Joker
+--  Words Can't Even Begin to Describe This Joker
+--  Adroit Joker
+--  Penetrating Joker
+--  Treacherous Joker
+--  Nebulous Joker
+--  Many Have Lost Their Minds Comprehending This Joker
+--  The Stronghold
+--  The Fuck!?
+--  The Clash
+--  The
+--  The Complete and Utter Annihilation of Everything That Makes Balatro Sacred
+--  Universe
+
+--=============== Page 9 ===============--
+--  Exposed
+--  Mask
+--  Tropical Smoothie
+--  Oil Lamp
+--  Tax Fraud
+--  Pity Prize
+--  Digital Hallucinations
+--  Arsonist
+--  Wrapped Candy
+--  Zooble
+--  Chocolate Die
+--  Spectrogram
+
+--=============== Page 10 ===============--
+--  Kitty Printer
+--  Clicked Cookie
+--  LeBaron James
+--  Hunting Season
+--  Trick-or-Treat
+--  Clockwork Joker
+--  Candy Basket
+--  Blacklist
+--  Rotten Egg
+--  Familiar Currency
+--  High Five
+--  Sock and Sock
+--  Candy Dagger
+--  Broken Home
+--  Candy Cane
+
+--=============== Page 11 ===============--
+--  Yarn Ball
+--  Candy Buttons
+--  Pizza
+--  Pizza Slice
+--  Jawbreaker
+--  Paved Joker
+--  Mellowcreme
+--  Fading Joker
+--  Brittle Candy
+--  Poor Joker
+--  Monopoly Money
+--  Broken Sync Catalyst
+--  Thalia and Melpomeme
+--  Key Change
+
+--=============== Page 12 ===============--
+--  Fast Food M
+--  M Stack
+--  Neon M
+--  Bonk
+--  Loopy
+--  Scrabble Tile
+--  Sacrifice
+--  Reverse Card
+--  Notebook
+--  Bubble M
+--  Emergency Chips
+--  Flesh Panopticon
+--  Wonka Bar
+
+--=============== Page 13 ===============--
+--  Monster
+--  Tiny
+--  Virgo
+--  Jolly Joker?
+--  Huge
+--  Copy/Paste
+--  Cut
+--  Megg
+--  Macabre Joker
+--  Doodle M
+--  Demicolon
+--  Starfruit
+--  Project Sundial
+
+--=============== Page 14 ===============--
+--  Python
+--  Iterum
+--  Stella Mortis
+--  Exponentia
+--  Redeo
+--  Tenebris
+--  Crustulum
+--  Primus
+--  Ace Aequilibrium
+--  Facile
+--  Circulus Pistoris
+--  Scalae
+--  Universum
+
+--=============== Page 15 ===============--
+--  Non Verisimile
+--  Duplicare
+--  Formidiulosus
+--  Tredecim
+--  Gemini
+--  Energia
+--  Caeruleum
+
+if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker_display) then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
+
+	-- Panopticon & Labyrinth calculation hooks
+	local orig_card_calc_jd = Card.calculate_joker_display
+	function Card:calculate_joker_display(...)
+		if Cryptid_config and Cryptid_config.joker_display == false then
+			return orig_card_calc_jd(self, ...)
+		end
+		local temp_hands_played = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_played
+		local temp_discards_used = G.GAME and G.GAME.current_round and G.GAME.current_round.discards_used
+		local temp_hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left
+
+		local has_maze = G.jokers and SMODS.find_card and next(SMODS.find_card("j_cry_maze"))
+		local has_panopticon = G.jokers and SMODS.find_card and next(SMODS.find_card("j_cry_panopticon"))
+
+		if G.GAME and G.GAME.current_round then
+			if has_maze then
+				G.GAME.current_round.hands_played = 0
+				G.GAME.current_round.discards_used = 0
+			end
+			if has_panopticon then
+				G.GAME.current_round.hands_left = (G.play and G.play.cards and next(G.play.cards)) and 0 or 1
+			end
+		end
+
+		local res = orig_card_calc_jd(self, ...)
+
+		if G.GAME and G.GAME.current_round then
+			if temp_hands_played ~= nil then G.GAME.current_round.hands_played = temp_hands_played end
+			if temp_discards_used ~= nil then G.GAME.current_round.discards_used = temp_discards_used end
+			if temp_hands_left ~= nil then G.GAME.current_round.hands_left = temp_hands_left end
+		end
+
+		return res
+	end
+
+	JokerDisplay.Definitions["j_cry_panopticon"] = {}
+	JokerDisplay.Definitions["j_cry_maze"] = {}
+
+	-- Cryptid Edition Definitions
+	JokerDisplay.Edition_Definitions = JokerDisplay.Edition_Definitions or {}
+	JokerDisplay.Edition_Definitions["e_cry_astral"] = {
+		condition_function = function(card)
+			return not card.debuff and card.edition and (card.edition.cry_astral or card.edition.key == "e_cry_astral" or card.edition.key == "astral")
+		end,
+		mod_function = function(card)
+			return { e_mult = (card.edition and card.edition.e_mult) or 1.1 }
+		end,
+	}
+	JokerDisplay.Edition_Definitions["e_cry_mosaic"] = {
+		condition_function = function(card)
+			return not card.debuff and card.edition and (card.edition.cry_mosaic or card.edition.key == "e_cry_mosaic" or card.edition.key == "mosaic")
+		end,
+		mod_function = function(card)
+			return { x_chips = (card.edition and card.edition.x_chips) or 2.5 }
+		end,
+	}
 
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page1 = {}
 
 	JokerDisplay.Definitions["j_cry_supercell"] = {
 		text = {
-			{ text = "+", colour = G.C.CHIPS },
-			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.CHIPS, retrigger_type = "mult" },
-			{ text = " +", colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "stat1", colour = G.C.MULT, retrigger_type = "mult" },
+			{ ref_table = "card.joker_display_values", ref_value = "plus_chips", colour = G.C.CHIPS },
+			{ ref_table = "card.joker_display_values", ref_value = "stat1_chips", colour = G.C.CHIPS, retrigger_type = "mult" },
+			{ ref_table = "card.joker_display_values", ref_value = "plus_mult", colour = G.C.MULT },
+			{ ref_table = "card.joker_display_values", ref_value = "stat1_mult", colour = G.C.MULT, retrigger_type = "mult" },
 		},
 		extra = {
 			{
@@ -184,6 +326,12 @@ if JokerDisplay then
 			},
 		},
 		calc_function = function(card)
+			local is_modest = Card.get_gameset and Card.get_gameset(card) == "modest"
+			local stat1 = (card.ability and card.ability.extra and card.ability.extra.stat1) or 15
+			card.joker_display_values.plus_chips = not is_modest and "+" or ""
+			card.joker_display_values.stat1_chips = not is_modest and stat1 or ""
+			card.joker_display_values.plus_mult = not is_modest and " +" or ""
+			card.joker_display_values.stat1_mult = not is_modest and stat1 or ""
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}
@@ -224,14 +372,14 @@ if JokerDisplay then
 	JokerDisplay.Definitions["j_cry_kidnap"] = {
 		text = {
 			{ text = "+$" },
-			{ ref_table = "card.joker_display_values", ref_value = "extra" },
+			{ ref_table = "card.joker_display_values", ref_value = "dollars" },
 		},
 		text_config = { colour = G.C.GOLD },
 		reminder_text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
 		},
 		calc_function = function(card)
-			local abc = 0
+			local count = 0
 			if G.GAME and G.GAME.jokers_sold then
 				for _, v in ipairs(G.GAME.jokers_sold) do
 					local center = G.P_CENTERS[v]
@@ -249,11 +397,12 @@ if JokerDisplay then
 							or center.name == "Crafty Joker"
 						)
 					then
-						abc = abc + 1
+						count = count + 1
 					end
 				end
 			end
-			card.joker_display_values.extra = card.ability.extra * abc
+			local money_per = (card.ability and card.ability.extra and type(card.ability.extra) == "table" and card.ability.extra.money) or (type(card.ability.extra) == "number" and card.ability.extra) or 4
+			card.joker_display_values.dollars = money_per * count
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}
@@ -292,28 +441,34 @@ if JokerDisplay then
 					{
 						ref_table = "card.joker_display_values",
 						ref_value = "e_mult",
-						retrigger_type = function(number, triggers)
-							local num = number
-							for i = 1, triggers - 1 do
-								num = num ^ number
-							end
-							return num
-						end,
+						retrigger_type = "exp",
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		reminder_text = {
 			{ text = "(" },
-			{ ref_table = "card.ability.extra", ref_value = "check" },
-			{ text = "/114)" },
+			{ ref_table = "card.joker_display_values", ref_value = "check" },
+			{ text = "/" },
+			{ ref_table = "card.joker_display_values", ref_value = "trigger" },
+			{ text = ")" },
 		},
 		calc_function = function(card)
-			card.joker_display_values.e_mult = card.ability.extra.check >= 114 and card.ability.extra.mult or 1
+			local immutable = (card.ability and card.ability.immutable) or {}
+			local check = immutable.check or 0
+			local trigger = immutable.trigger or 114
+			local mult = immutable.mult or 4
+			card.joker_display_values.e_mult = check >= trigger and mult or 1
+			card.joker_display_values.check = check
+			card.joker_display_values.trigger = trigger
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_bubblem"] = {
+		text = {
+			{ text = "+1 Jolly" },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
 		reminder_text = {
 			{ text = "(" },
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
@@ -321,7 +476,8 @@ if JokerDisplay then
 		},
 		reminder_text_config = { scale = 0.35 },
 		calc_function = function(card)
-			card.joker_display_values.localized_text = localize(card.ability.extra.type, "poker_hands")
+			local p_type = (card.ability and card.ability.extra and card.ability.extra.type) or "Three of a Kind"
+			card.joker_display_values.localized_text = localize(p_type, "poker_hands")
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_foodm"] = {
@@ -378,7 +534,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 	}
@@ -410,27 +566,34 @@ if JokerDisplay then
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_notebook"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "slots" },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
 		reminder_text = {
 			{ text = "(" },
-			{ ref_table = "card.ability.extra", ref_value = "slot" },
-			{ text = ") " },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text", colour = G.C.ORANGE },
+			{ text = ")" },
 		},
 		extra = {
 			{
 				{ text = "(" },
 				{ ref_table = "card.joker_display_values", ref_value = "odds" },
 				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
+				{ ref_table = "card.joker_display_values", ref_value = "max_odds" },
 				{ text = ")" },
 			},
 		},
 		extra_config = { colour = G.C.GREEN, scale = 0.3 },
 		calc_function = function(card)
-			card.joker_display_values.localized_text = "("
-				.. (card.ability.extra.check and localize("k_active_ex") or "Inactive")
-				.. ")"
+			local immutable = (card.ability and card.ability.immutable) or {}
+			local extra = (card.ability and card.ability.extra) or {}
+			card.joker_display_values.slots = immutable.slots or 0
+			local is_active = extra.check ~= false
+			card.joker_display_values.active_text = is_active and localize("cry_active") or localize("cry_inactive")
 			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.max_odds = extra.odds or 7
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_pot_of_jokes"] = {
@@ -473,7 +636,10 @@ if JokerDisplay then
 		},
 		text_config = { colour = G.C.CHIPS },
 		calc_function = function(card)
-			card.joker_display_values.stat = card.ability.extra.chips * Cryptid.member_count
+			local chips_mod = (card.ability and card.ability.immutable and card.ability.immutable.chips_mod) or 1
+			local member_count = Cryptid.member_count or 0
+			local chips = (card.ability and card.ability.extra and card.ability.extra.chips) or 1
+			card.joker_display_values.stat = chips * math.floor(member_count / chips_mod)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_redeo"] = {
@@ -598,15 +764,29 @@ if JokerDisplay then
 	}
 	JokerDisplay.Definitions["j_cry_mprime"] = {
 		mod_function = function(card, mod_joker)
+			local is_m_or_jolly = (card.is_jolly and card:is_jolly())
+				or card.ability.name == "Jolly Joker"
+				or (card.edition and card.edition.key == "e_cry_m")
+				or (card.config and card.config.center and Cryptid.safe_get(card.config.center, "pools", "M"))
 			return {
-				e_mult = (
-					card.ability.name == "Jolly Joker"
-					or card.edition and card.edition.key == "e_cry_m"
-					or Cryptid.safe_get(card, "pools", "M")
-				)
+				e_mult = (card ~= mod_joker and is_m_or_jolly)
 						and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker)
 					or nil,
 			}
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_megg"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "amount" },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
+		reminder_text = {
+			{ text = "(Sell)" },
+		},
+		calc_function = function(card)
+			local amount = (card.ability and card.ability.extra and card.ability.extra.amount) or 0
+			card.joker_display_values.amount = math.floor(amount)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_whip"] = {
@@ -656,16 +836,24 @@ if JokerDisplay then
 			{ ref_table = "card.joker_display_values", ref_value = "num_retriggers" },
 		},
 		calc_function = function(card)
+			local is_modest = Card.get_gameset and Card.get_gameset(card) == "modest"
 			local num_retriggers = 0
 			if G.jokers then
 				for i = 1, #G.jokers.cards do
+					local other = G.jokers.cards[i]
+					local is_common = (other.is_rarity and other:is_rarity(1)) or (other.config and other.config.center and other.config.center.rarity == 1)
+					local is_candy = (other.is_rarity and other:is_rarity("cry_candy")) or (other.config and other.config.center and other.config.center.rarity == "cry_candy")
 					if
-						card.T.x + card.T.w / 2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w / 2
-						and G.jokers.cards[i].config.center.rarity ~= 1
+						card.T.x + card.T.w / 2 < other.T.x + other.T.w / 2
+						and not is_common
+						and (not is_modest or not is_candy)
 					then
 						num_retriggers = num_retriggers + 1
 					end
 				end
+			end
+			if is_modest then
+				num_retriggers = math.min(2, num_retriggers)
 			end
 			card.joker_display_values.num_retriggers = num_retriggers
 		end,
@@ -951,22 +1139,23 @@ if JokerDisplay then
 			},
 		},
 		calc_function = function(card)
-			local hand = G.hand.highlighted
+			local cur_xmult = (card.ability and card.ability.extra and card.ability.extra.x_mult) or 1
+			local mod = (card.ability and card.ability.extra and card.ability.extra.x_mult_mod) or 0.15
+			local hand = G.hand and G.hand.highlighted
 			local text, _, _ = JokerDisplay.evaluate_hand(hand)
-			local play_more_than = 0
-			local hand_exists = text ~= "Unknown" and G.GAME and G.GAME.hands and G.GAME.hands[text]
-			if hand_exists then
+			if text ~= "Unknown" and G.GAME and G.GAME.hands and G.GAME.hands[text] then
+				local play_more_than = G.GAME.hands[text].played or 0
+				local will_reset = false
 				for k, v in pairs(G.GAME.hands) do
 					if text ~= k and v.played and v.played >= play_more_than and v.visible then
-						play_more_than = v.played
+						will_reset = true
+						break
 					end
 				end
+				card.joker_display_values.x_mult = will_reset and 1 or (cur_xmult + mod)
+			else
+				card.joker_display_values.x_mult = cur_xmult
 			end
-			card.joker_display_values.x_mult = (
-				hand_exists
-					and (G.GAME.hands[text].played < play_more_than and 1 or card.ability.x_mult + card.ability.extra)
-				or card.ability.x_mult
-			)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_fspinner"] = {
@@ -1055,6 +1244,241 @@ if JokerDisplay then
 			},
 		},
 	}
+	JokerDisplay.Definitions["j_cry_circus"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "count", colour = G.C.ORANGE },
+			{ text = " Jokers)" },
+		},
+		calc_function = function(card)
+			local count = 0
+			if G.jokers then
+				for _, joker_card in ipairs(G.jokers.cards) do
+					if joker_card ~= card and joker_card.config and joker_card.config.center then
+						local rarity = joker_card.config.center.rarity
+						local rarity_map = (card.ability and card.ability.immutable and card.ability.immutable.rarity_map)
+							or { [3] = "3_mult_mod", ["cry_epic"] = "cry_epic_mult_mod", [4] = "4_mult_mod", ["cry_exotic"] = "cry_exotic_mult_mod" }
+						local mod_key = rarity_map[rarity]
+						if mod_key and card.ability and card.ability.extra and card.ability.extra[mod_key] and to_big(card.ability.extra[mod_key]) > to_big(1) then
+							count = count + 1
+						end
+					end
+				end
+			end
+			card.joker_display_values.count = count
+		end,
+		mod_function = function(card, mod_joker)
+			if card ~= mod_joker and card.config and card.config.center then
+				local rarity = card.config.center.rarity
+				local rarity_map = (mod_joker.ability and mod_joker.ability.immutable and mod_joker.ability.immutable.rarity_map)
+					or { [3] = "3_mult_mod", ["cry_epic"] = "cry_epic_mult_mod", [4] = "4_mult_mod", ["cry_exotic"] = "cry_exotic_mult_mod" }
+				local mod_key = rarity_map[rarity]
+				if mod_key and mod_joker.ability and mod_joker.ability.extra and mod_joker.ability.extra[mod_key] then
+					local xmult = mod_joker.ability.extra[mod_key]
+					if to_big(xmult) > to_big(1) then
+						return { x_mult = xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) }
+					end
+				end
+			end
+			return {}
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_booster"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "slots" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(Slots)" },
+		},
+		calc_function = function(card)
+			local max_slots = (card.ability and card.ability.immutable and card.ability.immutable.max_slots) or 25
+			local slots = (card.ability and card.ability.extra and card.ability.extra.booster_slots) or 1
+			card.joker_display_values.slots = math.min(max_slots, slots)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_blurred"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "extra_hands" },
+		},
+		text_config = { colour = G.C.BLUE },
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local max_hands = (card.ability and card.ability.immutable and card.ability.immutable.max_hand_size_mod) or 1000
+			local extra = (card.ability and card.ability.extra and card.ability.extra.extra_hands) or 1
+			card.joker_display_values.extra_hands = math.min(max_hands, extra)
+			card.joker_display_values.localized_text = localize("k_round")
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_sync_catalyst"] = {
+		text = {
+			{ text = "Balance", colour = G.C.DARK_EDITION },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_soccer"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "holygrail" },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
+		reminder_text = {
+			{ text = "(All Slots)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_jtron"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{
+						ref_table = "card.ability.immutable",
+						ref_value = "current",
+						retrigger_type = function(number, triggers)
+							local num = number
+							for i = 1, triggers - 1 do
+								num = num ^ number
+							end
+							return num
+						end,
+					},
+				},
+				border_colour = G.C.emult or G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local bonus = (card.ability and card.ability.extra and card.ability.extra.bonus) or 1
+			local jokers = (G.jokers and SMODS.find_card and #SMODS.find_card("j_joker")) or 0
+			if card.ability and card.ability.immutable then
+				card.ability.immutable.current = 1 + bonus * jokers
+			end
+			card.joker_display_values.localized_text = localize({ type = "name_text", set = "Joker", key = "j_joker" })
+		end,
+	}
+	--[[
+	JokerDisplay.Definitions["j_cry_rnjoker"] = {
+		text = {
+			{
+				border_nodes = {
+					{ ref_table = "card.joker_display_values", ref_value = "prefix" },
+					{ ref_table = "card.joker_display_values", ref_value = "value" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "reminder_text" },
+		},
+		calc_function = function(card)
+			local ability = card.ability and card.ability.abilities and card.ability.abilities[1]
+			if not ability then
+				card.joker_display_values.prefix = ""
+				card.joker_display_values.value = ""
+				card.joker_display_values.reminder_text = ""
+				return
+			end
+
+			local val = card.ability.extra and card.ability.extra.value or ability.value or 0
+			if ability.stat == "plus_mult" then
+				card.joker_display_values.prefix = "+"
+				card.joker_display_values.value = val
+				card.joker_display_values.reminder_text = "(Mult)"
+			elseif ability.stat == "plus_chips" then
+				card.joker_display_values.prefix = "+"
+				card.joker_display_values.value = val
+				card.joker_display_values.reminder_text = "(Chips)"
+			elseif ability.stat == "x_mult" then
+				card.joker_display_values.prefix = "X"
+				card.joker_display_values.value = val
+				card.joker_display_values.reminder_text = "(Mult)"
+			elseif ability.stat == "x_chips" then
+				card.joker_display_values.prefix = "X"
+				card.joker_display_values.value = val
+				card.joker_display_values.reminder_text = "(Chips)"
+			elseif ability.stat == "h_size" then
+				card.joker_display_values.prefix = "+"
+				card.joker_display_values.value = val
+				card.joker_display_values.reminder_text = "(Hand Size)"
+			elseif ability.stat == "money" then
+				card.joker_display_values.prefix = "+$"
+				card.joker_display_values.value = val
+				card.joker_display_values.reminder_text = "(Money)"
+			elseif ability.act then
+				if ability.act == "make_joker" then
+					card.joker_display_values.prefix = "+"
+					card.joker_display_values.value = 1
+					card.joker_display_values.reminder_text = "(Joker)"
+				elseif ability.act == "make_tarot" then
+					card.joker_display_values.prefix = "+"
+					card.joker_display_values.value = val > 0 and val or 1
+					card.joker_display_values.reminder_text = "(Tarot)"
+				elseif ability.act == "make_planet" then
+					card.joker_display_values.prefix = "+"
+					card.joker_display_values.value = val > 0 and val or 1
+					card.joker_display_values.reminder_text = "(Planet)"
+				elseif ability.act == "make_spectral" then
+					card.joker_display_values.prefix = "+"
+					card.joker_display_values.value = 1
+					card.joker_display_values.reminder_text = "(Spectral)"
+				elseif ability.act == "add_dollars" then
+					card.joker_display_values.prefix = "+$"
+					card.joker_display_values.value = val
+					card.joker_display_values.reminder_text = "(Dollars)"
+				end
+			else
+				card.joker_display_values.prefix = ""
+				card.joker_display_values.value = val
+				card.joker_display_values.reminder_text = ""
+			end
+		end,
+		mod_function = function(card, mod_joker)
+			local ability = mod_joker.ability and mod_joker.ability.abilities and mod_joker.ability.abilities[1]
+			if ability and ability.context == "other_joker" and card ~= mod_joker then
+				local val = mod_joker.ability.extra and mod_joker.ability.extra.value or ability.value or 0
+				local triggers = JokerDisplay.calculate_joker_triggers(mod_joker)
+				if ability.stat == "plus_mult" then
+					return { mult = val * triggers }
+				elseif ability.stat == "plus_chips" then
+					return { chips = val * triggers }
+				elseif ability.stat == "x_mult" then
+					return { x_mult = val ^ triggers }
+				elseif ability.stat == "x_chips" then
+					return { x_chips = val ^ triggers }
+				end
+			end
+			return {}
+		end,
+	}
+	--]]
+	JokerDisplay.Definitions["j_cry_seal_the_deal"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left or 0
+			card.joker_display_values.is_active = (hands_left == 1 and not next(G.play.cards))
+				or (hands_left == 0 and next(G.play.cards))
+				or hands_left <= 0
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
 	JokerDisplay.Definitions["j_cry_primus"] = {
 		text = {
 			{
@@ -1072,7 +1496,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		reminder_text = {
@@ -1153,7 +1577,7 @@ if JokerDisplay then
 			{
 				border_nodes = {
 					{ text = "X" },
-					{ ref_table = "card.ability.extra", ref_value = "x_chips", retrigger_type = "exp" },
+					{ ref_table = "card.joker_display_values", ref_value = "x_chips", retrigger_type = "exp" },
 				},
 				border_colour = G.C.CHIPS,
 			},
@@ -1161,6 +1585,25 @@ if JokerDisplay then
 		reminder_text = {
 			{ text = "(7,4)" },
 		},
+		calc_function = function(card)
+			local count = 0
+			local playing_hand = G.play and next(G.play.cards)
+			if not playing_hand then
+				local hand = G.hand and G.hand.highlighted
+				local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+				if text ~= "Unknown" and scoring_hand then
+					for _, scoring_card in pairs(scoring_hand) do
+						local rank = scoring_card:get_id()
+						if rank == 4 or rank == 7 then
+							count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+						end
+					end
+				end
+			end
+			local cur_xchips = (card.ability and card.ability.extra and card.ability.extra.x_chips) or 1
+			local bonus = (card.ability and card.ability.extra and card.ability.extra.bonus) or 0.1
+			card.joker_display_values.x_chips = cur_xchips + count * bonus
+		end,
 	}
 	JokerDisplay.Definitions["j_cry_caramel"] = {
 		text = {
@@ -1212,6 +1655,9 @@ if JokerDisplay then
 			{ ref_table = "card.ability.extra", ref_value = "money" },
 		},
 		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ text = "(Consumable)" },
+		},
 	}
 	JokerDisplay.Definitions["j_cry_weegaming"] = {
 		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
@@ -1299,7 +1745,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 	}
@@ -1331,24 +1777,28 @@ if JokerDisplay then
 				{ text = "(" },
 				{ ref_table = "card.joker_display_values", ref_value = "odds" },
 				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
+				{ ref_table = "card.joker_display_values", ref_value = "max_odds" },
 				{ text = ")" },
 			},
 		},
 		extra_config = { colour = G.C.GREEN, scale = 0.3 },
 		calc_function = function(card)
 			local count = 0
-			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local hand = (G.play and next(G.play.cards)) and G.play.cards or (G.hand and G.hand.highlighted)
 			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
-			if text ~= "Unknown" then
+			if text ~= "Unknown" and scoring_hand then
 				for _, scoring_card in pairs(scoring_hand) do
-					if scoring_card.ability.effect and scoring_card.ability.effect == "Bonus Card" then
+					if SMODS and SMODS.has_enhancement and SMODS.has_enhancement(scoring_card, "m_bonus") then
+						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					elseif scoring_card.ability and scoring_card.ability.effect == "Bonus Card" then
 						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
 					end
 				end
 			end
-			card.joker_display_values.count = math.min(count, 2 - card.ability.extra.check)
+			local check = (card.ability and card.ability.immutable and card.ability.immutable.check) or 0
+			card.joker_display_values.count = math.min(count, math.max(0, 2 - check))
 			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.max_odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 8
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_pirate_dagger"] = {
@@ -1403,6 +1853,10 @@ if JokerDisplay then
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_happy"] = {
+		text = {
+			{ text = "+1 Joker" },
+		},
+		text_config = { colour = G.C.BLUE },
 		reminder_text = {
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
 		},
@@ -1545,6 +1999,1014 @@ if JokerDisplay then
 			}
 		end,
 	}
+	JokerDisplay.Definitions["j_cry_universe"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.joker_display_values", ref_value = "emult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.emult or G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.DARK_EDITION },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local count = 0
+			local playing_hand = next(G.play.cards)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" then
+				for _, scoring_card in pairs(scoring_hand) do --Astral cards scored
+					if scoring_card.edition and scoring_card.edition.cry_astral == true then
+						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					end
+				end
+			end
+			for _, playing_card in ipairs(G.hand.cards) do --Astral cards held in hand
+				if playing_hand or not playing_card.highlighted then
+					if
+						not (playing_card.facing == "back")
+						and not playing_card.debuff
+						and playing_card.edition
+						and playing_card.edition.cry_astral == true
+					then
+						count = count + JokerDisplay.calculate_card_triggers(playing_card, nil, true)
+					end
+				end
+			end
+			card.joker_display_values.emult = (card.ability.extra.emult or 1.2) ^ count
+			card.joker_display_values.localized_text =
+				localize({ type = "name_text", set = "Edition", key = "e_cry_astral" })
+		end,
+		mod_function = function(card, mod_joker) --Astral Jokers
+			return {
+				e_mult = (card ~= mod_joker and card.edition and card.edition.cry_astral == true)
+						and (mod_joker.ability.extra.emult ^ JokerDisplay.calculate_joker_triggers(mod_joker))
+					or nil,
+			}
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_exposed"] = {
+		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+			if held_in_hand or (playing_card:is_face()) then
+				return 0
+			end
+			return math.min(joker_card.ability.immutable.max_retriggers or 40, (joker_card.ability.extra and joker_card.ability.extra.retriggers) or 2)
+				* JokerDisplay.calculate_joker_triggers(joker_card)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_mask"] = {
+		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+			if held_in_hand or (not playing_card:is_face()) then
+				return 0
+			end
+			return math.min(joker_card.ability.immutable.max_retriggers or 40, (joker_card.ability.extra and joker_card.ability.extra.retriggers) or 3)
+				* JokerDisplay.calculate_joker_triggers(joker_card)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_tropical_smoothie"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability", ref_value = "extra", retrigger_type = "exp" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_oil_lamp"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "increase", retrigger_type = "exp" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local other_joker = nil
+			if card.area and card.area.cards then
+				for i = 1, #card.area.cards do
+					if card.area.cards[i] == card then
+						other_joker = card.area.cards[i + 1]
+						break
+					end
+				end
+			end
+			local compatible = other_joker and other_joker ~= card and not other_joker.config.center.immutable
+			card.joker_display_values.compatible = compatible
+			local other_key = compatible and other_joker.config and other_joker.config.center and other_joker.config.center.key
+			card.joker_display_values.localized_text = other_key and localize({ type = "name_text", key = other_key, set = "Joker" }) or localize("k_incompatible")
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.compatible and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_tax_fraud"] = {
+		text = {
+			{ text = "+$" },
+			{ ref_table = "card.joker_display_values", ref_value = "dollars" },
+		},
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+		},
+		calc_function = function(card)
+			local rentals = 0
+			if Cryptid and Cryptid.advanced_find_joker then
+				rentals = #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true)
+			elseif G.jokers and G.jokers.cards then
+				for _, j in ipairs(G.jokers.cards) do
+					if j.ability and j.ability.rental then
+						rentals = rentals + 1
+					end
+				end
+			end
+			card.joker_display_values.dollars = (card.ability.extra and card.ability.extra.money or 6) * rentals
+			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_pity_prize"] = {
+		text = {
+			{ text = "+1", colour = G.C.ORANGE },
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local is_in_booster = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.PLANET_PACK
+				or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.STANDARD_PACK
+				or G.STATE == G.STATES.BUFFOON_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+				or (G.booster_pack and not G.booster_pack.REMOVED))
+			card.joker_display_values.is_active = is_in_booster
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_digitalhallucinations"] = {
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = ")" },
+			},
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			local numerator, denominator = (G.GAME.probabilities.normal or 1), (card.ability and card.ability.odds or 2)
+			if SMODS then
+				numerator, denominator = SMODS.get_probability_vars(card, 1, denominator, "Digital Hallucinations")
+			end
+			card.joker_display_values.odds = localize({ type = "variable", key = "jdis_odds", vars = { numerator, denominator } })
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_arsonist"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, _ = JokerDisplay.evaluate_hand(hand)
+			local is_full_house = text == "Full House" or text == "Flush House"
+			card.joker_display_values.is_active = is_full_house
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_wrapped"] = {
+		text = {
+			{ text = "+1", colour = G.C.FILTER },
+		},
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+		},
+		calc_function = function(card)
+			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds) or 2
+			local rounds_passed = math.max(0, 2 - rounds_left)
+			card.joker_display_values.rounds_remaining = "(" .. rounds_passed .. "/2)"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_zooble"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" },
+		},
+		text_config = { colour = G.C.MULT },
+		reminder_text = {
+			{ text = "(No Straight)" },
+		},
+		calc_function = function(card)
+			local mult = (card.ability and card.ability.extra and card.ability.extra.mult) or 0
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" and hand and #hand > 0 and not (next(G.play.cards)) then
+				local eval = evaluate_poker_hand(hand)
+				if not (eval and eval["Straight"] and next(eval["Straight"])) then
+					local unique_ranks = {}
+					for _, v in ipairs(scoring_hand) do
+						if not (SMODS.has_no_rank(v) and not v.vampired) then
+							local id = v:get_id()
+							if id then
+								unique_ranks[id] = true
+							end
+						end
+					end
+					local count = 0
+					for _ in pairs(unique_ranks) do
+						count = count + 1
+					end
+					if count >= 1 then
+						mult = mult + count * ((card.ability and card.ability.extra and card.ability.extra.a_mult) or 1)
+					end
+				end
+			end
+			card.joker_display_values.mult = mult
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_chocolate_dice"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "event_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local roll = card.ability and card.ability.extra and card.ability.extra.roll or 0
+			if roll == 0 then
+				card.joker_display_values.event_text = localize("k_none")
+			else
+				local ev_key = "ev_cry_choco" .. roll
+				local name = (G.localization and G.localization.descriptions and G.localization.descriptions.Other and G.localization.descriptions.Other[ev_key] and G.localization.descriptions.Other[ev_key].name)
+					or localize({ type = "name_text", set = "Other", key = ev_key })
+				if name and name ~= "ERROR" then
+					local parsed = name:match(":%s*(.+)$") or name
+					card.joker_display_values.event_text = parsed
+				else
+					card.joker_display_values.event_text = "Event " .. roll
+				end
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_spectrogram"] = {
+		text = {
+			{ text = "x" },
+			{ ref_table = "card.joker_display_values", ref_value = "num_retriggers" },
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "target_name" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local count = 0
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" then
+				for _, scoring_card in pairs(scoring_hand) do
+					if scoring_card.config and scoring_card.config.center_key == "m_cry_echo" and not scoring_card.debuff then
+						count = count + 1
+					end
+				end
+			end
+			local target = G.jokers and G.jokers.cards and G.jokers.cards[#G.jokers.cards]
+			local valid_target = target and target ~= card
+			local target_key = valid_target and target.config and target.config.center and target.config.center.key
+			card.joker_display_values.num_retriggers = count
+			card.joker_display_values.valid_target = valid_target
+			card.joker_display_values.target_name = target_key and localize({ type = "name_text", key = target_key, set = "Joker" }) or localize("k_none")
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.valid_target and G.C.DARK_EDITION or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+		retrigger_joker_function = function(card, retrigger_joker)
+			local is_rightmost = G.jokers and G.jokers.cards and card == G.jokers.cards[#G.jokers.cards] and card ~= retrigger_joker
+			return is_rightmost and (retrigger_joker.joker_display_values.num_retriggers or 0) or 0
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_kittyprinter"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+	}
+	JokerDisplay.Definitions["j_cry_clicked_cookie"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "chips", retrigger_type = "mult" },
+		},
+		text_config = { colour = G.C.CHIPS },
+	}
+	JokerDisplay.Definitions["j_cry_lebaron_james"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.immutable", ref_value = "added_h" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(Kings)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_huntingseason"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			card.joker_display_values.is_active = (hand and #hand == 3)
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_trick_or_treat"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "num_candies" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = ")" },
+			},
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			local numerator, denominator = 3 * (G.GAME.probabilities.normal or 1), (card.ability and card.ability.extra and card.ability.extra.odds or 4)
+			if SMODS then
+				numerator, denominator = SMODS.get_probability_vars(card, 3, denominator, "Trick-or-Treat")
+			end
+			card.joker_display_values.odds = localize({ type = "variable", key = "jdis_odds", vars = { numerator, denominator } })
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_clockwork"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local is_active = false
+			if card.config and card.config.center and card.config.center.loc_vars then
+				local res = card.config.center:loc_vars({}, card)
+				if res and res.vars then
+					for i = 1, 4 do
+						if res.vars[i] == localize("k_active_ex") then
+							is_active = true
+							break
+						end
+					end
+				end
+			end
+			card.joker_display_values.is_active = is_active
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_candy_basket"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "candies" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_blacklist"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local blacklist = false
+			local target_id = (card.ability and card.ability.extra and card.ability.extra.blacklist) or 14
+			if G.play and G.play.cards then
+				for _, c in ipairs(G.play.cards) do
+					if c:get_id() == target_id then
+						blacklist = true
+						break
+					end
+				end
+			end
+			if not blacklist and G.hand and G.hand.cards then
+				for _, c in ipairs(G.hand.cards) do
+					if c:get_id() == target_id then
+						blacklist = true
+						break
+					end
+				end
+			end
+			card.joker_display_values.is_active = blacklist
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.RED or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_rotten_egg"] = {
+		text = {
+			{ text = "-$" },
+			{ ref_table = "card.ability.extra", ref_value = "lose_money" },
+		},
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+			{ ref_table = "card.joker_display_values", ref_value = "progress_text" },
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ") "
+			local left = (card.ability and card.ability.extra and card.ability.extra.left_money) or 10
+			local needed = (card.ability and card.ability.extra and card.ability.extra.needed_money) or 10
+			card.joker_display_values.progress_text = "(" .. math.max(0, needed - left) .. "/$" .. needed .. ")"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_familiar_currency"] = {
+		text = {
+			{ text = "+1", colour = G.C.ORANGE },
+			{ text = " (-$" },
+			{ ref_table = "card.ability", ref_value = "extra" },
+			{ text = ")" },
+		},
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			card.joker_display_values.localized_text = localize("k_round")
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_highfive"] = {
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			local active = false
+			if text ~= "Unknown" and scoring_hand and #scoring_hand > 0 then
+				local maximum = -1
+				local fives = 0
+				for _, v in ipairs(scoring_hand) do
+					if not (SMODS and SMODS.has_no_rank and SMODS.has_no_rank(v)) then
+						local id = v:get_id()
+						local rank_val = id == 14 and 1 or id
+						if rank_val == 5 then fives = fives + 1 end
+						if rank_val > maximum then maximum = rank_val end
+					end
+				end
+				if maximum == 5 and fives ~= #scoring_hand then
+					active = true
+				end
+			end
+			card.joker_display_values.is_active = active
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_sock_and_sock"] = {
+		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+			if held_in_hand or not (SMODS and SMODS.has_enhancement and SMODS.has_enhancement(playing_card, "m_cry_abstract")) then
+				return 0
+			end
+			return math.min((joker_card.ability and joker_card.ability.immutable and joker_card.ability.immutable.max_retriggers) or 40, (joker_card.ability and joker_card.ability.extra and joker_card.ability.extra.retriggers) or 1)
+				* JokerDisplay.calculate_joker_triggers(joker_card)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_candy_dagger"] = {
+		text = {
+			{ text = "+1", colour = G.C.ORANGE },
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "target_name" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local other_joker = nil
+			if card.area and card.area.cards then
+				for i = 1, #card.area.cards do
+					if card.area.cards[i] == card then
+						other_joker = card.area.cards[i + 1]
+						break
+					end
+				end
+			end
+			local compatible = other_joker and other_joker ~= card and not (SMODS and SMODS.is_eternal and SMODS.is_eternal(other_joker))
+			card.joker_display_values.compatible = compatible
+			local other_key = compatible and other_joker.config and other_joker.config.center and other_joker.config.center.key
+			card.joker_display_values.target_name = other_key and localize({ type = "name_text", key = other_key, set = "Joker" }) or localize("k_incompatible")
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[2] then
+				reminder_text.children[2].config.colour = card.joker_display_values.compatible and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_brokenhome"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "Xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = ")" },
+			},
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			local numerator, denominator = (G.GAME.probabilities.normal or 1), (card.ability and card.ability.extra and card.ability.extra.odds or 4)
+			if SMODS then
+				numerator, denominator = SMODS.get_probability_vars(card, 1, denominator, "Broken Home")
+			end
+			card.joker_display_values.odds = localize({ type = "variable", key = "jdis_odds", vars = { numerator, denominator } })
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_candy_cane"] = {
+		text = {
+			{ text = "+$" },
+			{ ref_table = "card.joker_display_values", ref_value = "dollars" },
+		},
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+		},
+		calc_function = function(card)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			local total_retriggers = 0
+			if text ~= "Unknown" and scoring_hand then
+				for _, scoring_card in ipairs(scoring_hand) do
+					local triggers = JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
+					total_retriggers = total_retriggers + math.max(0, triggers - 1)
+				end
+			end
+			local dollars_per = (card.ability and card.ability.extra and card.ability.extra.dollars) or 4
+			card.joker_display_values.dollars = total_retriggers * dollars_per * JokerDisplay.calculate_joker_triggers(card)
+			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds) or 11
+			card.joker_display_values.rounds_remaining = "(" .. rounds_left .. "/11)"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_yarnball"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "odds" },
+		},
+		text_config = { colour = G.C.GREEN },
+		reminder_text = {
+			{ text = "(Cat Tags)" },
+		},
+		calc_function = function(card)
+			local highest_cat_lvl = 0
+			if G.GAME and G.GAME.tags then
+				for _, tag in pairs(G.GAME.tags) do
+					local lvl = tag.ability and tag.ability.level
+					if highest_cat_lvl < 1 and tag.key == "tag_cry_cat" then
+						highest_cat_lvl = 1
+					end
+					if lvl and lvl > highest_cat_lvl then
+						highest_cat_lvl = lvl
+					end
+				end
+			end
+			card.joker_display_values.odds = highest_cat_lvl
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_candy_buttons"] = {
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+		},
+		calc_function = function(card)
+			local rerolls_left = (card.ability and card.ability.extra and card.ability.extra.rerolls) or 15
+			card.joker_display_values.rounds_remaining = "(" .. rerolls_left .. "/15)"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_pizza"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "slices" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(On Sell) " },
+			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+		},
+		calc_function = function(card)
+			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds_left) or 3
+			local rounds_needed = (card.ability and card.ability.extra and card.ability.extra.rounds_needed) or 3
+			card.joker_display_values.rounds_remaining = "(" .. math.max(0, rounds_needed - rounds_left) .. "/" .. rounds_needed .. ")"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_pizza_slice"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+	}
+	JokerDisplay.Definitions["j_cry_jawbreaker"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X2" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(Adjacent) " },
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "active_text" },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local is_boss = G.GAME and G.GAME.blind and Cryptid.is_boss_blind(G.GAME.blind)
+			card.joker_display_values.is_active = is_boss
+			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if reminder_text and reminder_text.children and reminder_text.children[3] then
+				reminder_text.children[3].config.colour = card.joker_display_values.is_active and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_paved_joker"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability", ref_value = "extra" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(Stone Fills)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_mellowcreme"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "sell_mult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_fading_joker"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" },
+				},
+			},
+		},
+	}
+	JokerDisplay.Definitions["j_cry_brittle"] = {
+		text = {
+			{ text = "Enhance", colour = G.C.FILTER },
+		},
+		reminder_text = {
+			{ ref_table = "card.joker_display_values", ref_value = "rounds_remaining" },
+		},
+		calc_function = function(card)
+			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds) or 9
+			card.joker_display_values.rounds_remaining = "(" .. rounds_left .. "/9)"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_poor_joker"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" },
+		},
+		text_config = { colour = G.C.MULT },
+	}
+	JokerDisplay.Definitions["j_cry_monopoly_money"] = {
+		extra = {
+			{
+				{ text = "(" },
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
+				{ text = ")" },
+			},
+		},
+		extra_config = { colour = G.C.GREEN, scale = 0.3 },
+		calc_function = function(card)
+			local numerator, denominator = (G.GAME.probabilities.normal or 1), (card.ability and card.ability.extra and card.ability.extra.odds or 4)
+			if SMODS then
+				numerator, denominator = SMODS.get_probability_vars(card, 1, denominator, "Monopoly Money")
+			end
+			card.joker_display_values.odds = localize({ type = "variable", key = "jdis_odds", vars = { numerator, denominator } })
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_broken_sync_catalyst"] = {
+		text = {
+			{ ref_table = "card.joker_display_values", ref_value = "chips_percent", colour = G.C.CHIPS },
+			{ text = " / " },
+			{ ref_table = "card.joker_display_values", ref_value = "mult_percent", colour = G.C.MULT },
+		},
+		reminder_text = {
+			{ text = "(Swap)" },
+		},
+		calc_function = function(card)
+			local portion_chips = (card.ability and card.ability.extra and (card.ability.extra.chips_portion or card.ability.extra.portion)) or 0.1
+			local portion_mult = (card.ability and card.ability.extra and (card.ability.extra.mult_portion or card.ability.extra.portion)) or 0.1
+			local chips_pct = math.floor(Cryptid.clamp(portion_chips * 100, 0, 100) + 0.5)
+			local mult_pct = math.floor(Cryptid.clamp(portion_mult * 100, 0, 100) + 0.5)
+			card.joker_display_values.chips_percent = chips_pct .. "%"
+			card.joker_display_values.mult_percent = mult_pct .. "%"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_thalia"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" },
+				},
+			},
+		},
+		calc_function = function(card)
+			local x_mult = 1
+			if card.config and card.config.center and card.config.center.calc_xmult then
+				x_mult = card.config.center:calc_xmult(card)
+			else
+				local seen = {}
+				local n = 0
+				if G.jokers and G.jokers.cards then
+					for _, c in ipairs(G.jokers.cards) do
+						local r = c.config and c.config.center and c.config.center.rarity
+						if r and not seen[r] then
+							seen[r] = true
+							n = n + 1
+						end
+					end
+				end
+				local bonus = (n * (n - 1)) / 2
+				x_mult = bonus >= 1 and (bonus * ((card.ability and card.ability.extra and card.ability.extra.xmgain) or 1)) or 1
+			end
+			card.joker_display_values.x_mult = x_mult
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_keychange"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" },
+				},
+			},
+		},
+		reminder_text = {
+			{ text = "(First Hand)" },
+		},
+		calc_function = function(card)
+			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
+			local text, _, _ = JokerDisplay.evaluate_hand(hand)
+			local xm = (card.ability and card.ability.extra and card.ability.extra.xm) or 1
+			if text ~= "Unknown" and G.GAME and G.GAME.hands and G.GAME.hands[text] and G.GAME.hands[text].played_this_round < 1 then
+				xm = xm + ((card.ability and card.ability.extra and card.ability.extra.xmgain) or 0.25)
+			end
+			card.joker_display_values.x_mult = xm
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_candy_sticks"] = {}
+	JokerDisplay.Definitions["j_cry_emergencychips"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "percent" },
+		},
+		text_config = { colour = G.C.CHIPS },
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+		calc_function = function(card)
+			local mult = (card.ability and card.ability.immutable and card.ability.immutable.blind_mult) or 0.2
+			card.joker_display_values.percent = math.floor(mult * 100 + 0.5) .. "%"
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_fleshpanopticon"] = {
+		text = {
+			{ text = "+1 Gateway" },
+		},
+		text_config = { colour = G.C.SECONDARY_SET.Spectral },
+		reminder_text = {
+			{ text = "(On Boss Blind defeat)" },
+		},
+		extra = {
+			{
+				{ text = "X", colour = G.C.RED },
+				{ ref_table = "card.joker_display_values", ref_value = "blind_size", colour = G.C.RED },
+				{ text = " Blind" },
+			},
+		},
+		calc_function = function(card)
+			local is_boss = G.GAME and G.GAME.blind and Cryptid.is_boss_blind(G.GAME.blind)
+			local boss_size = (card.ability and card.ability.extra and card.ability.extra.boss_size) or 20
+			card.joker_display_values.blind_size = is_boss and boss_size or 1
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_wonka_bar"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.ability", ref_value = "extra" },
+			{ text = " Limit" },
+		},
+		text_config = { colour = G.C.ORANGE },
+		reminder_text = {
+			{ text = "(On Sell)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_macabre"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "count", colour = G.C.ORANGE },
+			{ text = " Jolly", colour = G.C.BLUE },
+		},
+		reminder_text = {
+			{ text = "(Setting Blind)" },
+		},
+		calc_function = function(card)
+			local count = 0
+			if G.jokers and G.jokers.cards then
+				for _, v in ipairs(G.jokers.cards) do
+					if
+						v ~= card
+						and not (v.is_jolly and v:is_jolly())
+						and v.config and v.config.center and v.config.center.key ~= "j_cry_mprime"
+						and not (
+							(SMODS and SMODS.is_eternal and SMODS.is_eternal(v))
+							or v.getting_sliced
+							or (Cryptid and Cryptid.safe_get and Cryptid.safe_get(v.config.center, "pools", "M"))
+						)
+					then
+						count = count + 1
+					end
+				end
+			end
+			local add = (card.ability and card.ability.extra and card.ability.extra.add) or 1
+			local max_spawn = (card.ability and card.ability.immutable and card.ability.immutable.max_spawn) or 15
+			card.joker_display_values.count = math.min(max_spawn, count * add)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_doodlem"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "count", colour = G.C.ORANGE },
+			{ text = " Consumables" },
+		},
+		reminder_text = {
+			{ text = "(Setting Blind)" },
+		},
+		calc_function = function(card)
+			local init = (card.ability and card.ability.extra and card.ability.extra.init) or 2
+			local add = (card.ability and card.ability.extra and card.ability.extra.add) or 1
+			local max_jollies = (card.ability and card.ability.immutable and card.ability.immutable.max_jollies) or 25
+			local jollycount = init
+			if G.jokers and G.jokers.cards then
+				for _, v in ipairs(G.jokers.cards) do
+					if v.is_jolly and v:is_jolly() then
+						jollycount = jollycount + add
+					end
+				end
+			end
+			card.joker_display_values.count = math.min(max_jollies, jollycount)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_demicolon"] = {
+		text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "target_name" },
+			{ text = ")" },
+		},
+		reminder_text = {
+			{ text = "(Force-trigger)" },
+		},
+		calc_function = function(card)
+			local other_joker = nil
+			if card.area and card.area.cards then
+				for i = 1, #card.area.cards do
+					if card.area.cards[i] == card then
+						other_joker = card.area.cards[i + 1]
+						break
+					end
+				end
+			end
+			local compatible = false
+			if other_joker and other_joker ~= card then
+				if Cryptid and Cryptid.demicolonGetTriggerable then
+					local m = Cryptid.demicolonGetTriggerable(other_joker)
+					compatible = m[1] and not m[2]
+				else
+					compatible = other_joker.config and other_joker.config.center and (other_joker.config.center.demicoloncompat == true or other_joker.config.center.demicoloncompat == nil)
+				end
+			end
+			card.joker_display_values.compatible = compatible
+			local other_key = other_joker and other_joker.config and other_joker.config.center and other_joker.config.center.key
+			card.joker_display_values.target_name = (compatible and other_key and localize({ type = "name_text", key = other_key, set = "Joker" })) or localize("k_incompatible")
+		end,
+		style_function = function(card, text, reminder_text, extra)
+			if text and text.children and text.children[2] then
+				text.children[2].config.colour = card.joker_display_values.compatible and G.C.GREEN or G.C.UI.TEXT_INACTIVE
+			end
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_starfruit"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.ability", ref_value = "emult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.emult or G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(-0.2/Reroll)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_sundial"] = {
+		reminder_text = {
+			{ text = "(On Sell) (" },
+			{ ref_table = "card.ability.extra", ref_value = "handleft" },
+			{ text = "/12)" },
+		},
+	}
 	JokerDisplay.Definitions["j_cry_multjoker"] = {
 		text = {
 			{ text = "+" },
@@ -1609,22 +3071,44 @@ if JokerDisplay then
 	}
 	JokerDisplay.Definitions["j_cry_circulus_pistoris"] = {
 		text = {
-			{ text = "^", colour = G.C.CHIPS },
-			{ ref_table = "card.ability.extra", ref_value = "Echips", colour = G.C.CHIPS },
-			{ text = "^", colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "Emult", colour = G.C.MULT },
-		},
-		extra = {
-
 			{
-				ref_table = "card.joker_display_values",
-				ref_value = "localized_text",
-				colour = G.C.UI.TEXT_INACTIVE,
-				scale = 0.3,
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.joker_display_values", ref_value = "e_chips", retrigger_type = "exp" },
+				},
+				border_colour = G.C.echips or G.C.CHIPS,
+			},
+			{ text = " " },
+			{
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.joker_display_values", ref_value = "e_mult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "hands_req" },
+			{ text = " " },
+			{ ref_table = "card.joker_display_values", ref_value = "hands_text" },
+			{ text = ")" },
+		},
 		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+			local hands_req = (card.ability and card.ability.extra and card.ability.extra.hands_remaining) or 3
+			local hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left or 0
+			local playing_hand = G.play and next(G.play.cards)
+			local is_active = (not playing_hand and hands_left == hands_req + 1) or (playing_hand and hands_left == hands_req)
+			local pi = math.pi
+			local is_oversat = (card.edition and (card.edition.cry_oversat or card.edition.key == "e_cry_oversat" or card.edition.type == "cry_oversat"))
+				or (Cryptid and Cryptid.safe_get and Cryptid.safe_get(card, "edition", "cry_oversat"))
+			if is_oversat then
+				pi = 2 * pi
+			end
+			card.joker_display_values.e_chips = is_active and pi or 1
+			card.joker_display_values.e_mult = is_active and pi or 1
+			card.joker_display_values.hands_req = hands_req
+			card.joker_display_values.hands_text = hands_req == 1 and localize("k_hand") or localize("k_hud_hands")
 		end,
 	}
 	local hand_xmult_jd = {
@@ -1642,13 +3126,108 @@ if JokerDisplay then
 			{ text = ")" },
 		},
 		calc_function = function(card)
+			local hand_type = (card.ability.extra and card.ability.extra.type) or card.ability.type
+			local xmult_val = (card.ability.extra and (card.ability.extra.Xmult or card.ability.extra.x_mult or card.ability.extra.xmult)) or card.ability.Xmult or card.ability.x_mult or card.ability.xmult or 1
 			local x_mult = 1
 			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
-			if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
-				x_mult = card.ability.x_mult
+			if text ~= "Unknown" and hand_type then
+				local matches = (poker_hands[hand_type] and next(poker_hands[hand_type])) or text == hand_type
+				if card.config.center.key == "j_cry_duos" then
+					matches = matches or (poker_hands["Full House"] and next(poker_hands["Full House"])) or text == "Full House"
+				end
+				if matches then
+					x_mult = xmult_val
+				end
 			end
 			card.joker_display_values.x_mult = x_mult
-			card.joker_display_values.localized_text = localize(card.ability.type, "poker_hands")
+			card.joker_display_values.localized_text = hand_type and localize(hand_type, "poker_hands") or "-"
+		end,
+	}
+	local hand_tmult_jd = {
+		text = {
+			{ text = "+", colour = G.C.MULT },
+			{
+				ref_table = "card.joker_display_values",
+				ref_value = "t_mult",
+				colour = G.C.MULT,
+				retrigger_type = "mult",
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand_type = (card.ability.extra and card.ability.extra.type) or card.ability.type
+			local mult_val = (card.ability.extra and (card.ability.extra.t_mult or card.ability.extra.mult)) or card.ability.t_mult or card.ability.mult or 0
+			local t_mult = 0
+			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+			if text ~= "Unknown" and hand_type then
+				if (poker_hands[hand_type] and next(poker_hands[hand_type])) or text == hand_type then
+					t_mult = mult_val
+				end
+			end
+			card.joker_display_values.t_mult = t_mult
+			card.joker_display_values.localized_text = hand_type and localize(hand_type, "poker_hands") or "-"
+		end,
+	}
+	local hand_tchips_jd = {
+		text = {
+			{ text = "+", colour = G.C.CHIPS },
+			{
+				ref_table = "card.joker_display_values",
+				ref_value = "t_chips",
+				colour = G.C.CHIPS,
+				retrigger_type = "mult",
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand_type = (card.ability.extra and card.ability.extra.type) or card.ability.type
+			local chip_val = (card.ability.extra and (card.ability.extra.t_chips or card.ability.extra.chips)) or card.ability.t_chips or card.ability.chips or 0
+			local t_chips = 0
+			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+			if text ~= "Unknown" and hand_type then
+				if (poker_hands[hand_type] and next(poker_hands[hand_type])) or text == hand_type then
+					t_chips = chip_val
+				end
+			end
+			card.joker_display_values.t_chips = t_chips
+			card.joker_display_values.localized_text = hand_type and localize(hand_type, "poker_hands") or "-"
+		end,
+	}
+	local hand_emult_jd = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "^" },
+					{ ref_table = "card.joker_display_values", ref_value = "e_mult", retrigger_type = "exp" },
+				},
+				border_colour = G.C.emult or G.C.DARK_EDITION,
+			},
+		},
+		reminder_text = {
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
+			{ text = ")" },
+		},
+		calc_function = function(card)
+			local hand_type = (card.ability.extra and card.ability.extra.type) or card.ability.type
+			local emult_val = (card.ability.extra and (card.ability.extra.Emult or card.ability.extra.emult or card.ability.extra.e_mult)) or card.ability.Emult or card.ability.emult or card.ability.e_mult or 1
+			local e_mult = 1
+			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
+			if text ~= "Unknown" and hand_type then
+				if (poker_hands[hand_type] and next(poker_hands[hand_type])) or text == hand_type then
+					e_mult = emult_val
+				end
+			end
+			card.joker_display_values.e_mult = e_mult
+			card.joker_display_values.localized_text = hand_type and localize(hand_type, "poker_hands") or "-"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_duos"] = hand_xmult_jd
@@ -1662,12 +3241,18 @@ if JokerDisplay then
 		text = {
 			{ text = "+$" },
 			{ ref_table = "card.ability.extra", ref_value = "money" },
-			{ text = "-" },
-			{ ref_table = "card.joker_display_values", ref_value = "money" },
+			{ text = "-$" },
+			{ ref_table = "card.joker_display_values", ref_value = "max_money" },
 		},
 		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ text = "(sold Joker)" },
+		},
 		calc_function = function(card)
-			card.joker_display_values.money = (card.ability.extra.money * 10)
+			local is_modest = Card.get_gameset and Card.get_gameset(card) == "modest"
+			local money_mod = is_modest and 4 or ((card.ability and card.ability.immutable and card.ability.immutable.money_mod) or 10)
+			local money = (card.ability and card.ability.extra and card.ability.extra.money) or 1
+			card.joker_display_values.max_money = money * money_mod
 		end,
 	}
 
@@ -1693,9 +3278,9 @@ if JokerDisplay then
 		extra = {
 			{
 				{ text = "(" },
-				{ ref_table = "G.GAME.probabilities", ref_value = "normal" }, --the usual thing doesn't work for some reason
+				{ ref_table = "card.joker_display_values", ref_value = "odds" },
 				{ text = " in " },
-				{ ref_table = "card.ability.extra", ref_value = "odds" },
+				{ ref_table = "card.joker_display_values", ref_value = "max_odds" },
 				{ text = ")" },
 			},
 		},
@@ -1703,7 +3288,26 @@ if JokerDisplay then
 		calc_function = function(card)
 			local copied_joker, copied_debuff = JokerDisplay.calculate_blueprint_copy(card)
 			card.joker_display_values.blueprint_compat = localize("k_incompatible")
+			local prev_loaded = card.joker_display_values.blueprint_ability_joker
 			JokerDisplay.copy_display(card, copied_joker, copied_debuff)
+			if copied_joker and card.children.joker_display and not card.joker_display_values.blueprint_debuff then
+				if not card.joker_display_values.oldblueprint_extra_added or prev_loaded ~= copied_joker then
+					card.children.joker_display:add_extra({
+						{
+							{ text = "(" },
+							{ ref_table = "card.joker_display_values", ref_value = "odds" },
+							{ text = " in " },
+							{ ref_table = "card.ability.extra", ref_value = "odds" },
+							{ text = ")" },
+						},
+					}, { colour = G.C.GREEN, scale = 0.3 }, card)
+					card.joker_display_values.oldblueprint_extra_added = true
+				end
+			else
+				card.joker_display_values.oldblueprint_extra_added = false
+			end
+			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.max_odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 4
 		end,
 		get_blueprint_joker = function(card)
 			for i = 1, #G.jokers.cards do
@@ -1731,7 +3335,7 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		reminder_text = {
@@ -1748,11 +3352,32 @@ if JokerDisplay then
 	}
 	JokerDisplay.Definitions["j_cry_busdriver"] = {
 		text = {
+			{ text = "(", colour = G.C.GREEN },
+			{ ref_table = "card.joker_display_values", ref_value = "odds_gain", colour = G.C.GREEN },
+			{ text = " in ", colour = G.C.GREEN },
+			{ ref_table = "card.joker_display_values", ref_value = "max_odds", colour = G.C.GREEN },
+			{ text = ") ", colour = G.C.GREEN },
 			{ text = "+", colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "mult", colour = G.C.MULT },
-			{ text = " or -", colour = G.C.MULT },
-			{ ref_table = "card.ability.extra", ref_value = "mult", colour = G.C.MULT },
+			{ ref_table = "card.ability.extra", ref_value = "mult", colour = G.C.MULT, retrigger_type = "mult" },
 		},
+		extra = {
+			{
+				{ text = "(", colour = G.C.GREEN },
+				{ ref_table = "card.joker_display_values", ref_value = "odds_loss", colour = G.C.GREEN },
+				{ text = " in ", colour = G.C.GREEN },
+				{ ref_table = "card.joker_display_values", ref_value = "max_odds", colour = G.C.GREEN },
+				{ text = ") ", colour = G.C.GREEN },
+				{ text = "-", colour = G.C.MULT },
+				{ ref_table = "card.ability.extra", ref_value = "mult", colour = G.C.MULT, retrigger_type = "mult" },
+			},
+		},
+		calc_function = function(card)
+			local prob = G.GAME and G.GAME.probabilities.normal or 1
+			local odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 4
+			card.joker_display_values.odds_gain = math.max(0, odds * prob - 1)
+			card.joker_display_values.odds_loss = 1
+			card.joker_display_values.max_odds = odds * prob
+		end,
 	}
 	JokerDisplay.Definitions["j_cry_morse"] = {
 		text = {
@@ -1782,10 +3407,13 @@ if JokerDisplay then
 	}
 	JokerDisplay.Definitions["j_cry_cryptidmoment"] = {
 		text = {
-			{ text = "+" },
+			{ text = "+$" },
 			{ ref_table = "card.ability.extra", ref_value = "money" },
 		},
-		text_config = { colour = G.C.ORANGE },
+		text_config = { colour = G.C.GOLD },
+		reminder_text = {
+			{ text = "(Sell Value)" },
+		},
 	}
 	JokerDisplay.Definitions["j_cry_copypaste"] = {
 		extra = {
@@ -1850,10 +3478,19 @@ if JokerDisplay then
 		},
 		text_config = { colour = G.C.GREEN },
 		reminder_text = {
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
+			{ text = "(" },
+			{ ref_table = "card.joker_display_values", ref_value = "target_name", colour = G.C.ORANGE },
+			{ text = ")" },
 		},
 		calc_function = function(card)
-			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+			local target = G.jokers and G.jokers.cards and G.jokers.cards[1]
+			if target and target ~= card and not (Card.no and Card.no(target, "immutable", true)) and not (target.config and target.config.center and target.config.center.immutable) then
+				local target_key = target.config and target.config.center and target.config.center.key
+				local target_name = target_key and localize({ type = "name_text", set = "Joker", key = target_key })
+				card.joker_display_values.target_name = (target_name and target_name ~= "ERROR" and target_name) or (target.ability and target.ability.name) or "Joker"
+			else
+				card.joker_display_values.target_name = localize("k_incompatible")
+			end
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_oldinvisible"] = {
@@ -1870,7 +3507,7 @@ if JokerDisplay then
 					{ text = "^" },
 					{ ref_table = "card.joker_display_values", ref_value = "Emult", retrigger_type = "exp" },
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 		calc_function = function(card)
@@ -1889,56 +3526,7 @@ if JokerDisplay then
 	--This is here so it shows up on the github symbol panel (easy to scroll to)
 	local page8 = {}
 
-	local hand_tmult_jd = {
-		text = {
-			{ text = "+", colour = G.C.MULT },
-			{
-				ref_table = "card.joker_display_values",
-				ref_value = "t_mult",
-				colour = G.C.MULT,
-				retrigger_type = "mult",
-			},
-		},
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			local t_mult = 0
-			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
-			if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
-				t_mult = card.ability.t_mult
-			end
-			card.joker_display_values.t_mult = t_mult
-			card.joker_display_values.localized_text = localize(card.ability.type, "poker_hands")
-		end,
-	}
-	local hand_tchips_jd = {
-		text = {
-			{ text = "+", colour = G.C.CHIPS },
-			{
-				ref_table = "card.joker_display_values",
-				ref_value = "t_chips",
-				colour = G.C.CHIPS,
-				retrigger_type = "mult",
-			},
-		},
-		reminder_text = {
-			{ text = "(" },
-			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
-			{ text = ")" },
-		},
-		calc_function = function(card)
-			local t_chips = 0
-			local text, poker_hands, _ = JokerDisplay.evaluate_hand()
-			if text ~= "Unknown" and poker_hands[card.ability.type] and next(poker_hands[card.ability.type]) then
-				t_chips = card.ability.t_chips
-			end
-			card.joker_display_values.t_chips = t_chips
-			card.joker_display_values.localized_text = localize(card.ability.type, "poker_hands")
-		end,
-	}
+
 	JokerDisplay.Definitions["j_cry_giggly"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_nutty"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_manic"] = hand_tmult_jd
@@ -1991,13 +3579,42 @@ if JokerDisplay then
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_queens_gambit"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "count", retrigger_type = "mult" },
+		},
+		text_config = { colour = G.C.DARK_EDITION },
 		reminder_text = {
 			{ text = "(" },
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text", colour = G.C.ORANGE },
 			{ text = ")" },
 		},
-		reminder_text_config = { scale = 0.35 },
 		calc_function = function(card)
+			local count = 0
+			local hand = (G.play and next(G.play.cards)) and G.play.cards or (G.hand and G.hand.highlighted)
+			local text, poker_hands, scoring_hand = JokerDisplay.evaluate_hand(hand)
+			if text ~= "Unknown" and scoring_hand and #scoring_hand >= 5 then
+				local is_straight_flush = (text == "Straight Flush") or (poker_hands and poker_hands["Straight Flush"] and next(poker_hands["Straight Flush"]))
+				if is_straight_flush then
+					local min_rank = 10
+					local has_queen = false
+					for _, scoring_card in pairs(scoring_hand) do
+						local id = scoring_card:get_id()
+						if id then
+							if id < min_rank then
+								min_rank = id
+							end
+							if id == 12 then
+								has_queen = true
+							end
+						end
+					end
+					if min_rank >= 10 and has_queen then
+						count = 1
+					end
+				end
+			end
+			card.joker_display_values.count = count
 			card.joker_display_values.localized_text = localize("Royal Flush", "poker_hands")
 		end,
 	}
@@ -2028,22 +3645,205 @@ if JokerDisplay then
 						end,
 					},
 				},
-				border_colour = G.C.DARK_EDITION,
+				border_colour = G.C.emult or G.C.DARK_EDITION,
 			},
 		},
 	}
 	JokerDisplay.Definitions["j_cry_stronghold"] = hand_xmult_jd
 	JokerDisplay.Definitions["j_cry_wtf"] = hand_xmult_jd
 	JokerDisplay.Definitions["j_cry_clash"] = hand_xmult_jd
+	JokerDisplay.Definitions["j_cry_the"] = hand_xmult_jd
+	JokerDisplay.Definitions["j_cry_words_cant_even"] = hand_xmult_jd
 	JokerDisplay.Definitions["j_cry_bonkers"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_fuckedup"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_foolhardy"] = hand_tmult_jd
+	JokerDisplay.Definitions["j_cry_undefined"] = hand_tmult_jd
 	JokerDisplay.Definitions["j_cry_adroit"] = hand_tchips_jd
 	JokerDisplay.Definitions["j_cry_penetrating"] = hand_tchips_jd
 	JokerDisplay.Definitions["j_cry_treacherous"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_nebulous"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_many_lost_minds"] = hand_tchips_jd
+	JokerDisplay.Definitions["j_cry_annihalation"] = hand_emult_jd
+
+	JokerDisplay.Definitions["j_cry_Scalae"] = {
+		text = {
+			{ text = "Degree-" },
+			{ ref_table = "card.ability.extra", ref_value = "scale", colour = G.C.ORANGE },
+		},
+		reminder_text = {
+			{ text = "(Scaling)" },
+		},
+	}
+	JokerDisplay.Definitions["j_cry_scalae"] = JokerDisplay.Definitions["j_cry_Scalae"]
+	JokerDisplay.Definitions["j_cry_universum"] = {
+		text = {
+			{
+				border_nodes = {
+					{ text = "X" },
+					{ ref_table = "card.ability", ref_value = "extra" },
+					{ text = " Levels" },
+				},
+				border_colour = G.C.DARK_EDITION,
+			},
+		},
+	}
+	JokerDisplay.Definitions["j_cry_energia"] = {
+		text = {
+			{ text = "+" },
+			{ ref_table = "card.joker_display_values", ref_value = "tags", colour = G.C.ORANGE },
+			{ text = " Tags" },
+		},
+		reminder_text = {
+			{ text = "(Tag Added)" },
+		},
+		calc_function = function(card)
+			local max_tags = (card.ability and card.ability.immutable and card.ability.immutable.max_tags) or 40
+			local tags = (card.ability and card.ability.extra and card.ability.extra.tags) or 1
+			card.joker_display_values.tags = math.min(max_tags, tags)
+		end,
+	}
+	JokerDisplay.Definitions["j_cry_caeruleum"] = {}
+
+	-- Caeruleum JokerDisplay Hooks:
+	-- Caeruleum has no text box of its own, but dynamically promotes adjacent Chips Jokers in real-time
+	-- (+Chips -> XChips border badge, XChips -> ^Chips E-Chips border badge).
+
+	-- Checks if a given card is directly adjacent to Caeruleum in G.jokers
+	local function check_caeruleum_adjacent(card)
+		if not G.jokers or not G.jokers.cards then return false end
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i] == card then
+				local left = G.jokers.cards[i - 1]
+				local right = G.jokers.cards[i + 1]
+				if (left and left.config and left.config.center and left.config.center.key == "j_cry_caeruleum")
+					or (right and right.config and right.config.center and right.config.center.key == "j_cry_caeruleum") then
+					return true
+				end
+				break
+			end
+		end
+		return false
+	end
+
+	-- Transforms flat/bordered chip definition nodes into their next hyperoperation tier
+	local function promote_chips_text(orig_text)
+		if not orig_text then return nil end
+		local new_text = copy_table(orig_text)
+
+		-- Check if orig_text contains border_nodes with X (promoting Xchips -> ^chips)
+		local has_border_x = false
+		for _, node in ipairs(new_text) do
+			if node.border_nodes then
+				for _, bn in ipairs(node.border_nodes) do
+					if bn.text == "X" then
+						has_border_x = true
+						bn.text = "^"
+					end
+				end
+				if has_border_x then
+					node.border_colour = G.C.echips or G.C.CHIPS
+				end
+			end
+		end
+
+		if has_border_x then
+			return new_text
+		end
+
+		-- Otherwise, promote flat +chips (or flat X) into a bordered badge
+		local val_nodes = {}
+		local is_plus = false
+		for _, node in ipairs(new_text) do
+			if node.text == "+" then
+				is_plus = true
+			elseif node.text == "X" then
+				is_plus = false
+			else
+				local n = copy_table(node)
+				n.retrigger_type = "exp"
+				val_nodes[#val_nodes + 1] = n
+			end
+		end
+
+		local border_col = is_plus and G.C.CHIPS or (G.C.echips or G.C.CHIPS)
+		local border_char = is_plus and "X" or "^"
+		local bordered = {
+			{
+				border_nodes = {
+					{ text = border_char },
+				},
+				border_colour = border_col,
+			}
+		}
+		for _, vn in ipairs(val_nodes) do
+			table.insert(bordered[1].border_nodes, vn)
+		end
+		return bordered
+	end
+
+	-- Intercepts Card:initialize_joker_display to apply promoted chips text/badges when adjacent to Caeruleum
+	local card_init_jd_ref = Card.initialize_joker_display
+	function Card:initialize_joker_display(custom_parent, stop_calc)
+		if Cryptid_config and Cryptid_config.joker_display == false then
+			return card_init_jd_ref(self, custom_parent, stop_calc)
+		end
+		local is_adj = check_caeruleum_adjacent(self)
+		local orig_def = self.config and self.config.center and JokerDisplay.Definitions[self.config.center.key]
+		local modified = false
+		local saved_text = nil
+		local saved_text_config = nil
+
+		if is_adj and orig_def and orig_def.text then
+			local is_chips = (orig_def.text_config and orig_def.text_config.colour == G.C.CHIPS)
+			if not is_chips then
+				for _, node in ipairs(orig_def.text) do
+					if node.colour == G.C.CHIPS or node.border_colour == G.C.CHIPS then
+						is_chips = true
+						break
+					end
+					if node.border_nodes then
+						for _, bn in ipairs(node.border_nodes) do
+							if bn.colour == G.C.CHIPS or bn.border_colour == G.C.CHIPS then
+								is_chips = true
+								break
+							end
+						end
+					end
+				end
+			end
+
+			if is_chips then
+				saved_text = orig_def.text
+				saved_text_config = orig_def.text_config
+				orig_def.text = promote_chips_text(orig_def.text)
+				orig_def.text_config = nil
+				modified = true
+			end
+		end
+
+		card_init_jd_ref(self, custom_parent, stop_calc)
+
+		if modified and saved_text then
+			orig_def.text = saved_text
+			orig_def.text_config = saved_text_config
+		end
+	end
+
+	-- Intercepts Card:update to detect position changes next to Caeruleum and trigger reload
+	local card_update_ref = Card.update
+	function Card:update(dt)
+		card_update_ref(self, dt)
+		if Cryptid_config and Cryptid_config.joker_display == false then return end
+		if self.ability and self.children and (self.children.joker_display or self.children.joker_display_small) then
+			local is_adj = check_caeruleum_adjacent(self)
+			if is_adj ~= self._cry_caer_adj then
+				self._cry_caer_adj = is_adj
+				self:update_joker_display(false, true, "Caeruleum")
+			end
+		end
+	end
 
 	--end of Jokerdisplays
 end
-]]
---
+
 return { name = "JokerDisplay" }
