@@ -836,16 +836,24 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			{ ref_table = "card.joker_display_values", ref_value = "num_retriggers" },
 		},
 		calc_function = function(card)
+			local is_modest = Card.get_gameset and Card.get_gameset(card) == "modest"
 			local num_retriggers = 0
 			if G.jokers then
 				for i = 1, #G.jokers.cards do
+					local other = G.jokers.cards[i]
+					local is_common = (other.is_rarity and other:is_rarity(1)) or (other.config and other.config.center and other.config.center.rarity == 1)
+					local is_candy = (other.is_rarity and other:is_rarity("cry_candy")) or (other.config and other.config.center and other.config.center.rarity == "cry_candy")
 					if
-						card.T.x + card.T.w / 2 < G.jokers.cards[i].T.x + G.jokers.cards[i].T.w / 2
-						and G.jokers.cards[i].config.center.rarity ~= 1
+						card.T.x + card.T.w / 2 < other.T.x + other.T.w / 2
+						and not is_common
+						and (not is_modest or not is_candy)
 					then
 						num_retriggers = num_retriggers + 1
 					end
 				end
+			end
+			if is_modest then
+				num_retriggers = math.min(2, num_retriggers)
 			end
 			card.joker_display_values.num_retriggers = num_retriggers
 		end,
