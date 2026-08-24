@@ -5119,7 +5119,7 @@ return {
 			["cry_feat_misc."] = "杂项",
 			["cry_feat_misc. jokers"] = "杂项小丑",
 			cry_feat_planets = "星球牌",
-			cry_feat_jokerdisplay = "JokerDisplay 兼容 (没啥用)",
+			cry_feat_jokerdisplay = "JokerDisplay 兼容 (需要重启)",
 			cry_feat_tags = "标签",
 			cry_feat_sleeves = "牌套",
 			cry_feat_spectrals = "幻灵牌",

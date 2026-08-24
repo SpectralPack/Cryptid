@@ -4328,7 +4328,7 @@ return {
 			["cry_feat_misc."] = "Khác",
 			["cry_feat_misc. jokers"] = "Joker Khác",
 			cry_feat_planets = "Hành Tinh",
-			cry_feat_jokerdisplay = "JokerDisplay (Vô Dụng)",
+			cry_feat_jokerdisplay = "Tích hợp JokerDisplay (Cần khởi động lại)",
 			cry_feat_tags = "Nhãn",
 			cry_feat_sleeves = "Bọc Bài",
 			cry_feat_spectrals = "Siêu Linh",
