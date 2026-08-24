@@ -4006,6 +4006,7 @@ return {
 			cry_set_features = "Функции",
 			cry_set_music = "Музыка",
 			cry_set_enable_features = "Выберите функции для включения (применяются при перезапуске игры):",
+			cry_set_thematic_ongoing_warning = "(Тематические наборы нельзя переключать во время текущей игры. Пожалуйста, завершите игру, чтобы получить доступ к этому разделу)",
 			cry_feat_spooky = "Жуткое обновление",
 			cry_feat_achievements = "Достижения",
 			["cry_feat_antimatter deck"] = "Колода антиматерии",

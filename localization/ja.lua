@@ -5167,6 +5167,7 @@ return {
 			cry_set_features = "機能",
 			cry_set_music = "BGM",
 			cry_set_enable_features = "このセクションでは特定のテーマのセットを無効／有効にできます",
+			cry_set_thematic_ongoing_warning = "(ゲーム進行中はテーマセットを切り替えることはできません。このセクションにアクセスするにはゲームを終了してください)",
 			cry_feat_achievements = "アチーブメント",
 			["cry_feat_antimatter deck"] = "Antimatter Deck",
 			cry_feat_blinds = "ブラインド",

@@ -3527,6 +3527,7 @@ return {
 			cry_set_features = "Características",
 			cry_set_music = "Música",
 			cry_set_enable_features = "Selecciona las características para activar (se aplica al reiniciar):",
+			cry_set_thematic_ongoing_warning = "(Los sets temáticos no se pueden alternar durante una partida en curso. Por favor, termina la partida para acceder a esta sección)",
 			cry_feat_achievements = "Logros",
 			["cry_feat_antimatter deck"] = "Baraja de antimateria",
 			cry_feat_blinds = "Ciegas",
