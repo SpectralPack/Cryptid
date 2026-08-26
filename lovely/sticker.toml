@@ -26,7 +26,7 @@ target = "functions/state_events.lua"
 pattern = "G.GAME.current_round.voucher = SMODS.get_next_vouchers()"
 position = "at"
 payload = '''
-if G.GAME.current_round.cry_voucher_stickers.pinned == false then
+if not (G.GAME.current_round.cry_voucher_stickers and G.GAME.current_round.cry_voucher_stickers.pinned) then
 	G.GAME.current_round.voucher = SMODS.get_next_vouchers()
 end
 '''
