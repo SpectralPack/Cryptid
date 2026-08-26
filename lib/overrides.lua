@@ -297,46 +297,82 @@ end
 if SMODS and SMODS.add_voucher_to_shop then
 	local avts = SMODS.add_voucher_to_shop
 	function SMODS.add_voucher_to_shop(key, dont_save, ...)
+		local card
 		-- Non-equilibrium: use original function
 		if not (G.GAME and G.GAME.modifiers and G.GAME.modifiers.cry_equilibrium) then
-			return avts(key, dont_save, ...)
-		end
-		-- Equilibrium: handle non-voucher items with correct front card and type
-		if key then
-			assert(G.P_CENTERS[key], "Invalid voucher key: " .. key)
+			card = avts(key, dont_save, ...)
 		else
-			key = get_next_voucher_key()
-			if not dont_save then
-				G.GAME.current_round.voucher.spawn[key] = true
-				G.GAME.current_round.voucher[#G.GAME.current_round.voucher + 1] = key
+			-- Equilibrium: handle non-voucher items with correct front card and type
+			if key then
+				assert(G.P_CENTERS[key], "Invalid voucher key: " .. key)
+			else
+				key = get_next_voucher_key()
+				if not dont_save then
+					G.GAME.current_round.voucher.spawn[key] = true
+					G.GAME.current_round.voucher[#G.GAME.current_round.voucher + 1] = key
+				end
+			end
+			local center = G.P_CENTERS[key]
+			local is_playing = Cryptid.is_playing_card_center(center)
+			local front = is_playing
+					and pseudorandom_element(
+						G.P_CARDS,
+						pseudoseed(
+							"cry_equifrontbrium" .. (G.GAME.round_resets.ante or 1) .. (key or ""),
+							G.GAME.pseudorandom.seed
+						)
+					)
+				or G.P_CARDS.empty
+			card = Card(
+				G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
+				G.shop_vouchers.T.y,
+				G.CARD_W,
+				G.CARD_H,
+				front,
+				center,
+				{ bypass_discovery_center = true, bypass_discovery_ui = true }
+			)
+			card.shop_voucher = true
+			Cryptid.manipulate(card)
+			if G.GAME.events.ev_cry_choco2 then
+				card.misprint_cost_fac = (card.misprint_cost_fac or 1) * 2
+				card:set_cost()
+			end
+			if
+				G.GAME.modifiers.cry_enable_flipped_in_shop
+				and pseudorandom("cry_flip_vouch" .. G.GAME.round_resets.ante) > 0.7
+			then
+				card.cry_flipped = true
+			end
+			local card_type = is_playing and "Base" or center.set
+			create_shop_card_ui(card, card_type, G.shop_vouchers)
+			card:start_materialize()
+			G.shop_vouchers:emplace(card)
+			G.shop_vouchers.config.card_limit = #G.shop_vouchers.cards
+		end
+		if card then
+			if G.GAME and G.GAME.current_round and G.GAME.current_round.cry_voucher_stickers then
+				for k, v in pairs(G.GAME.current_round.cry_voucher_stickers) do
+					if v then
+						card.ability[k] = true
+						if k == "pinned" then
+							card.pinned = true
+						elseif k == "perishable" then
+							card.ability.perish_tally = G.GAME.cry_voucher_perishable_rounds or 8
+						end
+					end
+				end
+				card:set_cost()
+			end
+			if
+				G.GAME
+				and G.GAME.current_round
+				and G.GAME.current_round.cry_voucher_edition
+				and next(G.GAME.current_round.cry_voucher_edition)
+			then
+				card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
 			end
 		end
-		local center = G.P_CENTERS[key]
-		local is_playing = Cryptid.is_playing_card_center(center)
-		local front = is_playing
-				and pseudorandom_element(
-					G.P_CARDS,
-					pseudoseed(
-						"cry_equifrontbrium" .. (G.GAME.round_resets.ante or 1) .. (key or ""),
-						G.GAME.pseudorandom.seed
-					)
-				)
-			or G.P_CARDS.empty
-		local card = Card(
-			G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
-			G.shop_vouchers.T.y,
-			G.CARD_W,
-			G.CARD_H,
-			front,
-			center,
-			{ bypass_discovery_center = true, bypass_discovery_ui = true }
-		)
-		card.shop_voucher = true
-		local card_type = is_playing and "Base" or center.set
-		create_shop_card_ui(card, card_type, G.shop_vouchers)
-		card:start_materialize()
-		G.shop_vouchers:emplace(card)
-		G.shop_vouchers.config.card_limit = #G.shop_vouchers.cards
 		return card
 	end
 end

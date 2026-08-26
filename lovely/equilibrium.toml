@@ -20,12 +20,3 @@ pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "at"
 payload = "create_shop_card_ui(card, Cryptid.is_playing_card_center(card.config.center) and 'Base' or card.config.center.set, G.shop_booster)"
 match_indent = true
-
-# non-voucher front card in bonus voucher shop slots (game.lua, stateless seeding)
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = "G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]],{bypass_discovery_center = true, bypass_discovery_ui = true})"
-position = "at"
-payload = "G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, Cryptid.is_playing_card_center(G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]]) and pseudorandom_element(G.P_CARDS, pseudoseed('cry_equifrontbrium'..(G.GAME.round_resets.ante or 1)..(G.GAME.current_round.cry_bonusvouchers[i] or '')..i, G.GAME.pseudorandom.seed)) or G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.cry_bonusvouchers[i]],{bypass_discovery_center = true, bypass_discovery_ui = true})"
-match_indent = true
