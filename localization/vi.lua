@@ -4231,6 +4231,7 @@ return {
 			cry_set_features = "Tính Năng",
 			cry_set_music = "Nhạc",
 			cry_set_enable_features = "Chọn tính năng để dùng (áp dụng khi khởi động lại trò chơi):",
+			cry_set_thematic_ongoing_warning = "(Không thể chuyển đổi bộ chủ đề khi đang có một ván chơi. Vui lòng kết thúc trò chơi để truy cập phần này)",
 			cry_feat_achievements = "Thành Tựu",
 			["cry_feat_antimatter deck"] = "Bộ Bài Phản Vật Chất",
 			cry_feat_blinds = "Blind",

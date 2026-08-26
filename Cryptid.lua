@@ -356,7 +356,9 @@ G.FUNCS.update_cry_members = function(...)
 end
 
 local cryptidConfigTab = function()
-	cry_nodes = {
+	local has_ongoing_run = (G.STAGE == G.STAGES.RUN)
+		or (not not (G.SETTINGS and G.SETTINGS.profile and love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")))
+	local cry_nodes = {
 		{
 			n = G.UIT.R,
 			config = { align = "cm" },
@@ -375,13 +377,32 @@ local cryptidConfigTab = function()
 			},
 		},
 	}
-	left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-	right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
-	config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
+	if has_ongoing_run then
+		cry_nodes[#cry_nodes + 1] = {
+			n = G.UIT.R,
+			config = { align = "cm" },
+			nodes = {
+				{
+					n = G.UIT.O,
+					config = {
+						object = DynaText({
+							string = localize("cry_set_thematic_ongoing_warning"),
+							colours = { G.C.RED },
+							shadow = true,
+							scale = 0.32,
+						}),
+					},
+				},
+			},
+		}
+	end
+	local left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+	local right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+	local config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 	cry_nodes[#cry_nodes + 1] = config
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
-		colour = G.C.CRY_GREENGRADIENT,
-		button = "your_collection_content_sets",
+		colour = has_ongoing_run and G.C.UI.BACKGROUND_INACTIVE or G.C.CRY_GREENGRADIENT,
+		button = has_ongoing_run and "nil" or "your_collection_content_sets",
 		label = { localize("b_content_sets") },
 		count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),
 		minw = 5,

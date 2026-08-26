@@ -4440,6 +4440,7 @@ return {
 			cry_set_features = "Features",
 			cry_set_music = "Music",
 			cry_set_enable_features = "Use this section to enable or disable entire Thematic Sets.",
+			cry_set_thematic_ongoing_warning = "(Os conjuntos temáticos não podem ser alterados durante uma partida em andamento. Por favor, termine a partida para acessar esta seção)",
 			cry_feat_achievements = "Achievements",
 			["cry_feat_antimatter deck"] = "Antimatter Deck",
 			cry_feat_blinds = "Blinds",
