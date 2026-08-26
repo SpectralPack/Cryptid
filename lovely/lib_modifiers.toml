@@ -18,10 +18,13 @@ if edi.type then
 		card:set_edition({[edi.type] = true})
   	end
 end
-local stickers = {'eternal', 'perishable', 'rental', 'banana'}
+local stickers = {'eternal', 'perishable', 'rental', 'banana', 'pinned'}
 for _, v in ipairs(stickers) do
-	if self.ability[v] then
-		card.ability[v] = self.ability[v]
+	if self.ability[v] or (v == 'pinned' and self.pinned) then
+		card.ability[v] = true
+		if v == 'pinned' then
+			card.pinned = true
+		end
 	end
 end
 '''
