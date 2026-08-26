@@ -1611,6 +1611,27 @@ function Card:get_id()
 	return vars
 end
 
+-- Hook SMODS.shatters to support editions with shatters = true (e.g. Fragile) or cards marked with will_shatter
+local smods_shatters = SMODS.shatters
+function SMODS.shatters(card)
+	if card then
+		if
+			card.edition
+			and (
+				card.edition.shatters
+				or (G.P_CENTERS and card.edition.key and G.P_CENTERS[card.edition.key] and G.P_CENTERS[card.edition.key].shatters)
+				or card.edition.cry_glass
+			)
+		then
+			return true
+		end
+		if card.shatters or card.will_shatter then
+			return true
+		end
+	end
+	return smods_shatters(card)
+end
+
 --override shatter function to adjust volume (it has been requested that at end of deck, abstract cards should shatter a bit quieter)
 function Card:shatter(volume)
 	local dissolve_time = 0.7

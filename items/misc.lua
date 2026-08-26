@@ -1867,14 +1867,16 @@ local glass_edition = {
 			context.cardarea == G.jokers
 			and context.post_trigger
 			and context.other_card == card --animation-wise this looks weird sometimes
+			and Cryptid.isNonRollProbabilityContext(context.other_context)
 		then
+			local shatter_chance = card and card.edition and card.edition.shatter_chance or self.config.shatter_chance
 			if
 				not SMODS.is_eternal(card)
 				and not SMODS.pseudorandom_probability(
 					card,
 					"cry_fragile",
-					card.edition.shatter_chance - 1,
-					card.edition.shatter_chance,
+					shatter_chance - 1,
+					shatter_chance,
 					nil,
 					true
 				)
@@ -1884,24 +1886,24 @@ local glass_edition = {
 			end
 		end
 		if context.main_scoring and context.cardarea == G.play then
+			return { x_mult = card and card.edition and card.edition.x_mult or self.config.x_mult }
+		end
+
+		if context.destroy_card and context.destroy_card == card and context.cardarea == G.play then
+			local shatter_chance = card and card.edition and card.edition.shatter_chance or self.config.shatter_chance
 			if
 				not SMODS.is_eternal(card)
-				and SMODS.pseudorandom_probability(
+				and not SMODS.pseudorandom_probability(
 					card,
 					"cry_fragile",
-					card.edition.shatter_chance - 1,
-					card.edition.shatter_chance,
+					shatter_chance - 1,
+					shatter_chance,
 					nil,
 					true
 				)
 			then
-				card.config.will_shatter = true
+				return { remove = true }
 			end
-			return { x_mult = self.config.x_mult }
-		end
-
-		if context.destroy_card and context.destroy_card == card and card.config.will_shatter then
-			return { remove = true }
 		end
 	end,
 	attributes = { "chance", "destroy_card", "xmult" },
