@@ -38,19 +38,19 @@ local used_crash = {
 	end,
 }
 
-local haxxor = {
-	object_type = "Achievement",
-	key = "haxxor",
-	order = 3,
-	bypass_all_unlocked = true,
-	atlas = "cry_achievements",
-	--reset_on_startup = true,
-	unlock_condition = function(self, args)
-		if args.type == "cheat_used" then
-			return true
-		end
-	end,
-}
+-- local haxxor = {
+-- 	object_type = "Achievement",
+-- 	key = "haxxor",
+-- 	order = 3,
+-- 	bypass_all_unlocked = true,
+-- 	atlas = "cry_achievements",
+-- 	--reset_on_startup = true,
+-- 	unlock_condition = function(self, args)
+-- 		if args.type == "cheat_used" then
+-- 			return true
+-- 		end
+-- 	end,
+-- }
 
 local googol_play_pass = {
 	object_type = "Achievement",
@@ -218,21 +218,27 @@ local freak_house = {
 	bypass_all_unlocked = true,
 	atlas = "cry_achievements",
 	--reset_on_startup = true,
-	unlock_condition = function(self, args) -- NOTE: I hate doing checks like this. Unscuff later
-		if args.type == "hand" then
+	unlock_condition = function(self, args)
+		if args.type == "hand" and (args.disp_text == "Flush House" or args.handname == "Flush House") then
 			-- Do you have Nice
-			local has_nice
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i].config.center.key == "j_cry_nice" then
-					has_nice = true
+			local has_nice = (next(SMODS.find_card("j_cry_nice")) ~= nil)
+			if not has_nice and G.jokers and G.jokers.cards then
+				for i = 1, #G.jokers.cards do
+					if G.jokers.cards[i].config.center.key == "j_cry_nice" then
+						has_nice = true
+						break
+					end
 				end
 			end
+			if not has_nice then return end
 
-			--Is it a hearts flush house
+			-- Is it a hearts flush house consisting of 6s and 9s
+			if not args.scoring_hand or #args.scoring_hand < 5 then return end
+
 			local total_6s = 0
 			local total_9s = 0
 			local total_hearts = 0
-			for k, v in ipairs(args.scoring_hand) do
+			for _, v in ipairs(args.scoring_hand) do
 				if v:is_suit("Hearts", nil, true) then
 					total_hearts = total_hearts + 1
 				end
@@ -244,10 +250,10 @@ local freak_house = {
 			end
 
 			if
-				has_nice
-				and ((total_6s == 3 and total_9s == 2) or (total_6s == 2 and total_9s == 3))
-				and total_hearts == 5
-				and args.disp_text == "Flush House"
+				total_hearts == #args.scoring_hand
+				and total_6s + total_9s == #args.scoring_hand
+				and total_6s >= 2
+				and total_9s >= 2
 			then
 				return true
 			end
@@ -496,7 +502,7 @@ local achievement_objects = {
 	exodia,
 	what_have_you_done,
 	used_crash,
-	haxxor,
+	--haxxor, Disabled: ://VARIABLE text field was replaced with GUI selection
 	googol_play_pass,
 	pull_request,
 	niw_uoy,
