@@ -230,10 +230,14 @@ local freak_house = {
 					end
 				end
 			end
-			if not has_nice then return end
+			if not has_nice then
+				return
+			end
 
 			-- Is it a hearts flush house consisting of 6s and 9s
-			if not args.scoring_hand or #args.scoring_hand < 5 then return end
+			if not args.scoring_hand or #args.scoring_hand < 5 then
+				return
+			end
 
 			local total_6s = 0
 			local total_9s = 0
