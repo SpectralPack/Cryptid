@@ -1396,7 +1396,11 @@ SMODS.ContentSet({
 -- these are mostly copy/paste from vanilla code
 G.FUNCS.your_collection_content_sets = function(e)
 	local has_ongoing_run = (G.STAGE == G.STAGES.RUN)
-		or (not not (G.SETTINGS and G.SETTINGS.profile and love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")))
+		or not not (
+			G.SETTINGS
+			and G.SETTINGS.profile
+			and love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")
+		)
 	if has_ongoing_run then
 		return
 	end
