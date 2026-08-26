@@ -147,6 +147,7 @@ payload = '''
 local stickers = Cryptid.next_voucher_stickers(true)	-- don't mind the name
 for k, v in pairs(stickers) do
 	card.ability[k] = v
+	if k == 'pinned' and v then card.pinned = true end
 end
 '''
 match_indent = true

@@ -621,6 +621,7 @@ function Card:set_banana(_banana)
 end
 function Card:set_pinned(_pinned)
 	self.ability.pinned = _pinned
+	self.pinned = _pinned
 end
 
 SMODS.Sticker:take_ownership("perishable", {
