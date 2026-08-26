@@ -482,10 +482,16 @@ function Cryptid.next_voucher_stickers(booster)
 		if (G.GAME.modifiers.enable_rentals_in_shop and checks.rental.poll > odds) or checks.rental.force then
 			ret.rental = true
 		end
-		if (G.GAME.modifiers.enable_pinned_in_shop and checks.pinned.poll > odds) or checks.pinned.force then
+		if
+			((G.GAME.modifiers.cry_enable_pinned_in_shop or G.GAME.modifiers.enable_pinned_in_shop) and checks.pinned.poll > odds)
+			or checks.pinned.force
+		then
 			ret.pinned = true
 		end
-		if (G.GAME.modifiers.enable_banana_in_shop and checks.banana.poll > odds) or checks.banana.force then
+		if
+			((G.GAME.modifiers.enable_banana or G.GAME.modifiers.enable_banana_in_shop) and checks.banana.poll > odds)
+			or checks.banana.force
+		then
 			ret.banana = true
 		end
 	end
