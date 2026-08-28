@@ -1961,12 +1961,7 @@ end
 local bat = buildAdditionsTab
 function buildAdditionsTab(mod)
 	local tab = bat(mod)
-	if
-		tab
-		and mod
-		and (Cryptid.mod_gameset_whitelist[mod.id] or mod.id == "Cryptid")
-		and Cryptid.has_ongoing_run()
-	then
+	if tab and mod and (Cryptid.mod_gameset_whitelist[mod.id] or mod.id == "Cryptid") and Cryptid.has_ongoing_run() then
 		local old_tab_def = tab.tab_definition_function
 		tab.tab_definition_function = function(...)
 			local res = old_tab_def(...)
