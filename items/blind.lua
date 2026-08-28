@@ -1071,7 +1071,7 @@ local tornado = {
 	end,
 	set_blind = function(self, reset, silent)
 		if not reset then
-			G.GAME.blind.tornado_guarantee = pseudorandom(pseudoseed("tornado"), 1, G.GAME.round_resets.hands)
+			G.GAME.blind.cry_tornado_scored = 0
 		end
 	end,
 	in_pool = function()
@@ -1081,22 +1081,22 @@ local tornado = {
 		return { vars = { SMODS.get_probability_vars(self, 2, 3, "Turquoise Tornado") } }
 	end,
 	debuff_hand = function(self, cards, hand, handname, check)
-		if
-			not check
-			and SMODS.pseudorandom_probability(self, "tornado", 2, 3, "Turquoise Tornado")
-			and not G.GAME.blind.disabled
-		then
-			--check for guarantee
-			if
-				G.GAME.probabilities.normal <= 1
-				and math.floor(G.GAME.current_round.hands_left) + 1 == G.GAME.blind.tornado_guarantee
-			then
-				return false
-			end
+		if check or G.GAME.blind.disabled then
+			return false
+		end
 
+		-- Bad-luck protection: guarantee at least 1 hand scores during the round
+		if (G.GAME.blind.cry_tornado_scored or 0) == 0 and math.floor(G.GAME.current_round.hands_left) <= 0 then
+			G.GAME.blind.cry_tornado_scored = (G.GAME.blind.cry_tornado_scored or 0) + 1
+			return false
+		end
+
+		if SMODS.pseudorandom_probability(self, "tornado", 2, 3, "Turquoise Tornado") then
 			G.GAME.blind.triggered = true
 			return true
 		end
+
+		G.GAME.blind.cry_tornado_scored = (G.GAME.blind.cry_tornado_scored or 0) + 1
 		return false
 	end,
 	attributes = { "chance" },
