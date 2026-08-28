@@ -3616,7 +3616,7 @@ return {
 			cry_set_features = "Funkcje",
 			cry_set_music = "Muzyka",
 			cry_set_enable_features = "Wybierz funkcje do włączenia (zastosują się po ponownym uruchomieniu gry):",
-			cry_set_thematic_ongoing_warning = "(Zestawy tematyczne nie mogą być przełączane podczas trwającej gry. Ukończ grę, aby uzyskać dostęp do tej sekcji)",
+			cry_gameset_ongoing_warning = "(Opcje konfiguracji zestawu nie mogą być przełączane podczas trwającej gry)",
 			cry_feat_achievements = "Wyzwania",
 			["cry_feat_antimatter deck"] = "Talia Antymateryjna",
 			cry_feat_blinds = "Przeszkadzajki",

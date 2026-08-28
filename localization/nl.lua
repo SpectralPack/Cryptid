@@ -3016,7 +3016,7 @@ return {
 			cry_set_features = "Features",
 			cry_set_music = "Music",
 			cry_set_enable_features = "Select features to enable (applies on game restart):",
-			cry_set_thematic_ongoing_warning = "(Thematische sets kunnen niet worden gewijzigd tijdens een lopend spel. Voltooi het spel om toegang te krijgen tot deze sectie)",
+			cry_gameset_ongoing_warning = "(Gameset-opties kunnen niet worden gewijzigd tijdens een lopend spel)",
 			cry_feat_achievements = "Achievements",
 			["cry_feat_antimatter deck"] = "Antimatter Deck",
 			cry_feat_blinds = "Blinds",

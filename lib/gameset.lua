@@ -1953,3 +1953,44 @@ SMODS.Atlas.inject = function(self)
 		G.ASSET_ATLAS[self.key_noloc or self.key] = G[self.atlas_table][self.key_noloc or self.key]
 	end
 end
+
+-- Hook to display ongoing game warning on mod additions tab
+local bat = buildAdditionsTab
+function buildAdditionsTab(mod)
+	local tab = bat(mod)
+	if
+		tab
+		and mod
+		and (Cryptid.mod_gameset_whitelist[mod.id] or mod.id == "Cryptid")
+		and Cryptid.has_ongoing_run()
+	then
+		local old_tab_def = tab.tab_definition_function
+		tab.tab_definition_function = function(...)
+			local res = old_tab_def(...)
+			local warning_node = {
+				n = G.UIT.R,
+				config = { align = "cm" },
+				nodes = {
+					{
+						n = G.UIT.O,
+						config = {
+							object = DynaText({
+								string = localize("cry_gameset_ongoing_warning"),
+								colours = { G.C.RED },
+								shadow = true,
+								scale = 0.32,
+							}),
+						},
+					},
+				},
+			}
+			local new_nodes = { warning_node }
+			for _, node in ipairs(res.nodes) do
+				new_nodes[#new_nodes + 1] = node
+			end
+			res.nodes = new_nodes
+			return res
+		end
+	end
+	return tab
+end

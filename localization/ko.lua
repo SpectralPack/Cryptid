@@ -5027,7 +5027,7 @@ return {
 			cry_set_features = "기능",
 			cry_set_music = "음악",
 			cry_set_enable_features = "이 섹션을 사용하여 전체 테마 세트를 활성화하거나 비활성화하세요.",
-			cry_set_thematic_ongoing_warning = "(진행 중인 게임이 있는 동안에는 테마 세트를 전환할 수 없습니다. 이 섹션에 접근하려면 게임을 완료하세요)",
+			cry_gameset_ongoing_warning = "(진행 중인 게임이 있는 동안에는 게임세트 설정을 전환할 수 없습니다)",
 			cry_feat_achievements = "업적",
 			["cry_feat_antimatter deck"] = "반물질 덱",
 			cry_feat_blinds = "블라인드",
