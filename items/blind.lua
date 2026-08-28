@@ -1075,7 +1075,17 @@ local tornado = {
 		end
 	end,
 	in_pool = function()
-		return #Cryptid.advanced_find_joker("Oops! All 6s", nil, nil, { "eternal" }, nil) == 0
+		if #Cryptid.advanced_find_joker("Oops! All 6s", nil, nil, { "eternal" }, nil) > 0 then
+			return false
+		end
+		if #Cryptid.advanced_find_joker("cry_yarnball", nil, nil, { "eternal" }, nil) > 0 and G.GAME.tags then
+			for _, tag in pairs(G.GAME.tags) do
+				if tag.key == "tag_cry_cat" then
+					return false
+				end
+			end
+		end
+		return true
 	end,
 	collection_loc_vars = function(self)
 		return { vars = { SMODS.get_probability_vars(self, 2, 3, "Turquoise Tornado") } }
