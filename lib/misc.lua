@@ -39,6 +39,15 @@ function Cryptid.is_boss_blind(blind)
 	return not not (blind.boss or (blind.config and blind.config.blind and blind.config.blind.boss))
 end
 
+function Cryptid.has_ongoing_run()
+	return (G.STAGE == G.STAGES.RUN)
+		or not not (
+			G.SETTINGS
+			and G.SETTINGS.profile
+			and love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")
+		)
+end
+
 -- More advanced version of find joker for things that need to find very specific things
 function Cryptid.advanced_find_joker(name, rarity, edition, ability, non_debuff, area)
 	local jokers = {}
