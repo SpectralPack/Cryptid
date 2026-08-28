@@ -912,6 +912,9 @@ function get_type_colour(center, card)
 end
 
 function Card:cry_set_gameset(center, gameset)
+	if Cryptid.has_ongoing_run() then
+		return
+	end
 	if
 		G.PROFILES[G.SETTINGS.profile].cry_gameset == gameset
 		and not G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides
