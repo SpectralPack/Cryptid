@@ -712,6 +712,9 @@ if Cryptid_config.gameset_toggle then
 					and G.ACTIVE_MOD_UI
 					and (Cryptid.mod_gameset_whitelist[G.ACTIVE_MOD_UI.id] or G.ACTIVE_MOD_UI.id == "Cryptid")
 				then
+					if Cryptid.has_ongoing_run() then
+						return
+					end
 					if not self.config.center or self.config.center and self.config.center.set == "Default" then
 						--make a fake center
 						local old_force_gameset = self.config.center and self.config.center.force_gameset
@@ -742,6 +745,9 @@ end
 
 -- gameset config UI
 function Cryptid.gameset_config_UI(center)
+	if Cryptid.has_ongoing_run() then
+		return
+	end
 	if not center then
 		center = G.viewedContentSet
 	end
@@ -906,6 +912,9 @@ function get_type_colour(center, card)
 end
 
 function Card:cry_set_gameset(center, gameset)
+	if Cryptid.has_ongoing_run() then
+		return
+	end
 	if
 		G.PROFILES[G.SETTINGS.profile].cry_gameset == gameset
 		and not G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides
@@ -931,6 +940,9 @@ function Card:cry_set_gameset(center, gameset)
 end
 
 function G.FUNCS.reset_gameset_config()
+	if Cryptid.has_ongoing_run() then
+		return
+	end
 	G.PROFILES[G.SETTINGS.profile].cry_gameset_overrides = nil
 	Cryptid.update_obj_registry()
 	G:save_progress()
@@ -1395,13 +1407,7 @@ SMODS.ContentSet({
 
 -- these are mostly copy/paste from vanilla code
 G.FUNCS.your_collection_content_sets = function(e)
-	local has_ongoing_run = (G.STAGE == G.STAGES.RUN)
-		or not not (
-			G.SETTINGS
-			and G.SETTINGS.profile
-			and love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")
-		)
-	if has_ongoing_run then
+	if Cryptid.has_ongoing_run() then
 		return
 	end
 	G.cry_prev_collec = "your_collection_content_sets"
@@ -1949,4 +1955,45 @@ SMODS.Atlas.inject = function(self)
 	if self.atlas_table ~= "ASSET_ATLAS" then
 		G.ASSET_ATLAS[self.key_noloc or self.key] = G[self.atlas_table][self.key_noloc or self.key]
 	end
+end
+
+-- Hook to display ongoing game warning on mod additions tab
+local bat = buildAdditionsTab
+function buildAdditionsTab(mod)
+	local tab = bat(mod)
+	if
+		tab
+		and mod
+		and (Cryptid.mod_gameset_whitelist[mod.id] or mod.id == "Cryptid")
+		and Cryptid.has_ongoing_run()
+	then
+		local old_tab_def = tab.tab_definition_function
+		tab.tab_definition_function = function(...)
+			local res = old_tab_def(...)
+			local warning_node = {
+				n = G.UIT.R,
+				config = { align = "cm" },
+				nodes = {
+					{
+						n = G.UIT.O,
+						config = {
+							object = DynaText({
+								string = localize("cry_gameset_ongoing_warning"),
+								colours = { G.C.RED },
+								shadow = true,
+								scale = 0.32,
+							}),
+						},
+					},
+				},
+			}
+			local new_nodes = { warning_node }
+			for _, node in ipairs(res.nodes) do
+				new_nodes[#new_nodes + 1] = node
+			end
+			res.nodes = new_nodes
+			return res
+		end
+	end
+	return tab
 end

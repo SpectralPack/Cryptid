@@ -3010,7 +3010,7 @@ return {
 			cry_set_features = "Features",
 			cry_set_music = "Music",
 			cry_set_enable_features = "Select features to enable (applies on game restart):",
-			cry_set_thematic_ongoing_warning = "(Set tematik tidak dapat diubah saat permainan sedang berlangsung. Selesaikan permainan untuk mengakses bagian ini)",
+			cry_gameset_ongoing_warning = "(Opsi konfigurasi gameset tidak dapat diubah saat permainan sedang berlangsung)",
 			cry_feat_achievements = "Achievements",
 			["cry_feat_antimatter deck"] = "Antimatter Deck",
 			cry_feat_blinds = "Blinds",

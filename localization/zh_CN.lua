@@ -5024,7 +5024,7 @@ return {
 			cry_set_features = "功能",
 			cry_set_music = "音乐",
 			cry_set_enable_features = "使用此选项卡来启用或禁用整个主题集合。",
-			cry_set_thematic_ongoing_warning = "(进行游戏时无法切换主题集合。请先结束游戏以访问此部分)",
+			cry_gameset_ongoing_warning = "(进行游戏时无法切换游戏集配置选项)",
 			cry_feat_achievements = "成就",
 			["cry_feat_antimatter deck"] = "反物质牌组",
 			cry_feat_blinds = "盲注",

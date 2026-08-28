@@ -4514,7 +4514,7 @@ return {
 			cry_set_features = "Características",
 			cry_set_music = "Música",
 			cry_set_enable_features = "Usa esta sección para activar o desactivar sets temáticos.",
-			cry_set_thematic_ongoing_warning = "(Los sets temáticos no se pueden alternar durante una partida en curso. Por favor, termina la partida para acceder a esta sección)",
+			cry_gameset_ongoing_warning = "(Las opciones de conjunto de juego no se pueden alternar durante una partida en curso)",
 			cry_feat_achievements = "Logros",
 			["cry_feat_antimatter deck"] = "Baraja de antimateria",
 			cry_feat_blinds = "Ciegas",

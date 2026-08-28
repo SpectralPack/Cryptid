@@ -5047,7 +5047,7 @@ return {
 			cry_set_features = "Fonctionnalités",
 			cry_set_music = "Musique",
 			cry_set_enable_features = "Utilisez cette section pour activer ou désactiver des Sets thématiques tout entier.",
-			cry_set_thematic_ongoing_warning = "(Les sets thématiques ne peuvent pas être modifiés pendant une partie en cours. Veuillez terminer la partie pour accéder à cette section)",
+			cry_gameset_ongoing_warning = "(Les options de configuration de jeu ne peuvent pas être modifiées pendant une partie en cours)",
 			cry_feat_achievements = "Succès",
 			["cry_feat_antimatter deck"] = "Jeu Anti-matière",
 			cry_feat_blinds = "Blindes",

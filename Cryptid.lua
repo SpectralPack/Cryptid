@@ -356,12 +356,7 @@ G.FUNCS.update_cry_members = function(...)
 end
 
 local cryptidConfigTab = function()
-	local has_ongoing_run = (G.STAGE == G.STAGES.RUN)
-		or not not (
-			G.SETTINGS
-			and G.SETTINGS.profile
-			and love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")
-		)
+	local has_ongoing_run = Cryptid.has_ongoing_run()
 	local cry_nodes = {
 		{
 			n = G.UIT.R,
@@ -390,7 +385,7 @@ local cryptidConfigTab = function()
 					n = G.UIT.O,
 					config = {
 						object = DynaText({
-							string = localize("cry_set_thematic_ongoing_warning"),
+							string = localize("cry_gameset_ongoing_warning"),
 							colours = { G.C.RED },
 							shadow = true,
 							scale = 0.32,
@@ -447,8 +442,8 @@ local cryptidConfigTab = function()
 		ref_value = "menu",
 	})
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
-		colour = G.C.CRY_ALTGREENGRADIENT,
-		button = "reset_gameset_config",
+		colour = has_ongoing_run and G.C.UI.BACKGROUND_INACTIVE or G.C.CRY_ALTGREENGRADIENT,
+		button = has_ongoing_run and "nil" or "reset_gameset_config",
 		label = { localize("b_reset_gameset_" .. (G.PROFILES[G.SETTINGS.profile].cry_gameset or "mainline")) },
 		minw = 5,
 	})

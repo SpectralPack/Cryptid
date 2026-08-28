@@ -5199,7 +5199,7 @@ return {
 			cry_set_features = "Features",
 			cry_set_music = "Music",
 			cry_set_enable_features = "Use this section to enable or disable entire Thematic Sets.",
-			cry_set_thematic_ongoing_warning = "(Thematic sets cannot be toggled while you have an ongoing game. Please finish the game to access this section)",
+			cry_gameset_ongoing_warning = "(Gameset config options cannot be toggled while you have an ongoing game)",
 			cry_feat_achievements = "Achievements",
 			["cry_feat_antimatter deck"] = "Antimatter Deck",
 			cry_feat_blinds = "Blinds",
