@@ -535,10 +535,10 @@ local choco7 = {
 					ease_dollars(3)
 				end
 				if G.GAME.events.ev_cry_choco8 then
-					SMODS.add_card{
+					SMODS.add_card({
 						set = "Food",
 						area = G.jokers,
-					}
+					})
 				end
 			end
 			return catd(self, debuff)
