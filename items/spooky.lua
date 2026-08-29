@@ -535,17 +535,10 @@ local choco7 = {
 					ease_dollars(3)
 				end
 				if G.GAME.events.ev_cry_choco8 then
-					local card = create_card(
-						"Joker",
-						G.jokers,
-						nil,
-						nil,
-						nil,
-						nil,
-						pseudorandom_element(SMODS.get_attribute_pool("food"), pseudoseed("cry_candy_rain"))
-					)
-					card:add_to_deck()
-					G.jokers:emplace(card)
+					SMODS.add_card{
+						set = "Food",
+						area = G.jokers,
+					}
 				end
 			end
 			return catd(self, debuff)
