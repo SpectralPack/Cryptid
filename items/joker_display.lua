@@ -3707,78 +3707,135 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 	-- Caeruleum JokerDisplay Hooks:
 	-- Caeruleum has no text box of its own, but dynamically promotes adjacent Chips Jokers in real-time
 	-- (+Chips -> XChips border badge, XChips -> ^Chips E-Chips border badge).
+	-- Supports stacking (e.g. 2 adjacent Caeruleums give 2 operator rises: +Chips -> ^Chips).
 
-	-- Checks if a given card is directly adjacent to Caeruleum in G.jokers
-	local function check_caeruleum_adjacent(card)
-		if not G.jokers or not G.jokers.cards then return false end
+	-- Counts how many active Caeruleums are directly adjacent to a given card in G.jokers
+	local function count_caeruleum_adjacent(card)
+		if not G.jokers or not G.jokers.cards then return 0 end
+		if card.config and card.config.center and card.config.center.key == "j_cry_caeruleum" then
+			return 0
+		end
+		local count = 0
 		for i = 1, #G.jokers.cards do
 			if G.jokers.cards[i] == card then
 				local left = G.jokers.cards[i - 1]
 				local right = G.jokers.cards[i + 1]
-				if (left and left.config and left.config.center and left.config.center.key == "j_cry_caeruleum")
-					or (right and right.config and right.config.center and right.config.center.key == "j_cry_caeruleum") then
-					return true
+				if left and left.config and left.config.center and left.config.center.key == "j_cry_caeruleum" and not left.debuff then
+					count = count + 1
+				end
+				if right and right.config and right.config.center and right.config.center.key == "j_cry_caeruleum" and not right.debuff then
+					count = count + 1
 				end
 				break
 			end
 		end
+		return count
+	end
+
+	local function is_chips_ref(ref)
+		if not ref or type(ref) ~= "string" then return false end
+		return ref == "chips" or ref == "x_chips" or ref == "e_chips" or ref == "chip_mod" or ref:find("chips") ~= nil
+	end
+
+	local function is_chip_node(node, default_colour)
+		if not node then return false end
+		if node.colour == G.C.CHIPS or node.border_colour == G.C.CHIPS then return true end
+		if node.border_nodes then
+			if node.border_colour == G.C.CHIPS or (not node.border_colour and default_colour == G.C.CHIPS) then
+				return true
+			end
+			for _, bn in ipairs(node.border_nodes) do
+				if bn.colour == G.C.CHIPS or bn.border_colour == G.C.CHIPS or is_chips_ref(bn.ref_value) then
+					return true
+				end
+			end
+		end
+		if is_chips_ref(node.ref_value) then return true end
+		if not node.colour and default_colour == G.C.CHIPS then return true end
 		return false
 	end
 
-	-- Transforms flat/bordered chip definition nodes into their next hyperoperation tier
-	local function promote_chips_text(orig_text)
-		if not orig_text then return nil end
-		local new_text = copy_table(orig_text)
+	local function has_chips(nodes, config)
+		if not nodes then return false end
+		local def_col = config and config.colour
+		if def_col == G.C.CHIPS then return true end
+		for _, node in ipairs(nodes) do
+			if is_chip_node(node, def_col) then return true end
+		end
+		return false
+	end
 
-		-- Check if orig_text contains border_nodes with X (promoting Xchips -> ^chips)
-		local has_border_x = false
-		for _, node in ipairs(new_text) do
+	-- Transforms chip definition nodes into their next hyperoperation tier for 1 step
+	local function promote_chips_step(nodes, default_colour)
+		if not nodes then return nil end
+		local result = {}
+		local flat_chip_nodes = {}
+		local is_plus = false
+
+		local function flush_flat_chips()
+			if #flat_chip_nodes > 0 then
+				local bordered = {
+					border_nodes = {
+						{ text = is_plus and "X" or "^" },
+					},
+					border_colour = is_plus and G.C.CHIPS or (G.C.echips or G.C.CHIPS),
+				}
+				for _, vn in ipairs(flat_chip_nodes) do
+					table.insert(bordered.border_nodes, vn)
+				end
+				table.insert(result, bordered)
+				flat_chip_nodes = {}
+				is_plus = false
+			end
+		end
+
+		for _, node in ipairs(nodes) do
 			if node.border_nodes then
-				for _, bn in ipairs(node.border_nodes) do
-					if bn.text == "X" then
-						has_border_x = true
-						bn.text = "^"
+				flush_flat_chips()
+				local new_node = copy_table(node)
+				if is_chip_node(node, default_colour) then
+					local promoted = false
+					for _, bn in ipairs(new_node.border_nodes) do
+						if bn.text == "X" then
+							bn.text = "^"
+							promoted = true
+						end
+					end
+					if promoted or (new_node.border_nodes[1] and new_node.border_nodes[1].text == "^") then
+						new_node.border_colour = G.C.echips or G.C.CHIPS
 					end
 				end
-				if has_border_x then
-					node.border_colour = G.C.echips or G.C.CHIPS
+				table.insert(result, new_node)
+			elseif is_chip_node(node, default_colour) then
+				if node.text == "+" or node.ref_value == "plus_chips" then
+					is_plus = true
+				elseif node.text == "X" then
+					is_plus = false
+				else
+					local n = copy_table(node)
+					n.retrigger_type = "exp"
+					n.colour = nil
+					table.insert(flat_chip_nodes, n)
 				end
-			end
-		end
-
-		if has_border_x then
-			return new_text
-		end
-
-		-- Otherwise, promote flat +chips (or flat X) into a bordered badge
-		local val_nodes = {}
-		local is_plus = false
-		for _, node in ipairs(new_text) do
-			if node.text == "+" then
-				is_plus = true
-			elseif node.text == "X" then
-				is_plus = false
 			else
-				local n = copy_table(node)
-				n.retrigger_type = "exp"
-				val_nodes[#val_nodes + 1] = n
+				flush_flat_chips()
+				table.insert(result, copy_table(node))
 			end
 		end
+		flush_flat_chips()
+		return result
+	end
 
-		local border_col = is_plus and G.C.CHIPS or (G.C.echips or G.C.CHIPS)
-		local border_char = is_plus and "X" or "^"
-		local bordered = {
-			{
-				border_nodes = {
-					{ text = border_char },
-				},
-				border_colour = border_col,
-			}
-		}
-		for _, vn in ipairs(val_nodes) do
-			table.insert(bordered[1].border_nodes, vn)
+	-- Applies `count` operator promotions to chip nodes
+	local function promote_chips_text(orig_text, text_config, count)
+		if not orig_text or not count or count <= 0 then return orig_text end
+		local cur = copy_table(orig_text)
+		local def_col = text_config and text_config.colour
+		for i = 1, count do
+			cur = promote_chips_step(cur, def_col)
+			def_col = nil
 		end
-		return bordered
+		return cur
 	end
 
 	-- Intercepts Card:initialize_joker_display to apply promoted chips text/badges when adjacent to Caeruleum
@@ -3787,45 +3844,51 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		if Cryptid_config and Cryptid_config.joker_display == false then
 			return card_init_jd_ref(self, custom_parent, stop_calc)
 		end
-		local is_adj = check_caeruleum_adjacent(self)
+		local caer_count = count_caeruleum_adjacent(self)
 		local orig_def = self.config and self.config.center and JokerDisplay.Definitions[self.config.center.key]
 		local modified = false
 		local saved_text = nil
 		local saved_text_config = nil
+		local saved_extra = nil
 
-		if is_adj and orig_def and orig_def.text then
-			local is_chips = (orig_def.text_config and orig_def.text_config.colour == G.C.CHIPS)
-			if not is_chips then
-				for _, node in ipairs(orig_def.text) do
-					if node.colour == G.C.CHIPS or node.border_colour == G.C.CHIPS then
-						is_chips = true
-						break
-					end
-					if node.border_nodes then
-						for _, bn in ipairs(node.border_nodes) do
-							if bn.colour == G.C.CHIPS or bn.border_colour == G.C.CHIPS then
-								is_chips = true
-								break
-							end
-						end
-					end
-				end
-			end
-
-			if is_chips then
+		if caer_count > 0 and orig_def then
+			if orig_def.text and has_chips(orig_def.text, orig_def.text_config) then
 				saved_text = orig_def.text
 				saved_text_config = orig_def.text_config
-				orig_def.text = promote_chips_text(orig_def.text)
+				orig_def.text = promote_chips_text(orig_def.text, orig_def.text_config, caer_count)
 				orig_def.text_config = nil
 				modified = true
+			end
+			if orig_def.extra then
+				local extra_has_chips = false
+				for _, line in ipairs(orig_def.extra) do
+					if has_chips(line, orig_def.extra_config) then
+						extra_has_chips = true
+						break
+					end
+				end
+				if extra_has_chips then
+					saved_extra = orig_def.extra
+					local new_extra = {}
+					for _, line in ipairs(orig_def.extra) do
+						table.insert(new_extra, promote_chips_text(line, orig_def.extra_config, caer_count))
+					end
+					orig_def.extra = new_extra
+					modified = true
+				end
 			end
 		end
 
 		card_init_jd_ref(self, custom_parent, stop_calc)
 
-		if modified and saved_text then
-			orig_def.text = saved_text
-			orig_def.text_config = saved_text_config
+		if modified then
+			if saved_text ~= nil then
+				orig_def.text = saved_text
+				orig_def.text_config = saved_text_config
+			end
+			if saved_extra ~= nil then
+				orig_def.extra = saved_extra
+			end
 		end
 	end
 
@@ -3835,9 +3898,9 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		card_update_ref(self, dt)
 		if Cryptid_config and Cryptid_config.joker_display == false then return end
 		if self.ability and self.children and (self.children.joker_display or self.children.joker_display_small) then
-			local is_adj = check_caeruleum_adjacent(self)
-			if is_adj ~= self._cry_caer_adj then
-				self._cry_caer_adj = is_adj
+			local count = count_caeruleum_adjacent(self)
+			if count ~= self._cry_caer_count then
+				self._cry_caer_count = count
 				self:update_joker_display(false, true, "Caeruleum")
 			end
 		end
