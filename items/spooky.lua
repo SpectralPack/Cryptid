@@ -542,7 +542,7 @@ local choco7 = {
 						nil,
 						nil,
 						nil,
-						pseudorandom_element(Cryptid.food, pseudoseed("cry_candy_rain"))
+						pseudorandom_element(SMODS.get_attribute_pool("food"), pseudoseed("cry_candy_rain"))
 					)
 					card:add_to_deck()
 					G.jokers:emplace(card)
