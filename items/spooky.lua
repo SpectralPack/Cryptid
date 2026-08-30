@@ -200,7 +200,7 @@ local choco2 = {
 	key = "choco2",
 	--everything here is done with lovely patches or hooks, search for ev_cry_choco2
 	calculate = function(self, context)
-		if context.cash_out then
+		if context.post_jokers and context.cash_out then
 			G.GAME.current_round.rerolled = false
 		end
 	end,
@@ -467,30 +467,13 @@ local choco6 = { --please take one
 	object_type = "Event",
 	key = "choco6",
 	calculate = function(self, context)
-		if context.pre_cash then
+		if context.post_jokers and context.start_shop then
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					local key = get_pack("cry_take_one").key
-					local card = Card(
-						G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
-						G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
-						G.CARD_W * 1.27,
-						G.CARD_H * 1.27,
-						G.P_CARDS.empty,
-						G.P_CENTERS[key],
-						{ bypass_discovery_center = true, bypass_discovery_ui = true }
-					)
-					card.cost = 0
-					card.from_tag = true
-					G.FUNCS.use_card({ config = { ref_table = card } })
-					card:start_materialize()
-					pack_opened = true
+					Cryptid.open_booster()
 					return true
 				end,
 			}))
-		end
-		if context.setting_blind then
-			pack_opened = nil
 		end
 	end,
 }
@@ -509,7 +492,7 @@ local choco7 = {
 		G.jokers:emplace(card)
 	end,
 	calculate = function(self, context)
-		if context.start_shop then
+		if context.post_jokers and context.start_shop then
 			local tag = Tag("tag_cry_rework")
 			if not tag.ability then
 				tag.ability = {}
@@ -542,7 +525,7 @@ local choco8 = {
 	object_type = "Event",
 	key = "choco8",
 	calculate = function(self, context)
-		if context.cash_out then
+		if context.post_jokers and context.cash_out then
 			for i = 1, G.GAME.current_round.hands_left do
 				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_choco8")
 				card:add_to_deck()
