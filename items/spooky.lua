@@ -129,15 +129,15 @@ local choco_dice = {
 	immutable = true,
 	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
-		if not center then --tooltip
-		else
+		if center and center.ability and center.ability.extra and center.ability.extra.roll and center.ability.extra.roll > 0 then
 			local ev = SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]
 			if ev and ev.loc_vars then
 				ev:loc_vars(info_queue, center)
 			end
 		end
+		local roll_val = (center and center.ability and center.ability.extra and center.ability.extra.roll) or 0
 		return {
-			vars = { not center and "None" or center.ability.extra.roll == 0 and "None" or center.ability.extra.roll },
+			vars = { roll_val == 0 and "None" or roll_val },
 		}
 	end,
 	calculate = function(self, card, context)
@@ -174,10 +174,12 @@ local choco_dice = {
 		end
 	end,
 }
+--[[
 local choco_base_event = {
 	object_type = "Event",
 	key = "choco0",
 }
+]]
 local choco1 = {
 	object_type = "Event",
 	key = "choco1",
@@ -2255,7 +2257,7 @@ items = {
 	cotton_candy,
 	wrapped,
 	choco_dice,
-	choco_base_event,
+	--choco_base_event,
 	choco1,
 	choco2,
 	choco3,
