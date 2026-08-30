@@ -2583,7 +2583,11 @@ function Card:redeem()
 				discover_card(self.config.center)
 			end
 			if self.shop_voucher then
-				if G.GAME.current_round.voucher and type(G.GAME.current_round.voucher) == "table" and G.GAME.current_round.voucher.spawn then
+				if
+					G.GAME.current_round.voucher
+					and type(G.GAME.current_round.voucher) == "table"
+					and G.GAME.current_round.voucher.spawn
+				then
 					G.GAME.current_round.voucher.spawn[self.config.center_key] = false
 					if self.shop_voucher_idx then
 						G.GAME.current_round.voucher.spawn[self.shop_voucher_idx] = false
@@ -2616,4 +2620,3 @@ function Card:redeem()
 	end
 	return redeemref(self)
 end
-
