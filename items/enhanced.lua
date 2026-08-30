@@ -71,16 +71,6 @@ Cryptid.edeck_sprites = {
 	},
 }
 
-Cryptid.edeck_atlas_update = function(self)
-	local sprite = Cryptid.edeck_sprites[self.edeck_type]
-	if not sprite then
-		error(self.edeck_type)
-	end
-	local enh_info = { Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {}) }
-	sprite = sprite[enh_info[sprite.order]] or sprite.default
-	self.atlas, self.pos = sprite.atlas, sprite.pos
-	return sprite
-end
 
 function Cryptid.update_edeck_sprite(card, type, key)
 	local sprites = Cryptid.edeck_sprites[type]
@@ -118,7 +108,7 @@ local e_deck = {
 				key = self.key .. "_preview",
 			}
 		end
-		local aaa = Cryptid.enhanced_deck_info(G.cry_edeck_center and self or {})
+		local aaa = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
 				localize({ type = "name_text", set = "Edition", key = aaa }),
@@ -453,132 +443,6 @@ return {
 				self,
 				not self.no_forced_suit and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_suit or new_suit
 			)
-		end
-		local ccl = Card.click
-		function Card:click()
-			ccl(self)
-			if
-				Galdur
-					and Cryptid.safe_get(Galdur, "run_setup", "current_page") == 1
-					and (self.edeck_select or (self.area == Cryptid.safe_get(Galdur, "run_setup", "selected_deck_area") and Cryptid.safe_get(
-						self,
-						"config",
-						"center",
-						"edeck_type"
-					)))
-				or not Galdur
-					and (Cryptid.safe_get(G.GAME, "viewed_back", "effect", "center", "edeck_type") and (self.back == "viewed_back" or self.edeck_select))
-			then
-				if not G.cry_edeck_select then
-					G.cry_edeck_select = true
-					G.cry_edeck_center = Galdur and self.config.center or G.GAME.viewed_back.effect.center
-					Cryptid.enhancement_config_UI(Galdur and self.config.center or G.GAME.viewed_back.effect.center, 1)
-				else
-					if self.edeck_select then
-						G.PROFILES[G.SETTINGS.profile]["cry_edeck_" .. self.config.center.edeck_type] =
-							self.edeck_select
-					end
-					G.FUNCS.overlay_menu({
-						definition = G.UIDEF.run_setup("main_menu_play"),
-					})
-					G.cry_edeck_select = nil
-					G.cry_edeck_center = nil
-				end
-			end
-		end
-		function Cryptid.enhancement_config_UI(center, actual_page)
-			local count_per_page = 6
-			if not center.edeck_type then
-				return
-			end
-			G.SETTINGS.paused = true
-			G.your_collection = {}
-			G.your_collection[1] = CardArea(
-				G.ROOM.T.x + 0.2 * G.ROOM.T.w / 2,
-				G.ROOM.T.h,
-				5.3 * G.CARD_W,
-				1.03 * G.CARD_H,
-				{ card_limit = 5, type = "title", highlight_limit = 0, collection = true }
-			)
-			local deck_tables = {
-				n = G.UIT.R,
-				config = { align = "cm", padding = 0, no_fill = true },
-				nodes = {
-					{ n = G.UIT.O, config = { object = G.your_collection[1] } },
-				},
-			}
-
-			local pool_table = {
-				edition = G.P_CENTER_POOLS.Edition,
-				enhancement = G.P_CENTER_POOLS.Enhanced,
-				sticker = SMODS.Stickers,
-				suit = SMODS.Suits,
-				seal = G.P_SEALS,
-			}
-			local editions = {}
-			for i, v in pairs(pool_table[center.edeck_type]) do
-				if v.key ~= "e_base" and not v.no_edeck then
-					editions[#editions + 1] =
-						{ index = i, center = (center.edeck_type == "edition" and v.key:sub(3)) or v.key }
-				end
-			end
-			local page = (actual_page and actual_page * count_per_page or count_per_page) - (count_per_page - 1)
-			local max_pages = math.floor(#editions / count_per_page)
-			if max_pages * count_per_page < #editions then --idk why this is needed but it is
-				max_pages = max_pages + 1
-			end
-			local modification_options = {}
-			for i = 1, max_pages do
-				table.insert(
-					modification_options,
-					localize("k_page") .. " " .. tostring(i) .. "/" .. tostring(max_pages)
-				)
-			end
-			for i = page, math.min(page + count_per_page - 1, #editions) do
-				local _center = Cryptid.deep_copy(center)
-				_center.config["cry_force_" .. center.edeck_type] = editions[i].center
-				Cryptid.edeck_atlas_update(_center)
-				local card = Cryptid.generic_card(_center)
-				card.edeck_select = editions[i].center
-				G.your_collection[1]:emplace(card)
-			end
-
-			INIT_COLLECTION_CARD_ALERTS()
-
-			local t = create_UIBox_generic_options({
-				--infotip = localize("cry_gameset_explanation"),
-				back_func = "setup_run",
-				snap_back = true,
-				contents = {
-					{
-						n = G.UIT.R,
-						config = { align = "cm", minw = 2.5, padding = 0.1, r = 0.1, colour = G.C.BLACK, emboss = 0.05 },
-						nodes = { deck_tables },
-					},
-					{
-						n = G.UIT.R,
-						config = { align = "cm" },
-						nodes = {
-							create_option_cycle({
-								options = modification_options,
-								w = 4.5,
-								cycle_shoulders = true,
-								opt_callback = "edeck_page",
-								current_option = actual_page,
-								colour = G.C.RED,
-								no_pips = true,
-								focus_args = { snap_to = true, nav = "wide" },
-							}),
-						},
-					},
-				},
-			})
-			G.FUNCS.overlay_menu({
-				definition = t,
-			})
-		end
-		G.FUNCS.edeck_page = function(args)
-			Cryptid.enhancement_config_UI(G.cry_edeck_center, args.cycle_config.current_option)
 		end
 	end,
 	items = { e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasedition },

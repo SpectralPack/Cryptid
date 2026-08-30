@@ -427,27 +427,6 @@ if G.GAME.modifiers.cry_force_seal then card:set_seal(G.GAME.modifiers.cry_force
 '''
 match_indent = true
 
-# Remove G.cry_edeck_select on back
-[[patches]]
-[patches.pattern]
-target = "functions/button_callbacks.lua"
-pattern = "G.FUNCS.setup_run = function(e)"
-position = "after"
-payload = '''
-	G.cry_edeck_select = nil
-'''
-match_indent = true
-
-# Remove G.cry_edeck_select on escape key press
-[[patches]]
-[patches.pattern]
-target = "engine/controller.lua"
-pattern = '''if key == "escape" then'''
-position = "after"
-payload = '''
-	G.cry_edeck_select = nil
-'''
-match_indent = true
 # Make vanilla edition tags Nope! if all jokers in shop have editions
 [[patches]]
 [patches.pattern]
