@@ -47,3 +47,21 @@ if G.GAME.events.ev_cry_choco10 then
 end
 '''
 match_indent = true
+
+# Monopoly Money - don't use card if destroyed by Monopoly Money
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if e.config.id == 'buy_and_use' then'''
+position = "at"
+payload = '''if e.config.id == 'buy_and_use' and not (c1 and c1.cry_monopoly_destroyed) then'''
+match_indent = true
+
+# Monopoly Money - don't use card in use_card if destroyed by Monopoly Money
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''local card = e.config.ref_table'''
+position = "after"
+payload = '''if card and card.cry_monopoly_destroyed then return end'''
+match_indent = true

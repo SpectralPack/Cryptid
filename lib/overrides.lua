@@ -2512,3 +2512,108 @@ function Card:set_ability(center, initial, delay_sprites)
 		self:set_edition("e_cry_astral", true, G.SETTINGS.paused)
 	end
 end
+
+-- Monopoly Money handling for booster packs and vouchers
+local openref = Card.open
+function Card:open()
+	if self.ability.set == "Booster" then
+		if not self.from_tag then
+			SMODS.calculate_context({ buying_card = true, card = self })
+		end
+		if self.cry_monopoly_destroyed then
+			if self.cost > 0 then
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						inc_career_stat("c_shop_dollars_spent", self.cost)
+						self:juice_up()
+						return true
+					end,
+				}))
+				ease_dollars(-self.cost)
+			else
+				delay(0.2)
+			end
+			if G.GAME.modifiers.inflation then
+				G.GAME.inflation = G.GAME.inflation + 1
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for k, v in pairs(G.I.CARD) do
+							if v.set_cost then
+								v:set_cost()
+							end
+						end
+						return true
+					end,
+				}))
+			end
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.2,
+				func = function()
+					if G.shop and G.shop.alignment.offset.py then
+						G.shop.alignment.offset.y = G.shop.alignment.offset.py
+						G.shop.alignment.offset.py = nil
+					end
+					G.STATE = G.STATES.SHOP
+					G.TAROT_INTERRUPT = nil
+					G.CONTROLLER.locks.use = false
+					if G.shop then
+						G.CONTROLLER:snap_to({ node = G.shop:get_UIE_by_ID("next_round_button") })
+					end
+					return true
+				end,
+			}))
+			return
+		end
+	end
+	return openref(self)
+end
+
+local redeemref = Card.redeem
+function Card:redeem()
+	if self.ability.set == "Voucher" then
+		if not self.from_tag then
+			SMODS.calculate_context({ buying_card = true, card = self })
+		end
+		if self.cry_monopoly_destroyed then
+			stop_use()
+			if not self.config.center.discovered then
+				discover_card(self.config.center)
+			end
+			if self.shop_voucher then
+				if G.GAME.current_round.voucher and type(G.GAME.current_round.voucher) == "table" and G.GAME.current_round.voucher.spawn then
+					G.GAME.current_round.voucher.spawn[self.config.center_key] = false
+					if self.shop_voucher_idx then
+						G.GAME.current_round.voucher.spawn[self.shop_voucher_idx] = false
+					end
+				end
+				G.GAME.current_round.voucher = nil
+			end
+			if self.shop_cry_bonusvoucher then
+				G.GAME.cry_bonusvouchersused[self.shop_cry_bonusvoucher] = true
+			end
+			self.states.hover.can = false
+			ease_dollars(-self.cost)
+			inc_career_stat("c_shop_dollars_spent", self.cost)
+			inc_career_stat("c_vouchers_bought", 1)
+			if G.GAME.modifiers.inflation then
+				G.GAME.inflation = G.GAME.inflation + 1
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						for k, v in pairs(G.I.CARD) do
+							if v.set_cost then
+								v:set_cost()
+							end
+						end
+						return true
+					end,
+				}))
+			end
+			return
+		end
+	end
+	return redeemref(self)
+end
+
