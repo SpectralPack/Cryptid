@@ -154,7 +154,7 @@ local choco_dice = {
 			if prev_ev then
 				prev_ev:finish()
 			end
-			card.ability.extra.roll = Cryptid.roll("cry_choco", 2, 10, { ignore_value = card.ability.extra.roll })
+			card.ability.extra.roll = Cryptid.roll("cry_choco", 1, 10, { ignore_value = card.ability.extra.roll })
 			local next_ev = SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]
 			if next_ev then
 				next_ev:start()
@@ -182,22 +182,21 @@ local choco1 = {
 	object_type = "Event",
 	key = "choco1",
 	loc_vars = function(self, info_queue, center)
-		local _, prob_den = SMODS.get_probability_vars(self, 1, 6, "Chocolate Dice 1")
-		info_queue[#info_queue + 1] = { set = "Other", key = self.key } --todo specific_vars
+		info_queue[#info_queue + 1] = { set = "Other", key = self.key }
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_flickering_desc", specific_vars = { 5 } }
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_cry_ghost",
-			specific_vars = { SMODS.get_probability_vars(self, 1, 2, "Chocolate Dice 1"), prob_den },
-		}
+		if G.P_CENTERS and G.P_CENTERS.j_cry_ghost then
+			info_queue[#info_queue + 1] = G.P_CENTERS.j_cry_ghost
+		end
 	end,
 	start = function(self)
 		G.GAME.events[self.key] = true
 		local areas = { "jokers", "deck", "hand", "play", "discard" }
-		for k, v in pairs(areas) do
-			for i = 1, #G[v].cards do
-				if SMODS.pseudorandom_probability(self, "cry_choco_possession", 1, 3, "Chocolate Dice 1") then
-					SMODS.Stickers.cry_flickering:apply(G[v].cards[i], true)
+		for _, area_name in ipairs(areas) do
+			if G[area_name] and G[area_name].cards then
+				for i = 1, #G[area_name].cards do
+					if SMODS.pseudorandom_probability(self, "cry_choco_possession", 1, 3, "Chocolate Dice 1") then
+						SMODS.Stickers.cry_flickering:apply(G[area_name].cards[i], true)
+					end
 				end
 			end
 		end
@@ -1136,23 +1135,29 @@ local ghost = {
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
+			local extra = card and card.ability and card.ability.extra or self.config.extra
 			if
 				SMODS.pseudorandom_probability(
 					card,
 					"cry_ghost_destroy",
 					1,
-					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
+					extra.destroy_rate,
+					"Ghost Destroy"
 				)
 			then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						card:start_dissolve()
-						for i = 1, #G.jokers.cards do
-							if G.jokers.cards[i].ability.cry_possessed then
-								if SMODS.is_eternal(G.jokers.cards[i]) then
-									G.jokers.cards[i].ability.cry_possessed = nil
+						for i = #G.jokers.cards, 1, -1 do
+							local j = G.jokers.cards[i]
+							if j and j.ability and j.ability.cry_possessed then
+								if SMODS.is_eternal(j) then
+									j.ability.cry_possessed = nil
+									if SMODS.Stickers and SMODS.Stickers.cry_possessed then
+										SMODS.Stickers.cry_possessed:apply(j, false)
+									end
 								else
-									G.jokers.cards[i]:start_dissolve()
+									j:start_dissolve()
 								end
 							end
 						end
@@ -1165,23 +1170,33 @@ local ghost = {
 			if
 				SMODS.pseudorandom_probability(
 					card,
-					"ghostdestroy",
+					"cry_ghost_possess",
 					1,
-					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
+					extra.possess_rate,
+					"Ghost Possess"
 				)
 			then
 				for i = 1, #G.jokers.cards do
-					G.jokers.cards[i].ability.cry_possessed = nil
+					local j = G.jokers.cards[i]
+					if j and j.ability then
+						j.ability.cry_possessed = nil
+						if SMODS.Stickers and SMODS.Stickers.cry_possessed then
+							SMODS.Stickers.cry_possessed:apply(j, false)
+						end
+					end
 				end
 				local eligible_cards = {}
 				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].config.center.key ~= "j_cry_ghost" then
-						table.insert(eligible_cards, i)
+					if G.jokers.cards[i] ~= card and G.jokers.cards[i].config.center.key ~= "j_cry_ghost" then
+						table.insert(eligible_cards, G.jokers.cards[i])
 					end
 				end
 				if #eligible_cards ~= 0 then
-					G.jokers.cards[pseudorandom_element(eligible_cards, pseudoseed("cry_ghost_possess_choice"))].ability.cry_possessed =
-						true
+					local target = pseudorandom_element(eligible_cards, "cry_ghost_possess_choice")
+					target.ability.cry_possessed = true
+					if SMODS.Stickers and SMODS.Stickers.cry_possessed then
+						SMODS.Stickers.cry_possessed:apply(target, true)
+					end
 				end
 				return
 			end
@@ -1189,22 +1204,15 @@ local ghost = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_possessed" }
-		local num, denom = SMODS.get_probability_vars(
-			card,
-			1,
-			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
-		)
-		local num2, denom2 = SMODS.get_probability_vars(
-			card,
-			1,
-			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
-		)
+		local extra = card and card.ability and card.ability.extra or self.config.extra
+		local num1, denom1 = SMODS.get_probability_vars(card, 1, extra.possess_rate, "Ghost Possess")
+		local num2, denom2 = SMODS.get_probability_vars(card, 1, extra.destroy_rate, "Ghost Destroy")
 		return {
 			vars = {
-				num2,
 				num1,
-				denom2,
+				num2,
 				denom1,
+				denom2,
 			},
 		}
 	end,
@@ -2248,7 +2256,7 @@ items = {
 	wrapped,
 	choco_dice,
 	choco_base_event,
-	--choco1,
+	choco1,
 	choco2,
 	choco3,
 	potion,
@@ -2265,8 +2273,8 @@ items = {
 	candy_basket,
 	blacklist,
 	rotten_egg,
-	--ghost,
-	--possessed,
+	ghost,
+	possessed,
 	spookydeck,
 	candy_dagger,
 	candy_cane,
