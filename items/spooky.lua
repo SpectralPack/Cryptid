@@ -254,7 +254,7 @@ local choco3 = {
 		for i = 1, 3 do
 			local card = create_card("Unique", G.consumeables, nil, nil, nil, nil, "c_cry_potion")
 			card:add_to_deck()
-			card.ability.random_event = pseudorandom(pseudoseed("cry_choco_witch"), 1, num_potions)
+			card.ability.random_event = pseudorandom("cry_choco_witch", 1, num_potions)
 			G.consumeables:emplace(card)
 		end
 	end,
@@ -374,10 +374,12 @@ local potion = {
 			)
 			update_hand_text({ delay = 0 }, { mult = "-", StatusText = true })
 			update_hand_text({ delay = 0 }, { chips = "-", StatusText = true })
-			update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+1" })
+			update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "-1" })
 			delay(1.3)
 			for k, v in pairs(G.GAME.hands) do
-				level_up_hand(card, k, true, -1)
+				if v.level > 1 then
+					level_up_hand(card, k, true, -1)
+				end
 			end
 			update_hand_text(
 				{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
