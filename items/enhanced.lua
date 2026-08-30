@@ -71,7 +71,6 @@ Cryptid.edeck_sprites = {
 	},
 }
 
-
 function Cryptid.update_edeck_sprite(card, type, key)
 	local sprites = Cryptid.edeck_sprites[type]
 	if not sprites then
