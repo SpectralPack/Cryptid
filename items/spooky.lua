@@ -422,26 +422,45 @@ local choco4 = { --lunar abyss
 							table.insert(faces, r)
 						end
 					end
-					local _rank = pseudorandom_element(faces, pseudoseed("cry_choco_lunar_create")).card_key
+					local _rank = pseudorandom_element(faces, "cry_choco_lunar_create").card_key
 					G.play.cards[i]:set_base(G.P_CARDS["C_" .. _rank])
 				end
 			end
 		end
 		if
 			context.post_jokers
-			and context.joker_main
+			and context.final_scoring_step
 			and not context.blueprint_card
 			and not context.retrigger_joker
 		then
 			local faces = 0
-			for i = 1, #G.play.cards do
-				if G.play.cards[i]:is_face() then
+			local cards = context.full_hand or (G.play and G.play.cards) or {}
+			for i = 1, #cards do
+				if cards[i]:is_face() then
 					faces = faces + 1
 				end
 			end
 			if faces > 1 then
-				mult = mult / faces
-				update_hand_text({ delay = 0 }, { mult = mult, chips = hand_chips })
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("multhit2", 0.7)
+						attention_text({
+							scale = 1.4,
+							text = "/" .. faces .. " Mult",
+							colour = G.C.MULT,
+							hold = 1.5,
+							align = "cm",
+							offset = { x = 0, y = -2.7 },
+							major = G.play,
+						})
+						return true
+					end,
+				}))
+				SMODS.calculate_effect({
+					x_mult = 1 / faces,
+					remove_default_message = true,
+					no_juice = true,
+				}, cards[1])
 			end
 		end
 	end,
