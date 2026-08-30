@@ -131,7 +131,10 @@ local choco_dice = {
 	loc_vars = function(self, info_queue, center)
 		if not center then --tooltip
 		else
-			SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]:loc_vars(info_queue, center)
+			local ev = SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]
+			if ev and ev.loc_vars then
+				ev:loc_vars(info_queue, center)
+			end
 		end
 		return {
 			vars = { not center and "None" or center.ability.extra.roll == 0 and "None" or center.ability.extra.roll },
@@ -147,9 +150,15 @@ local choco_dice = {
 			and Cryptid.is_boss_blind(G.GAME.blind)
 		then
 			--todo: check if duplicates of event are already started/finished
-			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
+			local prev_ev = SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]
+			if prev_ev then
+				prev_ev:finish()
+			end
 			card.ability.extra.roll = Cryptid.roll("cry_choco", 2, 10, { ignore_value = card.ability.extra.roll })
-			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:start()
+			local next_ev = SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]
+			if next_ev then
+				next_ev:start()
+			end
 			return {
 				message = tostring(card.ability.extra.roll),
 				colour = G.C.GREEN,
@@ -158,7 +167,10 @@ local choco_dice = {
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		if not from_debuff then
-			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
+			local ev = SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]
+			if ev then
+				ev:finish()
+			end
 		end
 	end,
 }
@@ -220,6 +232,14 @@ local choco2 = {
 				return
 			end
 			return gfcr(e)
+		end
+		--prevent skipping blind
+		local gfsb = G.FUNCS.skip_blind
+		G.FUNCS.skip_blind = function(e)
+			if G.GAME.events and G.GAME.events.ev_cry_choco2 then
+				return
+			end
+			return gfsb(e)
 		end
 	end,
 }
