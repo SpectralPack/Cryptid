@@ -457,16 +457,7 @@ local choco5 = { --bloodsucker
 		then
 			if context.destroying_card:is_suit("Hearts") or context.destroying_card:is_suit("Diamonds") then
 				if SMODS.pseudorandom_probability(self, "cry_choco_blood", 1, 3, "Chocolate Dice 5") then
-					context.destroying_card.will_shatter = true
-					local destroying_card = context.destroying_card
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if destroying_card then
-								destroying_card:start_dissolve()
-							end
-							return true
-						end,
-					}))
+					return { remove = not SMODS.is_eternal(context.destroying_card) }
 				end
 			end
 		end

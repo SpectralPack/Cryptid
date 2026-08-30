@@ -49,10 +49,20 @@ local cj = Card.calculate_joker
 
 local smcc = SMODS.calculate_context
 function SMODS.calculate_context(context, return_table)
+	local ret = {}
 	for k, v in pairs(SMODS.Events) do
 		if G.GAME.events and G.GAME.events[k] then
 			context.pre_jokers = true
-			v:calculate(context)
+			local res = v:calculate(context)
+			if res and type(res) == "table" then
+				if return_table then
+					return_table[#return_table + 1] = res
+				else
+					for rk, rv in pairs(res) do
+						ret[rk] = rv
+					end
+				end
+			end
 			context.pre_jokers = nil
 		end
 	end
@@ -94,11 +104,25 @@ function SMODS.calculate_context(context, return_table)
 			SMODS.trigger_effects(effects, _card)
 		end
 	end
-	local ret = smcc(context, return_table)
+	local smcc_ret = smcc(context, return_table)
+	if smcc_ret and type(smcc_ret) == "table" then
+		for rk, rv in pairs(smcc_ret) do
+			ret[rk] = rv
+		end
+	end
 	for k, v in pairs(SMODS.Events) do
 		if G.GAME.events and G.GAME.events[k] then
 			context.post_jokers = true
-			v:calculate(context)
+			local res = v:calculate(context)
+			if res and type(res) == "table" then
+				if return_table then
+					return_table[#return_table + 1] = res
+				else
+					for rk, rv in pairs(res) do
+						ret[rk] = rv
+					end
+				end
+			end
 			context.post_jokers = nil
 		end
 	end
