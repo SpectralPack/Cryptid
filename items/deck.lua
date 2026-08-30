@@ -502,64 +502,63 @@ local critical = {
 	pos = { x = 4, y = 5 },
 	atlas = "atlasdeck",
 	loc_vars = function(self, info_queue, center)
-		local _, aaa = SMODS.get_probability_vars(self, 1, self.config.cry_crit_miss_rate, "Critical Deck")
-		local bbb, ccc = SMODS.get_probability_vars(self, 1, self.config.cry_crit_rate, "Critical Deck")
-		return { vars = { bbb, ccc, aaa } }
+		local _, miss_denom = SMODS.get_probability_vars(self, 1, self.config.cry_crit_miss_rate, "Critical Deck")
+		local crit_num, crit_denom = SMODS.get_probability_vars(self, 1, self.config.cry_crit_rate, "Critical Deck")
+		return { vars = { crit_num, crit_denom, miss_denom } }
 	end,
 	calculate = function(self, card, context)
 		if context.final_scoring_step then
-			local aaa =
+			local hit =
 				SMODS.pseudorandom_probability(self, "cry_critical", 1, self.config.cry_crit_rate, "Critical Deck")
-			local bbb =
+			local miss =
 				SMODS.pseudorandom_probability(self, "cry_critical", 1, self.config.cry_crit_miss_rate, "Critical Deck")
-			local check
-			if aaa then
-				check = 2
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("talisman_emult", 1)
-						attention_text({
-							scale = 1.4,
-							text = localize("cry_critical_hit_ex"),
-							hold = 2,
-							align = "cm",
-							offset = { x = 0, y = -2.7 },
-							major = G.play,
-						})
-						return true
-					end,
-				}))
-			elseif bbb then
-				check = 0.5
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("timpani", 1)
-						attention_text({
-							scale = 1.4,
-							text = localize("cry_critical_miss_ex"),
-							hold = 2,
-							align = "cm",
-							offset = { x = 0, y = -2.7 },
-							major = G.play,
-						})
-						return true
-					end,
-				}))
+			local check, sound, text
+			if hit then
+				check, sound, text = 2, "talisman_emult", localize("cry_critical_hit_ex")
+			elseif miss then
+				check, sound, text = 0.5, "timpani", localize("cry_critical_miss_ex")
 			end
-			delay(0.6)
 			if check then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound(sound, 1)
+						attention_text({
+							scale = 1.4,
+							text = text,
+							hold = 2,
+							align = "cm",
+							offset = { x = 0, y = -2.7 },
+							major = G.play,
+						})
+						local deck_card = G.deck and G.deck.cards[1] or G.deck
+						attention_text({
+							text = "^" .. tostring(check),
+							scale = 0.7,
+							hold = 1.4,
+							backdrop_colour = G.C.emult or G.C.DARK_EDITION,
+							align = "tm",
+							major = deck_card,
+							offset = { x = 0, y = -0.05 * G.CARD_H },
+						})
+						if deck_card and deck_card.juice_up then
+							deck_card:juice_up(0.6, 0.1)
+						end
+						G.ROOM.jiggle = G.ROOM.jiggle + 0.7
+						return true
+					end,
+				}))
 				return {
 					emult = check,
-					no_message = true,
+					remove_default_message = true,
 				}
 			end
 		end
 	end,
 	cry_antimatter_calculate = function(self, context)
 		if context.final_scoring_step then
-			local aaa =
+			local hit =
 				SMODS.pseudorandom_probability(self, "cry_critical", 1, self.config.cry_crit_rate, "Critical Deck")
-			if aaa then
+			if hit then
 				return {
 					emult = 2,
 				}
