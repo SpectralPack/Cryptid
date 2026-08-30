@@ -313,7 +313,7 @@ local redeemed = {
 		function Card:redeem()
 			cr(self)
 
-			if G.GAME.modifiers.cry_redeemed then
+			if G.GAME.modifiers.cry_redeemed and not self.cry_monopoly_destroyed then
 				if
 					#G.play.cards == 0
 					and (not G.redeemed_vouchers_during_hand or #G.redeemed_vouchers_during_hand.cards == 0)

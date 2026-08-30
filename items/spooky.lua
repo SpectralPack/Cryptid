@@ -1903,7 +1903,12 @@ local monopoly_money = {
 			and not context.blueprint_card
 			and not context.retrigger_joker
 			and not (context.card == card)
+			and not (context.card and context.card.cry_monopoly_destroyed)
+			and not (context.card and context.card.cry_monopoly_checked)
 		then
+			if context.card then
+				context.card.cry_monopoly_checked = true
+			end
 			if
 				SMODS.pseudorandom_probability(
 					card,
@@ -1912,9 +1917,14 @@ local monopoly_money = {
 					card and card.ability.extra.odds or self.config.extra.odds
 				)
 			then
+				if context.card then
+					context.card.cry_monopoly_destroyed = true
+				end
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						context.card:start_dissolve()
+						if context.card then
+							context.card:start_dissolve()
+						end
 						card_eval_status_text(card, "extra", nil, nil, nil, {
 							message = localize("k_nope_ex"),
 							colour = G.C.BLACK,
