@@ -1061,6 +1061,7 @@ local double_scale = {
 		},
 	},
 	attributes = { "modify_card" }, --does this count as value manip???
+	blueprint_compat = false,
 }
 
 -- Nostalgic Candy

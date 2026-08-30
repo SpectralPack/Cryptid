@@ -764,6 +764,7 @@ local scalae = {
 		code = { "Mathguy" },
 	},
 	attributes = { "scaling", "modify_card" }, --ditto with comment on double scale
+	blueprint_compat = false,
 }
 local stella_mortis = {
 	dependencies = {
