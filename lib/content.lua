@@ -871,7 +871,7 @@ function Cryptid.antimatter_compat(key, on_load)
 		not back
 		or back.set ~= "Back"
 		or (SMODS.Centers[key] and Cryptid.enabled(key) ~= true)
-		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" or ((Cryptid.safe_get(
+		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter or "b_cry_antimatter") == "madness" or ((Cryptid.safe_get(
 			G.PROFILES,
 			G.SETTINGS.profile,
 			"deck_usage",
@@ -894,6 +894,39 @@ function Cryptid.antimatter_compat(key, on_load)
 		return true
 	end
 	return false
+end
+
+function Cryptid.antimatter_sleeve_compat(sleeve_key)
+	if not sleeve_key then
+		return false
+	end
+	local full_key = sleeve_key
+	if not full_key:find("^sleeve_") then
+		full_key = "sleeve_" .. full_key
+	end
+	if full_key == "sleeve_cry_antimatter_sleeve" or full_key == "sleeve_casl_none" or full_key == "sleeve_none" then
+		return false
+	end
+	if Cryptid.gameset(G.P_CENTERS.sleeve_cry_antimatter_sleeve or "sleeve_cry_antimatter_sleeve") == "madness" then
+		return true
+	end
+	return (
+		Cryptid.safe_get(
+			G.PROFILES,
+			G.SETTINGS.profile,
+			"sleeve_usage",
+			full_key,
+			"wins_by_key",
+			"stake_gold"
+		) or Cryptid.safe_get(
+			G.PROFILES,
+			G.SETTINGS.profile,
+			"sleeve_usage",
+			sleeve_key,
+			"wins_by_key",
+			"stake_gold"
+		) or 0
+	) > 0
 end
 
 --Edition Deck Selection

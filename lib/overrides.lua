@@ -231,7 +231,7 @@ function SMODS.add_to_pool(obj, args)
 		bl_pillar = (Cryptid.enabled("bl_cry_oldpillar") == true),
 		bl_serpent = (Cryptid.enabled("bl_cry_oldserpent") == true),
 	}
-	if G.GAME.modifiers.cry_beta and so_retro[obj.key] then --just exclude blinds with nustalgics entirely because thats the same effect pretty much
+	if (G.GAME.modifiers.cry_beta or G.GAME.modifiers.cry_antimatter_beta) and so_retro[obj.key] then --just exclude blinds with nustalgics entirely because thats the same effect pretty much
 		return false
 	end
 	return pool_ref(obj, args)
