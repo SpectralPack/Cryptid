@@ -3501,19 +3501,17 @@ return {
 			sleeve_cry_antimatter_sleeve = {
 				name = "반물질 슬리브",
 				text = {
-					"모든 덱 슬리브의",
-					"{C:attention}효과{}와",
-					"{C:attention}특수 효과{}를 적용",
-					"{C:red}개발 중",
+					"{C:attention}선택된 모든 슬리브{}의",
+					"모든 {C:attention}효과{}와 {C:attention}특수 효과{}의",
+					"{C:legendary,E:1}장점{}을 적용",
 				},
 			},
 			sleeve_cry_antimatter_sleeve_balanced = {
 				name = "반물질 슬리브",
 				text = {
-					"{C:gold}골드 스테이크{}에서 승리한",
-					"{C:attention}모든{} 덱 슬리브의",
-					"{C:attention}효과{}와 {C:attention}특수 효과{}를 적용",
-					"{C:red}개발 중",
+					"{C:gold}골드 스테이크{}에서 승리한 {C:attention}선택된 슬리브{}의",
+					"{C:attention}효과{} 및 {C:gold}골드 스테이크{}에서 승리한",
+					"해당 {C:attention}덱{}의 {C:attention}특수 효과{}의 {C:legendary,E:1}장점{}을 적용",
 				},
 			},
 		},

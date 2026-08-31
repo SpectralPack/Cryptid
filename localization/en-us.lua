@@ -3673,19 +3673,19 @@ return {
 			sleeve_cry_antimatter_sleeve = {
 				name = "Antimatter Sleeve",
 				text = {
-					"applies the {C:attention}effects{}",
-					"and {C:attention}special effects{}",
-					"of all deck sleeves",
-					"{C:red}WIP",
+					"Applies the {C:legendary,E:1}upsides{}",
+					"of every {C:attention}effect{} and {C:attention}special effect{}",
+					"of {C:attention}all selected sleeves{}",
 				},
 			},
 			sleeve_cry_antimatter_sleeve_balanced = {
 				name = "Antimatter Sleeve",
 				text = {
-					"applies the {C:attention}effects{}",
-					"and {C:attention}special effects{}",
-					"of {C:attention}every{} sleeve won",
-					"with {C:gold}Gold Stake{}",
+					"Applies the {C:legendary,E:1}upsides{} of the {C:attention}effects{}",
+					"of {C:attention}all selected sleeves{} won",
+					"with {C:gold}Gold Stake{}, and {C:attention}special effects{}",
+					"for every corresponding {C:attention}deck{}",
+					"won with {C:gold}Gold Stake{}",
 				},
 			},
 		},

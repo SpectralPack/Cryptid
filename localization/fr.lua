@@ -3555,20 +3555,19 @@ return {
 			sleeve_cry_antimatter_sleeve = {
 				name = "Pochette d'Antimatière",
 				text = {
-					"Applique les {C:attention}effets{}",
-					"et autres {C:attention}effets spéciaux{}",
-					"de toutes les autres pochettes",
-					"{C:red}WIP",
+					"Applique les {C:legendary,E:1}avantages{}",
+					"de chaque {C:attention}effet{} et {C:attention}effet spécial{}",
+					"de {C:attention}toutes les pochettes sélectionnées{}",
 				},
 			},
 			sleeve_cry_antimatter_sleeve_balanced = {
 				name = "Pochette d'Antimatière",
 				text = {
-					"Applique les {C:attention}effets{}",
-					"et autres {C:attention}effets spéciaux{}",
-					"de {C:attention}toutes{} les pochettes",
-					"battues avec la {C:gold}Mise Or{}",
-					"{C:red}WIP",
+					"Applique les {C:legendary,E:1}avantages{} des {C:attention}effets{}",
+					"de {C:attention}toutes les pochettes sélectionnées{} battues",
+					"avec la {C:gold}Mise Or{}, et les {C:attention}effets spéciaux{}",
+					"pour chaque {C:attention}jeu{} correspondant",
+					"battu avec la {C:gold}Mise Or{}",
 				},
 			},
 		},
