@@ -140,6 +140,39 @@ SMODS.DrawStep({
 	conditions = { vortex = false, facing = "back" },
 })
 
+-- Sleeve Edition / Shaders
+SMODS.DrawStep({
+	key = "sleeve_edition",
+	order = 6,
+	func = function(self)
+		if self.children.back and not self.cry_antimatter_sleeve_locked then
+			local s_center = self.config.center
+			local s_key = s_center and s_center.key or self.config.center_key
+			if s_key == "sleeve_cry_antimatter_sleeve" or s_key == "cry_antimatter_sleeve" then
+				self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
+				self.children.back:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
+			end
+		end
+	end,
+	conditions = { vortex = false, facing = "back" },
+})
+
+if CardSleeves then
+	local old_CardArea_draw = CardArea.draw
+	function CardArea:draw(...)
+		old_CardArea_draw(self, ...)
+		if
+			self == G.deck
+			and self.states.visible
+			and (G.GAME.selected_sleeve == "sleeve_cry_antimatter_sleeve" or G.GAME.selected_sleeve == "cry_antimatter_sleeve")
+			and self.sleeve_sprite
+		then
+			self.sleeve_sprite:draw_shader("negative", nil, nil, true)
+			self.sleeve_sprite:draw_shader("negative_shine", nil, nil, true)
+		end
+	end
+end
+
 if SMODS.DrawSteps and SMODS.DrawSteps.seal then
 	local orig_seal_draw = SMODS.DrawSteps.seal.func
 	SMODS.DrawSteps.seal.func = function(self, layer)
