@@ -766,6 +766,27 @@ if CardSleeves then
 	special_antimatter_sleeves["red"] = special_antimatter_sleeves["sleeve_casl_red"]
 	special_antimatter_sleeves["blue"] = special_antimatter_sleeves["sleeve_casl_blue"]
 
+	local function is_sleeve_selected(slv)
+		local s_key = slv.key or ""
+		local s_key_base = slv.key_base or ""
+		local selected = G.GAME.cry_antimatter_sleeves
+			or (G.PROFILES and G.PROFILES[G.SETTINGS.profile] and G.PROFILES[G.SETTINGS.profile].last_choices and G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter_sleeve)
+			or (SMODS.RunSelect and SMODS.RunSelect.Setup and SMODS.RunSelect.Setup.choices and SMODS.RunSelect.Setup.choices.cry_antimatter_sleeve)
+		if selected and type(selected) == "table" then
+			if selected[s_key] ~= nil then
+				return selected[s_key] == true
+			end
+			if s_key_base ~= "" and selected[s_key_base] ~= nil then
+				return selected[s_key_base] == true
+			end
+			if selected["sleeve_" .. s_key] ~= nil then
+				return selected["sleeve_" .. s_key] == true
+			end
+			return false
+		end
+		return Cryptid.antimatter_sleeve_compat(s_key) or (s_key_base ~= "" and Cryptid.antimatter_sleeve_compat(s_key_base))
+	end
+
 	local antimattersleeve = CardSleeves.Sleeve({
 		key = "antimatter_sleeve",
 		name = "Antimatter Sleeve",
@@ -789,7 +810,7 @@ if CardSleeves then
 			for _, slv in ipairs(G.P_CENTER_POOLS.Sleeve) do
 				local s_key = slv.key
 				if s_key and s_key ~= "sleeve_cry_antimatter_sleeve" and s_key ~= "sleeve_casl_none" and s_key ~= "sleeve_none" then
-					if Cryptid.antimatter_sleeve_compat(s_key) then
+					if is_sleeve_selected(slv) then
 						local override = special_antimatter_sleeves[s_key] or (slv.key_base and special_antimatter_sleeves[slv.key_base])
 						if type(override) == "function" then
 							override(slv, "calculate", context)
@@ -859,7 +880,7 @@ if CardSleeves then
 			for _, slv in ipairs(G.P_CENTER_POOLS.Sleeve) do
 				local s_key = slv.key
 				if s_key and s_key ~= "sleeve_cry_antimatter_sleeve" and s_key ~= "sleeve_casl_none" and s_key ~= "sleeve_none" then
-					if Cryptid.antimatter_sleeve_compat(s_key) then
+					if is_sleeve_selected(slv) then
 						local override = special_antimatter_sleeves[s_key] or (slv.key_base and special_antimatter_sleeves[slv.key_base])
 						if type(override) == "function" then
 							override(slv, "apply")
