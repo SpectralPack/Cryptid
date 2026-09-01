@@ -1355,11 +1355,11 @@ local eternalflame = {
 	perishable_compat = false,
 	blueprint_compat = true,
 	demicoloncompat = true,
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(center.ability.extra.extra),
-				number_format(center.ability.extra.x_mult),
+				number_format(card.ability.extra.extra),
+				number_format(card.ability.extra.x_mult),
 			},
 			key = Card.get_gameset(card) ~= "modest" and "j_cry_eternalflame2" or "j_cry_eternalflame",
 		}
@@ -7343,13 +7343,13 @@ local coin = {
 	cost = 5,
 	blueprint_compat = true,
 	demicoloncompat = true,
-	loc_vars = function(self, info_queue, center)
+	loc_vars = function(self, info_queue, card)
 		return {
 			vars = {
-				number_format(center.ability.extra.money),
+				number_format(card.ability.extra.money),
 				number_format(
-					center.ability.extra.money
-						* (Card.get_gameset(card) ~= "modest" and center.ability.immutable.money_mod or 4)
+					card.ability.extra.money
+						* (Card.get_gameset(card) ~= "modest" and card.ability.immutable.money_mod or 4)
 				),
 			},
 		}

@@ -1619,7 +1619,7 @@ local machinecode = {
 			nil,
 			nil,
 			Cryptid.random_consumable("cry_machinecode", nil, "c_cry_machinecode").key,
-			c_cry_machinecode
+			"c_cry_machinecode"
 		)
 		card:set_edition({ cry_glitched = true })
 		card:add_to_deck()

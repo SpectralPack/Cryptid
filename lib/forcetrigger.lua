@@ -946,7 +946,7 @@ function Cryptid.forcetrigger(card, context)
 					planets_used = planets_used + 1
 				end
 			end
-			ease_dollars(card.ability.extra * planets_used or 1)
+			ease_dollars((card.ability.extra or 1) * planets_used)
 		end
 		if card.ability.name == "Shoot The Moon" then
 			results = { jokers = { mult_mod = 13, card = card } }

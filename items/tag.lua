@@ -337,7 +337,7 @@ local gambler = {
 	end,
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
-			if SMODS.pseudorandom_probability(card, "cry_gambler_tag", 1, tag.config.odds, "Gambler Tag") then
+			if SMODS.pseudorandom_probability(tag, "cry_gambler_tag", 1, tag.config.odds, "Gambler Tag") then
 				local lock = tag.ID
 				G.CONTROLLER.locks[lock] = true
 				tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
