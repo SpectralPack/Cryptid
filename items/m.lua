@@ -482,13 +482,22 @@ local mneon = {
 			return { message = localize("cry_m_ex") }
 		end
 		if context.forcetrigger then
+			local jollycount = 0
+			for i = 1, #G.jokers.cards do
+				if
+					G.jokers.cards[i]:is_jolly()
+					or Cryptid.safe_get(G.jokers.cards[i].config.center, "pools", "M")
+					or G.jokers.cards[i].ability.name == "cry-mprime"
+				then
+					jollycount = jollycount + 1
+				end
+			end
 			card.ability.extra.money = lenient_bignum(
-				to_big(card.ability.extra.money) + math.max(1, to_big(card.ability.extra.bonus)) * (jollycount or 1)
+				to_big(card.ability.extra.money)
+					+ math.max(1, to_big(card.ability.extra.bonus)) * (jollycount > 0 and jollycount or 1)
 			)
 			return {
-				dollars = lenient_bignum(
-					to_big(card.ability.extra.money) + math.max(1, to_big(card.ability.extra.bonus)) * (jollycount or 1)
-				),
+				dollars = lenient_bignum(card.ability.extra.money),
 			}
 		end
 	end,

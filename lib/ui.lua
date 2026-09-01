@@ -218,14 +218,14 @@ SMODS.DrawStep({
 				)
 			else
 				local center = self.config.center
-				if _center and _center.soul_pos and _center.soul_pos.extra then
+				if center and center.soul_pos and center.soul_pos.extra then
 					self.children.floating_sprite2 = Sprite(
 						self.T.x,
 						self.T.y,
 						self.T.w,
 						self.T.h,
-						G.ASSET_ATLAS[_center.atlas or _center.set],
-						_center.soul_pos.extra
+						G.ASSET_ATLAS[center.atlas or center.set],
+						center.soul_pos.extra
 					)
 					self.children.floating_sprite2.role.draw_major = self
 					self.children.floating_sprite2.states.hover.can = false

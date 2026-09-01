@@ -437,8 +437,8 @@ function Cryptid.manipulate(card, args)
 					card.misprint_cost_fac = 1
 						/ Cryptid.log_random(
 							pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-							override and override.min or G.GAME.modifiers.cry_misprint_min,
-							override and override.max or G.GAME.modifiers.cry_misprint_max
+							args and args.min or G.GAME.modifiers.cry_misprint_min,
+							args and args.max or G.GAME.modifiers.cry_misprint_max
 						)
 					card:set_cost()
 				end

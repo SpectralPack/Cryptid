@@ -1730,8 +1730,7 @@ function create_card_for_shop(area)
 				table.remove(G.GAME.next_shop_cards, i)
 				create_shop_card_ui(
 					other_card,
-					G.P_CENTERS[card.save_fields.center],
-					set,
+					G.P_CENTERS[card.save_fields.center].set,
 					areas_to_check[card.cry_from_shop]
 				)
 				areas_to_check[card.cry_from_shop]:emplace(other_card)
@@ -2212,7 +2211,7 @@ function Cryptid.create_dummy_from_stone(rank)
 		},
 	}
 end
-function Cryptid.next_ranks(key, start, recurse)
+function Cryptid.next_ranks(key, start, recurse, wrap)
 	key = ({
 		["14"] = "Ace",
 		["13"] = "King",
@@ -2228,7 +2227,7 @@ function Cryptid.next_ranks(key, start, recurse)
 		ret[#ret + 1] = v
 		local curr = #ret
 		if recurse and recurse > 0 then
-			for i, v in pairs(Cryptid.next_ranks(ret[#ret], start, recurse - 1)) do
+			for i, v in pairs(Cryptid.next_ranks(ret[#ret], start, recurse - 1, wrap)) do
 				ret[#ret + 1] = v
 			end
 		end
@@ -2272,7 +2271,7 @@ function get_straight(hand, min_length, skip, wrap)
 		for i, v in pairs(hand) do
 			if v.config.center.key ~= "m_stone" then
 				cards[#cards + 1] = v
-				for i, v in pairs(Cryptid.next_ranks(v:get_id(), nil, stones)) do --this means its inaccurate in some situations like K S S S S but its fine there isnt a better way
+				for i, v in pairs(Cryptid.next_ranks(v:get_id(), nil, stones, wrap)) do --this means its inaccurate in some situations like K S S S S but its fine there isnt a better way
 					ranks[v] = true
 				end
 			end

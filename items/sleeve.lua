@@ -1877,27 +1877,5 @@ if CardSleeves then
 		end
 		return consumable_table
 	end
-	local sleeveitems = {}
-	if CardSleeves then
-		sleeveitems = {
-			veryfairsleeve,
-			infinitesleeve,
-			equilibriumsleeve,
-			misprintsleeve,
-			CCDsleeve,
-			wormholesleeve,
-			conveyorsleeve,
-			redeemedsleeve,
-			glowingsleeve,
-			criticalsleeve,
-			encodedsleeve,
-			nostalgicsleeve,
-			bountifulsleeve,
-			beigesleeve,
-			legendarysleeve,
-			spookysleeve,
-			antimattersleeve,
-		}
-	end
 end
-return { name = "Sleeves", init = function() end, items = { sleeveitems } }
+return { name = "Sleeves", init = function() end }
