@@ -237,14 +237,14 @@ function SMODS.add_to_pool(obj, args)
 	return pool_ref(obj, args)
 end
 
-if SMODS and SMODS.add_booster_to_shop then
+if SMODS.add_booster_to_shop then
 	local abts = SMODS.add_booster_to_shop
 	function SMODS.add_booster_to_shop(key, ...)
-		if G.GAME and G.GAME.modifiers and G.GAME.modifiers.cry_no_boosters then
+		if G.GAME.modifiers.cry_no_boosters then
 			return
 		end
 		-- Non-equilibrium: use original function
-		if not (G.GAME and G.GAME.modifiers and G.GAME.modifiers.cry_equilibrium) then
+		if not G.GAME.modifiers.cry_equilibrium then
 			return abts(key, ...)
 		end
 		-- Equilibrium: handle non-booster items with correct scale, front card, and type
@@ -276,12 +276,12 @@ if SMODS and SMODS.add_booster_to_shop then
 	end
 end
 
-if SMODS and SMODS.add_voucher_to_shop then
+if SMODS.add_voucher_to_shop then
 	local avts = SMODS.add_voucher_to_shop
 	function SMODS.add_voucher_to_shop(key, dont_save, ...)
 		local card
 		-- Non-equilibrium: use original function
-		if not (G.GAME and G.GAME.modifiers and G.GAME.modifiers.cry_equilibrium) then
+		if not G.GAME.modifiers.cry_equilibrium then
 			card = avts(key, dont_save, ...)
 		else
 			-- Equilibrium: handle non-voucher items with correct front card and type
@@ -333,7 +333,7 @@ if SMODS and SMODS.add_voucher_to_shop then
 			G.shop_vouchers.config.card_limit = #G.shop_vouchers.cards
 		end
 		if card then
-			if G.GAME and G.GAME.current_round and G.GAME.current_round.cry_voucher_stickers then
+			if G.GAME.current_round.cry_voucher_stickers then
 				for k, v in pairs(G.GAME.current_round.cry_voucher_stickers) do
 					if v then
 						card.ability[k] = true
@@ -347,9 +347,7 @@ if SMODS and SMODS.add_voucher_to_shop then
 				card:set_cost()
 			end
 			if
-				G.GAME
-				and G.GAME.current_round
-				and G.GAME.current_round.cry_voucher_edition
+				G.GAME.current_round.cry_voucher_edition
 				and next(G.GAME.current_round.cry_voucher_edition)
 			then
 				card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
@@ -1046,7 +1044,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		end
 		ps = Cryptid.predict_pseudoseed
 	end
-	if (_type == "Joker" or _type == "Meme") and G.GAME and G.GAME.modifiers and G.GAME.modifiers.all_rnj then
+	if (_type == "Joker" or _type == "Meme") and G.GAME.modifiers.all_rnj then
 		forced_key = "j_cry_rnjoker"
 	end
 	local function aeqviable(center)
@@ -1917,8 +1915,7 @@ G.FUNCS.skip_booster = function(e)
 			local c = nil
 			c = G.jokers.cards[#G.jokers.cards] --fallback to rightmost if somehow, you skipped without disabling and its unskippable.
 			--Iterate backwards to get the rightmost valid (non eternal or cursed) Joker
-			if G.jokers and G.jokers.cards then
-				for i = #G.jokers.cards, 1, -1 do
+			for i = #G.jokers.cards, 1, -1 do
 					if
 						not (
 							SMODS.is_eternal(G.jokers.cards[i])

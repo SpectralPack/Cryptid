@@ -353,7 +353,7 @@ function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_jui
 end
 
 function Cryptid.update_used_vouchers()
-	if G and G.GAME and G.vouchers then
+	if G.vouchers then
 		G.GAME.used_vouchers = {}
 		for i, v in ipairs(G.vouchers.cards) do
 			G.GAME.used_vouchers[v.config.center_key] = true

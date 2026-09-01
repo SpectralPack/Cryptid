@@ -220,17 +220,7 @@ local freak_house = {
 	--reset_on_startup = true,
 	unlock_condition = function(self, args)
 		if args.type == "hand" and (args.disp_text == "Flush House" or args.handname == "Flush House") then
-			-- Do you have Nice
-			local has_nice = (next(SMODS.find_card("j_cry_nice")) ~= nil)
-			if not has_nice and G.jokers and G.jokers.cards then
-				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].config.center.key == "j_cry_nice" then
-						has_nice = true
-						break
-					end
-				end
-			end
-			if not has_nice then
+			if not next(SMODS.find_card("j_cry_nice")) then
 				return
 			end
 

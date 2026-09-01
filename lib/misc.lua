@@ -32,7 +32,7 @@ function Cryptid.is_number(v)
 end
 
 function Cryptid.is_boss_blind(blind)
-	blind = blind or (G.GAME and G.GAME.blind)
+	blind = blind or G.GAME.blind
 	if not blind then
 		return false
 	end
@@ -41,11 +41,7 @@ end
 
 function Cryptid.has_ongoing_run()
 	return (G.STAGE == G.STAGES.RUN)
-		or not not (
-			G.SETTINGS
-			and G.SETTINGS.profile
-			and love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")
-		)
+		or not not love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")
 end
 
 -- More advanced version of find joker for things that need to find very specific things
@@ -963,15 +959,15 @@ function Cryptid.force_save_before_crash(used_card)
 
 	-- Determine what state the game should reload into
 	local resting_state = G.STATES.SELECTING_HAND
-	if G.shop or G.STATE == G.STATES.SHOP or (G.GAME and G.GAME.pack_interrupt == G.STATES.SHOP) then
+	if G.shop or G.STATE == G.STATES.SHOP or (G.GAME.pack_interrupt == G.STATES.SHOP) then
 		resting_state = G.STATES.SHOP
 	elseif
 		G.blind_select
 		or G.STATE == G.STATES.BLIND_SELECT
-		or (G.GAME and G.GAME.pack_interrupt == G.STATES.BLIND_SELECT)
+		or (G.GAME.pack_interrupt == G.STATES.BLIND_SELECT)
 	then
 		resting_state = G.STATES.BLIND_SELECT
-	elseif G.STATE == G.STATES.ROUND_EVAL or (G.GAME and G.GAME.pack_interrupt == G.STATES.ROUND_EVAL) then
+	elseif G.STATE == G.STATES.ROUND_EVAL or (G.GAME.pack_interrupt == G.STATES.ROUND_EVAL) then
 		resting_state = G.STATES.ROUND_EVAL
 	end
 
@@ -1283,7 +1279,7 @@ end
 local lcpref = Controller.L_cursor_press
 function Controller:L_cursor_press(x, y)
 	lcpref(self, x, y)
-	if G and G.GAME and G.GAME.hands and G.GAME.USING_EXPLOIT_HAND then
+	if G.GAME and G.GAME.USING_EXPLOIT_HAND then
 		if
 			G.CONTROLLER.cursor_hover
 			and G.CONTROLLER.cursor_hover.target

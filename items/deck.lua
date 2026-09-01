@@ -530,7 +530,7 @@ local critical = {
 							offset = { x = 0, y = -2.7 },
 							major = G.play,
 						})
-						local deck_card = G.deck and G.deck.cards[1] or G.deck
+						local deck_card = G.deck.cards[1] or G.deck
 						attention_text({
 							text = "^" .. tostring(check),
 							scale = 0.7,
