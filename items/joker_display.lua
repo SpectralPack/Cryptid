@@ -237,27 +237,25 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		if Cryptid_config and Cryptid_config.joker_display == false then
 			return orig_card_calc_jd(self, ...)
 		end
-		local temp_hands_played = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_played
-		local temp_discards_used = G.GAME and G.GAME.current_round and G.GAME.current_round.discards_used
-		local temp_hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left
+		local temp_hands_played = G.GAME.current_round.hands_played
+		local temp_discards_used = G.GAME.current_round.discards_used
+		local temp_hands_left = G.GAME.current_round.hands_left
 
-		local has_maze = G.jokers and SMODS.find_card and next(SMODS.find_card("j_cry_maze"))
-		local has_panopticon = G.jokers and SMODS.find_card and next(SMODS.find_card("j_cry_panopticon"))
+		local has_maze = next(SMODS.find_card("j_cry_maze"))
+		local has_panopticon = next(SMODS.find_card("j_cry_panopticon"))
 
-		if G.GAME and G.GAME.current_round then
-			if has_maze then
+		if has_maze then
 				G.GAME.current_round.hands_played = 0
 				G.GAME.current_round.discards_used = 0
 			end
 			if has_panopticon then
-				G.GAME.current_round.hands_left = (G.play and G.play.cards and next(G.play.cards)) and 0 or 1
+				G.GAME.current_round.hands_left = (G.play.cards and next(G.play.cards)) and 0 or 1
 			end
 		end
 
 		local res = orig_card_calc_jd(self, ...)
 
-		if G.GAME and G.GAME.current_round then
-			if temp_hands_played ~= nil then G.GAME.current_round.hands_played = temp_hands_played end
+		if temp_hands_played ~= nil then G.GAME.current_round.hands_played = temp_hands_played end
 			if temp_discards_used ~= nil then G.GAME.current_round.discards_used = temp_discards_used end
 			if temp_hands_left ~= nil then G.GAME.current_round.hands_left = temp_hands_left end
 		end
@@ -1358,7 +1356,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		},
 		calc_function = function(card)
 			local bonus = (card.ability and card.ability.extra and card.ability.extra.bonus) or 1
-			local jokers = (G.jokers and SMODS.find_card and #SMODS.find_card("j_joker")) or 0
+			local jokers = #SMODS.find_card("j_joker")
 			if card.ability and card.ability.immutable then
 				card.ability.immutable.current = 1 + bonus * jokers
 			end
@@ -1467,7 +1465,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			{ text = ")" },
 		},
 		calc_function = function(card)
-			local hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left or 0
+			local hands_left = G.GAME.current_round.hands_left or 0
 			card.joker_display_values.is_active = (hands_left == 1 and not next(G.play.cards))
 				or (hands_left == 0 and next(G.play.cards))
 				or hands_left <= 0
@@ -1788,7 +1786,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			local text, _, scoring_hand = JokerDisplay.evaluate_hand(hand)
 			if text ~= "Unknown" and scoring_hand then
 				for _, scoring_card in pairs(scoring_hand) do
-					if SMODS and SMODS.has_enhancement and SMODS.has_enhancement(scoring_card, "m_bonus") then
+					if SMODS.has_enhancement(scoring_card, "m_bonus") then
 						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
 					elseif scoring_card.ability and scoring_card.ability.effect == "Bonus Card" then
 						count = count + JokerDisplay.calculate_card_triggers(scoring_card, scoring_hand)
@@ -2129,9 +2127,9 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		},
 		calc_function = function(card)
 			local rentals = 0
-			if Cryptid and Cryptid.advanced_find_joker then
+			if Cryptid.advanced_find_joker then
 				rentals = #Cryptid.advanced_find_joker(nil, nil, nil, { "rental" }, true)
-			elseif G.jokers and G.jokers.cards then
+			elseif G.jokers then
 				for _, j in ipairs(G.jokers.cards) do
 					if j.ability and j.ability.rental then
 						rentals = rentals + 1
@@ -2295,7 +2293,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 					end
 				end
 			end
-			local target = G.jokers and G.jokers.cards and G.jokers.cards[#G.jokers.cards]
+			local target = G.jokers.cards[#G.jokers.cards]
 			local valid_target = target and target ~= card
 			local target_key = valid_target and target.config and target.config.center and target.config.center.key
 			card.joker_display_values.num_retriggers = count
@@ -2308,7 +2306,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			end
 		end,
 		retrigger_joker_function = function(card, retrigger_joker)
-			local is_rightmost = G.jokers and G.jokers.cards and card == G.jokers.cards[#G.jokers.cards] and card ~= retrigger_joker
+			local is_rightmost = card == G.jokers.cards[#G.jokers.cards] and card ~= retrigger_joker
 			return is_rightmost and (retrigger_joker.joker_display_values.num_retriggers or 0) or 0
 		end,
 	}
@@ -2436,7 +2434,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		calc_function = function(card)
 			local blacklist = false
 			local target_id = (card.ability and card.ability.extra and card.ability.extra.blacklist) or 14
-			if G.play and G.play.cards then
+			if G.play.cards then
 				for _, c in ipairs(G.play.cards) do
 					if c:get_id() == target_id then
 						blacklist = true
@@ -2444,7 +2442,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 					end
 				end
 			end
-			if not blacklist and G.hand and G.hand.cards then
+			if not blacklist and G.hand.cards then
 				for _, c in ipairs(G.hand.cards) do
 					if c:get_id() == target_id then
 						blacklist = true
@@ -2509,7 +2507,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 				local maximum = -1
 				local fives = 0
 				for _, v in ipairs(scoring_hand) do
-					if not (SMODS and SMODS.has_no_rank and SMODS.has_no_rank(v)) then
+					if not SMODS.has_no_rank(v) then
 						local id = v:get_id()
 						local rank_val = id == 14 and 1 or id
 						if rank_val == 5 then fives = fives + 1 end
@@ -2531,7 +2529,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 	}
 	JokerDisplay.Definitions["j_cry_sock_and_sock"] = {
 		retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
-			if held_in_hand or not (SMODS and SMODS.has_enhancement and SMODS.has_enhancement(playing_card, "m_cry_abstract")) then
+			if held_in_hand or not SMODS.has_enhancement(playing_card, "m_cry_abstract") then
 				return 0
 			end
 			return math.min((joker_card.ability and joker_card.ability.immutable and joker_card.ability.immutable.max_retriggers) or 40, (joker_card.ability and joker_card.ability.extra and joker_card.ability.extra.retriggers) or 1)
@@ -2557,7 +2555,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 					end
 				end
 			end
-			local compatible = other_joker and other_joker ~= card and not (SMODS and SMODS.is_eternal and SMODS.is_eternal(other_joker))
+			local compatible = other_joker and other_joker ~= card and not SMODS.is_eternal(other_joker)
 			card.joker_display_values.compatible = compatible
 			local other_key = compatible and other_joker.config and other_joker.config.center and other_joker.config.center.key
 			card.joker_display_values.target_name = other_key and localize({ type = "name_text", key = other_key, set = "Joker" }) or localize("k_incompatible")
@@ -2629,7 +2627,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		},
 		calc_function = function(card)
 			local highest_cat_lvl = 0
-			if G.GAME and G.GAME.tags then
+			if G.GAME.tags then
 				for _, tag in pairs(G.GAME.tags) do
 					local lvl = tag.ability and tag.ability.level
 					if highest_cat_lvl < 1 and tag.key == "tag_cry_cat" then
@@ -2694,7 +2692,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			{ text = ")" },
 		},
 		calc_function = function(card)
-			local is_boss = G.GAME and G.GAME.blind and Cryptid.is_boss_blind(G.GAME.blind)
+			local is_boss = Cryptid.is_boss_blind(G.GAME.blind)
 			card.joker_display_values.is_active = is_boss
 			card.joker_display_values.active_text = localize("jdis_" .. (card.joker_display_values.is_active and "active" or "inactive"))
 		end,
@@ -2808,7 +2806,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			else
 				local seen = {}
 				local n = 0
-				if G.jokers and G.jokers.cards then
+				if G.jokers then
 					for _, c in ipairs(G.jokers.cards) do
 						local r = c.config and c.config.center and c.config.center.rarity
 						if r and not seen[r] then
@@ -2839,7 +2837,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			local hand = next(G.play.cards) and G.play.cards or G.hand.highlighted
 			local text, _, _ = JokerDisplay.evaluate_hand(hand)
 			local xm = (card.ability and card.ability.extra and card.ability.extra.xm) or 1
-			if text ~= "Unknown" and G.GAME and G.GAME.hands and G.GAME.hands[text] and G.GAME.hands[text].played_this_round < 1 then
+			if text ~= "Unknown" and G.GAME.hands[text] and G.GAME.hands[text].played_this_round < 1 then
 				xm = xm + ((card.ability and card.ability.extra and card.ability.extra.xmgain) or 0.25)
 			end
 			card.joker_display_values.x_mult = xm
@@ -2876,7 +2874,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			},
 		},
 		calc_function = function(card)
-			local is_boss = G.GAME and G.GAME.blind and Cryptid.is_boss_blind(G.GAME.blind)
+			local is_boss = Cryptid.is_boss_blind(G.GAME.blind)
 			local boss_size = (card.ability and card.ability.extra and card.ability.extra.boss_size) or 20
 			card.joker_display_values.blind_size = is_boss and boss_size or 1
 		end,
@@ -2903,16 +2901,16 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		},
 		calc_function = function(card)
 			local count = 0
-			if G.jokers and G.jokers.cards then
+			if G.jokers then
 				for _, v in ipairs(G.jokers.cards) do
 					if
 						v ~= card
 						and not (v.is_jolly and v:is_jolly())
 						and v.config and v.config.center and v.config.center.key ~= "j_cry_mprime"
 						and not (
-							(SMODS and SMODS.is_eternal and SMODS.is_eternal(v))
+							SMODS.is_eternal(v)
 							or v.getting_sliced
-							or (Cryptid and Cryptid.safe_get and Cryptid.safe_get(v.config.center, "pools", "M"))
+							or Cryptid.safe_get(v.config.center, "pools", "M")
 						)
 					then
 						count = count + 1
@@ -2938,7 +2936,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			local add = (card.ability and card.ability.extra and card.ability.extra.add) or 1
 			local max_jollies = (card.ability and card.ability.immutable and card.ability.immutable.max_jollies) or 25
 			local jollycount = init
-			if G.jokers and G.jokers.cards then
+			if G.jokers then
 				for _, v in ipairs(G.jokers.cards) do
 					if v.is_jolly and v:is_jolly() then
 						jollycount = jollycount + add
@@ -2969,7 +2967,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			end
 			local compatible = false
 			if other_joker and other_joker ~= card then
-				if Cryptid and Cryptid.demicolonGetTriggerable then
+				if Cryptid.demicolonGetTriggerable then
 					local m = Cryptid.demicolonGetTriggerable(other_joker)
 					compatible = m[1] and not m[2]
 				else
@@ -3096,12 +3094,12 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		},
 		calc_function = function(card)
 			local hands_req = (card.ability and card.ability.extra and card.ability.extra.hands_remaining) or 3
-			local hands_left = G.GAME and G.GAME.current_round and G.GAME.current_round.hands_left or 0
+			local hands_left = G.GAME.current_round.hands_left or 0
 			local playing_hand = G.play and next(G.play.cards)
 			local is_active = (not playing_hand and hands_left == hands_req + 1) or (playing_hand and hands_left == hands_req)
 			local pi = math.pi
 			local is_oversat = (card.edition and (card.edition.cry_oversat or card.edition.key == "e_cry_oversat" or card.edition.type == "cry_oversat"))
-				or (Cryptid and Cryptid.safe_get and Cryptid.safe_get(card, "edition", "cry_oversat"))
+				or Cryptid.safe_get(card, "edition", "cry_oversat")
 			if is_oversat then
 				pi = 2 * pi
 			end
@@ -3306,7 +3304,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			else
 				card.joker_display_values.oldblueprint_extra_added = false
 			end
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
 			card.joker_display_values.max_odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 4
 		end,
 		get_blueprint_joker = function(card)
@@ -3372,7 +3370,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			},
 		},
 		calc_function = function(card)
-			local prob = G.GAME and G.GAME.probabilities.normal or 1
+			local prob = G.GAME.probabilities.normal or 1
 			local odds = (card.ability and card.ability.extra and card.ability.extra.odds) or 4
 			card.joker_display_values.odds_gain = math.max(0, odds * prob - 1)
 			card.joker_display_values.odds_loss = 1
@@ -3483,7 +3481,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			{ text = ")" },
 		},
 		calc_function = function(card)
-			local target = G.jokers and G.jokers.cards and G.jokers.cards[1]
+			local target = G.jokers.cards[1]
 			if target and target ~= card and not (Card.no and Card.no(target, "immutable", true)) and not (target.config and target.config.center and target.config.center.immutable) then
 				local target_key = target.config and target.config.center and target.config.center.key
 				local target_name = target_key and localize({ type = "name_text", set = "Joker", key = target_key })
