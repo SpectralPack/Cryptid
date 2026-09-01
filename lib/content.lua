@@ -1657,7 +1657,7 @@ SMODS.RunSelectPage({
 	end,
 	generate_pool = function(self)
 		local pool = {}
-		if G.P_CENTER_POOLS and G.P_CENTER_POOLS.Sleeve then
+		if G.P_CENTER_POOLS.Sleeve then
 			for _, c in ipairs(G.P_CENTER_POOLS.Sleeve) do
 				if c.key ~= "sleeve_cry_antimatter_sleeve" and Cryptid.antimatter_sleeve_compat(c.key) then
 					pool[#pool + 1] = c
@@ -1675,7 +1675,7 @@ SMODS.RunSelectPage({
 				end
 			end
 		else
-			if G.P_CENTER_POOLS and G.P_CENTER_POOLS.Sleeve then
+			if G.P_CENTER_POOLS.Sleeve then
 				for _, c in ipairs(G.P_CENTER_POOLS.Sleeve) do
 					if Cryptid.antimatter_sleeve_compat(c.key) then
 						selected[c.key] = true
