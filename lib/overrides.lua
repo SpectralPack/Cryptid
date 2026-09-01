@@ -214,11 +214,20 @@ function SMODS.get_new_blind(blind_type)
 	if G.GAME.modifiers.cry_rush_hour_ii then
 		blind_type = "boss"
 	end
-	if blind_type == "big" and G.GAME.modifiers.cry_big_boss_rate and pseudorandom("cry_big_boss") < G.GAME.modifiers.cry_big_boss_rate then
+	if
+		blind_type == "big"
+		and G.GAME.modifiers.cry_big_boss_rate
+		and pseudorandom("cry_big_boss") < G.GAME.modifiers.cry_big_boss_rate
+	then
 		blind_type = "boss"
 	end
-	if G.GAME.modifiers.cry_rush_hour and blind_type == "boss" and Cryptid.enabled("bl_cry_clock") == true and Cryptid.enabled("bl_cry_lavender_loop") == true then
-		if G.GAME.round_resets.ante%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 1 then --society if there was a util function for the showdown check
+	if
+		G.GAME.modifiers.cry_rush_hour
+		and blind_type == "boss"
+		and Cryptid.enabled("bl_cry_clock") == true
+		and Cryptid.enabled("bl_cry_lavender_loop") == true
+	then
+		if G.GAME.round_resets.ante % G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 1 then --society if there was a util function for the showdown check
 			return "bl_cry_lavender_loop"
 		else
 			return "bl_cry_clock"
