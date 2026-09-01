@@ -187,24 +187,6 @@ function get_new_boss()
 		end
 		return v
 	end
-	--This is how nostalgic deck replaces the boss blinds with Nostalgic versions
-	if G.GAME.modifiers.cry_beta then
-		local bl_key = string.sub(bl, 4)
-		local nostalgicblinds = {
-			arm = (Cryptid.enabled("bl_cry_oldarm") == true),
-			fish = (Cryptid.enabled("bl_cry_oldfish") == true),
-			flint = (Cryptid.enabled("bl_cry_oldflint") == true),
-			house = (Cryptid.enabled("bl_cry_oldhouse") == true),
-			manacle = (Cryptid.enabled("bl_cry_oldmanacle") == true),
-			mark = (Cryptid.enabled("bl_cry_oldmark") == true),
-			ox = (Cryptid.enabled("bl_cry_oldox") == true),
-			pillar = (Cryptid.enabled("bl_cry_oldpillar") == true),
-			serpent = (Cryptid.enabled("bl_cry_oldserpent") == true),
-		}
-		if nostalgicblinds[bl_key] then
-			return "bl_cry_old" .. bl_key
-		end
-	end
 	return bl
 end
 
@@ -234,6 +216,25 @@ function SMODS.get_new_blind(blind_type)
 		end
 	end
 	return get_new_blind(blind_type)
+end
+
+local pool_ref = SMODS.add_to_pool
+function SMODS.add_to_pool(obj, args)
+	local so_retro = {
+		bl_arm = (Cryptid.enabled("bl_cry_oldarm") == true),
+		bl_fish = (Cryptid.enabled("bl_cry_oldfish") == true),
+		bl_flint = (Cryptid.enabled("bl_cry_oldflint") == true),
+		bl_house = (Cryptid.enabled("bl_cry_oldhouse") == true),
+		bl_manacle = (Cryptid.enabled("bl_cry_oldmanacle") == true),
+		bl_mark = (Cryptid.enabled("bl_cry_oldmark") == true),
+		bl_ox = (Cryptid.enabled("bl_cry_oldox") == true),
+		bl_pillar = (Cryptid.enabled("bl_cry_oldpillar") == true),
+		bl_serpent = (Cryptid.enabled("bl_cry_oldserpent") == true),
+	}
+	if G.GAME.modifiers.cry_beta and so_retro[obj.key] then --just exclude blinds with nustalgics entirely because thats the same effect pretty much
+		return false
+	end
+	return pool_ref(obj, args)
 end
 
 if SMODS and SMODS.add_booster_to_shop then
