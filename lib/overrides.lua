@@ -1916,18 +1916,16 @@ G.FUNCS.skip_booster = function(e)
 			c = G.jokers.cards[#G.jokers.cards] --fallback to rightmost if somehow, you skipped without disabling and its unskippable.
 			--Iterate backwards to get the rightmost valid (non eternal or cursed) Joker
 			for i = #G.jokers.cards, 1, -1 do
-					if
-						not (
-							SMODS.is_eternal(G.jokers.cards[i])
-							or G.jokers.cards[i].config.center.rarity == "cry_cursed"
-						)
-					then
-						c = G.jokers.cards[i]
-						break
-					end
+				if
+					not (
+						SMODS.is_eternal(G.jokers.cards[i])
+						or G.jokers.cards[i].config.center.rarity == "cry_cursed"
+					)
+				then
+					c = G.jokers.cards[i]
+					break
 				end
 			end
-
 			if c.config.center.rarity == "cry_exotic" then
 				check_for_unlock({ type = "what_have_you_done" })
 			end
@@ -1939,8 +1937,8 @@ G.FUNCS.skip_booster = function(e)
 			end
 			c:start_dissolve()
 		end
-		banefulSkipPenalty(e)
 	end
+	banefulSkipPenalty(e)
 end
 
 --Overriding the skip booster function.

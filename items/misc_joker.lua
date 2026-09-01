@@ -8863,7 +8863,7 @@ local pumpkin = {
 			card.ability.extra.enabled = false
 		end
 
-		if context.cry_start_dissolving and context.card == card and card.ability.extra.enabled == true then
+		if context.joker_type_destroyed and context.card == card and card.ability.extra.enabled == true then
 			local newcard = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_carved_pumpkin")
 			newcard:add_to_deck()
 			G.jokers:emplace(newcard)
@@ -10923,14 +10923,6 @@ local miscitems = {
 return {
 	name = "Misc. Jokers",
 	init = function()
-		-- Add more calculation contexts (used by Pumpkin and Clicked Cookie)
-		local oldfunc = Card.start_dissolve
-		function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
-			if G.jokers then
-				SMODS.calculate_context({ cry_start_dissolving = true, card = self })
-			end
-			return oldfunc(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
-		end
 
 		local lcpref = Controller.L_cursor_press
 		function Controller:L_cursor_press(x, y)
