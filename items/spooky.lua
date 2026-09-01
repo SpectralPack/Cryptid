@@ -1172,22 +1172,15 @@ local ghost = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_possessed" }
-		local num, denom = SMODS.get_probability_vars(
-			card,
-			1,
-			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
-		)
-		local num2, denom2 = SMODS.get_probability_vars(
-			card,
-			1,
-			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
-		)
+		local extra = card and card.ability and card.ability.extra or self.config.extra
+		local num1, denom1 = SMODS.get_probability_vars(card, 1, extra.possess_rate, "Ghost Possess")
+		local num2, denom2 = SMODS.get_probability_vars(card, 1, extra.destroy_rate, "Ghost Destroy")
 		return {
 			vars = {
-				num2,
 				num1,
-				denom2,
+				num2,
 				denom1,
+				denom2,
 			},
 		}
 	end,
