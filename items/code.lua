@@ -299,7 +299,7 @@ local crash = {
 	atlas = "atlasnotjokers",
 	order = 400,
 	can_use = function(self, card)
-		return not (G.GAME and G.GAME.USING_CODE)
+		return not G.GAME.USING_CODE
 	end,
 	keep_on_use = function(self, card)
 		if not card.cry_crash_choice then
