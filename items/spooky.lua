@@ -186,7 +186,7 @@ local choco1 = {
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = { set = "Other", key = self.key }
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_flickering_desc", specific_vars = { 5 } }
-		if G.P_CENTERS and G.P_CENTERS.j_cry_ghost then
+		if G.P_CENTERS.j_cry_ghost then
 			info_queue[#info_queue + 1] = G.P_CENTERS.j_cry_ghost
 		end
 	end,
@@ -435,7 +435,7 @@ local choco4 = { --lunar abyss
 			and not context.retrigger_joker
 		then
 			local faces = 0
-			local cards = context.full_hand or (G.play and G.play.cards) or {}
+			local cards = context.full_hand or G.play.cards or {}
 			for i = 1, #cards do
 				if cards[i]:is_face() then
 					faces = faces + 1
