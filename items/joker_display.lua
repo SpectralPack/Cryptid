@@ -245,20 +245,18 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		local has_panopticon = next(SMODS.find_card("j_cry_panopticon"))
 
 		if has_maze then
-				G.GAME.current_round.hands_played = 0
-				G.GAME.current_round.discards_used = 0
-			end
-			if has_panopticon then
-				G.GAME.current_round.hands_left = (G.play.cards and next(G.play.cards)) and 0 or 1
-			end
+			G.GAME.current_round.hands_played = 0
+			G.GAME.current_round.discards_used = 0
+		end
+		if has_panopticon then
+			G.GAME.current_round.hands_left = (G.play.cards and next(G.play.cards)) and 0 or 1
 		end
 
 		local res = orig_card_calc_jd(self, ...)
 
 		if temp_hands_played ~= nil then G.GAME.current_round.hands_played = temp_hands_played end
-			if temp_discards_used ~= nil then G.GAME.current_round.discards_used = temp_discards_used end
-			if temp_hands_left ~= nil then G.GAME.current_round.hands_left = temp_hands_left end
-		end
+		if temp_discards_used ~= nil then G.GAME.current_round.discards_used = temp_discards_used end
+		if temp_hands_left ~= nil then G.GAME.current_round.hands_left = temp_hands_left end
 
 		return res
 	end
