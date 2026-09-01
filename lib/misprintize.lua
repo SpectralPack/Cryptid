@@ -34,12 +34,12 @@ Cryptid.misprintize_value_cap = {
 	repetitions = 40,
 }
 
-function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level)
+function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level, name)
 	local big_initial = (type(initial) ~= "table" and to_big(initial)) or initial
 	local big_min = (type(min) ~= "table" and to_big(min)) or min
 	local big_max = (type(max) ~= "table" and to_big(max)) or max
 
-	local grow = Cryptid.log_random(pseudoseed("cry_misprint" .. G.GAME.round_resets.ante), big_min, big_max)
+	local grow = Cryptid.log_random(pseudoseed('cry_misprint_' .. name), big_min, big_max)
 
 	local calc = big_initial
 	if not grow_type then
@@ -145,7 +145,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 					tbl[k] = Cryptid.sanity_check(
 						clear and Cryptid.base_values[name][k .. ref_value]
-							or cry_format(Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level), "%.2g"),
+							or cry_format(Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level, name), "%.2g"),
 						big
 					)
 				end
@@ -198,7 +198,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						tbl[k][_k] = Cryptid.sanity_check(
 							clear and Cryptid.base_values[name][_k .. k]
 								or cry_format(
-									Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level),
+									Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level, name),
 									"%.2g"
 								),
 							big
@@ -210,7 +210,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 		ref_tbl[ref_value] = tbl
 	end
 end
-function Cryptid.misprintize_val(val, override, big, grow_type, pow_level)
+function Cryptid.misprintize_val(val, override, big, grow_type, pow_level, name)
 	if is_number(val) then
 		val = Cryptid.sanity_check(
 			cry_format(
@@ -219,7 +219,8 @@ function Cryptid.misprintize_val(val, override, big, grow_type, pow_level)
 					override and override.min or G.GAME.modifiers.cry_misprint_min,
 					override and override.max or G.GAME.modifiers.cry_misprint_max,
 					grow_type,
-					pow_level
+					pow_level,
+					name
 				),
 				"%.2g"
 			),
@@ -315,7 +316,7 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
 			--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
 			card.misprint_cost_fac = 1
 				/ Cryptid.log_random(
-					pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
+					pseudoseed('cry_misprint_' .. card.config.center.key),
 					override and override.min or G.GAME.modifiers.cry_misprint_min,
 					override and override.max or G.GAME.modifiers.cry_misprint_max
 				)
@@ -436,7 +437,7 @@ function Cryptid.manipulate(card, args)
 					--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
 					card.misprint_cost_fac = 1
 						/ Cryptid.log_random(
-							pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
+							pseudoseed('cry_misprint_' .. card.config.center.key),
 							override and override.min or G.GAME.modifiers.cry_misprint_min,
 							override and override.max or G.GAME.modifiers.cry_misprint_max
 						)
@@ -510,9 +511,9 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 				end
 			end
 			if args.big ~= nil then
-				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big, i)
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, args.big, i, card)
 			else
-				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card), i)
+				ref_table[ref_value][i] = Cryptid.manipulate_value(num, args, Cryptid.is_card_big(card), i, card)
 			end
 		elseif i ~= "immutable" and type(v) == "table" and Cryptid.misprintize_value_blacklist[i] ~= false then
 			Cryptid.manipulate_table(card, ref_table[ref_value], i, args)
@@ -520,7 +521,7 @@ function Cryptid.manipulate_table(card, ref_table, ref_value, args, tblkey)
 	end
 end
 
-function Cryptid.manipulate_value(num, args, is_big, name)
+function Cryptid.manipulate_value(num, args, is_big, name, card)
 	if args.func then
 		num = args.func(num, args, is_big, name)
 	else
@@ -529,7 +530,7 @@ function Cryptid.manipulate_value(num, args, is_big, name)
 			local big_min = to_big(args.min)
 			local big_max = to_big(args.max)
 			local new_value = Cryptid.log_random(
-				pseudoseed(args.seed or ("cry_misprint" .. G.GAME.round_resets.ante)),
+				pseudoseed(args.seed or ('cry_misprint_' .. card.config.center.key)),
 				big_min,
 				big_max
 			)
