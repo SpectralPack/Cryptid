@@ -675,11 +675,11 @@ local baneful1 = {
 	no_doe = true,
 	unskippable = function(self)
 		--Only be unskippable if no VALID jokers are owned (if rightmost is eternal/cursed, the next)
-		if G.jokers and (#G.jokers.cards == 0 or not G.jokers.cards) then
+		if G.jokers and #G.jokers.cards == 0 then
 			return true
 		end
 		--For loop that iterates from right to left, breaking and returning false if finding the rightmost valid noneternal or cursed Joker
-		if G.jokers and G.jokers.cards then
+		if G.jokers then
 			for i = #G.jokers.cards, 1, -1 do
 				if
 					not (SMODS.is_eternal(G.jokers.cards[i]) or G.jokers.cards[i].config.center.rarity == "cry_cursed")
@@ -1409,10 +1409,9 @@ local noisy = {
 							{ string = "rand()", colour = G.C.JOKER_GREY },
 							{
 								string = "#@"
-									.. (G.deck and G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)
+									.. (G.deck.cards[1] and G.deck.cards[#G.deck.cards].base.id or 11)
 									.. (
-										G.deck
-											and G.deck.cards[1]
+										G.deck.cards[1]
 											and G.deck.cards[#G.deck.cards].base.suit
 											and G.deck.cards[#G.deck.cards].base.suit:sub(1, 1)
 										or "D"
@@ -1469,11 +1468,11 @@ local noisy = {
 							{ string = "rand()", colour = G.C.JOKER_GREY },
 							{
 								string = "@#"
-									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(
+									.. (G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(
 										2,
 										2
 									) or "m")
-									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.id or 7),
+									.. (G.deck.cards[1] and G.deck.cards[1].base.id or 7),
 								colour = G.C.BLUE,
 							},
 							loc_chips,

@@ -232,7 +232,7 @@ if JokerDisplay then
 		},
 		calc_function = function(card)
 			local abc = 0
-			if G.GAME and G.GAME.jokers_sold then
+			if G.GAME.jokers_sold then
 				for _, v in ipairs(G.GAME.jokers_sold) do
 					local center = G.P_CENTERS[v]
 					if
@@ -430,7 +430,7 @@ if JokerDisplay then
 			card.joker_display_values.localized_text = "("
 				.. (card.ability.extra.check and localize("k_active_ex") or "Inactive")
 				.. ")"
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_pot_of_jokes"] = {
@@ -497,7 +497,7 @@ if JokerDisplay then
 		},
 		extra_config = { colour = G.C.GREEN, scale = 0.3 },
 		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_sacrifice"] = {
@@ -527,7 +527,7 @@ if JokerDisplay then
 		},
 		extra_config = { colour = G.C.GREEN, scale = 0.3 },
 		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_wee_fib"] = {
@@ -878,7 +878,7 @@ if JokerDisplay then
 		},
 		extra_config = { colour = G.C.GREEN, scale = 0.3 },
 		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_eternalflame"] = {
@@ -954,7 +954,7 @@ if JokerDisplay then
 			local hand = G.hand.highlighted
 			local text, _, _ = JokerDisplay.evaluate_hand(hand)
 			local play_more_than = 0
-			local hand_exists = text ~= "Unknown" and G.GAME and G.GAME.hands and G.GAME.hands[text]
+			local hand_exists = text ~= "Unknown" and G.GAME.hands[text]
 			if hand_exists then
 				for k, v in pairs(G.GAME.hands) do
 					if text ~= k and v.played and v.played >= play_more_than and v.visible then
@@ -979,7 +979,7 @@ if JokerDisplay then
 			local hand = G.hand.highlighted
 			local text, _, _ = JokerDisplay.evaluate_hand(hand)
 			local play_more_than = 0
-			local hand_exists = text ~= "Unknown" and G.GAME and G.GAME.hands and G.GAME.hands[text]
+			local hand_exists = text ~= "Unknown" and G.GAME.hands[text]
 			if hand_exists then
 				for k, v in pairs(G.GAME.hands) do
 					if v.played and v.played >= play_more_than and v.visible then
@@ -1260,7 +1260,7 @@ if JokerDisplay then
 			},
 		},
 		calc_function = function(card)
-			local is_boss = Cryptid.is_boss_blind and Cryptid.is_boss_blind(G.GAME.blind) or (G.GAME and G.GAME.blind and G.GAME.blind.get_type and G.GAME.blind:get_type() == "Boss")
+			local is_boss = Cryptid.is_boss_blind(G.GAME.blind)
 			card.joker_display_values.x_mult = is_boss and card.ability.extra.x_mult or 1
 		end,
 	}
@@ -1348,7 +1348,7 @@ if JokerDisplay then
 				end
 			end
 			card.joker_display_values.count = math.min(count, 2 - card.ability.extra.check)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_pirate_dagger"] = {
@@ -1573,7 +1573,7 @@ if JokerDisplay then
 				end
 			end
 			card.joker_display_values.count = count
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_goldjoker"] = {
@@ -1738,11 +1738,11 @@ if JokerDisplay then
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
 		},
 		calc_function = function(card)
-			card.joker_display_values.e_mult = (G.GAME and G.GAME.current_round.hands_left <= 1)
+			card.joker_display_values.e_mult = (G.GAME.current_round.hands_left <= 1)
 					and card.ability.extra.mult
 				or 1
 			card.joker_display_values.localized_text = "("
-				.. ((G.GAME and G.GAME.current_round.hands_left <= 1) and localize("k_active_ex") or "Inactive")
+				.. ((G.GAME.current_round.hands_left <= 1) and localize("k_active_ex") or "Inactive")
 				.. ")"
 		end,
 	}
@@ -1799,7 +1799,7 @@ if JokerDisplay then
 		},
 		extra_config = { colour = G.C.GREEN, scale = 0.3 },
 		calc_function = function(card)
-			card.joker_display_values.odds = G.GAME and G.GAME.probabilities.normal or 1
+			card.joker_display_values.odds = G.GAME.probabilities.normal or 1
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_cut"] = {

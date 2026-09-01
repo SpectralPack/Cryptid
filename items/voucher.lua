@@ -976,7 +976,7 @@ local asteroglyph = { -- Heiroglyph T3; Set Ante to 0
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if G and G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante and G.GAME.round_resets.ante >= 36 then
+		if G.GAME and G.GAME.round_resets.ante >= 36 then
 			unlock_card(self)
 		end
 		if args.type == "cry_lock_all" then
