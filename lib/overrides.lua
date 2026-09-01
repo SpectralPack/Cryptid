@@ -346,10 +346,7 @@ if SMODS.add_voucher_to_shop then
 				end
 				card:set_cost()
 			end
-			if
-				G.GAME.current_round.cry_voucher_edition
-				and next(G.GAME.current_round.cry_voucher_edition)
-			then
+			if G.GAME.current_round.cry_voucher_edition and next(G.GAME.current_round.cry_voucher_edition) then
 				card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
 			end
 		end
@@ -1917,10 +1914,7 @@ G.FUNCS.skip_booster = function(e)
 			--Iterate backwards to get the rightmost valid (non eternal or cursed) Joker
 			for i = #G.jokers.cards, 1, -1 do
 				if
-					not (
-						SMODS.is_eternal(G.jokers.cards[i])
-						or G.jokers.cards[i].config.center.rarity == "cry_cursed"
-					)
+					not (SMODS.is_eternal(G.jokers.cards[i]) or G.jokers.cards[i].config.center.rarity == "cry_cursed")
 				then
 					c = G.jokers.cards[i]
 					break

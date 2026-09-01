@@ -10923,7 +10923,6 @@ local miscitems = {
 return {
 	name = "Misc. Jokers",
 	init = function()
-
 		local lcpref = Controller.L_cursor_press
 		function Controller:L_cursor_press(x, y)
 			lcpref(self, x, y)
