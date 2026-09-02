@@ -14,6 +14,7 @@ local cotton_candy = {
 	eternal_compat = false,
 	perishable_compat = false,
 	demicoloncompat = true,
+	blueprint_compat = false,
 	pools = { ["Food"] = true },
 	calculate = function(self, card, context)
 		if
@@ -122,6 +123,7 @@ local choco_dice = {
 	rarity = 3,
 	cost = 10,
 	order = 132,
+	blueprint_compat = false,
 	atlas = "atlasspooky",
 	config = { extra = { roll = 0 } },
 	immutable = true,
@@ -1624,7 +1626,7 @@ local candy_buttons = {
 	config = { extra = { rerolls = 15 } },
 	cost = 10,
 	atlas = "atlasspooky",
-	blueprint_compat = true,
+	blueprint_compat = false,
 	pools = { ["Food"] = true },
 	loc_vars = function(self, info_queue, center)
 		return { vars = { number_format(center.ability.extra.rerolls) } }

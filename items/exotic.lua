@@ -346,6 +346,7 @@ local redeo = {
 	atlas = "atlasexotic",
 	soul_pos = { x = 4, y = 0, extra = { x = 5, y = 0 } },
 	demicoloncompat = true,
+	blueprint_compat = false,
 	calculate = function(self, card, context)
 		if context.cry_ease_dollars and to_big(context.cry_ease_dollars) < to_big(0) and not context.blueprint then
 			card.ability.extra.money_remaining =
@@ -468,6 +469,7 @@ local effarcire = {
 	atlas = "effarcire",
 	rarity = "cry_exotic",
 	demicoloncompat = true,
+	blueprint_compat = false,
 	calculate = function(self, card, context)
 		if not context.blueprint and not context.retrigger_joker or context.forcetrigger then
 			if
