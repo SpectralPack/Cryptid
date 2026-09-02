@@ -230,6 +230,7 @@ local maximized = {
 	order = 13,
 	cost = 11,
 	immutable = true,
+	blueprint_compat = false,
 	atlas = "atlastwo",
 	cry_credits = {
 		idea = {
@@ -298,6 +299,7 @@ local potofjokes = {
 	cost = 10,
 	perishable_compat = false,
 	demicoloncompat = true,
+	blueprint_compat = false,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
 		return {
@@ -395,6 +397,7 @@ local queensgambit = {
 	cost = 7,
 	immutable = true,
 	demicoloncompat = true,
+	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		if not center.edition or (center.edition and not center.edition.negative) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_negative
@@ -1494,6 +1497,7 @@ local seal_the_deal = {
 	cost = 5,
 	order = 101,
 	immutable = true,
+	blueprint_compat = false,
 	atlas = "atlasone",
 	calculate = function(self, card, context)
 		if
@@ -2703,6 +2707,7 @@ local maze = {
 	cost = 1,
 	order = 61,
 	immutable = true,
+	blueprint_compat = false,
 	atlas = "atlastwo",
 	cry_credits = {
 		idea = {
@@ -2736,6 +2741,7 @@ local panopticon = {
 	order = 47,
 	cost = 1,
 	immutable = true,
+	blueprint_compat = false,
 	atlas = "atlastwo",
 	calculate = function(self, card, context)
 		if context.before and not context.blueprint and not context.retrigger_joker then
@@ -8027,6 +8033,7 @@ local kscope = {
 	atlas = "atlasthree",
 	demicoloncompat = true,
 	immutable = true,
+	blueprint_compat = false,
 	calculate = function(self, card, context)
 		if
 			(
@@ -8304,6 +8311,7 @@ local fractal = {
 	rarity = 3,
 	cost = 7,
 	order = 76,
+	blueprint_compat = false,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.extra } }
@@ -9053,6 +9061,7 @@ local necromancer = {
 	atlas = "atlastwo",
 	order = 126,
 	immutable = true,
+	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		return { vars = { center.ability.immutable.sell_cost_min } }
 	end,
@@ -10198,6 +10207,7 @@ local yarnball = { -- +1 to all listed probabilities for the highest cat tag lev
 	cost = 8,
 	order = 140,
 	demicoloncompat = false,
+	blueprint_compat = false,
 	in_pool = function(self)
 		if not G.GAME.tags or #G.GAME.tags == 0 then
 			return false
@@ -10394,6 +10404,7 @@ local paved_joker = { -- +1 to all listed probabilities for the highest cat tag 
 	rarity = 1,
 	cost = 4,
 	order = 142,
+	blueprint_compat = false,
 	config = { extra = 1 },
 	loc_vars = function(self, info_queue, card)
 		return { vars = { number_format(math.floor(card.ability.extra)) } }

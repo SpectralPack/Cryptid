@@ -529,6 +529,7 @@ local notebook = {
 	pools = { ["M"] = true },
 	pos = { x = 1, y = 0 },
 	order = 255,
+	blueprint_compat = false,
 	config = {
 		extra = {
 			add = 1,
@@ -1032,6 +1033,7 @@ local reverse = {
 	cost = 4,
 	eternal_compat = false,
 	demicoloncompat = true,
+	blueprint_compat = false,
 	immutable = true,
 	atlas = "atlastwo",
 	loc_vars = function(self, info_queue, center)
@@ -1279,6 +1281,7 @@ local virgo = {
 	order = 265,
 	eternal_compat = false,
 	demicoloncompat = true,
+	blueprint_compat = false,
 	loc_vars = function(self, info_queue, center)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
 		if not center.edition or (center.edition and not center.edition.polychrome) then
