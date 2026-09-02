@@ -1630,7 +1630,9 @@ function Card:shatter(volume)
 	self.shattered = true
 	self.dissolve = 0
 	self.dissolve_colours = { { 1, 1, 1, 0.8 } }
-	self:juice_up()
+	if type(volume) ~= "table" or not volume.no_juice then
+		self:juice_up()
+	end
 	local childParts = Particles(0, 0, 0, 0, {
 		timer_type = "TOTAL",
 		timer = 0.007 * dissolve_time,
@@ -1653,8 +1655,12 @@ function Card:shatter(volume)
 	G.E_MANAGER:add_event(Event({
 		blockable = false,
 		func = function()
-			play_sound("glass" .. math.random(1, 6), math.random() * 0.2 + 0.9, volume or 0.5)
-			play_sound("generic1", math.random() * 0.2 + 0.9, volume or 0.5)
+			local silent = type(volume) == "table" and volume.silent
+			if not silent then
+				local vol = (type(volume) == "number" and volume) or (type(volume) == "table" and volume.volume) or 0.5
+				play_sound("glass" .. math.random(1, 6), math.random() * 0.2 + 0.9, vol)
+				play_sound("generic1", math.random() * 0.2 + 0.9, vol)
+			end
 			return true
 		end,
 	}))

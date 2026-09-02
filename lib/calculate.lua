@@ -21,9 +21,6 @@ function eval_card(card, context)
 			end,
 		}
 	end
-	if card.will_shatter then
-		return {}, {}
-	end
 	-- Store old probability for later reference
 	local ret, post = ec(card, context)
 	return ret, post
