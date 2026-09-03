@@ -1361,7 +1361,7 @@ return {
 				text = {
 					"Vendre cette carte crée {C:attention}#1#{} {C:cry_candy}bonbons",
 					"{C:attention}+#2#{} {C:cry_candy}bonbons{} tous les {C:attention}2{} Blindes battues",
-					"{C:attention}+#3#{} {C:cry_candy}bonbons{} lorsque la {C:attention}Blinde de Boss{} est battue",
+					"{C:attention}+#4#{} {C:cry_candy}bonbons{} lorsque la {C:attention}Blinde de Boss{} est battue",
 				},
 			},
 			j_cry_candy_buttons = {

@@ -1681,8 +1681,8 @@ return {
 				name = "Корзинка конфет",
 				text = {
 					"Продайте эту карту, чтобы создать {C:attention}#1#{} {C:cry_candy}Конфет",
-					"{C:attention}+#2#{} {C:cry_candy}Конфет{} каждие {C:attention}#3#{} победы над блайндом",
-					"{C:attention}+#3#{} {C:cry_candy}Конфет{} когда {C:attention}Босс-блайнд{} повержен",
+					"{C:attention}+#2#{} {C:cry_candy}Конфет{} каждые {C:attention}#3#{} победы над блайндом",
+					"{C:attention}+#4#{} {C:cry_candy}Конфет{} когда {C:attention}Босс-блайнд{} повержен",
 				},
 			},
 			j_cry_blacklist = {

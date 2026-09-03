@@ -1369,7 +1369,7 @@ return {
 				text = {
 					"이 카드를 팔아 {C:attention}#1#{}개의 {C:cry_candy}사탕{} 생성",
 					"{C:attention}#3#{}개의 블라인드를 격파할 때마다 {C:attention}사탕 +#2#{}개",
-					"{C:attention}보스 블라인드{} 격파 시 {C:attention}사탕 +#3#{}개",
+					"{C:attention}보스 블라인드{} 격파 시 {C:attention}사탕 +#4#{}개",
 				},
 			},
 			j_cry_candy_buttons = {

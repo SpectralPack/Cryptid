@@ -1335,7 +1335,7 @@ return {
 				text = {
 					"Verkaufe diese Karte um {C:attention}#1#{} {C:cry_candy}Süßigkeiten{} zu erstellen",
 					"{C:attention}+#2#{} {C:cry_candy}Süßigkeiten{} für alle {C:attention}2{} besiegten Blinds",
-					"{C:attention}+#3#{} {C:cry_candy}Süßigkeiten{} für alle besiegten {C:attention}Boss Blinds{}",
+					"{C:attention}+#4#{} {C:cry_candy}Süßigkeiten{} für alle besiegten {C:attention}Boss Blinds{}",
 				},
 			},
 			j_cry_candy_buttons = {
