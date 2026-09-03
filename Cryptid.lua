@@ -441,7 +441,10 @@ local cryptidConfigTab = function()
 		ref_table = Cryptid_config,
 		ref_value = "menu",
 	})
-	if (SMODS.Mods and SMODS.Mods["JokerDisplay"] and not SMODS.Mods["JokerDisplay"].disabled) or JokerDisplay ~= nil then
+	if
+		(SMODS.Mods and SMODS.Mods["JokerDisplay"] and not SMODS.Mods["JokerDisplay"].disabled)
+		or JokerDisplay ~= nil
+	then
 		cry_nodes[#cry_nodes + 1] = create_toggle({
 			label = localize("cry_feat_jokerdisplay"),
 			active_colour = HEX("2e7cd6"),
