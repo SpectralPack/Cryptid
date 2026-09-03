@@ -231,6 +231,31 @@
 if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker_display) then
 	--Side note: I Don't think retrigger type exp gives a correct value with Emult jokers, but ehhhhh ig I can live with that (It's good enough)
 
+	local function cut_float(val)
+		if not val then return val end
+		if type(val) == "string" then
+			local n = tonumber(val)
+			if n then
+				val = n
+			else
+				return (val:gsub("(%d+%.%d)%d*", "%1"))
+			end
+		end
+		if type(val) == "number" then
+			if val == math.floor(val) then
+				return math.floor(val)
+			end
+			local sign = val < 0 and -1 or 1
+			local abs_val = math.abs(val)
+			local res = sign * (math.floor(abs_val * 10 + 1e-7) / 10)
+			if res == math.floor(res) then
+				return math.floor(res)
+			end
+			return res
+		end
+		return val
+	end
+
 	-- Panopticon & Labyrinth calculation hooks
 	local orig_card_calc_jd = Card.calculate_joker_display
 	function Card:calculate_joker_display(...)
@@ -258,6 +283,50 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		if temp_discards_used ~= nil then G.GAME.current_round.discards_used = temp_discards_used end
 		if temp_hands_left ~= nil then G.GAME.current_round.hands_left = temp_hands_left end
 
+		if self.joker_display_values then
+			if self.joker_display_values.rounds_remaining then
+				self.joker_display_values.rounds_remaining = cut_float(self.joker_display_values.rounds_remaining)
+			end
+			if self.joker_display_values.start_round then
+				self.joker_display_values.start_round = cut_float(self.joker_display_values.start_round)
+			end
+			if self.joker_display_values.start_count then
+				self.joker_display_values.start_count = cut_float(self.joker_display_values.start_count)
+			end
+			if self.joker_display_values.progress_text then
+				self.joker_display_values.progress_text = cut_float(self.joker_display_values.progress_text)
+			end
+			if self.joker_display_values.perishable then
+				self.joker_display_values.perishable = cut_float(self.joker_display_values.perishable)
+			end
+			if self.joker_display_values.loyalty_text then
+				self.joker_display_values.loyalty_text = cut_float(self.joker_display_values.loyalty_text)
+			end
+			for k, v in pairs(self.joker_display_values) do
+				if type(v) == "string" and v:find("%d+%.%d%d%d+") then
+					self.joker_display_values[k] = (v:gsub("(%d+%.%d)%d+", "%1"))
+				end
+			end
+		end
+
+		return res
+	end
+
+	local orig_jd_text_format = JokerDisplay.text_format
+	function JokerDisplay.text_format(text, node)
+		local res = orig_jd_text_format(text, node)
+		if type(res) == "string" then
+			local card = node.UIBox.parent
+			local is_food = (card.is_food and card:is_food())
+				or (type(card.ability.extra) == "table" and (card.ability.extra.rounds or card.ability.extra.rounds_remaining or card.ability.extra.rounds_left or card.ability.extra.rerolls or card.ability.extra.handleft))
+			local is_round_ref = node.config and (node.config.ref_value == "rounds_remaining" or node.config.ref_value == "start_round" or node.config.ref_value == "start_count" or node.config.ref_value == "h_size" or node.config.ref_value == "handleft")
+			local is_reminder = node.config and (node.config.id == "reminder_text" or (node.parent and node.parent.config and node.parent.config.id == "reminder_text"))
+			if (is_food or is_reminder or is_round_ref) and res:find("%d+%.%d%d+") then
+				res = res:gsub("(%d+%.%d)%d+", "%1")
+			elseif res:find("%d+%.%d%d%d+") then
+				res = res:gsub("(%d+%.%d)%d+", "%1")
+			end
+		end
 		return res
 	end
 
@@ -491,7 +560,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			card.joker_display_values.rounds_remaining = localize({
 				type = "variable",
 				key = "loyalty_inactive",
-				vars = { card.ability.extra.rounds_remaining or 2 },
+				vars = { cut_float(card.ability.extra.rounds_remaining or 2) },
 			})
 		end,
 	}
@@ -599,8 +668,9 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			{ text = ")" },
 		},
 		calc_function = function(card)
-			card.joker_display_values.h_size = (card.ability.extra.h_size >= 0 and "+" or "")
-				.. card.ability.extra.h_size
+			local h_size = card.ability.extra.h_size
+			card.joker_display_values.h_size = (h_size >= 0 and "+" or "")
+				.. cut_float(h_size)
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_bonk"] = {
@@ -1001,9 +1071,9 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			card.joker_display_values.start_round = card.joker_display_values.start_round
 				or card.ability.extra.rounds_remaining
 			card.joker_display_values.rounds_remaining = "("
-				.. card.ability.extra.rounds_remaining
+				.. cut_float(card.ability.extra.rounds_remaining)
 				.. "/"
-				.. card.joker_display_values.start_round
+				.. cut_float(card.joker_display_values.start_round)
 				.. ")"
 		end,
 	}
@@ -1627,9 +1697,9 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			card.joker_display_values.start_round = card.joker_display_values.start_round
 				or card.ability.extra.rounds_remaining
 			card.joker_display_values.rounds_remaining = "("
-				.. card.ability.extra.rounds_remaining
+				.. cut_float(card.ability.extra.rounds_remaining)
 				.. "/"
-				.. card.joker_display_values.start_round
+				.. cut_float(card.joker_display_values.start_round)
 				.. ")"
 		end,
 	}
@@ -1686,9 +1756,9 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			card.joker_display_values.start_round = card.joker_display_values.start_round
 				or card.ability.extra.rounds_remaining
 			card.joker_display_values.rounds_remaining = " ("
-				.. card.ability.extra.rounds_remaining
+				.. cut_float(card.ability.extra.rounds_remaining)
 				.. "/"
-				.. card.joker_display_values.start_round
+				.. cut_float(card.joker_display_values.start_round)
 				.. ")"
 		end,
 	}
@@ -1825,7 +1895,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		calc_function = function(card)
 			local is_active = card.ability.immutable.score >= card.ability.extra.req
 			card.joker_display_values.localized_text = "("
-				.. (is_active and localize("k_active_ex") or (card.ability.immutable.score .. "/" .. card.ability.extra.req))
+				.. (is_active and localize("k_active_ex") or (cut_float(card.ability.immutable.score) .. "/" .. cut_float(card.ability.extra.req)))
 				.. ")"
 		end,
 	}
@@ -2207,7 +2277,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		calc_function = function(card)
 			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds) or 2
 			local rounds_passed = math.max(0, 2 - rounds_left)
-			card.joker_display_values.rounds_remaining = "(" .. rounds_passed .. "/2)"
+			card.joker_display_values.rounds_remaining = "(" .. cut_float(rounds_passed) .. "/2)"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_zooble"] = {
@@ -2471,7 +2541,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ") "
 			local left = (card.ability and card.ability.extra and card.ability.extra.left_money) or 10
 			local needed = (card.ability and card.ability.extra and card.ability.extra.needed_money) or 10
-			card.joker_display_values.progress_text = "(" .. math.max(0, needed - left) .. "/$" .. needed .. ")"
+			card.joker_display_values.progress_text = "(" .. cut_float(math.max(0, needed - left)) .. "/$" .. cut_float(needed) .. ")"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_familiar_currency"] = {
@@ -2611,7 +2681,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 			local dollars_per = (card.ability and card.ability.extra and card.ability.extra.dollars) or 4
 			card.joker_display_values.dollars = total_retriggers * dollars_per * JokerDisplay.calculate_joker_triggers(card)
 			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds) or 11
-			card.joker_display_values.rounds_remaining = "(" .. rounds_left .. "/11)"
+			card.joker_display_values.rounds_remaining = "(" .. cut_float(rounds_left) .. "/11)"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_yarnball"] = {
@@ -2645,7 +2715,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		},
 		calc_function = function(card)
 			local rerolls_left = (card.ability and card.ability.extra and card.ability.extra.rerolls) or 15
-			card.joker_display_values.rounds_remaining = "(" .. rerolls_left .. "/15)"
+			card.joker_display_values.rounds_remaining = "(" .. cut_float(rerolls_left) .. "/15)"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_pizza"] = {
@@ -2661,7 +2731,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		calc_function = function(card)
 			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds_left) or 3
 			local rounds_needed = (card.ability and card.ability.extra and card.ability.extra.rounds_needed) or 3
-			card.joker_display_values.rounds_remaining = "(" .. math.max(0, rounds_needed - rounds_left) .. "/" .. rounds_needed .. ")"
+			card.joker_display_values.rounds_remaining = "(" .. cut_float(math.max(0, rounds_needed - rounds_left)) .. "/" .. cut_float(rounds_needed) .. ")"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_pizza_slice"] = {
@@ -2743,7 +2813,7 @@ if JokerDisplay and (Cryptid_config.joker_display == nil or Cryptid_config.joker
 		},
 		calc_function = function(card)
 			local rounds_left = (card.ability and card.ability.extra and card.ability.extra.rounds) or 9
-			card.joker_display_values.rounds_remaining = "(" .. rounds_left .. "/9)"
+			card.joker_display_values.rounds_remaining = "(" .. cut_float(rounds_left) .. "/9)"
 		end,
 	}
 	JokerDisplay.Definitions["j_cry_poor_joker"] = {
