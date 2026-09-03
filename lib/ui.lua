@@ -399,7 +399,6 @@ function SMODS.RunSelect.Functions.grab_tooltips(set, key)
 	return orig_grab_tooltips(set, key)
 end
 
-
 local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
 	local abc = G_UIDEF_use_and_sell_buttons_ref(card)

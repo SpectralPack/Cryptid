@@ -285,7 +285,7 @@ return {
 					"Используйте {C:spectral}Реплику",
 				},
 			},
-		
+
 			b_black_antimatter = {
 				name = "Черная колода",
 				text = {
