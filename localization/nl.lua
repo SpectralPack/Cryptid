@@ -132,6 +132,86 @@ return {
 					"{C:attention}-2{} Joker slots",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "Zwart kaartspel",
+				text = {
+					"{C:attention}+#1#{} jokerslot",
+				},
+			},
+			b_green_antimatter = {
+				name = "Groen kaartspel",
+				text = {
+					"Aan het einde van elke ronde:",
+					"{C:money}$#1#{s:0.85} per overgebleven {C:blue}hand",
+					"{C:money}$#2#{s:0.85} per overgebleven {C:red}weggooiing",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "Nevel kaartspel",
+				text = {
+					"Begin het spel met de",
+					"{C:planet,T:v_telescope}#1#{}-voucher",
+				},
+			},
+			b_painted_antimatter = {
+				name = "Geschilderd kaartspel",
+				text = {
+					"{C:attention}+#1#{} handgrootte",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "Plasmakaartspel",
+				text = {
+					"Breng {C:blue}fiches{} en",
+					"{C:red}mult{} in evenwicht bij het berekenen",
+					"van de score voor de gespeelde hand",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "Nostalgic Deck",
+				text = {
+					"{C:attention}Joker{} and {C:attention}Consumable{}",
+					"slots are {C:attention}combined",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "Conveyor Deck",
+				text = {
+					"At start of round,",
+					"{C:attention}duplicate{} rightmost Joker",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "Critical Deck",
+				text = {
+					"After each hand played,",
+					"{C:green}#1# in #2#{} chance for {X:dark_edition,C:white} ^2 {} Mult",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "Encoded Deck",
+				text = {
+					"Start with a {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
+					"and a {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "Spooky Deck",
+				text = {
+					"Start with a {C:attention,T:j_cry_chocolate_dice}Chocolate Die",
+					"After each {C:attention}Ante{}, create a",
+					"{C:cry_candy}Candy{} or {X:cry_cursed,C:white}Cursed{} Joker",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "Wormhole Deck",
+				text = {
+					"Start with an {C:cry_exotic}Exotic{C:attention} Joker",
+					"Jokers are {C:attention}20X{} more",
+					"likely to be {C:dark_edition}Negative",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {

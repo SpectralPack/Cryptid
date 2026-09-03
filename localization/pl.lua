@@ -141,6 +141,86 @@ return {
 					"{C:inactive}(wymaga miejsca){}",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "Czarna talia",
+				text = {
+					"{C:attention}+#1#{} miejsce na jokera",
+				},
+			},
+			b_green_antimatter = {
+				name = "Zielona talia",
+				text = {
+					"Na końcu każdej rundy otrzymujesz:",
+					"{C:money}$#1#{s:0.85} za pozostałą {C:blue}rękę",
+					"{C:money}$#2#{s:0.85} za pozostałą {C:red}zrzutkę",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "Mgławicowa talia",
+				text = {
+					"Rozpoczynasz podejście z",
+					"kuponem {C:planet,T:v_telescope}#1#{}",
+				},
+			},
+			b_painted_antimatter = {
+				name = "Malowana talia",
+				text = {
+					"{C:attention}+#1#{} do rozmiaru ręki",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "Plazmowa talia",
+				text = {
+					"Równoważy {C:blue}żetony{} i",
+					"{C:red}mnożnik{} przy obliczaniu",
+					"punktów za zagraną rękę",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "Nostalgiczna Talia",
+				text = {
+					"Miejsca na {C:attention}Jokery{} i {C:attention}Karty Jednorazowe{}",
+					"są {C:attention}połączone",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "Taśmociągowa Talia",
+				text = {
+					"Na początku rundy",
+					"{C:attention}duplikuje{} jokera najbardziej po prawej",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "Krytyczna Talia",
+				text = {
+					"Po każdej zagranej ręce",
+					"{C:green}#1# na #2#{} szans na {X:dark_edition,C:white} ^2 {} mnożnika",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "Zakodowana Talia",
+				text = {
+					"Zaczynasz z {C:cry_code,T:j_cry_CodeJoker}Jokerem Kodu{}",
+					"i {C:cry_code,T:j_cry_copypaste}Kopiuj/Wklej{}",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "Straszliwa Talia",
+				text = {
+					"Zaczynasz z {C:attention,T:j_cry_chocolate_dice}Czekoladową Kostką",
+					"Po każdym {C:attention}Ante{}, stwórz",
+					"{C:cry_candy}Cukierka{} lub {X:cry_cursed,C:white}Przeklętego{} jokera",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "Tuneloczasowa Talia",
+				text = {
+					"Rozpoczynasz podejście z {C:cry_exotic}egzotycznym{C:attention} jokerem",
+					"{C:attention}X20{} prawdopodobieństwa",
+					"na {C:dark_edition}Negatywy{} jokerów",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {

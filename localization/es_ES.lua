@@ -193,6 +193,86 @@ return {
 					"{C:inactive}(debe haber espacio){}",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "Baraja negra",
+				text = {
+					"{C:attention}+#1#{} ranura(s) de comodín",
+				},
+			},
+			b_green_antimatter = {
+				name = "Baraja verde",
+				text = {
+					"Al final de cada ronda:",
+					"{C:money}$#1#{s:0.85} por {C:blue}mano restante",
+					"{C:money}$#2#{s:0.85} por {C:red}descarte restante",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "Baraja nébula",
+				text = {
+					"Comienza la partida",
+					"con el vale {C:planet,T:v_telescope}#1#{}",
+				},
+			},
+			b_painted_antimatter = {
+				name = "Baraja pintada",
+				text = {
+					"{C:attention}+#1#{} tamaño de mano",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "Baraja plasmática",
+				text = {
+					"Equilibra las {C:blue}fichas{} y",
+					"el {C:red}multi{} cuando calcula",
+					"los puntos de cada mano jugada",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "Baraja nostálgica",
+				text = {
+					"Las ranuras de {C:attention}comodín{} y",
+					"{C:attention}consumibles{} se {C:attention}combinan",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "Baraja transportadora",
+				text = {
+					"Al principio de la runda,",
+					"{C:attention}duplica{} el comodín del extremo derecho",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "Baraja crítica",
+				text = {
+					"Después de cada mano jugada,",
+					"{C:green}#1# en #2#{} probabilidades para {X:dark_edition,C:white} ^2 {} multi",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "Baraja codificada",
+				text = {
+					"Comienza con un {C:cry_code,T:j_cry_CodeJoker}Comodín de código{}",
+					"y {C:cry_code,T:j_cry_copypaste}Copiar y pegar{}",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "Baraja espeluznante",
+				text = {
+					"Comienza con un {C:attention,T:j_cry_chocolate_dice}Dado de chocolate",
+					"Después de cada {C:attention}apuesta{}, crea un comodín",
+					"de {C:cry_candy}dulce{} o {X:cry_cursed,C:white}maldito{}",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "Baraja de agujero de gusano",
+				text = {
+					"Comienza con un comodín {C:cry_exotic}exótico{C:attention}",
+					"Los comodines son {C:attention}20X{} más",
+					"probables de ser {C:dark_edition}Negativos",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {
