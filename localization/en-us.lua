@@ -411,6 +411,13 @@ return {
 					"at the same time",
 				},
 			},
+			b_cry_bountiful_antimatter = {
+				name = "Bountiful Deck",
+				text = {
+					"After {C:blue}Play{} or {C:red}Discard{},",
+					"always draw at least {C:attention}5{} cards",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {
