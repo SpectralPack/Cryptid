@@ -193,6 +193,86 @@ return {
 					"{C:inactive}(precisa ter espaço){}",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "Baralho Preto",
+				text = {
+					"{C:attention}+#1#{} Espaço de Curinga",
+				},
+			},
+			b_green_antimatter = {
+				name = "Baralho Verde",
+				text = {
+					"No fim de cada Rodada:",
+					"{C:money}$#1#{s:0.85} por {C:blue}Mão restante",
+					"{C:money}$#2#{s:0.85} por {C:red}Descarte restante",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "Baralho de Nebulosa",
+				text = {
+					"Comece a tentativa com o",
+					"cupom de {C:planet,T:v_telescope}#1#{}",
+				},
+			},
+			b_painted_antimatter = {
+				name = "Baralho Pintado",
+				text = {
+					"{C:attention}+#1#{} tamanho de mão",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "Baralho de Plasma",
+				text = {
+					"Equilibre {C:blue}Fichas{} e",
+					"{C:red}Multi{} ao calcular a",
+					"pontuação para a mão preferida",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "Baralho Nostalgico",
+				text = {
+					"{C:attention}Curingas{} e {C:attention}Consumíveis{}",
+					"tem espaços {C:attention}combinados",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "Baralho Conversor",
+				text = {
+					"No começo da rodada,",
+					"{C:attention}duplique{} O Curinga mais a direita",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "Baralho Crítico",
+				text = {
+					"Após cada mão jogada,",
+					"{C:green}#1# em #2#{} de chance para {X:dark_edition,C:white} ^2 {} Mult",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "Baralho Codificado",
+				text = {
+					"Começe com um {C:cry_code,T:j_cry_CodeJoker} Curinga Código{}",
+					"e um {C:cry_code,T:j_cry_copypaste}Copia/Cola{}",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "Baralho Assustador",
+				text = {
+					"Começe com um {C:attention,T:j_cry_chocolate_dice}Dado de Chocolate",
+					"Após cada {C:attention}Aposta{}, crie um",
+					"Curinga {C:cry_candy}Doce{} ou {X:cry_cursed,C:white}Amaldiçoado{}",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "Baralho Buraco de Minhoca",
+				text = {
+					"Começe com um Curinga {C:cry_exotic}Exótico{C:attention}",
+					"Curingas são {C:attention}20X{} mais suscetíveis",
+					"para serem {C:dark_edition}Negativos",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {

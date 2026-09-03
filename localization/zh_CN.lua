@@ -268,6 +268,84 @@ return {
 					"获得一张{C:cry_exotic}域外{C:attention}小丑",
 				},
 			},
+			b_black_antimatter = {
+				name = "黑色牌组",
+				text = {
+					"{C:attention}+#1#{}个小丑牌位",
+				},
+			},
+			b_green_antimatter = {
+				name = "绿色牌组",
+				text = {
+					"在每轮结束时：",
+					"{C:money}$#1#{s:0.85}每个剩余的出牌机会",
+					"{C:money}$#2#{s:0.85}每个剩余的弃牌机会",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "星云牌组",
+				text = {
+					"开局时拥有",
+					"{C:planet,T:v_telescope}#1#{}优惠券",
+				},
+			},
+			b_painted_antimatter = {
+				name = "涂色牌组",
+				text = {
+					"{C:attention}+#1#{}手牌上限",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "等离子牌组",
+				text = {
+					"在计算出牌得分时",
+					"平衡{C:blue}筹码{}和{C:red}倍率{}",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "怀旧牌组",
+				text = {
+					"{C:attention}小丑{}和{C:attention}消耗牌{}",
+					"槽位{C:attention}合并{}",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "传送带牌组",
+				text = {
+					"在回合开始时，",
+					"{C:attention}复制{}最右侧的小丑",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "暴击牌组",
+				text = {
+					"每次出牌后，",
+					"{C:green}#1# / #2#{}几率获得{X:talisman_emult,C:white} ^2 {}倍率",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "编码牌组",
+				text = {
+					"以一张{C:cry_code,T:j_cry_CodeJoker}代码小丑{}",
+					"和一张{C:cry_code,T:j_cry_copypaste}复制/粘贴{}开局",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "万圣节牌组",
+				text = {
+					"以一张{C:attention,T:j_cry_chocolate_dice}巧克力骰{}开局",
+					"每个{C:attention}底注{}结束后，创建一个",
+					"{C:cry_candy}糖果{}或{X:cry_cursed,C:white}诅咒{}小丑",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "虫洞牌组",
+				text = {
+					"以一张{C:cry_exotic}域外{C:attention}小丑{}开局",
+					"小丑牌成为{C:dark_edition}负片{}的",
+					"概率是原本的{C:attention}20倍{}",
+				},
+			},
 			b_cry_legendary = {
 				name = "传奇牌组",
 				text = {

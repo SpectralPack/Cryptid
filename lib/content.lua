@@ -1368,7 +1368,7 @@ SMODS.RunSelectPage({
 	create_selection_card = function(self, card_key, card_number, area)
 		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.b_red)
 		local unlocked = Cryptid.antimatter_compat(card_key)
-		card.cry_antimatter_card = true --figure out how to make this actually display a different description
+		card.cry_antimatter_card = true
 		card.cry_antimatter_locked = not unlocked
 		card.sprite_facing = "back"
 		card.facing = "back"

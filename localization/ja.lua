@@ -293,6 +293,86 @@ return {
 					"所持する",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "ブラックデッキ",
+				text = {
+					"ジョーカースロット {C:attention}+#1#{}",
+				},
+			},
+			b_green_antimatter = {
+				name = "グリーンデッキ",
+				text = {
+					"各ラウンドの終了時に",
+					"{s:0.85}残りの {C:blue}ハンド{} ごとに {C:money}$#1#{}",
+					"{s:0.85}残りの {C:red}ディスカード{} ごとに {C:money}$#2#{}",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "ネビュラデッキ",
+				text = {
+					"{C:planet,T:v_telescope}#1#{} のバウチャーを持って",
+					"ランを開始する",
+				},
+			},
+			b_painted_antimatter = {
+				name = "ペインテッドデッキ",
+				text = {
+					"ハンドサイズ {C:attention}+#1#{}",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "プラズマデッキ",
+				text = {
+					"プレイされたハンドのスコアを",
+					"計算する時に",
+					"{C:blue}チップ{} と {C:red}倍率{} のバランスをとる",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "郷愁デッキ",
+				text = {
+					"{C:attention}ジョーカー{}と{C:attention}消耗{}スロットが",
+					"{C:attention}合体{}される",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "コンベアデッキ",
+				text = {
+					"ラウンド開始時",
+					"右端のジョーカーを{C:attention}複製{}する",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "クリティカルデッキ",
+				text = {
+					"ハンドをプレイするごとに",
+					"{C:green}#2#分の#1#{}の確率で 倍率 {X:dark_edition,C:white} 2乗 {}",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "エンコーディドデッキ",
+				text = {
+					"1枚の{C:cry_code,T:j_cry_CodeJoker}コードジョーカー{}と",
+					"1枚の{C:cry_code,T:j_cry_copypaste}Copy/Paste{}でランをスタートする",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "不気味なデッキ",
+				text = {
+					"{C:attention,T:j_cry_chocolate_dice}チョコレート・ダイ{}でランをスタートする",
+					"{C:attention}アンティ{}ごとに",
+					"{C:cry_candy}キャンディ{}か{X:cry_cursed,C:white}呪い{}ジョーカーを作る",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "ワームホールデッキ",
+				text = {
+					"1枚の{C:cry_exotic}エキゾチック{C:attention}ジョーカーでランをスタートする",
+					"{C:dark_edition}ネガティブ{}ジョーカーの出現確率",
+					"{C:attention}20倍{}",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {

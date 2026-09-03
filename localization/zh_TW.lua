@@ -125,6 +125,86 @@ return {
 					"when Boss Blind is defeated {C:inactive}(must have room){}",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "黑色牌組",
+				text = {
+					"{C:attention}+#1#{}小丑牌欄位",
+				},
+			},
+			b_green_antimatter = {
+				name = "綠色牌組",
+				text = {
+					"每一回合結束時：",
+					"每剩一次{C:blue}出牌次數，獲得{C:money}$#1#{s:0.85}",
+					"每剩一次{C:red}棄牌次數，獲得{C:money}$#2#{s:0.85}",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "星雲牌組",
+				text = {
+					"開局時得到",
+					"{C:planet,T:v_telescope}#1#{}禮券",
+				},
+			},
+			b_painted_antimatter = {
+				name = "彩繪牌組",
+				text = {
+					"{C:attention}+#1#{}手牌數量",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "等離子牌組",
+				text = {
+					"在計算局數分數時",
+					"平均{C:blue}籌碼{}",
+					"和{C:red}倍數{}",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "懷舊牌組",
+				text = {
+					"{C:attention}小丑{}和{C:attention}消耗牌{}",
+					"欄位{C:attention}合併{}",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "傳送帶牌組",
+				text = {
+					"在回合開始時，",
+					"{C:attention}複製{}最右側的小丑",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "暴擊牌組",
+				text = {
+					"每次出牌後，",
+					"{C:green}#1# / #2#{}幾率獲得{X:talisman_emult,C:white} ^2 {}倍率",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "編碼牌組",
+				text = {
+					"以一張{C:cry_code,T:j_cry_CodeJoker}代碼小丑{}",
+					"和一張{C:cry_code,T:j_cry_copypaste}複製/貼上{}開局",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "萬聖節牌組",
+				text = {
+					"以一張{C:attention,T:j_cry_chocolate_dice}巧克力骰{}開局",
+					"每個{C:attention}底注{}結束後，創建一個",
+					"{C:cry_candy}糖果{}或{X:cry_cursed,C:white}詛咒{}小丑",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "蟲洞牌組",
+				text = {
+					"以一張{C:cry_exotic}域外{C:attention}小丑{}開局",
+					"小丑牌成為{C:dark_edition}負片{}的",
+					"概率是原本的{C:attention}20倍{}",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {

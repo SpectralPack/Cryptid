@@ -283,6 +283,86 @@ return {
 					"보유",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "블랙 덱",
+				text = {
+					"{C:attention}+#1#{} 개의 조커 슬롯",
+				},
+			},
+			b_green_antimatter = {
+				name = "그린 덱",
+				text = {
+					"각 라운드 종료 시:",
+					"{s:0.85}남은 {C:blue}핸드{} 당 {C:money}$#1#",
+					"{s:0.85}남은 {C:red}버리기{} 당 {C:money}$#2#",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "네뷸라 덱",
+				text = {
+					"{C:planet,T:v_telescope}#1#{} 바우처를 가지고",
+					"런을 시작합니다",
+				},
+			},
+			b_painted_antimatter = {
+				name = "칠한 덱",
+				text = {
+					"{C:attention}+#1#{} 핸드 크기",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "플라스마 덱",
+				text = {
+					"플레이한 핸드의",
+					"점수를 계산할 때 {C:blue}칩{} 과 {C:red}배수{} 의",
+					"균형을 맞춥니다",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "추억의 덱",
+				text = {
+					"{C:attention}조커{}와 {C:attention}소모품{}",
+					"슬롯이 {C:attention}통합됨",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "컨베이어 덱",
+				text = {
+					"라운드 시작 시,",
+					"가장 오른쪽 조커를 {C:attention}복제{}",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "크리티컬 덱",
+				text = {
+					"핸드를 낼 때마다,",
+					"{C:green}#2#분의 #1#{} 확률로 {X:dark_edition,C:white}배수 ^2{}",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "인코딩된 덱",
+				text = {
+					"{C:cry_code,T:j_cry_CodeJoker}코드 조커{}와",
+					"{C:cry_code,T:j_cry_copypaste}복사/붙여넣기{}를 가지고 시작",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "으스스한 덱",
+				text = {
+					"{C:attention,T:j_cry_chocolate_dice}초콜릿 주사위{}를 가지고 시작",
+					"{C:attention}앤티{} 종료 시마다,",
+					"{C:cry_candy}캔디{} 또는 {X:cry_cursed,C:white}저주받은{} 조커 생성",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "웜홀 덱",
+				text = {
+					"{C:cry_exotic}이색적{C:attention} 조커로 런 시작",
+					"조커가 {C:dark_edition}네거티브{}가 될 확률",
+					"{C:attention}20배{} 증가",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {

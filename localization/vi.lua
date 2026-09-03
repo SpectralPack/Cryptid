@@ -185,6 +185,86 @@ return {
 					"khi Boss Blind bị đánh bại {C:inactive}(Phải có ô trống)",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "Bộ Bài Đen",
+				text = {
+					"{C:attention}+#1#{} ô Joker",
+				},
+			},
+			b_green_antimatter = {
+				name = "Bộ Bài Xanh Lá",
+				text = {
+					"Vào cuối mỗi Ván:",
+					"{C:money}$#1#{s:0.85} cho mỗi {C:blue}Tay bài{} còn lại",
+					"{C:money}$#2#{s:0.85} cho mỗi lần {C:red}Bỏ bài{} còn lại",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "Bộ Bài Tinh Vân",
+				text = {
+					"Bắt đầu ván với",
+					"voucher {C:planet,T:v_telescope}#1#{}",
+				},
+			},
+			b_painted_antimatter = {
+				name = "Bộ Bài Sơn",
+				text = {
+					"{C:attention}+#1#{} giới hạn bài trên tay",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "Bộ Bài Plasma",
+				text = {
+					"Cân bằng {C:blue}Chip{} và",
+					"{C:red}Nhân{} khi tính điểm",
+					"cho tay bài đã chơi",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "Bộ Bài Hoài Niệm",
+				text = {
+					"Gộp ô {C:attention}Joker{} và ô",
+					"{C:attention}Tiêu Thụ{} lại thành một",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "Bộ Bài Băng Chuyền",
+				text = {
+					"Vào mỗi đầu ván,",
+					"{C:attention}nhân đôi{} Joker ở tít bên phải",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "Bộ Bài Chí Mạng",
+				text = {
+					"Sau mỗi tay bài đã chơi,",
+					"Xác suất {C:green}#1# trên #2#{} cho {X:dark_edition,C:white} ^2 {} Nhân",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "Bộ Bài Mã Hóa",
+				text = {
+					"Bắt đầu với {C:cry_code,T:j_cry_CodeJoker}Code Joker{}",
+					"và {C:cry_code,T:j_cry_copypaste}Copy/Paste{}",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "Bộ Bài Ma Quái",
+				text = {
+					"Bắt đầu với {C:attention,T:j_cry_chocolate_dice}Xúc Sắc Sôcôla",
+					"Sau mỗi {C:attention}Ante{}, tạo ra",
+					"viên {C:cry_candy}Kẹo{} hoặc Joker {X:cry_cursed,C:white}Nguyền_Rủa",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "Bộ Bài Lỗ Giun",
+				text = {
+					"Bắt đầu với một {C:attention}Joker {C:cry_exotic}Ngoại Lai",
+					"Tăng xác suất xuất hiện Joker",
+					"{C:dark_edition}Âm bản lên {C:attention}20 lần",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {

@@ -294,6 +294,86 @@ return {
 					"en même temps",
 				},
 			},
+
+			b_black_antimatter = {
+				name = "Jeu noir",
+				text = {
+					"{C:attention}+#1#{} emplacement de Joker",
+				},
+			},
+			b_green_antimatter = {
+				name = "Jeu vert",
+				text = {
+					"À la fin de la manche :",
+					"{C:money}#1# ${s:0.85} par {C:blue}main restante",
+					"{C:money}#2# ${s:0.85} par {C:red}défausse restante",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "Jeu nébuleux",
+				text = {
+					"Commencez la partie avec le",
+					"coupon {C:planet,T:v_telescope}#1#{}",
+				},
+			},
+			b_painted_antimatter = {
+				name = "Jeu peint",
+				text = {
+					"{C:attention}+#1#{} taille de main",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "Jeu plasmique",
+				text = {
+					"Équilibrez les {C:blue}jetons{} et",
+					"le {C:red}Multi{} lorsque vous calculez",
+					"le score de la main jouée",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "Jeu Nostalgique",
+				text = {
+					"Les emplacements de {C:attention}Jokers{}",
+					"et de {C:attention}Consommables{} sont {C:attention}combinés{}",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "Jeu Convoyeur",
+				text = {
+					"Au début de la manche,",
+					"{C:attention}duplique{} le Joker le plus à droite",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "Jeu Critique",
+				text = {
+					"Après chaque main jouée,",
+					"{C:green}#1# chance sur #2#{} d'obtenir {X:dark_edition,C:white} ^2 {} Multi",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "Jeu Encodé",
+				text = {
+					"Démarre avec un {C:cry_code,T:j_cry_CodeJoker}Joker de Code{}",
+					"et un {C:cry_code,T:j_cry_copypaste}Copier/Coller{}",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "Jeu fantôme",
+				text = {
+					"Démarre avec un {C:attention,T:j_cry_chocolate_dice}Dé en chocolat",
+					"Après chaque {C:attention}Mise{}, crée un Joker",
+					"{C:cry_candy}Bonbon{} ou {X:cry_cursed,C:white}Maudit{}",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "Jeu Vortex",
+				text = {
+					"Commence avec un Joker {C:cry_exotic}Exotique{C:attention}",
+					"Les Jokers ont {C:attention}20X{} plus",
+					"de chances d'être {C:dark_edition}Négatifs",
+				},
+			},
 		},
 		Blind = {
 			bl_cry_box = {

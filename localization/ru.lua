@@ -285,6 +285,86 @@ return {
 					"Используйте {C:spectral}Реплику",
 				},
 			},
+		
+			b_black_antimatter = {
+				name = "Черная колода",
+				text = {
+					"{C:attention}+#1#{} слот джокера",
+				},
+			},
+			b_green_antimatter = {
+				name = "Зеленая колода",
+				text = {
+					"В конце каждого раунда:",
+					"{C:money}$#1#{s:0.85} за каждую оставшуюся {C:blue}руку",
+					"{C:money}$#2#{s:0.85} за каждый оставшийся {C:red}сброс",
+				},
+			},
+			b_nebula_antimatter = {
+				name = "Колода туманности",
+				text = {
+					"Начинаете партию с",
+					"{C:planet,T:v_telescope}#1#{} ваучером",
+				},
+			},
+			b_painted_antimatter = {
+				name = "Рисованная колода",
+				text = {
+					"{C:attention}+#1#{} размер руки",
+				},
+			},
+			b_plasma_antimatter = {
+				name = "Плазменная колода",
+				text = {
+					"Баланс {C:blue}фишек{} и",
+					"{C:red}множ.{} при расчете",
+					"очков для сыгранной руки",
+				},
+			},
+			b_cry_beta_antimatter = {
+				name = "Ностальгическая колода",
+				text = {
+					"Слоты под {C:attention}Джокеры{}",
+					"и под {C:attention}Расходники{} {C:attention}соединены",
+				},
+			},
+			b_cry_conveyor_antimatter = {
+				name = "Конвейерная колода",
+				text = {
+					"в начале раунда,",
+					"{C:attention}дублирует{} самого правого джокера",
+				},
+			},
+			b_cry_critical_antimatter = {
+				name = "Критическая колода",
+				text = {
+					"После каждой сыгранной руки,",
+					"{C:green}#1# к #2#{} шанс для {X:dark_edition,C:white} ^2 {} Множ",
+				},
+			},
+			b_cry_encoded_antimatter = {
+				name = "Закодированная колода",
+				text = {
+					"Начинаете партию с {C:cry_code,T:j_cry_CodeJoker}Код Джокером{}",
+					"и {C:cry_code,T:j_cry_copypaste}Копировать/Вставить{}",
+				},
+			},
+			b_cry_spooky_antimatter = {
+				name = "Жуткая колода",
+				text = {
+					"Начните с {C:attention,T:j_cry_chocolate_dice}Шоколадным кубиком",
+					"после каждого {C:attention}Анте{}, создайте",
+					"{C:cry_candy}Конфету{} или {X:cry_cursed,C:white}Проклятого{} джокера",
+				},
+			},
+			b_cry_wormhole_antimatter = {
+				name = "Колода червоточины",
+				text = {
+					"Начинаете с {C:cry_exotic}Экзотическим{C:attention} Джокером",
+					"Джокеры в {C:attention}20X{} чаще",
+					"появляются {C:dark_edition}Негативными",
+				},
+			},
 		},
 
 		-- ── БЛАЙНДЫ ─────────────────────────────────────────
