@@ -577,7 +577,10 @@ local notebook = {
 				end
 			end
 			local has_enough_jollies = to_number(jollycount) >= to_number(card.ability.extra.jollies)
-			if has_enough_jollies or SMODS.pseudorandom_probability(card, "cry_notebook", 1, card.ability.extra.odds, "Notebook") then
+			if
+				has_enough_jollies
+				or SMODS.pseudorandom_probability(card, "cry_notebook", 1, card.ability.extra.odds, "Notebook")
+			then
 				card.ability.immutable.slots = to_number(
 					math.min(
 						card.ability.immutable.max_slots,

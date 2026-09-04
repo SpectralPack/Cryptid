@@ -193,7 +193,8 @@ local et_deck = {
 		local _, enhancement = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				enhancement == "random" and "Random" or localize({ type = "name_text", set = "Enhanced", key = enhancement }),
+				enhancement == "random" and "Random"
+					or localize({ type = "name_text", set = "Enhanced", key = enhancement }),
 				colours = {
 					enhancement == "random" and G.C.FILTER
 						or (G.P_CENTERS[enhancement] and G.P_CENTERS[enhancement].badge_colour or G.C.FILTER),
@@ -266,9 +267,11 @@ local sk_deck = {
 		local _, _, sticker = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				sticker == "random" and "Random"
-					or sticker == "all" and "All"
-					or localize({ type = "name_text", set = "Other", key = sticker == "pinned" and "pinned_left" or sticker }),
+				sticker == "random" and "Random" or sticker == "all" and "All" or localize({
+					type = "name_text",
+					set = "Other",
+					key = sticker == "pinned" and "pinned_left" or sticker,
+				}),
 				colours = {
 					(sticker == "random" or sticker == "all") and G.C.FILTER
 						or (SMODS.Stickers[sticker] and SMODS.Stickers[sticker].badge_colour or G.C.FILTER),

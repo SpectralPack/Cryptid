@@ -7420,7 +7420,8 @@ local wheelhope = {
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
 		local prob_num, prob_den = SMODS.get_probability_vars(nil, 1, 4, "wheel_of_fortune")
-		info_queue[#info_queue + 1] = { key = "alt_wheel_of_fortune", set = "Other", specific_vars = { prob_num, prob_den } }
+		info_queue[#info_queue + 1] =
+			{ key = "alt_wheel_of_fortune", set = "Other", specific_vars = { prob_num, prob_den } }
 		return {
 			vars = {
 				number_format(center.ability.extra.extra),

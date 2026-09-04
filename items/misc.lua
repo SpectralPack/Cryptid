@@ -209,8 +209,10 @@ local abstract = {
 	config = { extra = { Emult = 1.15, odds_after_play = 2, odds_after_round = 4, marked = false, survive = false } },
 	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
 	loc_vars = function(self, info_queue, card)
-		local play_prob_num, play_prob_den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_play, "Abstract Card")
-		local round_prob_num, round_prob_den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_round, "Abstract Card")
+		local play_prob_num, play_prob_den =
+			SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_play, "Abstract Card")
+		local round_prob_num, round_prob_den =
+			SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_round, "Abstract Card")
 		return {
 			vars = {
 				card.ability.extra.Emult,

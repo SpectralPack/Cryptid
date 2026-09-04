@@ -768,7 +768,8 @@ local nstar = {
 	loc_vars = function(self, info_queue, center)
 		local neutron_stars_used = Cryptid.safe_get(G, "GAME", "neutronstarsusedinthisrun") or 0
 		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
-			info_queue[#info_queue + 1] = { key = "o_nstar", set = "Other", specific_vars = { 0.1, (1 + (0.1 * neutron_stars_used)) } }
+			info_queue[#info_queue + 1] =
+				{ key = "o_nstar", set = "Other", specific_vars = { 0.1, (1 + (0.1 * neutron_stars_used)) } }
 		end
 		return { vars = { neutron_stars_used } }
 	end,
