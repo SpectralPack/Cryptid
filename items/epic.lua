@@ -135,12 +135,12 @@ local membershipcardtwo = {
 	demicoloncompat = true,
 	atlas = "atlasepic",
 	loc_vars = function(self, info_queue, card)
-		local aaa
+		local disabled_tooltip
 		if not Cryptid_config.HTTPS then
 			if G.localization.descriptions.Other.cry_https_disabled then
-				aaa = {}
-				localize({ type = "other", key = "cry_https_disabled", nodes = aaa, vars = {} })
-				aaa = aaa[1]
+				disabled_tooltip = {}
+				localize({ type = "other", key = "cry_https_disabled", nodes = disabled_tooltip, vars = {} })
+				disabled_tooltip = disabled_tooltip[1]
 			end
 		end
 		return {
@@ -154,7 +154,7 @@ local membershipcardtwo = {
 					)
 				),
 			},
-			main_end = aaa,
+			main_end = disabled_tooltip,
 		}
 	end,
 	calculate = function(self, card, context)
@@ -210,11 +210,11 @@ local googol_play = {
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 4, y = 0 } },
 	loc_vars = function(self, info_queue, card)
-		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Googol Play Card")
+		local prob_num, prob_den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Googol Play Card")
 		return {
 			vars = {
-				aaa,
-				bbb,
+				prob_num,
+				prob_den,
 				number_format(card.ability.extra.Xmult),
 			},
 		}
@@ -1497,11 +1497,11 @@ local bonusjoker = {
 	enhancement_gate = "m_bonus",
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.m_bonus
-		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Bonus Joker")
+		local prob_num, prob_den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Bonus Joker")
 		return {
 			vars = {
-				aaa,
-				bbb,
+				prob_num,
+				prob_den,
 				number_format(math.min(card.ability.extra.add, card.ability.immutable.max)),
 			},
 		}

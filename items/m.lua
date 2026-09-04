@@ -550,11 +550,11 @@ local notebook = {
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = G.P_CENTERS.j_jolly
-		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Notebook")
+		local prob_num, prob_den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Notebook")
 		return {
 			vars = {
-				aaa,
-				bbb,
+				prob_num,
+				prob_den,
 				number_format(card.ability.immutable.slots),
 				number_format(card.ability.extra.active),
 				number_format(card.ability.extra.jollies),
@@ -576,8 +576,11 @@ local notebook = {
 					jollycount = jollycount + 1
 				end
 			end
-			local aaa = to_number(jollycount) >= to_number(card.ability.extra.jollies)
-			if aaa or SMODS.pseudorandom_probability(card, "cry_notebook", 1, card.ability.extra.odds, "Notebook") then
+			local has_enough_jollies = to_number(jollycount) >= to_number(card.ability.extra.jollies)
+			if
+				has_enough_jollies
+				or SMODS.pseudorandom_probability(card, "cry_notebook", 1, card.ability.extra.odds, "Notebook")
+			then
 				card.ability.immutable.slots = to_number(
 					math.min(
 						card.ability.immutable.max_slots,
@@ -1870,20 +1873,20 @@ local longboi = {
 		if card.cry_flipping then
 			return
 		end
-		local aaa = lenient_bignum(G.GAME and G.GAME.monstermult or 1)
+		local monster_mult = lenient_bignum(G.GAME and G.GAME.monstermult or 1)
 		if (Cryptid.safe_get(card, "area", "config", "type") or "") == "title" then
-			card.ability.extra.monster = aaa
+			card.ability.extra.monster = monster_mult
 		else
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					card.ability.extra.monster = aaa
+					card.ability.extra.monster = monster_mult
 					return true
 				end,
 			}))
 		end
-		if to_big(aaa) >= to_big(1234567654321) then
+		if to_big(monster_mult) >= to_big(1234567654321) then
 			card.children.center:set_sprite_pos({ x = 7, y = 5 })
-		elseif to_big(aaa) >= to_big(12321) then
+		elseif to_big(monster_mult) >= to_big(12321) then
 			card.children.center:set_sprite_pos({ x = 7, y = 6 })
 		end
 	end,

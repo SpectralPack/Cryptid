@@ -346,8 +346,8 @@ local trade = {
 			for kk, vv in ipairs(G.vouchers.cards) do
 				local center = G.P_CENTERS[vv.config.center.key]
 				if center.requires then
-					for _, vvv in pairs(center.requires) do
-						if vvv == v.config.center.key then
+					for _, req_key in pairs(center.requires) do
+						if req_key == v.config.center.key then
 							can_use = false
 							break
 						end
@@ -445,8 +445,8 @@ local trade = {
 			for kk, vv in ipairs(G.vouchers.cards) do
 				local center = G.P_CENTERS[vv.config.center.key]
 				if center.requires then
-					for _, vvv in pairs(center.requires) do
-						if vvv == v.config.center.key then
+					for _, req_key in pairs(center.requires) do
+						if req_key == v.config.center.key then
 							can_use = false
 							break
 						end

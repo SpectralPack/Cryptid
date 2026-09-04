@@ -1027,7 +1027,7 @@ local lavender_loop = {
 		G.GAME.cry_ach_conditions.patience_virtue_earnable = nil
 	end,
 	cry_round_base_mod = function(self, dt)
-		local aaa = 4 * (G.GAME.modifiers.cry_rush_hour_iii or 1)
+		local rush_mult = 4 * (G.GAME.modifiers.cry_rush_hour_iii or 1)
 		if
 			G.GAME.cry_ach_conditions.patience_virtue_timer
 			and G.GAME.cry_ach_conditions.patience_virtue_timer > 0
@@ -1041,7 +1041,7 @@ local lavender_loop = {
 		if G.SETTINGS.paused or G.STATE == G.STATES.HAND_PLAYED then
 			return 1
 		else
-			return 1.25 ^ (dt / (1.5 / math.min(G.SETTINGS.GAMESPEED, 4) * aaa))
+			return 1.25 ^ (dt / (1.5 / math.min(G.SETTINGS.GAMESPEED, 4) * rush_mult))
 		end
 	end,
 	attributes = { "large_blind" },

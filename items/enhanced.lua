@@ -108,13 +108,13 @@ local e_deck = {
 				key = self.key .. "_preview",
 			}
 		end
-		local aaa = Cryptid.enhanced_deck_info(self)
+		local edition = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				aaa == "random" and "Random" or localize({ type = "name_text", set = "Edition", key = aaa }),
+				edition == "random" and "Random" or localize({ type = "name_text", set = "Edition", key = edition }),
 				colours = {
-					aaa == "random" and G.C.DARK_EDITION
-						or (G.P_CENTERS[aaa] and G.P_CENTERS[aaa].badge_colour or G.C.DARK_EDITION),
+					edition == "random" and G.C.DARK_EDITION
+						or (G.P_CENTERS[edition] and G.P_CENTERS[edition].badge_colour or G.C.DARK_EDITION),
 				},
 			},
 		}
@@ -122,13 +122,13 @@ local e_deck = {
 	edeck_type = "edition",
 	config = { cry_no_edition_price = true },
 	apply = function(self)
-		local aaa = Cryptid.enhanced_deck_info({})
+		local edition = Cryptid.enhanced_deck_info({})
 		G.GAME.cry_lock_edition = true
-		if aaa == "random" then
+		if edition == "random" then
 			G.GAME.modifiers.cry_force_random_edition = true
 			G.GAME.modifiers.cry_force_edition = nil
 		else
-			G.GAME.modifiers.cry_force_edition = aaa
+			G.GAME.modifiers.cry_force_edition = edition
 		end
 		--Ban Edition tags (They will never redeem)
 		for k, v in pairs(G.P_TAGS) do
@@ -139,10 +139,10 @@ local e_deck = {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-					if aaa == "random" then
+					if edition == "random" then
 						G.playing_cards[c]:set_edition(Cryptid.poll_random_edition(), true, true)
 					else
-						G.playing_cards[c]:set_edition(aaa, true, true)
+						G.playing_cards[c]:set_edition(edition, true, true)
 					end
 				end
 				return true
@@ -190,33 +190,34 @@ local et_deck = {
 				key = self.key .. "_preview",
 			}
 		end
-		local _, bbb = Cryptid.enhanced_deck_info(self)
+		local _, enhancement = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				bbb == "random" and "Random" or localize({ type = "name_text", set = "Enhanced", key = bbb }),
+				enhancement == "random" and "Random"
+					or localize({ type = "name_text", set = "Enhanced", key = enhancement }),
 				colours = {
-					bbb == "random" and G.C.FILTER
-						or (G.P_CENTERS[bbb] and G.P_CENTERS[bbb].badge_colour or G.C.FILTER),
+					enhancement == "random" and G.C.FILTER
+						or (G.P_CENTERS[enhancement] and G.P_CENTERS[enhancement].badge_colour or G.C.FILTER),
 				},
 			},
 		}
 	end,
 	apply = function(self)
-		local aaa, bbb = Cryptid.enhanced_deck_info(self)
+		local _, enhancement = Cryptid.enhanced_deck_info(self)
 		G.GAME.cry_lock_enhancement = true
-		if bbb == "random" then
+		if enhancement == "random" then
 			G.GAME.modifiers.cry_force_random_enhancement = true
 			G.GAME.modifiers.cry_force_enhancement = nil
 		else
-			G.GAME.modifiers.cry_force_enhancement = bbb
+			G.GAME.modifiers.cry_force_enhancement = enhancement
 		end
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-					if bbb == "random" then
+					if enhancement == "random" then
 						G.playing_cards[c]:set_ability(Cryptid.poll_random_enhancement())
 					else
-						G.playing_cards[c]:set_ability(G.P_CENTERS[bbb])
+						G.playing_cards[c]:set_ability(G.P_CENTERS[enhancement])
 					end
 				end
 				return true
@@ -263,45 +264,47 @@ local sk_deck = {
 				key = self.key .. "_preview",
 			}
 		end
-		local _, _, ccc = Cryptid.enhanced_deck_info(self)
+		local _, _, sticker = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				ccc == "random" and "Random"
-					or ccc == "all" and "All"
-					or localize({ type = "name_text", set = "Other", key = ccc == "pinned" and "pinned_left" or ccc }),
+				sticker == "random" and "Random" or sticker == "all" and "All" or localize({
+					type = "name_text",
+					set = "Other",
+					key = sticker == "pinned" and "pinned_left" or sticker,
+				}),
 				colours = {
-					(ccc == "random" or ccc == "all") and G.C.FILTER
-						or (SMODS.Stickers[ccc] and SMODS.Stickers[ccc].badge_colour or G.C.FILTER),
+					(sticker == "random" or sticker == "all") and G.C.FILTER
+						or (SMODS.Stickers[sticker] and SMODS.Stickers[sticker].badge_colour or G.C.FILTER),
 				},
 			},
 		}
 	end,
 	apply = function(self)
-		local aaa, bbb, ccc = Cryptid.enhanced_deck_info(self)
-		if ccc == "random" then
+		local _, _, sticker = Cryptid.enhanced_deck_info(self)
+		if sticker == "random" then
 			G.GAME.modifiers.cry_force_random_sticker = true
 			G.GAME.modifiers.cry_force_sticker = nil
 			G.GAME.modifiers.cry_force_all_stickers = nil
-		elseif ccc == "all" then
+		elseif sticker == "all" then
 			G.GAME.modifiers.cry_force_all_stickers = true
 			G.GAME.modifiers.cry_force_random_sticker = nil
 			G.GAME.modifiers.cry_force_sticker = nil
 		else
-			G.GAME.modifiers.cry_force_sticker = ccc
+			G.GAME.modifiers.cry_force_sticker = sticker
 			G.GAME.modifiers.cry_force_random_sticker = nil
 			G.GAME.modifiers.cry_force_all_stickers = nil
 		end
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-					if ccc == "all" then
+					if sticker == "all" then
 						for _, st in ipairs(SMODS.Sticker.obj_buffer) do
 							if not SMODS.Stickers[st].no_edeck then
 								G.playing_cards[c]:add_sticker(st, true)
 							end
 						end
 					else
-						local st = ccc == "random" and Cryptid.poll_random_sticker() or ccc
+						local st = sticker == "random" and Cryptid.poll_random_sticker() or sticker
 						if SMODS.Stickers[st] then
 							G.playing_cards[c]:add_sticker(st, true)
 						else
@@ -352,32 +355,32 @@ local st_deck = {
 				key = self.key .. "_preview",
 			}
 		end
-		local _, _, _, ddd = Cryptid.enhanced_deck_info(self)
+		local _, _, _, suit = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				ddd == "random" and "Random" or localize(ddd, "suits_plural"),
-				colours = { ddd == "random" and G.C.FILTER or G.C.SUITS[ddd] },
+				suit == "random" and "Random" or localize(suit, "suits_plural"),
+				colours = { suit == "random" and G.C.FILTER or G.C.SUITS[suit] },
 			},
 		}
 	end,
 	apply = function(self)
-		local aaa, bbb, ccc, ddd = Cryptid.enhanced_deck_info(self)
+		local _, _, _, suit = Cryptid.enhanced_deck_info(self)
 		G.GAME.cry_lock_suit = true
-		if ddd == "random" then
+		if suit == "random" then
 			G.GAME.modifiers.cry_force_random_suit = true
 			G.GAME.modifiers.cry_force_suit = nil
 		else
 			for _, blind in pairs(G.P_BLINDS) do
-				if Cryptid.safe_get(blind, "debuff", "suit") == ddd then --ban all blinds that debuff the selected suit (in the normal way)
+				if Cryptid.safe_get(blind, "debuff", "suit") == suit then --ban all blinds that debuff the selected suit (in the normal way)
 					G.GAME.banned_keys[blind.key] = true
 				end
 			end
-			G.GAME.modifiers.cry_force_suit = ddd
+			G.GAME.modifiers.cry_force_suit = suit
 		end
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-					local st = ddd == "random" and Cryptid.poll_random_suit() or ddd
+					local st = suit == "random" and Cryptid.poll_random_suit() or suit
 					G.playing_cards[c]:change_suit(st)
 				end
 				return true
@@ -423,30 +426,30 @@ local sl_deck = {
 				key = self.key .. "_preview",
 			}
 		end
-		local _, _, _, _, eee = Cryptid.enhanced_deck_info(self)
+		local _, _, _, _, seal = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				eee == "random" and "Random"
-					or localize({ type = "name_text", set = "Other", key = eee:lower() .. "_seal" }),
+				seal == "random" and "Random"
+					or localize({ type = "name_text", set = "Other", key = seal:lower() .. "_seal" }),
 				colours = {
-					eee == "random" and G.C.FILTER or (G.P_SEALS[eee] and G.P_SEALS[eee].badge_colour or G.C.FILTER),
+					seal == "random" and G.C.FILTER or (G.P_SEALS[seal] and G.P_SEALS[seal].badge_colour or G.C.FILTER),
 				},
 			},
 		}
 	end,
 	apply = function(self)
-		local aaa, bbb, ccc, ddd, eee = Cryptid.enhanced_deck_info(self)
+		local _, _, _, _, seal = Cryptid.enhanced_deck_info(self)
 		G.GAME.cry_lock_seal = true
-		if eee == "random" then
+		if seal == "random" then
 			G.GAME.modifiers.cry_force_random_seal = true
 			G.GAME.modifiers.cry_force_seal = nil
 		else
-			G.GAME.modifiers.cry_force_seal = eee
+			G.GAME.modifiers.cry_force_seal = seal
 		end
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-					local sl = eee == "random" and Cryptid.poll_random_seal() or eee
+					local sl = seal == "random" and Cryptid.poll_random_seal() or seal
 					G.playing_cards[c]:set_seal(sl, true)
 				end
 				return true

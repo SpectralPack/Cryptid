@@ -170,13 +170,13 @@ local choco1 = {
 	object_type = "Event",
 	key = "choco1",
 	loc_vars = function(self, info_queue, center)
-		local _, aaa = SMODS.get_probability_vars(self, 1, 6, "Chocolate Dice 1")
+		local _, prob_den = SMODS.get_probability_vars(self, 1, 6, "Chocolate Dice 1")
 		info_queue[#info_queue + 1] = { set = "Other", key = self.key } --todo specific_vars
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_flickering_desc", specific_vars = { 5 } }
 		info_queue[#info_queue + 1] = {
 			set = "Joker",
 			key = "j_cry_ghost",
-			specific_vars = { SMODS.get_probability_vars(self, 1, 2, "Chocolate Dice 1"), aaa },
+			specific_vars = { SMODS.get_probability_vars(self, 1, 2, "Chocolate Dice 1"), prob_den },
 		}
 	end,
 	start = function(self)

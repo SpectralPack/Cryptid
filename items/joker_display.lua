@@ -231,7 +231,7 @@ if JokerDisplay then
 			{ ref_table = "card.joker_display_values", ref_value = "localized_text" },
 		},
 		calc_function = function(card)
-			local abc = 0
+			local count = 0
 			if G.GAME.jokers_sold then
 				for _, v in ipairs(G.GAME.jokers_sold) do
 					local center = G.P_CENTERS[v]
@@ -249,11 +249,11 @@ if JokerDisplay then
 							or center.name == "Crafty Joker"
 						)
 					then
-						abc = abc + 1
+						count = count + 1
 					end
 				end
 			end
-			card.joker_display_values.extra = card.ability.extra * abc
+			card.joker_display_values.extra = card.ability.extra * count
 			card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
 		end,
 	}
