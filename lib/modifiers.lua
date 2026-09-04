@@ -280,6 +280,10 @@ function Card:set_ability(center, initial, delay_sprites)
 	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_sticker") then
 		sticker = G.GAME.modifiers.cry_force_sticker
 	end
+	local all_stickers = nil
+	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_all_stickers") then
+		all_stickers = true
+	end
 	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_random_edition") then
 		random = true
 	end
@@ -296,6 +300,12 @@ function Card:set_ability(center, initial, delay_sprites)
 			if sticker then
 				self.ability[sticker] = true
 				self:set_cost()
+			elseif all_stickers then
+				for _, c in ipairs(SMODS.Sticker.obj_buffer) do
+					if not SMODS.Stickers[c].no_edeck then
+						self:add_sticker(c, true)
+					end
+				end
 			end
 		end
 		if self.ability.set == "Voucher" then
@@ -450,11 +460,13 @@ function Cryptid.next_voucher_stickers(booster)
 	for k, v in pairs(checks) do
 		v["poll"] = pseudorandom("cry_" .. suff .. k .. G.GAME.round_resets.ante)
 		v["force"] = G.GAME.modifiers.cry_sticker_sheet_plus
+			or G.GAME.modifiers.cry_force_all_stickers
 			or (G.GAME.modifiers.cry_force_sticker and G.GAME.modifiers.cry_force_sticker == k)
 	end
 	if
 		G.GAME.modifiers.cry_any_stickers
 		or G.GAME.modifiers.cry_sticker_sheet_plus
+		or G.GAME.modifiers.cry_force_all_stickers
 		or G.GAME.modifiers.cry_force_sticker
 	then
 		if (G.GAME.modifiers.enable_eternals_in_shop and checks.eternal.poll > odds) or checks.eternal.force then

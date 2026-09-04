@@ -903,14 +903,21 @@ SMODS.RunSelectPage({
 	page = 2,
 	area_type = "deck",
 	random_select = true,
-	generate_pool = function(self)
+	get_pool = function(self)
 		local pool = {}
 		for _, c in ipairs(G.P_CENTER_POOLS.Edition) do
 			if not c.no_edeck and c.key ~= "e_base" then
 				pool[#pool + 1] = c
 			end
 		end
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if is_antimatter then -- or true then -- uncomment `or true` to enable for normal edition decks
+			pool[#pool + 1] = { key = "random", set = "Edition", unlocked = true, discovered = true }
+		end
 		return pool
+	end,
+	generate_pool = function(self)
+		return self:get_pool()
 	end,
 	quick_start_text = function()
 		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
@@ -919,7 +926,7 @@ SMODS.RunSelectPage({
 			return
 		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_ed
-		if Cryptid.safe_get(G.P_CENTERS, curr, "set") ~= "Edition" then
+		if Cryptid.safe_get(G.P_CENTERS, curr, "set") ~= "Edition" and curr ~= "random" then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_ed = "e_foil"
 		end
 		return localize({
@@ -929,10 +936,31 @@ SMODS.RunSelectPage({
 		})
 	end,
 	set_default = function(self, choice)
-		return Cryptid.safe_get(G.P_CENTERS, choice, "set") == "Edition" and choice or "e_foil"
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if choice == "random" and not is_antimatter then -- and false then -- uncomment `and false` to enable for normal edition decks
+			return "e_foil"
+		end
+		return (choice == "random" or Cryptid.safe_get(G.P_CENTERS, choice, "set") == "Edition") and choice or "e_foil"
+	end,
+	selected_text = function(self, selection)
+		return localize({ type = "name_text", set = "Edition", key = selection })
 	end,
 	create_selection_card = function(self, card_key, card_number, area)
 		local sprites = Cryptid.edeck_sprites.edition
+		if card_key == "random" then
+			local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.c_base)
+			card.children.center.atlas = G.ASSET_ATLAS[sprites.default.atlas]
+			card.children.center:set_sprite_pos(sprites.default.pos)
+			card.ability._cry_edition_choice = "random"
+			card.generate_UIBox_ability_table = function(card_self, vars_only)
+				if vars_only then
+					return
+				end
+				return generate_card_ui({ set = "Other", key = "random_edition" }, nil, nil, "Other", {})
+			end
+			stick(card)
+			return card
+		end
 		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.e_foil)
 		card:set_edition(card_key, true, true)
 		if sprites[card_key] then
@@ -952,13 +980,16 @@ SMODS.RunSelectPage({
 	end,
 	handle_choice = function(self, choice, remove)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		local val = (choice.ability and choice.ability._cry_edition_choice)
+			or (choice.config and choice.config.center and choice.config.center.key)
+			or choice
 		if not remove then
 			if self.selection_limit > 1 then
 				if
 					SMODS.table_size(SMODS.RunSelect.Setup.choices[self.key]) < self.selection_limit
-					and not SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key]
+					and not SMODS.RunSelect.Setup.choices[self.key][val]
 				then
-					SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = true
+					SMODS.RunSelect.Setup.choices[self.key][val] = true
 				else
 					if choice.juice_up then
 						choice:juice_up()
@@ -966,13 +997,13 @@ SMODS.RunSelectPage({
 					return
 				end
 			else
-				SMODS.RunSelect.Setup.choices[self.key] = choice.config.center.key
+				SMODS.RunSelect.Setup.choices[self.key] = val
 			end
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
-				SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = nil
+				SMODS.RunSelect.Setup.choices[self.key][val] = nil
 			end
 		end
 	end,
@@ -988,14 +1019,21 @@ SMODS.RunSelectPage({
 	page = 2,
 	area_type = "deck",
 	random_select = true,
-	generate_pool = function(self)
+	get_pool = function(self)
 		local pool = {}
 		for _, c in ipairs(G.P_CENTER_POOLS.Enhanced) do
 			if not c.no_edeck then
 				pool[#pool + 1] = c
 			end
 		end
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if is_antimatter then -- or true then -- uncomment `or true` to enable for normal edition decks
+			pool[#pool + 1] = { key = "random", set = "Enhanced", unlocked = true, discovered = true }
+		end
 		return pool
+	end,
+	generate_pool = function(self)
+		return self:get_pool()
 	end,
 	quick_start_text = function()
 		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
@@ -1004,7 +1042,7 @@ SMODS.RunSelectPage({
 			return
 		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh
-		if Cryptid.safe_get(G.P_CENTERS, curr, "set") ~= "Enhanced" then
+		if Cryptid.safe_get(G.P_CENTERS, curr, "set") ~= "Enhanced" and curr ~= "random" then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_enh = "m_bonus"
 		end
 		return localize({
@@ -1014,10 +1052,32 @@ SMODS.RunSelectPage({
 		})
 	end,
 	set_default = function(self, choice)
-		return Cryptid.safe_get(G.P_CENTERS, choice, "set") == "Enhanced" and choice or "m_bonus"
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if choice == "random" and not is_antimatter then -- and false then -- uncomment `and false` to enable for normal edition decks
+			return "m_bonus"
+		end
+		return (choice == "random" or Cryptid.safe_get(G.P_CENTERS, choice, "set") == "Enhanced") and choice
+			or "m_bonus"
+	end,
+	selected_text = function(self, selection)
+		return localize({ type = "name_text", set = "Enhanced", key = selection })
 	end,
 	create_selection_card = function(self, card_key, card_number, area)
 		local sprites = Cryptid.edeck_sprites.enhancement
+		if card_key == "random" then
+			local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.c_base)
+			card.children.center.atlas = G.ASSET_ATLAS[sprites.default.atlas]
+			card.children.center:set_sprite_pos(sprites.default.pos)
+			card.ability._cry_enhancement_choice = "random"
+			card.generate_UIBox_ability_table = function(card_self, vars_only)
+				if vars_only then
+					return
+				end
+				return generate_card_ui({ set = "Other", key = "random_enhancement" }, nil, nil, "Other", {})
+			end
+			stick(card)
+			return card
+		end
 		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS[card_key] or G.P_CENTERS.m_bonus)
 		if sprites[card_key] then
 			card.children.center.atlas = G.ASSET_ATLAS[sprites[card_key].atlas]
@@ -1036,13 +1096,16 @@ SMODS.RunSelectPage({
 	end,
 	handle_choice = function(self, choice, remove)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		local val = (choice.ability and choice.ability._cry_enhancement_choice)
+			or (choice.config and choice.config.center and choice.config.center.key)
+			or choice
 		if not remove then
 			if self.selection_limit > 1 then
 				if
 					SMODS.table_size(SMODS.RunSelect.Setup.choices[self.key]) < self.selection_limit
-					and not SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key]
+					and not SMODS.RunSelect.Setup.choices[self.key][val]
 				then
-					SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = true
+					SMODS.RunSelect.Setup.choices[self.key][val] = true
 				else
 					if choice.juice_up then
 						choice:juice_up()
@@ -1050,13 +1113,13 @@ SMODS.RunSelectPage({
 					return
 				end
 			else
-				SMODS.RunSelect.Setup.choices[self.key] = choice.config.center.key
+				SMODS.RunSelect.Setup.choices[self.key] = val
 			end
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
-				SMODS.RunSelect.Setup.choices[self.key][choice.config.center.key] = nil
+				SMODS.RunSelect.Setup.choices[self.key][val] = nil
 			end
 		end
 	end,
@@ -1072,14 +1135,22 @@ SMODS.RunSelectPage({
 	page = 2,
 	area_type = "deck",
 	random_select = true,
-	generate_pool = function(self)
+	get_pool = function(self)
 		local pool = {}
 		for _, c in ipairs(SMODS.Sticker.obj_buffer) do
 			if not SMODS.Stickers[c].no_edeck then
 				pool[#pool + 1] = SMODS.Stickers[c]
 			end
 		end
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if is_antimatter then -- or true then -- uncomment `or true` to enable for normal edition decks
+			pool[#pool + 1] = { key = "random", unlocked = true, discovered = true }
+			pool[#pool + 1] = { key = "all", unlocked = true, discovered = true }
+		end
 		return pool
+	end,
+	generate_pool = function(self)
+		return self:get_pool()
 	end,
 	quick_start_text = function()
 		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
@@ -1088,26 +1159,66 @@ SMODS.RunSelectPage({
 			return
 		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk
-		if not SMODS.Stickers[curr] then
+		if not SMODS.Stickers[curr] and curr ~= "random" and curr ~= "all" then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk = "eternal"
 		end
 		return localize({
 			type = "name_text",
 			set = "Other",
-			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk,
+			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk == "random" and "random_sticker"
+				or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk == "all" and "all_stickers"
+				or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk,
 		})
 	end,
 	set_default = function(self, choice)
-		return SMODS.Stickers[choice] and choice or "eternal"
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if (choice == "random" or choice == "all") and not is_antimatter then -- and false then -- uncomment `and false` to enable for normal edition decks
+			return "eternal"
+		end
+		return (choice == "random" or choice == "all" or SMODS.Stickers[choice]) and choice or "eternal"
+	end,
+	selected_text = function(self, selection)
+		return localize({
+			type = "name_text",
+			set = "Other",
+			key = selection == "random" and "random_sticker" or selection == "all" and "all_stickers" or selection,
+		})
 	end,
 	create_selection_card = function(self, card_key, card_number, area)
 		local sprites = Cryptid.edeck_sprites.sticker
 		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.c_base)
-		card:add_sticker(card_key, true)
-		card.ability._cry_sticker_choice = card_key
-		if sprites[card_key] then
-			card.children.center.atlas = G.ASSET_ATLAS[sprites[card_key].atlas]
-			card.children.center:set_sprite_pos(sprites[card_key].pos)
+		if card_key == "random" then
+			card.children.center.atlas = G.ASSET_ATLAS[sprites.default.atlas]
+			card.children.center:set_sprite_pos(sprites.default.pos)
+			card.ability._cry_sticker_choice = "random"
+			card.generate_UIBox_ability_table = function(card_self, vars_only)
+				if vars_only then
+					return
+				end
+				return generate_card_ui({ set = "Other", key = "random_sticker" }, nil, nil, "Other", {})
+			end
+		elseif card_key == "all" then
+			card.children.center.atlas = G.ASSET_ATLAS[sprites.all.atlas]
+			card.children.center:set_sprite_pos(sprites.all.pos)
+			card.ability._cry_sticker_choice = "all"
+			for _, c in ipairs(SMODS.Sticker.obj_buffer) do
+				if not SMODS.Stickers[c].no_edeck then
+					card:add_sticker(c, true)
+				end
+			end
+			card.generate_UIBox_ability_table = function(card_self, vars_only)
+				if vars_only then
+					return
+				end
+				return generate_card_ui({ set = "Other", key = "all_stickers" }, nil, nil, "Other", {})
+			end
+		else
+			card:add_sticker(card_key, true)
+			card.ability._cry_sticker_choice = card_key
+			if sprites[card_key] then
+				card.children.center.atlas = G.ASSET_ATLAS[sprites[card_key].atlas]
+				card.children.center:set_sprite_pos(sprites[card_key].pos)
+			end
 		end
 		stick(card)
 		return card
@@ -1122,13 +1233,16 @@ SMODS.RunSelectPage({
 	end,
 	handle_choice = function(self, choice, remove)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		local val = (choice.ability and choice.ability._cry_sticker_choice)
+			or (choice.config and choice.config.center and choice.config.center.key)
+			or choice
 		if not remove then
 			if self.selection_limit > 1 then
 				if
 					SMODS.table_size(SMODS.RunSelect.Setup.choices[self.key]) < self.selection_limit
-					and not SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_sticker_choice]
+					and not SMODS.RunSelect.Setup.choices[self.key][val]
 				then
-					SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_sticker_choice] = true
+					SMODS.RunSelect.Setup.choices[self.key][val] = true
 				else
 					if choice.juice_up then
 						choice:juice_up()
@@ -1136,13 +1250,13 @@ SMODS.RunSelectPage({
 					return
 				end
 			else
-				SMODS.RunSelect.Setup.choices[self.key] = choice.ability._cry_sticker_choice
+				SMODS.RunSelect.Setup.choices[self.key] = val
 			end
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
-				SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_sticker_choice] = nil
+				SMODS.RunSelect.Setup.choices[self.key][val] = nil
 			end
 		end
 	end,
@@ -1158,14 +1272,21 @@ SMODS.RunSelectPage({
 	page = 2,
 	area_type = "deck",
 	random_select = true,
-	generate_pool = function(self)
+	get_pool = function(self)
 		local pool = {}
 		for _, c in ipairs(SMODS.Suit.obj_buffer) do
 			if not SMODS.Suits[c].no_edeck then
 				pool[#pool + 1] = SMODS.Suits[c]
 			end
 		end
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if is_antimatter then -- or true then -- uncomment `or true` to enable for normal edition decks
+			pool[#pool + 1] = { key = "random", unlocked = true, discovered = true }
+		end
 		return pool
+	end,
+	generate_pool = function(self)
+		return self:get_pool()
 	end,
 	quick_start_text = function()
 		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
@@ -1174,24 +1295,57 @@ SMODS.RunSelectPage({
 			return
 		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st
-		if not SMODS.Suits[curr] then
+		if not SMODS.Suits[curr] and curr ~= "random" then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st = "Spades"
+		end
+		if curr == "random" then
+			return localize({
+				type = "name_text",
+				set = "Other",
+				key = "random_suit",
+			})
 		end
 		return localize(G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st, "suits_plural")
 	end,
 	set_default = function(self, choice)
-		return SMODS.Suits[choice] and choice or "Spades"
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if choice == "random" and not is_antimatter then -- and false then -- uncomment `and false` to enable for normal edition decks
+			return "Spades"
+		end
+		return (choice == "random" or SMODS.Suits[choice]) and choice or "Spades"
+	end,
+	selected_text = function(self, selection)
+		if selection == "random" then
+			return localize({
+				type = "name_text",
+				set = "Other",
+				key = "random_suit",
+			})
+		end
+		return localize(selection, "suits_plural")
 	end,
 	create_selection_card = function(self, card_key, card_number, area)
 		local sprites = Cryptid.edeck_sprites.suit
 		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.c_base)
-		card.no_ui = true
-		card.ability._cry_suit_choice = card_key
-		if sprites[card_key] then
-			card.children.center.atlas = G.ASSET_ATLAS[sprites[card_key].atlas]
-			card.children.center:set_sprite_pos(sprites[card_key].pos)
+		if card_key == "random" then
+			card.children.center.atlas = G.ASSET_ATLAS[sprites.default.atlas]
+			card.children.center:set_sprite_pos(sprites.default.pos)
+			card.ability._cry_suit_choice = "random"
+			card.generate_UIBox_ability_table = function(card_self, vars_only)
+				if vars_only then
+					return
+				end
+				return generate_card_ui({ set = "Other", key = "random_suit" }, nil, nil, "Other", {})
+			end
 		else
-			assert(SMODS.change_base(card, card_key, "Ace"))
+			card.no_ui = true
+			card.ability._cry_suit_choice = card_key
+			if sprites[card_key] then
+				card.children.center.atlas = G.ASSET_ATLAS[sprites[card_key].atlas]
+				card.children.center:set_sprite_pos(sprites[card_key].pos)
+			else
+				assert(SMODS.change_base(card, card_key, "Ace"))
+			end
 		end
 		stick(card)
 		return card
@@ -1206,13 +1360,16 @@ SMODS.RunSelectPage({
 	end,
 	handle_choice = function(self, choice, remove)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		local val = (choice.ability and choice.ability._cry_suit_choice)
+			or (choice.config and choice.config.center and choice.config.center.key)
+			or choice
 		if not remove then
 			if self.selection_limit > 1 then
 				if
 					SMODS.table_size(SMODS.RunSelect.Setup.choices[self.key]) < self.selection_limit
-					and not SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_suit_choice]
+					and not SMODS.RunSelect.Setup.choices[self.key][val]
 				then
-					SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_suit_choice] = true
+					SMODS.RunSelect.Setup.choices[self.key][val] = true
 				else
 					if choice.juice_up then
 						choice:juice_up()
@@ -1220,13 +1377,13 @@ SMODS.RunSelectPage({
 					return
 				end
 			else
-				SMODS.RunSelect.Setup.choices[self.key] = choice.ability._cry_suit_choice
+				SMODS.RunSelect.Setup.choices[self.key] = val
 			end
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
-				SMODS.RunSelect.Setup.choices[self.key][choice.ability._cry_suit_choice] = nil
+				SMODS.RunSelect.Setup.choices[self.key][val] = nil
 			end
 		end
 	end,
@@ -1242,14 +1399,21 @@ SMODS.RunSelectPage({
 	page = 2,
 	area_type = "deck",
 	random_select = true,
-	generate_pool = function(self)
+	get_pool = function(self)
 		local pool = {}
 		for _, c in ipairs(SMODS.Seal.obj_buffer) do
 			if not G.P_SEALS[c].no_edeck then
 				pool[#pool + 1] = G.P_SEALS[c]
 			end
 		end
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if is_antimatter then -- or true then -- uncomment `or true` to enable for normal edition decks
+			pool[#pool + 1] = { key = "random", unlocked = true, discovered = true }
+		end
 		return pool
+	end,
+	generate_pool = function(self)
+		return self:get_pool()
 	end,
 	quick_start_text = function()
 		local back = G.PROFILES[G.SETTINGS.profile].last_choices.deck_choice
@@ -1258,7 +1422,7 @@ SMODS.RunSelectPage({
 			return
 		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl
-		if not G.P_SEALS[curr] then
+		if not G.P_SEALS[curr] and curr ~= "random" then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl = "Gold"
 		end
 		return localize({
@@ -1268,15 +1432,38 @@ SMODS.RunSelectPage({
 		})
 	end,
 	set_default = function(self, choice)
-		return G.P_SEALS[choice] and choice or "Gold"
+		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
+		if choice == "random" and not is_antimatter then -- and false then -- uncomment `and false` to enable for normal edition decks
+			return "Gold"
+		end
+		return (choice == "random" or G.P_SEALS[choice]) and choice or "Gold"
+	end,
+	selected_text = function(self, selection)
+		return localize({
+			type = "name_text",
+			set = "Other",
+			key = selection:lower() .. "_seal",
+		})
 	end,
 	create_selection_card = function(self, card_key, card_number, area)
 		local sprites = Cryptid.edeck_sprites.seal
 		local card = Card(area.T.x, area.T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS.c_base)
-		card:set_seal(card_key, true, true)
-		if sprites[card_key] then
-			card.children.center.atlas = G.ASSET_ATLAS[sprites[card_key].atlas]
-			card.children.center:set_sprite_pos(sprites[card_key].pos)
+		if card_key == "random" then
+			card.children.center.atlas = G.ASSET_ATLAS[sprites.default.atlas]
+			card.children.center:set_sprite_pos(sprites.default.pos)
+			card.ability._cry_seal_choice = "random"
+			card.generate_UIBox_ability_table = function(card_self, vars_only)
+				if vars_only then
+					return
+				end
+				return generate_card_ui({ set = "Other", key = "random_seal" }, nil, nil, "Other", {})
+			end
+		else
+			card:set_seal(card_key, true, true)
+			if sprites[card_key] then
+				card.children.center.atlas = G.ASSET_ATLAS[sprites[card_key].atlas]
+				card.children.center:set_sprite_pos(sprites[card_key].pos)
+			end
 		end
 		stick(card)
 		return card
@@ -1291,13 +1478,17 @@ SMODS.RunSelectPage({
 	end,
 	handle_choice = function(self, choice, remove)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		local val = (choice.ability and choice.ability._cry_seal_choice)
+			or choice.seal
+			or (choice.config and choice.config.center and choice.config.center.key)
+			or choice
 		if not remove then
 			if self.selection_limit > 1 then
 				if
 					SMODS.table_size(SMODS.RunSelect.Setup.choices[self.key]) < self.selection_limit
-					and not SMODS.RunSelect.Setup.choices[self.key][choice.seal]
+					and not SMODS.RunSelect.Setup.choices[self.key][val]
 				then
-					SMODS.RunSelect.Setup.choices[self.key][choice.seal] = true
+					SMODS.RunSelect.Setup.choices[self.key][val] = true
 				else
 					if choice.juice_up then
 						choice:juice_up()
@@ -1305,13 +1496,13 @@ SMODS.RunSelectPage({
 					return
 				end
 			else
-				SMODS.RunSelect.Setup.choices[self.key] = choice.seal
+				SMODS.RunSelect.Setup.choices[self.key] = val
 			end
 		else
 			if self.selection_limit == 1 then
 				SMODS.RunSelect.Setup.choices[self.key] = nil
 			else
-				SMODS.RunSelect.Setup.choices[self.key][choice.seal] = nil
+				SMODS.RunSelect.Setup.choices[self.key][val] = nil
 			end
 		end
 	end,
@@ -1398,3 +1589,12 @@ SMODS.RunSelectPage({
 		return SMODS.RunSelect.Setup.choices.deck_choice == "b_cry_antimatter"
 	end,
 })
+
+local create_page_ref = SMODS.RunSelect.Functions.create_page
+function SMODS.RunSelect.Functions.create_page(key)
+	local page_def = SMODS.RunSelect.Pages[key]
+	if page_def and page_def.get_pool then
+		page_def.pool = page_def:get_pool()
+	end
+	return create_page_ref(key)
+end

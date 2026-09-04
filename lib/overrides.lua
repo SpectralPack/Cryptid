@@ -1099,19 +1099,41 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	local center = card and card.config and card.config.center or {}
 	if front and G.GAME.modifiers.cry_force_suit then
 		card:change_suit(G.GAME.modifiers.cry_force_suit)
+	elseif front and G.GAME.modifiers.cry_force_random_suit then
+		card:change_suit(Cryptid.poll_random_suit())
 	end
 	if front and G.GAME.modifiers.cry_force_enhancement then
 		card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement])
+	elseif front and G.GAME.modifiers.cry_force_random_enhancement then
+		card:set_ability(Cryptid.poll_random_enhancement())
 	end
 	if front and G.GAME.modifiers.cry_force_edition then
 		card:set_edition(G.GAME.modifiers.cry_force_edition, true, true)
 		card:add_to_deck()
+	elseif front and G.GAME.modifiers.cry_force_random_edition then
+		card:set_edition(Cryptid.poll_random_edition(), true, true)
+		card:add_to_deck()
 	end
 	if front and G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
+	elseif front and G.GAME.modifiers.cry_force_random_seal then
+		card:set_seal(Cryptid.poll_random_seal())
 	end
 	if G.GAME.modifiers.cry_force_sticker then
 		card:add_sticker(G.GAME.modifiers.cry_force_sticker, true)
+	elseif G.GAME.modifiers.cry_force_random_sticker then
+		local st = Cryptid.poll_random_sticker()
+		if SMODS.Stickers[st] then
+			card:add_sticker(st, true)
+		else
+			card["set_" .. st](card, true)
+		end
+	elseif G.GAME.modifiers.cry_force_all_stickers then
+		for _, c in ipairs(SMODS.Sticker.obj_buffer) do
+			if not SMODS.Stickers[c].no_edeck then
+				card:add_sticker(c, true)
+			end
+		end
 	end
 	if G.GAME.modifiers.cry_sticker_sheet_plus and not (_type == "Base" or _type == "Enhanced") then
 		for k, v in pairs(SMODS.Stickers) do
@@ -1256,18 +1278,39 @@ function create_playing_card(card_init, area, skip_materialize, silent, colours,
 	local card = create_pcard(card_init, area, skip_materialize, silent, colours, skip_emplace)
 	if G.GAME.modifiers.cry_force_suit then
 		card:change_suit(G.GAME.modifiers.cry_force_suit)
+	elseif G.GAME.modifiers.cry_force_random_suit then
+		card:change_suit(Cryptid.poll_random_suit())
 	end
 	if G.GAME.modifiers.cry_force_enhancement then
 		card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement])
+	elseif G.GAME.modifiers.cry_force_random_enhancement then
+		card:set_ability(Cryptid.poll_random_enhancement())
 	end
 	if G.GAME.modifiers.cry_force_edition then
 		card:set_edition(G.GAME.modifiers.cry_force_edition, true, true)
+	elseif G.GAME.modifiers.cry_force_random_edition then
+		card:set_edition(Cryptid.poll_random_edition(), true, true)
 	end
 	if G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
+	elseif G.GAME.modifiers.cry_force_random_seal then
+		card:set_seal(Cryptid.poll_random_seal())
 	end
 	if G.GAME.modifiers.cry_force_sticker then
 		card:add_sticker(G.GAME.modifiers.cry_force_sticker)
+	elseif G.GAME.modifiers.cry_force_random_sticker then
+		local st = Cryptid.poll_random_sticker()
+		if SMODS.Stickers[st] then
+			card:add_sticker(st)
+		else
+			card["set_" .. st](card, true)
+		end
+	elseif G.GAME.modifiers.cry_force_all_stickers then
+		for _, c in ipairs(SMODS.Sticker.obj_buffer) do
+			if not SMODS.Stickers[c].no_edeck then
+				card:add_sticker(c, true)
+			end
+		end
 	end
 	return card
 end

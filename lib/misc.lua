@@ -265,13 +265,52 @@ function Cryptid.pluralize(str, vars)
 end
 
 -- generate a random edition (e.g. Antimatter Deck)
-function Cryptid.poll_random_edition()
-	local random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
-	while random_edition.key == "e_base" do
-		random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("cry_ant_edition"))
+function Cryptid.poll_random_edition(_seed)
+	local random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed(_seed or "cry_ant_edition"))
+	while random_edition.key == "e_base" or random_edition.no_edeck do
+		random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed(_seed or "cry_ant_edition"))
 	end
-	ed_table = { [random_edition.key:sub(3)] = true }
-	return ed_table
+	return { [random_edition.key:sub(3)] = true }
+end
+
+function Cryptid.poll_random_enhancement(_seed)
+	local pool = {}
+	for _, c in ipairs(G.P_CENTER_POOLS.Enhanced) do
+		if not c.no_edeck then
+			pool[#pool + 1] = c
+		end
+	end
+	return pseudorandom_element(pool, pseudoseed(_seed or "cry_ant_enhancement"))
+end
+
+function Cryptid.poll_random_seal(_seed)
+	local pool = {}
+	for _, c in ipairs(SMODS.Seal.obj_buffer) do
+		if not G.P_SEALS[c].no_edeck then
+			pool[#pool + 1] = c
+		end
+	end
+	return pseudorandom_element(pool, pseudoseed(_seed or "cry_ant_seal"))
+end
+
+function Cryptid.poll_random_sticker(_seed)
+	local pool = {}
+	for _, c in ipairs(SMODS.Sticker.obj_buffer) do
+		if not SMODS.Stickers[c].no_edeck then
+			pool[#pool + 1] = c
+		end
+	end
+	return pseudorandom_element(pool, pseudoseed(_seed or "cry_ant_sticker"))
+end
+
+function Cryptid.poll_random_suit(_seed)
+	local pool = {}
+	for _, c in ipairs(SMODS.Suit.obj_buffer) do
+		if not SMODS.Suits[c].no_edeck then
+			pool[#pool + 1] = c
+		end
+	end
+	return pseudorandom_element(pool, pseudoseed(_seed or "cry_ant_suit"))
 end
 
 -- gets a random, valid consumeable (used for Hammerspace, CCD Deck, Blessing, etc.)
@@ -700,11 +739,12 @@ function Cryptid.enhanced_deck_info(deck)
 			or "Spades",
 		SMODS.RunSelect.Setup.choices.cry_edeck_sl or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sl or "Gold"
 	-- Do Stuff
-	edition = (Cryptid.safe_get(G.P_CENTERS, edition) and edition or "e_foil")
-	enhancement = Cryptid.safe_get(G.P_CENTERS, enhancement) and enhancement or "m_bonus"
-	sticker = Cryptid.safe_get(SMODS.Stickers, sticker) and sticker or "eternal"
-	suit = Cryptid.safe_get(SMODS.Suits, suit) and suit or "Spades"
-	seal = Cryptid.safe_get(G.P_SEALS, seal) and seal or "Gold"
+	edition = (edition == "random" or Cryptid.safe_get(G.P_CENTERS, edition)) and edition or "e_foil"
+	enhancement = (enhancement == "random" or Cryptid.safe_get(G.P_CENTERS, enhancement)) and enhancement or "m_bonus"
+	sticker = (sticker == "random" or sticker == "all" or Cryptid.safe_get(SMODS.Stickers, sticker)) and sticker
+		or "eternal"
+	suit = (suit == "random" or Cryptid.safe_get(SMODS.Suits, suit)) and suit or "Spades"
+	seal = (seal == "random" or Cryptid.safe_get(G.P_SEALS, seal)) and seal or "Gold"
 	local ret = {
 		edition = edition,
 		enhancement = enhancement,
