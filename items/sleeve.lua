@@ -582,7 +582,8 @@ if CardSleeves then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
-							local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormholesleeve")
+							local card =
+								create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_wormholesleeve")
 							card:add_to_deck()
 							card:start_materialize()
 							G.jokers:emplace(card)
@@ -598,13 +599,19 @@ if CardSleeves then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						if G.jokers then
-							if G.P_CENTERS["j_cry_CodeJoker"] and (not G.GAME.banned_keys or not G.GAME.banned_keys["j_cry_CodeJoker"]) then
+							if
+								G.P_CENTERS["j_cry_CodeJoker"]
+								and (not G.GAME.banned_keys or not G.GAME.banned_keys["j_cry_CodeJoker"])
+							then
 								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_CodeJoker")
 								card:add_to_deck()
 								card:start_materialize()
 								G.jokers:emplace(card)
 							end
-							if G.P_CENTERS["j_cry_copypaste"] and (not G.GAME.banned_keys or not G.GAME.banned_keys["j_cry_copypaste"]) then
+							if
+								G.P_CENTERS["j_cry_copypaste"]
+								and (not G.GAME.banned_keys or not G.GAME.banned_keys["j_cry_copypaste"])
+							then
 								local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cry_copypaste")
 								card:add_to_deck()
 								card:start_materialize()
@@ -617,8 +624,20 @@ if CardSleeves then
 			end
 		end,
 		["sleeve_cry_critical_sleeve"] = function(sleeve, action, context)
-			if (action == "calculate" or action == "trigger_effect") and context and context.context == "final_scoring_step" then
-				if SMODS.pseudorandom_probability(sleeve, "cry_critical", 1, sleeve.config.cry_crit_rate or 4, "Antimatter Sleeve") then
+			if
+				(action == "calculate" or action == "trigger_effect")
+				and context
+				and context.context == "final_scoring_step"
+			then
+				if
+					SMODS.pseudorandom_probability(
+						sleeve,
+						"cry_critical",
+						1,
+						sleeve.config.cry_crit_rate or 4,
+						"Antimatter Sleeve"
+					)
+				then
 					context.mult = context.mult ^ 2
 					update_hand_text({ delay = 0 }, { mult = context.mult, chips = context.chips })
 					G.E_MANAGER:add_event(Event({
@@ -657,7 +676,11 @@ if CardSleeves then
 		end,
 		["sleeve_cry_bountiful_sleeve"] = function(sleeve, action, context)
 			if (action == "calculate" or action == "trigger_effect") and context and context.drawing_cards then
-				if (G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0) and context.amount and context.amount < 5 then
+				if
+					(G.GAME.current_round.hands_played ~= 0 or G.GAME.current_round.discards_used ~= 0)
+					and context.amount
+					and context.amount < 5
+				then
 					return { cards_to_draw = 5 }
 				end
 			end
@@ -681,7 +704,12 @@ if CardSleeves then
 					}))
 				end
 			elseif (action == "calculate" or action == "trigger_effect") and is_synergy_active(sleeve) then
-				if CardSleeves and CardSleeves.Sleeve and CardSleeves.Sleeve.obj_table and CardSleeves.Sleeve.obj_table["sleeve_casl_painted"] then
+				if
+					CardSleeves
+					and CardSleeves.Sleeve
+					and CardSleeves.Sleeve.obj_table
+					and CardSleeves.Sleeve.obj_table["sleeve_casl_painted"]
+				then
 					local orig = CardSleeves.Sleeve.obj_table["sleeve_casl_painted"]
 					if orig.calculate then
 						return orig:calculate(sleeve, context)
@@ -720,19 +748,25 @@ if CardSleeves then
 					G.E_MANAGER:add_event(Event({
 						trigger = "after",
 						func = function()
-							sleeve.config.added_bankrupt = sleeve.config.debt_bonus * (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
+							sleeve.config.added_bankrupt = sleeve.config.debt_bonus
+								* (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
 							G.GAME.bankrupt_at = G.GAME.bankrupt_at - sleeve.config.added_bankrupt
 							return true
 						end,
 					}))
 				end
 			elseif (action == "calculate" or action == "trigger_effect") and is_synergy_active(sleeve) then
-				if sleeve.config.debt_bonus and (context.end_of_round and not context.individual and not context.repetition) then
+				if
+					sleeve.config.debt_bonus
+					and (context.end_of_round and not context.individual and not context.repetition)
+				then
 					if not sleeve.config.added_bankrupt then
-						sleeve.config.added_bankrupt = sleeve.config.debt_bonus * (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
+						sleeve.config.added_bankrupt = sleeve.config.debt_bonus
+							* (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
 					end
 					G.GAME.bankrupt_at = G.GAME.bankrupt_at + sleeve.config.added_bankrupt
-					sleeve.config.added_bankrupt = sleeve.config.debt_bonus * (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
+					sleeve.config.added_bankrupt = sleeve.config.debt_bonus
+						* (G.GAME.round_resets.discards + G.GAME.round_resets.hands)
 					G.GAME.bankrupt_at = G.GAME.bankrupt_at - sleeve.config.added_bankrupt
 				end
 			end
@@ -771,7 +805,12 @@ if CardSleeves then
 		local s_key_base = slv.key_base or ""
 		local selected = G.GAME.cry_antimatter_sleeves
 			or (G.PROFILES and G.PROFILES[G.SETTINGS.profile] and G.PROFILES[G.SETTINGS.profile].last_choices and G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter_sleeve)
-			or (SMODS.RunSelect and SMODS.RunSelect.Setup and SMODS.RunSelect.Setup.choices and SMODS.RunSelect.Setup.choices.cry_antimatter_sleeve)
+			or (
+				SMODS.RunSelect
+				and SMODS.RunSelect.Setup
+				and SMODS.RunSelect.Setup.choices
+				and SMODS.RunSelect.Setup.choices.cry_antimatter_sleeve
+			)
 		if selected and type(selected) == "table" then
 			if selected[s_key] ~= nil then
 				return selected[s_key] == true
@@ -784,7 +823,8 @@ if CardSleeves then
 			end
 			return false
 		end
-		return Cryptid.antimatter_sleeve_compat(s_key) or (s_key_base ~= "" and Cryptid.antimatter_sleeve_compat(s_key_base))
+		return Cryptid.antimatter_sleeve_compat(s_key)
+			or (s_key_base ~= "" and Cryptid.antimatter_sleeve_compat(s_key_base))
 	end
 
 	local antimattersleeve = CardSleeves.Sleeve({
@@ -809,9 +849,15 @@ if CardSleeves then
 			local res_chips, res_mult
 			for _, slv in ipairs(G.P_CENTER_POOLS.Sleeve) do
 				local s_key = slv.key
-				if s_key and s_key ~= "sleeve_cry_antimatter_sleeve" and s_key ~= "sleeve_casl_none" and s_key ~= "sleeve_none" then
+				if
+					s_key
+					and s_key ~= "sleeve_cry_antimatter_sleeve"
+					and s_key ~= "sleeve_casl_none"
+					and s_key ~= "sleeve_none"
+				then
 					if is_sleeve_selected(slv) then
-						local override = special_antimatter_sleeves[s_key] or (slv.key_base and special_antimatter_sleeves[slv.key_base])
+						local override = special_antimatter_sleeves[s_key]
+							or (slv.key_base and special_antimatter_sleeves[slv.key_base])
 						if type(override) == "function" then
 							override(slv, "calculate", context)
 						elseif override ~= true then
@@ -879,9 +925,15 @@ if CardSleeves then
 			G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
 			for _, slv in ipairs(G.P_CENTER_POOLS.Sleeve) do
 				local s_key = slv.key
-				if s_key and s_key ~= "sleeve_cry_antimatter_sleeve" and s_key ~= "sleeve_casl_none" and s_key ~= "sleeve_none" then
+				if
+					s_key
+					and s_key ~= "sleeve_cry_antimatter_sleeve"
+					and s_key ~= "sleeve_casl_none"
+					and s_key ~= "sleeve_none"
+				then
 					if is_sleeve_selected(slv) then
-						local override = special_antimatter_sleeves[s_key] or (slv.key_base and special_antimatter_sleeves[slv.key_base])
+						local override = special_antimatter_sleeves[s_key]
+							or (slv.key_base and special_antimatter_sleeves[slv.key_base])
 						if type(override) == "function" then
 							override(slv, "apply")
 						elseif override ~= true and type(slv.apply) == "function" then
@@ -915,4 +967,3 @@ if CardSleeves then
 	})
 end
 return { name = "Sleeves", init = function() end }
-

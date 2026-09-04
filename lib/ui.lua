@@ -365,7 +365,10 @@ SMODS.DrawStep({
 			card.children.center:draw_shader("debuff", nil, card.ARGS.send_to_shader)
 		end
 		if
-			(Cryptid.safe_get(card, "params", "run_select_selection_choice", 2) == "cry_antimatter" or Cryptid.safe_get(card, "params", "run_select_selection_choice", 2) == "antimatter")
+			(
+				Cryptid.safe_get(card, "params", "run_select_selection_choice", 2) == "cry_antimatter"
+				or Cryptid.safe_get(card, "params", "run_select_selection_choice", 2) == "antimatter"
+			)
 			and SMODS.RunSelect.Setup.choices.antimatter
 			and not SMODS.RunSelect.Setup.choices.antimatter[card.config.center_key]
 			and not card.cry_antimatter_locked
@@ -373,7 +376,10 @@ SMODS.DrawStep({
 			card.children.back:draw_shader("debuff", nil, card.ARGS.send_to_shader, true)
 		end
 		if
-			(Cryptid.safe_get(card, "params", "run_select_selection_choice", 2) == "cry_antimatter_sleeve" or Cryptid.safe_get(card, "params", "run_select_selection_choice", 2) == "antimatter_sleeve")
+			(
+				Cryptid.safe_get(card, "params", "run_select_selection_choice", 2) == "cry_antimatter_sleeve"
+				or Cryptid.safe_get(card, "params", "run_select_selection_choice", 2) == "antimatter_sleeve"
+			)
 			and card.params.sleeve_card
 			and SMODS.RunSelect.Setup.choices.cry_antimatter_sleeve
 			and not SMODS.RunSelect.Setup.choices.cry_antimatter_sleeve[card.config.center_key]

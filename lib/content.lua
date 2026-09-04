@@ -911,21 +911,9 @@ function Cryptid.antimatter_sleeve_compat(sleeve_key)
 		return true
 	end
 	return (
-		Cryptid.safe_get(
-			G.PROFILES,
-			G.SETTINGS.profile,
-			"sleeve_usage",
-			full_key,
-			"wins_by_key",
-			"stake_gold"
-		) or Cryptid.safe_get(
-			G.PROFILES,
-			G.SETTINGS.profile,
-			"sleeve_usage",
-			sleeve_key,
-			"wins_by_key",
-			"stake_gold"
-		) or 0
+		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", full_key, "wins_by_key", "stake_gold")
+		or Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", sleeve_key, "wins_by_key", "stake_gold")
+		or 0
 	) > 0
 end
 
