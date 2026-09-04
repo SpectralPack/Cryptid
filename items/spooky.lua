@@ -265,15 +265,17 @@ local choco3 = {
 	end,
 	finish = function(self)
 		--Reverse all potion effects
-		if G.GAME.events[self.key].potions and G.GAME.events[self.key].potions[2] then
-			G.GAME.starting_params.ante_scaling = G.GAME.starting_params.ante_scaling
-				/ (1.15 ^ G.GAME.events[self.key].potions[2])
-		end
-		if G.GAME.events[self.key].potions and G.GAME.events[self.key].potions[3] then
-			G.GAME.round_resets.hands = G.GAME.round_resets.hands + G.GAME.events[self.key].potions[3]
-			ease_hands_played(G.GAME.events[self.key].potions[3])
-			G.GAME.round_resets.discards = G.GAME.round_resets.discards + G.GAME.events[self.key].potions[3]
-			ease_discard(G.GAME.events[self.key].potions[3])
+		if G.GAME.events[self.key] and G.GAME.events[self.key].potions then
+			if G.GAME.events[self.key].potions[2] then
+				G.GAME.starting_params.ante_scaling = G.GAME.starting_params.ante_scaling
+					/ (1.15 ^ G.GAME.events[self.key].potions[2])
+			end
+			if G.GAME.events[self.key].potions[3] then
+				G.GAME.round_resets.hands = G.GAME.round_resets.hands + G.GAME.events[self.key].potions[3]
+				ease_hands_played(G.GAME.events[self.key].potions[3])
+				G.GAME.round_resets.discards = G.GAME.round_resets.discards + G.GAME.events[self.key].potions[3]
+				ease_discard(G.GAME.events[self.key].potions[3])
+			end
 		end
 		G.GAME.events[self.key] = nil
 	end,
