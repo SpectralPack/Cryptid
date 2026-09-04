@@ -2059,7 +2059,7 @@ return {
 				},
 			},
 			j_cry_fuckedup = {
-				name = Cryptid_config.family_mode and "Tidy Joker" or "Fucked-Up Joker",
+				name = Cryptid_config.family_mode and "Disorganized Joker" or "Fucked-Up Joker",
 				text = {
 					"{C:red}+#1#{} Mult if played",
 					"hand contains",
@@ -2647,7 +2647,7 @@ return {
 				},
 			},
 			j_cry_penetrating = {
-				name = "Penetrating Joker",
+				name = Cryptid_config.family_mode and "Nonsense Joker" or "Penetrating Joker",
 				text = {
 					"{C:chips}+#1#{} Chips if played",
 					"hand contains",
@@ -3336,7 +3336,7 @@ return {
 				},
 			},
 			j_cry_wtf = {
-				name = Cryptid_config.family_mode and "The Cluster" or "The Fuck!?",
+				name = Cryptid_config.family_mode and "The Outcasts" or "The Fuck!?",
 				text = {
 					"{X:mult,C:white} X#1# {} Mult if played",
 					"hand contains",
@@ -5174,7 +5174,7 @@ return {
 		},
 		poker_hands = {
 			["cry_Bulwark"] = "Bulwark",
-			["cry_Clusterfuck"] = Cryptid_config.family_mode and "Cluster" or "Clusterfuck",
+			["cry_Clusterfuck"] = Cryptid_config.family_mode and "High Card++" or "Clusterfuck",
 			["cry_UltPair"] = "Ultimate Pair",
 			["cry_WholeDeck"] = Cryptid_config.family_mode and "The Entire Deck" or "The Entire Fucking Deck",
 			["cry-Cluster Bulwark"] = "Clusterwark",
@@ -5234,7 +5234,7 @@ return {
 			ach_cry_youre_fucking_kidding = Cryptid_config.family_mode and "You Can't Be Serious"
 				or "You're Fucking Kidding",
 			ach_cry_stoned = "Stoned",
-			ach_cry_fucked = Cryptid_config.family_mode and "Clustered" or "Fucked",
+			ach_cry_fucked = Cryptid_config.family_mode and "Yes, but Why?" or "Fucked",
 			ach_cry_despaired = "Despaired",
 			ach_cry_decked = "Decked",
 		},
