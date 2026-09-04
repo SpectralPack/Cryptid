@@ -129,7 +129,13 @@ local choco_dice = {
 	immutable = true,
 	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
-		if center and center.ability and center.ability.extra and center.ability.extra.roll and center.ability.extra.roll > 0 then
+		if
+			center
+			and center.ability
+			and center.ability.extra
+			and center.ability.extra.roll
+			and center.ability.extra.roll > 0
+		then
 			local ev = SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]
 			if ev and ev.loc_vars then
 				ev:loc_vars(info_queue, center)
@@ -1140,15 +1146,7 @@ local ghost = {
 			and not context.retrigger_joker
 		then
 			local extra = card and card.ability and card.ability.extra or self.config.extra
-			if
-				SMODS.pseudorandom_probability(
-					card,
-					"cry_ghost_destroy",
-					1,
-					extra.destroy_rate,
-					"Ghost Destroy"
-				)
-			then
+			if SMODS.pseudorandom_probability(card, "cry_ghost_destroy", 1, extra.destroy_rate, "Ghost Destroy") then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						card:start_dissolve()
@@ -1171,15 +1169,7 @@ local ghost = {
 				return
 			end
 			--todo: let multiple ghosts possess multiple jokers
-			if
-				SMODS.pseudorandom_probability(
-					card,
-					"cry_ghost_possess",
-					1,
-					extra.possess_rate,
-					"Ghost Possess"
-				)
-			then
+			if SMODS.pseudorandom_probability(card, "cry_ghost_possess", 1, extra.possess_rate, "Ghost Possess") then
 				for i = 1, #G.jokers.cards do
 					local j = G.jokers.cards[i]
 					if j and j.ability then
