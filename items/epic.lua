@@ -2545,18 +2545,16 @@ local starfruit = {
 					colour = G.C.RARITY.cry_epic,
 				}
 			else
-				if not msg or type(msg) == "string" then
-					return {
-						message = msg or localize({
-							type = "variable",
-							key = "a_powmult_minus",
-							vars = {
-								number_format(card.ability.emult_mod),
-							},
-						}),
-						colour = G.C.RARITY.cry_epic,
-					}
-				end
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_powmult_minus",
+						vars = {
+							number_format(card.ability.emult_mod),
+						},
+					}),
+					colour = G.C.RARITY.cry_epic,
+				}
 			end
 		end
 	end,

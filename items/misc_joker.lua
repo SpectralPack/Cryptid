@@ -1153,17 +1153,14 @@ local chili_pepper = {
 				no_message = true,
 			})
 			if to_big(card.ability.extra.rounds_remaining) > to_big(0) then
-				if not msg or type(msg) == "string" then
-					return {
-						message = msg or localize({
-							type = "variable",
-							key = "a_xmult",
-							vars = { number_format(card.ability.extra.Xmult) },
-						}),
-						colour = G.C.FILTER,
-					}
-				end
-				return nil, true
+				return {
+					message = localize({
+						type = "variable",
+						key = "a_xmult",
+						vars = { number_format(card.ability.extra.Xmult) },
+					}),
+					colour = G.C.FILTER,
+				}
 			else
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -9984,7 +9981,7 @@ local highfive = {
 						whapoosh = true
 						G.E_MANAGER:add_event(Event({
 							func = function()
-								assert(SMODS.change_base(v, _, "5"))
+								assert(SMODS.change_base(v, nil, "5"))
 								v:juice_up()
 								return true
 							end,
