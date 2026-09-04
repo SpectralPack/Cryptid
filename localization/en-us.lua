@@ -5545,6 +5545,7 @@ return {
 			k_suit = "Suit",
 		},
 		labels = {
+			cry_ccd = "CCD",
 			random_edition = "Random",
 			random_enhancement = "Random",
 			random_seal = "Random",

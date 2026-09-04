@@ -349,6 +349,71 @@ function Cryptid.random_consumable(seed, excluded_flags, banned_card, pool, no_u
 	end
 end
 
+function Cryptid.set_ccd(card, consumable_center)
+	if not card or not consumable_center then
+		return
+	end
+	if type(consumable_center) == "string" then
+		consumable_center = G.P_CENTERS[consumable_center]
+	end
+	if not consumable_center then
+		return
+	end
+
+	local ability_tbl = {
+		name = consumable_center.name,
+		effect = consumable_center.effect,
+		set = consumable_center.set,
+		consumeable = copy_table(consumable_center.config or {}),
+	}
+	for k, v in pairs(consumable_center.config or {}) do
+		if k ~= "bonus" then
+			if type(v) == "table" then
+				ability_tbl[k] = copy_table(v)
+			else
+				ability_tbl[k] = v
+			end
+		end
+	end
+
+	card.cry_ccd = {
+		center = consumable_center,
+		ability = ability_tbl,
+	}
+	card.ability.consumeable = card.cry_ccd.ability.consumeable
+
+	if card.children then
+		local atlas = G.ASSET_ATLAS[consumable_center.atlas or consumable_center.set] or G.ASSET_ATLAS["Tarot"]
+		if atlas then
+			if card.children.cry_ccd_sprite then
+				card.children.cry_ccd_sprite.atlas = atlas
+				card.children.cry_ccd_sprite:set_sprite_pos(consumable_center.pos)
+			else
+				card.children.cry_ccd_sprite = Sprite(card.T.x, card.T.y, card.T.w, card.T.h, atlas, consumable_center.pos)
+				card.children.cry_ccd_sprite.states.hover = card.states.hover
+				card.children.cry_ccd_sprite.states.click = card.states.click
+				card.children.cry_ccd_sprite.states.drag = card.states.drag
+				card.children.cry_ccd_sprite.states.collide.can = false
+				card.children.cry_ccd_sprite:set_role({ major = card, role_type = "Glued", draw_major = card })
+			end
+		end
+	end
+end
+
+function Cryptid.remove_ccd(card)
+	if not card then
+		return
+	end
+	card.cry_ccd = nil
+	if card.children and card.children.cry_ccd_sprite then
+		card.children.cry_ccd_sprite:remove()
+		card.children.cry_ccd_sprite = nil
+	end
+	if not SMODS.ConsumableTypes[card.ability.set] then
+		card.ability.consumeable = nil
+	end
+end
+
 -- checks for Jolly Jokers or cards that are supposed to be treated as jolly jokers
 function Card:is_jolly()
 	if self.ability.name == "Jolly Joker" or self.ability.name == "cry-jollysus Joker" then
@@ -1051,6 +1116,8 @@ end
 function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)
 	ignore = ignore or {} --easiest fix lmao
 	ignore.checked = true
+	min = min or 1
+	max = max or min
 	blacklist = blacklist or function()
 		return true
 	end

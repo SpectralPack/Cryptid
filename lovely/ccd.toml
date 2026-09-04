@@ -12,7 +12,7 @@ position = "before"
 payload = '''
 if G.GAME.modifiers.cry_ccd then
     for k, v in pairs(G.playing_cards) do
-        v:set_ability(Cryptid.random_consumable('cry_ccd', nil, nil, nil, true), true, nil)
+        Cryptid.set_ccd(v, Cryptid.random_consumable('cry_ccd', nil, nil, nil, true))
     end
 end
 '''
@@ -46,17 +46,7 @@ position = "at"
 payload = "if area == G.consumeables or area == G.hand then"
 match_indent = true
 
-# Fix bugs from removing CCD
-# This really shouldn't be in the card drawing code, but it doesn't really matter since that's where it crashes anyway lol
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = "if not self.config.center.discovered and (self.ability.consumeable or self.config.center.unlocked) and not self.config.center.demo and not self.bypass_discovery_center then"
-position = "before"
-payload = "if self.ability.set == 'Enhanced' then self.ability.consumeable = nil end"
-match_indent = true
-
-# Remove CCD from enhanced cards
+# Only clear consumeable if not a CCD card
 [[patches]]
 [patches.pattern]
 target = "card.lua"
@@ -64,9 +54,9 @@ pattern = '''if center.consumeable then
 	self.ability.consumeable = center.config'''
 position = "after"
 payload = '''
-else
+elseif not self.cry_ccd then
 	self.ability.consumeable = nil
- '''
+'''
 match_indent = true
 
 #Fixes for negative CCD cards
@@ -117,6 +107,17 @@ name_from_rows(AUT.name, is_playing_card and G.C.WHITE or nil),
 '''
 match_indent = true
 
+# UI: Badge colour for CCD
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "pinned_left = G.C.ORANGE,"
+position = "after"
+payload = '''
+cry_ccd = G.C.SECONDARY_SET.Tarot,
+'''
+match_indent = true
+
 # i love patching like five billion things
 [[patches]]
 [patches.pattern]
@@ -124,6 +125,10 @@ target = "card.lua"
 pattern = '''return generate_card_ui(self.config.center, nil, loc_vars, card_type, badges, hide_desc, main_start, main_end, self)'''
 position = "before"
 payload = '''
+if self.cry_ccd then
+	badges = badges or {}
+	badges[#badges + 1] = 'cry_ccd'
+end
 if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card then
 	loc_vars = loc_vars or {}
 	loc_vars.ccd = {
@@ -131,6 +136,19 @@ if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card then
 		nominal_chips = self.base.nominal > 0 and self.base.nominal or nil,
 		bonus_chips = (self.ability.bonus + (self.ability.perma_bonus or 0)) > 0 and (self.ability.bonus + (self.ability.perma_bonus or 0)) or nil,
 	}
+end
+'''
+match_indent = true
+
+# UI: Add CCD consumable info_queue box in generate_card_ui
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if v == 'pinned_left' then info_queue[#info_queue+1] = {key = 'pinned_left', set = 'Other'} end"
+position = "after"
+payload = '''
+if v == 'cry_ccd' and card and card.cry_ccd and card.cry_ccd.center then
+	info_queue[#info_queue + 1] = card.cry_ccd.center
 end
 '''
 match_indent = true

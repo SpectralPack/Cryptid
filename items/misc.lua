@@ -1157,6 +1157,12 @@ local glitched = {
 	attributes = { "value_manip" },
 }
 
+local ccd_split_shader = {
+	object_type = "Shader",
+	key = "ccd_split",
+	path = "ccd_split.fs",
+}
+
 local astral_shader = {
 	object_type = "Shader",
 	key = "astral",
@@ -2516,6 +2522,7 @@ local miscitems = {
 	glitched_shader2,
 	glitched_shaderb,
 	astral_shader,
+	ccd_split_shader,
 	blurred_shader,
 	glass_shader,
 	gold_shader,

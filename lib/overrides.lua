@@ -1553,14 +1553,115 @@ function mod_mult(_mult)
 	return trophy_mod_mult(_mult)
 end
 
--- Fix a CCD-related crash
+local function prep_ccd_state(card)
+	if card.config and card.config.center and card.config.center.config and card.ability then
+		for k, v in pairs(card.config.center.config) do
+			if card.ability[k] == nil and k ~= "bonus" then
+				if type(v) == "table" then
+					card.ability[k] = copy_table(v)
+				else
+					card.ability[k] = v
+				end
+			end
+		end
+	end
+	if card.ability.name == "The Wheel of Fortune" then
+		card.eligible_strength_jokers = {}
+		if G.jokers and G.jokers.cards then
+			for _, v in pairs(G.jokers.cards) do
+				if v.ability.set == "Joker" and not v.edition then
+					table.insert(card.eligible_strength_jokers, v)
+				end
+			end
+		end
+	elseif card.ability.name == "Ectoplasm" or card.ability.name == "Hex" then
+		card.eligible_editionless_jokers = {}
+		if G.jokers and G.jokers.cards then
+			for _, v in pairs(G.jokers.cards) do
+				if v.ability.set == "Joker" and not v.edition then
+					table.insert(card.eligible_editionless_jokers, v)
+				end
+			end
+		end
+	elseif card.ability.name == "Temperance" then
+		card.ability.money = 0
+		if G.jokers and G.jokers.cards then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].ability.set == "Joker" then
+					card.ability.money = card.ability.money + G.jokers.cards[i].sell_cost
+				end
+			end
+		end
+		if card.ability.extra then
+			card.ability.money = math.min(card.ability.money, card.ability.extra)
+		end
+	end
+end
+
+-- Fix a CCD-related crash and support CCD consumables on enhanced cards
 local cuc = Card.can_use_consumeable
 function Card:can_use_consumeable(any_state, skip_check)
 	if not self.ability.consumeable then
 		return false
 	end
+	if self.cry_ccd then
+		local old_c = self.config.center
+		local old_a = self.ability
+		self.config.center = self.cry_ccd.center
+		self.ability = self.cry_ccd.ability
+		prep_ccd_state(self)
+		local ret = cuc(self, any_state, skip_check)
+		self.config.center = old_c
+		self.ability = old_a
+		return ret
+	end
 	return cuc(self, any_state, skip_check)
 end
+
+local cur_use_ref = Card.use_consumeable
+function Card:use_consumeable(area, copier)
+	if self.cry_ccd then
+		local old_c = self.config.center
+		local old_a = self.ability
+		self.config.center = self.cry_ccd.center
+		self.ability = self.cry_ccd.ability
+		prep_ccd_state(self)
+		local ret = cur_use_ref(self, area, copier)
+		if self.cry_ccd then
+			self.cry_ccd.ability = self.ability
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.3,
+			func = function()
+				if not self.removed and not self.dissolve then
+					self.config.center = old_c
+					self.ability = old_a
+				end
+				return true
+			end,
+		}))
+		return ret
+	end
+	return cur_use_ref(self, area, copier)
+end
+
+local check_use_ref = Card.check_use
+function Card:check_use()
+	if self.cry_ccd then
+		local old_c = self.config.center
+		local old_a = self.ability
+		self.config.center = self.cry_ccd.center
+		self.ability = self.cry_ccd.ability
+		prep_ccd_state(self)
+		local ret = check_use_ref(self)
+		self.config.center = old_c
+		self.ability = old_a
+		return ret
+	end
+	return check_use_ref(self)
+end
+
 
 -- add second back button to create_UIBox_generic_options
 local cuigo = create_UIBox_generic_options
@@ -1889,6 +1990,10 @@ function Card:save()
 	if self.cry_from_shop then
 		saved_table.cry_from_shop = self.cry_from_shop
 	end
+	if self.cry_ccd and self.cry_ccd.center then
+		saved_table.cry_ccd = self.cry_ccd.center.key
+		saved_table.cry_ccd_ability = copy_table(self.cry_ccd.ability)
+	end
 	return saved_table
 end
 
@@ -1912,6 +2017,26 @@ function Card:load(cardTable, other_card)
 	if cardTable.cry_from_shop then
 		self.cry_from_shop = cardTable.cry_from_shop
 	end
+	if cardTable.cry_ccd and G.P_CENTERS[cardTable.cry_ccd] then
+		Cryptid.set_ccd(self, G.P_CENTERS[cardTable.cry_ccd])
+		if cardTable.cry_ccd_ability and self.cry_ccd then
+			self.cry_ccd.ability = cardTable.cry_ccd_ability
+			self.ability.consumeable = self.cry_ccd.ability.consumeable
+		end
+	end
+end
+
+local copy_card_ref = copy_card
+function copy_card(other, new_card, card_scale, playing_card, strip_edition)
+	local ret = copy_card_ref(other, new_card, card_scale, playing_card, strip_edition)
+	if other and other.cry_ccd and other.cry_ccd.center then
+		Cryptid.set_ccd(ret, other.cry_ccd.center)
+		if other.cry_ccd.ability then
+			ret.cry_ccd.ability = copy_table(other.cry_ccd.ability)
+			ret.ability.consumeable = ret.cry_ccd.ability.consumeable
+		end
+	end
+	return ret
 end
 
 -- Attach Buttercup's stored cards card area
@@ -2521,6 +2646,9 @@ end
 local set_abil_ref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
 	set_abil_ref(self, center, initial, delay_sprites)
+	if self.cry_ccd then
+		self.ability.consumeable = self.cry_ccd.ability.consumeable
+	end
 	if self.config.center_key == "j_cry_meteor" then
 		self:set_edition("e_foil", true, G.SETTINGS.paused)
 	elseif self.config.center_key == "j_cry_exoplanet" then
