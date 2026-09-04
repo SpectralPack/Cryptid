@@ -41,6 +41,7 @@ Cryptid.edeck_sprites = {
 	sticker = {
 		order = 3,
 		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
+		all = { atlas = "cry_placeholders", pos = { x = 3, y = 2 } },
 		eternal = { atlas = "cry_atlasdeck", pos = { x = 6, y = 0 } },
 		perishable = { atlas = "cry_atlasdeck", pos = { x = 7, y = 0 } },
 		rental = { atlas = "cry_atlasdeck", pos = { x = 8, y = 0 } },
@@ -259,8 +260,13 @@ local sk_deck = {
 		local _, _, ccc = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				ccc == "random" and "Random" or localize({ type = "name_text", set = "Other", key = ccc == "pinned" and "pinned_left" or ccc }),
-				colours = { ccc == "random" and G.C.FILTER or (SMODS.Stickers[ccc] and SMODS.Stickers[ccc].badge_colour or G.C.FILTER) },
+				ccc == "random" and "Random"
+					or ccc == "all" and "All"
+					or localize({ type = "name_text", set = "Other", key = ccc == "pinned" and "pinned_left" or ccc }),
+				colours = {
+					(ccc == "random" or ccc == "all") and G.C.FILTER
+						or (SMODS.Stickers[ccc] and SMODS.Stickers[ccc].badge_colour or G.C.FILTER),
+				},
 			},
 		}
 	end,
@@ -269,17 +275,32 @@ local sk_deck = {
 		if ccc == "random" then
 			G.GAME.modifiers.cry_force_random_sticker = true
 			G.GAME.modifiers.cry_force_sticker = nil
+			G.GAME.modifiers.cry_force_all_stickers = nil
+		elseif ccc == "all" then
+			G.GAME.modifiers.cry_force_all_stickers = true
+			G.GAME.modifiers.cry_force_random_sticker = nil
+			G.GAME.modifiers.cry_force_sticker = nil
 		else
 			G.GAME.modifiers.cry_force_sticker = ccc
+			G.GAME.modifiers.cry_force_random_sticker = nil
+			G.GAME.modifiers.cry_force_all_stickers = nil
 		end
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
-					local st = ccc == "random" and Cryptid.poll_random_sticker() or ccc
-					if SMODS.Stickers[st] then
-						G.playing_cards[c]:add_sticker(st, true)
+					if ccc == "all" then
+						for _, st in ipairs(SMODS.Sticker.obj_buffer) do
+							if not SMODS.Stickers[st].no_edeck then
+								G.playing_cards[c]:add_sticker(st, true)
+							end
+						end
 					else
-						G.playing_cards[c]["set_" .. st](G.playing_cards[c], true)
+						local st = ccc == "random" and Cryptid.poll_random_sticker() or ccc
+						if SMODS.Stickers[st] then
+							G.playing_cards[c]:add_sticker(st, true)
+						else
+							G.playing_cards[c]["set_" .. st](G.playing_cards[c], true)
+						end
 					end
 				end
 				return true

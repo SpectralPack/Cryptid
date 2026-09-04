@@ -1128,6 +1128,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 		else
 			card["set_" .. st](card, true)
 		end
+	elseif G.GAME.modifiers.cry_force_all_stickers then
+		for _, c in ipairs(SMODS.Sticker.obj_buffer) do
+			if not SMODS.Stickers[c].no_edeck then
+				card:add_sticker(c, true)
+			end
+		end
 	end
 	if G.GAME.modifiers.cry_sticker_sheet_plus and not (_type == "Base" or _type == "Enhanced") then
 		for k, v in pairs(SMODS.Stickers) do
@@ -1298,6 +1304,12 @@ function create_playing_card(card_init, area, skip_materialize, silent, colours,
 			card:add_sticker(st)
 		else
 			card["set_" .. st](card, true)
+		end
+	elseif G.GAME.modifiers.cry_force_all_stickers then
+		for _, c in ipairs(SMODS.Sticker.obj_buffer) do
+			if not SMODS.Stickers[c].no_edeck then
+				card:add_sticker(c, true)
+			end
 		end
 	end
 	return card

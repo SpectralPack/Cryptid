@@ -4617,6 +4617,13 @@ return {
 					"to every {C:attention}card{}",
 				},
 			},
+			all_stickers = {
+				name = "All",
+				text = {
+					"Applies {C:attention}all stickers{}",
+					"to every {C:attention}card{}",
+				},
+			},
 			random_suit = {
 				name = "Random",
 				text = {
@@ -5524,6 +5531,7 @@ return {
 			run_select_cry_edeck_ed_random = "Random Edition",
 			run_select_cry_edeck_sk = "Select Sticker",
 			run_select_cry_edeck_sk_random = "Random Sticker",
+			run_select_cry_edeck_sk_all = "All Stickers",
 			run_select_cry_edeck_st = "Select Suit",
 			run_select_cry_edeck_st_random = "Random Suit",
 			run_select_cry_edeck_sl = "Select Seal",
@@ -5541,6 +5549,7 @@ return {
 			random_enhancement = "Random",
 			random_seal = "Random",
 			random_sticker = "Random",
+			all_stickers = "All",
 			random_suit = "Random",
 			food_jokers = "Food Jokers",
 			banana = "Banana",

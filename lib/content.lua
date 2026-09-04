@@ -1144,6 +1144,7 @@ SMODS.RunSelectPage({
 		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
 		if is_antimatter then -- or true then -- uncomment `or true` to enable for normal edition decks
 			pool[#pool + 1] = { key = "random", unlocked = true, discovered = true }
+			pool[#pool + 1] = { key = "all", unlocked = true, discovered = true }
 		end
 		return pool
 	end,
@@ -1157,28 +1158,31 @@ SMODS.RunSelectPage({
 			return
 		end
 		local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk
-		if not SMODS.Stickers[curr] and curr ~= "random" then
+		if not SMODS.Stickers[curr] and curr ~= "random" and curr ~= "all" then
 			G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk = "eternal"
 		end
 		return localize({
 			type = "name_text",
 			set = "Other",
 			key = G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk == "random" and "random_sticker"
+				or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk == "all" and "all_stickers"
 				or G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_sk,
 		})
 	end,
 	set_default = function(self, choice)
 		local is_antimatter = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "deck_choice") == "b_cry_antimatter"
-		if choice == "random" and not is_antimatter then -- and false then -- uncomment `and false` to enable for normal edition decks
+		if (choice == "random" or choice == "all") and not is_antimatter then -- and false then -- uncomment `and false` to enable for normal edition decks
 			return "eternal"
 		end
-		return (choice == "random" or SMODS.Stickers[choice]) and choice or "eternal"
+		return (choice == "random" or choice == "all" or SMODS.Stickers[choice]) and choice or "eternal"
 	end,
 	selected_text = function(self, selection)
 		return localize({
 			type = "name_text",
 			set = "Other",
-			key = selection == "random" and "random_sticker" or selection,
+			key = selection == "random" and "random_sticker"
+				or selection == "all" and "all_stickers"
+				or selection,
 		})
 	end,
 	create_selection_card = function(self, card_key, card_number, area)
@@ -1193,6 +1197,21 @@ SMODS.RunSelectPage({
 					return
 				end
 				return generate_card_ui({ set = "Other", key = "random_sticker" }, nil, nil, "Other", {})
+			end
+		elseif card_key == "all" then
+			card.children.center.atlas = G.ASSET_ATLAS[sprites.all.atlas]
+			card.children.center:set_sprite_pos(sprites.all.pos)
+			card.ability._cry_sticker_choice = "all"
+			for _, c in ipairs(SMODS.Sticker.obj_buffer) do
+				if not SMODS.Stickers[c].no_edeck then
+					card:add_sticker(c, true)
+				end
+			end
+			card.generate_UIBox_ability_table = function(card_self, vars_only)
+				if vars_only then
+					return
+				end
+				return generate_card_ui({ set = "Other", key = "all_stickers" }, nil, nil, "Other", {})
 			end
 		else
 			card:add_sticker(card_key, true)
