@@ -1047,6 +1047,13 @@ return {
 			},
 		},
 		Edition = {
+			random = {
+				name = "Random",
+				text = {
+					"Applies a random {C:dark_edition}edition{}",
+					"to every {C:attention}card{}",
+				},
+			},
 			e_cry_astral = {
 				name = "Astral",
 				text = {
@@ -1148,6 +1155,13 @@ return {
 			},
 		},
 		Enhanced = {
+			random = {
+				name = "Random",
+				text = {
+					"Applies a random {C:attention}enhancement{}",
+					"to every {C:attention}playing card{}",
+				},
+			},
 			m_cry_echo = {
 				name = "Echo Card",
 				text = {
@@ -4575,6 +4589,41 @@ return {
 			},
 		},
 		Other = {
+			random_edition = {
+				name = "Random",
+				text = {
+					"Applies a random {C:dark_edition}edition{}",
+					"to every {C:attention}card{}",
+				},
+			},
+			random_enhancement = {
+				name = "Random",
+				text = {
+					"Applies a random {C:attention}enhancement{}",
+					"to every {C:attention}playing card{}",
+				},
+			},
+			random_seal = {
+				name = "Random",
+				text = {
+					"Applies a random {C:attention}seal{}",
+					"to every {C:attention}playing card{}",
+				},
+			},
+			random_sticker = {
+				name = "Random",
+				text = {
+					"Applies a random {C:attention}sticker{}",
+					"to every {C:attention}card{}",
+				},
+			},
+			random_suit = {
+				name = "Random",
+				text = {
+					"Applies a random {C:attention}suit{}",
+					"to every {C:attention}playing card{}",
+				},
+			},
 			alt_wheel_of_fortune = {
 				name = "The Wheel of Fortune",
 				text = {
@@ -5480,8 +5529,19 @@ return {
 			run_select_cry_edeck_sl = "Select Seal",
 			run_select_cry_edeck_sl_random = "Random Seal",
 			run_select_cry_antimatter = "Antimatter Decks",
+			k_random = "Random",
+			k_edition = "Edition",
+			k_enhancement = "Enhancement",
+			k_seal = "Seal",
+			k_sticker = "Sticker",
+			k_suit = "Suit",
 		},
 		labels = {
+			random_edition = "Random",
+			random_enhancement = "Random",
+			random_seal = "Random",
+			random_sticker = "Random",
+			random_suit = "Random",
 			food_jokers = "Food Jokers",
 			banana = "Banana",
 			pinned = "Pinned",

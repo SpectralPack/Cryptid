@@ -66,7 +66,7 @@ SMODS.DrawStep({
 				if ed == "e_negative" then
 					self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
 					self.children.back:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
-				elseif ed ~= "default" then
+				elseif ed ~= "default" and ed ~= "random" then
 					local shader = G.SHADERS[ed:sub(3)] and ed:sub(3)
 						or Cryptid.safe_get(G.P_CENTERS, ed, "shader")
 						or nil
@@ -80,7 +80,7 @@ SMODS.DrawStep({
 			if back.key == "b_cry_sk_deck" then
 				local sk = get_edeck_sprite_key(in_run_setup, "sticker")
 				Cryptid.update_edeck_sprite(self, "sticker", sk)
-				if sk ~= "default" then
+				if sk ~= "default" and sk ~= "random" then
 					if type(SMODS.Stickers[sk].draw) == "function" then
 						SMODS.Stickers[sk]:draw(self)
 					else
@@ -103,7 +103,7 @@ SMODS.DrawStep({
 			if back.key == "b_cry_sl_deck" then
 				local sl = get_edeck_sprite_key(in_run_setup, "seal")
 				Cryptid.update_edeck_sprite(self, "seal", sl)
-				if sl ~= "default" then
+				if sl ~= "default" and sl ~= "random" then
 					G.shared_seals[sl].role.draw_major = self
 					G.shared_seals[sl]:draw_shader("dissolve", nil, nil, true, self.children.center)
 					if sl == "Gold" then --figure out handling shader `draw` funcs later
@@ -121,6 +121,52 @@ SMODS.DrawStep({
 	end,
 	conditions = { vortex = false, facing = "back" },
 })
+
+if SMODS.DrawSteps and SMODS.DrawSteps.seal then
+	local orig_seal_draw = SMODS.DrawSteps.seal.func
+	SMODS.DrawSteps.seal.func = function(self, layer)
+		if self.seal == "random" or not G.shared_seals[self.seal] then
+			local seal = G.P_SEALS[self.seal]
+			if seal and type(seal.draw) == "function" then
+				seal:draw(self, layer)
+			end
+			return
+		end
+		return orig_seal_draw(self, layer)
+	end
+end
+
+local update_alert_ref = Card.update_alert
+function Card:update_alert()
+	if self.seal and not G.P_SEALS[self.seal] then
+		return
+	end
+	return update_alert_ref(self)
+end
+
+if SMODS.has_playing_card_property then
+	local orig_has_property = SMODS.has_playing_card_property
+	SMODS.has_playing_card_property = function(card, key)
+		for k, _ in pairs(SMODS.get_enhancements(card)) do
+			if G.P_CENTERS[k] and G.P_CENTERS[k][key] then
+				return true
+			end
+		end
+		if (G.P_CENTERS[(card.edition or {}).key] or {})[key] then
+			return true
+		end
+		if (G.P_SEALS[card.seal or {}] or {})[key] then
+			return true
+		end
+		for k, v in pairs(SMODS.Stickers) do
+			if v[key] and card.ability and card.ability[k] then
+				return true
+			end
+		end
+		return false
+	end
+end
+
 -- Third Layer
 SMODS.DrawStep({
 	key = "floating_sprite2",
