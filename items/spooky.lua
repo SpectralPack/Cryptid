@@ -129,12 +129,21 @@ local choco_dice = {
 	immutable = true,
 	no_dbl = true,
 	loc_vars = function(self, info_queue, center)
-		if not center then --tooltip
-		else
-			SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]:loc_vars(info_queue, center)
+		if
+			center
+			and center.ability
+			and center.ability.extra
+			and center.ability.extra.roll
+			and center.ability.extra.roll > 0
+		then
+			local ev = SMODS.Events["ev_cry_choco" .. center.ability.extra.roll]
+			if ev and ev.loc_vars then
+				ev:loc_vars(info_queue, center)
+			end
 		end
+		local roll_val = (center and center.ability and center.ability.extra and center.ability.extra.roll) or 0
 		return {
-			vars = { not center and "None" or center.ability.extra.roll == 0 and "None" or center.ability.extra.roll },
+			vars = { roll_val == 0 and "None" or roll_val },
 		}
 	end,
 	calculate = function(self, card, context)
@@ -147,9 +156,15 @@ local choco_dice = {
 			and Cryptid.is_boss_blind(G.GAME.blind)
 		then
 			--todo: check if duplicates of event are already started/finished
-			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
-			card.ability.extra.roll = Cryptid.roll("cry_choco", 2, 10, { ignore_value = card.ability.extra.roll })
-			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:start()
+			local prev_ev = SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]
+			if prev_ev then
+				prev_ev:finish()
+			end
+			card.ability.extra.roll = Cryptid.roll("cry_choco", 1, 10, { ignore_value = card.ability.extra.roll })
+			local next_ev = SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]
+			if next_ev then
+				next_ev:start()
+			end
 			return {
 				message = tostring(card.ability.extra.roll),
 				colour = G.C.GREEN,
@@ -158,34 +173,38 @@ local choco_dice = {
 	end,
 	remove_from_deck = function(self, card, from_debuff)
 		if not from_debuff then
-			SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]:finish()
+			local ev = SMODS.Events["ev_cry_choco" .. card.ability.extra.roll]
+			if ev then
+				ev:finish()
+			end
 		end
 	end,
 }
+--[[
 local choco_base_event = {
 	object_type = "Event",
 	key = "choco0",
 }
+]]
 local choco1 = {
 	object_type = "Event",
 	key = "choco1",
 	loc_vars = function(self, info_queue, center)
-		local _, prob_den = SMODS.get_probability_vars(self, 1, 6, "Chocolate Dice 1")
-		info_queue[#info_queue + 1] = { set = "Other", key = self.key } --todo specific_vars
+		info_queue[#info_queue + 1] = { set = "Other", key = self.key }
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_flickering_desc", specific_vars = { 5 } }
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_cry_ghost",
-			specific_vars = { SMODS.get_probability_vars(self, 1, 2, "Chocolate Dice 1"), prob_den },
-		}
+		if G.P_CENTERS.j_cry_ghost then
+			info_queue[#info_queue + 1] = G.P_CENTERS.j_cry_ghost
+		end
 	end,
 	start = function(self)
 		G.GAME.events[self.key] = true
 		local areas = { "jokers", "deck", "hand", "play", "discard" }
-		for k, v in pairs(areas) do
-			for i = 1, #G[v].cards do
-				if SMODS.pseudorandom_probability(self, "cry_choco_possession", 1, 3, "Chocolate Dice 1") then
-					SMODS.Stickers.cry_flickering:apply(G[v].cards[i], true)
+		for _, area_name in ipairs(areas) do
+			if G[area_name] and G[area_name].cards then
+				for i = 1, #G[area_name].cards do
+					if SMODS.pseudorandom_probability(self, "cry_choco_possession", 1, 3, "Chocolate Dice 1") then
+						SMODS.Stickers.cry_flickering:apply(G[area_name].cards[i], true)
+					end
 				end
 			end
 		end
@@ -200,7 +219,7 @@ local choco2 = {
 	key = "choco2",
 	--everything here is done with lovely patches or hooks, search for ev_cry_choco2
 	calculate = function(self, context)
-		if context.cash_out then
+		if context.post_jokers and context.cash_out then
 			G.GAME.current_round.rerolled = false
 		end
 	end,
@@ -221,6 +240,14 @@ local choco2 = {
 			end
 			return gfcr(e)
 		end
+		--prevent skipping blind
+		local gfsb = G.FUNCS.skip_blind
+		G.FUNCS.skip_blind = function(e)
+			if G.GAME.events and G.GAME.events.ev_cry_choco2 then
+				return
+			end
+			return gfsb(e)
+		end
 	end,
 }
 local num_potions = 3 --note: must be changed whenever new potion effects are added
@@ -234,7 +261,7 @@ local choco3 = {
 		for i = 1, 3 do
 			local card = create_card("Unique", G.consumeables, nil, nil, nil, nil, "c_cry_potion")
 			card:add_to_deck()
-			card.ability.random_event = pseudorandom(pseudoseed("cry_choco_witch"), 1, num_potions)
+			card.ability.random_event = pseudorandom("cry_choco_witch", 1, num_potions)
 			G.consumeables:emplace(card)
 		end
 	end,
@@ -244,15 +271,17 @@ local choco3 = {
 	end,
 	finish = function(self)
 		--Reverse all potion effects
-		if G.GAME.events[self.key].potions and G.GAME.events[self.key].potions[2] then
-			G.GAME.starting_params.ante_scaling = G.GAME.starting_params.ante_scaling
-				/ (1.15 ^ G.GAME.events[self.key].potions[2])
-		end
-		if G.GAME.events[self.key].potions and G.GAME.events[self.key].potions[3] then
-			G.GAME.round_resets.hands = G.GAME.round_resets.hands + G.GAME.events[self.key].potions[3]
-			ease_hands_played(G.GAME.events[self.key].potions[3])
-			G.GAME.round_resets.discards = G.GAME.round_resets.discards + G.GAME.events[self.key].potions[3]
-			ease_discard(G.GAME.events[self.key].potions[3])
+		if G.GAME.events[self.key] and G.GAME.events[self.key].potions then
+			if G.GAME.events[self.key].potions[2] then
+				G.GAME.starting_params.ante_scaling = G.GAME.starting_params.ante_scaling
+					/ (1.15 ^ G.GAME.events[self.key].potions[2])
+			end
+			if G.GAME.events[self.key].potions[3] then
+				G.GAME.round_resets.hands = G.GAME.round_resets.hands + G.GAME.events[self.key].potions[3]
+				ease_hands_played(G.GAME.events[self.key].potions[3])
+				G.GAME.round_resets.discards = G.GAME.round_resets.discards + G.GAME.events[self.key].potions[3]
+				ease_discard(G.GAME.events[self.key].potions[3])
+			end
 		end
 		G.GAME.events[self.key] = nil
 	end,
@@ -354,10 +383,12 @@ local potion = {
 			)
 			update_hand_text({ delay = 0 }, { mult = "-", StatusText = true })
 			update_hand_text({ delay = 0 }, { chips = "-", StatusText = true })
-			update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+1" })
+			update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "-1" })
 			delay(1.3)
 			for k, v in pairs(G.GAME.hands) do
-				level_up_hand(card, k, true, -1)
+				if v.level > 1 then
+					level_up_hand(card, k, true, -1)
+				end
 			end
 			update_hand_text(
 				{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -400,26 +431,45 @@ local choco4 = { --lunar abyss
 							table.insert(faces, r)
 						end
 					end
-					local _rank = pseudorandom_element(faces, pseudoseed("cry_choco_lunar_create")).card_key
+					local _rank = pseudorandom_element(faces, "cry_choco_lunar_create").card_key
 					G.play.cards[i]:set_base(G.P_CARDS["C_" .. _rank])
 				end
 			end
 		end
 		if
 			context.post_jokers
-			and context.joker_main
+			and context.final_scoring_step
 			and not context.blueprint_card
 			and not context.retrigger_joker
 		then
 			local faces = 0
-			for i = 1, #G.play.cards do
-				if G.play.cards[i]:is_face() then
+			local cards = context.full_hand or G.play.cards or {}
+			for i = 1, #cards do
+				if cards[i]:is_face() then
 					faces = faces + 1
 				end
 			end
 			if faces > 1 then
-				mult = mult / faces
-				update_hand_text({ delay = 0 }, { mult = mult, chips = hand_chips })
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("multhit2", 0.7)
+						attention_text({
+							scale = 1.4,
+							text = "/" .. faces .. " Mult",
+							colour = G.C.MULT,
+							hold = 1.5,
+							align = "cm",
+							offset = { x = 0, y = -2.7 },
+							major = G.play,
+						})
+						return true
+					end,
+				}))
+				SMODS.calculate_effect({
+					x_mult = 1 / faces,
+					remove_default_message = true,
+					no_juice = true,
+				}, cards[1])
 			end
 		end
 	end,
@@ -457,16 +507,7 @@ local choco5 = { --bloodsucker
 		then
 			if context.destroying_card:is_suit("Hearts") or context.destroying_card:is_suit("Diamonds") then
 				if SMODS.pseudorandom_probability(self, "cry_choco_blood", 1, 3, "Chocolate Dice 5") then
-					context.destroying_card.will_shatter = true
-					local destroying_card = context.destroying_card
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							if destroying_card then
-								destroying_card:start_dissolve()
-							end
-							return true
-						end,
-					}))
+					return { remove = not SMODS.is_eternal(context.destroying_card) }
 				end
 			end
 		end
@@ -476,30 +517,13 @@ local choco6 = { --please take one
 	object_type = "Event",
 	key = "choco6",
 	calculate = function(self, context)
-		if context.pre_cash then
+		if context.post_jokers and context.start_shop then
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					local key = get_pack("cry_take_one").key
-					local card = Card(
-						G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
-						G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
-						G.CARD_W * 1.27,
-						G.CARD_H * 1.27,
-						G.P_CARDS.empty,
-						G.P_CENTERS[key],
-						{ bypass_discovery_center = true, bypass_discovery_ui = true }
-					)
-					card.cost = 0
-					card.from_tag = true
-					G.FUNCS.use_card({ config = { ref_table = card } })
-					card:start_materialize()
-					pack_opened = true
+					Cryptid.open_booster()
 					return true
 				end,
 			}))
-		end
-		if context.setting_blind then
-			pack_opened = nil
 		end
 	end,
 }
@@ -518,7 +542,7 @@ local choco7 = {
 		G.jokers:emplace(card)
 	end,
 	calculate = function(self, context)
-		if context.start_shop then
+		if context.post_jokers and context.start_shop then
 			local tag = Tag("tag_cry_rework")
 			if not tag.ability then
 				tag.ability = {}
@@ -551,7 +575,7 @@ local choco8 = {
 	object_type = "Event",
 	key = "choco8",
 	calculate = function(self, context)
-		if context.cash_out then
+		if context.post_jokers and context.cash_out then
 			for i = 1, G.GAME.current_round.hands_left do
 				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_choco8")
 				card:add_to_deck()
@@ -1121,23 +1145,21 @@ local ghost = {
 			and not context.blueprint
 			and not context.retrigger_joker
 		then
-			if
-				SMODS.pseudorandom_probability(
-					card,
-					"cry_ghost_destroy",
-					1,
-					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
-				)
-			then
+			local extra = card and card.ability and card.ability.extra or self.config.extra
+			if SMODS.pseudorandom_probability(card, "cry_ghost_destroy", 1, extra.destroy_rate, "Ghost Destroy") then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						card:start_dissolve()
-						for i = 1, #G.jokers.cards do
-							if G.jokers.cards[i].ability.cry_possessed then
-								if SMODS.is_eternal(G.jokers.cards[i]) then
-									G.jokers.cards[i].ability.cry_possessed = nil
+						for i = #G.jokers.cards, 1, -1 do
+							local j = G.jokers.cards[i]
+							if j and j.ability and j.ability.cry_possessed then
+								if SMODS.is_eternal(j) then
+									j.ability.cry_possessed = nil
+									if SMODS.Stickers and SMODS.Stickers.cry_possessed then
+										SMODS.Stickers.cry_possessed:apply(j, false)
+									end
 								else
-									G.jokers.cards[i]:start_dissolve()
+									j:start_dissolve()
 								end
 							end
 						end
@@ -1147,26 +1169,28 @@ local ghost = {
 				return
 			end
 			--todo: let multiple ghosts possess multiple jokers
-			if
-				SMODS.pseudorandom_probability(
-					card,
-					"ghostdestroy",
-					1,
-					(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
-				)
-			then
+			if SMODS.pseudorandom_probability(card, "cry_ghost_possess", 1, extra.possess_rate, "Ghost Possess") then
 				for i = 1, #G.jokers.cards do
-					G.jokers.cards[i].ability.cry_possessed = nil
+					local j = G.jokers.cards[i]
+					if j and j.ability then
+						j.ability.cry_possessed = nil
+						if SMODS.Stickers and SMODS.Stickers.cry_possessed then
+							SMODS.Stickers.cry_possessed:apply(j, false)
+						end
+					end
 				end
 				local eligible_cards = {}
 				for i = 1, #G.jokers.cards do
-					if G.jokers.cards[i].config.center.key ~= "j_cry_ghost" then
-						table.insert(eligible_cards, i)
+					if G.jokers.cards[i] ~= card and G.jokers.cards[i].config.center.key ~= "j_cry_ghost" then
+						table.insert(eligible_cards, G.jokers.cards[i])
 					end
 				end
 				if #eligible_cards ~= 0 then
-					G.jokers.cards[pseudorandom_element(eligible_cards, pseudoseed("cry_ghost_possess_choice"))].ability.cry_possessed =
-						true
+					local target = pseudorandom_element(eligible_cards, "cry_ghost_possess_choice")
+					target.ability.cry_possessed = true
+					if SMODS.Stickers and SMODS.Stickers.cry_possessed then
+						SMODS.Stickers.cry_possessed:apply(target, true)
+					end
 				end
 				return
 			end
@@ -1174,22 +1198,15 @@ local ghost = {
 	end,
 	loc_vars = function(self, info_queue, card)
 		info_queue[#info_queue + 1] = { set = "Other", key = "cry_possessed" }
-		local num, denom = SMODS.get_probability_vars(
-			card,
-			1,
-			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.destroy_rate
-		)
-		local num2, denom2 = SMODS.get_probability_vars(
-			card,
-			1,
-			(card and card.ability.extra.odds or self.config.extra.odds) * card.ability.extra.possess_rate
-		)
+		local extra = card and card.ability and card.ability.extra or self.config.extra
+		local num1, denom1 = SMODS.get_probability_vars(card, 1, extra.possess_rate, "Ghost Possess")
+		local num2, denom2 = SMODS.get_probability_vars(card, 1, extra.destroy_rate, "Ghost Destroy")
 		return {
 			vars = {
-				num2,
 				num1,
-				denom2,
+				num2,
 				denom1,
+				denom2,
 			},
 		}
 	end,
@@ -2232,8 +2249,8 @@ items = {
 	cotton_candy,
 	wrapped,
 	choco_dice,
-	choco_base_event,
-	--choco1,
+	--choco_base_event,
+	choco1,
 	choco2,
 	choco3,
 	potion,
@@ -2250,8 +2267,8 @@ items = {
 	candy_basket,
 	blacklist,
 	rotten_egg,
-	--ghost,
-	--possessed,
+	ghost,
+	possessed,
 	spookydeck,
 	candy_dagger,
 	candy_cane,
