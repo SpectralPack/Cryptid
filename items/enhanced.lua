@@ -112,7 +112,10 @@ local e_deck = {
 		return {
 			vars = {
 				aaa == "random" and "Random" or localize({ type = "name_text", set = "Edition", key = aaa }),
-				colours = { aaa == "random" and G.C.DARK_EDITION or (G.P_CENTERS[aaa] and G.P_CENTERS[aaa].badge_colour or G.C.DARK_EDITION) },
+				colours = {
+					aaa == "random" and G.C.DARK_EDITION
+						or (G.P_CENTERS[aaa] and G.P_CENTERS[aaa].badge_colour or G.C.DARK_EDITION),
+				},
 			},
 		}
 	end,
@@ -191,7 +194,10 @@ local et_deck = {
 		return {
 			vars = {
 				bbb == "random" and "Random" or localize({ type = "name_text", set = "Enhanced", key = bbb }),
-				colours = { bbb == "random" and G.C.FILTER or (G.P_CENTERS[bbb] and G.P_CENTERS[bbb].badge_colour or G.C.FILTER) },
+				colours = {
+					bbb == "random" and G.C.FILTER
+						or (G.P_CENTERS[bbb] and G.P_CENTERS[bbb].badge_colour or G.C.FILTER),
+				},
 			},
 		}
 	end,
@@ -347,7 +353,12 @@ local st_deck = {
 			}
 		end
 		local _, _, _, ddd = Cryptid.enhanced_deck_info(self)
-		return { vars = { ddd == "random" and "Random" or localize(ddd, "suits_plural"), colours = { ddd == "random" and G.C.FILTER or G.C.SUITS[ddd] } } }
+		return {
+			vars = {
+				ddd == "random" and "Random" or localize(ddd, "suits_plural"),
+				colours = { ddd == "random" and G.C.FILTER or G.C.SUITS[ddd] },
+			},
+		}
 	end,
 	apply = function(self)
 		local aaa, bbb, ccc, ddd = Cryptid.enhanced_deck_info(self)
@@ -415,8 +426,11 @@ local sl_deck = {
 		local _, _, _, _, eee = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				eee == "random" and "Random" or localize({ type = "name_text", set = "Other", key = eee:lower() .. "_seal" }),
-				colours = { eee == "random" and G.C.FILTER or (G.P_SEALS[eee] and G.P_SEALS[eee].badge_colour or G.C.FILTER) },
+				eee == "random" and "Random"
+					or localize({ type = "name_text", set = "Other", key = eee:lower() .. "_seal" }),
+				colours = {
+					eee == "random" and G.C.FILTER or (G.P_SEALS[eee] and G.P_SEALS[eee].badge_colour or G.C.FILTER),
+				},
 			},
 		}
 	end,

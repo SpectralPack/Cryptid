@@ -1056,7 +1056,8 @@ SMODS.RunSelectPage({
 		if choice == "random" and not is_antimatter then -- and false then -- uncomment `and false` to enable for normal edition decks
 			return "m_bonus"
 		end
-		return (choice == "random" or Cryptid.safe_get(G.P_CENTERS, choice, "set") == "Enhanced") and choice or "m_bonus"
+		return (choice == "random" or Cryptid.safe_get(G.P_CENTERS, choice, "set") == "Enhanced") and choice
+			or "m_bonus"
 	end,
 	selected_text = function(self, selection)
 		return localize({ type = "name_text", set = "Enhanced", key = selection })
@@ -1180,9 +1181,7 @@ SMODS.RunSelectPage({
 		return localize({
 			type = "name_text",
 			set = "Other",
-			key = selection == "random" and "random_sticker"
-				or selection == "all" and "all_stickers"
-				or selection,
+			key = selection == "random" and "random_sticker" or selection == "all" and "all_stickers" or selection,
 		})
 	end,
 	create_selection_card = function(self, card_key, card_number, area)
@@ -1599,4 +1598,3 @@ function SMODS.RunSelect.Functions.create_page(key)
 	end
 	return create_page_ref(key)
 end
-
