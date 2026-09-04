@@ -215,21 +215,21 @@ if CardSleeves then
 		apply = function(self) end,
 		trigger_effect = function(self, args)
 			if args.context == "final_scoring_step" then
-				local aaa = SMODS.pseudorandom_probability(
+				local crit_hit = SMODS.pseudorandom_probability(
 					self,
 					"cry_critical",
 					1,
 					self.config.cry_crit_rate,
 					"Critical Sleeve"
 				)
-				local bbb = SMODS.pseudorandom_probability(
+				local crit_miss = SMODS.pseudorandom_probability(
 					self,
 					"cry_critical",
 					1,
 					self.config.cry_crit_miss_rate,
 					"Critical Sleeve"
 				)
-				if aaa then
+				if crit_hit then
 					args.mult = args.mult ^ 2
 					update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
 					G.E_MANAGER:add_event(Event({
@@ -246,7 +246,7 @@ if CardSleeves then
 							return true
 						end,
 					}))
-				elseif bbb then
+				elseif crit_miss then
 					args.mult = args.mult ^ 0.5
 					update_hand_text({ delay = 0 }, { mult = args.mult, chips = args.chips })
 					G.E_MANAGER:add_event(Event({

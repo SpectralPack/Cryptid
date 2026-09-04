@@ -381,7 +381,7 @@ local planetlua = {
 	atlas = "atlasnotjokers",
 	order = 101,
 	loc_vars = function(self, info_queue, card)
-		local aaa, bbb = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Planet.lua")
+		local prob_num, prob_den = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "Planet.lua")
 		local xmulttexts = {}
 		local loc_mult = " " .. (localize("k_mult")) .. " "
 		for i = 0, 100 do
@@ -451,8 +451,8 @@ local planetlua = {
 		end
 		return {
 			vars = {
-				aaa,
-				bbb,
+				prob_num,
+				prob_den,
 			},
 		}
 	end,
@@ -706,9 +706,9 @@ local planetlua = {
 	calculate = function(self, card, context)
 		if context.cry_observatory then
 			-- pseudorandom("cry_googol_play")
-			local aaa = pseudorandom("mstar")
+			local rand_val = pseudorandom("mstar")
 			local limit = Card.get_gameset(card) == "modest" and 2 or 1e100
-			local formula = aaa + (0.07 * (aaa ^ 5 / (1 - aaa ^ 2)))
+			local formula = rand_val + (0.07 * (rand_val ^ 5 / (1 - rand_val ^ 2)))
 			local value = Cryptid.nuke_decimals(math.min(limit, 1.7 ^ formula), 2)
 			--[[
 
@@ -766,11 +766,11 @@ local nstar = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, center)
-		local aaa = Cryptid.safe_get(G, "GAME", "neutronstarsusedinthisrun") or 0
+		local neutron_stars_used = Cryptid.safe_get(G, "GAME", "neutronstarsusedinthisrun") or 0
 		if Cryptid.safe_get(G, "GAME", "used_vouchers", "v_observatory") then
-			info_queue[#info_queue + 1] = { key = "o_nstar", set = "Other", specific_vars = { 0.1, (1 + (0.1 * aaa)) } }
+			info_queue[#info_queue + 1] = { key = "o_nstar", set = "Other", specific_vars = { 0.1, (1 + (0.1 * neutron_stars_used)) } }
 		end
-		return { vars = { aaa } }
+		return { vars = { neutron_stars_used } }
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card

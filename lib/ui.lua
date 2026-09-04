@@ -465,7 +465,7 @@ end
 
 local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
-	local abc = G_UIDEF_use_and_sell_buttons_ref(card)
+	local button_nodes = G_UIDEF_use_and_sell_buttons_ref(card)
 	-- Remove sell button from cursed jokers
 	if
 		card.area
@@ -475,10 +475,10 @@ function G.UIDEF.use_and_sell_buttons(card)
 		and card.config.center.rarity == "cry_cursed"
 		and card.ability.name ~= "cry-Monopoly"
 	then
-		table.remove(abc.nodes[1].nodes, 1)
+		table.remove(button_nodes.nodes[1].nodes, 1)
 	end
 	if card.config and card.config.center and card.config.center.key == "c_cry_potion" then
-		table.remove(abc.nodes[1].nodes, 1)
+		table.remove(button_nodes.nodes[1].nodes, 1)
 	end
 	-- i love buttercup
 	if
@@ -522,18 +522,18 @@ function G.UIDEF.use_and_sell_buttons(card)
 				},
 			},
 		}
-		local m = abc.nodes[1]
+		local target_node = button_nodes.nodes[1]
 		if not card.added_to_deck then
 			use.nodes[1].nodes = { use.nodes[1].nodes[2] }
 			if card.ability.consumeable then
-				m = abc
+				target_node = button_nodes
 			end
 		end
-		m.nodes = m.nodes or {}
-		table.insert(m.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
+		target_node.nodes = target_node.nodes or {}
+		table.insert(target_node.nodes, { n = G.UIT.R, config = { align = "cl" }, nodes = {
 			use,
 		} })
-		return abc
+		return button_nodes
 	end
-	return abc
+	return button_nodes
 end

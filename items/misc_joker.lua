@@ -1448,16 +1448,16 @@ local nice = {
 	end,
 	calculate = function(self, card, context)
 		if context.cardarea == G.jokers and context.joker_main then
-			local aaa, bbb = nil, nil
+			local has_six, has_nine = nil, nil
 			for i = 1, #context.full_hand do
 				if context.full_hand[i]:get_id() == 6 then
-					aaa = true
+					has_six = true
 				end
 				if context.full_hand[i]:get_id() == 9 then
-					bbb = true
+					has_nine = true
 				end
 			end
-			if aaa and bbb then
+			if has_six and has_nine then
 				return {
 					chips = lenient_bignum(card.ability.extra.chips),
 				}
@@ -1802,11 +1802,11 @@ local sus = {
 					delay = 0.1,
 					func = function()
 						for i = #destroyed_cards, 1, -1 do
-							local aaa = destroyed_cards[i]
-							if SMODS.shatters(aaa) then
-								aaa:shatter()
+							local destroyed_card = destroyed_cards[i]
+							if SMODS.shatters(destroyed_card) then
+								destroyed_card:shatter()
 							else
-								aaa:start_dissolve(nil, i == #destroyed_cards)
+								destroyed_card:start_dissolve(nil, i == #destroyed_cards)
 							end
 						end
 						return true
@@ -2153,17 +2153,17 @@ local blurred = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
-		local aaa
+		local extra_tooltip
 		if next(SMODS.find_mod("sdm0sstuff")) then
 			if G.localization.descriptions.Other.blurred_sdm0 then
-				aaa = {}
-				localize({ type = "other", key = "blurred_sdm0", nodes = aaa, vars = {} })
-				aaa = aaa[1]
+				extra_tooltip = {}
+				localize({ type = "other", key = "blurred_sdm0", nodes = extra_tooltip, vars = {} })
+				extra_tooltip = extra_tooltip[1]
 			end
 		end
 		return {
 			vars = { math.min(center.ability.immutable.max_hand_size_mod, center.ability.extra.extra_hands) },
-			main_end = aaa,
+			main_end = extra_tooltip,
 		}
 	end,
 	atlas = "atlastwo",
@@ -7419,8 +7419,8 @@ local wheelhope = {
 	blueprint_compat = true,
 	demicoloncompat = true,
 	loc_vars = function(self, info_queue, center)
-		local aaa, bbb = SMODS.get_probability_vars(nil, 1, 4, "wheel_of_fortune")
-		info_queue[#info_queue + 1] = { key = "alt_wheel_of_fortune", set = "Other", specific_vars = { aaa, bbb } }
+		local prob_num, prob_den = SMODS.get_probability_vars(nil, 1, 4, "wheel_of_fortune")
+		info_queue[#info_queue + 1] = { key = "alt_wheel_of_fortune", set = "Other", specific_vars = { prob_num, prob_den } }
 		return {
 			vars = {
 				number_format(center.ability.extra.extra),
@@ -7806,19 +7806,19 @@ local translucent = {
 	demicoloncompat = true,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, card)
-		local aaa
+		local extra_tooltip
 		if G.jokers then
 			for k, v in ipairs(G.jokers.cards) do
 				if (v.edition and v.edition.negative) and G.localization.descriptions.Other.remove_negative then
-					aaa = {}
-					localize({ type = "other", key = "remove_negative", nodes = aaa, vars = {} })
-					aaa = aaa[1]
+					extra_tooltip = {}
+					localize({ type = "other", key = "remove_negative", nodes = extra_tooltip, vars = {} })
+					extra_tooltip = extra_tooltip[1]
 					break
 				end
 			end
 		end
 		return {
-			main_end = aaa,
+			main_end = extra_tooltip,
 		}
 	end,
 	calculate = function(self, card, context)
@@ -7978,12 +7978,12 @@ local membershipcard = {
 	demicoloncompat = true,
 	atlas = "atlasthree",
 	loc_vars = function(self, info_queue, card)
-		local aaa
+		local disabled_tooltip
 		if not Cryptid_config.HTTPS then
 			if G.localization.descriptions.Other.cry_https_disabled then
-				aaa = {}
-				localize({ type = "other", key = "cry_https_disabled", nodes = aaa, vars = {} })
-				aaa = aaa[1]
+				disabled_tooltip = {}
+				localize({ type = "other", key = "cry_https_disabled", nodes = disabled_tooltip, vars = {} })
+				disabled_tooltip = disabled_tooltip[1]
 			end
 		end
 		return {
@@ -7991,7 +7991,7 @@ local membershipcard = {
 				number_format(card.ability.extra.Xmult_mod),
 				number_format(lenient_bignum(to_big(card.ability.extra.Xmult_mod) * Cryptid.member_count)),
 			},
-			main_end = aaa,
+			main_end = disabled_tooltip,
 		}
 	end,
 	calculate = function(self, card, context)

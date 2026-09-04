@@ -1544,8 +1544,8 @@ function Cryptid.nuke_decimals(number, surviving_decimals, round)
 	surviving_decimals = surviving_decimals or 0
 	--Set round to 0.5 to round or 0 to floor
 	round = round or 0
-	local aaa = 10 ^ surviving_decimals
-	return math.floor(number * aaa + round) / aaa
+	local scale = 10 ^ surviving_decimals
+	return math.floor(number * scale + round) / scale
 end
 -- "log base (x) of (y)". Pre-Calculus courses recommended
 function Cryptid.funny_log(x, y)

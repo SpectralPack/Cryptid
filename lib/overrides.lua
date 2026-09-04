@@ -89,10 +89,10 @@ function get_pack(_key, _type)
 	for k, v in pairs(G.GAME.cry_banished_keys) do
 		G.GAME.banned_keys[k] = v
 	end
-	local abc = getpackref(_key, _type)
+	local pack_card = getpackref(_key, _type)
 	--Convert banned keys back to what it was originally
 	G.GAME.banned_keys = copy_table(temp_banned)
-	return abc
+	return pack_card
 end
 
 local smods_get_voucher_key = SMODS.get_next_vouchers
