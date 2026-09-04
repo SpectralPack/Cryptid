@@ -871,7 +871,7 @@ function Cryptid.antimatter_compat(key, on_load)
 		not back
 		or back.set ~= "Back"
 		or (SMODS.Centers[key] and Cryptid.enabled(key) ~= true)
-		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter) == "madness" or ((Cryptid.safe_get(
+		or not (Cryptid.gameset(G.P_CENTERS.b_cry_antimatter or "b_cry_antimatter") == "madness" or ((Cryptid.safe_get(
 			G.PROFILES,
 			G.SETTINGS.profile,
 			"deck_usage",
@@ -894,6 +894,27 @@ function Cryptid.antimatter_compat(key, on_load)
 		return true
 	end
 	return false
+end
+
+function Cryptid.antimatter_sleeve_compat(sleeve_key)
+	if not sleeve_key then
+		return false
+	end
+	local full_key = sleeve_key
+	if not full_key:find("^sleeve_") then
+		full_key = "sleeve_" .. full_key
+	end
+	if full_key == "sleeve_cry_antimatter_sleeve" or full_key == "sleeve_casl_none" or full_key == "sleeve_none" then
+		return false
+	end
+	if Cryptid.gameset(G.P_CENTERS.sleeve_cry_antimatter_sleeve or "sleeve_cry_antimatter_sleeve") == "madness" then
+		return true
+	end
+	return (
+		Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", full_key, "wins_by_key", "stake_gold")
+		or Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "sleeve_usage", sleeve_key, "wins_by_key", "stake_gold")
+		or 0
+	) > 0
 end
 
 --Edition Deck Selection
@@ -1587,6 +1608,116 @@ SMODS.RunSelectPage({
 	end,
 	optional = function(self)
 		return SMODS.RunSelect.Setup.choices.deck_choice == "b_cry_antimatter"
+	end,
+})
+
+--Antimatter Sleeve selection
+SMODS.RunSelectPage({
+	key = "cry_antimatter_sleeve",
+	include_deck_preview = true,
+	area_type = "deck",
+	stack_size = 11,
+	preview_size = 11,
+	inject = function(self)
+		local sleeve_idx = nil
+		if SMODS.RunSelect and SMODS.RunSelect.Internals and SMODS.RunSelect.Internals.pages then
+			for idx, p_key in ipairs(SMODS.RunSelect.Internals.pages) do
+				if p_key == "casl_sleeve_choice" or p_key == "sleeve_choice" then
+					sleeve_idx = idx
+					break
+				end
+			end
+		end
+		if sleeve_idx then
+			self.page = sleeve_idx + 1
+		else
+			self.page = #SMODS.RunSelect.Internals.pages + 1
+		end
+		SMODS.RunSelectPage.inject(self)
+	end,
+	card_hover = function(self, card)
+		local page = SMODS.RunSelect
+			and SMODS.RunSelect.Pages
+			and (SMODS.RunSelect.Pages.casl_sleeve_choice or SMODS.RunSelect.Pages.sleeve_choice)
+		if page and page.card_hover then
+			return page:card_hover(card)
+		end
+	end,
+	generate_pool = function(self)
+		local pool = {}
+		if G.P_CENTER_POOLS.Sleeve then
+			for _, c in ipairs(G.P_CENTER_POOLS.Sleeve) do
+				if c.key ~= "sleeve_cry_antimatter_sleeve" and Cryptid.antimatter_sleeve_compat(c.key) then
+					pool[#pool + 1] = c
+				end
+			end
+		end
+		return pool
+	end,
+	set_default = function(self, choice)
+		local selected = {}
+		if choice and type(choice) == "table" then
+			for k, v in pairs(choice) do
+				if Cryptid.antimatter_sleeve_compat(k) then
+					selected[k] = (v == true)
+				end
+			end
+		else
+			if G.P_CENTER_POOLS.Sleeve then
+				for _, c in ipairs(G.P_CENTER_POOLS.Sleeve) do
+					if Cryptid.antimatter_sleeve_compat(c.key) then
+						selected[c.key] = true
+					end
+				end
+			end
+		end
+		return selected
+	end,
+	quick_start_text = function()
+		local slv = G.PROFILES[G.SETTINGS.profile].last_choices.casl_sleeve_choice
+			or G.PROFILES[G.SETTINGS.profile].last_choices.sleeve_choice
+		if slv == "sleeve_cry_antimatter_sleeve" then
+			local curr = G.PROFILES[G.SETTINGS.profile].last_choices.cry_antimatter_sleeve
+			local sleeve_total = 0
+			for k in pairs(curr or {}) do
+				if Cryptid.antimatter_sleeve_compat(k) then
+					sleeve_total = sleeve_total + 1
+				else
+					curr[k] = nil
+				end
+			end
+		end
+	end,
+	create_selection_card = function(self, card_key, card_number, area)
+		local page = SMODS.RunSelect
+			and SMODS.RunSelect.Pages
+			and (SMODS.RunSelect.Pages.casl_sleeve_choice or SMODS.RunSelect.Pages.sleeve_choice)
+		if page and page.create_selection_card then
+			local card = page:create_selection_card(card_key, card_number, area)
+			card.cry_antimatter_sleeve_card = true
+			if not Cryptid.antimatter_sleeve_compat(card_key) then
+				card.cry_antimatter_sleeve_locked = true
+			end
+			return card
+		end
+	end,
+	handle_choice = function(self, choice, remove)
+		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
+		local choices = SMODS.RunSelect.Setup.choices[self.key]
+		local s_key = choice.config.center.key
+		if Cryptid.antimatter_sleeve_compat(s_key) then
+			choices[s_key] = not choices[s_key]
+		end
+	end,
+	start_run = function(self, choice)
+		G.GAME.cry_antimatter_sleeves = SMODS.shallow_copy(choice or {})
+	end,
+	optional = function(self)
+		local s_choice = Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "casl_sleeve_choice")
+			or Cryptid.safe_get(SMODS.RunSelect, "Setup", "choices", "sleeve_choice")
+			or (G.GAME and G.GAME.selected_sleeve)
+			or Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "last_choices", "casl_sleeve_choice")
+		return s_choice == "sleeve_cry_antimatter_sleeve" or s_choice == "cry_antimatter_sleeve"
 	end,
 })
 
