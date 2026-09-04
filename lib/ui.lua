@@ -351,16 +351,10 @@ function Cryptid.get_split_shader(shader_name, half)
 		return shader_name
 	end
 
-	local split_condition = (half == "top_left")
-		and "\n\tif ((uv.x + uv.y) >= 1.0) { return vec4(0.0); }\n"
+	local split_condition = (half == "top_left") and "\n\tif ((uv.x + uv.y) >= 1.0) { return vec4(0.0); }\n"
 		or "\n\tif ((uv.x + uv.y) < 1.0) { return vec4(0.0); }\n"
 
-	local modified_code, count = string.gsub(
-		raw_code,
-		"(vec2%s+uv%s*=%s*.-;)",
-		"%1" .. split_condition,
-		1
-	)
+	local modified_code, count = string.gsub(raw_code, "(vec2%s+uv%s*=%s*.-;)", "%1" .. split_condition, 1)
 
 	if count > 0 then
 		local compile_ok, new_shader = pcall(love.graphics.newShader, modified_code)
@@ -374,18 +368,58 @@ function Cryptid.get_split_shader(shader_name, half)
 end
 
 local sprite_draw_shader_ref = Sprite.draw_shader
-function Sprite:draw_shader(_shader, _shadow_height, _send, _no_tilt, other_obj, ms, mr, mx, my, custom_shader, tilt_shadow)
+function Sprite:draw_shader(
+	_shader,
+	_shadow_height,
+	_send,
+	_no_tilt,
+	other_obj,
+	ms,
+	mr,
+	mx,
+	my,
+	custom_shader,
+	tilt_shadow
+)
 	if not self.cry_split_half or not _shader then
-		return sprite_draw_shader_ref(self, _shader, _shadow_height, _send, _no_tilt, other_obj, ms, mr, mx, my, custom_shader, tilt_shadow)
+		return sprite_draw_shader_ref(
+			self,
+			_shader,
+			_shadow_height,
+			_send,
+			_no_tilt,
+			other_obj,
+			ms,
+			mr,
+			mx,
+			my,
+			custom_shader,
+			tilt_shadow
+		)
 	end
 
 	local target_shader_key = Cryptid.get_split_shader(_shader, self.cry_split_half)
 	local shader_obj = G.SHADERS[target_shader_key]
 	if not shader_obj or target_shader_key == _shader then
-		return sprite_draw_shader_ref(self, _shader, _shadow_height, _send, _no_tilt, other_obj, ms, mr, mx, my, custom_shader, tilt_shadow)
+		return sprite_draw_shader_ref(
+			self,
+			_shader,
+			_shadow_height,
+			_send,
+			_no_tilt,
+			other_obj,
+			ms,
+			mr,
+			mx,
+			my,
+			custom_shader,
+			tilt_shadow
+		)
 	end
 
-	if G.SETTINGS.reduced_motion then _no_tilt = true end
+	if G.SETTINGS.reduced_motion then
+		_no_tilt = true
+	end
 	local _draw_major = self.role.draw_major or self
 	if _shadow_height then
 		self.VT.y = self.VT.y - _draw_major.shadow_parrallax.y * _shadow_height
@@ -408,11 +442,9 @@ function Sprite:draw_shader(_shader, _shadow_height, _send, _no_tilt, other_obj,
 	else
 		self.ARGS.prep_shader = self.ARGS.prep_shader or {}
 		self.ARGS.prep_shader.cursor_pos = self.ARGS.prep_shader.cursor_pos or {}
-		self.ARGS.prep_shader.cursor_pos[1] = _draw_major.tilt_var
-			and _draw_major.tilt_var.mx * G.CANV_SCALE
+		self.ARGS.prep_shader.cursor_pos[1] = _draw_major.tilt_var and _draw_major.tilt_var.mx * G.CANV_SCALE
 			or G.CONTROLLER.cursor_position.x * G.CANV_SCALE
-		self.ARGS.prep_shader.cursor_pos[2] = _draw_major.tilt_var
-			and _draw_major.tilt_var.my * G.CANV_SCALE
+		self.ARGS.prep_shader.cursor_pos[2] = _draw_major.tilt_var and _draw_major.tilt_var.my * G.CANV_SCALE
 			or G.CONTROLLER.cursor_position.y * G.CANV_SCALE
 
 		if shader_obj:hasUniform("mouse_screen_pos") then
@@ -424,7 +456,8 @@ function Sprite:draw_shader(_shader, _shadow_height, _send, _no_tilt, other_obj,
 		if shader_obj:hasUniform("hovering") then
 			shader_obj:send(
 				"hovering",
-				((_shadow_height and not tilt_shadow) or _no_tilt) and 0 or (_draw_major.hover_tilt or 0) * (tilt_shadow or 1)
+				((_shadow_height and not tilt_shadow) or _no_tilt) and 0
+					or (_draw_major.hover_tilt or 0) * (tilt_shadow or 1)
 			)
 		end
 		if shader_obj:hasUniform("dissolve") then
@@ -440,10 +473,16 @@ function Sprite:draw_shader(_shader, _shadow_height, _send, _no_tilt, other_obj,
 			shader_obj:send("image_details", self:get_image_dims())
 		end
 		if shader_obj:hasUniform("burn_colour_1") then
-			shader_obj:send("burn_colour_1", _draw_major.dissolve_colours and _draw_major.dissolve_colours[1] or G.C.CLEAR)
+			shader_obj:send(
+				"burn_colour_1",
+				_draw_major.dissolve_colours and _draw_major.dissolve_colours[1] or G.C.CLEAR
+			)
 		end
 		if shader_obj:hasUniform("burn_colour_2") then
-			shader_obj:send("burn_colour_2", _draw_major.dissolve_colours and _draw_major.dissolve_colours[2] or G.C.CLEAR)
+			shader_obj:send(
+				"burn_colour_2",
+				_draw_major.dissolve_colours and _draw_major.dissolve_colours[2] or G.C.CLEAR
+			)
 		end
 		if shader_obj:hasUniform("shadow") then
 			shader_obj:send("shadow", not not _shadow_height)
@@ -485,9 +524,11 @@ SMODS.DrawStep({
 	func = function(self)
 		if self.cry_ccd and self.facing == "front" then
 			if not self.children.cry_ccd_sprite then
-				local atlas = G.ASSET_ATLAS[self.cry_ccd.center.atlas or self.cry_ccd.center.set] or G.ASSET_ATLAS["Tarot"]
+				local atlas = G.ASSET_ATLAS[self.cry_ccd.center.atlas or self.cry_ccd.center.set]
+					or G.ASSET_ATLAS["Tarot"]
 				if atlas then
-					self.children.cry_ccd_sprite = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, atlas, self.cry_ccd.center.pos)
+					self.children.cry_ccd_sprite =
+						Sprite(self.T.x, self.T.y, self.T.w, self.T.h, atlas, self.cry_ccd.center.pos)
 					self.children.cry_ccd_sprite.states.hover = self.states.hover
 					self.children.cry_ccd_sprite.states.click = self.states.click
 					self.children.cry_ccd_sprite.states.drag = self.states.drag
@@ -537,7 +578,13 @@ if SMODS.DrawSteps and SMODS.DrawSteps.edition then
 					else
 						if is_enhanced then
 							self.children.center.cry_split_half = "top_left"
-							pcall(self.children.center.draw_shader, self.children.center, v.shader, nil, self.ARGS.send_to_shader)
+							pcall(
+								self.children.center.draw_shader,
+								self.children.center,
+								v.shader,
+								nil,
+								self.ARGS.send_to_shader
+							)
 							self.children.center.cry_split_half = nil
 
 							if self.children.cry_ccd_sprite then

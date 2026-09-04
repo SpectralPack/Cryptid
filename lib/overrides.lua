@@ -1662,7 +1662,6 @@ function Card:check_use()
 	return check_use_ref(self)
 end
 
-
 -- add second back button to create_UIBox_generic_options
 local cuigo = create_UIBox_generic_options
 function create_UIBox_generic_options(args)

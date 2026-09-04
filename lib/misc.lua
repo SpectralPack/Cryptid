@@ -389,7 +389,8 @@ function Cryptid.set_ccd(card, consumable_center)
 				card.children.cry_ccd_sprite.atlas = atlas
 				card.children.cry_ccd_sprite:set_sprite_pos(consumable_center.pos)
 			else
-				card.children.cry_ccd_sprite = Sprite(card.T.x, card.T.y, card.T.w, card.T.h, atlas, consumable_center.pos)
+				card.children.cry_ccd_sprite =
+					Sprite(card.T.x, card.T.y, card.T.w, card.T.h, atlas, consumable_center.pos)
 				card.children.cry_ccd_sprite.states.hover = card.states.hover
 				card.children.cry_ccd_sprite.states.click = card.states.click
 				card.children.cry_ccd_sprite.states.drag = card.states.drag

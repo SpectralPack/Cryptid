@@ -285,7 +285,10 @@ local hammerspace = {
 				delay = 0.15,
 				func = function()
 					CARD:flip()
-					Cryptid.set_ccd(CARD, Cryptid.random_consumable("cry_hammerspace", nil, "c_cry_hammerspace", nil, true))
+					Cryptid.set_ccd(
+						CARD,
+						Cryptid.random_consumable("cry_hammerspace", nil, "c_cry_hammerspace", nil, true)
+					)
 					play_sound("tarot2", percent)
 					CARD:juice_up(0.3, 0.3)
 					return true
