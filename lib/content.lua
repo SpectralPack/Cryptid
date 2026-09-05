@@ -29,10 +29,7 @@ SMODS.PokerHand({
 		end
 		local stones = {}
 		for i, card in ipairs(hand) do
-			if
-				card.config.center_key == "m_stone"
-				or (card.config.center.no_rank and card.config.center.no_suit and not card.config.center.not_stoned)
-			then
+			if SMODS.has_no_rank(card) and SMODS.has_no_suit(card) then
 				stones[#stones + 1] = card
 			end
 		end
