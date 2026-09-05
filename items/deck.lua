@@ -412,16 +412,16 @@ local legendary = {
 						"Legendary Deck"
 					)
 				then
-					G.E_MANAGER:add_event(Event{
-						func = function ()
-							SMODS.add_card{ --legendary = true isnt needed as you need to have legendaries unlocked to unlock this anyway
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							SMODS.add_card({ --legendary = true isnt needed as you need to have legendaries unlocked to unlock this anyway
 								set = "Joker",
 								rarity = "Legendary",
 								key_append = "cry_legendary_joker",
-							}
+							})
 							return true
-						end
-					})
+						end,
+					}))
 					return { message = localize("k_plus_joker"), colour = G.C.RARITY[4], message_card = G.jokers }
 				else
 					return { message = localize("k_nope_ex"), colour = G.C.RARITY[4], message_card = G.jokers }
@@ -438,11 +438,11 @@ local legendary = {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					SMODS.add_card{
+					SMODS.add_card({
 						set = "Joker",
 						rarity = "Legendary",
 						key_append = "cry_legendary_joker",
-					}
+					})
 					return true
 				end
 			end,
@@ -591,7 +591,7 @@ local glowing = {
 			for i = 1, #G.jokers.cards do
 				if not Card.no(G.jokers.cards[i], "immutable", true) then
 					Cryptid.manipulate(G.jokers.cards[i], { value = 1.25 })
-					SMODS.calculate_effect({ message = localize("k_upgrade_ex") }, G.jokers.cards[i] )
+					SMODS.calculate_effect({ message = localize("k_upgrade_ex") }, G.jokers.cards[i])
 				end
 			end
 			return nil, true
