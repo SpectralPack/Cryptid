@@ -1129,6 +1129,7 @@ SMODS.RunSelectPage({
 		local pool = {}
 		for _, c in ipairs(SMODS.Sticker.obj_buffer) do
 			if not SMODS.Stickers[c].no_edeck then
+				SMODS.Stickers[c].unlocked = true
 				pool[#pool + 1] = SMODS.Stickers[c]
 			end
 		end
@@ -1266,6 +1267,7 @@ SMODS.RunSelectPage({
 		local pool = {}
 		for _, c in ipairs(SMODS.Suit.obj_buffer) do
 			if not SMODS.Suits[c].no_edeck then
+				SMODS.Suits[c].unlocked = true
 				pool[#pool + 1] = SMODS.Suits[c]
 			end
 		end
@@ -1393,6 +1395,7 @@ SMODS.RunSelectPage({
 		local pool = {}
 		for _, c in ipairs(SMODS.Seal.obj_buffer) do
 			if not G.P_SEALS[c].no_edeck then
+				G.P_SEALS[c].unlocked = true
 				pool[#pool + 1] = G.P_SEALS[c]
 			end
 		end
