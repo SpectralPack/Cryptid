@@ -423,7 +423,7 @@ local sl_deck = {
 	loc_vars = function(self, info_queue, center)
 		if
 			SMODS.RunSelect.Internals.preview_area
-			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_st.page
+			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_sl.page
 		then
 			return {
 				key = self.key .. "_preview",
