@@ -401,43 +401,33 @@ local legendary = {
 		return { vars = { SMODS.get_probability_vars(self, 1, self.config.cry_legendary_rate, "Legendary Deck") } }
 	end,
 	calculate = function(self, back, context)
-		if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
-			if G.jokers then
-				if #G.jokers.cards < G.jokers.config.card_limit then
-					if
-						SMODS.pseudorandom_probability(
-							self,
-							"cry_legendary",
-							1,
-							self.config.cry_legendary_rate,
-							"Legendary Deck"
-						)
-					then
-						local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-						card:add_to_deck()
-						card:start_materialize()
-						G.jokers:emplace(card)
-						return true
-					else
-						card_eval_status_text(
-							G.jokers,
-							"jokers",
-							nil,
-							nil,
-							nil,
-							{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
-						)
-					end
-				else
-					card_eval_status_text(
-						G.jokers,
-						"jokers",
-						nil,
-						nil,
-						nil,
-						{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
+		if context.end_of_round and context.main_eval and context.beat_boss and G.jokers then
+			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+				if
+					SMODS.pseudorandom_probability(
+						self,
+						"cry_legendary",
+						1,
+						self.config.cry_legendary_rate,
+						"Legendary Deck"
 					)
+				then
+					G.E_MANAGER:add_event(Event{
+						func = function ()
+							SMODS.add_card{ --legendary = true isnt needed as you need to have legendaries unlocked to unlock this anyway
+								set = "Joker",
+								rarity = "Legendary",
+								key_append = "cry_legendary_joker",
+							}
+							return true
+						end
+					})
+					return { message = localize("k_plus_joker"), colour = G.C.RARITY[4], message_card = G.jokers }
+				else
+					return { message = localize("k_nope_ex"), colour = G.C.RARITY[4], message_card = G.jokers }
 				end
+			else
+				return { message = localize("k_no_room_ex"), colour = G.C.RARITY[4], message_card = G.jokers }
 			end
 		end
 	end,
@@ -448,10 +438,11 @@ local legendary = {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-					card:add_to_deck()
-					card:start_materialize()
-					G.jokers:emplace(card)
+					SMODS.add_card{
+						set = "Joker",
+						rarity = "Legendary",
+						key_append = "cry_legendary_joker",
+					}
 					return true
 				end
 			end,
@@ -462,7 +453,7 @@ local legendary = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if Cryptid.safe_get(G, "jokers") then
+		if G.jokers then
 			local count = 0
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].config.center.rarity == 4 then
@@ -526,7 +517,7 @@ local critical = {
 						})
 						local deck_card = G.deck.cards[1] or G.deck
 						attention_text({
-							text = "^" .. tostring(check),
+							text = "^" .. number_format(check),
 							scale = 0.7,
 							hold = 1.4,
 							backdrop_colour = G.C.emult or G.C.DARK_EDITION,
@@ -561,7 +552,7 @@ local critical = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if Cryptid.safe_get(G, "jokers") then
+		if G.jokers then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.cry_rigged then
 					unlock_card(self)
@@ -596,12 +587,14 @@ local glowing = {
 	end,
 	atlas = "glowing",
 	calculate = function(self, back, context)
-		if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
+		if context.end_of_round and context.main_eval and context.beat_boss then
 			for i = 1, #G.jokers.cards do
 				if not Card.no(G.jokers.cards[i], "immutable", true) then
 					Cryptid.manipulate(G.jokers.cards[i], { value = 1.25 })
+					SMODS.calculate_effect({ message = localize("k_upgrade_ex") }, G.jokers.cards[i] )
 				end
 			end
+			return nil, true
 		end
 	end,
 	cry_antimatter_calculate = function(self, context)
