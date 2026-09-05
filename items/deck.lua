@@ -828,7 +828,7 @@ local antimatter = {
 						v:cry_antimatter_consumables(consumables)
 					elseif v.config and v.config.consumables then
 						for _, c in ipairs(v.config.consumables) do
-							consumables[#consumables+1] = c
+							consumables[#consumables + 1] = c
 						end
 					end
 					-- VOUCHERS
@@ -836,10 +836,10 @@ local antimatter = {
 						v:cry_antimatter_vouchers(vouchers)
 					elseif v.config and v.config.vouchers then
 						for _, c in ipairs(v.config.vouchers) do
-							vouchers[#vouchers+1] = c
+							vouchers[#vouchers + 1] = c
 						end
 					elseif v.config and v.config.voucher then
-						vouchers[#vouchers+1] = v.config.voucher
+						vouchers[#vouchers + 1] = v.config.voucher
 					end
 					-- EVERYTHING ELSE
 					if v.config then
@@ -853,40 +853,47 @@ local antimatter = {
 							G.GAME.starting_params.no_faces = true
 						end
 						if v.config.spectral_rate then
-							G.GAME.starting_params.spectral_rate = math.max(G.GAME.starting_params.spectral_rate or 0, v.config.spectral_rate)
+							G.GAME.starting_params.spectral_rate =
+								math.max(G.GAME.starting_params.spectral_rate or 0, v.config.spectral_rate)
 						end
 						if v.config.discards and v.config.discards > 0 then
 							G.GAME.starting_params.discards = G.GAME.starting_params.discards + v.config.discards
 						end
 						if v.config.reroll_discount and v.config.reroll_discount > 0 then
-							G.GAME.starting_params.reroll_cost = G.GAME.starting_params.reroll_cost - v.config.reroll_discount
+							G.GAME.starting_params.reroll_cost = G.GAME.starting_params.reroll_cost
+								- v.config.reroll_discount
 						end
 						if v.config.edition then
 							for _ = 1, v.config.edition_count do
-								editions[#editions+1] = v.config.edition
+								editions[#editions + 1] = v.config.edition
 							end
 						end
 						if v.config.randomize_rank_suit then
 							G.GAME.starting_params.erratic_suits_and_ranks = true
 						end
 						if v.config.joker_slot and v.config.joker_slot > 0 then
-							G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + v.config.joker_slot
+							G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots
+								+ v.config.joker_slot
 						end
 						if v.config.hand_size and v.config.hand_size > 0 then
 							G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + v.config.hand_size
 						end
 						-- Only every reduce blind size multiplier
 						if v.config.ante_scaling then
-							G.GAME.starting_params.ante_scaling = math.min(G.GAME.starting_params.ante_scaling, v.config.ante_scaling)
+							G.GAME.starting_params.ante_scaling =
+								math.min(G.GAME.starting_params.ante_scaling, v.config.ante_scaling)
 						end
 						if v.config.consumable_slot and v.config.consumable_slot > 0 then
-							G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots + v.config.consumable_slot
+							G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots
+								+ v.config.consumable_slot
 						end
 						if v.config.extra_hand_bonus then
-							G.GAME.modifiers.money_per_hand = math.max(G.GAME.modifiers.money_per_hand or 1, v.config.extra_hand_bonus)
+							G.GAME.modifiers.money_per_hand =
+								math.max(G.GAME.modifiers.money_per_hand or 1, v.config.extra_hand_bonus)
 						end
 						if (v.config.extra_discard_bonus or 0) > 0 then
-							G.GAME.modifiers.money_per_discard = math.max(G.GAME.modifiers.money_per_discard or 0, v.config.extra_discard_bonus)
+							G.GAME.modifiers.money_per_discard =
+								math.max(G.GAME.modifiers.money_per_discard or 0, v.config.extra_discard_bonus)
 						end
 					end
 				end
@@ -911,7 +918,7 @@ local antimatter = {
 			local clean_vouchers, applied_vouchers = {}, {}
 			for _, v in ipairs(vouchers) do
 				if not applied_vouchers[v] then
-					clean_vouchers[#clean_vouchers+1] = v
+					clean_vouchers[#clean_vouchers + 1] = v
 					applied_vouchers[v] = true
 				end
 			end
@@ -930,11 +937,13 @@ local antimatter = {
 				end
 			end
 			if #editions > 0 then
-				G.E_MANAGER:add_event(Event{
-					func = function ()
+				G.E_MANAGER:add_event(Event({
+					func = function()
 						local editionless_cards = {}
 						for _, c in ipairs(G.playing_cards) do
-							if not c.edition then editionless_cards[#editionless_cards+1] = c end
+							if not c.edition then
+								editionless_cards[#editionless_cards + 1] = c
+							end
 						end
 						for _, edition in ipairs(editions) do
 							local card, idx = pseudorandom_element(editionless_cards, "edition_deck")
@@ -942,8 +951,8 @@ local antimatter = {
 							table.remove(editionless_cards, idx)
 						end
 						return true
-					end
-				})
+					end,
+				}))
 			end
 		end
 		function Cryptid.antimatter_trigger(self, context, skip, custom)
