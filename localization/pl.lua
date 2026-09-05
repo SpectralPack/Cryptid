@@ -826,7 +826,7 @@ return {
 				text = {
 					"Sprzedaj tę kartę, aby stworzyć {C:attention}#1#{} {C:cry_candy}Cukierków",
 					"{C:attention}+#2#{} {C:cry_candy}Cukierek{} co {C:attention}2{} pokonane przeszkadzajki",
-					"{C:attention}+#3#{} {C:cry_candy}Cukierki{}, kiedy {C:attention}Przeszkadzajka Bossa{} jest pokonana",
+					"{C:attention}+#4#{} {C:cry_candy}Cukierki{}, kiedy {C:attention}Przeszkadzajka Bossa{} jest pokonana",
 				},
 			},
 			j_cry_candy_buttons = {

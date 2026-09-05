@@ -1120,7 +1120,7 @@ return {
 				text = {
 					"Vende esta carta para crear {C:attention}#1#{} {C:cry_candy}dulce#<s>1#",
 					"{C:attention}+#2#{} {C:cry_candy}dulce#<s>2#{} cada {C:attention}2{} ciegas derrotadas",
-					"{C:attention}+#3#{} {C:cry_candy}dulce#<s>3#{} al derrotar la {C:attention}ciega jefe{}",
+					"{C:attention}+#4#{} {C:cry_candy}dulce#<s>4#{} al derrotar la {C:attention}ciega jefe{}",
 				},
 			},
 			j_cry_candy_buttons = {

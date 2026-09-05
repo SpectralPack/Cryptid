@@ -935,17 +935,15 @@ local candy_basket = {
 		if context.end_of_round and not context.individual and not context.repetition then
 			card.ability.immutable.current_win_count = card.ability.immutable.current_win_count + 1
 
+			local scaled = false
 			if Cryptid.is_boss_blind(G.GAME.blind) then
 				SMODS.scale_card(card, {
 					ref_table = card.ability.extra,
 					ref_value = "candies",
 					scalar_value = "candy_boss_mod",
-					operation = function(ref_table, ref_value, initial, change)
-						ref_table[ref_value] = initial + change * card.ability.extra.candy_boss_mod
-					end,
-					no_message = true,
+					scalar_factor = card.ability.extra.candy_mod,
 				})
-				return nil, true
+				scaled = true
 			end
 			if card.ability.immutable.current_win_count >= card.ability.immutable.wins_needed then
 				card.ability.immutable.current_win_count = 0
@@ -954,6 +952,9 @@ local candy_basket = {
 					ref_value = "candies",
 					scalar_value = "candy_mod",
 				})
+				scaled = true
+			end
+			if scaled then
 				return nil, true
 			end
 		end
@@ -962,9 +963,7 @@ local candy_basket = {
 				ref_table = card.ability.extra,
 				ref_value = "candies",
 				scalar_value = "candy_boss_mod",
-				operation = function(ref_table, ref_value, initial, change)
-					ref_table[ref_value] = initial + change * card.ability.extra.candy_boss_mod
-				end,
+				scalar_factor = card.ability.extra.candy_mod,
 				no_message = true,
 			})
 			SMODS.scale_card(card, {
