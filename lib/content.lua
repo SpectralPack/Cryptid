@@ -883,17 +883,7 @@ function Cryptid.antimatter_compat(key, on_load)
 	then
 		return false
 	end
-	if
-		back.cry_antimatter_apply
-		or back.cry_antimatter_calculate
-		or back.cry_antimatter_consumables
-		or back.cry_antimatter_vouchers
-		or back.cry_antimatter_compat --this is so you can mark a deck as antimatter compat even if it doesnt use the above functions for that
-		or not back.original_mod
-	then
-		return true
-	end
-	return false
+	return true
 end
 
 --Edition Deck Selection
