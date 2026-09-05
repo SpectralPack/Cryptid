@@ -4785,6 +4785,8 @@ return {
 				last_discard = { "if it's the {C:attention}last {C:attention}discard{}" },
 				odds = { "with a {C:green}#4# {C:green}in {C:green}#3#{} chance" },
 			},
+			b_select_all = "Selecionar tudo",
+			b_deselect_all = "Desmarcar tudo",
 		},
 		v_dictionary = {
 			a_xchips = "X#1# Chips",

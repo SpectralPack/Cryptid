@@ -11,4 +11,5 @@ return {
 	["force_tooltips"] = true, -- acivates lovely patch to always show the desc of jokers and stuff
 	["HTTPS"] = true, -- your internet connection
 	["menu"] = true, -- Restart game and the main menu is now blue
+	["antimatter_decks"] = {}, -- Saved deck selection for Antimatter Deck
 }
