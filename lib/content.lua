@@ -949,7 +949,9 @@ SMODS.RunSelectPage({
 	handle_choice = function(self, choice, remove)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
 		local val = choice.edition and choice.edition.key
-		if not val then return end
+		if not val then
+			return
+		end
 		if not remove then
 			SMODS.RunSelect.Setup.choices[self.key] = val
 		else
@@ -1064,7 +1066,7 @@ SMODS.RunSelectPage({
 		})
 	end,
 	set_default = function(self, choice)
-		return (SMODS.Stickers[choice]) and choice or "eternal"
+		return SMODS.Stickers[choice] and choice or "eternal"
 	end,
 	selected_text = function(self, selection)
 		return localize({
@@ -1105,10 +1107,10 @@ SMODS.RunSelectPage({
 	start_run = function(self, choice)
 		G.GAME.cry_selected_sticker = choice
 	end,
-	choose_random = function (self)
+	choose_random = function(self)
 		local sticker = pseudorandom_element(self.pool, pseudoseed(os.time()))
-		self:handle_choice{ ability = { _cry_sticker_choice = sticker.key }}
-	end
+		self:handle_choice({ ability = { _cry_sticker_choice = sticker.key } })
+	end,
 })
 
 -- Suit Deck selection
@@ -1140,7 +1142,7 @@ SMODS.RunSelectPage({
 		return localize(G.PROFILES[G.SETTINGS.profile].last_choices.cry_edeck_st, "suits_plural")
 	end,
 	set_default = function(self, choice)
-		return (SMODS.Suits[choice]) and choice or "Spades"
+		return SMODS.Suits[choice] and choice or "Spades"
 	end,
 	selected_text = function(self, selection)
 		return localize(selection, "suits_plural")
@@ -1169,7 +1171,7 @@ SMODS.RunSelectPage({
 	end,
 	handle_choice = function(self, choice, remove)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or "Spades"
-		local val = (choice.base.suit)
+		local val = choice.base.suit
 		if not remove then
 			SMODS.RunSelect.Setup.choices[self.key] = val
 		else
@@ -1179,10 +1181,10 @@ SMODS.RunSelectPage({
 	start_run = function(self, choice)
 		G.GAME.cry_selected_suit = choice
 	end,
-	choose_random = function (self)
+	choose_random = function(self)
 		local suit = pseudorandom_element(self.pool, pseudoseed(os.time()))
-		self:handle_choice{base = { suit = suit.key }}
-	end
+		self:handle_choice({ base = { suit = suit.key } })
+	end,
 })
 
 -- Seal Deck selection
@@ -1218,7 +1220,7 @@ SMODS.RunSelectPage({
 		})
 	end,
 	set_default = function(self, choice)
-		return (G.P_SEALS[choice]) and choice or "Gold"
+		return G.P_SEALS[choice] and choice or "Gold"
 	end,
 	selected_text = function(self, selection)
 		return localize({
@@ -1261,10 +1263,10 @@ SMODS.RunSelectPage({
 	start_run = function(self, choice)
 		G.GAME.cry_selected_seal = choice
 	end,
-	choose_random = function (self)
+	choose_random = function(self)
 		local seal = pseudorandom_element(self.pool, pseudoseed(os.time()))
-		self:handle_choice{ seal = seal.key }
-	end
+		self:handle_choice({ seal = seal.key })
+	end,
 })
 
 --Antimatter Deck selection
@@ -1309,7 +1311,7 @@ SMODS.RunSelectPage({
 					deck_total = deck_total + 1
 				end
 			end
-			return localize{ type = "variable", key = "antimatter_quickstart", vars = {deck_total} }
+			return localize({ type = "variable", key = "antimatter_quickstart", vars = { deck_total } })
 		end
 	end,
 	create_selection_card = function(self, card_key, card_number, area)
@@ -1344,7 +1346,7 @@ SMODS.RunSelectPage({
 	optional = function(self)
 		return SMODS.RunSelect.Setup.choices.deck_choice == "b_cry_antimatter"
 	end,
-	choose_random = function (self)
+	choose_random = function(self)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or {}
 		local choices = SMODS.RunSelect.Setup.choices[self.key]
 		for _, back in ipairs(self.pool) do
@@ -1352,5 +1354,5 @@ SMODS.RunSelectPage({
 				choices[back.key] = math.random() > 0.5
 			end
 		end
-	end
+	end,
 })

@@ -5694,7 +5694,7 @@ return {
 			cry_idea = "Idea: #1#",
 			cry_trade_add = "#1# was redeemed by trade",
 			cry_trade_remove = "#1# was unredeemed by trade",
-			antimatter_quickstart = "#1# Decks"
+			antimatter_quickstart = "#1# Decks",
 		},
 		v_text = {
 			ch_c_cry_all_perishable = { "All Jokers are {C:eternal}Perishable{}" },
