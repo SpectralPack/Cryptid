@@ -5537,6 +5537,7 @@ return {
 			run_select_cry_edeck_sl = "Select Seal",
 			run_select_cry_edeck_sl_random = "Random Seal",
 			run_select_cry_antimatter = "Antimatter Decks",
+			run_select_cry_antimatter_random = "Random Decks",
 			k_random = "Random",
 			k_edition = "Edition",
 			k_enhancement = "Enhancement",
@@ -5693,6 +5694,7 @@ return {
 			cry_idea = "Idea: #1#",
 			cry_trade_add = "#1# was redeemed by trade",
 			cry_trade_remove = "#1# was unredeemed by trade",
+			antimatter_quickstart = "#1# Decks"
 		},
 		v_text = {
 			ch_c_cry_all_perishable = { "All Jokers are {C:eternal}Perishable{}" },

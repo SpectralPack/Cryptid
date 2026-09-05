@@ -39,6 +39,7 @@ local very_fair = {
 		end
 	end,
 	attributes = { "discard", "hands", "voucher" },
+	no_antimatter = true,
 }
 local equilibrium = {
 	object_type = "Back",
