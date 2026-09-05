@@ -5537,6 +5537,8 @@ return {
 			run_select_cry_edeck_sl = "Select Seal",
 			run_select_cry_edeck_sl_random = "Random Seal",
 			run_select_cry_antimatter = "Antimatter Decks",
+			b_select_all = "Select All",
+			b_deselect_all = "Deselect All",
 			k_random = "Random",
 			k_edition = "Edition",
 			k_enhancement = "Enhancement",
