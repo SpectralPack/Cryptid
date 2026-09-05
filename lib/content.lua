@@ -1171,7 +1171,7 @@ SMODS.RunSelectPage({
 	end,
 	handle_choice = function(self, choice, remove)
 		SMODS.RunSelect.Setup.choices[self.key] = SMODS.RunSelect.Setup.choices[self.key] or "Spades"
-		local val = choice.base.suit
+		local val = choice.ability._cry_suit_choice
 		if not remove then
 			SMODS.RunSelect.Setup.choices[self.key] = val
 		else
@@ -1183,7 +1183,7 @@ SMODS.RunSelectPage({
 	end,
 	choose_random = function(self)
 		local suit = pseudorandom_element(self.pool, pseudoseed(os.time()))
-		self:handle_choice({ base = { suit = suit.key } })
+		self:handle_choice({ ability = { _cry_suit_choice = suit.key } })
 	end,
 })
 
