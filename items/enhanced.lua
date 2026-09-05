@@ -211,6 +211,7 @@ local et_deck = {
 		else
 			G.GAME.modifiers.cry_force_enhancement = enhancement
 		end
+		if G.GAME.modifiers.cry_ccd then return end --Dont override starting deck ccd modifier
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
