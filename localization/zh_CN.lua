@@ -1358,7 +1358,7 @@ return {
 				text = {
 					"出售此牌以创造 {C:attention}#1#{} 个 {C:cry_candy}糖果{}",
 					"每击败 {C:attention}#3#{} 个盲注 {C:attention}+#2#{} 个 {C:cry_candy}糖果{}",
-					"击败{C:attention}Boss盲注{}时 {C:attention}+#3#{} 个 {C:cry_candy}糖果{}",
+					"击败{C:attention}Boss盲注{}时 {C:attention}+#4#{} 个 {C:cry_candy}糖果{}",
 				},
 			},
 			j_cry_candy_buttons = {

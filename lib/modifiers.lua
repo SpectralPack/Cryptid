@@ -263,51 +263,10 @@ function Card:set_ability(center, initial, delay_sprites)
 	setabilityref(self, center, initial, delay_sprites)
 	self.ignore_base_shader = self.ignore_base_shader or {}
 	self.ignore_shadow = self.ignore_shadow or {}
-	local function repeatcheck(comp, table)
-		for _, v in ipairs(table) do
-			if comp == v then
-				return true
-			end
-		end
-		return false
-	end
-	local edition = nil
-	local sticker = nil
-	local random = nil
-	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_edition") then
-		edition = G.GAME.modifiers.cry_force_edition
-	end
-	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_sticker") then
-		sticker = G.GAME.modifiers.cry_force_sticker
-	end
-	local all_stickers = nil
-	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_all_stickers") then
-		all_stickers = true
-	end
-	if Cryptid.safe_get(G, "GAME", "modifiers", "cry_force_random_edition") then
-		random = true
+	if G.SETTINGS.paused then
+		return
 	end
 	if self.ability then
-		if
-			repeatcheck(self.ability.set, { "Joker", "Voucher", "Booster", "Base", "Enhanced" })
-			or self.ability.consumeable
-		then
-			if edition and not random then
-				self:set_edition(edition, true, true)
-			elseif random then
-				self:set_edition(Cryptid.poll_random_edition(), true, true)
-			end
-			if sticker then
-				self.ability[sticker] = true
-				self:set_cost()
-			elseif all_stickers then
-				for _, c in ipairs(SMODS.Sticker.obj_buffer) do
-					if not SMODS.Stickers[c].no_edeck then
-						self:add_sticker(c, true)
-					end
-				end
-			end
-		end
 		if self.ability.set == "Voucher" then
 			if self.ability.perishable and not self.ability.perish_tally then
 				self.ability.perish_tally = G.GAME.cry_voucher_perishable_rounds
@@ -434,7 +393,9 @@ function Cryptid.edition_to_table(edition) -- look mom i figured it out (this do
 	end
 end
 function cry_get_next_voucher_edition() -- currently only for edition decks, can be modified if voucher editioning becomes more important
-	if G.GAME.modifiers.cry_force_edition then
+	if next(SMODS.find_card("j_cry_error")) then
+		return Cryptid.edition_to_table("e_cry_glitched")
+	elseif G.GAME.modifiers.cry_force_edition then
 		return Cryptid.edition_to_table(G.GAME.modifiers.cry_force_edition)
 	elseif G.GAME.modifiers.cry_force_random_edition then
 		return Cryptid.poll_random_edition()

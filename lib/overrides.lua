@@ -1107,12 +1107,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	elseif front and G.GAME.modifiers.cry_force_random_enhancement then
 		card:set_ability(Cryptid.poll_random_enhancement())
 	end
-	if front and G.GAME.modifiers.cry_force_edition then
+	if next(SMODS.find_card("j_cry_error")) then
+		card:set_edition("e_cry_glitched", true, true)
+	elseif G.GAME.modifiers.cry_force_edition then
 		card:set_edition(G.GAME.modifiers.cry_force_edition, true, true)
-		card:add_to_deck()
-	elseif front and G.GAME.modifiers.cry_force_random_edition then
+	elseif G.GAME.modifiers.cry_force_random_edition then
 		card:set_edition(Cryptid.poll_random_edition(), true, true)
-		card:add_to_deck()
 	end
 	if front and G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
@@ -1224,17 +1224,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 			end
 		end
 	end
-	if
-		G.GAME.modifiers.cry_force_edition
-		and not G.GAME.modifiers.cry_force_random_edition
-		and area ~= G.pack_cards
-	then
-		card:set_edition(nil, true)
-	end
-	if G.GAME.modifiers.cry_force_random_edition and area ~= G.pack_cards then
-		local edition = Cryptid.poll_random_edition()
-		card:set_edition(edition, true)
-	end
 	if card.ability.set == "Code" and G.GAME.extra_multiuse and G.GAME.extra_multiuse ~= 0 then
 		card.ability.cry_multiuse = math.ceil((card.ability.cry_multiuse or 1) + G.GAME.extra_multiuse)
 	end
@@ -1269,7 +1258,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	-- Certain jokers such as Steel Joker and Driver's License depend on values set
 	-- during the update function. Cryptid can create jokers mid-scoring, meaning
 	-- those values will be unset during scoring unless update() is manually called.
-	card:update(0.016) -- dt is unused in the base game, but we're providing a realistic value anyway
+	card:update(0)
 	return card
 end
 
@@ -1286,7 +1275,10 @@ function create_playing_card(card_init, area, skip_materialize, silent, colours,
 	elseif G.GAME.modifiers.cry_force_random_enhancement then
 		card:set_ability(Cryptid.poll_random_enhancement())
 	end
-	if G.GAME.modifiers.cry_force_edition then
+
+	if next(SMODS.find_card("j_cry_error")) then
+		card:set_edition("e_cry_glitched", true, true)
+	elseif G.GAME.modifiers.cry_force_edition then
 		card:set_edition(G.GAME.modifiers.cry_force_edition, true, true)
 	elseif G.GAME.modifiers.cry_force_random_edition then
 		card:set_edition(Cryptid.poll_random_edition(), true, true)

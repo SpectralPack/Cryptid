@@ -1445,7 +1445,6 @@ local formidiulosus = {
 	config = {
 		extra = {
 			Emult_mod = 0.01,
-			Emult = 1,
 		},
 		immutable = {
 			num_candies = 3,
@@ -1456,7 +1455,7 @@ local formidiulosus = {
 			vars = {
 				center.ability.immutable.num_candies,
 				center.ability.extra.Emult_mod,
-				center.ability.extra.Emult,
+				1 + center.ability.extra.Emult_mod * #Cryptid.advanced_find_joker(nil, "cry_candy", nil, nil, true),
 			},
 		}
 	end,
@@ -1465,11 +1464,6 @@ local formidiulosus = {
 	order = 518,
 	atlas = "atlasexotic",
 	no_dbl = true,
-	update = function(self, card, front)
-		card.ability.extra.Emult = lenient_bignum(
-			1 + (card.ability.extra.Emult_mod * #Cryptid.advanced_find_joker(nil, "cry_candy", nil, nil, true))
-		)
-	end,
 	calculate = function(self, card, context)
 		if
 			(context.buying_card or context.cry_creating_card)
@@ -1491,23 +1485,28 @@ local formidiulosus = {
 		end
 		if context.ending_shop then
 			for i = 1, card.ability.immutable.num_candies do
-				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")
-				card:set_edition({ negative = true }, true)
-				card:add_to_deck()
-				G.jokers:emplace(card)
+				SMODS.add_card({
+					set = "Joker",
+					rarity = "cry_candy",
+					key_append = "cry_trick_candy",
+				})
+				return { message = localize("k_plus_joker"), colour = G.C.RARITY.cry_candy }
 			end
 		end
-		if context.cardarea == G.jokers and (to_big(card.ability.extra.Emult) > to_big(1)) and context.joker_main then
+		if context.joker_main then
 			return {
-				emult = lenient_bignum(card.ability.extra.Emult),
+				emult = lenient_bignum(
+					1 + card.ability.extra.Emult_mod * #Cryptid.advanced_find_joker(nil, "cry_candy", nil, nil, true)
+				),
 			}
 		end
 		if context.forcetrigger then
 			for i = 1, card.ability.immutable.num_candies do
-				local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "cry_trick_candy")
-				card:set_edition({ negative = true }, true)
-				card:add_to_deck()
-				G.jokers:emplace(card)
+				SMODS.add_card({
+					set = "Joker",
+					rarity = "cry_candy",
+					key_append = "cry_trick_candy",
+				})
 			end
 			return {
 				emult = lenient_bignum(card.ability.extra.Emult),

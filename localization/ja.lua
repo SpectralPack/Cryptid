@@ -1391,7 +1391,7 @@ return {
 				text = {
 					"このカードを売ると{C:attention}#1#{}個の {C:cry_candy}キャンディ{} を得る",
 					"ブラインドを {C:attention}#3#{}回倒すごとに 獲得{C:cry_candy}キャンディ{} {C:attention}+#2#{}",
-					"ボスブラインドを倒すごとに 獲得{C:cry_candy}キャンディ{} {C:attention}+#3#{}",
+					"ボスブラインドを倒すごとに 獲得{C:cry_candy}キャンディ{} {C:attention}+#4#{}",
 				},
 			},
 			j_cry_candy_buttons = {

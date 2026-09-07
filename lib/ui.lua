@@ -54,7 +54,9 @@ SMODS.DrawStep({
 					local shader = G.SHADERS[ed:sub(3)] and ed:sub(3)
 						or Cryptid.safe_get(G.P_CENTERS, ed, "shader")
 						or nil
-					self.children.back:draw_shader(shader, nil, self.ARGS.send_to_shader, true)
+					if shader then --because shader can be `false`
+						self.children.back:draw_shader(shader, nil, self.ARGS.send_to_shader, true)
+					end
 				end
 			end
 			if back.key == "b_cry_et_deck" then
@@ -64,7 +66,23 @@ SMODS.DrawStep({
 			if back.key == "b_cry_sk_deck" then
 				local sk = get_edeck_sprite_key(in_run_setup, "sticker")
 				Cryptid.update_edeck_sprite(self, "sticker", sk)
-				if sk ~= "default" then
+				if sk == "all" then
+					for key, sticker in pairs(SMODS.Stickers) do
+						if type(sticker.draw) == "function" then
+							sticker:draw(self)
+						elseif G.shared_stickers[key] then
+							G.shared_stickers[key].role.draw_major = self
+							G.shared_stickers[key]:draw_shader("dissolve", nil, nil, true, self.children.center)
+							G.shared_stickers[key]:draw_shader(
+								"voucher",
+								nil,
+								self.ARGS.send_to_shader,
+								true,
+								self.children.center
+							)
+						end
+					end
+				elseif sk ~= "default" and sk ~= "random" and SMODS.Stickers[sk] then
 					if type(SMODS.Stickers[sk].draw) == "function" then
 						SMODS.Stickers[sk]:draw(self)
 					else
@@ -87,7 +105,7 @@ SMODS.DrawStep({
 			if back.key == "b_cry_sl_deck" then
 				local sl = get_edeck_sprite_key(in_run_setup, "seal")
 				Cryptid.update_edeck_sprite(self, "seal", sl)
-				if sl ~= "default" then
+				if G.shared_seals[sl] then
 					G.shared_seals[sl].role.draw_major = self
 					G.shared_seals[sl]:draw_shader("dissolve", nil, nil, true, self.children.center)
 					if sl == "Gold" then --figure out handling shader `draw` funcs later
