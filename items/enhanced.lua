@@ -491,29 +491,46 @@ return {
 		local sa = Card.set_ability
 		function Card:set_ability(center, y, z)
 			if not G.SETTINGS.paused and not self.no_forced_enhancement and G.GAME.cry_lock_enhancement then
-				center = G.GAME.modifiers.cry_force_enhancement or center
+				if self.ability and self.ability.set == "Enhanced" then
+					return
+				elseif G.GAME.modifiers.cry_force_enhancement and center.set == "Enhanced" then
+					center = G.GAME.modifiers.cry_force_enhancement
+				end
 			end
 			sa(self, center, y, z)
 		end
 		local se = Card.set_edition
 		function Card:set_edition(edition, immediate, silent, delay)
 			if not G.SETTINGS.paused and not self.no_forced_edition and G.GAME.cry_lock_edition then
-				edition = G.GAME.modifiers.cry_force_edition or edition
+				if G.GAME.modifiers.cry_force_edition then
+					edition = G.GAME.modifiers.cry_force_edition
+				elseif self.edition then
+					return
+				end
 			end
 			return se(self, edition, immediate, silent, delay)
 		end
 		local ss = Card.set_seal
 		function Card:set_seal(seal, y, z)
 			if not G.SETTINGS.paused and not self.no_forced_seal and G.GAME.cry_lock_seal then
-				seal = G.GAME.modifiers.cry_force_seal or seal
+				if G.GAME.modifiers.cry_force_seal then
+					seal = G.GAME.modifiers.cry_force_seal
+				elseif self.seal then
+					return
+				end
 			end
 			return ss(self, seal, y, z)
 		end
 		local cs = Card.change_suit
 		function Card:change_suit(new_suit)
 			if not G.SETTINGS.paused and not self.no_forced_suit and G.GAME.cry_lock_suit then
-				new_suit = G.GAME.modifiers.cry_force_suit or new_suit
+				if G.GAME.modifiers.cry_force_suit then
+					new_suit = G.GAME.modifiers.cry_force_suit
+				elseif self.ability.cry_suit_set then
+					return
+				end
 			end
+			self.ability.cry_suit_set = true
 			return cs(self, new_suit)
 		end
 	end,
