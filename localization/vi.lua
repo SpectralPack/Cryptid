@@ -1060,7 +1060,7 @@ return {
 				text = {
 					"Bán lá bài này để tạo ra {C:attention}#1#{} {C:cry_candy}Kẹo",
 					"{C:attention}+#2#{} viên {C:cry_candy}Kẹo{} mỗi {C:attention}2{} Blind đã đánh bại",
-					"{C:attention}+#3#{} viên {C:cry_candy}Kẹo{} mỗi {C:attention}Boss Blind{} đã đánh bại",
+					"{C:attention}+#4#{} viên {C:cry_candy}Kẹo{} mỗi {C:attention}Boss Blind{} đã đánh bại",
 				},
 			},
 			j_cry_candy_buttons = {
