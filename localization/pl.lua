@@ -2440,6 +2440,23 @@ return {
 					"po pokonaniu przeszkadzajki bossa {C:inactive}(wymaga miejsca){}",
 				},
 			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Antymateryjny Rękaw",
+				text = {
+					"Aplikuje {C:legendary,E:1}zalety{}",
+					"każdego {C:attention}efektu{} i {C:attention}specjalnego efektu{}",
+					"{C:attention}wszystkich wybranych rękawów{}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Antymateryjny Rękaw",
+				text = {
+					"Aplikuje {C:legendary,E:1}zalety{} {C:attention}efektów{}",
+					"{C:attention}wszystkich wybranych rękawów{} wygranych na {C:gold}Złotej Stawce{},",
+					"oraz {C:attention}specjalne efekty{} dla każdej odpowiedniej",
+					"{C:attention}talii{} wygranej na {C:gold}Złotej Stawce{}",
+				},
+			},
 		},
 		Spectral = {
 			c_cry_adversary = {

@@ -3140,12 +3140,21 @@ return {
 				},
 			},
 			sleeve_cry_antimatter_sleeve = {
-				name = "Funda de Antimateria",
+				name = "Funda de antimateria",
 				text = {
-					"Aplica los {C:attention}efectos{}",
-					"y {C:attention}efectos especiales{}",
-					"de {C:attention}todas{} las fundas",
-					"{C:red}WIP",
+					"Aplica las {C:legendary,E:1}ventajas{}",
+					"de cada {C:attention}efecto{} y {C:attention}efecto especial{}",
+					"de {C:attention}todas las fundas seleccionadas{}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Funda de antimateria",
+				text = {
+					"Aplica las {C:legendary,E:1}ventajas{} de los {C:attention}efectos{}",
+					"de {C:attention}todas las fundas seleccionadas{} completadas",
+					"en la dificultad {C:gold}Pozo de oro{}, y {C:attention}efectos especiales{}",
+					"para cada {C:attention}baraja{} correspondiente",
+					"completada en la dificultad {C:gold}Pozo de oro{}",
 				},
 			},
 		},
