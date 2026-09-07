@@ -509,25 +509,6 @@ local error_joker = {
 			},
 		}
 	end,
-	add_to_deck = function(self, card, from_debuff)
-		if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_edition_from_deck then
-			G.GAME.modifiers.cry_force_edition_from_deck = G.GAME.modifiers.cry_force_edition
-		elseif not G.GAME.modifiers.cry_force_edition_from_deck then
-			if G.P_CENTERS.e_cry_glitched then
-				G.GAME.modifiers.cry_force_edition = "e_cry_glitched"
-			else
-				G.GAME.modifiers.cry_force_edition = "e_foil"
-			end
-			G.GAME.modifiers.cry_force_edition_from_deck = "Nope!"
-		end
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		if G.GAME.modifiers.cry_force_edition_from_deck ~= "Nope!" then
-			G.GAME.modifiers.cry_force_edition = G.GAME.modifiers.cry_force_edition_from_deck
-		else
-			G.GAME.modifiers.cry_force_edition = nil
-		end
-	end,
 	calculate = function(self, card, context)
 		if
 			context.end_of_round
@@ -2383,66 +2364,41 @@ local demicolon = {
 	config = { check = nil },
 	immutable = true,
 	loc_vars = function(self, info_queue, card)
-		card.ability.demicoloncompat_ui = card.ability.demicoloncompat_ui or ""
-		card.ability.demicoloncompat_ui_check = nil
-		local check = card.ability.check
+		if G.STAGE ~= G.STAGES.RUN or card.area ~= G.jokers then
+			return
+		end -- False if nil
+		local other_joker = G.jokers.cards[card.rank + 1]
+		local compatible = other_joker and Cryptid.demicolonGetTriggerable(other_joker)[1]
+
+		local bg_colour, txt
+		if compatible then
+			bg_colour = G.C.RARITY.cry_epic
+			txt = localize("k_compatible")
+		else
+			bg_colour = G.C.JOKER_GREY
+			txt = localize("k_incompatible")
+		end
+
 		return {
-			main_end = (card.area and card.area == G.jokers) and {
+			main_end = {
 				{
 					n = G.UIT.C,
 					config = { align = "bm", minh = 0.4 },
 					nodes = {
 						{
 							n = G.UIT.C,
-							config = {
-								ref_table = card,
-								align = "m",
-								-- colour = (check and G.C.cry_epic or G.C.JOKER_GREY),
-								colour = card.ability.colour,
-								r = 0.05,
-								padding = 0.08,
-								func = "blueprint_compat",
-							},
+							config = { ref_table = card, align = "m", colour = bg_colour, r = 0.05, padding = 0.08 },
 							nodes = {
 								{
 									n = G.UIT.T,
-									config = {
-										ref_table = card.ability,
-										ref_value = "demicoloncompat",
-										colour = G.C.UI.TEXT_LIGHT,
-										scale = 0.32 * 0.8,
-									},
+									config = { text = txt, colour = G.C.UI.TEXT_LIGHT, scale = 0.32 * 0.8 },
 								},
 							},
 						},
 					},
 				},
-			} or nil,
+			},
 		}
-	end,
-	update = function(self, card, front)
-		local other_joker = nil
-		if G.STAGE == G.STAGES.RUN then
-			for i = 1, #G.jokers.cards do
-				if G.jokers.cards[i] == card then
-					other_joker = G.jokers.cards[i + 1]
-				end
-			end
-			local m = Cryptid.demicolonGetTriggerable(other_joker)
-			if m[1] and not m[2] then
-				card.ability.demicoloncompat = "Compatible"
-				card.ability.check = true
-				card.ability.colour = G.C.SECONDARY_SET.Enhanced
-			elseif m[2] then
-				card.ability.demicoloncompat = "Dangerous!"
-				card.ability.check = true
-				card.ability.colour = G.C.MULT
-			else
-				card.ability.demicoloncompat = "Incompatible"
-				card.ability.check = false
-				card.ability.colour = G.C.SUITS.Spades
-			end
-		end
 	end,
 	calculate = function(self, card, context)
 		if context.joker_main and not context.blueprint then
@@ -2471,6 +2427,7 @@ local demicolon = {
 								context = context,
 								silent = context.forcetrigger,
 							})
+							return nil, true
 						end
 					end
 				end

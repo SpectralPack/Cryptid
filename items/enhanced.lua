@@ -23,6 +23,7 @@ Cryptid.edeck_sprites = {
 		e_cry_noisy = { atlas = "cry_atlaseditiondeck", pos = { x = 1, y = 2 } },
 		e_cry_astral = { atlas = "cry_atlaseditiondeck", pos = { x = 2, y = 2 } },
 		e_cry_m = { atlas = "cry_atlaseditiondeck", pos = { x = 3, y = 2 } },
+		random = { atlas = "cry_atlaseditiondeck", pos = { x = 4, y = 1 } },
 	},
 	enhancement = {
 		order = 2,
@@ -40,8 +41,8 @@ Cryptid.edeck_sprites = {
 	},
 	sticker = {
 		order = 3,
-		default = { atlas = "cry_placeholders", pos = { x = 4, y = 2 } },
-		all = { atlas = "cry_placeholders", pos = { x = 3, y = 2 } },
+		default = { atlas = "cry_atlasdeck", pos = { x = 6, y = 5 } },
+		all = { atlas = "cry_atlasdeck", pos = { x = 7, y = 5 } },
 		eternal = { atlas = "cry_atlasdeck", pos = { x = 6, y = 0 } },
 		perishable = { atlas = "cry_atlasdeck", pos = { x = 7, y = 0 } },
 		rental = { atlas = "cry_atlasdeck", pos = { x = 8, y = 0 } },
@@ -111,7 +112,8 @@ local e_deck = {
 		local edition = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				edition == "random" and "Random" or localize({ type = "name_text", set = "Edition", key = edition }),
+				edition == "random" and localize("run_select_cry_edeck_ed_random")
+					or localize({ type = "name_text", set = "Edition", key = edition }),
 				colours = {
 					edition == "random" and G.C.DARK_EDITION
 						or (G.P_CENTERS[edition] and G.P_CENTERS[edition].badge_colour or G.C.DARK_EDITION),
@@ -151,6 +153,7 @@ local e_deck = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
+		G.GAME.cry_lock_edition = nil
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -193,7 +196,7 @@ local et_deck = {
 		local _, enhancement = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				enhancement == "random" and "Random"
+				enhancement == "random" and localize("run_select_cry_edeck_enh_random")
 					or localize({ type = "name_text", set = "Enhanced", key = enhancement }),
 				colours = {
 					enhancement == "random" and G.C.FILTER
@@ -211,6 +214,9 @@ local et_deck = {
 		else
 			G.GAME.modifiers.cry_force_enhancement = enhancement
 		end
+		if G.GAME.modifiers.cry_ccd then
+			return
+		end --Dont override starting deck ccd modifier
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				for c = #G.playing_cards, 1, -1 do
@@ -226,6 +232,7 @@ local et_deck = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
+		G.GAME.cry_lock_enhancement = nil
 	end,
 	draw = cry_edeck_draw,
 	unlocked = false,
@@ -267,7 +274,9 @@ local sk_deck = {
 		local _, _, sticker = Cryptid.enhanced_deck_info(self)
 		return {
 			vars = {
-				sticker == "random" and "Random" or sticker == "all" and "All" or localize({
+				sticker == "random" and localize("run_select_cry_edeck_sk_random") or sticker == "all" and localize(
+					"run_select_cry_edeck_sk_all"
+				) or localize({
 					type = "name_text",
 					set = "Other",
 					key = sticker == "pinned" and "pinned_left" or sticker,
@@ -389,6 +398,7 @@ local st_deck = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
+		G.GAME.cry_lock_suit = nil
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -420,7 +430,7 @@ local sl_deck = {
 	loc_vars = function(self, info_queue, center)
 		if
 			SMODS.RunSelect.Internals.preview_area
-			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_st.page
+			and (SMODS.RunSelect.Internals.current_page or 0) < SMODS.RunSelect.Pages.cry_edeck_sl.page
 		then
 			return {
 				key = self.key .. "_preview",
@@ -458,6 +468,7 @@ local sl_deck = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
+		G.GAME.cry_lock_seal = nil
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -479,47 +490,48 @@ return {
 	init = function()
 		local sa = Card.set_ability
 		function Card:set_ability(center, y, z)
-			if not G.SETTINGS.paused and Cryptid.safe_get(center, "name") == "Default Base" then -- scuffed
-				return sa(
-					self,
-					(not self.no_forced_enhancement and G.GAME.modifiers.cry_force_enhancement)
-							and G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement]
-						or center,
-					y,
-					z
-				)
-			else
-				return sa(self, center, y, z)
+			if not G.SETTINGS.paused and not self.no_forced_enhancement and G.GAME.cry_lock_enhancement then
+				if self.ability and self.ability.set == "Enhanced" then
+					return
+				elseif G.GAME.modifiers.cry_force_enhancement and center.set == "Enhanced" then
+					center = G.GAME.modifiers.cry_force_enhancement
+				end
 			end
+			sa(self, center, y, z)
 		end
 		local se = Card.set_edition
-		function Card:set_edition(edition, y, z, force)
-			if not force and not G.SETTINGS.paused then
-				return se(
-					self,
-					not self.no_forced_edition and G.GAME.modifiers.cry_force_edition or edition,
-					y,
-					z,
-					force
-				)
+		function Card:set_edition(edition, immediate, silent, delay)
+			if not G.SETTINGS.paused and not self.no_forced_edition and G.GAME.cry_lock_edition then
+				if G.GAME.modifiers.cry_force_edition then
+					edition = G.GAME.modifiers.cry_force_edition
+				elseif self.edition then
+					return
+				end
 			end
-			return se(self, edition, y, z)
+			return se(self, edition, immediate, silent, delay)
 		end
 		local ss = Card.set_seal
 		function Card:set_seal(seal, y, z)
-			return ss(
-				self,
-				not self.no_forced_seal and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_seal or seal,
-				y,
-				z
-			)
+			if not G.SETTINGS.paused and not self.no_forced_seal and G.GAME.cry_lock_seal then
+				if G.GAME.modifiers.cry_force_seal then
+					seal = G.GAME.modifiers.cry_force_seal
+				elseif self.seal then
+					return
+				end
+			end
+			return ss(self, seal, y, z)
 		end
 		local cs = Card.change_suit
 		function Card:change_suit(new_suit)
-			return cs(
-				self,
-				not self.no_forced_suit and not G.SETTINGS.paused and G.GAME.modifiers.cry_force_suit or new_suit
-			)
+			if not G.SETTINGS.paused and not self.no_forced_suit and G.GAME.cry_lock_suit then
+				if G.GAME.modifiers.cry_force_suit then
+					new_suit = G.GAME.modifiers.cry_force_suit
+				elseif self.ability.cry_suit_set then
+					return
+				end
+			end
+			self.ability.cry_suit_set = true
+			return cs(self, new_suit)
 		end
 	end,
 	items = { e_deck, et_deck, sk_deck, st_deck, sl_deck, atlasedition },

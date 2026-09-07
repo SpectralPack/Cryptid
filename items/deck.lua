@@ -39,6 +39,7 @@ local very_fair = {
 		end
 	end,
 	attributes = { "discard", "hands", "voucher" },
+	no_antimatter = true,
 }
 local equilibrium = {
 	object_type = "Back",
@@ -58,11 +59,6 @@ local equilibrium = {
 	end,
 	cry_antimatter_apply = function(self)
 		self:apply()
-	end,
-	cry_antimatter_vouchers = function(self, voucher_table)
-		for _, v in ipairs(self.config.vouchers) do
-			voucher_table[#voucher_table + 1] = v
-		end
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -151,7 +147,6 @@ local infinite = {
 		}))
 	end,
 	cry_antimatter_apply = function(self)
-		G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + self.config.hand_size
 		self:apply()
 	end,
 	check_for_unlock = function(self, args)
@@ -407,43 +402,33 @@ local legendary = {
 		return { vars = { SMODS.get_probability_vars(self, 1, self.config.cry_legendary_rate, "Legendary Deck") } }
 	end,
 	calculate = function(self, back, context)
-		if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
-			if G.jokers then
-				if #G.jokers.cards < G.jokers.config.card_limit then
-					if
-						SMODS.pseudorandom_probability(
-							self,
-							"cry_legendary",
-							1,
-							self.config.cry_legendary_rate,
-							"Legendary Deck"
-						)
-					then
-						local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-						card:add_to_deck()
-						card:start_materialize()
-						G.jokers:emplace(card)
-						return true
-					else
-						card_eval_status_text(
-							G.jokers,
-							"jokers",
-							nil,
-							nil,
-							nil,
-							{ message = localize("k_nope_ex"), colour = G.C.RARITY[4] }
-						)
-					end
-				else
-					card_eval_status_text(
-						G.jokers,
-						"jokers",
-						nil,
-						nil,
-						nil,
-						{ message = localize("k_no_room_ex"), colour = G.C.RARITY[4] }
+		if context.end_of_round and context.main_eval and context.beat_boss and G.jokers then
+			if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+				if
+					SMODS.pseudorandom_probability(
+						self,
+						"cry_legendary",
+						1,
+						self.config.cry_legendary_rate,
+						"Legendary Deck"
 					)
+				then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							SMODS.add_card({ --legendary = true isnt needed as you need to have legendaries unlocked to unlock this anyway
+								set = "Joker",
+								rarity = "Legendary",
+								key_append = "cry_legendary_joker",
+							})
+							return true
+						end,
+					}))
+					return { message = localize("k_plus_joker"), colour = G.C.RARITY[4], message_card = G.jokers }
+				else
+					return { message = localize("k_nope_ex"), colour = G.C.RARITY[4], message_card = G.jokers }
 				end
+			else
+				return { message = localize("k_no_room_ex"), colour = G.C.RARITY[4], message_card = G.jokers }
 			end
 		end
 	end,
@@ -454,10 +439,11 @@ local legendary = {
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				if G.jokers then
-					local card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, "")
-					card:add_to_deck()
-					card:start_materialize()
-					G.jokers:emplace(card)
+					SMODS.add_card({
+						set = "Joker",
+						rarity = "Legendary",
+						key_append = "cry_legendary_joker",
+					})
 					return true
 				end
 			end,
@@ -468,7 +454,7 @@ local legendary = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if Cryptid.safe_get(G, "jokers") then
+		if G.jokers then
 			local count = 0
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].config.center.rarity == 4 then
@@ -532,7 +518,7 @@ local critical = {
 						})
 						local deck_card = G.deck.cards[1] or G.deck
 						attention_text({
-							text = "^" .. tostring(check),
+							text = "^" .. number_format(check),
 							scale = 0.7,
 							hold = 1.4,
 							backdrop_colour = G.C.emult or G.C.DARK_EDITION,
@@ -567,7 +553,7 @@ local critical = {
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
-		if Cryptid.safe_get(G, "jokers") then
+		if G.jokers then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].ability.cry_rigged then
 					unlock_card(self)
@@ -602,12 +588,14 @@ local glowing = {
 	end,
 	atlas = "glowing",
 	calculate = function(self, back, context)
-		if context.context == "eval" and Cryptid.safe_get(G.GAME, "last_blind", "boss") then
+		if context.end_of_round and context.main_eval and context.beat_boss then
 			for i = 1, #G.jokers.cards do
 				if not Card.no(G.jokers.cards[i], "immutable", true) then
 					Cryptid.manipulate(G.jokers.cards[i], { value = 1.25 })
+					SMODS.calculate_effect({ message = localize("k_upgrade_ex") }, G.jokers.cards[i])
 				end
 			end
+			return nil, true
 		end
 	end,
 	cry_antimatter_calculate = function(self, context)
@@ -758,6 +746,7 @@ local blank = {
 	pos = { x = 1, y = 0 },
 	atlas = "atlasdeck",
 	discovered = true,
+	no_antimatter = true,
 }
 local antimatter = {
 	object_type = "Back",
@@ -804,27 +793,9 @@ local antimatter = {
 			local function check(back)
 				return SMODS.RunSelect.Setup.choices.cry_antimatter[back]
 			end
-			--Blue Deck
-			if check("b_blue") then
-				G.GAME.starting_params.hands = G.GAME.starting_params.hands + 1
-			end
-			--Yellow Deck
-			if check("b_yellow") then
-				G.GAME.starting_params.dollars = G.GAME.starting_params.dollars + 10
-			end
-			--Abandoned Deck
-			if check("b_abandoned") then
-				G.GAME.starting_params.no_faces = true
-			end
-			--Ghost Deck
-			if check("b_ghost") then
-				G.GAME.spectral_rate = 2
-			end
-			-- Red Deck
-			if check("b_red") then
-				G.GAME.starting_params.discards = G.GAME.starting_params.discards + 1
-			end
-			-- Checkered Deck
+			-- editions is unused vanilla functionality but ill add compat anyway
+			local vouchers, consumables, editions = {}, {}, {}
+			-- Checkered Deck (this is the only one that needs manual compat now lmao)
 			if check("b_checkered") then
 				G.E_MANAGER:add_event(Event({
 					func = function()
@@ -840,36 +811,94 @@ local antimatter = {
 					end,
 				}))
 			end
-			-- Erratic Deck
-			if check("b_erratic") then
-				G.GAME.starting_params.erratic_suits_and_ranks = true
-			end
-			-- Black Deck
-			if check("b_black") then
-				G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 1
-			end
-			-- Painted Deck
-			if check("b_painted") then
-				G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + 2
-			end
-			-- Green Deck
-			if check("b_green") then
-				G.GAME.modifiers.money_per_hand = (G.GAME.modifiers.money_per_hand or 1) + 1
-				G.GAME.modifiers.money_per_discard = (G.GAME.modifiers.money_per_discard or 0) + 1
-			end
-			--Mod Compat
+			--Mod Compat + Config value autocompat stuff
 			for _, v in ipairs(G.P_CENTER_POOLS.Back) do
-				if v.cry_antimatter_apply and check(v.key) then
-					v:cry_antimatter_apply()
+				if check(v.key) then
+					-- APPLY FUNCS
+					if type(v.cry_antimatter_apply) == "function" and check(v.key) then
+						v:cry_antimatter_apply()
+					end
+					-- CONSUMABLES
+					if type(v.cry_antimatter_consumables) == "function" then
+						v:cry_antimatter_consumables(consumables)
+					elseif v.config and v.config.consumables then
+						for _, c in ipairs(v.config.consumables) do
+							consumables[#consumables + 1] = c
+						end
+					end
+					-- VOUCHERS
+					if type(v.cry_antimatter_vouchers) == "function" then
+						v:cry_antimatter_vouchers(vouchers)
+					elseif v.config and v.config.vouchers then
+						for _, c in ipairs(v.config.vouchers) do
+							vouchers[#vouchers + 1] = c
+						end
+					elseif v.config and v.config.voucher then
+						vouchers[#vouchers + 1] = v.config.voucher
+					end
+					-- EVERYTHING ELSE
+					if v.config then
+						if v.config.hands and v.config.hands > 0 then
+							G.GAME.starting_params.hands = G.GAME.starting_params.hands + v.config.hands
+						end
+						if v.config.dollars and v.config.dollars > 0 then
+							G.GAME.starting_params.dollars = G.GAME.starting_params.dollars + v.config.dollars
+						end
+						if v.config.remove_faces then
+							G.GAME.starting_params.no_faces = true
+						end
+						if v.config.spectral_rate then
+							G.GAME.starting_params.spectral_rate =
+								math.max(G.GAME.starting_params.spectral_rate or 0, v.config.spectral_rate)
+						end
+						if v.config.discards and v.config.discards > 0 then
+							G.GAME.starting_params.discards = G.GAME.starting_params.discards + v.config.discards
+						end
+						if v.config.reroll_discount and v.config.reroll_discount > 0 then
+							G.GAME.starting_params.reroll_cost = G.GAME.starting_params.reroll_cost
+								- v.config.reroll_discount
+						end
+						if v.config.edition then
+							for _ = 1, v.config.edition_count do
+								editions[#editions + 1] = v.config.edition
+							end
+						end
+						if v.config.randomize_rank_suit then
+							G.GAME.starting_params.erratic_suits_and_ranks = true
+						end
+						if v.config.joker_slot and v.config.joker_slot > 0 then
+							G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots
+								+ v.config.joker_slot
+						end
+						if v.config.hand_size and v.config.hand_size > 0 then
+							G.GAME.starting_params.hand_size = G.GAME.starting_params.hand_size + v.config.hand_size
+						end
+						-- Only every reduce blind size multiplier
+						if v.config.ante_scaling then
+							G.GAME.starting_params.ante_scaling =
+								math.min(G.GAME.starting_params.ante_scaling, v.config.ante_scaling)
+						end
+						if v.config.consumable_slot and v.config.consumable_slot > 0 then
+							G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots
+								+ v.config.consumable_slot
+						end
+						if v.config.extra_hand_bonus then
+							G.GAME.modifiers.money_per_hand =
+								math.max(G.GAME.modifiers.money_per_hand or 1, v.config.extra_hand_bonus)
+						end
+						if (v.config.extra_discard_bonus or 0) > 0 then
+							G.GAME.modifiers.money_per_discard =
+								math.max(G.GAME.modifiers.money_per_discard or 0, v.config.extra_discard_bonus)
+						end
+					end
 				end
 			end
-			--All Consumables (see Cryptid.get_antimatter_consumables)
-			local querty = Cryptid.get_antimatter_consumables(nil, skip, custom)
-			if #querty > 0 then
+			-- Create consumables
+			if #consumables > 0 then
 				delay(0.4)
 				G.E_MANAGER:add_event(Event({
 					func = function()
-						for k, v in ipairs(querty) do
+						for k, v in ipairs(consumables) do
 							if G.P_CENTERS[v] then
 								local card = create_card("Tarot", G.consumeables, nil, nil, nil, nil, v, "deck")
 								card:add_to_deck()
@@ -880,10 +909,16 @@ local antimatter = {
 					end,
 				}))
 			end
-			-- All Decks with Vouchers (see Cryptid.get_antimatter_vouchers)
-			local vouchers = Cryptid.get_antimatter_vouchers(nil, skip, custom)
-			if #vouchers > 0 then
-				for k, v in pairs(vouchers) do
+			-- Sanitize and apply vouchers
+			local clean_vouchers, applied_vouchers = {}, {}
+			for _, v in ipairs(vouchers) do
+				if not applied_vouchers[v] then
+					clean_vouchers[#clean_vouchers + 1] = v
+					applied_vouchers[v] = true
+				end
+			end
+			if #clean_vouchers > 0 then
+				for k, v in pairs(clean_vouchers) do
 					if G.P_CENTERS[v] then
 						G.GAME.used_vouchers[v] = true
 						G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
@@ -895,6 +930,24 @@ local antimatter = {
 						}))
 					end
 				end
+			end
+			if #editions > 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local editionless_cards = {}
+						for _, c in ipairs(G.playing_cards) do
+							if not c.edition then
+								editionless_cards[#editionless_cards + 1] = c
+							end
+						end
+						for _, edition in ipairs(editions) do
+							local card, idx = pseudorandom_element(editionless_cards, "edition_deck")
+							card:set_edition({ [edition] = true }, nil, true)
+							table.remove(editionless_cards, idx)
+						end
+						return true
+					end,
+				}))
 			end
 		end
 		function Cryptid.antimatter_trigger(self, context, skip, custom)
@@ -931,76 +984,6 @@ local antimatter = {
 				return SMODS.merge_effects(rets)
 			end
 		end
-		function Cryptid.get_antimatter_vouchers(voucher_table, skip, custom)
-			-- Create a table or use one that is passed into the function
-			if not voucher_table or type(voucher_table) ~= "table" then
-				voucher_table = {}
-			end
-			-- Add Vouchers into the table by key
-			-- Ignores duplicates
-			local function already_exists(t, voucher)
-				for _, v in ipairs(t) do
-					if v == voucher then
-						return true
-					end
-				end
-				return false
-			end
-			local function Add_voucher_to_the_table(t, voucher)
-				if not already_exists(t, voucher) then
-					table.insert(t, voucher)
-				end
-			end
-			local function check(back)
-				return SMODS.RunSelect.Setup.choices.cry_antimatter[back]
-			end
-			--Nebula Deck
-			if check("b_nebula") then
-				Add_voucher_to_the_table(voucher_table, "v_telescope")
-			end
-			-- Magic Deck
-			if check("b_magic") then
-				Add_voucher_to_the_table(voucher_table, "v_crystal_ball")
-			end
-			-- Zodiac Deck
-			if check("b_zodiac") then
-				Add_voucher_to_the_table(voucher_table, "v_tarot_merchant")
-				Add_voucher_to_the_table(voucher_table, "v_planet_merchant")
-				Add_voucher_to_the_table(voucher_table, "v_overstock_norm")
-			end
-			for _, v in ipairs(G.P_CENTER_POOLS.Back) do
-				if v.cry_antimatter_vouchers and check(v.key) then
-					v:cry_antimatter_vouchers(voucher_table)
-				end
-			end
-			local clean_table = {}
-			for _, v in ipairs(voucher_table) do
-				Add_voucher_to_the_table(clean_table, v)
-			end
-			return clean_table
-		end
-		--Does this even need to be a function idk
-		function Cryptid.get_antimatter_consumables(consumable_table, skip, custom)
-			local function check(back)
-				return SMODS.RunSelect.Setup.choices.cry_antimatter[back]
-			end
-			if not consumable_table or type(consumable_table) ~= "table" then
-				consumable_table = {}
-			end
-			if check("b_magic") then
-				table.insert(consumable_table, "c_fool")
-				table.insert(consumable_table, "c_fool")
-			end
-			if check("b_ghost") then
-				table.insert(consumable_table, "c_hex")
-			end
-			for _, v in ipairs(G.P_CENTER_POOLS.Back) do
-				if v.cry_antimatter_consumables and check(v.key) then
-					v:cry_antimatter_consumables(consumable_table)
-				end
-			end
-			return consumable_table
-		end
 	end,
 	unlocked = false,
 	check_for_unlock = function(self, args)
@@ -1019,29 +1002,10 @@ local antimatter = {
 	attributes = { "copying" },
 }
 
---[[
-Customize your Antimatter Deck here for the TRUE Sandbox experience!
-How to use Custom Antimatter Deck:
-1: Add decks to the antimatter_custom table with the format deck_key = true
-2: Win a run on Gold Stake for each deck
-3: Go to Mods > Cryptid > Thematic Sets > Decks > Antimatter Deck
-4: Switch Gameset to  "Custom"
-
-]]
---
-local antimatter_custom = {
-	["b_red"] = true,
-	["b_blue"] = true,
-	["b_yellow"] = true,
-	["b_green"] = true,
-	["b_black"] = true,
-}
+-- Dont customize your antimatter deck here its in the base mod
 
 return {
 	name = "Misc. Decks",
-	init = function()
-		G.SETTINGS.custom_antimatter_deck = antimatter_custom
-	end,
 	items = {
 		very_fair,
 		equilibrium,

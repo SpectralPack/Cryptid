@@ -324,7 +324,7 @@ local box = {
 	key = "box",
 	pos = { x = 0, y = 8 },
 	boss = {
-		min = 1,
+		min = 2,
 		max = 10,
 		yes_orb = true,
 	},
