@@ -207,7 +207,7 @@ local abstract = {
 	specific_suit = "cry_abstract",
 	specific_rank = "cry_abstract",
 	config = { extra = { Emult = 1.15, odds_after_round = 4, marked = false, survive = false } },
-	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
+	--#1# emult, #2# in #3# chance card is destroyed after round
 	loc_vars = function(self, info_queue, card)
 		local round_prob_num, round_prob_den =
 			SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_round, "Abstract Card")
@@ -220,7 +220,6 @@ local abstract = {
 		}
 	end,
 	calculate = function(self, card, context)
-		--During scoring
 		if
 			(context.destroy_card == card or context.playing_card_end_of_round)
 			and context.cardarea == G.hand
@@ -232,7 +231,7 @@ local abstract = {
 				card.ability.extra.odds_after_play,
 				"Abstract Card"
 			)
-		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
+		then
 			return { remove = true }
 		end
 		if context.cardarea == G.play and context.main_scoring then
