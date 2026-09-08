@@ -228,11 +228,15 @@ local abstract = {
 				card,
 				"cry_abstract_destroy",
 				1,
-				card.ability.extra.odds_after_play,
+				card.ability.extra.odds_after_round,
 				"Abstract Card"
 			)
 		then
-			return { remove = true }
+			if context.destroy_card then
+				return { remove = true }
+			else
+				SMODS.destroy_cards(card)
+			end
 		end
 		if context.cardarea == G.play and context.main_scoring then
 			return {
@@ -2518,37 +2522,6 @@ return {
 			elseif self.ignore_shadow["cry_noshadow"] then
 				self.ignore_shadow["cry_noshadow"] = nil
 			end
-		end
-		function Card:calculate_abstract_break()
-			if self.config.center_key == "m_cry_abstract" and not self.ability.extra.marked then
-				if
-					SMODS.pseudorandom_probability(
-						self,
-						"cry_abstract_destroy2",
-						1,
-						self.ability and self.ability.extra and self.ability.extra.odds_after_round
-							or self.config.extra.odds_after_round
-							or 4,
-						"Abstract Card"
-					)
-				then
-					self.ability.extra.marked = true
-					--KUFMO HAS abstract!!!!111!!!
-					G.E_MANAGER:add_event(Event({
-						trigger = "immediate",
-						delay = "0.1",
-						func = function()
-							self:juice_up(2, 2)
-							self:shatter(0.2)
-							return true
-						end,
-					}))
-					return true
-				else
-					return false
-				end
-			end
-			return false
 		end
 	end,
 	items = miscitems,
