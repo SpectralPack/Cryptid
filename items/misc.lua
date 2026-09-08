@@ -206,18 +206,14 @@ local abstract = {
 	--NEW! specific_suit suit. Like abstracted!
 	specific_suit = "cry_abstract",
 	specific_rank = "cry_abstract",
-	config = { extra = { Emult = 1.15, odds_after_play = 2, odds_after_round = 4, marked = false, survive = false } },
+	config = { extra = { Emult = 1.15, odds_after_round = 4, marked = false, survive = false } },
 	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
 	loc_vars = function(self, info_queue, card)
-		local play_prob_num, play_prob_den =
-			SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_play, "Abstract Card")
 		local round_prob_num, round_prob_den =
 			SMODS.get_probability_vars(card, 1, card.ability.extra.odds_after_round, "Abstract Card")
 		return {
 			vars = {
 				card.ability.extra.Emult,
-				play_prob_num,
-				play_prob_den,
 				round_prob_num,
 				round_prob_den,
 			},
@@ -226,11 +222,9 @@ local abstract = {
 	calculate = function(self, card, context)
 		--During scoring
 		if
-			context.cardarea == G.hand
-			and context.before
-			and not card.ability.extra.marked
+			(context.destroy_card == card or context.playing_card_end_of_round)
+			and context.cardarea == G.hand
 			and not SMODS.is_eternal(card)
-			and not card.ability.extra.survive --this presvents repitition of shatter chance by shutting it out once it confirms to "survive"
 			and SMODS.pseudorandom_probability(
 				card,
 				"cry_abstract_destroy",
@@ -239,34 +233,13 @@ local abstract = {
 				"Abstract Card"
 			)
 		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
-			card.ability.extra.marked = true
-		elseif context.cardarea == G.play and not card.ability.extra.marked then
-			card.ability.extra.survive = true
+			return { remove = true }
 		end
 		if context.cardarea == G.play and context.main_scoring then
 			return {
 				emult = card.ability.extra.Emult,
 			}
 		end
-
-		if
-			context.final_scoring_step
-			and context.cardarea == G.hand
-			and card.ability.extra.marked
-			and not context.repetition
-			and not SMODS.is_eternal(card)
-			and not (card.will_shatter or card.destroyed or card.shattered)
-		then
-			G.E_MANAGER:add_event(Event({
-				trigger = "immediate",
-				func = function()
-					card:juice_up(0.9, 0.9)
-					card:shatter()
-					return true
-				end,
-			}))
-		end
-		card.ability.extra.survive = false
 	end,
 	attributes = { "emult", "chance", "destroy_card" },
 }
