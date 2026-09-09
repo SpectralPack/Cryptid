@@ -1438,11 +1438,11 @@ local noisy = {
 							{ string = "rand()", colour = G.C.JOKER_GREY },
 							{
 								string = "@#"
-									.. (G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(
+									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.suit and G.deck.cards[1].base.suit:sub(
 										2,
 										2
 									) or "m")
-									.. (G.deck.cards[1] and G.deck.cards[1].base.id or 7),
+									.. (G.deck and G.deck.cards[1] and G.deck.cards[1].base.id or 7),
 								colour = G.C.BLUE,
 							},
 							loc_chips,
