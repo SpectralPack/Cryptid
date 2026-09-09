@@ -1097,7 +1097,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 
 	local card = create_card_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	local center = card and card.config and card.config.center or {}
-	local is_pcard = _type == "Base" or _type == "Enhanced"
+	local is_pcard = SMODS.is_playing_card(card)
 	if is_pcard and G.GAME.modifiers.cry_force_suit then
 		card:change_suit(G.GAME.modifiers.cry_force_suit)
 	elseif is_pcard and G.GAME.modifiers.cry_force_random_suit then
