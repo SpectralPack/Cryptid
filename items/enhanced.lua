@@ -38,6 +38,7 @@ Cryptid.edeck_sprites = {
 		m_lucky = { atlas = "cry_atlasdeck", pos = { x = 6, y = 3 } },
 		m_cry_echo = { atlas = "cry_atlasdeck", pos = { x = 1, y = 5 } },
 		m_cry_light = { atlas = "cry_atlasdeck", pos = { x = 7, y = 3 } },
+		m_cry_abstract = { atlas = "cry_misc", pos = { x = 3, y = 0 } },
 	},
 	sticker = {
 		order = 3,
