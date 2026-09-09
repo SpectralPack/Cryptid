@@ -1097,14 +1097,15 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 
 	local card = create_card_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 	local center = card and card.config and card.config.center or {}
-	if front and G.GAME.modifiers.cry_force_suit then
+	local is_pcard = _type == "Base" or _type == "Enhanced"
+	if is_pcard and G.GAME.modifiers.cry_force_suit then
 		card:change_suit(G.GAME.modifiers.cry_force_suit)
-	elseif front and G.GAME.modifiers.cry_force_random_suit then
+	elseif is_pcard and G.GAME.modifiers.cry_force_random_suit then
 		card:change_suit(Cryptid.poll_random_suit())
 	end
-	if front and G.GAME.modifiers.cry_force_enhancement then
+	if is_pcard and G.GAME.modifiers.cry_force_enhancement then
 		card:set_ability(G.P_CENTERS[G.GAME.modifiers.cry_force_enhancement])
-	elseif front and G.GAME.modifiers.cry_force_random_enhancement then
+	elseif is_pcard and G.GAME.modifiers.cry_force_random_enhancement then
 		card:set_ability(Cryptid.poll_random_enhancement())
 	end
 	if next(SMODS.find_card("j_cry_error")) then
@@ -1114,9 +1115,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	elseif G.GAME.modifiers.cry_force_random_edition then
 		card:set_edition(Cryptid.poll_random_edition(), true, true)
 	end
-	if front and G.GAME.modifiers.cry_force_seal then
+	if is_pcard and G.GAME.modifiers.cry_force_seal then
 		card:set_seal(G.GAME.modifiers.cry_force_seal)
-	elseif front and G.GAME.modifiers.cry_force_random_seal then
+	elseif is_pcard and G.GAME.modifiers.cry_force_random_seal then
 		card:set_seal(Cryptid.poll_random_seal())
 	end
 	if G.GAME.modifiers.cry_force_sticker then
