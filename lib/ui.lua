@@ -40,11 +40,7 @@ SMODS.DrawStep({
 		local back = (self.ability.set == "Back" and self.config.center)
 			or (self.params.viewed_back == true and G.GAME.viewed_back and G.GAME.viewed_back.effect.center)
 			or (self.playing_card and not in_run_setup and G.GAME.selected_back_key)
-		if
-			not self.cry_antimatter_locked
-			and back
-			and (back.unlocked or not in_run_setup)
-		then
+		if not self.cry_antimatter_locked and back and (back.unlocked or not in_run_setup) then
 			if back.key == "b_cry_antimatter" then
 				self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
 				self.children.back:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
