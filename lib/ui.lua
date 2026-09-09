@@ -27,19 +27,20 @@ SMODS.DrawStep({
 	key = "back_edition",
 	order = 5,
 	func = function(self)
-		if self.area and self.area == SMODS.RunSelect.Internals.stake_tower then --why is this even an issue ???????
+		if self.params.sleeve_card or self.ability.set == "Sleeve" then
 			return
 		end
-		local in_run_setup = self.area
-				and (self.area.config.run_select or self.area.config.run_select_deck_preview)
-				and true
-			or false
-		local back = self.ability.set == "Back" and in_run_setup and self.config.center or G.GAME.selected_back_key
-		if
-			not self.cry_antimatter_locked
-			and back
-			and ((type(back) == "table" and back.unlocked) or not in_run_setup)
-		then
+		local in_run_setup = not not (
+			self.ability.set == "Back"
+			or self.params.viewed_back
+			or self.params.run_select_selection_choice
+			or self.params.run_select_preview_card
+			or (self.area and (self.area.config.run_select or self.area.config.run_select_deck_preview))
+		)
+		local back = (self.ability.set == "Back" and self.config.center)
+			or (self.params.viewed_back == true and G.GAME.viewed_back and G.GAME.viewed_back.effect.center)
+			or (self.playing_card and not in_run_setup and G.GAME.selected_back_key)
+		if not self.cry_antimatter_locked and back and (back.unlocked or not in_run_setup) then
 			if back.key == "b_cry_antimatter" then
 				self.children.back:draw_shader("negative", nil, self.ARGS.send_to_shader, true)
 				self.children.back:draw_shader("negative_shine", nil, self.ARGS.send_to_shader, true)
