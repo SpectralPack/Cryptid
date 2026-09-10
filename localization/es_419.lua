@@ -3822,6 +3822,8 @@ return {
 				last_discard = { "si es el {C:attention}último descarte{}" },
 				odds = { "con {C:green}#4# {C:green}en {C:green}#3#{} probabilidades" },
 			},
+			b_select_all = "Seleccionar todo",
+			b_deselect_all = "Deseleccionar todo",
 		},
 		v_dictionary = {
 			a_xchips = "X#1# fichas",

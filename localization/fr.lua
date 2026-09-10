@@ -5404,6 +5404,8 @@ return {
 				last_discard = { "si c'est la {C:attention}dernière défausse{}" },
 				odds = { "avec {C:green}#4# chances sur {C:green}#3#{}" },
 			},
+			b_select_all = "Tout sélectionner",
+			b_deselect_all = "Tout désélectionner",
 		},
 		v_dictionary = {
 			a_xchips = "X#1# Jetons",

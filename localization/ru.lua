@@ -4342,6 +4342,8 @@ return {
 				last_discard = { "если это последний {C:attention}сброс{}" },
 				odds = { "с шансом {C:green}#4# к {C:green}#3#{}" },
 			},
+			b_select_all = "Выбрать все",
+			b_deselect_all = "Снять выбор со всех",
 		},
 
 		v_dictionary = {
