@@ -45,7 +45,7 @@ You can also enable/disable certain music tracks in the Music tab. If you're a s
 
 > *I'm hitting infinity very often, is there any way to raise the limit of the scoring system?*
 
-Amulet may not be configured to be on **Omeganum** mode, which has a maximum limit of e10##1000. You can make the limit virtually disappear by going into Mods, then clicking Amulet, and changing the Score Limit under Config. Be careful; if you have a saved run that was on a different number system, you won't be able to load it (unless if you switch back)!
+Amulet may not be configured to be on **Omeganum** mode, which has a maximum limit of 1e308#1##1e308. You can make the limit virtually disappear by going into Mods, then clicking Amulet, and changing the Score Limit under Config. Be careful; if you have a saved run that was on a different number system, you won't be able to load it (unless if you switch back)!
 
 > *I've experienced a crash/bug!*
 
