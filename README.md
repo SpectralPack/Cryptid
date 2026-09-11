@@ -19,20 +19,11 @@ Cryptid currently adds:
 [Not Mac Video Installation Guide](https://www.youtube.com/watch?v=aUr0gXE77rk)
 
 ### Frequently asked questions
-* Credit to @jenwalter666 for creating this FAQ (forwarded from Cryptid Discord)
 
-## General
+> *My game is crashing on startup/mods or content don't appear to be loading!*
 
-> *My game is crashing on startup/something doesn't appear to be loading!*
-
-Make sure everything is properly installed.
-For automatic updates, try using the [automatic update script](https://discord.com/channels/1264429948970733782/1268911536638787625).
-It could also be that Steamodded is out of date, sometimes mods may use features of a new version that's absent in an older version, but don't change the version that they ask for.
-
-> *I can't see any new jokers/content!*
-
-If you've installed everything correctly, but no new jokers, blinds, etc. are ingame, check the Mods list by clicking on [MODS] in the main menu, and look for Cryptid/Amulet.
-If they show up red, that means there's a problem. Hover over the mod icon (which should be an exclamation mark) to see what said problem is. It could be an outdated dependency in most cases. However If the mod button doesn't show up, it means steamodded hasn't been downloaded correctly.  
+Make sure all mods are fully updated and properly installed. Make sure your installs arent nested (e.x. There should be mod files at Mods/Cryptid, rather than Mods/Cryptid/Cryptid).
+When updating [lovely](https://github.com/ethangreen-dev/lovely-injector), make sure to follow the install guide on its github rather than downloading it like an ordinary mod.
 
 > *What's up with all the "M" jokers/references to Jolly Joker?*
 
@@ -41,11 +32,12 @@ If they show up red, that means there's a problem. Hover over the mod icon (whic
 > *There's some content in the mod I don't like! Is there any way to remove them?*
 
 You can disable some features of the mod by opening your Mods, clicking [Cryptid], going over to the Config tab, and clicking Thematic Sets. There, you can toggle various Cryptid additions on or off as you see fit.
-You can also enable/disable certain music tracks in the Music tab. If you're a streamer, consider disabling the Jimball music for your safety!
+You can also enable/disable certain music tracks in the Music tab. If you're a streamer, you may want to disable the Jimball music here or in the popup when obtaining it.
 
 > *I'm hitting infinity very often, is there any way to raise the limit of the scoring system?*
 
 Amulet may not be configured to be on **Omeganum** mode, which has a maximum limit of 1e308#1##1e308. You can make the limit virtually disappear by going into Mods, then clicking Amulet, and changing the Score Limit under Config. Be careful; if you have a saved run that was on a different number system, you won't be able to load it (unless if you switch back)!
+If you are reaching Infinity with Amulet set to Omeganum, you are likely running into some sort of bug in Amulet. True Infinity is not actually reachable with Cryptid alone (or most other mods for that matter) and is in 99% of cases caused by a bug.
 
 > *I've experienced a crash/bug!*
 
