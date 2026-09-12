@@ -5264,7 +5264,7 @@ return {
 			["cry_feat_misc."] = "その他",
 			["cry_feat_misc. jokers"] = "その他のジョーカー",
 			cry_feat_planets = "惑星",
-			cry_feat_jokerdisplay = "JokerDisplay (Does Nothing)",
+			cry_feat_jokerdisplay = "JokerDisplay 連携 (要再起動)",
 			cry_feat_tags = "タグ",
 			cry_feat_sleeves = "スリーブ",
 			cry_feat_spectrals = "スペクトル",

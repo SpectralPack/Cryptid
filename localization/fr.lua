@@ -5144,7 +5144,7 @@ return {
 			["cry_feat_misc."] = "Divers",
 			["cry_feat_misc. jokers"] = "Jokers divers",
 			cry_feat_planets = "Planètes",
-			cry_feat_jokerdisplay = "JokerDisplay (Fait rien)",
+			cry_feat_jokerdisplay = "Intégration JokerDisplay (Redémarrage requis)",
 			cry_feat_tags = "Badges",
 			cry_feat_sleeves = "Pochettes",
 			cry_feat_spectrals = "Cartes spectrales",
