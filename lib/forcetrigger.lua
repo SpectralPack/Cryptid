@@ -35,7 +35,7 @@ function Cryptid.forcetrigger(card, context)
 		}))
 	end
 	if not check and card.ability.set == "Joker" then
-		local demicontext = Cryptid.deep_copy(context)
+		local demicontext = SMODS.shallow_copy(context or {})
 		demicontext.forcetrigger = true
 		results = eval_card(card, demicontext)
 		demicontext = nil

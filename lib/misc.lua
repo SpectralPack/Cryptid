@@ -374,7 +374,7 @@ function Cryptid.with_deck_effects(card, func)
 end
 
 function Cryptid.deep_copy(obj, seen)
-	if type(obj) ~= "table" then
+	if type(obj) ~= "table" or (obj.is and obj:is(Object)) then
 		return obj
 	end
 	if seen and seen[obj] then
