@@ -47,8 +47,22 @@ function Card:cry_copy_ability()
 end
 local cj = Card.calculate_joker
 
+local function is_in_evaluated_area(card)
+	if not card.area then
+		return false
+	end
+	for _, group in ipairs({ "jokers", "playing_cards" }) do
+		for _, area in ipairs(SMODS.get_card_areas(group)) do
+			if card.area == area then
+				return true
+			end
+		end
+	end
+	return false
+end
+
 local smcc = SMODS.calculate_context
-function SMODS.calculate_context(context, return_table)
+function SMODS.calculate_context(context, return_table, no_resolve)
 	for k, v in pairs(SMODS.Events) do
 		if G.GAME.events and G.GAME.events[k] then
 			context.pre_jokers = true
@@ -94,7 +108,39 @@ function SMODS.calculate_context(context, return_table)
 			SMODS.trigger_effects(effects, _card)
 		end
 	end
-	local ret = smcc(context, return_table)
+	local ret = smcc(context, return_table, no_resolve)
+	local trigger = context.trigger_obj
+	if
+		(context.mod_probability or context.fix_probability)
+		and type(trigger) == "table"
+		and trigger.is
+		and trigger:is(Card)
+		and not is_in_evaluated_area(trigger)
+	then
+		if no_resolve then
+			SMODS.no_resolve = true
+		end
+		local eval, post = eval_card(trigger, context)
+		local effects = { eval }
+		for _, v in ipairs(post) do
+			effects[#effects + 1] = v
+		end
+		if return_table then
+			for _, v in ipairs(effects) do
+				return_table[#return_table + 1] = v
+			end
+		else
+			local f = SMODS.trigger_effects(effects, trigger)
+			ret = ret or {}
+			for k, v in pairs(f) do
+				ret[k] = v
+			end
+			SMODS.update_context_flags(context, f)
+		end
+		if no_resolve then
+			SMODS.no_resolve = nil
+		end
+	end
 	for k, v in pairs(SMODS.Events) do
 		if G.GAME.events and G.GAME.events[k] then
 			context.post_jokers = true
