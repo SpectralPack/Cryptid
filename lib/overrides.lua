@@ -2632,3 +2632,14 @@ function Card:redeem()
 	end
 	return redeemref(self)
 end
+
+local play_sound_ref = play_sound
+function play_sound(sound_code, per, vol)
+	if type(sound_code) == "table" then
+		for _, s in ipairs(sound_code) do
+			play_sound_ref(s, per, vol)
+		end
+		return
+	end
+	return play_sound_ref(sound_code, per, vol)
+end
