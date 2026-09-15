@@ -3624,7 +3624,7 @@ return {
 			["cry_feat_misc."] = "Misc.",
 			["cry_feat_misc. jokers"] = "Comodines misceláneos",
 			cry_feat_planets = "Planetas",
-			cry_feat_jokerdisplay = "JokerDisplay (no hace nada)",
+			cry_feat_jokerdisplay = "Integración con JokerDisplay (Requiere reinicio)",
 			cry_feat_tags = "Etiquetas",
 			cry_feat_sleeves = "Mangas",
 			cry_feat_spectrals = "Espectrales",

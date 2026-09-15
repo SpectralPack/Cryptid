@@ -5124,7 +5124,7 @@ return {
 			["cry_feat_misc."] = "기타",
 			["cry_feat_misc. jokers"] = "기타 조커",
 			cry_feat_planets = "행성",
-			cry_feat_jokerdisplay = "조커 디스플레이 (아무 효과 없음)",
+			cry_feat_jokerdisplay = "조커 디스플레이 연동 (재시작 필요)",
 			cry_feat_tags = "태그",
 			cry_feat_sleeves = "슬리브",
 			cry_feat_spectrals = "유령",

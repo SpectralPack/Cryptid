@@ -5079,7 +5079,7 @@ return {
 			["cry_feat_misc."] = "Verschiedenes",
 			["cry_feat_misc. jokers"] = "Verschiedene Joker",
 			cry_feat_planets = "Planeten",
-			cry_feat_jokerdisplay = "JokerDisplay (Macht nichts)",
+			cry_feat_jokerdisplay = "JokerDisplay-Integration (Neustart erforderlich)",
 			cry_feat_tags = "Tags",
 			cry_feat_sleeves = "Hüllen",
 			cry_feat_spectrals = "Geister-Karten",

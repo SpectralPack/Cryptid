@@ -4105,7 +4105,7 @@ return {
 			["cry_feat_misc."] = "Проч.",
 			["cry_feat_misc. jokers"] = "Проч. Джокеры",
 			cry_feat_planets = "Планеты",
-			cry_feat_jokerdisplay = "ПоказДжокера (Ничего не делает)",
+			cry_feat_jokerdisplay = "Интеграция JokerDisplay (нужен перезапуск)",
 			cry_feat_tags = "Теги",
 			cry_feat_sleeves = "Рукава",
 			cry_feat_spectrals = "Спектры",

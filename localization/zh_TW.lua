@@ -3106,7 +3106,7 @@ return {
 			["cry_feat_misc."] = "Misc.",
 			["cry_feat_misc. jokers"] = "Misc. Jokers",
 			cry_feat_planets = "Planets",
-			cry_feat_jokerdisplay = "JokerDisplay (Does Nothing)",
+			cry_feat_jokerdisplay = "JokerDisplay 兼容 (需要重啟)",
 			cry_feat_tags = "Tags",
 			cry_feat_sleeves = "Sleeves",
 			cry_feat_spectrals = "Spectrals",

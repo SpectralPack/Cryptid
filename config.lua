@@ -11,4 +11,5 @@ return {
 	["force_tooltips"] = true, -- acivates lovely patch to always show the desc of jokers and stuff
 	["HTTPS"] = true, -- your internet connection
 	["menu"] = true, -- Restart game and the main menu is now blue
+	["joker_display"] = true, -- enable/disable JokerDisplay integration
 }
