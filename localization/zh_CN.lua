@@ -5396,6 +5396,8 @@ return {
 				last_discard = { "如果是{C:attention}最后一次弃牌{}" },
 				odds = { "有 {C:green}#4# / #3#{} 的几率" },
 			},
+			b_select_all = "全选",
+			b_deselect_all = "取消全选",
 		},
 		v_dictionary = {
 			a_xchips = "X#1# 筹码",
