@@ -43,6 +43,27 @@ function Cryptid.has_ongoing_run()
 	return (G.STAGE == G.STAGES.RUN) or not not love.filesystem.getInfo(G.SETTINGS.profile .. "/" .. "save.jkr")
 end
 
+function Cryptid.open_booster(pack_key)
+	local key = pack_key or get_pack("cry_take_one").key
+	local card = Card(
+		G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
+		G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
+		G.CARD_W * 1.27,
+		G.CARD_H * 1.27,
+		G.P_CARDS.empty,
+		G.P_CENTERS[key],
+		{ bypass_discovery_center = true, bypass_discovery_ui = true }
+	)
+	card.cost = 0
+	card.from_tag = true
+	if G.shop and not G.shop.alignment.offset.py then
+		G.shop.alignment.offset.py = -5.3
+	end
+	G.FUNCS.use_card({ config = { ref_table = card } })
+	card:start_materialize()
+	return card
+end
+
 -- More advanced version of find joker for things that need to find very specific things
 function Cryptid.advanced_find_joker(name, rarity, edition, ability, non_debuff, area)
 	local jokers = {}
