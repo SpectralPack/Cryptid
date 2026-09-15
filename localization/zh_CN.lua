@@ -3542,18 +3542,17 @@ return {
 			sleeve_cry_antimatter_sleeve = {
 				name = "反物质牌套",
 				text = {
-					"拥有所有牌套的",
-					"{C:attention}效果{}和",
-					"{C:attention}特殊效果{}",
-					"{C:red}开发中",
+					"拥有{C:attention}所有选定牌套{}的",
+					"各项{C:attention}效果{}与{C:attention}特殊效果{}的",
+					"{C:legendary,E:1}增益效果{}",
 				},
 			},
 			sleeve_cry_antimatter_sleeve_balanced = {
 				name = "反物质牌套",
 				text = {
-					"拥有{C:attention}所有{}在{C:gold}金注{}中获胜过的",
-					"牌套的{C:attention}效果{}",
-					"和{C:attention}特殊效果{}",
+					"拥有在{C:gold}金注{}中获胜过的{C:attention}选定牌套{}的{C:attention}效果{}，",
+					"以及在{C:gold}金注{}中获胜过的对应{C:attention}牌组{}的",
+					"{C:attention}特殊效果{}的{C:legendary,E:1}增益效果{}",
 				},
 			},
 		},

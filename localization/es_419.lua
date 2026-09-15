@@ -2370,12 +2370,30 @@ return {
 				},
 			},
 			sleeve_cry_legendary_sleeve = {
-				name = "Manga legendaria<",
+				name = "Manga legendaria",
 				text = {
 					"Comienza con un comodín {C:legendary}legendario{C:legendary}",
 					"{C:green}1 en 5{} probabilidades para crear otro",
 					"cuando se derrota a la ciega jefe",
 					"{C:inactive}(debe haber espacio){}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Manga de antimateria",
+				text = {
+					"Aplica las {C:legendary,E:1}ventajas{}",
+					"de cada {C:attention}efecto{} y {C:attention}efecto especial{}",
+					"de {C:attention}todas las mangas seleccionadas{}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Manga de antimateria",
+				text = {
+					"Aplica las {C:legendary,E:1}ventajas{} de los {C:attention}efectos{}",
+					"de {C:attention}todas las mangas seleccionadas{} ganadas",
+					"con {C:gold}Pozo de oro{}, y {C:attention}efectos especiales{}",
+					"para cada {C:attention}baraja{} correspondiente",
+					"ganada con {C:gold}Pozo de oro{}",
 				},
 			},
 		},
