@@ -2282,8 +2282,7 @@ local hooked = {
 			and context.post_trigger
 			and not context.forcetrigger
 			and not context.other_context.forcetrigger
-			and not context.other_context.mod_probability
-			and not context.other_context.fixed_probability
+			and Cryptid.isNonScalingContext(context)
 		then
 			for i = 1, #G.jokers.cards do
 				if G.jokers.cards[i].sort_id == card.ability.cry_hook_id then

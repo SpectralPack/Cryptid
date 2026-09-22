@@ -1326,7 +1326,7 @@ local duplicare = {
 					and context.other_card
 					and context.other_card.ability
 					and context.other_card.ability.set == "Joker"
-					and Cryptid.isNonRollProbabilityContext(context.other_context)
+					--and Cryptid.isNonRollProbabilityContext(context.other_context) Literally all of these contexts are already blacklisted from post_trigger lmao
 					and Cryptid.isNonScalingContext(context.other_context)
 				) or (context.individual and context.cardarea == G.play)
 			)
