@@ -5,7 +5,7 @@
 -- essentially in_pool for equilibrium spawning
 function Cryptid.can_spawn_equilibrium(center)
 	if
-		(Cryptid.enabled(center.key) ~= true or (Spectrallib and Spectrallib.enabled(center.key) ~= true))
+		(Cryptid.enabled(center.key) ~= true)
 		and center.original_mod
 	then
 		return false
