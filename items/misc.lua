@@ -830,57 +830,59 @@ local oversat = {
 		card.ability.cry_oversat = nil
 	end,
 	init = function(self)
-		AurinkoAddons.cry_oversat = function(card, hand, instant, amount)
-			G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + (G.GAME.hands[hand].l_chips * amount), 0)
-			G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + (G.GAME.hands[hand].l_mult * amount), 1)
-			if not instant then
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.3,
-					func = function()
-						play_sound("chips1")
-						card:juice_up(0.8, 0.5)
-						return true
-					end,
-				}))
-				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips, StatusText = true })
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.3,
-					func = function()
-						play_sound("multhit1")
-						card:juice_up(0.8, 0.5)
-						return true
-					end,
-				}))
-				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
-			elseif Aurinko.VerboseMode then
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.2,
-					func = function()
-						play_sound("chips1")
-						card:juice_up(0.8, 0.5)
-						return true
-					end,
-				}))
-				update_hand_text(
-					{ delay = 1.3 },
-					{ chips = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
-				)
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.2,
-					func = function()
-						play_sound("multhit1")
-						card:juice_up(0.8, 0.5)
-						return true
-					end,
-				}))
-				update_hand_text(
-					{ delay = 1.3 },
-					{ mult = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
-				)
+		if next(SMODS.find_mod("enf")) then
+			Engulf.EditionFuncs.e_cry_oversat = function(card, hand, instant, amount)
+				G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + (G.GAME.hands[hand].l_chips * amount), 0)
+				G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + (G.GAME.hands[hand].l_mult * amount), 1)
+				if not instant then
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.3,
+						func = function()
+							play_sound("chips1")
+							card:juice_up(0.8, 0.5)
+							return true
+						end,
+					}))
+					update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips, StatusText = true })
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.3,
+						func = function()
+							play_sound("multhit1")
+							card:juice_up(0.8, 0.5)
+							return true
+						end,
+					}))
+					update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
+				elseif Engulf.config.verbose then
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.2,
+						func = function()
+							play_sound("chips1")
+							card:juice_up(0.8, 0.5)
+							return true
+						end,
+					}))
+					update_hand_text(
+						{ delay = 1.3 },
+						{ chips = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
+					)
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.2,
+						func = function()
+							play_sound("multhit1")
+							card:juice_up(0.8, 0.5)
+							return true
+						end,
+					}))
+					update_hand_text(
+						{ delay = 1.3 },
+						{ mult = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
+					)
+				end
 			end
 		end
 	end,
@@ -1042,91 +1044,93 @@ local glitched = {
 			return str
 		end
 
-		AurinkoAddons.cry_glitched = function(card, hand, instant, amount)
-			local modc = G.GAME.hands[hand].l_chips
-				* Cryptid.log_random(
-					pseudoseed("cry_aurinko_chips_misprint" .. G.GAME.round_resets.ante),
-					(G.GAME.modifiers.cry_misprint_min or 1) / 10,
-					(G.GAME.modifiers.cry_misprint_max or 1) * 10
-				)
-				* amount
-			local modm = G.GAME.hands[hand].l_mult
-				* Cryptid.log_random(
-					pseudoseed("cry_aurinko_mult_misprint" .. G.GAME.round_resets.ante),
-					(G.GAME.modifiers.cry_misprint_min or 1) / 10,
-					(G.GAME.modifiers.cry_misprint_max or 1) * 10
-				)
-				* amount
-			G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
-			G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
-			if not instant then
-				for i = 1, math.random(2, 4) do
+		if next(SMODS.find_mod("enf")) then
+			Engulf.EditionFuncs.e_cry_glitched = function(card, hand, instant, amount)
+				local modc = G.GAME.hands[hand].l_chips
+					* Cryptid.log_random(
+						pseudoseed("cry_aurinko_chips_misprint" .. G.GAME.round_resets.ante),
+						(G.GAME.modifiers.cry_misprint_min or 1) / 10,
+						(G.GAME.modifiers.cry_misprint_max or 1) * 10
+					)
+					* amount
+				local modm = G.GAME.hands[hand].l_mult
+					* Cryptid.log_random(
+						pseudoseed("cry_aurinko_mult_misprint" .. G.GAME.round_resets.ante),
+						(G.GAME.modifiers.cry_misprint_min or 1) / 10,
+						(G.GAME.modifiers.cry_misprint_max or 1) * 10
+					)
+					* amount
+				G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].chips + modc, 1)
+				G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].mult + modm, 1)
+				if not instant then
+					for i = 1, math.random(2, 4) do
+						update_hand_text(
+							{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+							{ chips = obfuscatedtext(3) }
+						)
+					end
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0,
+						func = function()
+							play_sound("chips1")
+							card:juice_up(0.8, 0.5)
+							return true
+						end,
+					}))
+					update_hand_text({ delay = 0 }, {
+						chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)),
+						StatusText = true,
+					})
+					update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
+					for i = 1, math.random(2, 4) do
+						update_hand_text(
+							{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
+							{ mult = obfuscatedtext(3) }
+						)
+					end
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0,
+						func = function()
+							play_sound("multhit1")
+							card:juice_up(0.8, 0.5)
+							return true
+						end,
+					}))
+					update_hand_text({ delay = 0 }, {
+						mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)),
+						StatusText = true,
+					})
+					update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
+				elseif Engulf.config.verbose then
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.2,
+						func = function()
+							play_sound("chips1")
+							card:juice_up(0.8, 0.5)
+							return true
+						end,
+					}))
 					update_hand_text(
-						{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
-						{ chips = obfuscatedtext(3) }
+						{ delay = 1.3 },
+						{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
+					)
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.2,
+						func = function()
+							play_sound("multhit1")
+							card:juice_up(0.8, 0.5)
+							return true
+						end,
+					}))
+					update_hand_text(
+						{ delay = 1.3 },
+						{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
 					)
 				end
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0,
-					func = function()
-						play_sound("chips1")
-						card:juice_up(0.8, 0.5)
-						return true
-					end,
-				}))
-				update_hand_text({ delay = 0 }, {
-					chips = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modc)),
-					StatusText = true,
-				})
-				update_hand_text({ delay = 1.3 }, { chips = G.GAME.hands[hand].chips })
-				for i = 1, math.random(2, 4) do
-					update_hand_text(
-						{ sound = "button", volume = 0.4, pitch = 1.1, delay = 0.2 },
-						{ mult = obfuscatedtext(3) }
-					)
-				end
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0,
-					func = function()
-						play_sound("multhit1")
-						card:juice_up(0.8, 0.5)
-						return true
-					end,
-				}))
-				update_hand_text({ delay = 0 }, {
-					mult = (to_big(amount) > to_big(0) and "+" or "-") .. number_format(math.abs(modm)),
-					StatusText = true,
-				})
-				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-			elseif Aurinko.VerboseMode then
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.2,
-					func = function()
-						play_sound("chips1")
-						card:juice_up(0.8, 0.5)
-						return true
-					end,
-				}))
-				update_hand_text(
-					{ delay = 1.3 },
-					{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
-				)
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.2,
-					func = function()
-						play_sound("multhit1")
-						card:juice_up(0.8, 0.5)
-						return true
-					end,
-				}))
-				update_hand_text(
-					{ delay = 1.3 },
-					{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
-				)
 			end
 		end
 	end,
