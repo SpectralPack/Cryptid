@@ -814,7 +814,7 @@ function Controller:key_press_update(key, dt)
 		G.DEBUG_POINTER = true
 		G.ENTERED_CARD = ""
 		G.CHOOSE_CARD = UIBox({
-			definition = create_UIBox_pointer(card),
+			definition = create_UIBox_pointer(),
 			config = {
 				align = "cm",
 				offset = { x = 0, y = 10 },
