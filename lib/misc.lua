@@ -186,7 +186,8 @@ function Card:set_sprites(_center, _front)
 		self.children.floating_sprite2.states.hover.can = false
 		self.children.floating_sprite2.states.click.can = false
 	end
-	if _center and _center.soul_pos and _center.soul_pos.extra then
+	--This works because cryptid also creates the sprite in the drawstep, allowing spectrallib floating_sprite2 to work properly if its loaded
+	if _center and _center.soul_pos and _center.soul_pos.extra and not next(SMODS.find_mod("Spectrallib")) then
 		self.children.floating_sprite2 = Sprite(
 			self.T.x,
 			self.T.y,
