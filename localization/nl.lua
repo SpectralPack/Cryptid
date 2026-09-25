@@ -2047,6 +2047,23 @@ return {
 					"{C:attention}-2{} Joker slots",
 				},
 			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Antimaterie Sleeve",
+				text = {
+					"Past de {C:legendary,E:1}voordelen{} toe",
+					"van elk {C:attention}effect{} en {C:attention}speciaal effect{}",
+					"van {C:attention}alle geselecteerde sleeves{}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Antimaterie Sleeve",
+				text = {
+					"Past de {C:legendary,E:1}voordelen{} toe van de {C:attention}effecten{}",
+					"van {C:attention}alle geselecteerde sleeves{} gewonnen met {C:gold}Gouden Inzet{},",
+					"en {C:attention}speciale effecten{} voor elk overeenkomstig",
+					"{C:attention}deck{} gewonnen met {C:gold}Gouden Inzet{}",
+				},
+			},
 		},
 		Spectral = {
 			c_cry_analog = {

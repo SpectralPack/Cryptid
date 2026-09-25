@@ -2042,6 +2042,22 @@ return {
 					"{C:attention}-2{} Joker slots",
 				},
 			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "反物質牌套",
+				text = {
+					"擁有{C:attention}所有選定牌套{}的",
+					"各項{C:attention}效果{}與{C:attention}特殊效果{}的",
+					"{C:legendary,E:1}增益效果{}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "反物質牌套",
+				text = {
+					"擁有在{C:gold}金注{}中獲勝過的{C:attention}選定牌套{}的{C:attention}效果{}，",
+					"以及在{C:gold}金注{}中獲勝過的對應{C:attention}牌組{}的",
+					"{C:attention}特殊效果{}的{C:legendary,E:1}增益效果{}",
+				},
+			},
 		},
 		Spectral = {
 			c_cry_analog = {
