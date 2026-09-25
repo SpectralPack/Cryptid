@@ -5398,6 +5398,8 @@ return {
 				last_discard = { "{C:attention}마지막 버리기{}일 경우" },
 				odds = { "{C:green}#3#분의 #4#{} 확률로" },
 			},
+			b_select_all = "모두 선택",
+			b_deselect_all = "모두 선택 해제",
 		},
 		v_dictionary = {
 			a_xchips = "칩 X#1#",
