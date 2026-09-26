@@ -1106,6 +1106,9 @@ SMODS.Consumable.enable = function(self)
 	if self.cry_disabled then
 		SMODS.Center.enable(self)
 		SMODS.insert_pool(G.P_CENTER_POOLS["Consumeables"], self)
+		if self.hidden then
+			table.insert(self.legendaries, self)
+		end
 	end
 end
 ---@type fun(self: SMODS.Consumable|table, reason: table)?
@@ -1113,6 +1116,9 @@ SMODS.Consumable._disable = function(self, reason)
 	if not self.cry_disabled then
 		SMODS.Center._disable(self, reason)
 		SMODS.remove_pool(G.P_CENTER_POOLS["Consumeables"], self.key)
+		if self.hidden then
+			SMODS.remove_pool(self.legendaries, self.key)
+		end
 	end
 end
 
