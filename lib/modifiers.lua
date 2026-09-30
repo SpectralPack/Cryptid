@@ -394,9 +394,9 @@ function Cryptid.edition_to_table(edition) -- look mom i figured it out (this do
 end
 function cry_get_next_voucher_edition() -- currently only for edition decks, can be modified if voucher editioning becomes more important
 	if next(SMODS.find_card("j_cry_error")) then
-		return Cryptid.edition_to_table("e_cry_glitched")
+		return "e_cry_glitched"
 	elseif G.GAME.modifiers.cry_force_edition then
-		return Cryptid.edition_to_table(G.GAME.modifiers.cry_force_edition)
+		return G.GAME.modifiers.cry_force_edition
 	elseif G.GAME.modifiers.cry_force_random_edition then
 		return Cryptid.poll_random_edition()
 	end

@@ -271,7 +271,7 @@ function Cryptid.poll_random_edition(_seed)
 	while random_edition.key == "e_base" or random_edition.no_edeck do
 		random_edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed(_seed or "cry_ant_edition"))
 	end
-	return { [random_edition.key:sub(3)] = true }
+	return random_edition.key
 end
 
 function Cryptid.poll_random_enhancement(_seed)
