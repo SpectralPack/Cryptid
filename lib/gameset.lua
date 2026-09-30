@@ -1532,7 +1532,7 @@ function create_UIBox_your_collection_current_set()
 
 	joker_pool = {}
 	local function is_in_set(card)
-		if card.dependencies and card.dependencies.items then
+		if card.dependencies and card.dependencies.items and card.object_type ~= "Challenge" then
 			for i = 1, #card.dependencies.items do
 				if card.dependencies.items[i] == G.viewedContentSet.key then
 					joker_pool[#joker_pool + 1] = card
@@ -1649,7 +1649,7 @@ G.FUNCS.your_collection_current_set_page = function(args)
 	end
 	joker_pool = {}
 	local function is_in_set(card)
-		if card.dependencies and card.dependencies.items then
+		if card.dependencies and card.dependencies.items and card.object_type ~= "Challenge" then
 			for i = 1, #card.dependencies.items do
 				if card.dependencies.items[i] == G.viewedContentSet.key then
 					joker_pool[#joker_pool + 1] = card
