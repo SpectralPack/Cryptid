@@ -73,7 +73,7 @@ position = "after"
 payload = '''
 cry_bonusvouchers = {},
 cry_voucher_stickers = {eternal = false, perishable = false, rental = false, pinned = false, banana = false},
-cry_voucher_edition = {},
+cry_voucher_edition = nil,
 '''
 match_indent = true
 
@@ -99,7 +99,7 @@ pattern = '''G.GAME.current_round.voucher = SMODS.get_next_vouchers()'''
 position = "after"
 payload = '''
 G.GAME.current_round.cry_voucher_stickers = Cryptid.next_voucher_stickers()
-G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition() or {}
+G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition()
 G.GAME.current_round.cry_bonusvouchers = {}
 G.GAME.cry_bonusvouchersused = {}	-- i'm not sure why i'm putting these in two separate tables but it doesn't matter much
 for i = 1, G.GAME.cry_bonusvouchercount do
@@ -116,7 +116,7 @@ pattern = '''self.GAME.current_round.voucher = forced_voucher and {forced_vouche
 position = "after"
 payload = '''
 G.GAME.current_round.cry_voucher_stickers = Cryptid.next_voucher_stickers()
-G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition() or {}
+G.GAME.current_round.cry_voucher_edition = cry_get_next_voucher_edition()
 for i = 1, self.GAME.cry_bonusvouchercount do
 	self.GAME.current_round.cry_bonusvouchers[i] = get_next_voucher_key()
 end

@@ -343,7 +343,7 @@ if SMODS.add_voucher_to_shop then
 				end
 				card:set_cost()
 			end
-			if G.GAME.current_round.cry_voucher_edition and next(G.GAME.current_round.cry_voucher_edition) then
+			if G.GAME.current_round.cry_voucher_edition then
 				card:set_edition(G.GAME.current_round.cry_voucher_edition, true, true)
 			end
 		end
