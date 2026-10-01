@@ -4570,6 +4570,8 @@ return {
 				last_discard = { "nếu nó là {C:attention}lượt bỏ {C:attention}cuối cùng{}" },
 				odds = { "với xác suất {C:green}#4# {C:green}trên {C:green}#3#{}" },
 			},
+			b_select_all = "Chọn tất cả",
+			b_deselect_all = "Bỏ chọn tất cả",
 		},
 		v_dictionary = {
 			a_xchips = "X#1# Chip",
