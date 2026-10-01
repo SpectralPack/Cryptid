@@ -605,6 +605,26 @@ position = "at"
 payload = """limit = limit - 1 + (card.edition and card.edition.card_limit or 0)"""
 match_indent = true
 
+#Fix SMODS.cards_to_draw desync when drawing negative cards (especially when drawing the entire deck)
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "SMODS.cards_to_draw = SMODS.cards_to_draw + (SMODS.cards_to_draw < #G.deck.cards and (cards_to_draw[i].ability.extra_slots_used or 0) - (cards_to_draw[i].ability.card_limit or 0) or 0)"
+position = "at"
+payload = "SMODS.cards_to_draw = SMODS.cards_to_draw + (cards_to_draw[i].ability.extra_slots_used or 0) - (cards_to_draw[i].ability.card_limit or 0)"
+match_indent = true
+
+#Ensure SMODS.cards_to_draw is reset at the start of each new round
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.current_round.used_packs = {}"
+position = "after"
+payload = '''
+SMODS.cards_to_draw = nil
+'''
+match_indent = true
+
 
 #This fixes a double-sided green seal cards crashing the game while trying to open "View deck" while flipped inside the random deck selection in a booster pack
 [[patches]]
