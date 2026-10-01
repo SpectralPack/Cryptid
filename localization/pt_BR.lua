@@ -3070,10 +3070,19 @@ return {
 			sleeve_cry_antimatter_sleeve = {
 				name = "Capa Antimatéria",
 				text = {
-					"aplica os {C:attention}efeitos{}",
-					"e {C:attention}efeitos especiais{}",
-					"de todas as capas dos baralhos",
-					"{C:red}WIP",
+					"Aplica as {C:legendary,E:1}vantagens{}",
+					"de cada {C:attention}efeito{} e {C:attention}efeito especial{}",
+					"de {C:attention}todas as capas selecionadas{}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Capa Antimatéria",
+				text = {
+					"Aplica as {C:legendary,E:1}vantagens{} dos {C:attention}efeitos{}",
+					"de {C:attention}todas as capas selecionadas{} vencidas",
+					"na {C:gold}Aposta Dourada{}, e os {C:attention}efeitos especiais{}",
+					"para cada {C:attention}baralho{} correspondente",
+					"vencido na {C:gold}Aposta Dourada{}",
 				},
 			},
 		},

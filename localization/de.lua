@@ -3504,21 +3504,19 @@ return {
 			sleeve_cry_antimatter_sleeve = {
 				name = "Antimaterie-Hülle",
 				text = {
-					"Übernimmt die {C:attention}Effekte{}",
-					"und {C:attention}Spezialeffekte{}",
-					"aller Deckhüllen",
-					"{C:red}WIP",
+					"Hat die {C:legendary,E:1}positiven Effekte{}",
+					"von jedem {C:attention}Effekt{} und {C:attention}Spezialeffekt{}",
+					"aller {C:attention}ausgewählten Hüllen{}",
 				},
 			},
 			sleeve_cry_antimatter_sleeve_balanced = {
 				name = "Antimaterie-Hülle",
 				text = {
-					"Übernimmt die {C:attention}Effekte{}",
-					"und {C:attention}Spezialeffekt{}",
-					"{C:attention}aller{} Deckhüllen",
-					"auf denen ein Durchlauf auf",
+					"Hat die {C:legendary,E:1}positiven Effekte{} der {C:attention}Effekte{}",
+					"aller {C:attention}ausgewählten Hüllen{}, die auf",
+					"{C:gold}Goldener Einsatz{} gewonnen wurden, und {C:attention}Spezialeffekte{}",
+					"für jedes entsprechende {C:attention}Deck{}, das auf",
 					"{C:gold}Goldener Einsatz{} gewonnen wurde",
-					"{C:red}WIP",
 				},
 			},
 		},
