@@ -3,23 +3,6 @@ version = "1.0.0"
 dump_lua = true
 priority = 10
 
-# Haunted House - useless skips
-[[patches]]
-[patches.regex]
-target = "functions/button_callbacks.lua"
-pattern = 'if _tag then'
-position = 'at'
-line_prepend = '$indent'
-payload = '''if _tag and not G.GAME.events.ev_cry_choco2 then'''
-
-# Please Take One jank
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''ease_background_colour_blind(G.STATES.ROUND_EVAL)'''
-position = "after"
-payload = '''if G.GAME.events.ev_cry_choco6 and G.round_eval then return true end'''
-match_indent = true
 
 # Revered Antique - create legendary
 [[patches]]
