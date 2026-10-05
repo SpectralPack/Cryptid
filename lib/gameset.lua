@@ -785,7 +785,7 @@ function Cryptid.gameset_config_UI(center)
 				and center.gameset_config[gamesets[i]].disabled
 			)
 		then
-			local _center = Cryptid.deep_copy(center)
+			local _center = SMODS.shallow_copy(center)
 			_center.force_gameset = gamesets[i]
 			local card = Cryptid.generic_card(_center)
 			card.gameset_select = true
