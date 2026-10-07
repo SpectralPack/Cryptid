@@ -8740,7 +8740,7 @@ local mask = {
 				}
 			end
 		end
-		if context.debuff_card and not context.debuff_card:is_face() then
+		if context.debuff_card and SMODS.is_playing_card(context.debuff_card) and not context.debuff_card:is_face() then
 			return { debuff = true }
 		end
 	end,
