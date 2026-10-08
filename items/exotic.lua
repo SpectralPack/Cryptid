@@ -1483,9 +1483,10 @@ local formidiulosus = {
 					set = "Joker",
 					rarity = "cry_candy",
 					key_append = "cry_trick_candy",
+					edition = "e_negative",
 				})
-				return { message = localize("k_plus_joker"), colour = G.C.RARITY.cry_candy }
 			end
+			return { message = localize("k_plus_joker"), colour = G.C.RARITY.cry_candy }
 		end
 		if context.joker_main then
 			return {
