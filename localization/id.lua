@@ -2042,6 +2042,23 @@ return {
 					"{C:attention}-2{} Joker slots",
 				},
 			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Antimatter Sleeve",
+				text = {
+					"Menerapkan {C:legendary,E:1}keuntungan{}",
+					"dari setiap {C:attention}efek{} dan {C:attention}efek khusus{}",
+					"dari {C:attention}semua sleeve yang dipilih{}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Antimatter Sleeve",
+				text = {
+					"Menerapkan {C:legendary,E:1}keuntungan{} dari {C:attention}efek{}",
+					"{C:attention}semua sleeve yang dipilih{} yang dimenangkan dengan {C:gold}Gold Stake{},",
+					"dan {C:attention}efek khusus{} untuk setiap {C:attention}deck{}",
+					"terkait yang dimenangkan dengan {C:gold}Gold Stake{}",
+				},
+			},
 		},
 		Spectral = {
 			c_cry_analog = {

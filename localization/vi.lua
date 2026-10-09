@@ -2876,6 +2876,23 @@ return {
 					"khi Boss Blind bị đánh bại {C:inactive}(Phải có ô trống)",
 				},
 			},
+			sleeve_cry_antimatter_sleeve = {
+				name = "Bọc Phản Vật Chất",
+				text = {
+					"Áp dụng {C:legendary,E:1}ưu năng{}",
+					"của mọi {C:attention}hiệu ứng{} và {C:attention}hiệu ứng đặc biệt{}",
+					"của {C:attention}tất cả bọc được chọn{}",
+				},
+			},
+			sleeve_cry_antimatter_sleeve_balanced = {
+				name = "Bọc Phản Vật Chất",
+				text = {
+					"Áp dụng {C:legendary,E:1}ưu năng{} của các {C:attention}hiệu ứng{}",
+					"của {C:attention}tất cả bọc được chọn{} đã thắng với {C:gold}Cọc Vàng{},",
+					"và {C:attention}hiệu ứng đặc biệt{} cho mỗi {C:attention}bộ bài{}",
+					"tương ứng đã thắng với {C:gold}Cọc Vàng{}",
+				},
+			},
 		},
 		Spectral = {
 			c_cry_adversary = {
