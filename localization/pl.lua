@@ -3713,7 +3713,7 @@ return {
 			["cry_feat_misc."] = "Różnorodne Jokery",
 			["cry_feat_misc. jokers"] = "Inne Jokery",
 			cry_feat_planets = "Karty Planet",
-			cry_feat_jokerdisplay = "JokerDisplay (Nie robi nic)",
+			cry_feat_jokerdisplay = "Integracja JokerDisplay (Wymaga restartu)",
 			cry_feat_tags = "Znaczniki",
 			cry_feat_sleeves = "Pokrowce",
 			cry_feat_spectrals = "Karty Ducha",

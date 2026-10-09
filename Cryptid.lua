@@ -441,6 +441,17 @@ local cryptidConfigTab = function()
 		ref_table = Cryptid_config,
 		ref_value = "menu",
 	})
+	if
+		(SMODS.Mods and SMODS.Mods["JokerDisplay"] and not SMODS.Mods["JokerDisplay"].disabled)
+		or JokerDisplay ~= nil
+	then
+		cry_nodes[#cry_nodes + 1] = create_toggle({
+			label = localize("cry_feat_jokerdisplay"),
+			active_colour = HEX("2e7cd6"),
+			ref_table = Cryptid_config,
+			ref_value = "joker_display",
+		})
+	end
 	cry_nodes[#cry_nodes + 1] = UIBox_button({
 		colour = has_ongoing_run and G.C.UI.BACKGROUND_INACTIVE or G.C.CRY_ALTGREENGRADIENT,
 		button = has_ongoing_run and "nil" or "reset_gameset_config",
