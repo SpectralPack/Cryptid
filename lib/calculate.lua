@@ -49,10 +49,20 @@ local cj = Card.calculate_joker
 
 local smcc = SMODS.calculate_context
 function SMODS.calculate_context(context, return_table)
+	local ret = {}
 	for k, v in pairs(SMODS.Events) do
 		if G.GAME.events and G.GAME.events[k] then
 			context.pre_jokers = true
-			v:calculate(context)
+			local res = v:calculate(context)
+			if res and type(res) == "table" then
+				if return_table then
+					return_table[#return_table + 1] = res
+				else
+					for rk, rv in pairs(res) do
+						ret[rk] = rv
+					end
+				end
+			end
 			context.pre_jokers = nil
 		end
 	end
@@ -94,11 +104,25 @@ function SMODS.calculate_context(context, return_table)
 			SMODS.trigger_effects(effects, _card)
 		end
 	end
-	local ret = smcc(context, return_table)
+	local smcc_ret = smcc(context, return_table)
+	if smcc_ret and type(smcc_ret) == "table" then
+		for rk, rv in pairs(smcc_ret) do
+			ret[rk] = rv
+		end
+	end
 	for k, v in pairs(SMODS.Events) do
 		if G.GAME.events and G.GAME.events[k] then
 			context.post_jokers = true
-			v:calculate(context)
+			local res = v:calculate(context)
+			if res and type(res) == "table" then
+				if return_table then
+					return_table[#return_table + 1] = res
+				else
+					for rk, rv in pairs(res) do
+						ret[rk] = rv
+					end
+				end
+			end
 			context.post_jokers = nil
 		end
 	end
@@ -138,7 +162,7 @@ function Card:calculate_joker(context)
 	--local orig_ability = copy_table(active_side.ability)
 	local in_context_scaling = false
 	local callback = context.callback
-	if active_side.ability.cry_possessed then
+	if active_side.ability and active_side.ability.cry_possessed then
 		if
 			not (
 				(context.individual and not context.repetition)
@@ -151,7 +175,7 @@ function Card:calculate_joker(context)
 		context.callback = nil
 	end
 	local ret, trig = cj(active_side, context)
-	if active_side.ability.cry_possessed and ret then
+	if active_side.ability and active_side.ability.cry_possessed and ret then
 		if ret.mult_mod then
 			ret.mult_mod = ret.mult_mod * -1
 		end
@@ -205,7 +229,9 @@ function Card:calculate_joker(context)
 				ret.message = ret.message .. "?"
 			end
 		end
-		callback(context.blueprint_card or self, ret, context.retrigger_joker)
+		if callback then
+			callback(context.blueprint_card or self, ret, context.retrigger_joker)
+		end
 	end
 	if not context.blueprint and (active_side.ability.set == "Joker") and not active_side.debuff then
 		if ret or trig then
