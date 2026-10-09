@@ -5351,6 +5351,8 @@ return {
 				last_discard = { "wenn es der {C:attention}letzte {C:attention}Abwurf{} ist" },
 				odds = { "mit einer Chance von {C:green}#4# {C:green}zu {C:green}#3#{}" },
 			},
+			b_select_all = "Alle auswählen",
+			b_deselect_all = "Alle abwählen",
 		},
 		v_dictionary = {
 			a_xchips = "X#1# Chips",

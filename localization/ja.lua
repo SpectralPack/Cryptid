@@ -5545,6 +5545,8 @@ return {
 				last_discard = { "if it's the {C:attention}last {C:attention}ディスカード{}" },
 				odds = { "with a {C:green}#4# {C:green}in {C:green}#3#{} chance" },
 			},
+			b_select_all = "すべて選択",
+			b_deselect_all = "すべて選択解除",
 		},
 		v_dictionary = {
 			a_xchips = "チップ X#1#",
